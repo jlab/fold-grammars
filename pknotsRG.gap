@@ -366,7 +366,26 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                    pkml  (dangleknot)
                    # h;
                      
-    knot         = XXXX
+    knot         = 
+
+      .[
+       ].
+      {
+         pk(REGION, REGION, REGION) .{
+           pk(REGION[i, i+h],
+              front[i+h+1, k1],
+              REGION[k1, k1+h1],
+              middle[k1+h1, k2-h],
+              REGION[k2-h, k2],
+              back[k2, j-h1-2],
+              REGION[j-h1, j],
+              stacknrg[k1, j],
+              stacknrg[i, k2],
+              stacknrg[a, b],
+              stacknrg[c, d] ) 
+         }.
+      } # h;
+
 >	    pknot       (i,j) = [pk' energy a u b v a' w b' (0,0) | i+11<=j, k <- [i+7 .. j-4],
 >				                 (alphanrg, alphalen) <- stacklen (i,k),
 >                                alphalen >= 2,
@@ -435,6 +454,10 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     
     emptystrand  = pss(REGION0) # h;
 	
+    stacklen = { sum(BASE, stacklen, BASE) |
+                 sumend(BASE, REGION with minsize(3), BASE) } with basepairing  # hpair ;
+
+
 >   stacklen = tabulated(
 >              (sum    <<<   base +~~ stacklen                        ~~+ base)  `with` basepair  |||
 >              (sumend <<<   base +~~ (region `with` (minloopsize 3)) ~~+ base)  `with` basepair  ...hmin)
