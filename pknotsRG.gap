@@ -369,20 +369,43 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     knot         = 
 
       .[
+         unsigned i = t_0_i;
+         unsigned j = t_0_j;
+         unsigned k = t_0_k_0;
+         unsigned l = t_0_k_1;
+         if (i+11>j)
+           continue;
+         if (k-i < 3 || j-l < 4)
+           continue;
+         if (l-k < 4)
+           continue;
+         unsigned alphamaxlen = stacklen(i, l);
+         if (alphamaxlen < 2)
+           continue;
+         unsigned alphareallen = min(alphamaxlen, k-i-1);
+         if (alphareallen < 2)
+           continue;
+         unsigned betamaxlen = stacklen(k, j);
+         if (betamaxlen < 2)
+           continue;
+         unsigned betatemplen = min(betamaxlen, j-l-2);
+         unsigned betareallen = min(betatemplen, l-k-alphareallen);
+         if (betareallen < 2)
+           continue;
        ].
       {
          pk(REGION, REGION, REGION) .{
-           pk(REGION[i, i+h],
-              front[i+h+1, k1],
-              REGION[k1, k1+h1],
-              middle[k1+h1, k2-h],
-              REGION[k2-h, k2],
-              back[k2, j-h1-2],
-              REGION[j-h1, j],
-              stacknrg[k1, j],
-              stacknrg[i, k2],
-              stacknrg[a, b],
-              stacknrg[c, d] ) 
+           pk(REGION[i, i+alphareallen],
+              front[i+alphareallen+1, k],
+              REGION[k, k+betareallen],
+              middle[k+betareallen, l-alphareallen],
+              REGION[l-alphareallen, l],
+              back[l, j-betareallen-2],
+              REGION[j-betareallen, j],
+              stacknrg[k, j],
+              stacknrg[i, l],
+              stacknrg[i+alphareallen, l-alphareallen],
+              stacknrg[k+betareallen, j-betareallen] ) 
          }.
       } # h;
 
@@ -452,7 +475,12 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     
     singlestrand = pss(REGION) # h;
     
-    emptystrand  = pss(REGION0) # h;
+    emptystrand  = pss(REGION0) # h ;
+
+    stacknrg = sr(BASE, stacknrg, BASE) with stackpairing |
+               sr(BASE, REGION with minsize(3), BASE) # h ;
+
+    // FIXME -> lib
 	
     stacklen = { sum(BASE, stacklen, BASE) |
                  sumend(BASE, REGION with minsize(3), BASE) } with basepairing  # hpair ;
