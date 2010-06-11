@@ -1,5 +1,6 @@
 import rna
-import pf_filter
+
+import stacklen
 
 input rna
 
@@ -409,6 +410,8 @@ grammar pknotsRG uses Algebra(axiom = struct) {
          }.
       } # h;
 
+/*
+
 >	    pknot       (i,j) = [pk' energy a u b v a' w b' (0,0) | i+11<=j, k <- [i+7 .. j-4],
 >				                 (alphanrg, alphalen) <- stacklen (i,k),
 >                                alphalen >= 2,
@@ -437,6 +440,8 @@ grammar pknotsRG uses Algebra(axiom = struct) {
 >					             (bcorrectionterm, _) <- stacklen (l+h'-1,j-h'+1),
 >					             let energy = alphanrg + betanrg - acorrectionterm - bcorrectionterm
 >    					    ]	                     
+
+*/
     
                      
     front j      = front_Pr               |
@@ -480,11 +485,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     stacknrg = sr(BASE, stacknrg, BASE) with stackpairing |
                sr(BASE, REGION with minsize(3), BASE) # h ;
 
-    // FIXME -> lib
-	
-    stacklen = { sum(BASE, stacklen, BASE) |
-                 sumend(BASE, REGION with minsize(3), BASE) } with basepairing  # hpair ;
-
+/*
 
 >   stacklen = tabulated(
 >              (sum    <<<   base +~~ stacklen                        ~~+ base)  `with` basepair  |||
@@ -493,5 +494,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
 >                    sumend   lb _ rb   = (0,1)
 >   hmin []  = []
 >   hmin xs = [minimum xs]
+
+*/
 
 }
