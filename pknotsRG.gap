@@ -8,6 +8,8 @@ type shape_t = shape
 // type base_t = extern // XXX
 type Rope = extern
 
+type string_t = string
+
 signature Algebra(alphabet, comp) {
 	comp sadd(Subsequence, comp);
 	comp cadd(comp, comp);
@@ -49,96 +51,96 @@ signature Algebra(alphabet, comp) {
 	choice [comp] h([comp]);
 }
 
-algebra pretty implements jensAlgebra(alphabet = char, comp = Rope) {
-	Rope sadd(Subsequence b, Rope x) {
-		Rope res;
+algebra pretty implements jensAlgebra(alphabet = char, comp = string_t) {
+	string_t sadd(Subsequence b, string_t x) {
+		string_t res;
 		append(res, '.');
 		append(res, e);
 		return res;
 	}
 
-	Rope cadd(Rope x, Rope y) {
-		Rope res;
+	string_t cadd(string_t x, string_t y) {
+		string_t res;
 		append(res, x);
 		append(res, y);
 		return res;
 	}
 
-	Rope nil(void) {
-		Rope res;
+	string_t nil(void) {
+		string_t res;
 		return res;
 	}
 
-	Rope is(Subsequence ld, Rope x, Subsequence rd) {
+	string_t is(Subsequence ld, string_t x, Subsequence rd) {
 		return x;
 	}
 
-	Rope edl(Subsequence ld, Rope x, Subsequence rd) {
-		Rope res;
+	string_t edl(Subsequence ld, string_t x, Subsequence rd) {
+		string_t res;
 		append(res, '.');
 		append(res, x);
 		return res;
 	}
  
-	Rope edr(Subsequence ld, Rope x, Subsequence rd) {
-		Rope res;
+	string_t edr(Subsequence ld, string_t x, Subsequence rd) {
+		string_t res;
 		append(res, x);
 		append(res, '.');
 		return res;
 	}
 
-	Rope edlr(Subsequence ld, Rope x, Subsequence rd) {
-		Rope res;
+	string_t edlr(Subsequence ld, string_t x, Subsequence rd) {
+		string_t res;
 		append(res, '.');
 		append(res, x);
 		append(res, '.');
 		return res;
 	}
 
-	Rope pk(Rope x) {
+	string_t pk(string_t x) {
 		return x;
 	}
 
-	Rope kndl(Subsequence ld, Rope x) {
-		Rope res;
+	string_t kndl(Subsequence ld, string_t x) {
+		string_t res;
 		append(res, '.');
 		append(res, x);
 		return res;
 	}
 
-	Rope kndr(Rope x, Subsequence rd) {
-		Rope res;
+	string_t kndr(string_t x, Subsequence rd) {
+		string_t res;
 		append(res, x);
 		append(res, '.');
 		return res;
 	}
 
-	Rope kndlr(Subsequence ld, Rope x, Subsequence rd) {
-		Rope res;
+	string_t kndlr(Subsequence ld, string_t x, Subsequence rd) {
+		string_t res;
 		append(res, '.');
 		append(res, x);
 		append(res, '.');
 		return res;
 	}
 
-	Rope sr(Subsequence lb, Rope x, Subsequence rb) {
-		Rope res;
+	string_t sr(Subsequence lb, string_t x, Subsequence rb) {
+		string_t res;
 		append(res, '(');
 		append(res, x);
 		append(res, ')');
 		return res;
 	}
 
-	Rope hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
-		Rope res;
+	string_t hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+		string_t res;
 		append(res, "((", 2);
 		append(res, '.', size(r));
 		append(res, "))", 2);
 		return res;
 	}
 
-	Rope bl(Subsequence llb, Subsequence lb, Subsequence lr, Rope x, Subsequence rb, Subsequence rrb) {
-		Rope res;
+	string_t bl(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rb, Subsequence rrb) {
+		string_t res;
 		append(res, "((", 2);
 		append(res, '.', size(lr));
 		append(res, x);
@@ -146,8 +148,8 @@ algebra pretty implements jensAlgebra(alphabet = char, comp = Rope) {
 		return res;
 	}
 
-	Rope br(Subsequence llb, Subsequence lb, Rope x, Subsequence rr, Subsequence rb, Subsequence rrb) {
-		Rope res;
+	string_t br(Subsequence llb, Subsequence lb, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+		string_t res;
 		append(res, "((", 2);
 		append(res, x);
 		append(res, '.', size(rr));
@@ -155,8 +157,8 @@ algebra pretty implements jensAlgebra(alphabet = char, comp = Rope) {
 		return res;
 	}
 
-	Rope il(Subsequence llb, Subsequence lb, Subsequence lr, Rope x, Subsequence rr, Subsequence rb, Subsequence rrb) {
-		Rope res;
+	string_t il(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+		string_t res;
 		append(res, "((", 2);
 		append(res, '.', size(lr));
 		append(res, x);
@@ -165,16 +167,16 @@ algebra pretty implements jensAlgebra(alphabet = char, comp = Rope) {
 		return res;
 	}
 
-	Rope ml(Subsequence llb, Subsequence lb, Rope x, Subsequence rb, Subsequence rrb) {
-		Rope res;
+	string_t ml(Subsequence llb, Subsequence lb, string_t x, Subsequence rb, Subsequence rrb) {
+		string_t res;
 		append(res, "((", 2);
 		append(res, x);
 		append(res, "))", 2);
 		return res;
 	}
 
-	Rope mldl(Subsequence llb, Subsequence lb, Subsequence ld, Rope x, Subsequence rb, Subsequence rrb) {
-		Rope res;
+	string_t mldl(Subsequence llb, Subsequence lb, Subsequence ld, string_t x, Subsequence rb, Subsequence rrb) {
+		string_t res;
 		append(res, "((", 2);
 		append(res, '.');
 		append(res, x);
@@ -182,8 +184,8 @@ algebra pretty implements jensAlgebra(alphabet = char, comp = Rope) {
 		return res;
 	}
 
-	Rope mldr(Subsequence llb, Subsequence lb, Rope x, Subsequence rd, Subsequence rb, Subsequence rrb) {
-		Rope res;
+	string_t mldr(Subsequence llb, Subsequence lb, string_t x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+		string_t res;
 		append(res, "((", 2);
 		append(res, x);
 		append(res, '.');
@@ -191,8 +193,8 @@ algebra pretty implements jensAlgebra(alphabet = char, comp = Rope) {
 		return res;
 	}
 
-	Rope mldlr(Subsequence llb, Subsequence lb, Subsequence ld, Rope x, Subsequence rd, Subsequence rb, Subsequence rrb) {
-		Rope res;
+	string_t mldlr(Subsequence llb, Subsequence lb, Subsequence ld, string_t x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+		string_t res;
 		append(res, "((", 2);
 		append(res, '.');
 		append(res, x);
@@ -201,110 +203,110 @@ algebra pretty implements jensAlgebra(alphabet = char, comp = Rope) {
 		return res;
 	}
 
-	Rope addss(Rope x, Subsequence r) {
-		Rope res;
+	string_t addss(string_t x, Subsequence r) {
+		string_t res;
 		append(res, x);
 		append(res, '.', size(r));
 		return res;
 	}
 
-	Rope mlstem(Rope x) {
+	string_t mlstem(string_t x) {
 		return x;
 	}
 
-	Rope pkml(Rope x) {
+	string_t pkml(string_t x) {
 		return x;
 	}
 
-	Rope knot(Subsequence a, Subsequence b, Subsequence c) {
-		Rope res;
+	string_t knot(Subsequence a, Subsequence b, Subsequence c) {
+		string_t res;
 		return res;
 	}
 
-	Rope frd(Rope x, Subsequence ld) { //frd j
-		Rope res;
+	string_t frd(string_t x, Subsequence ld) { //frd j
+		string_t res;
 		append(res, x);
 		append(res, '.');
 		return res;
 	}
 
-	Rope ul(Rope x) {
+	string_t ul(string_t x) {
 		return x;
 	}
 
-	Rope emptymid(void) { //emptymid k l
-		Rope res;
+	string_t emptymid(void) { //emptymid k l
+		string_t res;
 		return res;
 	}
 
-	Rope midbase(void) { //midbase k l
-		Rope res;
+	string_t midbase(void) { //midbase k l
+		string_t res;
 		append(res, '.'); //if k+1==l
 		return res;
 	}
 
-	Rope middlro(void) { //middlro k l
-		Rope res;
+	string_t middlro(void) { //middlro k l
+		string_t res;
 		append(res, "..", 2); //if k+2==l
 		return res;
 	}
 
-	Rope midregion(Rope x) {
+	string_t midregion(string_t x) {
 		return x;
 	}
 
-	Rope middl(Subsequence ld, Rope x) { //middl k
-		Rope res;
+	string_t middl(Subsequence ld, string_t x) { //middl k
+		string_t res;
 		append(res, '.');
 		append(res, x);
 		return res;
 	}
 
-	Rope middr(Rope x, Subsequence rd) { //middr   l
-		Rope res;
+	string_t middr(string_t x, Subsequence rd) { //middr   l
+		string_t res;
 		append(res, x);
 		append(res, '.');
 		return res;
 	}
 
-	Rope middlr(Subsequence ld, Rope x, Subsequence rd) { //middlr k l
-		Rope res;
+	string_t middlr(Subsequence ld, string_t x, Subsequence rd) { //middlr k l
+		string_t res;
 		append(res, '.');
 		append(res, x);
 		append(res, '.');
 		return res;
 	}
 
-	Rope bkd(Subsequence rd, Rope x) { //bkd i
-		Rope res;
+	string_t bkd(Subsequence rd, string_t x) { //bkd i
+		string_t res;
 		append(res, '.');
 		append(res, x);
 		return res;
 	}
  
-	Rope pss(Subsequence r) {
-		Rope res;
+	string_t pss(Subsequence r) {
+		string_t res;
 		append(res, '.', size(r));
 		return res;
 	}
 
-	Rope sum(Subsequence lb, Rope x, Subsequence rb) {
-		Rope res;
+	string_t sum(Subsequence lb, string_t x, Subsequence rb) {
+		string_t res;
 		append(res, '(');
 		append(res, r);
 		append(res, ')');
 		return res;
 	}
 
-	Rope sumend(Subsequence lb, Subsequence r, Subsequence rb) {
-		Rope res;
+	string_t sumend(Subsequence lb, Subsequence r, Subsequence rb) {
+		string_t res;
 		append(res, '(');
 		append(res, '.', size(r));
 		append(res, ')');
 		return res;
 	}
 
-	choice [Rope] h([Rope] i) {
+	choice [string_t] h([string_t] i) {
 		return i;
 	}
 }
