@@ -18,7 +18,8 @@ signature Algebra(alphabet, comp) {
 	comp edl(Subsequence, comp, Subsequence);
 	comp edr(Subsequence, comp, Subsequence);
 	comp edlr(Subsequence, comp, Subsequence);
-	comp pk(Subsequence, comp, Subsequence, comp, Subsequence,
+	comp pk(comp);
+	comp pknot(Subsequence, comp, Subsequence, comp, Subsequence,
                 comp, Subsequence,
                 comp, comp, comp, comp);
 	comp kndl(Subsequence, comp);
@@ -36,7 +37,6 @@ signature Algebra(alphabet, comp) {
 	comp addss(comp, Subsequence);
 	comp mlstem(comp);
 	comp pkml(comp);
-	comp knot(Subsequence, Subsequence, Subsequence);
 	comp frd(comp, Subsequence); //frd j
 	comp ul(comp);
 	comp emptymid(void); //emptymid k l
@@ -48,8 +48,6 @@ signature Algebra(alphabet, comp) {
 	comp middlr(Subsequence, comp, Subsequence); //middlr k l
 	comp bkd(Subsequence, comp); //bkd i
 	comp pss(Subsequence);
-	comp sum(Subsequence, comp, Subsequence);
-	comp sumend(Subsequence, Subsequence, Subsequence);
 	choice [comp] h([comp]);
 }
 
@@ -101,6 +99,23 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 
 	string_t pk(string_t x) {
 		return x;
+	}
+
+	string_t pknot(Subsequence a, string_t frt, Subsequence b,
+                string_t mid, Subsequence at,
+                string_t bck, Subsequence bt,
+                string_t e1, string_t e2, string_t e3, string_t e4) {
+          string_t res;
+          append(res, '(', size(a));
+          append(res, '.');
+          append(res, frt);
+          append(res, '{', size(b));
+          append(res, mid);
+          append(res, ')', size(at));
+          append(res, bck);
+          append(res, '.', 2);
+          append(res, '}', size(bt));
+          return x;
 	}
 
 	string_t kndl(Subsequence ld, string_t x) {
@@ -220,10 +235,6 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 		return x;
 	}
 
-	string_t knot(Subsequence a, Subsequence b, Subsequence c) {
-		string_t res;
-		return res;
-	}
 
 	string_t frd(string_t x, Subsequence ld) { //frd j
 		string_t res;
@@ -289,22 +300,6 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 	string_t pss(Subsequence r) {
 		string_t res;
 		append(res, '.', size(r));
-		return res;
-	}
-
-	string_t sum(Subsequence lb, string_t x, Subsequence rb) {
-		string_t res;
-		append(res, '(');
-		append(res, r);
-		append(res, ')');
-		return res;
-	}
-
-	string_t sumend(Subsequence lb, Subsequence r, Subsequence rb) {
-		string_t res;
-		append(res, '(');
-		append(res, '.', size(r));
-		append(res, ')');
 		return res;
 	}
 
@@ -399,8 +394,8 @@ grammar pknotsRG uses Algebra(axiom = struct) {
            continue;
        ].
       {
-         pk(REGION, REGION, REGION) .{
-           pk(REGION[i, i+alphareallen],
+         pknot(REGION, REGION, REGION) .{
+           pknot(REGION[i, i+alphareallen],
               front[i+alphareallen+1, k],
               REGION[k, k+betareallen],
               middle[k+betareallen, l-alphareallen],
@@ -487,7 +482,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     emptystrand  = pss(REGION0) # h ;
 
     stacknrg = sr(BASE, stacknrg, BASE) with stackpairing |
-               sr(BASE, REGION with minsize(3), BASE) # h ;
+               hairpin # h ;
 
 /*
 
