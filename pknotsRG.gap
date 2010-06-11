@@ -55,7 +55,7 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 	string_t sadd(Subsequence b, string_t x) {
 		string_t res;
 		append(res, '.');
-		append(res, e);
+		append(res, x);
 		return res;
 	}
 
@@ -115,7 +115,7 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
           append(res, bck);
           append(res, '.', 2);
           append(res, '}', size(bt));
-          return x;
+          return res;
 	}
 
 	string_t kndl(Subsequence ld, string_t x) {
@@ -379,13 +379,13 @@ grammar pknotsRG uses Algebra(axiom = struct) {
            continue;
          if (l-k < 4)
            continue;
-         int alphamaxlen = stacklen(i, l);
+         int alphamaxlen = stacklen(t_0_seq, i, l);
          if (alphamaxlen < 2)
            continue;
          int alphareallen = min(alphamaxlen, k-i-1);
          if (alphareallen < 2)
            continue;
-         int betamaxlen = stacklen(k, j);
+         int betamaxlen = stacklen(t_0_seq, k, j);
          if (betamaxlen < 2)
            continue;
          int betatemplen = min(betamaxlen, j-l-2);
