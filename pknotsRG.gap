@@ -5,7 +5,7 @@ import stacklen
 input rna
 
 type shape_t = shape
-type base_t = extern
+// type base_t = extern // XXX
 type Rope = extern
 
 signature Algebra(alphabet, comp) {
@@ -444,29 +444,29 @@ grammar pknotsRG uses Algebra(axiom = struct) {
 */
     
                      
-    front j      = front_Pr               |
-                   frd j (front_Pr, BASE)
+    front       = front_Pr               |
+                   frd  (front_Pr, BASE)
                    # h;
               
     front_Pr     = ul(emptystrand) |
                    pk_comps
 				   # h;
                
-    middle k l   = emptymid  k l                   |
-                   midbase   k l                   |
-                   middlro   k l                   |
+    middle     = emptymid(EMPTY)                     |
+                   midbase(EMPTY)                      |
+                   middlro(EMPTY)                      |
                    midregion     (      mid      ) |
-                   middl     k   (BASE, mid      ) |
-                   middr       l (      mid, BASE) |
-                   middlr    k l (BASE, mid, BASE) 
+                   middl        (BASE, mid      ) |
+                   middr        (      mid, BASE) |
+                   middlr      (BASE, mid, BASE) 
                    # h;
     
     mid          = ul(singlestrand) |
                    pk_comps
                    # h;
           
-    back i       = back_Pr               |
-                   bkd i (BASE, back_Pr) 
+    back        = back_Pr               |
+                   bkd  (BASE, back_Pr) 
                    # h;
              
     back_Pr      = ul(emptystrand) |
@@ -498,3 +498,6 @@ grammar pknotsRG uses Algebra(axiom = struct) {
 */
 
 }
+
+
+
