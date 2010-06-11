@@ -23,13 +23,15 @@ unsigned stacklen(const Basic_Sequence<C> &seq, U a, U b)
           array.tabulate(i, j, r);
           continue;
         }
-        if (basepairing(seq, i, j))
+        if (basepairing(seq, i, j)) {
           r = 1;
-        array.tabulate(i, j, r);
-        if (j-i>3) {
-          unsigned t = array.get_tabulated(i+1, j-1) + r;
-          array.tabulate(i, j, t);
-        }
+          if (j-i>3) {
+            unsigned t = array.get_tabulated(i+1, j-1) + r;
+            array.tabulate(i, j, t);
+          } else
+            array.tabulate(i, j, r);
+        } else
+          array.tabulate(i, j, r);
       }
       unsigned r = 0;
       array.tabulate(j, j, r);
@@ -39,6 +41,15 @@ unsigned stacklen(const Basic_Sequence<C> &seq, U a, U b)
     array.tabulate(0, 0, r);
     array.tabulate(0, 1, r);
     compute = false;
+
+/*
+    for (unsigned i = 0; i <= seq.size(); ++i) {
+      for (unsigned j = i; j <= seq.size(); ++j) {
+        std::cout << array.get_tabulated(i, j) << ' ';
+      }
+      std::cout << '\n';
+    }
+    */
   }
   return array.get_tabulated(a, b);
 }
