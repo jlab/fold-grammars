@@ -12,6 +12,7 @@ type string_t = string
 
 signature Algebra(alphabet, comp) {
   comp sumend(Subsequence, Subsequence, Subsequence);
+  comp sumss(Subsequence);
 	comp sadd(Subsequence, comp);
 	comp cadd(comp, comp);
 	comp nil(void);
@@ -142,6 +143,11 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 	}
 
   string_t sumend(Subsequence lb, Subsequence r, Subsequence rb)
+  {
+string_t res;
+return res;
+}
+  string_t sumss(Subsequence r)
   {
 string_t res;
 return res;
@@ -380,7 +386,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
          int j = t_0_j;
          int k = t_0_k_0;
          int l = t_0_k_1;
-         if (i+11>j)
+         if (j-i<11)
            continue;
          if (k-i < 3 || j-l < 4)
            continue;
@@ -494,7 +500,8 @@ grammar pknotsRG uses Algebra(axiom = struct) {
 */
 
     stacknrg = sr(BASE, stacknrg, BASE) with basepairing |
-               sumend(BASE, REGION with minsize(3), BASE) with basepairing # h ;
+               sumend(BASE, REGION with minsize(3), BASE) with basepairing |
+               sumss(REGION0) # h ;
 
 /*
 
