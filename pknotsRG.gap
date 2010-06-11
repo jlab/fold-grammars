@@ -18,7 +18,9 @@ signature Algebra(alphabet, comp) {
 	comp edl(Subsequence, comp, Subsequence);
 	comp edr(Subsequence, comp, Subsequence);
 	comp edlr(Subsequence, comp, Subsequence);
-	comp pk(comp);
+	comp pk(Subsequence, comp, Subsequence, comp, Subsequence,
+                comp, Subsequence,
+                comp, comp, comp, comp);
 	comp kndl(Subsequence, comp);
 	comp kndr(comp, Subsequence);
 	comp kndlr(Subsequence, comp, Subsequence);
@@ -51,7 +53,7 @@ signature Algebra(alphabet, comp) {
 	choice [comp] h([comp]);
 }
 
-algebra pretty implements jensAlgebra(alphabet = char, comp = string_t) {
+algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 	string_t sadd(Subsequence b, string_t x) {
 		string_t res;
 		append(res, '.');
@@ -372,27 +374,27 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     knot         = 
 
       .[
-         unsigned i = t_0_i;
-         unsigned j = t_0_j;
-         unsigned k = t_0_k_0;
-         unsigned l = t_0_k_1;
+         int i = t_0_i;
+         int j = t_0_j;
+         int k = t_0_k_0;
+         int l = t_0_k_1;
          if (i+11>j)
            continue;
          if (k-i < 3 || j-l < 4)
            continue;
          if (l-k < 4)
            continue;
-         unsigned alphamaxlen = stacklen(i, l);
+         int alphamaxlen = stacklen(i, l);
          if (alphamaxlen < 2)
            continue;
-         unsigned alphareallen = min(alphamaxlen, k-i-1);
+         int alphareallen = min(alphamaxlen, k-i-1);
          if (alphareallen < 2)
            continue;
-         unsigned betamaxlen = stacklen(k, j);
+         int betamaxlen = stacklen(k, j);
          if (betamaxlen < 2)
            continue;
-         unsigned betatemplen = min(betamaxlen, j-l-2);
-         unsigned betareallen = min(betatemplen, l-k-alphareallen);
+         int betatemplen = min(betamaxlen, j-l-2);
+         int betareallen = min(betatemplen, l-k-alphareallen);
          if (betareallen < 2)
            continue;
        ].
@@ -501,5 +503,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
 
 }
 
+
+instance pretty = pknotsRG(pretty) ;
 
 
