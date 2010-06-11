@@ -11,13 +11,13 @@
 
 BOOST_AUTO_TEST_CASE( stack )
 {
-  char s[] = "cccacgu" "aaauacccccuau" "auauau";
+  char s[] = "ccaccaaagggg" "ccccaaagggg" "aucccaucccau";
   Sequence seq(s);
   char_to_rna(seq);
-  unsigned r = stacklen(seq, 3, 7);
+  unsigned r = stacklen(seq, 0, 12);
   CHECK_EQ(r, 2);
-  r = stacklen(seq, 9, 20);
-  CHECK_EQ(r, 3);
+  r = stacklen(seq, 12, 23);
+  CHECK_EQ(r, 4);
 }
 
 BOOST_AUTO_TEST_CASE( over )
@@ -26,8 +26,8 @@ BOOST_AUTO_TEST_CASE( over )
   //char s[] = "auauau";
   Sequence seq;
   char_to_rna(seq);
-  unsigned r = stacklen(seq, 20+0, 20+4);
+  unsigned r = stacklen(seq, 23+0, 23+7);
   CHECK_EQ(r, 2);
-  r = stacklen(seq, 20+2, 20+6);
+  r = stacklen(seq, 23+5, 23+12);
   CHECK_EQ(r, 2);
 }
