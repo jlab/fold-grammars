@@ -19,10 +19,14 @@ unsigned stacklen(const Basic_Sequence<C> &seq, U a, U b)
       for (unsigned is = j-2+1; is > 0; --is) {
         unsigned i = is-1;
         unsigned r = 0;
+        if (j-i < 5) {
+          array.tabulate(i, j, r);
+          continue;
+        }
         if (basepairing(seq, i, j))
           r = 1;
         array.tabulate(i, j, r);
-        if (j-i>1) {
+        if (j-i>3) {
           unsigned t = array.get_tabulated(i+1, j-1) + r;
           array.tabulate(i, j, t);
         }

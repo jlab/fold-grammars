@@ -11,6 +11,7 @@ type Rope = extern
 type string_t = string
 
 signature Algebra(alphabet, comp) {
+  comp sumend(Subsequence, Subsequence, Subsequence);
 	comp sadd(Subsequence, comp);
 	comp cadd(comp, comp);
 	comp nil(void);
@@ -139,6 +140,12 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 		append(res, '.');
 		return res;
 	}
+
+  string_t sumend(Subsequence lb, Subsequence r, Subsequence rb)
+  {
+string_t res;
+return res;
+}
 
 	string_t sr(Subsequence lb, string_t x, Subsequence rb) {
 		string_t res;
@@ -481,8 +488,13 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     
     emptystrand  = pss(REGION0) # h ;
 
+/*
     stacknrg = sr(BASE, stacknrg, BASE) with stackpairing |
                hairpin # h ;
+*/
+
+    stacknrg = sr(BASE, stacknrg, BASE) with basepairing |
+               sumend(BASE, REGION with minsize(3), BASE) with basepairing # h ;
 
 /*
 
