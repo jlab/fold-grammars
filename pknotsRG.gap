@@ -44,7 +44,7 @@ signature Algebra(alphabet, comp) {
 	comp emptymid(void); //emptymid k l
 	comp midbase(void); //midbase k l
 	comp middlro(void); //middlro k l
-	comp midregion(comp);
+	comp midregion(comp ;  int, int);
 	comp middl(Subsequence, comp); //middl k
 	comp middr(comp, Subsequence); //middr   l
 	comp middlr(Subsequence, comp, Subsequence); //middlr k l
@@ -277,7 +277,7 @@ return res;
 		return res;
 	}
 
-	string_t midregion(string_t x) {
+	string_t midregion(string_t x ; int k, int l) {
 		return x;
 	}
 
@@ -411,7 +411,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
            pknot(REGION[i, i+alphareallen],
               front[i+alphareallen+1, k],
               REGION[k, k+betareallen],
-              middle[k+betareallen, l-alphareallen],
+              middle[k+betareallen, l-alphareallen] .(k, l).,
               REGION[l-alphareallen, l],
               back[l, j-betareallen-2],
               REGION[j-betareallen, j],
@@ -464,10 +464,10 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                    pk_comps
 				   # h;
                
-    middle     = emptymid(EMPTY)                     |
+    middle(int k, int l)     = emptymid(EMPTY)                     |
                    midbase(EMPTY)                      |
                    middlro(EMPTY)                      |
-                   midregion     (      mid      ) |
+                   midregion     (      mid    ;  k, l) |
                    middl        (BASE, mid      ) |
                    middr        (      mid, BASE) |
                    middlr      (BASE, mid, BASE) 
