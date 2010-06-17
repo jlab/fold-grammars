@@ -41,9 +41,9 @@ signature Algebra(alphabet, comp) {
 	comp pkml(comp);
 	comp frd(comp, Subsequence); //frd j
 	comp ul(comp);
-	comp emptymid(void); //emptymid k l
-	comp midbase(void); //midbase k l
-	comp middlro(void); //middlro k l
+	comp emptymid(void ; int, int);
+	comp midbase(void ; int, int);
+	comp middlro(void ; int, int);
 	comp midregion(comp ;  int, int);
 	comp middl(Subsequence, comp); //middl k
 	comp middr(comp, Subsequence); //middr   l
@@ -260,19 +260,21 @@ return res;
 		return x;
 	}
 
-	string_t emptymid(void) { //emptymid k l
+	string_t emptymid(void; int k, int l) {
 		string_t res;
 		return res;
 	}
 
-	string_t midbase(void) { //midbase k l
+	string_t midbase(void; int k, int l) {
 		string_t res;
+    if (k+1 == l)
 		append(res, '.'); //if k+1==l
 		return res;
 	}
 
-	string_t middlro(void) { //middlro k l
+	string_t middlro(void; int k, int l) {
 		string_t res;
+    if (k+2 == l)
 		append(res, "..", 2); //if k+2==l
 		return res;
 	}
@@ -464,9 +466,9 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                    pk_comps
 				   # h;
                
-    middle(int k, int l)     = emptymid(EMPTY)                     |
-                   midbase(EMPTY)                      |
-                   middlro(EMPTY)                      |
+    middle(int k, int l)     = emptymid(EMPTY ; k, l)                     |
+                   midbase(EMPTY ; k, l)                      |
+                   middlro(EMPTY ; k, l)                      |
                    midregion     (      mid    ;  k, l) |
                    middl        (BASE, mid      ) |
                    middr        (      mid, BASE) |
