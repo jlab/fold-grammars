@@ -10,7 +10,8 @@ type shape_t = shape
 // type base_t = extern // XXX
 type Rope = extern
 type mfeanswer = (int energy, int betaLeftOuter, int alphaRightOuter)
-type string_t = string
+type string_t = Rope
+
 
 signature Algebra(alphabet, comp) {
   comp sumend(Subsequence, Subsequence, Subsequence);
@@ -55,8 +56,8 @@ signature Algebra(alphabet, comp) {
   choice [comp] h([comp]);
 }
 
+
 algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
-    
   mfeanswer sadd(Subsequence b, mfeanswer x) {
     return x;
   }
@@ -150,9 +151,9 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
 	betaInner.i = b.j-1;
 	betaInner.j = bPrime.i+1;
 	  
-    res.energy =   alphaMax.energy - alphaCorrect.energy // alpha helix
+    res.energy =   alphaMax.energy;/* - alphaCorrect.energy // alpha helix
                  + betaMax.energy - betaCorrect.energy   // beta helix
-                 + pkmlinit                              // initiation energy for pk
+                 ;*//*+ pkmlinit                              // initiation energy for pk
                  + 3*npp                                 // penalty for 1+2 explicitly unpaired bases
                  + front.energy                          // energy from front substructure
                  + middle.energy                         // energy from middle substructure
@@ -162,7 +163,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
                  + termaupenalty(betaOuter, betaOuter)   // AU penalty for outmost BP in beta helix
                  + termaupenalty(betaInner, betaInner)   // AU penalty for innermost BP in beta helix
                  + dli_energy(betaOuter, betaOuter)
-				 + dri_energy(alphaOuter, alphaOuter);
+				 + dri_energy(alphaOuter, alphaOuter);*/
 
     return res;
   }
@@ -519,7 +520,8 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
   }
 
   choice [mfeanswer] h([mfeanswer] i) {
-    return list(minimum(i));
+    //~ return list(minimum(i));
+    return i;
   }
 }
 
@@ -574,10 +576,7 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     return x;
   }
 
-  string_t pknot(Subsequence a, string_t frt, Subsequence b,
-    string_t mid, Subsequence at,
-    string_t bck, Subsequence bt,
-    string_t e1, string_t e2, string_t e3, string_t e4) {
+  string_t pknot(Subsequence a, string_t frt, Subsequence b, string_t mid, Subsequence at, string_t bck, Subsequence bt, string_t e1, string_t e2, string_t e3, string_t e4) {
     string_t res;
     append(res, '(', size(a));
     append(res, '.');
@@ -588,6 +587,32 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     append(res, bck);
     append(res, '.', 2);
     append(res, '}', size(bt));
+	  
+	 append(res, " a:", 3);
+	 append(res, a.i);
+	 append(res, '-');
+	 append(res, a.j);
+	 append(res, " a':", 4);
+	 append(res, at.i);
+	 append(res, '-');
+	 append(res, at.j);
+	 append(res, " b:", 3);
+	 append(res, b.i);
+	 append(res, '-');
+	 append(res, b.j);
+	 append(res, " b':", 4);
+	 append(res, bt.i);
+	 append(res, '-');
+	 append(res, bt.j);
+	
+	append(res, "alpha:", 6);
+	append(res, e1);
+	append(res, " beta:", 6);
+	append(res, e2);
+	append(res, " alphaC:", 8);
+	append(res, e3);
+	append(res, " betaC:", 7);
+	append(res, e4);
     return res;
   }
 
@@ -615,12 +640,14 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 
   string_t sumend(Subsequence lb, Subsequence r, Subsequence rb) {
     string_t res;
+	append(res, "sumend", 6);
     return res;
   }
   
   string_t sumss(Subsequence r) {
     string_t res;
-    return res;
+    append(res, "sumss", 5);
+	return res;
   }
 
   string_t sr(Subsequence lb, string_t x, Subsequence rb) {
@@ -723,6 +750,8 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     string_t res;
     append(res, x);
     append(res, '.');
+	  
+	//~ append(res, 'F');
     return res;
   }
 
@@ -732,29 +761,37 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 
   string_t emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
     string_t res;
+	//~ append(res, betaRightInner);
+	//~ append(res, ' ');
+	//~ append(res, alphaLeftInner);
+  	//~ append(res, 'e');
     return res;
   }
 
   string_t midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
     string_t res;
-    if (alphaLeftInner+1 == betaRightInner) append(res, '.'); //if k+1==l
+    append(res, '.');
+  	//~ append(res, 'M');
     return res;
   }
 
   string_t middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
     string_t res;
-    if (alphaLeftInner+2 == betaRightInner) append(res, "..", 2); //if k+2==l
+    append(res, "..", 2);
+  	//~ append(res, 'M');
     return res;
   }
 
   string_t midregion(string_t x) {
-    return x;
+  	//~ append(x, 'M');
+	return x;
   }
 
   string_t middl(Subsequence ld, string_t x;  int betaRightInner) { //middl k
     string_t res;
     append(res, '.');
     append(res, x);
+  	//~ append(res, 'M');
     return res;
   }
 
@@ -762,6 +799,7 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     string_t res;
     append(res, x);
     append(res, '.');
+  	//~ append(res, 'M');
     return res;
   }
 
@@ -770,6 +808,8 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     append(res, '.');
     append(res, x);
     append(res, '.');
+  	//~ append(res, 'M');
+	
     return res;
   }
 
@@ -777,6 +817,8 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     string_t res;
     append(res, '.');
     append(res, x);
+  	//~ append(res, 'B');
+
     return res;
   }
  
@@ -881,7 +923,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
            pknot(REGION[i, i+alphareallen],
               front[i+alphareallen+1, k] .(j).,
               REGION[k, k+betareallen],
-              middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
+              middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen+1).,
               REGION[l-alphareallen, l],
               back[l, j-betareallen-2] .(i).,
               REGION[j-betareallen, j],
@@ -934,14 +976,14 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                    pk_comps
                    # h;
                
-    middle(int betaRightInner, int alphaLeftInner) = emptymid(LOC ; betaRightInner, alphaLeftInner) with midsize(betaRightInner - alphaLeftInner, 0) |
-                   midbase(LOC ; betaRightInner, alphaLeftInner)                      with midsize(betaRightInner - alphaLeftInner, 1) |
-                   middlro(LOC ; betaRightInner, alphaLeftInner)                      with midsize(betaRightInner - alphaLeftInner, 2) |
-                   midregion     (      mid    ) |
-                   middl        (BASE, mid      ; betaRightInner) |
-                   middr        (      mid, BASE; alphaLeftInner) |
-                   middlr      (BASE, mid, BASE; betaRightInner, alphaLeftInner) 
-                   # h;
+    middle(int betaRightInner, int alphaLeftInner) = emptymid  (REGION0        ; betaRightInner, alphaLeftInner) with minsize(0) with maxsize(0) |
+                                                     midbase   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(1) with maxsize(1) |
+                                                     middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
+                                                     midregion (      mid                                      ) |
+                                                     middl     (BASE, mid      ; betaRightInner                ) |
+                                                     middr     (      mid, BASE;                 alphaLeftInner) |
+                                                     middlr    (BASE, mid, BASE; betaRightInner, alphaLeftInner) 
+                                                     # h;
     
     mid          = ul(singlestrand) |
                    pk_comps
