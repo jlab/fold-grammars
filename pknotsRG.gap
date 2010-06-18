@@ -2,6 +2,8 @@ import rna
 
 import stacklen
 
+import pkenergy
+
 input rna
 
 type shape_t = shape
@@ -41,9 +43,9 @@ signature Algebra(alphabet, comp) {
   comp pkml(comp);
   comp frd(comp, Subsequence; int); //frd j
   comp ul(comp);
-  comp emptymid(void ; int, int);
-  comp midbase(void ; int, int);
-  comp middlro(void ; int, int);
+  comp emptymid(Subsequence ; int, int);
+  comp midbase(Subsequence ; int, int);
+  comp middlro(Subsequence ; int, int);
   comp midregion(comp);
   comp middl(Subsequence, comp; int); //middl k
   comp middr(comp, Subsequence; int); //middr   l
@@ -54,9 +56,6 @@ signature Algebra(alphabet, comp) {
 }
 
 algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
-  int npp = 30;
-  int mlinit = 380;
-  int pkmlinit = 600;
 	
   mfeanswer sadd(Subsequence b, mfeanswer x) {
     return x;
@@ -64,7 +63,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
 
   mfeanswer cadd(mfeanswer x, mfeanswer y) {
 	mfeanswer res = x;
-	x.energy = x.energy + y;
+	x.energy = x.energy + y.energy;
 	return res;
   }
 
@@ -156,7 +155,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
 
   mfeanswer kndr(mfeanswer x, Subsequence rd) {
 	Subsequence beta;
-	beta.seq = ld.seq;
+	beta.seq = rd.seq;
 	beta.i = x.betaLeftOuter+1;
 	beta.j = rd.j-1;
 	
@@ -380,54 +379,44 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     return x;
   }
 
-  mfeanswer emptymid(void; int betaRightInner, int alphaLeftInner) {
+  mfeanswer emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
 	mfeanswer res;
 	res.betaLeftOuter = 0;
 	res.alphaRightOuter = 0;
 	
-	if (i == j) {
-	  res.energy = stack37[bp_index(s[alphaLeftInner], s[i+1])][bp_index(s[i], s[betaRightInner])];
-	} else {
-	  res.energy = 0;
-	}
+    res.energy = sr_pk_energy(m[alphaLeftInner], m[m.i+1],
+                              m[m.i], m[betaRightInner]);
 	
 	return res;
   }
 
-  mfeanswer midbase(void; int betaRightInner, int alphaLeftInner) {
+  mfeanswer midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
     mfeanswer res;
     res.betaLeftOuter = 0;
     res.alphaRightOuter = 0;
 	
-    if (i+1 == j) {
-      res.energy = stack37[bp_index(s[alphaLeftInner], s[i+2])][bp_index(s[i], s[betaRightInner])];
-    } else {
-      res.energy = 0;
-    }
+    res.energy = sr_pk_energy(m[alphaLeftInner], m[m.i+2],
+                              m[m.i], m[betaRightInner]);
 	
     return res;
   }
 
-  mfeanswer middlro(void; int betaRightInner, int alphaLeftInner) {
+  mfeanswer middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
     mfeanswer res;
     res.betaLeftOuter = 0;
     res.alphaRightOuter = 0;
 	
 	Subsequence beta;
-	beta.seq = ;
-	beta.i = i-1;
+	beta.seq = m.seq;
+	beta.i = m.i-1;
 	beta.j = betaRightInner;
 	  
 	Subsequence alpha;
-	alpha.seq = ;
+	alpha.seq =m.seq ;
 	alpha.i = alphaLeftInner;
-	alpha.j = j+1;
+	alpha.j = m.j+1;
 	  
-	if (i+2 == j) {
-		res.energy = 2*npp + dri_energy inp (alpha, alpha) + dli_energy inp (beta, beta);
-	} else {
-		res.energy = 0;
-	}
+    res.energy = 2*npp + dri_energy(alpha, alpha) + dli_energy(beta, beta);
 	
     return res;
   }
@@ -709,18 +698,18 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     return x;
   }
 
-  string_t emptymid(void; int betaRightInner, int alphaLeftInner) {
+  string_t emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
     string_t res;
     return res;
   }
 
-  string_t midbase(void; int betaRightInner, int alphaLeftInner) {
+  string_t midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
     string_t res;
     if (alphaLeftInner+1 == betaRightInner) append(res, '.'); //if k+1==l
     return res;
   }
 
-  string_t middlro(void; int betaRightInner, int alphaLeftInner) {
+  string_t middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
     string_t res;
     if (alphaLeftInner+2 == betaRightInner) append(res, "..", 2); //if k+2==l
     return res;
@@ -913,9 +902,9 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                    pk_comps
 				   # h;
                
-    middle(int betaRightInner, int alphaLeftInner) = emptymid(EMPTY ; betaRightInner, alphaLeftInner)                     |
-                   midbase(EMPTY ; betaRightInner, alphaLeftInner)                      |
-                   middlro(EMPTY ; betaRightInner, alphaLeftInner)                      |
+    middle(int betaRightInner, int alphaLeftInner) = emptymid(LOC ; betaRightInner, alphaLeftInner) with midsize(betaRightInner - alphaLeftInner, 0) |
+                   midbase(LOC ; betaRightInner, alphaLeftInner)                      with midsize(betaRightInner - alphaLeftInner, 1) |
+                   middlro(LOC ; betaRightInner, alphaLeftInner)                      with midsize(betaRightInner - alphaLeftInner, 2) |
                    midregion     (      mid    ) |
                    middl        (BASE, mid      ; betaRightInner) |
                    middr        (      mid, BASE; alphaLeftInner) |
@@ -968,5 +957,6 @@ grammar pknotsRG uses Algebra(axiom = struct) {
 
 
 instance pretty = pknotsRG(pretty) ;
+instance mfe = pknotsRG(mfe) ;
 
 
