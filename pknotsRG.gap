@@ -14,8 +14,9 @@ type string_t = Rope
 
 
 signature Algebra(alphabet, comp) {
-  comp sumend(Subsequence, Subsequence, Subsequence);
-  comp sumss(Subsequence);
+  comp stackss(Subsequence);
+  comp stackhl(Subsequence, Subsequence, Subsequence, Subsequence, Subsequence);
+  comp stacksr(Subsequence, comp, Subsequence);
   comp sadd(Subsequence, comp);
   comp cadd(comp, comp);
   comp nil(void);
@@ -24,9 +25,7 @@ signature Algebra(alphabet, comp) {
   comp edr(Subsequence, comp, Subsequence);
   comp edlr(Subsequence, comp, Subsequence);
   comp pk(comp);
-  comp pknot(Subsequence, comp, Subsequence, comp, Subsequence,
-  comp, Subsequence,
-  comp, comp, comp, comp);
+  comp pknot(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, comp, comp, comp);
   comp kndl(Subsequence, comp);
   comp kndr(comp, Subsequence);
   comp kndlr(Subsequence, comp, Subsequence);
@@ -79,8 +78,8 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
   mfeanswer is(Subsequence ld, mfeanswer x, Subsequence rd) {
     Subsequence stem;
     stem.seq = ld.seq;
-    stem.i = ld.i+1;
-    stem.j = rd.j-1;
+    stem.i = ld.i;
+    stem.j = rd.j;
     
     mfeanswer res = x;
     res.energy = res.energy + termaupenalty(stem, stem);
@@ -92,7 +91,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     Subsequence stem;
     stem.seq = ld.seq;
     stem.i = ld.i+1;
-    stem.j = rd.j-1;
+    stem.j = rd.j;
       
     mfeanswer res = x;
     res.energy = res.energy + termaupenalty(stem, stem) + dl_energy(stem, stem);
@@ -103,7 +102,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
   mfeanswer edr(Subsequence ld, mfeanswer x, Subsequence rd) {
     Subsequence stem;
     stem.seq = ld.seq;
-    stem.i = ld.i+1;
+    stem.i = ld.i;
     stem.j = rd.j-1;
       
     mfeanswer res = x;
@@ -131,29 +130,32 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
   mfeanswer pknot(Subsequence a, mfeanswer front, Subsequence b, mfeanswer middle, Subsequence aPrime, mfeanswer back, Subsequence bPrime, mfeanswer alphaMax, mfeanswer betaMax, mfeanswer alphaCorrect, mfeanswer betaCorrect) {
     mfeanswer res;
 	
-	Subsequence alphaOuter;
-	alphaOuter.seq = a.seq;
-	alphaOuter.i = a.i;
-	alphaOuter.j = aPrime.j;
+    Subsequence alphaOuter;
+    alphaOuter.seq = a.seq;
+    alphaOuter.i = a.i;
+    alphaOuter.j = aPrime.j;
+    
+    Subsequence alphaInner;
+    alphaInner.seq = a.seq;
+    alphaInner.i = a.j-1;
+    alphaInner.j = aPrime.i+1;
+    
+    Subsequence betaOuter;
+    betaOuter.seq = b.seq;
+    betaOuter.i = b.i;
+    betaOuter.j = bPrime.j;
+    
+    Subsequence betaInner;
+    betaInner.seq = b.seq;
+    betaInner.i = b.j-1;
+    betaInner.j = bPrime.i+1;
 	  
-	Subsequence alphaInner;
-	alphaInner.seq = a.seq;
-	alphaInner.i = a.j-1;
-	alphaInner.j = aPrime.i+1;
-	  
-	Subsequence betaOuter;
-	betaOuter.seq = b.seq;
-	betaOuter.i = b.i;
-	betaOuter.j = bPrime.j;
-	  
-	Subsequence betaInner;
-	betaInner.seq = b.seq;
-	betaInner.i = b.j-1;
-	betaInner.j = bPrime.i+1;
-	  
-    res.energy =   alphaMax.energy;/* - alphaCorrect.energy // alpha helix
+    res.betaLeftOuter = b.i;
+    res.alphaRightOuter = aPrime.j;
+    
+    res.energy =   alphaMax.energy - alphaCorrect.energy // alpha helix
                  + betaMax.energy - betaCorrect.energy   // beta helix
-                 ;*//*+ pkmlinit                              // initiation energy for pk
+                 + pkmlinit                              // initiation energy for pk
                  + 3*npp                                 // penalty for 1+2 explicitly unpaired bases
                  + front.energy                          // energy from front substructure
                  + middle.energy                         // energy from middle substructure
@@ -162,8 +164,8 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
                  + termaupenalty(alphaInner, alphaInner) // AU penalty for innermost BP in alpha helix
                  + termaupenalty(betaOuter, betaOuter)   // AU penalty for outmost BP in beta helix
                  + termaupenalty(betaInner, betaInner)   // AU penalty for innermost BP in beta helix
-                 + dli_energy(betaOuter, betaOuter)
-				 + dri_energy(alphaOuter, alphaOuter);*/
+                 + dli_energy(alphaInner, alphaInner)    // explicitly unpaired base, before front, dangles at the inside of helix alpha
+		 + dri_energy(betaInner, betaInner);     // explicitly unpaired base, after back, dangles at the inside of helix beta
 
     return res;
   }
@@ -209,24 +211,41 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     return res;
   }
 
-  mfeanswer sumend(Subsequence lb, Subsequence r, Subsequence rb) {
-    mfeanswer res; //Same as HL
+
+  mfeanswer stackss(Subsequence r) {
+	mfeanswer res;
+	res.energy = 0;
+	return res;
+  }
+  
+  mfeanswer stackhl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+    Subsequence outerStem;
+    outerStem.seq = llb.seq;
+    outerStem.i = llb.i;
+    outerStem.j = rrb.j;
       
     Subsequence innerStem;
     innerStem.seq = lb.seq;
     innerStem.i = lb.i;
     innerStem.j = rb.j;
-
-    res.energy = hl_energy(innerStem, innerStem);
-
+    
+    mfeanswer res;
+    res.energy = sr_energy(outerStem, outerStem); // + sr_energy(outerStem, outerStem);
+    res.betaLeftOuter = 0;
+    res.alphaRightOuter = 0;
+    
     return res;
   }
   
-  mfeanswer sumss(Subsequence r) {
-    mfeanswer res;
-    res.energy = 0;
-    res.betaLeftOuter = 0;
-    res.alphaRightOuter = 0;
+  mfeanswer stacksr(Subsequence lb, mfeanswer x, Subsequence rb) {
+    Subsequence stem;
+    stem.seq = lb.seq;
+    stem.i = lb.i;
+    stem.j = rb.j;
+      
+    mfeanswer res = x;
+    res.energy = res.energy + sr_energy(stem, stem);
+    
     return res;
   }
 
@@ -419,7 +438,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     res.betaLeftOuter = 0;
     res.alphaRightOuter = 0;
     
-    res.energy = sr_pk_energy(m[alphaLeftInner], m[m.i+1], m[m.i], m[betaRightInner]);
+    res.energy = sr_pk_energy(m[alphaLeftInner-1], m[m.i], m[betaRightInner], m[m.i-1]);
   
     return res;
   }
@@ -429,7 +448,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     res.betaLeftOuter = 0;
     res.alphaRightOuter = 0;
     
-    res.energy = sr_pk_energy(m[alphaLeftInner], m[m.i+2], m[m.i], m[betaRightInner]);
+    res.energy = sr_pk_energy(m[alphaLeftInner-1], m[m.i+1], m[betaRightInner], m[m.i-1]) + npp;
     
     return res;
   }
@@ -442,11 +461,11 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     Subsequence beta;
     beta.seq = m.seq;
     beta.i = m.i-1;
-    beta.j = betaRightInner;
+    beta.j = betaRightInner+1;
       
     Subsequence alpha;
-    alpha.seq =m.seq ;
-    alpha.i = alphaLeftInner;
+    alpha.seq = m.seq;
+    alpha.i = alphaLeftInner-1;
     alpha.j = m.j+1;
       
     res.energy = 2*npp + dri_energy(alpha, alpha) + dli_energy(beta, beta);
@@ -462,7 +481,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     Subsequence beta;
     beta.seq = ld.seq;
     beta.i = ld.i-1;
-    beta.j = betaRightInner;
+    beta.j = betaRightInner+1;
 
     mfeanswer res = x;
     res.energy = res.energy + npp + dli_energy(beta, beta);
@@ -473,7 +492,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
   mfeanswer middr(mfeanswer x, Subsequence rd; int alphaLeftInner) { //middr   l
     Subsequence alpha;
     alpha.seq = rd.seq;
-    alpha.i = alphaLeftInner;
+    alpha.i = alphaLeftInner-1;
     alpha.j = rd.j+1;
 
     mfeanswer res = x;
@@ -486,11 +505,11 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     Subsequence beta;
     beta.seq = ld.seq;
     beta.i = ld.i-1;
-    beta.j = betaRightInner;
+    beta.j = betaRightInner+1;
       
     Subsequence alpha;
     alpha.seq = rd.seq;
-    alpha.i = alphaLeftInner;
+    alpha.i = alphaLeftInner-1;
     alpha.j = rd.j+1;
 
     mfeanswer res = x;
@@ -520,8 +539,8 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
   }
 
   choice [mfeanswer] h([mfeanswer] i) {
-    //~ return list(minimum(i));
-    return i;
+    return list(minimum(i));
+    //~ return i;
   }
 }
 
@@ -576,9 +595,9 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     return x;
   }
 
-  string_t pknot(Subsequence a, string_t frt, Subsequence b, string_t mid, Subsequence at, string_t bck, Subsequence bt, string_t e1, string_t e2, string_t e3, string_t e4) {
+  string_t pknot(Subsequence a, string_t frt, Subsequence b, string_t mid, Subsequence at, string_t bck, Subsequence bt, string_t alphaMax, string_t betaMax, string_t alphaCorrect, string_t betaCorrect) {
     string_t res;
-    append(res, '(', size(a));
+    append(res, '[', size(a));
     append(res, '.');
     append(res, frt);
     append(res, '{', size(b));
@@ -586,33 +605,33 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     append(res, ')', size(at));
     append(res, bck);
     append(res, '.', 2);
-    append(res, '}', size(bt));
+    append(res, ']', size(bt));
 	  
-	 append(res, " a:", 3);
-	 append(res, a.i);
-	 append(res, '-');
-	 append(res, a.j);
-	 append(res, " a':", 4);
-	 append(res, at.i);
-	 append(res, '-');
-	 append(res, at.j);
-	 append(res, " b:", 3);
-	 append(res, b.i);
-	 append(res, '-');
-	 append(res, b.j);
-	 append(res, " b':", 4);
-	 append(res, bt.i);
-	 append(res, '-');
-	 append(res, bt.j);
+	 //~ append(res, " a:", 3);
+	 //~ append(res, a.i);
+	 //~ append(res, '-');
+	 //~ append(res, a.j);
+	 //~ append(res, " a':", 4);
+	 //~ append(res, at.i);
+	 //~ append(res, '-');
+	 //~ append(res, at.j);
+	 //~ append(res, " b:", 3);
+	 //~ append(res, b.i);
+	 //~ append(res, '-');
+	 //~ append(res, b.j);
+	 //~ append(res, " b':", 4);
+	 //~ append(res, bt.i);
+	 //~ append(res, '-');
+	 //~ append(res, bt.j);
 	
-	append(res, "alpha:", 6);
-	append(res, e1);
-	append(res, " beta:", 6);
-	append(res, e2);
-	append(res, " alphaC:", 8);
-	append(res, e3);
-	append(res, " betaC:", 7);
-	append(res, e4);
+	//~ append(res, " alpha:", 7);
+	//~ append(res, alphaMax);
+	//~ append(res, " beta:", 6);
+	//~ append(res, betaMax);
+	//~ append(res, " alphaC:", 8);
+	//~ append(res, alphaCorrect);
+	//~ append(res, " betaC:", 7);
+	//~ append(res, betaCorrect);
     return res;
   }
 
@@ -638,16 +657,26 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     return res;
   }
 
-  string_t sumend(Subsequence lb, Subsequence r, Subsequence rb) {
-    string_t res;
-	append(res, "sumend", 6);
+  string_t stackss(Subsequence r) {
+	string_t res;
+	append(res, ':', size(r));
     return res;
   }
   
-  string_t sumss(Subsequence r) {
+  string_t stacksr(Subsequence lb, string_t x, Subsequence rb) {
     string_t res;
-    append(res, "sumss", 5);
-	return res;
+    append(res, '<');
+    append(res, x);
+    append(res, '>');
+    return res;
+  }
+
+  string_t stackhl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+    string_t res;
+    append(res, "<.", 2);
+    append(res, ':', size(r));
+    append(res, ".>", 2);
+    return res;
   }
 
   string_t sr(Subsequence lb, string_t x, Subsequence rb) {
@@ -750,8 +779,6 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     string_t res;
     append(res, x);
     append(res, '.');
-	  
-	//~ append(res, 'F');
     return res;
   }
 
@@ -761,37 +788,56 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 
   string_t emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
     string_t res;
+	  //~ append(res, "emptymid", 8);
+	//~ append(res, " bi: ", 5);
 	//~ append(res, betaRightInner);
-	//~ append(res, ' ');
+	//~ append(res, " ai: ", 5);
 	//~ append(res, alphaLeftInner);
-  	//~ append(res, 'e');
+	//~ append(res, " m.i: ", 6);
+	//~ append(res, m.i);
+	//~ append(res, " m.j: ", 6);
+	//~ append(res, m.j);
+	  
     return res;
   }
 
   string_t midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
     string_t res;
     append(res, '.');
-  	//~ append(res, 'M');
     return res;
   }
 
   string_t middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
     string_t res;
     append(res, "..", 2);
-  	//~ append(res, 'M');
+	  
+	  //~ append(res, " m.i: ", 6);
+	  //~ append(res, m.i);
+	  //~ append(res, " m.j: ", 6);
+	  //~ append(res, m.j);
+	  //~ append(res, " bri: ", 6);
+	  //~ append(res, betaRightInner);
+	  //~ append(res, " ali: ", 6);
+	  //~ append(res, alphaLeftInner);
+	  
     return res;
   }
 
   string_t midregion(string_t x) {
-  	//~ append(x, 'M');
-	return x;
+    return x;
   }
 
   string_t middl(Subsequence ld, string_t x;  int betaRightInner) { //middl k
     string_t res;
     append(res, '.');
     append(res, x);
-  	//~ append(res, 'M');
+	  //~ append(res, " ld.i: ", 7);
+	  //~ append(res, ld.i);
+	  //~ append(res, " ld.j: ", 7);
+	  //~ append(res, ld.j);
+	  //~ append(res, " bri: ", 6);
+	  //~ append(res, betaRightInner);
+	  
     return res;
   }
 
@@ -799,7 +845,6 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     string_t res;
     append(res, x);
     append(res, '.');
-  	//~ append(res, 'M');
     return res;
   }
 
@@ -808,8 +853,6 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     append(res, '.');
     append(res, x);
     append(res, '.');
-  	//~ append(res, 'M');
-	
     return res;
   }
 
@@ -817,8 +860,6 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     string_t res;
     append(res, '.');
     append(res, x);
-  	//~ append(res, 'B');
-
     return res;
   }
  
@@ -892,7 +933,6 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                    # h;
                      
     knot         = 
-
       .[
          int i = t_0_i;
          int j = t_0_j;
@@ -923,54 +963,20 @@ grammar pknotsRG uses Algebra(axiom = struct) {
            pknot(REGION[i, i+alphareallen],
               front[i+alphareallen+1, k] .(j).,
               REGION[k, k+betareallen],
-              middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen+1).,
+              middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
               REGION[l-alphareallen, l],
               back[l, j-betareallen-2] .(i).,
               REGION[j-betareallen, j],
-              stacknrg[k, j],
               stacknrg[i, l],
+              stacknrg[k, j],
               stacknrg[i+alphareallen, l-alphareallen],
               stacknrg[k+betareallen, j-betareallen] ) 
          }.
-      } # h;
-
-/*
-
->      pknot       (i,j) = [pk' energy a u b v a' w b' (0,0) | i+11<=j, k <- [i+7 .. j-4],
->                         (alphanrg, alphalen) <- stacklen (i,k),
->                                alphalen >= 2,
->                                l <- [i+3 .. k-4],
->                                -- don't let a-a' run into b-b' from behind
->                                let h = min alphalen (l-i-1),
->                                h>=2,
->                       (betanrg, betalen) <- stacklen (l,j),
->                         betalen >=2, 
->                                -- don't let b-b' run into a-a' from behind
->                                let tmph' = min betalen (j-k-2),
->                                -- don't let a-a' and b-b'  collide in the middle
->                       let h' = min tmph'  (k-l-h),
->                       h' >= 2,
-
->                       a <- region   (i     , i+h  ),
->                       u <- front  j (i+h+1,    l  ),
->                       b <- region   (l    , l+h'  ),
->                         v <- middle (j-h') (i+h) (l+h', k-h  ),
->                       a'<- region   (k-h  , k     ),
->                       w <- back   i (k    , j-h'-2),
->                       b'<- region   (j-h' , j     ),
-
->                                -- recalculate the energy of shrinked helices
->                                (acorrectionterm, _) <- stacklen (i+h -1,k-h +1),
->                       (bcorrectionterm, _) <- stacklen (l+h'-1,j-h'+1),
->                       let energy = alphanrg + betanrg - acorrectionterm - bcorrectionterm
->                  ]                       
-
-*/
-    
+      } # h;    
                      
     front(int betaRightOuter) = front_Pr               |
-                   frd  (front_Pr, BASE; betaRightOuter)
-                   # h;
+                                frd  (front_Pr, BASE; betaRightOuter)
+                                # h;
               
     front_Pr     = ul(emptystrand) |
                    pk_comps
@@ -990,8 +996,8 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                    # h;
           
     back(int alphaLeftOuter) = back_Pr               |
-                   bkd  (BASE, back_Pr; alphaLeftOuter) 
-                   # h;
+                               bkd  (BASE, back_Pr; alphaLeftOuter) 
+                               # h;
              
     back_Pr      = ul(emptystrand) |
                    pk_comps
@@ -1006,27 +1012,11 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     
     emptystrand  = pss(REGION0) # h ;
 
-/*
-    stacknrg = sr(BASE, stacknrg, BASE) with stackpairing |
-               hairpin # h ;
-*/
-
-    stacknrg     = sr    (BASE, stacknrg,               BASE) with basepairing |
-                   sumend(BASE, REGION with minsize(3), BASE) with basepairing |
-                   sumss (      REGION0                     ) # h ;
-
-/*
-
->   stacklen = tabulated(
->              (sum    <<<   base +~~ stacklen                        ~~+ base)  `with` basepair  |||
->              (sumend <<<   base +~~ (region `with` (minloopsize 3)) ~~+ base)  `with` basepair  ...hmin)
->           where    sum      lb (c,k) rb   = (c + sr_energy inp (lb, rb), k+1)
->                    sumend   lb _ rb   = (0,1)
->   hmin []  = []
->   hmin xs = [minimum xs]
-
-*/
-
+    stacknrg     = stackss(REGION0) | stackcont # h;
+	
+    stackcont    = {stacksr(BASE, stackcont, BASE) |
+	           stackhl(BASE, BASE, REGION with minsize(3), BASE, BASE)} with stackpairing
+		   # h;
 }
 
 
