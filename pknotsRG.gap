@@ -153,20 +153,25 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     res.betaLeftOuter = b.i;
     res.alphaRightOuter = aPrime.j;
     
+	//~ Subsequence h;
+    //~ h.seq = b.seq;
+    //~ h.i = b.j-1;
+    //~ h.j = bPrime.i+1;
+    
     res.energy =   alphaMax.energy - alphaCorrect.energy // alpha helix
                  + betaMax.energy - betaCorrect.energy   // beta helix
-		 //~ + pkmlinit                              // initiation energy for pk
-                 //~ + 3*npp                                 // penalty for 1+2 explicitly unpaired bases
+                 + pkmlinit                              // initiation energy for pk
+                 + 3*npp                                 // penalty for 1+2 explicitly unpaired bases
                  + front.energy                          // energy from front substructure
-		 + middle.energy                         // energy from middle substructure
-                 //~ + back.energy                           // energy from back substructure
-                 //~ + termaupenalty(alphaOuter, alphaOuter) // AU penalty for outmost BP in alpha helix
-                 //~ + termaupenalty(alphaInner, alphaInner) // AU penalty for innermost BP in alpha helix
-                 //~ + termaupenalty(betaOuter, betaOuter)   // AU penalty for outmost BP in beta helix
-                 //~ + termaupenalty(betaInner, betaInner)   // AU penalty for innermost BP in beta helix
-                 //~ + dli_energy(alphaInner, alphaInner)    // explicitly unpaired base, before front, dangles at the inside of helix alpha
-		 //~ + dri_energy(betaInner, betaInner)      // explicitly unpaired base, after back, dangles at the inside of helix beta
-		;
+                 + middle.energy                         // energy from middle substructure
+                 + back.energy                           // energy from back substructure
+                 + termaupenalty(alphaOuter, alphaOuter) // AU penalty for outmost BP in alpha helix
+                 + termaupenalty(alphaInner, alphaInner) // AU penalty for innermost BP in alpha helix
+                 + termaupenalty(betaOuter, betaOuter)   // AU penalty for outmost BP in beta helix
+                 + termaupenalty(betaInner, betaInner)   // AU penalty for innermost BP in beta helix
+                 + dli_energy(alphaInner, alphaInner)    // explicitly unpaired base, before front, dangles at the inside of helix alpha
+		         + dri_energy(betaInner, betaInner);     // explicitly unpaired base, after back, dangles at the inside of helix beta
+//~ ;
     return res;
   }
 
@@ -437,10 +442,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     mfeanswer res;
     res.betaLeftOuter = 0;
     res.alphaRightOuter = 0;
-    
     res.energy = sr_pk_energy(m[m.i-1], m[betaRightInner], m[m.i], m[alphaLeftInner-1]);
-    //~ res.energy = 0;
-	  
     return res;
   }
 
@@ -448,10 +450,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     mfeanswer res;
     res.betaLeftOuter = 0;
     res.alphaRightOuter = 0;
-    
-    //~ res.energy = sr_pk_energy(m[m.i-1], m[betaRightInner+1], m[m.i+1], m[alphaLeftInner]);
-    res.energy = 0;
-	  
+    res.energy = sr_pk_energy(m[m.i-1], m[betaRightInner], m[m.i+1], m[alphaLeftInner-1]);
     return res;
   }
 
@@ -649,11 +648,6 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     string_t res;
     append(res, x);
     append(res, '.');
-	  //~ append(res, " rd.i: ", 7);
-	  //~ append(res, rd.i);
-	  //~ append(res, " rd.j: ", 7);
-	  //~ append(res, rd.j);
-	  
     return res;
   }
 
@@ -667,25 +661,17 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 
   string_t stackss(Subsequence r) {
     string_t res;
-    //~ append(res, '_', size(r));
     return res;
   }
   
   string_t stacksr(Subsequence lb, string_t x, Subsequence rb) {
     string_t res;
-    //~ append(res, '<');
-    //~ append(res, lb.i);
     append(res, x);
-    //~ append(res, rb.j);
-    //~ append(res, '>');
     return res;
   }
 
   string_t stackhl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
     string_t res;
-    //~ append(res, "<.", 2);
-    //~ append(res, ':', size(r));
-    //~ append(res, ".>", 2);
     return res;
   }
 
@@ -799,10 +785,10 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
   string_t emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
     string_t res;
 	  //~ append(res, "emptymid", 8);
-	append(res, " bi: ", 5);
-	append(res, betaRightInner);
-	append(res, " ai: ", 5);
-	append(res, alphaLeftInner);
+	//~ append(res, " bi: ", 5);
+	//~ append(res, betaRightInner);
+	//~ append(res, " ai: ", 5);
+	//~ append(res, alphaLeftInner);
 	//~ append(res, " m.i: ", 6);
 	//~ append(res, m.i);
 	//~ append(res, " m.j: ", 6);
