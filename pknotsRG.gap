@@ -990,3 +990,9 @@ instance mfe = pknotsRG(mfe) ;
 instance mfepp = pknotsRG(mfe * pretty);
 instance ppmfe = pknotsRG(pretty * mfe);
 
+
+/* Beispiel, warum stacklen nicht nur durch # moeglicher BP berechnet werden kann, denn GU auf UG gibt destabilisierende Energie!	
+acgucgaaauaaaugccuugucugcuauauucgacgcgagcuuaauauuuggggcc
+.[[[[[[[......{{{{{..........]]]]]]]..............}}}}}. 
+.[[[[[[[......{{{{{{.........]]]]]]].............}}}}}}.
+*/
