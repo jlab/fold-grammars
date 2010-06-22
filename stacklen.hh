@@ -22,7 +22,8 @@ struct TA {
 };
 
 template <typename C, typename U>
-unsigned stacklen(const Basic_Sequence<C> &seq, U a, U b)
+inline
+std::pair<int, unsigned> stacklen(const Basic_Sequence<C> &seq, U a, U b)
 {
   typedef Table::Quadratic<std::pair<int, unsigned>, Table::CYK> table_t;
   static table_t table;
@@ -82,8 +83,37 @@ unsigned stacklen(const Basic_Sequence<C> &seq, U a, U b)
     }
     */
   }
-  return array(a, b).second;
+  return array(a, b);
 }
+
+template <typename A, typename B>
+inline
+A &first(std::pair<A, B> &p)
+{
+  return p.first;
+}
+
+template <typename A, typename B>
+inline
+B &second(std::pair<A, B> &p)
+{
+  return p.second;
+}
+
+template <typename A, typename B>
+inline
+const A &first(const std::pair<A, B> &p)
+{
+  return p.first;
+}
+
+template <typename A, typename B>
+inline
+const B &second(const std::pair<A, B> &p)
+{
+  return p.second;
+}
+
 
 
 #endif

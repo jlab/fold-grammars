@@ -25,7 +25,7 @@ signature Algebra(alphabet, comp) {
   comp edr(Subsequence, comp, Subsequence);
   comp edlr(Subsequence, comp, Subsequence);
   comp pk(comp);
-  comp pknot(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, comp, comp, comp);
+  comp pknot(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int, int, int, int);
   comp kndl(Subsequence, comp);
   comp kndr(comp, Subsequence);
   comp kndlr(Subsequence, comp, Subsequence);
@@ -127,7 +127,8 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     return x;
   }
 
-  mfeanswer pknot(Subsequence a, mfeanswer front, Subsequence b, mfeanswer middle, Subsequence aPrime, mfeanswer back, Subsequence bPrime, mfeanswer alphaMax, mfeanswer betaMax, mfeanswer alphaCorrect, mfeanswer betaCorrect) {
+  mfeanswer pknot(Subsequence a, mfeanswer front, Subsequence b, mfeanswer middle, Subsequence aPrime, mfeanswer back, Subsequence bPrime
+; int alphaMax, int betaMax, int alphaCorrect, int betaCorrect) {
     mfeanswer res;
 	
     Subsequence alphaOuter;
@@ -153,8 +154,8 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     res.betaLeftOuter = b.i;
     res.alphaRightOuter = aPrime.j;
     
-    res.energy =   alphaMax.energy - alphaCorrect.energy // alpha helix
-                 + betaMax.energy - betaCorrect.energy   // beta helix
+    res.energy =   alphaMax - alphaCorrect // alpha helix
+                 + betaMax - betaCorrect // beta helix
                  + pkmlinit                              // initiation energy for pk
                  + 3*npp                                 // penalty for 1+2 explicitly unpaired bases
                  + front.energy                          // energy from front substructure
@@ -590,7 +591,8 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     return x;
   }
 
-  string_t pknot(Subsequence a, string_t frt, Subsequence b, string_t mid, Subsequence at, string_t bck, Subsequence bt, string_t alphaMax, string_t betaMax, string_t alphaCorrect, string_t betaCorrect) {
+  string_t pknot(Subsequence a, string_t frt, Subsequence b, string_t mid, Subsequence at, string_t bck, Subsequence bt ;
+int alphaMax, int betaMax, int alphaCorrect, int betaCorrect) {
     string_t res;
     append(res, '[', size(a));
     append(res, '.');
@@ -907,19 +909,24 @@ grammar pknotsRG uses Algebra(axiom = struct) {
            continue;
          if (l-k < 4)
            continue;
-         int alphamaxlen = stacklen(t_0_seq, i, l);
+         int alphamaxlen = second(stacklen(t_0_seq, i, l));
          if (alphamaxlen < 2)
            continue;
          int alphareallen = min(alphamaxlen, k-i-1);
          if (alphareallen < 2)
            continue;
-         int betamaxlen = stacklen(t_0_seq, k, j);
+         int betamaxlen = second(stacklen(t_0_seq, k, j));
          if (betamaxlen < 2)
            continue;
          int betatemplen = min(betamaxlen, j-l-2);
          int betareallen = min(betatemplen, l-k-alphareallen);
          if (betareallen < 2)
            continue;
+
+         int a = first(stacklen(t_0_seq, i, l));
+         int b = first(stacklen(t_0_seq, k, j));
+         int c = first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1));
+         int d = first(stacklen(t_0_seq, k+betareallen-1, j-betareallen+1));
        ].
       {
          pknot(REGION, REGION, REGION) .{
@@ -929,11 +936,11 @@ grammar pknotsRG uses Algebra(axiom = struct) {
               middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
               REGION[l-alphareallen, l],
               back[l, j-betareallen-2] .(i).,
-              REGION[j-betareallen, j],
-              stacknrg[i, l],
-              stacknrg[k, j],
-              stacknrg[i+alphareallen-1, l-alphareallen+1],
-              stacknrg[k+betareallen-1, j-betareallen+1] ) 
+              REGION[j-betareallen, j] ;
+              a,
+              b,
+              c,
+              d) 
          }.
       } # h;    
                      
@@ -975,6 +982,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     
     emptystrand  = pss(REGION0) # h ;
 
+/*
     stacknrg     = stackss(REGION0) | 
                    stackcont 
 		           # h;
@@ -982,6 +990,8 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     stackcont    = stacksr(BASE, stackcont, BASE) with stackpairing |
 	               stackhl(BASE, BASE, REGION with minsize(3), BASE, BASE) with stackpairing  
 		           # h;
+
+*/
 }
 
 
