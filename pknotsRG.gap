@@ -841,6 +841,9 @@ int alphaMax, int betaMax, int alphaCorrect, int betaCorrect) {
 
 
 grammar pknotsRG uses Algebra(axiom = struct) {
+
+    tabulated {struct, closed, ml_comps1, ml_comps, pk_comps, knot }
+
     struct       = sadd(BASE,      struct) |
                    cadd(dangle_Pr, struct) |
                    nil (EMPTY) 
