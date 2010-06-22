@@ -12,6 +12,7 @@ type Rope = extern
 type mfeanswer = (int energy, int betaLeftOuter, int alphaRightOuter)
 type string_t = Rope
 type myShape = Rope
+type myBool = int
 
 signature Algebra(alphabet, comp) {
   comp sadd(Subsequence, comp);
@@ -124,8 +125,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     return x;
   }
 
-  mfeanswer pknot(Subsequence a, mfeanswer front, Subsequence b, mfeanswer middle, Subsequence aPrime, mfeanswer back, Subsequence bPrime
-; int stackenergies) {
+  mfeanswer pknot(Subsequence a, mfeanswer front, Subsequence b, mfeanswer middle, Subsequence aPrime, mfeanswer back, Subsequence bPrime ; int stackenergies) {
     mfeanswer res;
 	
     Subsequence alphaOuter;
@@ -753,149 +753,152 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
   }
 }
 
-
-algebra enforce implements Algebra(alphabet = char, comp = bool) {
-  bool sadd(Subsequence b, bool x) {
+algebra enforce implements Algebra(alphabet = char, comp = myBool) {
+  myBool sadd(Subsequence b, myBool x) {
     return x;
   }
 
-  bool cadd(bool x, bool y) {
-    return x || y;
+  myBool cadd(myBool x, myBool y) {
+	if ((x == 1) || (y == 1)) {
+		return 1;
+	} else {
+		return 0;
+	}
   }
 
-  bool nil(void) {
-    return false;
+  myBool nil(void) {
+    return 0;
   }
 
-  bool is(Subsequence ld, bool x, Subsequence rd) {
+  myBool is(Subsequence ld, myBool x, Subsequence rd) {
     return x;
   }
 
-  bool edl(Subsequence ld, bool x, Subsequence rd) {
-    return x;
-  }
- 
-  bool edr(Subsequence ld, bool x, Subsequence rd) {
-    return x;
-  }
-
-  bool edlr(Subsequence ld, bool x, Subsequence rd) {
-    return x;
-  }
-
-  bool pk(bool x) {
-    return x;
-  }
-
-  bool pknot(Subsequence a, bool frt, Subsequence b, bool mid, Subsequence at, bool bck, Subsequence bt ; int stackenergies) {
-    return true;
-  }
-
-  bool kndl(Subsequence ld, bool x) {
-    return x;
-  }
-
-  bool kndr(bool x, Subsequence rd) {
-    return x;
-  }
-
-  bool kndlr(Subsequence ld, bool x, Subsequence rd) {
-    return x;
-  }
-
-  bool sr(Subsequence lb, bool x, Subsequence rb) {
-    return x;
-  }
-
-  bool hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
-    return false;
-  }
-
-  bool bl(Subsequence llb, Subsequence lb, Subsequence lr, bool x, Subsequence rb, Subsequence rrb) {
-    return x;
-  }
-
-  bool br(Subsequence llb, Subsequence lb, bool x, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return x;
-  }
-
-  bool il(Subsequence llb, Subsequence lb, Subsequence lr, bool x, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return x;
-  }
-
-  bool ml(Subsequence llb, Subsequence lb, bool x, Subsequence rb, Subsequence rrb) {
-    return x;
-  }
-
-  bool mldl(Subsequence llb, Subsequence lb, Subsequence ld, bool x, Subsequence rb, Subsequence rrb) {
-    return x;
-  }
-
-  bool mldr(Subsequence llb, Subsequence lb, bool x, Subsequence rd, Subsequence rb, Subsequence rrb) {
-    return x;
-  }
-
-  bool mldlr(Subsequence llb, Subsequence lb, Subsequence ld, bool x, Subsequence rd, Subsequence rb, Subsequence rrb) {
-    return x;
-  }
-
-  bool addss(bool x, Subsequence r) {
-    return x;
-  }
-
-  bool mlstem(bool x) {
-    return x;
-  }
-
-  bool pkml(bool x) {
-    return x;
-  }
-
-  bool frd(bool x, Subsequence ld; int betaRightOuter) {
-    return x;
-  }
-
-  bool ul(bool x) {
-    return x;
-  }
-
-  bool emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
-    return false;
-  }
-
-  bool midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
-    return false;
-  }
-
-  bool middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
-    return false;
-  }
-
-  bool midregion(bool x) {
-    return x;
-  }
-
-  bool middl(Subsequence ld, bool x;  int betaRightInner) {
-    return x;
-  }
-
-  bool middr(bool x, Subsequence rd;  int alphaLeftInner) {
-    return x;
-  }
-
-  bool middlr(Subsequence ld, bool x, Subsequence rd; int betaRightInner, int alphaLeftInner) {
-    return x;
-  }
-
-  bool bkd(Subsequence rd, bool x; int alphaLeftOuter) {
+  myBool edl(Subsequence ld, myBool x, Subsequence rd) {
     return x;
   }
  
-  bool pss(Subsequence r) {
-    return false;
+  myBool edr(Subsequence ld, myBool x, Subsequence rd) {
+    return x;
   }
 
-  choice [bool] h([bool] i) {
+  myBool edlr(Subsequence ld, myBool x, Subsequence rd) {
+    return x;
+  }
+
+  myBool pk(myBool x) {
+    return x;
+  }
+
+  myBool pknot(Subsequence a, myBool frt, Subsequence b, myBool mid, Subsequence at, myBool bck, Subsequence bt ; int stackenergies) {
+    return 1;
+  }
+
+  myBool kndl(Subsequence ld, myBool x) {
+    return x;
+  }
+
+  myBool kndr(myBool x, Subsequence rd) {
+    return x;
+  }
+
+  myBool kndlr(Subsequence ld, myBool x, Subsequence rd) {
+    return x;
+  }
+
+  myBool sr(Subsequence lb, myBool x, Subsequence rb) {
+    return x;
+  }
+
+  myBool hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+    return 0;
+  }
+
+  myBool bl(Subsequence llb, Subsequence lb, Subsequence lr, myBool x, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  myBool br(Subsequence llb, Subsequence lb, myBool x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  myBool il(Subsequence llb, Subsequence lb, Subsequence lr, myBool x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  myBool ml(Subsequence llb, Subsequence lb, myBool x, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  myBool mldl(Subsequence llb, Subsequence lb, Subsequence ld, myBool x, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  myBool mldr(Subsequence llb, Subsequence lb, myBool x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  myBool mldlr(Subsequence llb, Subsequence lb, Subsequence ld, myBool x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  myBool addss(myBool x, Subsequence r) {
+    return x;
+  }
+
+  myBool mlstem(myBool x) {
+    return x;
+  }
+
+  myBool pkml(myBool x) {
+    return x;
+  }
+
+  myBool frd(myBool x, Subsequence ld; int betaRightOuter) {
+    return x;
+  }
+
+  myBool ul(myBool x) {
+    return x;
+  }
+
+  myBool emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    return 0;
+  }
+
+  myBool midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    return 0;
+  }
+
+  myBool middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    return 0;
+  }
+
+  myBool midregion(myBool x) {
+    return x;
+  }
+
+  myBool middl(Subsequence ld, myBool x;  int betaRightInner) {
+    return x;
+  }
+
+  myBool middr(myBool x, Subsequence rd;  int alphaLeftInner) {
+    return x;
+  }
+
+  myBool middlr(Subsequence ld, myBool x, Subsequence rd; int betaRightInner, int alphaLeftInner) {
+    return x;
+  }
+
+  myBool bkd(Subsequence rd, myBool x; int alphaLeftOuter) {
+    return x;
+  }
+ 
+  myBool pss(Subsequence r) {
+    return 0;
+  }
+
+  choice [myBool] h([myBool] i) {
     return unique(i);
   }
 }
@@ -948,32 +951,6 @@ algebra shape5 implements Algebra(alphabet = char, comp = myShape) {
     append(res, bck);
     append(res, '}');
 	  
-	 //~ append(res, " a:", 3);
-	 //~ append(res, a.i);
-	 //~ append(res, '-');
-	 //~ append(res, a.j);
-	 //~ append(res, " a':", 4);
-	 //~ append(res, at.i);
-	 //~ append(res, '-');
-	 //~ append(res, at.j);
-	 //~ append(res, " b:", 3);
-	 //~ append(res, b.i);
-	 //~ append(res, '-');
-	 //~ append(res, b.j);
-	 //~ append(res, " b':", 4);
-	 //~ append(res, bt.i);
-	 //~ append(res, '-');
-	 //~ append(res, bt.j);
-	
-	//~ append(res, " alpha:", 7);
-	//~ append(res, alphaMax);
-	//~ append(res, ' ');
-	//~ append(res, " beta:", 6);
-	//~ append(res, betaMax);
-	//~ append(res, " alphaC:", 8);
-	//~ append(res, alphaCorrect);
-	//~ append(res, " betaC:", 7);
-	//~ append(res, betaCorrect);
     return res;
   }
 
@@ -1108,6 +1085,297 @@ algebra shape5 implements Algebra(alphabet = char, comp = myShape) {
   }
 }
 
+algebra shape4 extends shape5 {
+  myShape il(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    myShape res;
+	append(res, '[');
+	append(res, x);
+	append(res, ']');
+	return res;
+  }
+}
+
+algebra shape3 extends shape5 {
+  myShape bl(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rb, Subsequence rrb) {
+    myShape res;
+	append(res, '[');
+	append(res, x);
+	append(res, ']');
+	return res;
+  }
+  myShape br(Subsequence llb, Subsequence lb, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    myShape res;
+	append(res, '[');
+	append(res, x);
+	append(res, ']');
+	return res;
+  }
+  myShape il(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    myShape res;
+	append(res, '[');
+	append(res, x);
+	append(res, ']');
+	return res;
+  }
+}
+
+algebra shape2 extends shape5 {
+  myShape bl(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rb, Subsequence rrb) {
+    myShape res;
+	append(res, '[');
+	append(res, '_');
+	append(res, x);
+	append(res, ']');
+	return res;
+  }
+  myShape br(Subsequence llb, Subsequence lb, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    myShape res;
+	append(res, '[');
+	append(res, x);
+	append(res, '_');
+	append(res, ']');
+	return res;
+  }
+  myShape il(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    myShape res;
+	append(res, '[');
+	append(res, '_');
+	append(res, x);
+	append(res, '_');
+	append(res, ']');
+	return res;
+  }
+}
+
+algebra shape1 extends shape5 {
+  myShape sadd(Subsequence b, myShape x) {
+    if (front(x) == '_') {
+      return x;
+    } else {
+      myShape res;
+      append(res, '_');
+      append(res, x);
+      return res;
+    }
+  }
+  myShape cadd(myShape x, myShape y) {
+    myShape res;
+    if (back(x) == '_' && front(y) == '_') {
+      append(res, x);
+      append(res, tail(y));
+    } else {
+      append(res, x);
+      append(res, y);
+    }
+    return res;
+  }
+  myShape edl(Subsequence ld, string_t x, Subsequence rd) {
+    myShape res;
+	append(res, '_');
+    append(res, x);
+    return res;
+  }
+  myShape edr(Subsequence ld, string_t x, Subsequence rd) {
+    myShape res;
+    append(res, x);
+    append(res, '_');
+    return res;
+  }
+  myShape edlr(Subsequence ld, string_t x, Subsequence rd) {
+    myShape res;
+    append(res, '_');
+    append(res, x);
+    append(res, '_');
+    return res;
+  }
+  myShape pknot(Subsequence a, myShape frt, Subsequence b, myShape mid, Subsequence at, myShape bck, Subsequence bt ; int stackenergies) {
+    myShape res;
+    
+    if (front(frt) == '_') {
+      append(res, '[');
+    } else {
+      append(res, '[');
+      append(res, '_');
+    }
+	append(res, frt);
+    append(res, '{');
+    append(res, mid);
+    append(res, ']');
+    if (back(bck) == '_') {
+      append(res, bck);
+    } else {
+      append(res, bck);
+      append(res, '_');
+    }
+    append(res, '}');
+    
+    return res;
+  }
+  myShape kndl(Subsequence ld, myShape x) {
+    myShape res;
+    append(res, '_');
+    append(res, x);
+    return res;
+  }
+  myShape kndr(myShape x, Subsequence rd) {
+    myShape res;
+    append(res, x);
+    append(res, '_');
+    return res;
+  }
+  myShape kndlr(Subsequence ld, myShape x, Subsequence rd) {
+    myShape res;
+    append(res, '_');
+    append(res, x);
+    append(res, '_');
+    return res;
+  }
+  myShape bl(Subsequence llb, Subsequence lb, Subsequence lr, myShape x, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    append(res, '[');
+    append(res, '_');
+    append(res, x);
+    append(res, ']');
+    return res;
+  }
+  myShape br(Subsequence llb, Subsequence lb, myShape x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    append(res, '[');
+    append(res, x);
+    append(res, '_');
+    append(res, ']');
+    return res;
+  }
+  myShape il(Subsequence llb, Subsequence lb, Subsequence lr, myShape x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    append(res, '[');
+    append(res, '_');
+    append(res, x);
+    append(res, '_');
+    append(res, ']');
+    return res;
+  }
+  myShape mldl(Subsequence llb, Subsequence lb, Subsequence ld, myShape x, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    append(res, '[');
+    if (front(x) == '_') {
+      append(res, '[');
+    } else {
+      append(res, '[');
+      append(res, '_');
+    }
+    append(res, x);
+    append(res, ']');
+    return res;
+  }
+  myShape mldr(Subsequence llb, Subsequence lb, myShape x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    append(res, '[');
+    if (back(x) == '_') {
+      append(res, x);
+    } else {
+      append(res, x);
+      append(res, '_');
+    }
+    append(res, ']');
+    return res;
+  }
+  myShape mldlr(Subsequence llb, Subsequence lb, Subsequence ld, myShape x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    if (front(x) == '_') {
+      append(res, '[');
+    } else {
+      append(res, '[');
+      append(res, '_');
+    }
+    if (back(x) == '_') {
+      append(res, x);
+    } else {
+      append(res, x);
+      append(res, '_');
+    }
+    append(res, ']');
+    return res;
+  }
+
+  myShape addss(myShape x, Subsequence r) {
+    myShape res;
+    if (back(x) == '_') {
+      append(res, x);
+    } else {
+      append(res, x);
+      append(res, '_');
+    }
+    return res;
+  }
+  myShape frd(myShape x, Subsequence ld; int betaRightOuter) {
+    myShape res;
+    if (back(x) == '_') {
+      append(res, x);
+    } else {
+      append(res, x);
+      append(res, '_');
+    }
+    return res;
+  }
+  myShape midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    myShape res;
+    append(res, '_');
+    return res;
+  }
+
+  myShape middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    myShape res;
+    append(res, '_');
+  return res;
+  }
+
+  myShape midregion(myShape x) {
+    return x;
+  }
+
+  myShape middl(Subsequence ld, myShape x;  int betaRightInner) {
+    myShape res;
+    append(res, '_');
+    append(res, x);
+    return res;
+  }
+
+  myShape middr(myShape x, Subsequence rd;  int alphaLeftInner) {
+    myShape res;
+    append(res, x);
+    append(res, '_');
+    return res;
+  }
+
+  myShape middlr(Subsequence ld, myShape x, Subsequence rd; int betaRightInner, int alphaLeftInner) {
+    myShape res;
+    append(res, '_');
+    append(res, x);
+    append(res, '_');
+    return res;
+  }
+
+  myShape bkd(Subsequence rd, myShape x; int alphaLeftOuter) {
+    if (front(x) == '_') {
+      return x;
+    } else {
+      myShape res;
+	  append(res, '_');
+	  append(res, x);
+	  return res;
+    }
+  }
+  myShape pss(Subsequence r) {
+    myShape res;
+    if (size(r) > 0) {
+      append(res, '_');
+    }
+    return res;
+  }
+}
+
+
 
 grammar pknotsRG uses Algebra(axiom = struct) {
 
@@ -1168,8 +1436,11 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     mldangle     = mlstem(dangle)     |
                    pkml  (dangleknot)
                    # h;
-                     
-    knot         = 
+    
+    knot         = help_pknot 
+                   # h;
+				   
+    help_pknot   = 
       .[
          int i = t_0_i;
          int j = t_0_j;
@@ -1260,7 +1531,8 @@ instance mfepp = pknotsRG(mfe * pretty);
 instance mfeppenf = pknotsRG((mfe * pretty) * enforce);
 instance ppmfe = pknotsRG(pretty * mfe);
 instance ppmfeenf = pknotsRG((pretty * mfe) * enforce);
-instance shape5mfepp = pknotsRG((shape5 * mfe) * pretty);
+instance shape1mfepp = pknotsRG((shape1 * mfe) * pretty);
+instance enfmfepp = pknotsRG((enforce * mfe) * pretty);
 
 /* Beispiel, warum stacklen nicht nur durch # moeglicher BP berechnet werden kann, denn GU auf UG gibt destabilisierende Energie!	
 acgucgaaauaaaugccuugucugcuauauucgacgcgagcuuaauauuuggggcc
@@ -1272,3 +1544,5 @@ acgucgaaauaaaugccuugucugcuauauucgacgcgagcuuaauauuuggggcc
 acgucgaaauaaaugccuugucugcuauauucgacg
 ( ( [{]}[] , (430, 5, 15) ) , .[[[.{{.....]]]..}}(((..........))). )
 ( ( [{]}[] , (430, 5, 15) ) , .[[[..{{....]]]..}}(((..........))). )
+
+//TODO Shape Datentyp auf { } < > erweitert, oder Rope um back und front erweitert um Shape Algebren fertig zu bekommen
