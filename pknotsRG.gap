@@ -11,7 +11,7 @@ type shape_t = shape
 type Rope = extern
 type mfeanswer = (int energy, int betaLeftOuter, int alphaRightOuter)
 type string_t = Rope
-
+type myShape = Rope
 
 signature Algebra(alphabet, comp) {
   comp stackss(Subsequence);
@@ -764,7 +764,6 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     return x;
   }
 
-
   string_t frd(string_t x, Subsequence ld; int betaRightOuter) {
     string_t res;
     append(res, x);
@@ -833,6 +832,230 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
   }
 
   choice [string_t] h([string_t] i) {
+    return unique(i);
+  }
+}
+
+
+algebra shape5 implements Algebra(alphabet = char, comp = myShape) {
+  myShape sadd(Subsequence b, myShape x) {
+    return x;
+  }
+
+  myShape cadd(myShape x, myShape y) {
+    myShape res;
+    append(res, x);
+    append(res, y);
+    return res;
+  }
+
+  myShape nil(void) {
+    myShape res;
+    return res;
+  }
+
+  myShape is(Subsequence ld, myShape x, Subsequence rd) {
+    return x;
+  }
+
+  myShape edl(Subsequence ld, myShape x, Subsequence rd) {
+    return x;
+  }
+ 
+  myShape edr(Subsequence ld, myShape x, Subsequence rd) {
+    return x;
+  }
+
+  myShape edlr(Subsequence ld, myShape x, Subsequence rd) {
+    return x;
+  }
+
+  myShape pk(myShape x) {
+    return x;
+  }
+
+  myShape pknot(Subsequence a, myShape frt, Subsequence b, myShape mid, Subsequence at, myShape bck, Subsequence bt, myShape alphaMax, myShape betaMax, myShape alphaCorrect, myShape betaCorrect) {
+    myShape res;
+    append(res, '[');
+    append(res, frt);
+    append(res, '{');
+    append(res, mid);
+    append(res, ']');
+    append(res, bck);
+    append(res, '}');
+	  
+	 //~ append(res, " a:", 3);
+	 //~ append(res, a.i);
+	 //~ append(res, '-');
+	 //~ append(res, a.j);
+	 //~ append(res, " a':", 4);
+	 //~ append(res, at.i);
+	 //~ append(res, '-');
+	 //~ append(res, at.j);
+	 //~ append(res, " b:", 3);
+	 //~ append(res, b.i);
+	 //~ append(res, '-');
+	 //~ append(res, b.j);
+	 //~ append(res, " b':", 4);
+	 //~ append(res, bt.i);
+	 //~ append(res, '-');
+	 //~ append(res, bt.j);
+	
+	//~ append(res, " alpha:", 7);
+	//~ append(res, alphaMax);
+	//~ append(res, ' ');
+	//~ append(res, " beta:", 6);
+	//~ append(res, betaMax);
+	//~ append(res, " alphaC:", 8);
+	//~ append(res, alphaCorrect);
+	//~ append(res, " betaC:", 7);
+	//~ append(res, betaCorrect);
+    return res;
+  }
+
+  myShape kndl(Subsequence ld, myShape x) {
+    return x;
+  }
+
+  myShape kndr(myShape x, Subsequence rd) {
+    return x;
+  }
+
+  myShape kndlr(Subsequence ld, myShape x, Subsequence rd) {
+    return x;
+  }
+
+  myShape stackss(Subsequence r) {
+    myShape res;
+    return res;
+  }
+  
+  myShape stacksr(Subsequence lb, myShape x, Subsequence rb) {
+    myShape res;
+    append(res, x);
+    return res;
+  }
+
+  myShape stackhl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    return res;
+  }
+
+  myShape sr(Subsequence lb, myShape x, Subsequence rb) {
+    return x;
+  }
+
+  myShape hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    append(res, "[]", 2);
+    return res;
+  }
+
+  myShape bl(Subsequence llb, Subsequence lb, Subsequence lr, myShape x, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  myShape br(Subsequence llb, Subsequence lb, myShape x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  myShape il(Subsequence llb, Subsequence lb, Subsequence lr, myShape x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  myShape ml(Subsequence llb, Subsequence lb, myShape x, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    append(res, '[');
+    append(res, x);
+    append(res, ']');
+    return res;
+  }
+
+  myShape mldl(Subsequence llb, Subsequence lb, Subsequence ld, myShape x, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    append(res, '[');
+    append(res, x);
+    append(res, ']');
+    return res;
+  }
+
+  myShape mldr(Subsequence llb, Subsequence lb, myShape x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    append(res, '[');
+    append(res, x);
+    append(res, ']');
+    return res;
+  }
+
+  myShape mldlr(Subsequence llb, Subsequence lb, Subsequence ld, myShape x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+    myShape res;
+    append(res, '[');
+    append(res, x);
+    append(res, ']');
+    return res;
+  }
+
+  myShape addss(myShape x, Subsequence r) {
+    return x;
+  }
+
+  myShape mlstem(myShape x) {
+    return x;
+  }
+
+  myShape pkml(myShape x) {
+    return x;
+  }
+
+  myShape frd(myShape x, Subsequence ld; int betaRightOuter) {
+    return x;
+  }
+
+  myShape ul(myShape x) {
+    return x;
+  }
+
+  myShape emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    myShape res;
+    return res;
+  }
+
+  myShape midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    myShape res;
+    return res;
+  }
+
+  myShape middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    myShape res;
+    return res;
+  }
+
+  myShape midregion(myShape x) {
+    return x;
+  }
+
+  myShape middl(Subsequence ld, myShape x;  int betaRightInner) {
+    return x;
+  }
+
+  myShape middr(myShape x, Subsequence rd;  int alphaLeftInner) {
+    return x;
+  }
+
+  myShape middlr(Subsequence ld, myShape x, Subsequence rd; int betaRightInner, int alphaLeftInner) {
+    return x;
+  }
+
+  myShape bkd(Subsequence rd, myShape x; int alphaLeftOuter) {
+    return x;
+  }
+ 
+  myShape pss(Subsequence r) {
+    myShape res;
+    return res;
+  }
+
+  choice [myShape] h([myShape] i) {
     return unique(i);
   }
 }
@@ -989,10 +1212,15 @@ instance pretty = pknotsRG(pretty) ;
 instance mfe = pknotsRG(mfe) ;
 instance mfepp = pknotsRG(mfe * pretty);
 instance ppmfe = pknotsRG(pretty * mfe);
-
+instance shape5mfepp = pknotsRG((shape5 * mfe) * pretty);
 
 /* Beispiel, warum stacklen nicht nur durch # moeglicher BP berechnet werden kann, denn GU auf UG gibt destabilisierende Energie!	
 acgucgaaauaaaugccuugucugcuauauucgacgcgagcuuaauauuuggggcc
 .[[[[[[[......{{{{{..........]]]]]]]..............}}}}}. 
 .[[[[[[[......{{{{{{.........]]]]]]].............}}}}}}.
 */
+
+/* Beispiel fuer nicht funktionierende Shape Algebra
+acgucgaaauaaaugccuugucugcuauauucgacg
+( ( [{]}[] , (430, 5, 15) ) , .[[[.{{.....]]]..}}(((..........))). )
+( ( [{]}[] , (430, 5, 15) ) , .[[[..{{....]]]..}}(((..........))). )
