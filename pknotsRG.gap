@@ -14,9 +14,6 @@ type string_t = Rope
 type myShape = Rope
 
 signature Algebra(alphabet, comp) {
-  comp stackss(Subsequence);
-  comp stackhl(Subsequence, Subsequence, Subsequence, Subsequence, Subsequence);
-  comp stacksr(Subsequence, comp, Subsequence);
   comp sadd(Subsequence, comp);
   comp cadd(comp, comp);
   comp nil(void);
@@ -25,7 +22,7 @@ signature Algebra(alphabet, comp) {
   comp edr(Subsequence, comp, Subsequence);
   comp edlr(Subsequence, comp, Subsequence);
   comp pk(comp);
-  comp pknot(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int, int, int, int);
+  comp pknot(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int);
   comp kndl(Subsequence, comp);
   comp kndr(comp, Subsequence);
   comp kndlr(Subsequence, comp, Subsequence);
@@ -128,7 +125,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
   }
 
   mfeanswer pknot(Subsequence a, mfeanswer front, Subsequence b, mfeanswer middle, Subsequence aPrime, mfeanswer back, Subsequence bPrime
-; int alphaMax, int betaMax, int alphaCorrect, int betaCorrect) {
+; int stackenergies) {
     mfeanswer res;
 	
     Subsequence alphaOuter;
@@ -154,8 +151,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     res.betaLeftOuter = b.i;
     res.alphaRightOuter = aPrime.j;
     
-    res.energy =   alphaMax - alphaCorrect // alpha helix
-                 + betaMax - betaCorrect // beta helix
+    res.energy =   stackenergies                         // stacking energies
                  + pkmlinit                              // initiation energy for pk
                  + 3*npp                                 // penalty for 1+2 explicitly unpaired bases
                  + front.energy                          // energy from front substructure
@@ -208,44 +204,6 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
       
     mfeanswer res = x;
     res.energy = res.energy + 2*npp + dl_energy(alpha, alpha) + dr_energy(beta, beta);
-    
-    return res;
-  }
-
-
-  mfeanswer stackss(Subsequence r) {
-	mfeanswer res;
-	res.energy = 0;
-	return res;
-  }
-  
-  mfeanswer stackhl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
-    Subsequence outerStem;
-    outerStem.seq = llb.seq;
-    outerStem.i = llb.i;
-    outerStem.j = rrb.j;
-      
-    Subsequence innerStem;
-    innerStem.seq = lb.seq;
-    innerStem.i = lb.i;
-    innerStem.j = rb.j;
-    
-    mfeanswer res;
-    res.energy = sr_energy(outerStem, outerStem);
-    res.betaLeftOuter = 0;
-    res.alphaRightOuter = 0;
-    
-    return res;
-  }
-  
-  mfeanswer stacksr(Subsequence lb, mfeanswer x, Subsequence rb) {
-    Subsequence stem;
-    stem.seq = lb.seq;
-    stem.i = lb.i;
-    stem.j = rb.j;
-      
-    mfeanswer res = x;
-    res.energy = res.energy + sr_energy(stem, stem);
     
     return res;
   }
@@ -591,8 +549,7 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     return x;
   }
 
-  string_t pknot(Subsequence a, string_t frt, Subsequence b, string_t mid, Subsequence at, string_t bck, Subsequence bt ;
-int alphaMax, int betaMax, int alphaCorrect, int betaCorrect) {
+  string_t pknot(Subsequence a, string_t frt, Subsequence b, string_t mid, Subsequence at, string_t bck, Subsequence bt ; int stackenergies) {
     string_t res;
     append(res, '[', size(a));
     append(res, '.');
@@ -604,32 +561,6 @@ int alphaMax, int betaMax, int alphaCorrect, int betaCorrect) {
     append(res, '.', 2);
     append(res, '}', size(bt));
 	  
-	 //~ append(res, " a:", 3);
-	 //~ append(res, a.i);
-	 //~ append(res, '-');
-	 //~ append(res, a.j);
-	 //~ append(res, " a':", 4);
-	 //~ append(res, at.i);
-	 //~ append(res, '-');
-	 //~ append(res, at.j);
-	 //~ append(res, " b:", 3);
-	 //~ append(res, b.i);
-	 //~ append(res, '-');
-	 //~ append(res, b.j);
-	 //~ append(res, " b':", 4);
-	 //~ append(res, bt.i);
-	 //~ append(res, '-');
-	 //~ append(res, bt.j);
-	
-	//~ append(res, " alpha:", 7);
-	//~ append(res, alphaMax);
-	//~ append(res, ' ');
-	//~ append(res, " beta:", 6);
-	//~ append(res, betaMax);
-	//~ append(res, " alphaC:", 8);
-	//~ append(res, alphaCorrect);
-	//~ append(res, " betaC:", 7);
-	//~ append(res, betaCorrect);
     return res;
   }
 
@@ -652,22 +583,6 @@ int alphaMax, int betaMax, int alphaCorrect, int betaCorrect) {
     append(res, '.');
     append(res, x);
     append(res, '.');
-    return res;
-  }
-
-  string_t stackss(Subsequence r) {
-    string_t res;
-    return res;
-  }
-  
-  string_t stacksr(Subsequence lb, string_t x, Subsequence rb) {
-    string_t res;
-    append(res, x);
-    return res;
-  }
-
-  string_t stackhl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
-    string_t res;
     return res;
   }
 
@@ -839,6 +754,153 @@ int alphaMax, int betaMax, int alphaCorrect, int betaCorrect) {
 }
 
 
+algebra enforce implements Algebra(alphabet = char, comp = bool) {
+  bool sadd(Subsequence b, bool x) {
+    return x;
+  }
+
+  bool cadd(bool x, bool y) {
+    return x || y;
+  }
+
+  bool nil(void) {
+    return false;
+  }
+
+  bool is(Subsequence ld, bool x, Subsequence rd) {
+    return x;
+  }
+
+  bool edl(Subsequence ld, bool x, Subsequence rd) {
+    return x;
+  }
+ 
+  bool edr(Subsequence ld, bool x, Subsequence rd) {
+    return x;
+  }
+
+  bool edlr(Subsequence ld, bool x, Subsequence rd) {
+    return x;
+  }
+
+  bool pk(bool x) {
+    return x;
+  }
+
+  bool pknot(Subsequence a, bool frt, Subsequence b, bool mid, Subsequence at, bool bck, Subsequence bt ; int stackenergies) {
+    return true;
+  }
+
+  bool kndl(Subsequence ld, bool x) {
+    return x;
+  }
+
+  bool kndr(bool x, Subsequence rd) {
+    return x;
+  }
+
+  bool kndlr(Subsequence ld, bool x, Subsequence rd) {
+    return x;
+  }
+
+  bool sr(Subsequence lb, bool x, Subsequence rb) {
+    return x;
+  }
+
+  bool hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+    return false;
+  }
+
+  bool bl(Subsequence llb, Subsequence lb, Subsequence lr, bool x, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  bool br(Subsequence llb, Subsequence lb, bool x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  bool il(Subsequence llb, Subsequence lb, Subsequence lr, bool x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  bool ml(Subsequence llb, Subsequence lb, bool x, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  bool mldl(Subsequence llb, Subsequence lb, Subsequence ld, bool x, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  bool mldr(Subsequence llb, Subsequence lb, bool x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  bool mldlr(Subsequence llb, Subsequence lb, Subsequence ld, bool x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+
+  bool addss(bool x, Subsequence r) {
+    return x;
+  }
+
+  bool mlstem(bool x) {
+    return x;
+  }
+
+  bool pkml(bool x) {
+    return x;
+  }
+
+  bool frd(bool x, Subsequence ld; int betaRightOuter) {
+    return x;
+  }
+
+  bool ul(bool x) {
+    return x;
+  }
+
+  bool emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    return false;
+  }
+
+  bool midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    return false;
+  }
+
+  bool middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    return false;
+  }
+
+  bool midregion(bool x) {
+    return x;
+  }
+
+  bool middl(Subsequence ld, bool x;  int betaRightInner) {
+    return x;
+  }
+
+  bool middr(bool x, Subsequence rd;  int alphaLeftInner) {
+    return x;
+  }
+
+  bool middlr(Subsequence ld, bool x, Subsequence rd; int betaRightInner, int alphaLeftInner) {
+    return x;
+  }
+
+  bool bkd(Subsequence rd, bool x; int alphaLeftOuter) {
+    return x;
+  }
+ 
+  bool pss(Subsequence r) {
+    return false;
+  }
+
+  choice [bool] h([bool] i) {
+    return unique(i);
+  }
+}
+
+
 algebra shape5 implements Algebra(alphabet = char, comp = myShape) {
   myShape sadd(Subsequence b, myShape x) {
     return x;
@@ -876,7 +938,7 @@ algebra shape5 implements Algebra(alphabet = char, comp = myShape) {
     return x;
   }
 
-  myShape pknot(Subsequence a, myShape frt, Subsequence b, myShape mid, Subsequence at, myShape bck, Subsequence bt, myShape alphaMax, myShape betaMax, myShape alphaCorrect, myShape betaCorrect) {
+  myShape pknot(Subsequence a, myShape frt, Subsequence b, myShape mid, Subsequence at, myShape bck, Subsequence bt; int stackenergies) {
     myShape res;
     append(res, '[');
     append(res, frt);
@@ -925,22 +987,6 @@ algebra shape5 implements Algebra(alphabet = char, comp = myShape) {
 
   myShape kndlr(Subsequence ld, myShape x, Subsequence rd) {
     return x;
-  }
-
-  myShape stackss(Subsequence r) {
-    myShape res;
-    return res;
-  }
-  
-  myShape stacksr(Subsequence lb, myShape x, Subsequence rb) {
-    myShape res;
-    append(res, x);
-    return res;
-  }
-
-  myShape stackhl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
-    myShape res;
-    return res;
   }
 
   myShape sr(Subsequence lb, myShape x, Subsequence rb) {
@@ -1146,10 +1192,10 @@ grammar pknotsRG uses Algebra(axiom = struct) {
          if (betareallen < 2)
            continue;
 
-         int a = first(stacklen(t_0_seq, i, l));
-         int b = first(stacklen(t_0_seq, k, j));
-         int c = first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1));
-         int d = first(stacklen(t_0_seq, k+betareallen-1, j-betareallen+1));
+		 int stackenergies =      first(stacklen(t_0_seq, i, l)) 								// maximal alpha helix
+								+ first(stacklen(t_0_seq, k, j)) 								// maximal beta helix
+		                        - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1))  // reduced part of alpha helix
+		                        - first(stacklen(t_0_seq, k+betareallen-1, j-betareallen+1));   // reduced part of beta helix
        ].
       {
          pknot(REGION, REGION, REGION) .{
@@ -1160,10 +1206,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
               REGION[l-alphareallen, l],
               back[l, j-betareallen-2] .(i).,
               REGION[j-betareallen, j] ;
-              a,
-              b,
-              c,
-              d) 
+              stackenergies) 
          }.
       } # h;    
                      
@@ -1205,23 +1248,15 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     
     emptystrand  = pss(REGION0) # h ;
 
-/*
-    stacknrg     = stackss(REGION0) | 
-                   stackcont 
-		           # h;
-	
-    stackcont    = stacksr(BASE, stackcont, BASE) with stackpairing |
-	               stackhl(BASE, BASE, REGION with minsize(3), BASE, BASE) with stackpairing  
-		           # h;
-
-*/
 }
 
 
 instance pretty = pknotsRG(pretty) ;
 instance mfe = pknotsRG(mfe) ;
 instance mfepp = pknotsRG(mfe * pretty);
+instance mfeppenf = pknotsRG((mfe * pretty) * enforce);
 instance ppmfe = pknotsRG(pretty * mfe);
+instance ppmfeenf = pknotsRG((pretty * mfe) * enforce);
 instance shape5mfepp = pknotsRG((shape5 * mfe) * pretty);
 
 /* Beispiel, warum stacklen nicht nur durch # moeglicher BP berechnet werden kann, denn GU auf UG gibt destabilisierende Energie!	
