@@ -72,6 +72,7 @@ unsigned stacklen(const Basic_Sequence<C> &seq, U a, U b)
     array(0, 1).first = 0;
     array(0, 1).second = 0;
 
+    compute = false;
 /*
     for (unsigned i = 0; i <= seq.size(); ++i) {
       for (unsigned j = i; j <= seq.size(); ++j) {
