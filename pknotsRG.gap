@@ -152,7 +152,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     res.alphaRightOuter = aPrime.j;
     
     res.energy =   stackenergies                         // stacking energies
-                 + pkmlinit                              // initiation energy for pk
+                 + pkinit                                // initiation energy for pk
                  + 3*npp                                 // penalty for 1+2 explicitly unpaired bases
                  + front.energy                          // energy from front substructure
                  + middle.energy                         // energy from middle substructure
@@ -1531,7 +1531,7 @@ instance mfepp = pknotsRG(mfe * pretty);
 instance mfeppenf = pknotsRG((mfe * pretty) * enforce);
 instance ppmfe = pknotsRG(pretty * mfe);
 instance ppmfeenf = pknotsRG((pretty * mfe) * enforce);
-instance shape1mfepp = pknotsRG((shape1 * mfe) * pretty);
+instance shape5mfepp = pknotsRG((shape5 * mfe) * pretty);
 instance enfmfepp = pknotsRG((enforce * mfe) * pretty);
 
 /* Beispiel, warum stacklen nicht nur durch # moeglicher BP berechnet werden kann, denn GU auf UG gibt destabilisierende Energie!	
