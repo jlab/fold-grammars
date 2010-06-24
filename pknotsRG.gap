@@ -24,6 +24,7 @@ signature Algebra(alphabet, comp) {
   comp edlr(Subsequence, comp, Subsequence);
   comp pk(comp);
   comp pknot(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int);
+  comp pkiss(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int);
   comp kndl(Subsequence, comp);
   comp kndr(comp, Subsequence);
   comp kndlr(Subsequence, comp, Subsequence);
@@ -166,7 +167,65 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     
 	return res;
   }
+  mfeanswer pkiss(Subsequence a, mfeanswer front, Subsequence b, mfeanswer middle1, Subsequence aPrime, mfeanswer middle2, Subsequence c, mfeanswer middle3, Subsequence bPrime, mfeanswer back, Subsequence cPrime ; int stackenergies) {
+    mfeanswer res;
+	
+	Subsequence alphaOuter;
+    alphaOuter.seq = a.seq;
+    alphaOuter.i = a.i;
+    alphaOuter.j = aPrime.j;
+    
+    Subsequence alphaInner;
+    alphaInner.seq = a.seq;
+    alphaInner.i = a.j-1;
+    alphaInner.j = aPrime.i+1;
+    
+    Subsequence betaOuter;
+    betaOuter.seq = b.seq;
+    betaOuter.i = b.i;
+    betaOuter.j = bPrime.j;
+    
+    Subsequence betaInner;
+    betaInner.seq = b.seq;
+    betaInner.i = b.j-1;
+    betaInner.j = bPrime.i+1;
 
+    Subsequence gammaOuter;
+    gammaOuter.seq = c.seq;
+    gammaOuter.i = c.i;
+    gammaOuter.j = cPrime.j;
+    
+    Subsequence gammaInner;
+    gammaInner.seq = c.seq;
+    gammaInner.i = c.j-1;
+    gammaInner.j = cPrime.i+1;
+
+    res.betaLeftOuter = c.i;
+    res.alphaRightOuter = aPrime.j;
+
+	res.energy =   stackenergies                         // stacking energies
+                 + pkissinit                             // initiation energy for pk
+                 + 4*npp                                 // penalty for 1+2+1 explicitly unpaired bases
+                 + front.energy                          // energy from front substructure
+                 + middle1.energy                        // energy from middle1 substructure
+                 + middle2.energy                        // energy from middle2 substructure
+                 + middle3.energy                        // energy from middle3 substructure
+                 + back.energy                           // energy from back substructure
+                 + termaupenalty(alphaOuter, alphaOuter) // AU penalty for outmost BP in alpha helix
+                 + termaupenalty(alphaInner, alphaInner) // AU penalty for innermost BP in alpha helix
+                 + termaupenalty(betaOuter, betaOuter)   // AU penalty for outmost BP in beta helix
+                 + termaupenalty(betaInner, betaInner)   // AU penalty for innermost BP in beta helix
+                 + termaupenalty(gammaOuter, gammaOuter) // AU penalty for outmost BP in gamma helix
+                 + termaupenalty(gammaInner, gammaInner) // AU penalty for innermost BP in gamma helix
+                 + dli_energy(alphaInner, alphaInner)    // explicitly unpaired base, before front, dangles at the inside of helix alpha
+		         + dri_energy(gammaInner, gammaInner)    // explicitly unpaired base, after back, dangles at the inside of helix gamma
+		         + dr_energy(alphaOuter, alphaOuter)     // explicitly unpaired base, before middle2, dangles at the outside of helix alpha
+		         + dl_energy(gammaOuter, gammaOuter)     // explicitly unpaired base, after middle2, dangles at the outside of helix gamma
+    ;
+	
+	return res;
+
+  }
   mfeanswer kndl(Subsequence ld, mfeanswer x) {
     Subsequence alpha;
     alpha.seq = ld.seq;
@@ -551,7 +610,8 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
 
   string_t pknot(Subsequence a, string_t frt, Subsequence b, string_t mid, Subsequence at, string_t bck, Subsequence bt ; int stackenergies) {
     string_t res;
-    append(res, '[', size(a));
+    
+	append(res, '[', size(a));
     append(res, '.');
     append(res, frt);
     append(res, '{', size(b));
@@ -564,6 +624,28 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
     return res;
   }
 
+  string_t pkiss(Subsequence a, string_t front, Subsequence b, string_t middle1, Subsequence aPrime, string_t middle2, Subsequence c, string_t middle3, Subsequence bPrime, string_t back, Subsequence cPrime ; int stackenergies) {
+    string_t res;
+    
+	append(res, '[', size(a));
+    append(res, '.');
+    append(res, front);
+    append(res, '{', size(b));
+    append(res, middle1);
+    append(res, ']', size(aPrime));
+	append(res, '.');
+	append(res, middle2);
+	append(res, '.');
+	append(res, '<', size(c));
+    append(res, middle3);
+	append(res, '}', size(bPrime));
+    append(res, back);
+    append(res, '.');
+    append(res, '>', size(cPrime));
+	  
+    return res;
+  }
+  
   string_t kndl(Subsequence ld, string_t x) {
     string_t res;
     append(res, '.');
@@ -794,6 +876,10 @@ algebra enforce implements Algebra(alphabet = char, comp = myBool) {
     return 1;
   }
 
+  myBool pkiss(Subsequence a, myBool front, Subsequence b, myBool middle1, Subsequence aPrime, myBool middle2, Subsequence c, myBool middle3, Subsequence bPrime, myBool back, Subsequence cPrime ; int stackenergies) {
+    return 1;
+  }
+  
   myBool kndl(Subsequence ld, myBool x) {
     return x;
   }
@@ -943,6 +1029,7 @@ algebra shape5 implements Algebra(alphabet = char, comp = myShape) {
 
   myShape pknot(Subsequence a, myShape frt, Subsequence b, myShape mid, Subsequence at, myShape bck, Subsequence bt; int stackenergies) {
     myShape res;
+	  
     append(res, '[');
     append(res, frt);
     append(res, '{');
@@ -954,6 +1041,24 @@ algebra shape5 implements Algebra(alphabet = char, comp = myShape) {
     return res;
   }
 
+  myShape pkiss(Subsequence a, myShape front, Subsequence b, myShape middle1, Subsequence aPrime, myShape middle2, Subsequence c, myShape middle3, Subsequence bPrime, myShape back, Subsequence cPrime ; int stackenergies) {
+    myShape res;
+	  
+    append(res, '[');
+    append(res, frt);
+    append(res, '{');
+    append(res, middle1);
+    append(res, ']');
+    append(res, middle2);
+    append(res, '<');
+    append(res, middle3);
+    append(res, '}');
+    append(res, bck);
+    append(res, '>');
+	  
+    return res;
+  }
+  
   myShape kndl(Subsequence ld, myShape x) {
     return x;
   }
@@ -1211,6 +1316,10 @@ algebra shape1 extends shape5 {
     
     return res;
   }
+  myShape pkiss(Subsequence a, myShape front, Subsequence b, myShape middle1, Subsequence aPrime, myShape middle2, Subsequence c, myShape middle3, Subsequence bPrime, myShape back, Subsequence cPrime ; int stackenergies) {
+    return front;
+  }
+
   myShape kndl(Subsequence ld, myShape x) {
     myShape res;
     append(res, '_');
@@ -1437,7 +1546,8 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                    pkml  (dangleknot)
                    # h;
     
-    knot         = help_pknot 
+    knot         = help_pknot |
+				   help_pkiss
                    # h;
 				   
     help_pknot   = 
@@ -1483,7 +1593,63 @@ grammar pknotsRG uses Algebra(axiom = struct) {
               stackenergies) 
          }.
       } # h;    
-                     
+    
+    help_pkiss   = 
+      .[
+         int i = t_0_i;
+         int j = t_0_j;
+         int h = t_0_k_0;
+         int k = t_0_k_1;
+         int l = t_0_k_2;
+         int m = t_0_k_3;
+		 //~ if (j-i<16)
+           //~ continue;
+		 if (i+3>h || h+4>k || k+2>l || l+4>m || m+3>j)
+			 continue;
+		 
+         int alphamaxlen = second(stacklen(t_0_seq, i, k));
+         if (alphamaxlen < 2)
+           continue;
+         int alphareallen = min(alphamaxlen, h-i-1);
+         if (alphareallen < 2)
+           continue;
+		 
+         int gammamaxlen = second(stacklen(t_0_seq, l, j));
+         if (gammamaxlen < 2)
+           continue;
+         int gammareallen = min(gammamaxlen, j-m-1);
+         if (gammareallen < 2)
+           continue;
+
+         int betamaxlen = second(stacklen(t_0_seq, h, m));
+		 int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
+		 if (betareallen < 2)
+           continue;
+         
+		 int stackenergies =      first(stacklen(t_0_seq, i, k)) 								// maximal alpha helix
+								+ first(stacklen(t_0_seq, h, m)) 								// maximal beta helix
+								+ first(stacklen(t_0_seq, l, j)) 								// maximal gamma helix
+		                        - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+		                        - first(stacklen(t_0_seq, h+betareallen-1, m-betareallen+1))    // reduced part of beta helix
+		                        - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
+       ].
+      {
+         pkiss(REGION, REGION, REGION, REGION, REGION) .{
+           pkiss(REGION[i, i+alphareallen],													           //alpha open
+                 front[i+alphareallen+1, h] .(m).,											           //front
+                 REGION[h, h+betareallen],													           //beta open
+                 middle[h+betareallen, k-alphareallen] .(m-betareallen, i+alphareallen).,	           //middle 1
+                 REGION[k-alphareallen, k],													           //alpha close
+                 middleNoDangling[k+1, l-1],	                                                       //middle 2
+                 REGION[l, l+gammareallen],													           //gamma open
+                 middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen).,   //middle 3
+                 REGION[m-betareallen, m],													           //beta close
+                 back[m, j-gammareallen-1] .(h).,											           //back
+                 REGION[j-gammareallen, j] ;													       //gamma close
+                 stackenergies) 
+         }.
+      } # h;    
+    	  
     front(int betaRightOuter) = front_Pr               |
                                 frd  (front_Pr, BASE; betaRightOuter)
                                 # h;
@@ -1492,21 +1658,33 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                    pk_comps
                    # h;
                
-    middle(int betaRightInner, int alphaLeftInner) = emptymid  (REGION0        ; betaRightInner, alphaLeftInner) with minsize(0) with maxsize(0) |
-                                                     midbase   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(1) with maxsize(1) |
-                                                     middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
-                                                     midregion (      mid                                      ) |
-                                                     middl     (BASE, mid      ; betaRightInner                ) |
-                                                     middr     (      mid, BASE;                 alphaLeftInner) |
-                                                     middlr    (BASE, mid, BASE; betaRightInner, alphaLeftInner) 
-                                                     # h;
-    
+    middle(int betaRightInner, int alphaLeftInner)            = emptymid  (REGION0        ; betaRightInner, alphaLeftInner) with minsize(0) with maxsize(0) |
+                                                                midbase   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(1) with maxsize(1) |
+                                                                middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
+                                                                midregion (      mid                                      )                                 |
+                                                                middl     (BASE, mid      ; betaRightInner                )                                 |
+                                                                middr     (      mid, BASE;                 alphaLeftInner)                                 |
+                                                                middlr    (BASE, mid, BASE; betaRightInner, alphaLeftInner) 
+                                                                # h;
+
+    middleNoDangling                                          = mid                                                                                         |
+																nil(EMPTY) 
+	                                                            # h;
+
+    middleNoCoaxStack(int betaRightInner, int alphaLeftInner) = nil       (EMPTY)                                                                           |
+                                                                middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
+                                                                midregion (      mid                                      )                                 |
+                                                                middl     (BASE, mid      ; betaRightInner                )                                 |
+                                                                middr     (      mid, BASE;                 alphaLeftInner)                                 |
+                                                                middlr    (BASE, mid, BASE; betaRightInner, alphaLeftInner) 
+                                                                # h;
+	  
     mid          = ul(singlestrand) |
                    pk_comps
                    # h;
           
     back(int alphaLeftOuter) = back_Pr               |
-                               bkd  (BASE, back_Pr; alphaLeftOuter) 
+                               bkd(BASE, back_Pr; alphaLeftOuter) 
                                # h;
              
     back_Pr      = ul(emptystrand) |
@@ -1546,3 +1724,5 @@ acgucgaaauaaaugccuugucugcuauauucgacg
 ( ( [{]}[] , (430, 5, 15) ) , .[[[..{{....]]]..}}(((..........))). )
 
 //TODO Shape Datentyp auf { } < > erweitert, oder Rope um back und front erweitert um Shape Algebren fertig zu bekommen
+
+/* CGGCACCCAGCCGGGGCGGAGUCCGCGAAUGGG */
