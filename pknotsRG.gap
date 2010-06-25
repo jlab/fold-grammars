@@ -14,7 +14,7 @@ type string_t = Rope
 type myShape = Rope
 type myBool = int
 
-signature Algebra(alphabet, comp) {
+signature Algebra(alphabet, comp, compKnot) {
   comp sadd(Subsequence, comp);
   comp cadd(comp, comp);
   comp nil(void);
@@ -22,12 +22,12 @@ signature Algebra(alphabet, comp) {
   comp edl(Subsequence, comp, Subsequence);
   comp edr(Subsequence, comp, Subsequence);
   comp edlr(Subsequence, comp, Subsequence);
-  comp pk(comp);
-  comp pknot(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int);
-  comp pkiss(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int);
-  comp kndl(Subsequence, comp);
-  comp kndr(comp, Subsequence);
-  comp kndlr(Subsequence, comp, Subsequence);
+  comp pk(compKnot);
+  compKnot pknot(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int);
+  compKnot pkiss(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int);
+  comp kndl(Subsequence, compKnot);
+  comp kndr(compKnot, Subsequence);
+  comp kndlr(Subsequence, compKnot, Subsequence);
   comp sr(Subsequence, comp, Subsequence);
   comp hl(Subsequence, Subsequence, Subsequence, Subsequence, Subsequence);
   comp bl(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence);
@@ -52,81 +52,64 @@ signature Algebra(alphabet, comp) {
   comp bkd(Subsequence, comp; int);
   comp pss(Subsequence);
   choice [comp] h([comp]);
+  choice [compKnot] hKnot([compKnot]);
 }
 
 
-algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
-  mfeanswer sadd(Subsequence b, mfeanswer x) {
+algebra mfe implements Algebra(alphabet = char, comp = int, compKnot = mfeanswer) {
+  int sadd(Subsequence b, int x) {
     return x;
   }
 
-  mfeanswer cadd(mfeanswer x, mfeanswer y) {
-    mfeanswer res = x;
-    res.energy = x.energy + y.energy;
-    return res;
+  int cadd(int x, int y) {
+    return x + y;
   }
 
-  mfeanswer nil(void) {
-    mfeanswer res;
-    res.energy = 0;
-    res.betaLeftOuter = 0;
-    res.alphaRightOuter = 0;
-    return res;
+  int nil(void) {
+    return 0;
   }
 
-  mfeanswer is(Subsequence ld, mfeanswer x, Subsequence rd) {
+  int is(Subsequence ld, int x, Subsequence rd) {
     Subsequence stem;
     stem.seq = ld.seq;
     stem.i = ld.i;
     stem.j = rd.j;
     
-    mfeanswer res = x;
-    res.energy = res.energy + termaupenalty(stem, stem);
-    
-    return res;
+    return x + termaupenalty(stem, stem);
   }
 
-  mfeanswer edl(Subsequence ld, mfeanswer x, Subsequence rd) {
+  int edl(Subsequence ld, int x, Subsequence rd) {
     Subsequence stem;
     stem.seq = ld.seq;
     stem.i = ld.i+1;
     stem.j = rd.j;
       
-    mfeanswer res = x;
-    res.energy = res.energy + termaupenalty(stem, stem) + dl_energy(stem, stem);
-    
-    return res;
+    return x + termaupenalty(stem, stem) + dl_energy(stem, stem);
   }
  
-  mfeanswer edr(Subsequence ld, mfeanswer x, Subsequence rd) {
+  int edr(Subsequence ld, int x, Subsequence rd) {
     Subsequence stem;
     stem.seq = ld.seq;
     stem.i = ld.i;
     stem.j = rd.j-1;
       
-    mfeanswer res = x;
-    res.energy = res.energy + termaupenalty(stem, stem) + dr_energy(stem, stem);
-    
-    return res;
+    return x + termaupenalty(stem, stem) + dr_energy(stem, stem);
   }
 
-  mfeanswer edlr(Subsequence ld, mfeanswer x, Subsequence rd) {
+  int edlr(Subsequence ld, int x, Subsequence rd) {
     Subsequence stem;
     stem.seq = ld.seq;
     stem.i = ld.i+1;
     stem.j = rd.j-1;
       
-    mfeanswer res = x;
-    res.energy = res.energy + termaupenalty(stem, stem) + dl_energy(stem, stem) + dr_energy(stem, stem);
-    
-    return res;
+    return x + termaupenalty(stem, stem) + dl_energy(stem, stem) + dr_energy(stem, stem);
   }
 
-  mfeanswer pk(mfeanswer x) {
-    return x;
+  int pk(mfeanswer x) {
+    return x.energy;
   }
 
-  mfeanswer pknot(Subsequence a, mfeanswer front, Subsequence b, mfeanswer middle, Subsequence aPrime, mfeanswer back, Subsequence bPrime ; int stackenergies) {
+  mfeanswer pknot(Subsequence a, int front, Subsequence b, int middle, Subsequence aPrime, int back, Subsequence bPrime ; int stackenergies) {
     mfeanswer res;
 	
     Subsequence alphaOuter;
@@ -155,9 +138,9 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     res.energy =   stackenergies                         // stacking energies
                  + pkinit                                // initiation energy for pk
                  + 3*npp                                 // penalty for 1+2 explicitly unpaired bases
-                 + front.energy                          // energy from front substructure
-                 + middle.energy                         // energy from middle substructure
-                 + back.energy                           // energy from back substructure
+                 + front                                 // energy from front substructure
+                 + middle                                // energy from middle substructure
+                 + back                                  // energy from back substructure
                  + termaupenalty(alphaOuter, alphaOuter) // AU penalty for outmost BP in alpha helix
                  + termaupenalty(alphaInner, alphaInner) // AU penalty for innermost BP in alpha helix
                  + termaupenalty(betaOuter, betaOuter)   // AU penalty for outmost BP in beta helix
@@ -167,7 +150,7 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     
 	return res;
   }
-  mfeanswer pkiss(Subsequence a, mfeanswer front, Subsequence b, mfeanswer middle1, Subsequence aPrime, mfeanswer middle2, Subsequence c, mfeanswer middle3, Subsequence bPrime, mfeanswer back, Subsequence cPrime ; int stackenergies) {
+  mfeanswer pkiss(Subsequence a, int front, Subsequence b, int middle1, Subsequence aPrime, int middle2, Subsequence c, int middle3, Subsequence bPrime, int back, Subsequence cPrime ; int stackenergies) {
     mfeanswer res;
 	
 	Subsequence alphaOuter;
@@ -206,11 +189,11 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
 	res.energy =   stackenergies                         // stacking energies
                  + pkissinit                             // initiation energy for pk
                  + 4*npp                                 // penalty for 1+2+1 explicitly unpaired bases
-                 + front.energy                          // energy from front substructure
-                 + middle1.energy                        // energy from middle1 substructure
-                 + middle2.energy                        // energy from middle2 substructure
-                 + middle3.energy                        // energy from middle3 substructure
-                 + back.energy                           // energy from back substructure
+                 + front                                 // energy from front substructure
+                 + middle1                               // energy from middle1 substructure
+                 + middle2                               // energy from middle2 substructure
+                 + middle3                               // energy from middle3 substructure
+                 + back                                  // energy from back substructure
                  + termaupenalty(alphaOuter, alphaOuter) // AU penalty for outmost BP in alpha helix
                  + termaupenalty(alphaInner, alphaInner) // AU penalty for innermost BP in alpha helix
                  + termaupenalty(betaOuter, betaOuter)   // AU penalty for outmost BP in beta helix
@@ -226,31 +209,25 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
 	return res;
 
   }
-  mfeanswer kndl(Subsequence ld, mfeanswer x) {
+  int kndl(Subsequence ld, mfeanswer x) {
     Subsequence alpha;
     alpha.seq = ld.seq;
     alpha.i = ld.i+1;
     alpha.j = x.alphaRightOuter;
     
-    mfeanswer res = x;
-    res.energy = res.energy + npp + dl_energy(alpha, alpha);
-    
-    return res;
+    return x.energy + npp + dl_energy(alpha, alpha);
   }
 
-  mfeanswer kndr(mfeanswer x, Subsequence rd) {
+  int kndr(mfeanswer x, Subsequence rd) {
     Subsequence beta;
     beta.seq = rd.seq;
     beta.i = x.betaLeftOuter;
     beta.j = rd.j-1;
     
-    mfeanswer res = x;
-    res.energy = res.energy + npp + dr_energy(beta, beta);
-    
-    return res;
+    return x.energy + npp + dr_energy(beta, beta);
   }
 
-  mfeanswer kndlr(Subsequence ld, mfeanswer x, Subsequence rd) {
+  int kndlr(Subsequence ld, mfeanswer x, Subsequence rd) {
     Subsequence alpha;
     alpha.seq = ld.seq;
     alpha.i = ld.i+1;
@@ -261,25 +238,19 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     beta.i = x.betaLeftOuter;
     beta.j = rd.j-1;
       
-    mfeanswer res = x;
-    res.energy = res.energy + 2*npp + dl_energy(alpha, alpha) + dr_energy(beta, beta);
-    
-    return res;
+    return x.energy + 2*npp + dl_energy(alpha, alpha) + dr_energy(beta, beta);
   }
 
-  mfeanswer sr(Subsequence lb, mfeanswer x, Subsequence rb) {
+  int sr(Subsequence lb, int x, Subsequence rb) {
     Subsequence stem;
     stem.seq = lb.seq;
     stem.i = lb.i;
     stem.j = rb.j;
       
-    mfeanswer res = x;
-    res.energy = res.energy + sr_energy(stem, stem);
-    
-    return res;
+    return x + sr_energy(stem, stem);
   }
 
-  mfeanswer hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+  int hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
     Subsequence outerStem;
     outerStem.seq = llb.seq;
     outerStem.i = llb.i;
@@ -290,15 +261,10 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     innerStem.i = lb.i;
     innerStem.j = rb.j;
     
-    mfeanswer res;
-    res.energy = hl_energy(innerStem, innerStem) + sr_energy(outerStem, outerStem);
-    res.betaLeftOuter = 0;
-    res.alphaRightOuter = 0;
-    
-    return res;
+    return hl_energy(innerStem, innerStem) + sr_energy(outerStem, outerStem);
   }
 
-  mfeanswer bl(Subsequence llb, Subsequence lb, Subsequence lr, mfeanswer x, Subsequence rb, Subsequence rrb) {
+  int bl(Subsequence llb, Subsequence lb, Subsequence lr, int x, Subsequence rb, Subsequence rrb) {
     Subsequence outerStem;
     outerStem.seq = llb.seq;
     outerStem.i = llb.i;
@@ -309,13 +275,10 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     innerStem.i = lb.i;
     innerStem.j = rb.j;
     
-    mfeanswer res = x;
-    res.energy = res.energy + sr_energy(outerStem, outerStem) + bl_energy(innerStem, lr, innerStem);
-    
-    return res;
+    return x + sr_energy(outerStem, outerStem) + bl_energy(innerStem, lr, innerStem);
   }
 
-  mfeanswer br(Subsequence llb, Subsequence lb, mfeanswer x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  int br(Subsequence llb, Subsequence lb, int x, Subsequence rr, Subsequence rb, Subsequence rrb) {
     Subsequence outerStem;
     outerStem.seq = llb.seq;
     outerStem.i = llb.i;
@@ -326,13 +289,10 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     innerStem.i = lb.i;
     innerStem.j = rb.j;
     
-    mfeanswer res = x;
-    res.energy = res.energy + sr_energy(outerStem, outerStem) + br_energy(innerStem, rr, innerStem);
-    
-    return res;
+    return x + sr_energy(outerStem, outerStem) + br_energy(innerStem, rr, innerStem);
   }
 
-  mfeanswer il(Subsequence llb, Subsequence lb, Subsequence lr, mfeanswer x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  int il(Subsequence llb, Subsequence lb, Subsequence lr, int x, Subsequence rr, Subsequence rb, Subsequence rrb) {
     Subsequence outerStem;
     outerStem.seq = llb.seq;
     outerStem.i = llb.i;
@@ -343,13 +303,10 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     innerStem.i = lb.i;
     innerStem.j = rb.j;
     
-    mfeanswer res = x;
-    res.energy = res.energy + sr_energy(outerStem, outerStem) + il_energy(lr, rr);
-    
-    return res;
+    return x + sr_energy(outerStem, outerStem) + il_energy(lr, rr);
   }
 
-  mfeanswer ml(Subsequence llb, Subsequence lb, mfeanswer x, Subsequence rb, Subsequence rrb) {
+  int ml(Subsequence llb, Subsequence lb, int x, Subsequence rb, Subsequence rrb) {
     Subsequence outerStem;
     outerStem.seq = llb.seq;
     outerStem.i = llb.i;
@@ -360,13 +317,10 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     innerStem.i = lb.i;
     innerStem.j = rb.j;
       
-    mfeanswer res = x;
-    res.energy = res.energy + mlinit + sr_energy(outerStem, outerStem) + termaupenalty(innerStem, innerStem);
-
-    return res;
+    return x + mlinit + sr_energy(outerStem, outerStem) + termaupenalty(innerStem, innerStem);
   }
 
-  mfeanswer mldl(Subsequence llb, Subsequence lb, Subsequence ld, mfeanswer x, Subsequence rb, Subsequence rrb) {
+  int mldl(Subsequence llb, Subsequence lb, Subsequence ld, int x, Subsequence rb, Subsequence rrb) {
     Subsequence outerStem;
     outerStem.seq = llb.seq;
     outerStem.i = llb.i;
@@ -377,13 +331,10 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     innerStem.i = lb.i;
     innerStem.j = rb.j;
       
-    mfeanswer res = x;
-    res.energy = res.energy + mlinit + sr_energy(outerStem, outerStem) + termaupenalty(innerStem, innerStem) + dli_energy(innerStem,innerStem);
-
-    return res;
+    return x + mlinit + sr_energy(outerStem, outerStem) + termaupenalty(innerStem, innerStem) + dli_energy(innerStem,innerStem);
   }
 
-  mfeanswer mldr(Subsequence llb, Subsequence lb, mfeanswer x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+  int mldr(Subsequence llb, Subsequence lb, int x, Subsequence rd, Subsequence rb, Subsequence rrb) {
     Subsequence outerStem;
     outerStem.seq = llb.seq;
     outerStem.i = llb.i;
@@ -394,13 +345,10 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     innerStem.i = lb.i;
     innerStem.j = rb.j;
       
-    mfeanswer res = x;
-    res.energy = res.energy + mlinit + sr_energy(outerStem, outerStem) + termaupenalty(innerStem, innerStem) + dri_energy(innerStem,innerStem);
-
-    return res;
+    return x + mlinit + sr_energy(outerStem, outerStem) + termaupenalty(innerStem, innerStem) + dri_energy(innerStem,innerStem);
   }
 
-  mfeanswer mldlr(Subsequence llb, Subsequence lb, Subsequence ld, mfeanswer x, Subsequence rd, Subsequence rb, Subsequence rrb) {
+  int mldlr(Subsequence llb, Subsequence lb, Subsequence ld, int x, Subsequence rd, Subsequence rb, Subsequence rrb) {
     Subsequence outerStem;
     outerStem.seq = llb.seq;
     outerStem.i = llb.i;
@@ -411,67 +359,44 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     innerStem.i = lb.i;
     innerStem.j = rb.j;
       
-    mfeanswer res = x;
-    res.energy = res.energy + mlinit + sr_energy(outerStem, outerStem) + termaupenalty(innerStem, innerStem) + dli_energy(innerStem,innerStem) + dri_energy(innerStem,innerStem);
-
-    return res;
+    return x + mlinit + sr_energy(outerStem, outerStem) + termaupenalty(innerStem, innerStem) + dli_energy(innerStem,innerStem) + dri_energy(innerStem,innerStem);
   }
 
-  mfeanswer addss(mfeanswer x, Subsequence r) {
-    mfeanswer res = x;
-    res.energy = res.energy + ss_energy(r);
-      
-    return res;
+  int addss(int x, Subsequence r) {
+    return x + ss_energy(r);
   }
 
-  mfeanswer mlstem(mfeanswer x) {
-    x.energy = x.energy + 40;
-    return x;
+  int mlstem(int x) {
+    return x + 40;
   }
 
-  mfeanswer pkml(mfeanswer x) {
-    x.energy = x.energy + pkmlinit;
-    return x;
+  int pkml(int x) {
+    return x + pkmlinit;
   }
 
 
-  mfeanswer frd(mfeanswer x, Subsequence ld; int betaRightOuter) {
+  int frd(int x, Subsequence ld; int betaRightOuter) {
     Subsequence beta;
     beta.seq = ld.seq;
     beta.i = ld.i+1;
     beta.j = betaRightOuter;
       
-    mfeanswer res = x;
-    res.energy = x.energy + npp + dl_energy(beta, beta);
-
-    return res;
+    return x + npp + dl_energy(beta, beta);
   }
 
-  mfeanswer ul(mfeanswer x) {
+  int ul(int x) {
     return x;
   }
 
-  mfeanswer emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
-    mfeanswer res;
-    res.betaLeftOuter = 0;
-    res.alphaRightOuter = 0;
-    res.energy = sr_pk_energy(m[m.i-1], m[betaRightInner], m[m.i], m[alphaLeftInner-1]);
-    return res;
+  int emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    return sr_pk_energy(m[m.i-1], m[betaRightInner], m[m.i], m[alphaLeftInner-1]);
   }
 
-  mfeanswer midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
-    mfeanswer res;
-    res.betaLeftOuter = 0;
-    res.alphaRightOuter = 0;
-    res.energy = sr_pk_energy(m[m.i-1], m[betaRightInner], m[m.i+1], m[alphaLeftInner-1]) + npp;
-    return res;
+  int midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    return sr_pk_energy(m[m.i-1], m[betaRightInner], m[m.i+1], m[alphaLeftInner-1]) + npp;
   }
 
-  mfeanswer middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
-    mfeanswer res;
-    res.betaLeftOuter = 0;
-    res.alphaRightOuter = 0;
-    
+  int middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
     Subsequence beta;
     beta.seq = m.seq;
     beta.i = m.i-1;
@@ -482,40 +407,32 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     alpha.i = alphaLeftInner-1;
     alpha.j = m.j+1;
       
-    res.energy = 2*npp + dri_energy(alpha, alpha) + dli_energy(beta, beta);
-    
-    return res;
+    return 2*npp + dri_energy(alpha, alpha) + dli_energy(beta, beta);
   }
 
-  mfeanswer midregion(mfeanswer x) {
+  int midregion(int x) {
     return x;
   }
 
-  mfeanswer middl(Subsequence ld, mfeanswer x; int betaRightInner) {
+  int middl(Subsequence ld, int x; int betaRightInner) {
     Subsequence beta;
     beta.seq = ld.seq;
     beta.i = ld.i-1;
     beta.j = betaRightInner+1;
 
-    mfeanswer res = x;
-    res.energy = res.energy + npp + dli_energy(beta, beta);
-    
-    return res;
+    return x + npp + dli_energy(beta, beta);
   }
 
-  mfeanswer middr(mfeanswer x, Subsequence rd; int alphaLeftInner) {
+  int middr(int x, Subsequence rd; int alphaLeftInner) {
     Subsequence alpha;
     alpha.seq = rd.seq;
     alpha.i = alphaLeftInner-1;
     alpha.j = rd.j+1;
 
-    mfeanswer res = x;
-    res.energy = res.energy + npp + dri_energy(alpha, alpha);
-    
-    return res;
+    return x + npp + dri_energy(alpha, alpha);
   }
 
-  mfeanswer middlr(Subsequence ld, mfeanswer x, Subsequence rd; int betaRightInner, int alphaLeftInner) {
+  int middlr(Subsequence ld, int x, Subsequence rd; int betaRightInner, int alphaLeftInner) {
     Subsequence beta;
     beta.seq = ld.seq;
     beta.i = ld.i-1;
@@ -526,39 +443,33 @@ algebra mfe implements Algebra(alphabet = char, comp = mfeanswer) {
     alpha.i = alphaLeftInner-1;
     alpha.j = rd.j+1;
 
-    mfeanswer res = x;
-    res.energy = res.energy + 2*npp + dli_energy(beta, beta) + dri_energy(alpha, alpha);
-    
-    return res;
+    return x + 2*npp + dli_energy(beta, beta) + dri_energy(alpha, alpha);
   }
 
-  mfeanswer bkd(Subsequence rd, mfeanswer x; int alphaLeftOuter) {
+  int bkd(Subsequence rd, int x; int alphaLeftOuter) {
     Subsequence alpha;
     alpha.seq = rd.seq;
     alpha.i = alphaLeftOuter;
     alpha.j = rd.j-1;
     
-    mfeanswer res = x;
-    res.energy = res.energy + npp + dr_energy(alpha, alpha);
-
-    return res;
+    return x + npp + dr_energy(alpha, alpha);
   }
  
-  mfeanswer pss(Subsequence r) {
-    mfeanswer res;
-    res.betaLeftOuter = 0;
-    res.alphaRightOuter = 0;
-    res.energy = npp * size(r);
-    return res;
+  int pss(Subsequence r) {
+    return npp * size(r);
   }
 
-  choice [mfeanswer] h([mfeanswer] i) {
+  choice [int] h([int] i) {
+    return list(minimum(i));
+  }
+
+  choice [mfeanswer] hKnot([mfeanswer] i) {
     return list(minimum(i));
   }
 }
 
 
-algebra pretty implements Algebra(alphabet = char, comp = string_t) {
+algebra pretty implements Algebra(alphabet = char, comp = string_t, compKnot = string_t) {
   string_t sadd(Subsequence b, string_t x) {
     string_t res;
     append(res, '.');
@@ -833,9 +744,13 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t) {
   choice [string_t] h([string_t] i) {
     return unique(i);
   }
+
+  choice [string_t] hKnot([string_t] i) {
+    return unique(i);
+  }
 }
 
-algebra enforce implements Algebra(alphabet = char, comp = myBool) {
+algebra enforce implements Algebra(alphabet = char, comp = myBool, compKnot = myBool) {
   myBool sadd(Subsequence b, myBool x) {
     return x;
   }
@@ -987,10 +902,14 @@ algebra enforce implements Algebra(alphabet = char, comp = myBool) {
   choice [myBool] h([myBool] i) {
     return unique(i);
   }
+
+  choice [myBool] hKnot([myBool] i) {
+    return unique(i);
+  }
 }
 
 
-algebra shape5 implements Algebra(alphabet = char, comp = myShape) {
+algebra shape5 implements Algebra(alphabet = char, comp = myShape, compKnot = myShape) {
   myShape sadd(Subsequence b, myShape x) {
     return x;
   }
@@ -1186,6 +1105,10 @@ algebra shape5 implements Algebra(alphabet = char, comp = myShape) {
   }
 
   choice [myShape] h([myShape] i) {
+    return unique(i);
+  }
+
+  choice [myShape] hKnot([myShape] i) {
     return unique(i);
   }
 }
@@ -1487,9 +1410,7 @@ algebra shape1 extends shape5 {
 
 
 grammar pknotsRG uses Algebra(axiom = struct) {
-
-    tabulated {struct, closed, ml_comps1, ml_comps, pk_comps, knot }
-
+	
     struct       = sadd(BASE,      struct) |
                    cadd(dangle_Pr, struct) |
                    nil (EMPTY) 
@@ -1548,7 +1469,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     
     knot         = help_pknot |
 				   help_pkiss
-                   # h;
+                   # hKnot;
 				   
     help_pknot   = 
       .[
@@ -1592,7 +1513,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
               REGION[j-betareallen, j] ;
               stackenergies) 
          }.
-      } # h;    
+      } # hKnot;    
     
     help_pkiss   = 
       .[
@@ -1648,7 +1569,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                  REGION[j-gammareallen, j] ;													       //gamma close
                  stackenergies) 
          }.
-      } # h;    
+      } # hKnot;    
     	  
     front(int betaRightOuter) = front_Pr               |
                                 frd  (front_Pr, BASE; betaRightOuter)
