@@ -11,7 +11,11 @@ type shape_t = shape
 type Rope = extern
 type mfeanswer = (int energy, int betaLeftOuter, int alphaRightOuter)
 type string_t = Rope
-type myShape = Rope
+
+type pkshape_t = extern
+//type myShape = Rope
+//type myShape = pkshape_t
+type myShape = extern
 type myBool = int
 
 signature Algebra(alphabet, comp, compKnot) {
@@ -960,7 +964,7 @@ algebra shape5 implements Algebra(alphabet = char, comp = myShape, compKnot = my
     return res;
   }
 
-  myShape pkiss(Subsequence a, myShape front, Subsequence b, myShape middle1, Subsequence aPrime, myShape middle2, Subsequence c, myShape middle3, Subsequence bPrime, myShape back, Subsequence cPrime ; int stackenergies) {
+  myShape pkiss(Subsequence a, myShape frt, Subsequence b, myShape middle1, Subsequence aPrime, myShape middle2, Subsequence c, myShape middle3, Subsequence bPrime, myShape bck, Subsequence cPrime ; int stackenergies) {
     myShape res;
 	  
     append(res, '[');
@@ -1114,7 +1118,7 @@ algebra shape5 implements Algebra(alphabet = char, comp = myShape, compKnot = my
 }
 
 algebra shape4 extends shape5 {
-  myShape il(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  myShape il(Subsequence llb, Subsequence lb, Subsequence lr, myShape x, Subsequence rr, Subsequence rb, Subsequence rrb) {
     myShape res;
 	append(res, '[');
 	append(res, x);
@@ -1124,21 +1128,21 @@ algebra shape4 extends shape5 {
 }
 
 algebra shape3 extends shape5 {
-  myShape bl(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rb, Subsequence rrb) {
+  myShape bl(Subsequence llb, Subsequence lb, Subsequence lr, myShape x, Subsequence rb, Subsequence rrb) {
     myShape res;
 	append(res, '[');
 	append(res, x);
 	append(res, ']');
 	return res;
   }
-  myShape br(Subsequence llb, Subsequence lb, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  myShape br(Subsequence llb, Subsequence lb, myShape x, Subsequence rr, Subsequence rb, Subsequence rrb) {
     myShape res;
 	append(res, '[');
 	append(res, x);
 	append(res, ']');
 	return res;
   }
-  myShape il(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  myShape il(Subsequence llb, Subsequence lb, Subsequence lr, myShape x, Subsequence rr, Subsequence rb, Subsequence rrb) {
     myShape res;
 	append(res, '[');
 	append(res, x);
@@ -1148,7 +1152,7 @@ algebra shape3 extends shape5 {
 }
 
 algebra shape2 extends shape5 {
-  myShape bl(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rb, Subsequence rrb) {
+  myShape bl(Subsequence llb, Subsequence lb, Subsequence lr, myShape x, Subsequence rb, Subsequence rrb) {
     myShape res;
 	append(res, '[');
 	append(res, '_');
@@ -1156,7 +1160,7 @@ algebra shape2 extends shape5 {
 	append(res, ']');
 	return res;
   }
-  myShape br(Subsequence llb, Subsequence lb, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  myShape br(Subsequence llb, Subsequence lb, myShape x, Subsequence rr, Subsequence rb, Subsequence rrb) {
     myShape res;
 	append(res, '[');
 	append(res, x);
@@ -1164,7 +1168,7 @@ algebra shape2 extends shape5 {
 	append(res, ']');
 	return res;
   }
-  myShape il(Subsequence llb, Subsequence lb, Subsequence lr, string_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  myShape il(Subsequence llb, Subsequence lb, Subsequence lr, myShape x, Subsequence rr, Subsequence rb, Subsequence rrb) {
     myShape res;
 	append(res, '[');
 	append(res, '_');
@@ -1197,19 +1201,19 @@ algebra shape1 extends shape5 {
     }
     return res;
   }
-  myShape edl(Subsequence ld, string_t x, Subsequence rd) {
+  myShape edl(Subsequence ld, myShape x, Subsequence rd) {
     myShape res;
 	append(res, '_');
     append(res, x);
     return res;
   }
-  myShape edr(Subsequence ld, string_t x, Subsequence rd) {
+  myShape edr(Subsequence ld, myShape x, Subsequence rd) {
     myShape res;
     append(res, x);
     append(res, '_');
     return res;
   }
-  myShape edlr(Subsequence ld, string_t x, Subsequence rd) {
+  myShape edlr(Subsequence ld, myShape x, Subsequence rd) {
     myShape res;
     append(res, '_');
     append(res, x);
