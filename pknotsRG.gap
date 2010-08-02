@@ -1648,6 +1648,7 @@ acgucgaaauaaaugccuugucugcuauauucgacg
 ( ( [{]}[] , (430, 5, 15) ) , .[[[.{{.....]]]..}}(((..........))). )
 ( ( [{]}[] , (430, 5, 15) ) , .[[[..{{....]]]..}}(((..........))). )
 
-//TODO Shape Datentyp auf { } < > erweitert, oder Rope um back und front erweitert um Shape Algebren fertig zu bekommen
+// Shape Datentyp wurde auf { } < > erweitert
+// TODO Shape Algebren fertig bekommen
 
 /* CGGCACCCAGCCGGGGCGGAGUCCGCGAAUGGG */
