@@ -1479,38 +1479,39 @@ grammar pknotsRG uses Algebra(axiom = struct) {
       .[
          int i = t_0_i;
          int j = t_0_j;
-         if (!(j - i < 11))
-           for (int l = (i + 7); (l <= (j - 4)); l=l+1) {
+         if (!(j - i < 11)) {
+           for (int l = i+7; l <= j-4; l=l+1) {
              int alphamaxlen = second(stacklen(t_0_seq, i, l));
-             if (alphamaxlen < 2)
+             if (alphamaxlen < 2) {
                continue;
+             }
              for (int k = i+3; k <= l-4; k=k+1) {
                int alphareallen = min(alphamaxlen, k-i-1);
-               if (alphareallen < 2)
+               if (alphareallen < 2) {
                  continue;
-         
+               }
                int betamaxlen = second(stacklen(t_0_seq, k, j));
-               if (betamaxlen < 2)
+               if (betamaxlen < 2) {
                  continue;
-
+               }
                int betatemplen = min(betamaxlen, j-l-2);
-               if (betatemplen<2)
+               if (betatemplen < 2) {
                  continue;
-
+               }
                int betareallen = min(betatemplen, l-k-alphareallen);
-               if (betareallen < 2)
+               if (betareallen < 2) {
                  continue;
+               }
+               int stackenergies = 
+                     first(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
+                   + first(stacklen(t_0_seq, k,                j               )) // maximal beta helix
+                   - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1)) // reduced part of alpha helix
+                   - first(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
 
-               int stackenergies = first(stacklen(t_0_seq, i, l))  // maximal alpha helix
-                   + first(stacklen(t_0_seq, k, j)) // maximal beta helix
-                   // reduced part of alpha helix
-                   - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1))
-                   // reduced part of beta helix
-                   - first(stacklen(t_0_seq, k+betareallen-1, j-betareallen+1));
-
-                INNER(CODE);
+               INNER(CODE);
               }
-            }
+           }
+         }
        ].
       {
          pknot(REGION, REGION, REGION) .{
@@ -1533,36 +1534,37 @@ grammar pknotsRG uses Algebra(axiom = struct) {
          int k = t_0_k_1;
          int l = t_0_k_2;
          int m = t_0_k_3;
-		 //~ if (j-i<16)
-           //~ continue;
-		 if (i+3>h || h+4>k || k+2>l || l+4>m || m+3>j)
-			 continue;
-		 
-         int alphamaxlen = second(stacklen(t_0_seq, i, k));
-         if (alphamaxlen < 2)
-           continue;
-         int alphareallen = min(alphamaxlen, h-i-1);
-         if (alphareallen < 2)
-           continue;
-		 
-         int gammamaxlen = second(stacklen(t_0_seq, l, j));
-         if (gammamaxlen < 2)
-           continue;
-         int gammareallen = min(gammamaxlen, j-m-1);
-         if (gammareallen < 2)
-           continue;
-
-         int betamaxlen = second(stacklen(t_0_seq, h, m));
-		 int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
-		 if (betareallen < 2)
-           continue;
          
-		 int stackenergies =      first(stacklen(t_0_seq, i, k)) 								// maximal alpha helix
-								+ first(stacklen(t_0_seq, h, m)) 								// maximal beta helix
-								+ first(stacklen(t_0_seq, l, j)) 								// maximal gamma helix
-		                        - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
-		                        - first(stacklen(t_0_seq, h+betareallen-1, m-betareallen+1))    // reduced part of beta helix
-		                        - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
+         if (i+3>h || h+4>k || k+2>l || l+4>m || m+3>j) {
+           continue;
+         }
+         int alphamaxlen = second(stacklen(t_0_seq, i, k));
+         if (alphamaxlen < 2) {
+           continue;
+         }
+         int alphareallen = min(alphamaxlen, h-i-1);
+         if (alphareallen < 2) {
+           continue;
+         }
+         int gammamaxlen = second(stacklen(t_0_seq, l, j));
+         if (gammamaxlen < 2) {
+           continue;
+         }
+         int gammareallen = min(gammamaxlen, j-m-1);
+         if (gammareallen < 2) {
+           continue;
+         }
+         int betamaxlen = second(stacklen(t_0_seq, h, m));
+         int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
+         if (betareallen < 2) {
+           continue;
+         }
+         int stackenergies =      first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                                + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
+                                + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
+                                - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                                - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
+                                - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
        ].
       {
          pkiss(REGION, REGION, REGION, REGION, REGION) .{
