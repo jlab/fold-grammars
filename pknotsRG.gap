@@ -1474,8 +1474,8 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                    # h;
     
     knot         = //help_pknot
-                    help_pkiss
-                   //| help_pkissAleft
+                   // help_pkiss
+                    help_pkissAleft
                    //| help_pkissAright
                      # hKnot;
 				   
@@ -1535,61 +1535,60 @@ grammar pknotsRG uses Algebra(axiom = struct) {
          int i = t_0_i;
          int j = t_0_j;
 
-for (int h = i+3; h<j-13; h=h+1) {
-for (int k = h+4; k<j-9; k=k+1) {
-for (int l = k+2; l<j-7; l=l+1) {
-         for (int m = l+4; m<j-3; m=m+1) {
-         
-         if (i+3>h || h+4>k || k+2>l || l+4>m || m+3>j) {
-           continue;
+         for (int h = i+3; h<j-13; h=h+1) {
+           for (int k = h+4; k<j-9; k=k+1) {
+             for (int l = k+2; l<j-7; l=l+1) {
+               for (int m = l+4; m<j-3; m=m+1) {
+                 if (i+3>h || h+4>k || k+2>l || l+4>m || m+3>j) {
+                   continue;
+                 }
+                 int alphamaxlen = second(stacklen(t_0_seq, i, k));
+                 if (alphamaxlen < 2) {
+                   continue;
+                 }
+                 int alphareallen = min(alphamaxlen, h-i-1);
+                 if (alphareallen < 2) {
+                   continue;
+                 }
+                 int gammamaxlen = second(stacklen(t_0_seq, l, j));
+                 if (gammamaxlen < 2) {
+                   continue;
+                 }
+                 int gammareallen = min(gammamaxlen, j-m-1);
+                 if (gammareallen < 2) {
+                   continue;
+                 }
+                 int betamaxlen = second(stacklen(t_0_seq, h, m));
+                 int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
+                 if (betareallen < 2) {
+                   continue;
+                 }
+                 int stackenergies =   first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                                     + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
+                                     + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
+                                     - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                                     - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
+                                     - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
+                 INNER(CODE);
+               }
+             }
+           }
          }
-         int alphamaxlen = second(stacklen(t_0_seq, i, k));
-         if (alphamaxlen < 2) {
-           continue;
-         }
-         int alphareallen = min(alphamaxlen, h-i-1);
-         if (alphareallen < 2) {
-           continue;
-         }
-         int gammamaxlen = second(stacklen(t_0_seq, l, j));
-         if (gammamaxlen < 2) {
-           continue;
-         }
-         int gammareallen = min(gammamaxlen, j-m-1);
-         if (gammareallen < 2) {
-           continue;
-         }
-         int betamaxlen = second(stacklen(t_0_seq, h, m));
-         int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
-         if (betareallen < 2) {
-           continue;
-         }
-         int stackenergies =      first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
-                                + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
-                                + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
-                                - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
-                                - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
-                                - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
-
-INNER(CODE);
-
-}}}}
        ].
       {
          pkiss(REGION, REGION, REGION, REGION, REGION) .{
-           pkiss(REGION[i, i+alphareallen],													           //alpha open
-                 front[i+alphareallen+1, h] .(m).,											           //front
-                 REGION[h, h+betareallen],													           //beta open
-                 middle[h+betareallen, k-alphareallen] .(m-betareallen, i+alphareallen).,	           //middle 1
-                 REGION[k-alphareallen, k],													           //alpha close
-                 middleNoDangling[k+1, l-1],	                                                       //middle 2
-                 REGION[l, l+gammareallen],													           //gamma open
+           pkiss(REGION[i, i+alphareallen],                                                            //alpha open
+                 front[i+alphareallen+1, h] .(m).,                                                     //front
+                 REGION[h, h+betareallen],                                                             //beta open
+                 middle[h+betareallen, k-alphareallen] .(m-betareallen, i+alphareallen).,              //middle 1
+                 REGION[k-alphareallen, k],                                                            //alpha close
+                 middleNoDangling[k+1, l-1],                                                           //middle 2
+                 REGION[l, l+gammareallen],                                                            //gamma open
                  middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen).,   //middle 3
-                 REGION[m-betareallen, m],													           //beta close
-                 back[m, j-gammareallen-1] .(h).,											           //back
-                 REGION[j-gammareallen, j],
-    help_pknot[i, j] 
- ;													       //gamma close
+                 REGION[m-betareallen, m],                                                             //beta close
+                 back[m, j-gammareallen-1] .(h).,                                                      //back
+                 REGION[j-gammareallen, j],                                                            //gamma close
+                 help_pknot[i, j] ;
                  stackenergies) 
          }.
       } # hKnot;
@@ -1700,8 +1699,9 @@ INNER(CODE);
 
          for (int m = i+13; m<j-3; m=m+1) {
            mfeanswer a = get_pk(i, m);
-           if (is_empty(a))
+           if (is_empty(a)) {
              continue;
+           }
            int h = a.betaLeftOuter;
            int k = a.alphaRightOuter;
            int alphamaxlen = second(stacklen(t_0_seq, i, k));
@@ -1733,14 +1733,12 @@ INNER(CODE);
            if (betareallen < 2) {
              continue;
            }
-           int stackenergies =
-             // maximal alpha helix
-             first(stacklen(t_0_seq, i,                k               ))  
-             + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
-             + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
-             - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
-             - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
-             - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
+           int stackenergies = first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                             + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
+                             + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
+                             - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                             - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
+                             - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
 
            INNER(CODE);
          }
