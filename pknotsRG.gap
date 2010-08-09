@@ -1588,7 +1588,7 @@ INNER(CODE);
                  REGION[m-betareallen, m],													           //beta close
                  back[m, j-gammareallen-1] .(h).,											           //back
                  REGION[j-gammareallen, j],
-    help_pknot_free_k[0, 0] .(0). 
+    help_pknot[i, j] 
  ;													       //gamma close
                  stackenergies) 
          }.
