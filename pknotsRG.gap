@@ -1473,9 +1473,9 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                    pkml  (dangleknot)
                    # h;
     
-    knot         = //help_pknot
+    knot         = help_pknot
                    // help_pkiss
-                    help_pkissAleft
+                   | help_pkissAleft
                    //| help_pkissAright
                      # hKnot;
 				   
@@ -1718,7 +1718,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
            mfeanswer b = get_pk_free_k(h, j, m);
            if (is_empty(b))
              continue;
-           int l = b.alphaRightOuter;
+           int l = b.betaLeftOuter;
            if (l-k<=2)
              continue;
            int gammamaxlen = second(stacklen(t_0_seq, l, j));
