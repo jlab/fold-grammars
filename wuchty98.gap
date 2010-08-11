@@ -350,9 +350,9 @@ grammar wuchty98 uses wuchty98Algebra(axiom = struct) {
   stack     = sr(BASE, closed, BASE) with basepairing 
 	      # h;
 
-  hairpin   = hl(BASE, BASE,                          {REGION with minsize(3)},        BASE, BASE) with stackpairing # h;
-  leftB     = bl(BASE, BASE, REGION with maxsize(30), closed,                          BASE, BASE) with stackpairing # h;
-  rightB    = br(BASE, BASE,                          closed, REGION with maxsize(30), BASE, BASE) with stackpairing # h;
+  hairpin   = hl(BASE, BASE,                          REGION with minsize(3),          BASE, BASE) with stackpairing # h;
+  leftB     = bl(BASE, BASE, REGION,                  closed,                          BASE, BASE) with stackpairing # h;
+  rightB    = br(BASE, BASE,                          closed, REGION,                  BASE, BASE) with stackpairing # h;
   iloop     = il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) with stackpairing # h;
   multiloop = ml(BASE, BASE,                          ml_comps,                        BASE, BASE) with stackpairing # h;
 
