@@ -125,7 +125,11 @@ algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
     }
   }
   shape_t cadd(shape_t x, shape_t e) {
-    return x + e;
+    if (e == '_') {
+      return x;
+    } else {
+      return x + e;
+    }
   }
   shape_t dlr(Subsequence lb, shape_t e, Subsequence rb) {
     return e;
@@ -134,19 +138,19 @@ algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
     return e;
   }
   shape_t hl(Subsequence lb, Subsequence f1, Subsequence x, Subsequence f2, Subsequence rb) {
-    return "[]";
+    return shape_t('[') + ']';
   }
   shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
     return e;
   }
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return e;
-  }	
-	shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  }
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return e;
-	}
+  }
   shape_t ml(Subsequence bl, Subsequence f1, shape_t x, Subsequence f2, Subsequence br) {
-    return "[" + x + "]";
+    return '[' + x + ']';
   }
   shape_t app(shape_t c1, shape_t c) {
     return c1 + c;
