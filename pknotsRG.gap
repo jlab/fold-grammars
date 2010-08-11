@@ -1416,402 +1416,469 @@ algebra shape1 extends shape5 {
 
 
 grammar pknotsRG uses Algebra(axiom = struct) {
-	
-    struct       = sadd(BASE,      struct) |
-                   cadd(dangle_Pr, struct) |
-                   nil (EMPTY) 
-                   # h;
-
-    dangle_Pr    = dangle | 
-                   dangleknot
-                   # h;
-    
-    dangle       = is   (LOC,  closed, LOC ) |
-                   edl  (BASE, closed, LOC ) |
-                   edr  (LOC,  closed, BASE) |
-                   edlr (BASE, closed, BASE) 
-                   # h;
-    
-    dangleknot   = pk   (      knot        ) |
-                   kndl (BASE, knot        ) |
-                   kndr (      knot,   BASE) |
-                   kndlr(BASE, knot,   BASE) 
-                   # h;
-
-    closed       ={stack   | 
-                   hairpin |
-                   leftB   | 
-                   rightB  | 
-                   iloop   | 
-                   multiloop} with stackpairing 
-                   # h;
-
-    stack        = sr   (      BASE,                          closed,                                            BASE      ) # h;
-    hairpin      = hl   (BASE, BASE,                          {REGION with minsize(3)},                          BASE, BASE) # h;
-    leftB        = bl   (BASE, BASE, REGION with maxsize(30), closed,                                            BASE, BASE) # h;
-    rightB       = br   (BASE, BASE,                          closed,                   REGION with maxsize(30), BASE, BASE) # h;
-    iloop        = il   (BASE, BASE, REGION with maxsize(30), closed,                   REGION with maxsize(30), BASE, BASE) # h;
-    
-    multiloop    ={ml   (BASE, BASE,                          ml_comps1,                                         BASE, BASE) |
-                   mldl (BASE, BASE, BASE,                    ml_comps1,                                         BASE, BASE) |
-                   mldr (BASE, BASE,                          ml_comps1,                BASE,                    BASE, BASE) |
-                   mldlr(BASE, BASE, BASE,                    ml_comps1,                BASE,                    BASE, BASE) } with stackpairing
-                   # h;
-
-    ml_comps1    = sadd (BASE,             ml_comps1) |
-                   cadd (mldangle,         ml_comps)  |
-                   addss(pkml(dangleknot), REGION0)
-                   # h ;
-
-                     
-    ml_comps     = sadd (BASE,             ml_comps) |
-                   cadd (mldangle,         ml_comps) |
-                   addss(mldangle,         REGION0)
-                   # h ;
-
-    mldangle     = mlstem(dangle)     |
-                   pkml  (dangleknot)
-                   # h;
-    
-    knot         = help_pknot
-                   // help_pkiss
-                   | help_pkissAleft
-                   //| help_pkissAright
-                     # hKnot;
-				   
-    help_pknot   = 
-      .[
-         int i = t_0_i;
-         int j = t_0_j;
-         if (!(j - i < 11)) {
-           for (int l = i+7; l <= j-4; l=l+1) {
+  struct       = sadd(BASE,      struct) |
+                 cadd(dangle_Pr, struct) |
+                 nil (EMPTY) 
+                 # h;
+  
+  dangle_Pr    = dangle | 
+                 dangleknot
+                 # h;
+  
+  dangle       = is   (LOC,  closed, LOC ) |
+                 edl  (BASE, closed, LOC ) |
+                 edr  (LOC,  closed, BASE) |
+                 edlr (BASE, closed, BASE) 
+                 # h;
+  
+  dangleknot   = pk   (      knot        ) |
+                 kndl (BASE, knot        ) |
+                 kndr (      knot,   BASE) |
+                 kndlr(BASE, knot,   BASE) 
+                 # h;
+  
+  closed       ={stack   | 
+                 hairpin |
+                 leftB   | 
+                 rightB  | 
+                 iloop   | 
+                 multiloop} with stackpairing 
+                 # h;
+  
+  stack        = sr   (      BASE,                          closed,                                            BASE      ) # h;
+  hairpin      = hl   (BASE, BASE,                          {REGION with minsize(3)},                          BASE, BASE) # h;
+  leftB        = bl   (BASE, BASE, REGION with maxsize(30), closed,                                            BASE, BASE) # h;
+  rightB       = br   (BASE, BASE,                          closed,                   REGION with maxsize(30), BASE, BASE) # h;
+  iloop        = il   (BASE, BASE, REGION with maxsize(30), closed,                   REGION with maxsize(30), BASE, BASE) # h;
+  
+  multiloop    ={ml   (BASE, BASE,                          ml_comps1,                                         BASE, BASE) |
+                 mldl (BASE, BASE, BASE,                    ml_comps1,                                         BASE, BASE) |
+                 mldr (BASE, BASE,                          ml_comps1,                BASE,                    BASE, BASE) |
+                 mldlr(BASE, BASE, BASE,                    ml_comps1,                BASE,                    BASE, BASE) } with stackpairing
+                 # h;
+  
+  ml_comps1    = sadd (BASE,             ml_comps1) |
+                 cadd (mldangle,         ml_comps)  |
+                 addss(pkml(dangleknot), REGION0)
+                 # h ;
+  
+                   
+  ml_comps     = sadd (BASE,             ml_comps) |
+                 cadd (mldangle,         ml_comps) |
+                 addss(mldangle,         REGION0)
+                 # h ;
+  
+  mldangle     = mlstem(dangle)     |
+                 pkml  (dangleknot)
+                 # h;
+  
+  knot         =   help_pknot_free_kl
+                 | help_pknot_free_k
+                 | help_pknot_free_l
+                 // help_pkiss_D
+                 | help_pkiss_Aleft
+                 //| help_pkiss_Aright
+                   # hKnot;
+  
+  help_pknot_free_kl = 
+    .[
+      int i = t_0_i;
+      int j = t_0_j;
+      if (i+11 < j) {
+        for (int l = i+7; l <= j-4; l=l+1) {
+          int alphamaxlen = second(stacklen(t_0_seq, i, l));
+          if (alphamaxlen < 2) {
+            continue;
+          }
+          for (int k = i+3; k <= l-4; k=k+1) {
+            int alphareallen = min(alphamaxlen, k-i-1);
+            if (alphareallen < 2) {
+              continue;
+            }
+            int betamaxlen = second(stacklen(t_0_seq, k, j));
+            if (betamaxlen < 2) {
+              continue;
+            }
+            int betatemplen = min(betamaxlen, j-l-2);
+            if (betatemplen < 2) {
+              continue;
+            }
+            int betareallen = min(betatemplen, l-k-alphareallen);
+            if (betareallen < 2) {
+              continue;
+            }
+            int stackenergies = 
+                  first(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
+                + first(stacklen(t_0_seq, k,                j               ))  // maximal beta helix
+                - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1))  // reduced part of alpha helix
+                - first(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
+  
+            INNER(CODE);
+          }
+        }
+      }
+     ].
+    {
+      pknot(REGION, REGION, REGION) .{
+        pknot(REGION[i, i+alphareallen],
+        front[i+alphareallen+1, k] .(j).,
+        REGION[k, k+betareallen],
+        middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
+        REGION[l-alphareallen, l],
+        back[l, j-betareallen-2] .(i).,
+        REGION[j-betareallen, j] ;
+        stackenergies) 
+      }.
+    } # hKnot;    
+  
+  help_pknot_free_k(int l, int startK) = 
+    .[
+      int i = t_0_i;
+      int j = t_0_j;
+       
+      if (i+11 < j) {
+        int alphamaxlen = second(stacklen(t_0_seq, i, l));
+        if (alphamaxlen >= 2) {
+          for (int k = startK; k <= l-4; k=k+1) {
+            int alphareallen = min(alphamaxlen, k-i-1);
+            if (alphareallen < 2) {
+              continue;
+            }
+            int betamaxlen = second(stacklen(t_0_seq, k, j));
+            if (betamaxlen < 2) {
+              continue;
+            }
+            int betatemplen = min(betamaxlen, j-l-2);
+            if (betatemplen < 2) {
+              continue;
+            }
+            int betareallen = min(betatemplen, l-k-alphareallen);
+            if (betareallen < 2) {
+              continue;
+            }
+            int stackenergies = 
+                  first(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
+                + first(stacklen(t_0_seq, k,                j               ))  // maximal beta helix
+                - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1))  // reduced part of alpha helix
+                - first(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
+  
+            INNER(CODE);
+          }
+        }
+      }
+     ].
+    {
+      pknot(REGION, REGION, REGION) .{
+        pknot(REGION[i, i+alphareallen],
+        front[i+alphareallen+1, k] .(j).,
+        REGION[k, k+betareallen],
+        middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
+        REGION[l-alphareallen, l],
+        back[l, j-betareallen-2] .(i).,
+        REGION[j-betareallen, j] ;
+        stackenergies) 
+      }.
+    } # hKnot;  
+  
+  help_pknot_free_l(int k, int endL) = 
+    .[
+      int i = t_0_i;
+      int j = t_0_j;
+      if (i+11 < j) {
+        int betamaxlen = second(stacklen(t_0_seq, k, j));
+        if (betamaxlen >= 2) {
+          for (int l = k+4; l <= endL; l=l+1) {
              int alphamaxlen = second(stacklen(t_0_seq, i, l));
              if (alphamaxlen < 2) {
                continue;
              }
-             for (int k = i+3; k <= l-4; k=k+1) {
-               int alphareallen = min(alphamaxlen, k-i-1);
-               if (alphareallen < 2) {
-                 continue;
-               }
-               int betamaxlen = second(stacklen(t_0_seq, k, j));
-               if (betamaxlen < 2) {
-                 continue;
-               }
-               int betatemplen = min(betamaxlen, j-l-2);
-               if (betatemplen < 2) {
-                 continue;
-               }
-               int betareallen = min(betatemplen, l-k-alphareallen);
-               if (betareallen < 2) {
-                 continue;
-               }
-               int stackenergies = 
-                     first(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
-                   + first(stacklen(t_0_seq, k,                j               )) // maximal beta helix
-                   - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1)) // reduced part of alpha helix
-                   - first(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
-
-               INNER(CODE);
-              }
-           }
-         }
-       ].
-      {
-         pknot(REGION, REGION, REGION) .{
-           pknot(REGION[i, i+alphareallen],
-              front[i+alphareallen+1, k] .(j).,
-              REGION[k, k+betareallen],
-              middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
-              REGION[l-alphareallen, l],
-              back[l, j-betareallen-2] .(i).,
-              REGION[j-betareallen, j] ;
-              stackenergies) 
-         }.
-      } # hKnot;    
-
-    help_pkiss   = 
-      .[
-         int i = t_0_i;
-         int j = t_0_j;
-
-         for (int h = i+3; h<j-13; h=h+1) {
-           for (int k = h+4; k<j-9; k=k+1) {
-             for (int l = k+2; l<j-7; l=l+1) {
-               for (int m = l+4; m<j-3; m=m+1) {
-                 if (i+3>h || h+4>k || k+2>l || l+4>m || m+3>j) {
-                   continue;
-                 }
-                 int alphamaxlen = second(stacklen(t_0_seq, i, k));
-                 if (alphamaxlen < 2) {
-                   continue;
-                 }
-                 int alphareallen = min(alphamaxlen, h-i-1);
-                 if (alphareallen < 2) {
-                   continue;
-                 }
-                 int gammamaxlen = second(stacklen(t_0_seq, l, j));
-                 if (gammamaxlen < 2) {
-                   continue;
-                 }
-                 int gammareallen = min(gammamaxlen, j-m-1);
-                 if (gammareallen < 2) {
-                   continue;
-                 }
-                 int betamaxlen = second(stacklen(t_0_seq, h, m));
-                 int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
-                 if (betareallen < 2) {
-                   continue;
-                 }
-                 int stackenergies =   first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
-                                     + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
-                                     + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
-                                     - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
-                                     - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
-                                     - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
-                 INNER(CODE);
-               }
-             }
-           }
-         }
-       ].
-      {
-         pkiss(REGION, REGION, REGION, REGION, REGION) .{
-           pkiss(REGION[i, i+alphareallen],                                                            //alpha open
-                 front[i+alphareallen+1, h] .(m).,                                                     //front
-                 REGION[h, h+betareallen],                                                             //beta open
-                 middle[h+betareallen, k-alphareallen] .(m-betareallen, i+alphareallen).,              //middle 1
-                 REGION[k-alphareallen, k],                                                            //alpha close
-                 middleNoDangling[k+1, l-1],                                                           //middle 2
-                 REGION[l, l+gammareallen],                                                            //gamma open
-                 middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen).,   //middle 3
-                 REGION[m-betareallen, m],                                                             //beta close
-                 back[m, j-gammareallen-1] .(h).,                                                      //back
-                 REGION[j-gammareallen, j],                                                            //gamma close
-                 help_pknot[i, j] ;
-                 stackenergies) 
-         }.
-      } # hKnot;
-
-
-    help_pknot_free_k(int x)   = 
-      .[
-         int l = x;
-         int i = t_0_i;
-         int j = t_0_j;
-         if (!(j - i < 11)) {
-             int alphamaxlen = second(stacklen(t_0_seq, i, l));
-             if (!(alphamaxlen < 2))
-             for (int k = i+3; k <= l-4; k=k+1) {
-               int alphareallen = min(alphamaxlen, k-i-1);
-               if (alphareallen < 2) {
-                 continue;
-               }
-               int betamaxlen = second(stacklen(t_0_seq, k, j));
-               if (betamaxlen < 2) {
-                 continue;
-               }
-               int betatemplen = min(betamaxlen, j-l-2);
-               if (betatemplen < 2) {
-                 continue;
-               }
-               int betareallen = min(betatemplen, l-k-alphareallen);
-               if (betareallen < 2) {
-                 continue;
-               }
-               int stackenergies = 
-                     first(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
-                   + first(stacklen(t_0_seq, k,                j               )) // maximal beta helix
-                   - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1)) // reduced part of alpha helix
-                   - first(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
-
-               INNER(CODE);
-              }
-         }
-       ].
-      {
-         pknot(REGION, REGION, REGION) .{
-           pknot(REGION[i, i+alphareallen],
-              front[i+alphareallen+1, k] .(j).,
-              REGION[k, k+betareallen],
-              middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
-              REGION[l-alphareallen, l],
-              back[l, j-betareallen-2] .(i).,
-              REGION[j-betareallen, j] ;
-              stackenergies) 
-         }.
-      } # hKnot;    
-
-    help_pknot_free_l(int k) = 
-      .[
-         int i = t_0_i;
-         int j = t_0_j;
-         if (!(j - i < 11)) {
-           for (int l = i+7; l <= j-4; l=l+1) {
-             int alphamaxlen = second(stacklen(t_0_seq, i, l));
-             if (alphamaxlen < 2) {
+             int alphareallen = min(alphamaxlen, k-i-1);
+             if (alphareallen < 2) {
                continue;
              }
-               int alphareallen = min(alphamaxlen, k-i-1);
-               if (alphareallen < 2) {
-                 continue;
-               }
-               int betamaxlen = second(stacklen(t_0_seq, k, j));
-               if (betamaxlen < 2) {
-                 continue;
-               }
-               int betatemplen = min(betamaxlen, j-l-2);
-               if (betatemplen < 2) {
-                 continue;
-               }
-               int betareallen = min(betatemplen, l-k-alphareallen);
-               if (betareallen < 2) {
-                 continue;
-               }
-               int stackenergies = 
-                     first(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
-                   + first(stacklen(t_0_seq, k,                j               )) // maximal beta helix
-                   - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1)) // reduced part of alpha helix
-                   - first(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
+             int betatemplen = min(betamaxlen, j-l-2);
+             if (betatemplen < 2) {
+               continue;
+             }
+             int betareallen = min(betatemplen, l-k-alphareallen);
+             if (betareallen < 2) {
+               continue;
+             }
+             int stackenergies = 
+                   first(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
+                 + first(stacklen(t_0_seq, k,                j               )) // maximal beta helix
+                 - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1)) // reduced part of alpha helix
+                 - first(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
 
-               INNER(CODE);
-           }
-         }
-       ].
-      {
-         pknot(REGION, REGION, REGION) .{
-           pknot(REGION[i, i+alphareallen],
-              front[i+alphareallen+1, k] .(j).,
-              REGION[k, k+betareallen],
-              middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
-              REGION[l-alphareallen, l],
-              back[l, j-betareallen-2] .(i).,
-              REGION[j-betareallen, j] ;
-              stackenergies) 
-         }.
-      } # hKnot;    
-    	  
-    
-    help_pkissAleft   = 
-      .[
-         int i = t_0_i;
-         int j = t_0_j;
+             INNER(CODE);
+          }
+        }
+      }
+     ].
+    {
+      pknot(REGION, REGION, REGION) .{
+        pknot(REGION[i, i+alphareallen],
+        front[i+alphareallen+1, k] .(j).,
+        REGION[k, k+betareallen],
+        middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
+        REGION[l-alphareallen, l],
+        back[l, j-betareallen-2] .(i).,
+        REGION[j-betareallen, j] ;
+        stackenergies) 
+      }.
+    } # hKnot; 
 
-         for (int m = i+13; m<j-3; m=m+1) {
-           mfeanswer a = get_pk(i, m);
-           if (is_empty(a)) {
-             continue;
-           }
-           int h = a.betaLeftOuter;
-           int k = a.alphaRightOuter;
-           int alphamaxlen = second(stacklen(t_0_seq, i, k));
-           if (alphamaxlen < 2) {
-             continue;
-           }
-           int alphareallen = min(alphamaxlen, h-i-1);
-           if (alphareallen < 2) {
-             continue;
-           }
-           int betamaxlen = second(stacklen(t_0_seq, h, m));
-           if (betamaxlen < 2)
-             continue;
-           mfeanswer b = get_pk_free_k(h, j, m);
-           if (is_empty(b))
-             continue;
-           int l = b.betaLeftOuter;
-           if (l-k<=2)
-             continue;
-           int gammamaxlen = second(stacklen(t_0_seq, l, j));
-           if (gammamaxlen < 2) {
-             continue;
-           }
-           int gammareallen = min(gammamaxlen, j-m-1);
-           if (gammareallen < 2) {
-             continue;
-           }
-           int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
-           if (betareallen < 2) {
-             continue;
-           }
-           int stackenergies = first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
-                             + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
-                             + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
-                             - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
-                             - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
-                             - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
 
-           INNER(CODE);
-         }
-         
-       ].
-      {
-         pkiss(REGION, REGION, REGION, REGION, REGION  ) .{
-           pkiss(REGION[i, i+alphareallen],													           //alpha open
-                 front[i+alphareallen+1, h] .(m).,											           //front
-                 REGION[h, h+betareallen],													           //beta open
-                 middle[h+betareallen, k-alphareallen] .(m-betareallen, i+alphareallen).,	           //middle 1
-                 REGION[k-alphareallen, k],													           //alpha close
-                 middleNoDangling[k+1, l-1],	                                                       //middle 2
-                 REGION[l, l+gammareallen],													           //gamma open
-                 middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen).,   //middle 3
-                 REGION[m-betareallen, m],													           //beta close
-                 back[m, j-gammareallen-1] .(h).,											           //back
-                 REGION[j-gammareallen, j] ,													       //gamma close
-                 help_pknot_free_k[h,j] .(m). ;
-                 stackenergies)
-         }.
-      } # hKnot;    
-    	  
-    front(int betaRightOuter) = front_Pr               |
-                                frd  (front_Pr, BASE; betaRightOuter)
-                                # h;
-              
-    front_Pr     = ul(emptystrand) |
-                   pk_comps
-                   # h;
-               
-    middle(int betaRightInner, int alphaLeftInner)            = emptymid  (REGION0        ; betaRightInner, alphaLeftInner) with minsize(0) with maxsize(0) |
-                                                                midbase   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(1) with maxsize(1) |
-                                                                middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
-                                                                midregion (      mid                                      )                                 |
-                                                                middl     (BASE, mid      ; betaRightInner                )                                 |
-                                                                middr     (      mid, BASE;                 alphaLeftInner)                                 |
-                                                                middlr    (BASE, mid, BASE; betaRightInner, alphaLeftInner) 
-                                                                # h;
+  help_pkiss_D   = 
+    .[
+      int i = t_0_i;
+      int j = t_0_j;
 
-    middleNoDangling                                          = mid                                                                                         |
-																nil(EMPTY) 
-	                                                            # h;
+      for (int h = i+3; h<j-13; h=h+1) {
+        for (int k = h+4; k<j-9; k=k+1) {
+          for (int l = k+2; l<j-7; l=l+1) {
+            for (int m = l+4; m<j-3; m=m+1) {
+              if (i+3>h || h+4>k || k+2>l || l+4>m || m+3>j) {
+                continue;
+              }
+              int alphamaxlen = second(stacklen(t_0_seq, i, k));
+              if (alphamaxlen < 2) {
+                continue;
+              }
+              int alphareallen = min(alphamaxlen, h-i-1);
+              if (alphareallen < 2) {
+                continue;
+              }
+              int gammamaxlen = second(stacklen(t_0_seq, l, j));
+              if (gammamaxlen < 2) {
+                continue;
+              }
+              int gammareallen = min(gammamaxlen, j-m-1);
+              if (gammareallen < 2) {
+                continue;
+              }
+              int betamaxlen = second(stacklen(t_0_seq, h, m));
+              int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
+              if (betareallen < 2) {
+                continue;
+              }
+              int stackenergies =   first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                                  + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
+                                  + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
+                                  - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                                  - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
+                                  - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
+              INNER(CODE);
+            }
+          }
+        }
+      }
+     ].
+    {
+      pkiss(REGION, REGION, REGION, REGION, REGION) .{
+        pkiss(REGION[i, i+alphareallen],                                                            //alpha open
+          front[i+alphareallen+1, h] .(m).,                                                     //front
+          REGION[h, h+betareallen],                                                             //beta open
+          middle[h+betareallen, k-alphareallen] .(m-betareallen, i+alphareallen).,              //middle 1
+          REGION[k-alphareallen, k],                                                            //alpha close
+          middleNoDangling[k+1, l-1],                                                           //middle 2
+          REGION[l, l+gammareallen],                                                            //gamma open
+          middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen).,   //middle 3
+          REGION[m-betareallen, m],                                                             //beta close
+          back[m, j-gammareallen-1] .(h).,                                                      //back
+          REGION[j-gammareallen, j],                                                            //gamma close
+          help_pknot_free_kl[i, j] ;
+          stackenergies) 
+        }.
+    } # hKnot;
 
-    middleNoCoaxStack(int betaRightInner, int alphaLeftInner) = nil       (EMPTY)                                                                           |
-                                                                middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
-                                                                midregion (      mid                                      )                                 |
-                                                                middl     (BASE, mid      ; betaRightInner                )                                 |
-                                                                middr     (      mid, BASE;                 alphaLeftInner)                                 |
-                                                                middlr    (BASE, mid, BASE; betaRightInner, alphaLeftInner) 
-                                                                # h;
-	  
-    mid          = ul(singlestrand) |
-                   pk_comps
-                   # h;
-          
-    back(int alphaLeftOuter) = back_Pr               |
+  help_pkiss_Aleft   = 
+    .[
+      int i = t_0_i;
+      int j = t_0_j;
+
+      for (int m = i+13; m<j-3; m=m+1) {
+        mfeanswer leftPK = get_pk(i, m);
+        if (is_empty(leftPK)) {
+          continue;
+        }
+        int h = leftPK.betaLeftOuter;
+        int k = leftPK.alphaRightOuter;
+        int alphamaxlen = second(stacklen(t_0_seq, i, k));
+        if (alphamaxlen < 2) {
+          continue;
+        }
+        int alphareallen = min(alphamaxlen, h-i-1);
+        if (alphareallen < 2) {
+          continue;
+        }
+        int betamaxlen = second(stacklen(t_0_seq, h, m));
+        if (betamaxlen < 2) {
+          continue;
+        }
+        mfeanswer rightPK = get_pk_free_k(h, j, m, k+2);
+        if (is_empty(rightPK)) {
+          continue;
+        }
+        int l = rightPK.betaLeftOuter;
+        int gammamaxlen = second(stacklen(t_0_seq, l, j));
+        if (gammamaxlen < 2) {
+          continue;
+        }
+        int gammareallen = min(gammamaxlen, j-m-1);
+        if (gammareallen < 2) {
+          continue;
+        }
+        int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
+        if (betareallen < 2) {
+          continue;
+        }
+        int stackenergies = first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                          + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
+                          + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
+                          - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                          - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
+                          - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
+
+        INNER(CODE);
+      }
+     ].
+    {
+      pkiss(REGION, REGION, REGION, REGION, REGION  ) .{
+        pkiss(REGION[i, i+alphareallen],                                                    //alpha open
+        front[i+alphareallen+1, h] .(m).,                                                   //front
+        REGION[h, h+betareallen],                                                           //beta open
+        middle[h+betareallen, k-alphareallen] .(m-betareallen, i+alphareallen).,            //middle 1
+        REGION[k-alphareallen, k],                                                          //alpha close
+        middleNoDangling[k+1, l-1],                                                         //middle 2
+        REGION[l, l+gammareallen],                                                          //gamma open
+        middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen)., //middle 3
+        REGION[m-betareallen, m],                                                           //beta close
+        back[m, j-gammareallen-1] .(h).,                                                    //back
+        REGION[j-gammareallen, j] ,                                                         //gamma close
+        help_pknot_free_k[h,j] .(m, k+2). ;
+        stackenergies)
+      }.
+    } # hKnot;
+
+  help_pkiss_Aright   = 
+    .[
+      int i = t_0_i;
+      int j = t_0_j;
+
+      for (int h = i+3; h<j-13; h=h+1) {
+        mfeanswer rightPK = get_pk(h, j);
+        if (is_empty(leftPK)) {
+          continue;
+        }
+        int l = rightPK.betaLeftOuter;
+        int m = rightPK.alphaRightOuter;
+        int gammamaxlen = second(stacklen(t_0_seq, l, j));
+        if (gammamaxlen < 2) {
+          continue;
+        }
+        int gammareallen = min(gammamaxlen, j-m-1);
+        if (gammareallen < 2) {
+          continue;
+        }
+        int betamaxlen = second(stacklen(t_0_seq, h, m));
+        if (betamaxlen < 2) {
+          continue;
+        }
+        mfeanswer leftPK = get_pk_free_l(i, m, h, l-2);
+        if (is_empty(leftPK)) {
+          continue;
+        }
+        int alphamaxlen = second(stacklen(t_0_seq, i, k));
+        if (alphamaxlen < 2) {
+          continue;
+        }
+        int alphareallen = min(alphamaxlen, h-i-1);
+        if (alphareallen < 2) {
+          continue;
+        }
+        int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
+        if (betareallen < 2) {
+          continue;
+        }
+        int stackenergies = first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                          + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
+                          + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
+                          - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                          - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
+                          - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
+
+        INNER(CODE);
+      }
+     ].
+    {
+      pkiss(REGION, REGION, REGION, REGION, REGION  ) .{
+        pkiss(REGION[i, i+alphareallen],                                                    //alpha open
+        front[i+alphareallen+1, h] .(m).,                                                   //front
+        REGION[h, h+betareallen],                                                           //beta open
+        middle[h+betareallen, k-alphareallen] .(m-betareallen, i+alphareallen).,            //middle 1
+        REGION[k-alphareallen, k],                                                          //alpha close
+        middleNoDangling[k+1, l-1],                                                         //middle 2
+        REGION[l, l+gammareallen],                                                          //gamma open
+        middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen)., //middle 3
+        REGION[m-betareallen, m],                                                           //beta close
+        back[m, j-gammareallen-1] .(h).,                                                    //back
+        REGION[j-gammareallen, j] ,                                                         //gamma close
+        help_pknot_free_l[i,m] .(h, l-2). ;
+        stackenergies)
+      }.
+    } # hKnot;
+
+
+  front(int betaRightOuter) = front_Pr               |
+                              frd  (front_Pr, BASE; betaRightOuter)
+                              # h;
+            
+  front_Pr     = ul(emptystrand) |
+                 pk_comps
+                 # h;
+             
+  middle(int betaRightInner, int alphaLeftInner)            = emptymid  (REGION0        ; betaRightInner, alphaLeftInner) with minsize(0) with maxsize(0) |
+                                                              midbase   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(1) with maxsize(1) |
+                                                              middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
+                                                              midregion (      mid                                      )                                 |
+                                                              middl     (BASE, mid      ; betaRightInner                )                                 |
+                                                              middr     (      mid, BASE;                 alphaLeftInner)                                 |
+                                                              middlr    (BASE, mid, BASE; betaRightInner, alphaLeftInner) 
+                                                              # h;
+
+  middleNoDangling                                          = mid                                                                                         |
+                                                              nil(EMPTY) 
+                                                              # h;
+
+  middleNoCoaxStack(int betaRightInner, int alphaLeftInner) = nil       (EMPTY)                                                                           |
+                                                              middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
+                                                              midregion (      mid                                      )                                 |
+                                                              middl     (BASE, mid      ; betaRightInner                )                                 |
+                                                              middr     (      mid, BASE;                 alphaLeftInner)                                 |
+                                                              middlr    (BASE, mid, BASE; betaRightInner, alphaLeftInner) 
+                                                              # h;
+  
+  mid          = ul(singlestrand) |
+                 pk_comps
+                 # h;
+        
+  back(int alphaLeftOuter) = back_Pr               |
                                bkd(BASE, back_Pr; alphaLeftOuter) 
                                # h;
              
-    back_Pr      = ul(emptystrand) |
-                   pk_comps
-                   # h;
-              
-    pk_comps     = cadd(singlestrand, pk_comps)    |
-                   cadd(mldangle, pk_comps)        |
-                   cadd(mldangle, ul(emptystrand)) 
-                   # h;
-    
-    singlestrand = pss(REGION) # h;
-    
-    emptystrand  = pss(REGION0) # h ;
-
+  back_Pr      = ul(emptystrand) |
+                 pk_comps
+                 # h;
+            
+  pk_comps     = cadd(singlestrand, pk_comps)    |
+                 cadd(mldangle, pk_comps)        |
+                 cadd(mldangle, ul(emptystrand)) 
+                 # h;
+  
+  singlestrand = pss(REGION) # h;
+  
+  emptystrand  = pss(REGION0) # h ;
 }
 
 
