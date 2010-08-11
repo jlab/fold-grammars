@@ -117,19 +117,19 @@ algebra pretty implements wuchty98Algebra(alphabet = char, comp = Rope) {
 
 algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
   shape_t sadd(Subsequence lb, shape_t e) {
-    shape_t emptyShape;
-    if (e == emptyShape) {
-      return '_' + e;
-    } else {
+    //~ shape_t emptyShape;
+    //~ if (e == emptyShape) {
+      //~ return '_' + e;
+    //~ } else {
       return e;
-    }
+    //~ }
   }
   shape_t cadd(shape_t x, shape_t e) {
-    if (e == '_') {
-      return x;
-    } else {
+    //~ if (e == '_') {
+      //~ return x;
+    //~ } else {
       return x + e;
-    }
+    //~ }
   }
   shape_t dlr(Subsequence lb, shape_t e, Subsequence rb) {
     return e;
@@ -331,40 +331,40 @@ algebra p_func implements wuchty98Algebra(alphabet = char, comp = double) {
 }
 
 grammar wuchty98 uses wuchty98Algebra(axiom = struct) {
-    struct    = sadd(BASE, struct)   |
-                cadd(dangle, struct) |
-                nil(EMPTY) 
-                # h;
+  struct    = sadd(BASE, struct)   |
+              cadd(dangle, struct) |
+              nil(EMPTY) 
+              # h;
 
-    dangle    = dlr(LOC, closed, LOC) 
-                # h;
+  dangle    = dlr(LOC, closed, LOC) 
+              # h;
 
-    closed    = {stack   | 
-                 hairpin |
-                 leftB   | 
-                 rightB  | 
-                 iloop   | 
-                 multiloop} with stackpairing 
-                # h;
+  closed    = stack   | 
+              hairpin |
+              leftB   | 
+              rightB  | 
+              iloop   | 
+              multiloop 
+              # h;
 
-    stack     = sr(BASE, closed, BASE)
-                # h;
+  stack     = sr(BASE, closed, BASE) with basepairing 
+	      # h;
 
-    hairpin   = hl(BASE, BASE,                          {REGION with minsize(3)},        BASE, BASE) # h;
-    leftB     = bl(BASE, BASE, REGION with maxsize(30), closed,                          BASE, BASE) # h;
-    rightB    = br(BASE, BASE,                          closed, REGION with maxsize(30), BASE, BASE) # h;
-    iloop     = il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) # h;
-    multiloop = ml(BASE, BASE,                          ml_comps,                        BASE, BASE) # h;
+  hairpin   = hl(BASE, BASE,                          {REGION with minsize(3)},        BASE, BASE) with stackpairing # h;
+  leftB     = bl(BASE, BASE, REGION with maxsize(30), closed,                          BASE, BASE) with stackpairing # h;
+  rightB    = br(BASE, BASE,                          closed, REGION with maxsize(30), BASE, BASE) with stackpairing # h;
+  iloop     = il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) with stackpairing # h;
+  multiloop = ml(BASE, BASE,                          ml_comps,                        BASE, BASE) with stackpairing # h;
 
-    ml_comps  = sadd(BASE, ml_comps) |
-                app(ul(dangle), ml_comps1) 
-                # h ;
+  ml_comps  = sadd(BASE, ml_comps) |
+              app(ul(dangle), ml_comps1) 
+              # h ;
 
-    ml_comps1 = sadd(BASE, ml_comps1)      |
-                app(ul(dangle), ml_comps1) |
-                ul(dangle)                 |
-                addss(ul(dangle), REGION)  
-                # h ;
+  ml_comps1 = sadd(BASE, ml_comps1)      |
+              app(ul(dangle), ml_comps1) |
+              ul(dangle)                 |
+              addss(ul(dangle), REGION)  
+              # h ;
 }
 
 instance count = wuchty98 (count);
@@ -381,3 +381,4 @@ instance mfe = wuchty98 (shape5 * mfe) ;
 instance shape2 = wuchty98 (shape2);
 instance shape5 = wuchty98 (shape5);
 instance shape5count = wuchty98(shape5 * count);
+instance pretty = wuchty98(pretty);
