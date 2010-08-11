@@ -8,20 +8,20 @@ type base_t = extern
 type Rope = extern
 
 signature wuchty98Algebra(alphabet, comp) {
-	comp sadd(Subsequence, comp);
-	comp cadd(comp, comp);
-	comp dlr(Subsequence, comp, Subsequence);
-	comp sr(Subsequence, comp, Subsequence);
-	comp hl(Subsequence, Subsequence, Subsequence, Subsequence, Subsequence);
-	comp bl(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence);
-	comp br(Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
-	comp il(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
-	comp ml(Subsequence, Subsequence, comp, Subsequence, Subsequence);
-	comp app(comp, comp);
-	comp ul(comp);
-	comp addss(comp, Subsequence);
-	comp nil(void);
-	choice [comp] h([comp]);
+  comp sadd(Subsequence, comp);
+  comp cadd(comp, comp);
+  comp dlr(Subsequence, comp, Subsequence);
+  comp sr(Subsequence, comp, Subsequence);
+  comp hl(Subsequence, Subsequence, Subsequence, Subsequence, Subsequence);
+  comp bl(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence);
+  comp br(Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
+  comp il(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
+  comp ml(Subsequence, Subsequence, comp, Subsequence, Subsequence);
+  comp app(comp, comp);
+  comp ul(comp);
+  comp addss(comp, Subsequence);
+  comp nil(void);
+  choice [comp] h([comp]);
 }
 
 algebra count auto count;
@@ -171,7 +171,7 @@ algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
 }
 
 algebra shape4 extends shape5 {
-	shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return '[' + e + ']';
   }
 }
@@ -182,10 +182,10 @@ algebra shape3 extends shape5 {
   }
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return '[' + e + ']';
-  }	
-	shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  }
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return '[' + e + ']';
-	}
+  }
 }
 
 algebra shape2 extends shape5 {
@@ -194,15 +194,15 @@ algebra shape2 extends shape5 {
   }
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return '[' + e + '_' + ']';
-  }	
-	shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  }
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return shape_t('[') + '_' + e + '_' + ']';
-	}
+  }
 }
 
 algebra shape1 extends shape5 {
   shape_t sadd(Subsequence lb, shape_t e) {
-		if (front(e) == '_') {
+    if (front(e) == '_') {
       return e;
     } else {
       return '_' + e;
@@ -220,10 +220,10 @@ algebra shape1 extends shape5 {
   }
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return '[' + e + '_' + ']';
-  }	
-	shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  }
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return shape_t('[') + '_' + e + '_' + ']';
-	}
+  }
   shape_t app(shape_t x, shape_t e) {
     if (back(x) == '_' && front(e) == '_') {
       return x + tail(e);
@@ -232,13 +232,14 @@ algebra shape1 extends shape5 {
     }
   }
   shape_t addss(shape_t c1, Subsequence e) {
-		if (back(c1) == '_') {
+    if (back(c1) == '_') {
       return c1;
     } else {
       return c1 + '_';
     }
   }
 }
+
 algebra mfe implements wuchty98Algebra(alphabet = char, comp = int) {
   int sadd(Subsequence lb, int e) {
     return e;
@@ -365,8 +366,6 @@ grammar wuchty98 uses wuchty98Algebra(axiom = struct) {
                 addss(ul(dangle), REGION)  
                 # h ;
 }
-
-
 
 instance count = wuchty98 (count);
 instance enum = wuchty98 (enum);
