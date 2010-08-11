@@ -117,19 +117,19 @@ algebra pretty implements wuchty98Algebra(alphabet = char, comp = Rope) {
 
 algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
   shape_t sadd(Subsequence lb, shape_t e) {
-    //~ shape_t emptyShape;
-    //~ if (e == emptyShape) {
-      //~ return '_' + e;
-    //~ } else {
+    shape_t emptyShape;
+    if (e == emptyShape) {
+      return '_' + e;
+    } else {
       return e;
-    //~ }
+    }
   }
   shape_t cadd(shape_t x, shape_t e) {
-    //~ if (e == '_') {
-      //~ return x;
-    //~ } else {
+    if (e == '_') {
+      return x;
+    } else {
       return x + e;
-    //~ }
+    }
   }
   shape_t dlr(Subsequence lb, shape_t e, Subsequence rb) {
     return e;
