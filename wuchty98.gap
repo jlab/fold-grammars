@@ -20,7 +20,6 @@ signature wuchty98Algebra(alphabet, comp) {
 	comp app(comp, comp);
 	comp ul(comp);
 	comp addss(comp, Subsequence);
-	comp ssadd(Subsequence, comp);
 	comp nil(void);
 	choice [comp] h([comp]);
 }
@@ -106,12 +105,6 @@ algebra pretty implements wuchty98Algebra(alphabet = char, comp = Rope) {
     append(r, '.', size(e));
     return r;
   }
-  Rope ssadd(Subsequence e, Rope x) {
-    Rope r;
-    append(r, '.', size(e));
-    append(r, x);
-    return r;
-  }
   Rope nil(void) {
     Rope r;
     return r;
@@ -124,7 +117,12 @@ algebra pretty implements wuchty98Algebra(alphabet = char, comp = Rope) {
 
 algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
   shape_t sadd(Subsequence lb, shape_t e) {
-    return e;
+    shape_t emptyShape;
+    if (e == emptyShape) {
+      return '_' + e;
+    } else {
+      return e;
+    }
   }
   shape_t cadd(shape_t x, shape_t e) {
     return x + e;
@@ -158,9 +156,6 @@ algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
   }
   shape_t addss(shape_t c1, Subsequence e) {
     return c1;
-  }
-  shape_t ssadd(Subsequence e, shape_t x) {
-    return x;
   }
   shape_t nil(void) {
     shape_t r;
@@ -239,13 +234,6 @@ algebra shape1 extends shape5 {
       return c1 + '_';
     }
   }
-  shape_t ssadd(Subsequence x, shape_t e) {
-		if (front(e) == '_') {
-      return e;
-    } else {
-      return '_' + e;
-    }
-  }
 }
 algebra mfe implements wuchty98Algebra(alphabet = char, comp = int) {
   int sadd(Subsequence lb, int e) {
@@ -283,9 +271,6 @@ algebra mfe implements wuchty98Algebra(alphabet = char, comp = int) {
   }
   int addss(int c1, Subsequence e) {
     return c1 + ss_energy(e);
-  }
-  int ssadd(Subsequence e, int x) {
-    return 40 + x + ss_energy(e);
   }
   int nil(void) {
     return 0;
@@ -332,9 +317,6 @@ algebra p_func implements wuchty98Algebra(alphabet = char, comp = double) {
   double addss(double c1, Subsequence e) {
     return scale(e.j-e.i) * c1 * mk_pf(ss_energy(e));
   }
-  double ssadd(Subsequence e, double x) {
-    return scale(e.j-e.i) * x * mk_pf(40);
-  }
   double nil(void) {
     return 1;
   }
@@ -344,40 +326,40 @@ algebra p_func implements wuchty98Algebra(alphabet = char, comp = double) {
 }
 
 grammar wuchty98 uses wuchty98Algebra(axiom = struct) {
-	struct = 	sadd(BASE, struct)   |
-			cadd(dangle, struct) |
-			nil(EMPTY) 
-			# h;
+    struct    = sadd(BASE, struct)   |
+                cadd(dangle, struct) |
+                nil(EMPTY) 
+                # h;
 
-	dangle = 	dlr(LOC, closed, LOC) 
-			# h;
+    dangle    = dlr(LOC, closed, LOC) 
+                # h;
 
-	closed = 	{stack   | 
-			hairpin |
-			leftB   | 
-			rightB  | 
-			iloop   | 
-			multiloop} with stackpairing 
-			# h;
+    closed    = {stack   | 
+                 hairpin |
+                 leftB   | 
+                 rightB  | 
+                 iloop   | 
+                 multiloop} with stackpairing 
+                # h;
 
-	stack = 	sr(BASE, closed, BASE)
-			# h;
+    stack     = sr(BASE, closed, BASE)
+                # h;
 
-	hairpin =   	hl(BASE, BASE,                          {REGION with minsize(3)},        BASE, BASE) # h;
-	leftB =     	bl(BASE, BASE, REGION with maxsize(30), closed,                          BASE, BASE) # h;
-	rightB =    	br(BASE, BASE,                          closed, REGION with maxsize(30), BASE, BASE) # h;
-	iloop =     	il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) # h;
-	multiloop = 	ml(BASE, BASE,                          ml_comps,                        BASE, BASE) # h;
+    hairpin   = hl(BASE, BASE,                          {REGION with minsize(3)},        BASE, BASE) # h;
+    leftB     = bl(BASE, BASE, REGION with maxsize(30), closed,                          BASE, BASE) # h;
+    rightB    = br(BASE, BASE,                          closed, REGION with maxsize(30), BASE, BASE) # h;
+    iloop     = il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) # h;
+    multiloop = ml(BASE, BASE,                          ml_comps,                        BASE, BASE) # h;
 
-	ml_comps = 	sadd(BASE, ml_comps) |
-			app(ul(dangle), ml_comps1) 
-			# h ;
+    ml_comps  = sadd(BASE, ml_comps) |
+                app(ul(dangle), ml_comps1) 
+                # h ;
 
-	ml_comps1 = 	sadd(BASE, ml_comps1)      |
-			app(ul(dangle), ml_comps1) |
-			ul(dangle)                 |
-			addss(ul(dangle), REGION)  
-			# h ;
+    ml_comps1 = sadd(BASE, ml_comps1)      |
+                app(ul(dangle), ml_comps1) |
+                ul(dangle)                 |
+                addss(ul(dangle), REGION)  
+                # h ;
 }
 
 
@@ -395,3 +377,4 @@ instance shape5pf = wuchty98 (shape5 * p_func);
 instance mfe = wuchty98 (shape5 * mfe) ;
 instance shape2 = wuchty98 (shape2);
 instance shape5 = wuchty98 (shape5);
+instance shape5count = wuchty98(shape5 * count);
