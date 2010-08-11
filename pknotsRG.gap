@@ -30,7 +30,7 @@ signature Algebra(alphabet, comp, compKnot) {
   comp edlr(Subsequence, comp, Subsequence);
   comp pk(compKnot);
   compKnot pknot(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int);
-  compKnot pkiss(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, compKnot ; int);
+  compKnot pkiss(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int);
   comp kndl(Subsequence, compKnot);
   comp kndr(compKnot, Subsequence);
   comp kndlr(Subsequence, compKnot, Subsequence);
@@ -156,7 +156,7 @@ algebra mfe implements Algebra(alphabet = char, comp = int, compKnot = mfeanswer
     
 	return res;
   }
-  mfeanswer pkiss(Subsequence a, int front, Subsequence b, int middle1, Subsequence aPrime, int middle2, Subsequence c, int middle3, Subsequence bPrime, int back, Subsequence cPrime, mfeanswer foo ; int stackenergies) {
+  mfeanswer pkiss(Subsequence a, int front, Subsequence b, int middle1, Subsequence aPrime, int middle2, Subsequence c, int middle3, Subsequence bPrime, int back, Subsequence cPrime; int stackenergies) {
     mfeanswer res;
 	
 	Subsequence alphaOuter;
@@ -541,7 +541,7 @@ algebra pretty implements Algebra(alphabet = char, comp = string_t, compKnot = s
     return res;
   }
 
-  string_t pkiss(Subsequence a, string_t front, Subsequence b, string_t middle1, Subsequence aPrime, string_t middle2, Subsequence c, string_t middle3, Subsequence bPrime, string_t back, Subsequence cPrime, string_t foo ; int stackenergies) {
+  string_t pkiss(Subsequence a, string_t front, Subsequence b, string_t middle1, Subsequence aPrime, string_t middle2, Subsequence c, string_t middle3, Subsequence bPrime, string_t back, Subsequence cPrime; int stackenergies) {
     string_t res;
     
 	append(res, '[', size(a));
@@ -797,7 +797,7 @@ algebra enforce implements Algebra(alphabet = char, comp = myBool, compKnot = my
     return 1;
   }
 
-  myBool pkiss(Subsequence a, myBool front, Subsequence b, myBool middle1, Subsequence aPrime, myBool middle2, Subsequence c, myBool middle3, Subsequence bPrime, myBool back, Subsequence cPrime, myBool foo ; int stackenergies) {
+  myBool pkiss(Subsequence a, myBool front, Subsequence b, myBool middle1, Subsequence aPrime, myBool middle2, Subsequence c, myBool middle3, Subsequence bPrime, myBool back, Subsequence cPrime; int stackenergies) {
     return 1;
   }
   
@@ -966,7 +966,7 @@ algebra shape5 implements Algebra(alphabet = char, comp = myShape, compKnot = my
     return res;
   }
 
-  myShape pkiss(Subsequence a, myShape frt, Subsequence b, myShape middle1, Subsequence aPrime, myShape middle2, Subsequence c, myShape middle3, Subsequence bPrime, myShape bck, Subsequence cPrime, myShape foo; int stackenergies) {
+  myShape pkiss(Subsequence a, myShape frt, Subsequence b, myShape middle1, Subsequence aPrime, myShape middle2, Subsequence c, myShape middle3, Subsequence bPrime, myShape bck, Subsequence cPrime; int stackenergies) {
     myShape res;
 	  
     append(res, '[');
@@ -1245,7 +1245,7 @@ algebra shape1 extends shape5 {
     
     return res;
   }
-  myShape pkiss(Subsequence a, myShape front, Subsequence b, myShape middle1, Subsequence aPrime, myShape middle2, Subsequence c, myShape middle3, Subsequence bPrime, myShape back, Subsequence cPrime, myShape foo ; int stackenergies) {
+  myShape pkiss(Subsequence a, myShape front, Subsequence b, myShape middle1, Subsequence aPrime, myShape middle2, Subsequence c, myShape middle3, Subsequence bPrime, myShape back, Subsequence cPrime; int stackenergies) {
     return front;
   }
 
@@ -1472,12 +1472,12 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                  pkml  (dangleknot)
                  # h;
   
-  knot         =   help_pknot_free_kl
-                 | help_pknot_free_k
-                 | help_pknot_free_l
+  knot         =   {help_pknot_free_kl  
+                 | help_pknot_free_k .(0, 0). 
+                 | help_pknot_free_l .(0, 0). }  with ignore
                  // help_pkiss_D
                  | help_pkiss_Aleft
-                 //| help_pkiss_Aright
+                 | help_pkiss_Aright
                    # hKnot;
   
   help_pknot_free_kl = 
@@ -1531,10 +1531,11 @@ grammar pknotsRG uses Algebra(axiom = struct) {
       }.
     } # hKnot;    
   
-  help_pknot_free_k(int l, int startK) = 
+  help_pknot_free_k(int ll, int startK) = 
     .[
       int i = t_0_i;
       int j = t_0_j;
+      int l = ll;
        
       if (i+11 < j) {
         int alphamaxlen = second(stacklen(t_0_seq, i, l));
@@ -1686,8 +1687,8 @@ grammar pknotsRG uses Algebra(axiom = struct) {
           middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen).,   //middle 3
           REGION[m-betareallen, m],                                                             //beta close
           back[m, j-gammareallen-1] .(h).,                                                      //back
-          REGION[j-gammareallen, j],                                                            //gamma close
-          help_pknot_free_kl[i, j] ;
+//gamma close
+          REGION[j-gammareallen, j];
           stackenergies) 
         }.
     } # hKnot;
@@ -1755,8 +1756,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
         middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen)., //middle 3
         REGION[m-betareallen, m],                                                           //beta close
         back[m, j-gammareallen-1] .(h).,                                                    //back
-        REGION[j-gammareallen, j] ,                                                         //gamma close
-        help_pknot_free_k[h,j] .(m, k+2). ;
+        REGION[j-gammareallen, j] ;                                                         //gamma close
         stackenergies)
       }.
     } # hKnot;
@@ -1768,7 +1768,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
 
       for (int h = i+3; h<j-13; h=h+1) {
         mfeanswer rightPK = get_pk(h, j);
-        if (is_empty(leftPK)) {
+        if (is_empty(rightPK)) {
           continue;
         }
         int l = rightPK.betaLeftOuter;
@@ -1789,6 +1789,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
         if (is_empty(leftPK)) {
           continue;
         }
+        int k = leftPK.alphaRightOuter;
         int alphamaxlen = second(stacklen(t_0_seq, i, k));
         if (alphamaxlen < 2) {
           continue;
@@ -1823,8 +1824,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
         middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen)., //middle 3
         REGION[m-betareallen, m],                                                           //beta close
         back[m, j-gammareallen-1] .(h).,                                                    //back
-        REGION[j-gammareallen, j] ,                                                         //gamma close
-        help_pknot_free_l[i,m] .(h, l-2). ;
+        REGION[j-gammareallen, j] ;                                                         //gamma close
         stackenergies)
       }.
     } # hKnot;
