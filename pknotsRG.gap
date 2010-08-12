@@ -1447,8 +1447,8 @@ grammar pknotsRG uses Algebra(axiom = struct) {
   
   stack        = sr   (      BASE,                          closed,                                            BASE      ) # h;
   hairpin      = hl   (BASE, BASE,                          {REGION with minsize(3)},                          BASE, BASE) # h;
-  leftB        = bl   (BASE, BASE, REGION with maxsize(30), closed,                                            BASE, BASE) # h;
-  rightB       = br   (BASE, BASE,                          closed,                   REGION with maxsize(30), BASE, BASE) # h;
+  leftB        = bl   (BASE, BASE, REGION,                  closed,                                            BASE, BASE) # h;
+  rightB       = br   (BASE, BASE,                          closed,                   REGION,                  BASE, BASE) # h;
   iloop        = il   (BASE, BASE, REGION with maxsize(30), closed,                   REGION with maxsize(30), BASE, BASE) # h;
   
   multiloop    ={ml   (BASE, BASE,                          ml_comps1,                                         BASE, BASE) |
