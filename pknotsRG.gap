@@ -1472,13 +1472,13 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                  pkml  (dangleknot)
                  # h;
   
-  knot         =   {help_pknot_free_kl  
-                 | help_pknot_free_k .(0, 0). 
-                 | help_pknot_free_l .(0, 0). }  with ignore
-                 // help_pkiss_D
+  knot         =   help_pknot_free_kl
+                 | {help_pknot_free_k .(0, 0). 
+                 |  help_pknot_free_l .(0, 0). }  with ignore
+                 //~ | help_pkiss_D
                  | help_pkiss_Aleft
                  | help_pkiss_Aright
-                   # hKnot;
+                 # hKnot;
   
   help_pknot_free_kl = 
     .[
@@ -1677,7 +1677,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
      ].
     {
       pkiss(REGION, REGION, REGION, REGION, REGION) .{
-        pkiss(REGION[i, i+alphareallen],                                                            //alpha open
+        pkiss(REGION[i, i+alphareallen],                                                        //alpha open
           front[i+alphareallen+1, h] .(m).,                                                     //front
           REGION[h, h+betareallen],                                                             //beta open
           middle[h+betareallen, k-alphareallen] .(m-betareallen, i+alphareallen).,              //middle 1
@@ -1687,8 +1687,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
           middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen).,   //middle 3
           REGION[m-betareallen, m],                                                             //beta close
           back[m, j-gammareallen-1] .(h).,                                                      //back
-//gamma close
-          REGION[j-gammareallen, j];
+          REGION[j-gammareallen, j];                                                            //gamma close
           stackenergies) 
         }.
     } # hKnot;
