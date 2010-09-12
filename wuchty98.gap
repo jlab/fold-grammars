@@ -119,7 +119,7 @@ algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
   shape_t sadd(Subsequence lb, shape_t e) {
     shape_t emptyShape;
     if (e == emptyShape) {
-      return '_' + e;
+      return shape_t('_') + e;
     } else {
       return e;
     }
@@ -138,7 +138,7 @@ algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
     return e;
   }
   shape_t hl(Subsequence lb, Subsequence f1, Subsequence x, Subsequence f2, Subsequence rb) {
-    return shape_t('[') + ']';
+    return shape_t('[') + shape_t(']');
   }
   shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
     return e;
@@ -150,7 +150,7 @@ algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
     return e;
   }
   shape_t ml(Subsequence bl, Subsequence f1, shape_t x, Subsequence f2, Subsequence br) {
-    return '[' + x + ']';
+    return shape_t('[') + x + shape_t(']');
   }
   shape_t app(shape_t c1, shape_t c) {
     return c1 + c;
@@ -172,31 +172,31 @@ algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
 
 algebra shape4 extends shape5 {
   shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return '[' + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
 }
 
 algebra shape3 extends shape5 {
   shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
-    return '[' + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return '[' + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
   shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return '[' + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
 }
 
 algebra shape2 extends shape5 {
   shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + '_' + e + ']';
+    return shape_t('[') + shape_t('_') + e + shape_t(']');
   }
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return '[' + e + '_' + ']';
+    return shape_t('[') + e + shape_t('_') + shape_t(']');
   }
   shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + '_' + e + '_' + ']';
+    return shape_t('[') + shape_t('_') + e + shape_t('_') + shape_t(']');
   }
 }
 
@@ -205,7 +205,7 @@ algebra shape1 extends shape5 {
     if (front(e) == '_') {
       return e;
     } else {
-      return '_' + e;
+      return shape_t('_') + e;
     }
   }
   shape_t cadd(shape_t x, shape_t e) {
@@ -216,13 +216,13 @@ algebra shape1 extends shape5 {
     }
   }
   shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + '_' + e + ']';
+    return shape_t('[') + shape_t('_') + e + shape_t(']');
   }
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return '[' + e + '_' + ']';
+    return shape_t('[') + e + shape_t('_') + shape_t(']');
   }
   shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + '_' + e + '_' + ']';
+    return shape_t('[') + shape_t('_') + e + shape_t('_') + shape_t(']');
   }
   shape_t app(shape_t x, shape_t e) {
     if (back(x) == '_' && front(e) == '_') {
@@ -235,7 +235,7 @@ algebra shape1 extends shape5 {
     if (back(c1) == '_') {
       return c1;
     } else {
-      return c1 + '_';
+      return c1 + shape_t('_');
     }
   }
 }
