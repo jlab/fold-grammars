@@ -1,5 +1,5 @@
 import rna
-import pf_filter
+import pf_filter_small
 
 input rna
 
