@@ -1476,7 +1476,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                  | {help_pknot_free_k .(0, 0). 
                  |  help_pknot_free_l .(0, 0). }  with ignore
                    //~ help_pkiss_D
-                 //~ | help_pkiss_Aleft
+                 | help_pkiss_Aleft
                  | help_pkiss_Aright
                  # hKnot;
   
@@ -1588,20 +1588,19 @@ grammar pknotsRG uses Algebra(axiom = struct) {
       if (i+11 <= j) {
         int betamaxlen = second(stacklen(t_0_seq, k, j));
         if (betamaxlen >= 2) {
-          //~ for (int l = k+4; l <= endL; l=l+1) {
-          for (int l = k+4; l <= j-4; l=l+1) {
+          for (int l = k+4; l <= endL; l=l+1) {
              int alphamaxlen = second(stacklen(t_0_seq, i, l));
-             //~ if (alphamaxlen < 2) {
-               //~ continue;
-             //~ }
+             if (alphamaxlen < 2) {
+               continue;
+             }
              int alphareallen = min(alphamaxlen, k-i-1);
              if (alphareallen < 2) {
                continue;
              }
              int betatemplen = min(betamaxlen, j-l-2);
-             //~ if (betatemplen < 2) {
-               //~ continue;
-             //~ }
+             if (betatemplen < 2) {
+               continue;
+             }
              int betareallen = min(betatemplen, l-k-alphareallen);
              if (betareallen < 2) {
                continue;
@@ -1788,12 +1787,9 @@ grammar pknotsRG uses Algebra(axiom = struct) {
 		mfeanswer leftPK = get_pk_free_l(i, m, h, l-2);
         if (is_empty(leftPK)) {
           continue;
-		} else {
-			fprintf(stderr, "free l: %d\n", leftPK.alphaRightOuter);
 		}
-		//~ for (int k = h+4; k<=l-2; k=k+1) {
-        int k = leftPK.alphaRightOuter;
-        int alphamaxlen = second(stacklen(t_0_seq, i, k));
+		int k = leftPK.alphaRightOuter;
+		int alphamaxlen = second(stacklen(t_0_seq, i, k));
         if (alphamaxlen < 2) {
           continue;
         }
@@ -1813,9 +1809,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                           - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
 
         INNER(CODE);
-//~ }
 	  }
-      //~ }
      ].
     {
       pkiss(REGION, REGION, REGION, REGION, REGION  ) .{
