@@ -1,5 +1,5 @@
 import rna
-import pf_filter
+import pf_filter_small
 
 input rna
 
@@ -192,7 +192,7 @@ algebra shape5 implements stefansAlgebra(alphabet = char, answer = shape_t) {
     return e;
   }
   shape_t unpaired(Subsequence ss){
-    return '_';
+    return shape_t('_');
   }
   shape_t lasthlnoss(shape_t e){
     return e;
@@ -234,7 +234,7 @@ algebra shape5 implements stefansAlgebra(alphabet = char, answer = shape_t) {
     return e;
   }
   shape_t hairpin(Subsequence llb, Subsequence lb, Subsequence loop, Subsequence rb, Subsequence rrb){
-    return shape_t('[') + ']';
+    return shape_t('[') + shape_t(']');
   }
   shape_t bulgeleft(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb){
     return e;
@@ -246,16 +246,16 @@ algebra shape5 implements stefansAlgebra(alphabet = char, answer = shape_t) {
     return e;
   }
   shape_t multiloop_drem(Subsequence llb, Subsequence lb, shape_t e, Subsequence rb, Subsequence rrb){
-    return '[' + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
   shape_t multiloop_edlr(Subsequence llb, Subsequence lb, Subsequence ld, shape_t e, Subsequence rd, Subsequence rb, Subsequence rrb){
-    return '[' + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
   shape_t multiloop_edl (Subsequence llb, Subsequence lb, Subsequence ld, shape_t e, Subsequence rb, Subsequence rrb){
-    return '[' + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
   shape_t multiloop_edr (Subsequence llb, Subsequence lb, shape_t e, Subsequence rd, Subsequence rb, Subsequence rrb){
-    return '[' + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
   choice [shape_t] h([shape_t] i) {
     return unique(i);
@@ -264,35 +264,35 @@ algebra shape5 implements stefansAlgebra(alphabet = char, answer = shape_t) {
 
 algebra shape4 extends shape5 {
   shape_t iloop(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb){
-    return shape_t('[') + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
 }
 
 algebra shape3 extends shape5 {
   shape_t bulgeleft(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb){
-    return shape_t('[') + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
 
   shape_t bulgeright(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb){
-    return '[' + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
   
   shape_t iloop(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb){
-    return shape_t('[') + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
 }
 
 algebra shape2 extends shape5 {
   shape_t bulgeleft(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb){
-    return shape_t('[') + '_' + e + ']';
+    return shape_t('[') + shape_t('_') + e + shape_t(']');
   }
 
   shape_t bulgeright(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb){
-    return '[' + e + '_' + ']';
+    return shape_t('[') + e + shape_t('_') + shape_t(']');
   }
 
   shape_t iloop(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb){
-    return shape_t('[') + '_' + e + '_' + ']';
+    return shape_t('[') + shape_t('_') + e + shape_t('_') + shape_t(']');
   }
 }
 
@@ -301,7 +301,7 @@ algebra shape1 extends shape5 {
     if (back(e) == '_') {
       return e;
     } else {
-      return e + '_';
+      return e + shape_t('_');
     }
   }
   shape_t nexthl(shape_t e1, shape_t e2){
@@ -328,7 +328,7 @@ algebra shape1 extends shape5 {
     if (back(res) == '_') {
       return res;
     } else {
-      return res + '_';
+      return res + shape_t('_');
     }
   }
   shape_t nextml(shape_t e1, shape_t e2) {
@@ -342,58 +342,58 @@ algebra shape1 extends shape5 {
     if (front(e) == '_') {
       return e;
     } else {
-      return '_' + e;
+      return shape_t('_') + e;
     }
   }
   shape_t edlr(Subsequence ld, shape_t e, Subsequence rd){
-    return '_' + e + '_';
+    return shape_t('_') + e + shape_t('_');
   }
   shape_t edl(Subsequence ld, shape_t e, Subsequence rd){
-    return '_' + e;
+    return shape_t('_') + e;
   }
   shape_t edr(Subsequence ld, shape_t e, Subsequence rd){
-    return e + '_';
+    return e + shape_t('_');
   }
   shape_t bulgeleft(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb){
-    return shape_t('[') + '_' + e + ']';
+    return shape_t('[') + shape_t('_') + e + shape_t(']');
   }
   shape_t bulgeright(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb){
-    return shape_t('[') + e + '_' + ']';
+    return shape_t('[') + e + shape_t('_') + shape_t(']');
   }
   shape_t iloop(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb){
-    return shape_t('[') + '_' + e + '_' + ']';
+    return shape_t('[') + shape_t('_') + e + shape_t('_') + shape_t(']');
   }
   shape_t multiloop_edlr(Subsequence llb, Subsequence lb, Subsequence ld, shape_t e, Subsequence rd, Subsequence rb, Subsequence rrb){
     shape_t res;
     if (front(e) == '_') {
       res = e;
     } else {
-      res = '_' + e;
+      res = shape_t('_') + e;
     }
     if (back(e) == '_') {
       res = e;
     } else {
-      res = e + '_';
+      res = e + shape_t('_');
     }
-    return '[' + res + ']';
+    return shape_t('[') + res + shape_t(']');
   }
   shape_t multiloop_edl (Subsequence llb, Subsequence lb, Subsequence ld, shape_t e, Subsequence rb, Subsequence rrb){
     shape_t res;
     if (front(e) == '_') {
       res = e;
     } else {
-      res = '_' + e;
+      res = shape_t('_') + e;
     }
-    return '[' + res + ']';
+    return shape_t('[') + res + shape_t(']');
   }
   shape_t multiloop_edr (Subsequence llb, Subsequence lb, shape_t e, Subsequence rd, Subsequence rb, Subsequence rrb){
     shape_t res;
     if (back(e) == '_') {
       res = e;
     } else {
-      res = e + '_';
+      res = e + shape_t('_');
     }
-    return '[' + res + ']';
+    return shape_t('[') + res + shape_t(']');
   }
 }
 algebra dotbracket extends pretty {

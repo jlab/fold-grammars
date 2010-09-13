@@ -1,5 +1,5 @@
 import rna
-import pf_filter
+import pf_filter_small
 
 input rna
 
@@ -144,11 +144,11 @@ algebra shape5 implements jensAlgebra(alphabet = char, comp = shape_t) {
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return e;
   }	
-	shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return e;
-	}
+  }
   shape_t ml(Subsequence bl, Subsequence f1, shape_t x, Subsequence f2, Subsequence br) {
-    return "[" + x + "]";
+    return shape_t('[') + x + shape_t(']');
   }
   shape_t app(shape_t c1, shape_t c) {
     return c1 + c;
@@ -172,41 +172,41 @@ algebra shape5 implements jensAlgebra(alphabet = char, comp = shape_t) {
 }
 
 algebra shape4 extends shape5 {
-	shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return '[' + e + ']';
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + e + shape_t(']');
   }
 }
 
 algebra shape3 extends shape5 {
   shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
-    return '[' + e + ']';
+    return shape_t('[') + e + shape_t(']');
   }
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return '[' + e + ']';
-  }	
-	shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return '[' + e + ']';
-	}
+    return shape_t('[') + e + shape_t(']');
+  }
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + e + shape_t(']');
+  }
 }
 
 algebra shape2 extends shape5 {
   shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + '_' + e + ']';
+    return shape_t('[') + shape_t('_') + e + shape_t(']');
   }
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return '[' + e + '_' + ']';
-  }	
-	shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + '_' + e + '_' + ']';
-	}
+    return shape_t('[') + e + shape_t('_') + shape_t(']');
+  }
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + shape_t('_') + e + shape_t('_') + shape_t(']');
+  }
 }
 
 algebra shape1 extends shape5 {
   shape_t sadd(Subsequence lb, shape_t e) {
-		if (front(e) == '_') {
+    if (front(e) == '_') {
       return e;
     } else {
-      return '_' + e;
+      return shape_t('_') + e;
     }
   }
   shape_t cadd(shape_t x, shape_t e) {
@@ -217,14 +217,14 @@ algebra shape1 extends shape5 {
     }
   }
   shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + '_' + e + ']';
+    return shape_t('[') + shape_t('_') + e + shape_t(']');
   }
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return '[' + e + '_' + ']';
-  }	
-	shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + '_' + e + '_' + ']';
-	}
+    return shape_t('[') + e + shape_t('_') + shape_t(']');
+  }
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + shape_t('_') + e + shape_t('_') + shape_t(']');
+  }
   shape_t app(shape_t x, shape_t e) {
     if (back(x) == '_' && front(e) == '_') {
       return x + tail(e);
@@ -233,17 +233,17 @@ algebra shape1 extends shape5 {
     }
   }
   shape_t addss(shape_t c1, Subsequence e) {
-		if (back(c1) == '_') {
+    if (back(c1) == '_') {
       return c1;
     } else {
-      return c1 + '_';
+      return c1 + shape_t('_');
     }
   }
   shape_t ssadd(Subsequence x, shape_t e) {
-		if (front(e) == '_') {
+    if (front(e) == '_') {
       return e;
     } else {
-      return '_' + e;
+      return shape_t('_') + e;
     }
   }
 }
@@ -395,3 +395,4 @@ instance shape5pf = jensDangle (shape5 * p_func);
 instance mfe = jensDangle (shape5 * mfe) ;
 instance shape2 = jensDangle (shape2);
 instance shape5 = jensDangle (shape5);
+instance pf = jensDangle (p_func);
