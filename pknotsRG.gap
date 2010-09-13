@@ -1475,8 +1475,8 @@ grammar pknotsRG uses Algebra(axiom = struct) {
   knot         =   help_pknot_free_kl
                  | {help_pknot_free_k .(0, 0). 
                  |  help_pknot_free_l .(0, 0). }  with ignore
-                 //~ | help_pkiss_D
-                 | help_pkiss_Aleft
+                   //~ help_pkiss_D
+                 //~ | help_pkiss_Aleft
                  | help_pkiss_Aright
                  # hKnot;
   
@@ -1537,7 +1537,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
       int j = t_0_j;
       int l = ll;
        
-      if (i+11 < j) {
+      if (i+11 <= j) {
         int alphamaxlen = second(stacklen(t_0_seq, i, l));
         if (alphamaxlen >= 2) {
           for (int k = startK; k <= l-4; k=k+1) {
@@ -1585,22 +1585,23 @@ grammar pknotsRG uses Algebra(axiom = struct) {
     .[
       int i = t_0_i;
       int j = t_0_j;
-      if (i+11 < j) {
+      if (i+11 <= j) {
         int betamaxlen = second(stacklen(t_0_seq, k, j));
         if (betamaxlen >= 2) {
-          for (int l = k+4; l <= endL; l=l+1) {
+          //~ for (int l = k+4; l <= endL; l=l+1) {
+          for (int l = k+4; l <= j-4; l=l+1) {
              int alphamaxlen = second(stacklen(t_0_seq, i, l));
-             if (alphamaxlen < 2) {
-               continue;
-             }
+             //~ if (alphamaxlen < 2) {
+               //~ continue;
+             //~ }
              int alphareallen = min(alphamaxlen, k-i-1);
              if (alphareallen < 2) {
                continue;
              }
              int betatemplen = min(betamaxlen, j-l-2);
-             if (betatemplen < 2) {
-               continue;
-             }
+             //~ if (betatemplen < 2) {
+               //~ continue;
+             //~ }
              int betareallen = min(betatemplen, l-k-alphareallen);
              if (betareallen < 2) {
                continue;
@@ -1635,10 +1636,10 @@ grammar pknotsRG uses Algebra(axiom = struct) {
       int i = t_0_i;
       int j = t_0_j;
 
-      for (int h = i+3; h<j-13; h=h+1) {
-        for (int k = h+4; k<j-9; k=k+1) {
-          for (int l = k+2; l<j-7; l=l+1) {
-            for (int m = l+4; m<j-3; m=m+1) {
+      for (int h = i+3; h<=j-13; h=h+1) {
+        for (int k = h+4; k<=j-9; k=k+1) {
+          for (int l = k+2; l<=j-7; l=l+1) {
+            for (int m = l+4; m<=j-3; m=m+1) {
               if (i+3>h || h+4>k || k+2>l || l+4>m || m+3>j) {
                 continue;
               }
@@ -1697,7 +1698,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
       int i = t_0_i;
       int j = t_0_j;
 
-      for (int m = i+13; m<j-3; m=m+1) {
+      for (int m = i+13; m<=j-3; m=m+1) {
         mfeanswer leftPK = get_pk(i, m);
         if (is_empty(leftPK)) {
           continue;
@@ -1765,7 +1766,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
       int i = t_0_i;
       int j = t_0_j;
 
-      for (int h = i+3; h<j-13; h=h+1) {
+      for (int h = i+3; h<=j-13; h=h+1) {
         mfeanswer rightPK = get_pk(h, j);
         if (is_empty(rightPK)) {
           continue;
@@ -1784,10 +1785,13 @@ grammar pknotsRG uses Algebra(axiom = struct) {
         if (betamaxlen < 2) {
           continue;
         }
-        mfeanswer leftPK = get_pk_free_l(i, m, h, l-2);
+		mfeanswer leftPK = get_pk_free_l(i, m, h, l-2);
         if (is_empty(leftPK)) {
           continue;
-        }
+		} else {
+			fprintf(stderr, "free l: %d\n", leftPK.alphaRightOuter);
+		}
+		//~ for (int k = h+4; k<=l-2; k=k+1) {
         int k = leftPK.alphaRightOuter;
         int alphamaxlen = second(stacklen(t_0_seq, i, k));
         if (alphamaxlen < 2) {
@@ -1801,7 +1805,7 @@ grammar pknotsRG uses Algebra(axiom = struct) {
         if (betareallen < 2) {
           continue;
         }
-        int stackenergies = first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+		int stackenergies = first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
                           + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
                           + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
                           - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
@@ -1809,7 +1813,9 @@ grammar pknotsRG uses Algebra(axiom = struct) {
                           - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
 
         INNER(CODE);
-      }
+//~ }
+	  }
+      //~ }
      ].
     {
       pkiss(REGION, REGION, REGION, REGION, REGION  ) .{
