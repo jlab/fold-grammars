@@ -488,7 +488,7 @@ algebra mfe implements canonicalsAlgebra(alphabet = char, comp = int) {
 		return e;
 	}
 	int sr(Subsequence lb, int e, Subsequence rb) {
-		return e + termaupenalty(ld, rd) + sr_energy(lb, rb);
+		return e + termaupenalty(lb, rb) + sr_energy(lb, rb);
 	}
 	int hl(Subsequence llb, Subsequence lb, Subsequence loop, Subsequence rb, Subsequence rrb) {
 		return termaupenalty(llb, rrb) + sr_energy(llb, rrb) + hl_energy(lb, rb);
