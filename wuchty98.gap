@@ -376,9 +376,15 @@ instance shape3pfx = wuchty98 ((shape3 * p_func) suchthat p_func_filter);
 instance shape2pfx = wuchty98 ((shape2 * p_func) suchthat p_func_filter);
 instance shape1pfx = wuchty98 ((shape1 * p_func) suchthat p_func_filter);
 
+//~ instance shape5pfxpp = wuchty98 (((shape5 * p_func) suchthat p_func_filter) * pretty);
+instance shapemfepf = wuchty98 (shape5 * (mfe % p_func) * pretty);
+instance shapemfepfx = wuchty98 (shape5 * (p_func % (mfe | pretty))); // (((shape5 * (mfe % p_func))) * pretty);
+
 instance shape5pf = wuchty98 (shape5 * p_func);
 instance mfe = wuchty98 (shape5 * mfe) ;
 instance shape2 = wuchty98 (shape2);
 instance shape5 = wuchty98 (shape5);
 instance shape5count = wuchty98(shape5 * count);
 instance pretty = wuchty98(pretty);
+
+instance mfepp = wuchty98(mfe * pretty);

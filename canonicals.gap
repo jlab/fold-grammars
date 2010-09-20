@@ -671,3 +671,5 @@ instance shape1pfx = canonicalsDangle ((shape1 * p_func) suchthat p_func_filter)
 
 //~ instance shape5pf = canonicalsDangle (shape5 * p_func);
 //~ instance mfe = canonicalsDangle (shape5 * mfe) ;
+
+instance mfepp = canonicalsDangle (mfe * pretty);

@@ -396,3 +396,5 @@ instance mfe = jensDangle (shape5 * mfe) ;
 instance shape2 = jensDangle (shape2);
 instance shape5 = jensDangle (shape5);
 instance pf = jensDangle (p_func);
+
+instance mfepp = jensDangle (mfe * pretty);
