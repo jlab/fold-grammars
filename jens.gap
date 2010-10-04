@@ -391,11 +391,11 @@ instance shape3pfx = jensDangle ((shape3 * p_func) suchthat p_func_filter);
 instance shape2pfx = jensDangle ((shape2 * p_func) suchthat p_func_filter);
 instance shape1pfx = jensDangle ((shape1 * p_func) suchthat p_func_filter);
 
-instance shape5mfepfx = jensDangle (((shape5 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
-instance shape4mfepfx = jensDangle (((shape4 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
-instance shape3mfepfx = jensDangle (((shape3 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
-instance shape2mfepfx = jensDangle (((shape2 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
-instance shape1mfepfx = jensDangle (((shape1 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape5mfepfxpp = jensDangle (((shape5 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape4mfepfxpp = jensDangle (((shape4 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape3mfepfxpp = jensDangle (((shape3 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape2mfepfxpp = jensDangle (((shape2 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape1mfepfxpp = jensDangle (((shape1 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
 
 instance shape5pf = jensDangle (shape5 * p_func);
 instance mfe = jensDangle (shape5 * mfe) ;
