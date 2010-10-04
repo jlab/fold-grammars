@@ -750,3 +750,10 @@ instance shape4pfx = stefansDangle ((shape4 * p_func) suchthat p_func_filter);
 instance shape3pfx = stefansDangle ((shape3 * p_func) suchthat p_func_filter);
 instance shape2pfx = stefansDangle ((shape2 * p_func) suchthat p_func_filter);
 instance shape1pfx = stefansDangle ((shape1 * p_func) suchthat p_func_filter);
+
+instance shape5mfepfx = stefansDangle (((shape5 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape4mfepfx = stefansDangle (((shape4 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape3mfepfx = stefansDangle (((shape3 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape2mfepfx = stefansDangle (((shape2 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape1mfepfx = stefansDangle (((shape1 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+

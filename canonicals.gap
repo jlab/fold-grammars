@@ -669,7 +669,15 @@ instance shape3pfx = canonicalsDangle ((shape3 * p_func) suchthat p_func_filter)
 instance shape2pfx = canonicalsDangle ((shape2 * p_func) suchthat p_func_filter);
 instance shape1pfx = canonicalsDangle ((shape1 * p_func) suchthat p_func_filter);
 
+instance shape5mfepfx = canonicalsDangle (((shape5 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape4mfepfx = canonicalsDangle (((shape4 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape3mfepfx = canonicalsDangle (((shape3 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape2mfepfx = canonicalsDangle (((shape2 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+instance shape1mfepfx = canonicalsDangle (((shape1 * (mfe % p_func)) suchthat p_func_filter_allPP) * pretty);  //unbedingt mit --kbacktrace kompilieren!
+
+
 //~ instance shape5pf = canonicalsDangle (shape5 * p_func);
 //~ instance mfe = canonicalsDangle (shape5 * mfe) ;
 
 instance mfepp = canonicalsDangle (mfe * pretty);
+instance ppmfe = canonicalsDangle (pretty * mfe);

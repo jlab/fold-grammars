@@ -58,23 +58,30 @@ struct p_func_filter
   }
 };
 
+// needed for (shape * (mfe * pf) * pretty) --kbacktrack ing since
+// the 3rd component needs to be ignored (its synoptic)
+inline bool operator==(const std::pair<Shape, std::pair<int, double> > &a, const std::pair<Shape, std::pair<int, double> > &b) {
+  return a.first == b.first && a.second.first == b.second.first;
+}
+
 template <typename T>
-struct p_func_filter_all
+struct p_func_filter_allPP
 {
 
   static double cutoff_prob;
 
   double sum;
-  p_func_filter_all()
+  p_func_filter_allPP()
     : sum(0) {}
   void update(const T &src)
   {
-    sum += src;
+    sum += src.second.second;
   }
   bool ok(const T &x) const
   {
     double thresh = cutoff_prob  * sum;
-    return x > thresh;
+    return
+      x.second.second > thresh;
   }
 };
 
@@ -84,7 +91,8 @@ template <typename T>
 double p_func_filter<T>::cutoff_prob = 0.000001;
 
 template <typename T>
-double p_func_filter_all<T>::cutoff_prob = 0.000001;
+double p_func_filter_allPP<T>::cutoff_prob = 0.000001;
+
 
 #endif
 
