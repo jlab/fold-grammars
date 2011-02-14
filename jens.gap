@@ -8,21 +8,21 @@ type base_t = extern
 type Rope = extern
 
 signature jensAlgebra(alphabet, comp) {
-	comp sadd(Subsequence, comp);
-	comp cadd(comp, comp);
-	comp dlr(Subsequence, comp, Subsequence);
-	comp sr(Subsequence, comp, Subsequence);
-	comp hl(Subsequence, Subsequence, Subsequence, Subsequence, Subsequence);
-	comp bl(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence);
-	comp br(Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
-	comp il(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
-	comp ml(Subsequence, Subsequence, comp, Subsequence, Subsequence);
-	comp app(comp, comp);
-	comp ul(comp);
-	comp addss(comp, Subsequence);
-	comp ssadd(Subsequence, comp);
-	comp nil(void);
-	choice [comp] h([comp]);
+  comp sadd(Subsequence, comp);
+  comp cadd(comp, comp);
+  comp dlr(Subsequence, comp, Subsequence);
+  comp sr(Subsequence, comp, Subsequence);
+  comp hl(Subsequence, Subsequence, Subsequence, Subsequence, Subsequence);
+  comp bl(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence);
+  comp br(Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
+  comp il(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
+  comp ml(Subsequence, Subsequence, comp, Subsequence, Subsequence);
+  comp app(comp, comp);
+  comp ul(comp);
+  comp addss(comp, Subsequence);
+  comp ssadd(Subsequence, comp);
+  comp nil(void);
+  choice [comp] h([comp]);
 }
 
 algebra count auto count;
@@ -143,7 +143,7 @@ algebra shape5 implements jensAlgebra(alphabet = char, comp = shape_t) {
   }
   shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return e;
-  }	
+  }
   shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
     return e;
   }
@@ -247,6 +247,7 @@ algebra shape1 extends shape5 {
     }
   }
 }
+
 algebra mfe implements jensAlgebra(alphabet = char, comp = int) {
   int sadd(Subsequence lb, int e) {
     return e;
@@ -344,40 +345,40 @@ algebra p_func implements jensAlgebra(alphabet = char, comp = double) {
 }
 
 grammar jensDangle uses jensAlgebra(axiom = struct) {
-	struct = 	sadd(BASE, struct)   |
-			cadd(dangle, struct) |
-			nil(EMPTY) 
-			# h;
-
-	dangle = 	dlr(LOC, closed, LOC) 
-			# h;
-
-	closed = 	{stack   | 
-			hairpin |
-			leftB   | 
-			rightB  | 
-			iloop   | 
-			multiloop} with stackpairing 
-			# h;
-
-	stack = 	sr(BASE, closed, BASE)
-			# h;
-
-	hairpin =   	hl(BASE, BASE,                          {REGION with minsize(3)},        BASE, BASE) # h;
-	leftB =     	bl(BASE, BASE, REGION,                  closed,                          BASE, BASE) # h;
-	rightB =    	br(BASE, BASE,                          closed, REGION,                  BASE, BASE) # h;
-	iloop =     	il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) # h;
-	multiloop = 	ml(BASE, BASE,                          ml_comps,                        BASE, BASE) # h;
-
-	ml_comps = 	sadd(BASE, ml_comps) |
-			app(ul(dangle), ml_comps1) 
-			# h ;
-
-	ml_comps1 = 	sadd(BASE, ml_comps1)      |
-			app(ul(dangle), ml_comps1) |
-			ul(dangle)                 |
-			addss(ul(dangle), REGION)  
-			# h ;
+  struct = sadd(BASE, struct)   |
+           cadd(dangle, struct) |
+           nil(EMPTY) 
+           # h;
+  
+  dangle = dlr(LOC, closed, LOC) 
+           # h;
+  
+  closed = {stack   | 
+            hairpin |
+            leftB   | 
+            rightB  | 
+            iloop   | 
+            multiloop} with stackpairing 
+            # h;
+  
+  stack = sr(BASE, closed, BASE)
+          # h;
+  
+  hairpin =   hl(BASE, BASE,                          {REGION with minsize(3)},        BASE, BASE) # h;
+  leftB =     bl(BASE, BASE, REGION,                  closed,                          BASE, BASE) # h;
+  rightB =    br(BASE, BASE,                          closed, REGION,                  BASE, BASE) # h;
+  iloop =     il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) # h;
+  multiloop = ml(BASE, BASE,                          ml_comps,                        BASE, BASE) # h;
+  
+  ml_comps = sadd(BASE, ml_comps) |
+             app(ul(dangle), ml_comps1) 
+             # h ;
+  
+  ml_comps1 = sadd(BASE, ml_comps1)      |
+              app(ul(dangle), ml_comps1) |
+              ul(dangle)                 |
+              addss(ul(dangle), REGION)  
+              # h ;
 }
 
 
