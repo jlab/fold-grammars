@@ -331,24 +331,20 @@ algebra p_func implements wuchty98Algebra(alphabet = char, comp = double) {
 }
 
 grammar wuchty98 uses wuchty98Algebra(axiom = struct) {
-  struct    = sadd(BASE, struct)   |
-              cadd(dangle, struct) |
-              nil(EMPTY) 
-              # h;
+  struct    = sadd(BASE, struct)    |
+              cadd(dangle, struct)  |
+              nil(EMPTY)            # h;
 
-  dangle    = dlr(LOC, closed, LOC) 
-              # h;
+  dangle    = dlr(LOC, closed, LOC) # h;
 
-  closed    = stack   | 
-              hairpin |
-              leftB   | 
-              rightB  | 
-              iloop   | 
-              multiloop 
-              # h;
+  closed    = stack     | 
+              hairpin   |
+              leftB     | 
+              rightB    | 
+              iloop     | 
+              multiloop # h;
 
-  stack     = sr(BASE, closed, BASE) with basepairing 
-	      # h;
+  stack     = sr(BASE, closed, BASE) with basepairing # h;
 
   hairpin   = hl(BASE, BASE,                          REGION with minsize(3),          BASE, BASE) with stackpairing # h;
   leftB     = bl(BASE, BASE, REGION,                  closed,                          BASE, BASE) with stackpairing # h;
@@ -356,15 +352,13 @@ grammar wuchty98 uses wuchty98Algebra(axiom = struct) {
   iloop     = il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) with stackpairing # h;
   multiloop = ml(BASE, BASE,                          ml_comps,                        BASE, BASE) with stackpairing # h;
 
-  ml_comps  = sadd(BASE, ml_comps) |
-              app(ul(dangle), ml_comps1) 
-              # h ;
+  ml_comps  = sadd(BASE, ml_comps)       |
+              app(ul(dangle), ml_comps1) # h ;
 
   ml_comps1 = sadd(BASE, ml_comps1)      |
               app(ul(dangle), ml_comps1) |
               ul(dangle)                 |
-              addss(ul(dangle), REGION)  
-              # h ;
+              addss(ul(dangle), REGION)  # h ;
 }
 
 instance count = wuchty98 (count);

@@ -345,40 +345,35 @@ algebra p_func implements jensAlgebra(alphabet = char, comp = double) {
 }
 
 grammar jensDangle uses jensAlgebra(axiom = struct) {
-  struct = sadd(BASE, struct)   |
-           cadd(dangle, struct) |
-           nil(EMPTY) 
-           # h;
+  struct    = sadd(BASE, struct)    |
+              cadd(dangle, struct)  |
+              nil(EMPTY)            # h;
   
-  dangle = dlr(LOC, closed, LOC) 
-           # h;
+  dangle    = dlr(LOC, closed, LOC) # h;
   
-  closed = {stack   | 
-            hairpin |
-            leftB   | 
-            rightB  | 
-            iloop   | 
-            multiloop} with stackpairing 
-            # h;
+  closed    = {stack   | 
+               hairpin |
+               leftB   | 
+               rightB  | 
+               iloop   | 
+               multiloop} with stackpairing 
+               # h;
   
-  stack = sr(BASE, closed, BASE)
-          # h;
+  stack     = sr(BASE, closed, BASE) # h;
   
-  hairpin =   hl(BASE, BASE,                          {REGION with minsize(3)},        BASE, BASE) # h;
-  leftB =     bl(BASE, BASE, REGION,                  closed,                          BASE, BASE) # h;
-  rightB =    br(BASE, BASE,                          closed, REGION,                  BASE, BASE) # h;
-  iloop =     il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) # h;
+  hairpin   = hl(BASE, BASE,                          {REGION with minsize(3)},        BASE, BASE) # h;
+  leftB     = bl(BASE, BASE, REGION,                  closed,                          BASE, BASE) # h;
+  rightB    = br(BASE, BASE,                          closed, REGION,                  BASE, BASE) # h;
+  iloop     = il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) # h;
   multiloop = ml(BASE, BASE,                          ml_comps,                        BASE, BASE) # h;
   
-  ml_comps = sadd(BASE, ml_comps) |
-             app(ul(dangle), ml_comps1) 
-             # h ;
+  ml_comps  = sadd(BASE, ml_comps)       |
+              app(ul(dangle), ml_comps1) # h;
   
   ml_comps1 = sadd(BASE, ml_comps1)      |
               app(ul(dangle), ml_comps1) |
               ul(dangle)                 |
-              addss(ul(dangle), REGION)  
-              # h ;
+              addss(ul(dangle), REGION)  # h;
 }
 
 

@@ -15,7 +15,6 @@ signature canonicalsAlgebra(alphabet, comp) {
   comp edr(Subsequence, comp, Subsequence);
   comp edlr(Subsequence, comp, Subsequence);
   comp drem(Subsequence, comp, Subsequence);
-  comp is(Subsequence, comp, Subsequence);
   comp sr(Subsequence, comp, Subsequence);
   comp hl(Subsequence, Subsequence, Subsequence, Subsequence, Subsequence);
   comp bl(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence);
@@ -72,9 +71,6 @@ algebra pretty implements canonicalsAlgebra(alphabet = char, comp = Rope) {
     return res;
   }
   Rope drem(Subsequence lb, Rope e, Subsequence rb) {
-    return e;
-  }
-  Rope is(Subsequence lb, Rope e, Subsequence rb) {
     return e;
   }
   Rope sr(Subsequence lb, Rope e, Subsequence rb) {
@@ -189,9 +185,6 @@ algebra shape5 implements canonicalsAlgebra(alphabet = char, comp = shape_t) {
     return e;
   }
   shape_t drem(Subsequence lb, shape_t e, Subsequence rb) {
-    return e;
-  }
-  shape_t is(Subsequence lb, shape_t e, Subsequence rb) {
     return e;
   }
   shape_t sr(Subsequence lb, shape_t e, Subsequence rb) {
@@ -357,28 +350,25 @@ algebra mfe implements canonicalsAlgebra(alphabet = char, comp = int) {
     Subsequence stem;
     stem.seq = ld.seq;
     stem.i = ld.i+1;
-    stem.j = rd.j-1;
-    return e + dl_energy(stem, stem);
+    stem.j = rd.j;
+    return e + termaupenalty(stem, stem) + dl_energy(stem, stem);
   }
   int edr(Subsequence ld, int e, Subsequence rd) {
     Subsequence stem;
     stem.seq = ld.seq;
-    stem.i = ld.i+1;
+    stem.i = ld.i;
     stem.j = rd.j-1;
-    return e + dr_energy(stem, stem);
+    return e + termaupenalty(stem, stem) + dr_energy(stem, stem);
   }
   int edlr(Subsequence ld, int e, Subsequence rd) {
     Subsequence stem;
     stem.seq = ld.seq;
     stem.i = ld.i+1;
     stem.j = rd.j-1;
-    return e + dl_energy(stem, stem) + dr_energy(stem, stem);
+    return e + termaupenalty(stem, stem) + dl_energy(stem, stem) + dr_energy(stem, stem);
   }
   int drem(Subsequence ld, int e, Subsequence rd) {
-    return e;
-  }
-  int is(Subsequence lb, int e, Subsequence rb) {
-    return e + termaupenalty(lb, rb);
+    return e + termaupenalty(ld, rd);
   }
   int sr(Subsequence lb, int e, Subsequence rb) {
     return e + sr_energy(lb, rb);
@@ -435,27 +425,24 @@ algebra p_func implements canonicalsAlgebra(alphabet = char, comp = double) {
     Subsequence stem;
     stem.seq = ld.seq;
     stem.i = ld.i+1;
-    stem.j = rd.j-1;
-    return scale(1) * e * mk_pf(dl_energy(stem, stem));
+    stem.j = rd.j;
+    return scale(1) * e * mk_pf(termaupenalty(stem, stem)) * mk_pf(dl_energy(stem, stem));
   }
   double edr(Subsequence ld, double e, Subsequence rd) {
     Subsequence stem;
     stem.seq = ld.seq;
-    stem.i = ld.i+1;
+    stem.i = ld.i;
     stem.j = rd.j-1;
-    return scale(1) * e * mk_pf(dr_energy(stem, stem));
+    return scale(1) * e * mk_pf(termaupenalty(stem, stem)) * mk_pf(dr_energy(stem, stem));
   }
   double edlr(Subsequence ld, double e, Subsequence rd) {
     Subsequence stem;
     stem.seq = ld.seq;
     stem.i = ld.i+1;
     stem.j = rd.j-1;
-    return scale(2) * e * mk_pf(dl_energy(stem, stem) + dr_energy(stem, stem));
+    return scale(2) * e * mk_pf(termaupenalty(stem, stem)) * mk_pf(dl_energy(stem, stem) + dr_energy(stem, stem));
   }
   double drem(Subsequence lb, double e, Subsequence rb) {
-    return e;
-  }
-  double is(Subsequence lb, double e, Subsequence rb) {
     return e * mk_pf(termaupenalty(lb, rb));
   }
   double sr(Subsequence lb, double e, Subsequence rb) {
@@ -500,19 +487,16 @@ algebra p_func implements canonicalsAlgebra(alphabet = char, comp = double) {
 }
 
 grammar canonicalsDangle uses canonicalsAlgebra(axiom = struct) {
-  struct        = sadd(BASE, struct)    |
-                  cadd(edangle, struct) |
+  struct        = sadd(BASE, struct)   |
+                  cadd(dangle, struct) |
                   nil(EMPTY) 
                   # h;
 
-  edangle       = edl (BASE, initstem, LOC ) |
-                  edr (LOC,  initstem, BASE) | 
-                  edlr(BASE, initstem, BASE) |
-                  drem(LOC,  initstem, LOC )
+  dangle        = edl (BASE, closed, LOC ) |
+                  edr (LOC,  closed, BASE) | 
+                  edlr(BASE, closed, BASE) |
+                  drem(LOC,  closed, LOC )
                   # h;
-  
-  initstem      = is(LOC, closed, LOC)
-                 # h;
 
   closed        = {stack   | 
                    hairpin |
@@ -528,21 +512,21 @@ grammar canonicalsDangle uses canonicalsAlgebra(axiom = struct) {
   rightB        = br(BASE, BASE,                          closed, REGION,                  BASE, BASE) # h;
   iloop         = il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) # h;
   
-  multiloop     = mldl (BASE, BASE, BASE, ml_comps,       BASE, BASE) with stackpairing |
+  multiloop     = ml   (BASE, BASE,       ml_comps,       BASE, BASE) with stackpairing |
+                  mldl (BASE, BASE, BASE, ml_comps,       BASE, BASE) with stackpairing |
                   mldr (BASE, BASE,       ml_comps, BASE, BASE, BASE) with stackpairing |
-                  mldlr(BASE, BASE, BASE, ml_comps, BASE, BASE, BASE) with stackpairing |
-                  ml   (BASE, BASE,       ml_comps,       BASE, BASE) with stackpairing 
+                  mldlr(BASE, BASE, BASE, ml_comps, BASE, BASE, BASE) with stackpairing 
                   # h;
 
-  ml_comps = sadd(BASE, ml_comps) |
-             app(ul(edangle), ml_comps1) 
-             # h ;
+  ml_comps      = sadd(BASE, ml_comps)       |
+                  app(ul(dangle), ml_comps1) 
+                  # h ;
   
-  ml_comps1 = sadd(BASE, ml_comps1)      |
-              app(ul(edangle), ml_comps1) |
-              ul(edangle)                 |
-              addss(ul(edangle), REGION)  
-              # h ;
+  ml_comps1     = sadd(BASE, ml_comps1)      |
+                  app(ul(dangle), ml_comps1) |
+                  ul(dangle)                 |
+                  addss(ul(dangle), REGION)  
+                  # h ;
 }
 
 
