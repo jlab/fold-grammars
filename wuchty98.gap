@@ -7,163 +7,217 @@ type shape_t = shape
 type base_t = extern
 type Rope = extern
 
-signature wuchty98Algebra(alphabet, comp) {
+//~ ====== START common Algebras for Canonicals, Jens and Wuchty98 =====
+signature commonAlgebra(alphabet, comp) {
   comp sadd(Subsequence, comp);
   comp cadd(comp, comp);
-  comp dlr(Subsequence, comp, Subsequence);
+  comp edl(Subsequence, comp, Subsequence);
+  comp edr(Subsequence, comp, Subsequence);
+  comp edlr(Subsequence, comp, Subsequence);
+  comp drem(Subsequence, comp, Subsequence);
   comp sr(Subsequence, comp, Subsequence);
   comp hl(Subsequence, Subsequence, Subsequence, Subsequence, Subsequence);
   comp bl(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence);
   comp br(Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
   comp il(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
+  comp mldl(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence);
+  comp mldr(Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
+  comp mldlr(Subsequence, Subsequence, Subsequence, comp, Subsequence, Subsequence, Subsequence);
   comp ml(Subsequence, Subsequence, comp, Subsequence, Subsequence);
-  comp app(comp, comp);
   comp ul(comp);
   comp addss(comp, Subsequence);
   comp nil(void);
   choice [comp] h([comp]);
 }
 
-algebra count auto count;
-
-algebra enum auto enum;
-
-algebra pretty implements wuchty98Algebra(alphabet = char, comp = Rope) {
-  Rope sadd(Subsequence lb, Rope e) {
+algebra pretty implements commonAlgebra(alphabet = char, comp = Rope) {
+  Rope sadd(Subsequence lb, Rope x) {
     Rope res;
     append(res, '.');
-    append(res, e);
+    append(res, x);
     return res;
   }
-  Rope cadd(Rope x, Rope e) {
+  Rope cadd(Rope x, Rope y) {
     Rope res;
     append(res, x);
-    append(res, e);
+    append(res, y);
     return res;
   }
-  Rope dlr(Subsequence lb, Rope e, Subsequence rb) {
-    return e;
+  Rope edl(Subsequence llb, Rope x, Subsequence rrb) {
+    Rope res;
+    append(res, '.');
+    append(res, x);
+    return res;
   }
-  Rope sr(Subsequence lb, Rope e, Subsequence rb) {
-    Rope r;
-    append(r, '(');
-    append(r, e);
-    append(r, ')');
-    return r;
+  Rope edr(Subsequence llb, Rope x, Subsequence rrb) {
+    Rope res;
+    append(res, x);
+    append(res, '.');
+    return res;
   }
-  Rope hl(Subsequence lb, Subsequence f1, Subsequence x, Subsequence f2, Subsequence rb) {
-    Rope r;
-    append(r, "((", 2);
-    append(r, '.', size(x));
-    append(r, "))", 2);
-    return r;
+  Rope edlr(Subsequence llb, Rope x, Subsequence rrb) {
+    Rope res;
+    append(res, '.');
+    append(res, x);
+    append(res, '.');
+    return res;
   }
-  Rope bl(Subsequence bl, Subsequence f1, Subsequence x, Rope e, Subsequence f2, Subsequence br) {
-    Rope r;
-    append(r, "((", 2);
-    append(r, '.', size(x));
-    append(r, e);
-    append(r, "))", 2);
-    return r;
+  Rope drem(Subsequence llb, Rope x, Subsequence rrb) {
+    return x;
   }
-  Rope br(Subsequence bl, Subsequence f1, Rope e, Subsequence x, Subsequence f2, Subsequence br) {
-    Rope r;
-    append(r, "((", 2);
-    append(r, e);
-    append(r, '.', size(x));
-    append(r, "))", 2);
-    return r;
+  Rope sr(Subsequence llb, Rope x, Subsequence rrb) {
+    Rope res;
+    append(res, '(');
+    append(res, x);
+    append(res, ')');
+    return res;
   }
-  Rope il(Subsequence f1, Subsequence f2, Subsequence r1, Rope x, Subsequence r2, Subsequence f3, Subsequence f4) {
-    Rope r;
-    append(r, "((", 2);
-    append(r, '.', size(r1));
-    append(r, x);
-    append(r, '.', size(r2));
-    append(r, "))", 2);
-    return r;
+  Rope hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+    Rope res;
+    append(res, "((", 2);
+    append(res, '.', size(r));
+    append(res, "))", 2);
+    return res;
   }
-  Rope ml(Subsequence bl, Subsequence f1, Rope x, Subsequence f2, Subsequence br) {
-    Rope r;
-    append(r, "((", 2);
-    append(r, x);
-    append(r, "))", 2);
-    return r;
+  Rope bl(Subsequence llb, Subsequence lb, Subsequence lr, Rope x, Subsequence rb, Subsequence rrb) {
+    Rope res;
+    append(res, "((", 2);
+    append(res, '.', size(lr));
+    append(res, x);
+    append(res, "))", 2);
+    return res;
   }
-  Rope app(Rope c1, Rope c) {
-    Rope r;
-    append(r, c1);
-    append(r, c);
-    return r;
+  Rope br(Subsequence llb, Subsequence lb, Rope x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    Rope res;
+    append(res, "((", 2);
+    append(res, x);
+    append(res, '.', size(rr));
+    append(res, "))", 2);
+    return res;
   }
-  Rope ul(Rope c1) {
-    return c1;
+  Rope il(Subsequence llb, Subsequence lb, Subsequence lr, Rope x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    Rope res;
+    append(res, "((", 2);
+    append(res, '.', size(lr));
+    append(res, x);
+    append(res, '.', size(rr));
+    append(res, "))", 2);
+    return res;
   }
-  Rope addss(Rope c1, Subsequence e) {
-    Rope r;
-    append(r, c1);
-    append(r, '.', size(e));
-    return r;
+  Rope mldl(Subsequence llb, Subsequence lb, Subsequence dl, Rope x, Subsequence rb, Subsequence rrb) {
+    Rope res;
+    append(res, "((", 2);
+    append(res, '.');
+    append(res, x);
+    append(res, "))", 2);
+    return res;
+  }
+  Rope mldr(Subsequence llb, Subsequence lb, Rope x, Subsequence dr, Subsequence rb, Subsequence rrb) {
+    Rope res;
+    append(res, "((", 2);
+    append(res, x);
+    append(res, '.');
+    append(res, "))", 2);
+    return res;
+  }
+  Rope mldlr(Subsequence llb, Subsequence lb, Subsequence dl, Rope x, Subsequence dr, Subsequence rb, Subsequence rrb) {
+    Rope res;
+    append(res, "((", 2);
+    append(res, '.');
+    append(res, x);
+    append(res, '.');
+    append(res, "))", 2);
+    return res;
+  }
+  Rope ml(Subsequence llb, Subsequence lb, Rope x, Subsequence rb, Subsequence rrb) {
+    Rope res;
+    append(res, "((", 2);
+    append(res, x);
+    append(res, "))", 2);
+    return res;
+  }
+  Rope ul(Rope x) {
+    return x;
+  }
+  Rope addss(Rope x, Subsequence r) {
+    Rope res;
+    append(res, x);
+    append(res, '.', size(r));
+    return res;
   }
   Rope nil(void) {
-    Rope r;
-    return r;
+    Rope res;
+    return res;
   }
   choice [Rope] h([Rope] i) {
     return i;
   }
-
 }
 
-algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
-  shape_t sadd(Subsequence lb, shape_t e) {
+algebra shape5 implements commonAlgebra(alphabet = char, comp = shape_t) {
+  shape_t sadd(Subsequence lb, shape_t x) {
     shape_t emptyShape;
-    if (e == emptyShape) {
-      return shape_t('_') + e;
+    if (x == emptyShape) {
+      return shape_t('_') + x;
     } else {
-      return e;
+      return x;
     }
   }
-  shape_t cadd(shape_t x, shape_t e) {
-    if (e == '_') {
+  shape_t cadd(shape_t x, shape_t y) {
+    if (y == '_') {
       return x;
     } else {
-      return x + e;
+      return x + y;
     }
   }
-  shape_t dlr(Subsequence lb, shape_t e, Subsequence rb) {
-    return e;
+  shape_t edl(Subsequence llb, shape_t x, Subsequence rrb) {
+    return x;
   }
-  shape_t sr(Subsequence lb, shape_t e, Subsequence rb) {
-    return e;
+  shape_t edr(Subsequence llb, shape_t x, Subsequence rrb) {
+    return x;
   }
-  shape_t hl(Subsequence lb, Subsequence f1, Subsequence x, Subsequence f2, Subsequence rb) {
-    return shape_t('[') + shape_t(']');
+  shape_t edlr(Subsequence llb, shape_t x, Subsequence rrb) {
+    return x;
   }
-  shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
-    return e;
+  shape_t drem(Subsequence llb, shape_t x, Subsequence rrb) {
+    return x;
   }
-  shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return e;
+  shape_t sr(Subsequence llb, shape_t x, Subsequence rrb) {
+    return x;
   }
-  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return e;
+  shape_t hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+    return "[]";
   }
-  shape_t ml(Subsequence bl, Subsequence f1, shape_t x, Subsequence f2, Subsequence br) {
+  shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t x, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+  shape_t br(Subsequence llb, Subsequence lb, shape_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return x;
+  }
+  shape_t mldl(Subsequence llb, Subsequence lb, Subsequence dl, shape_t x, Subsequence rb, Subsequence rrb) {
     return shape_t('[') + x + shape_t(']');
   }
-  shape_t app(shape_t c1, shape_t c) {
-    return c1 + c;
+  shape_t mldr(Subsequence llb, Subsequence lb, shape_t x, Subsequence dr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + x + shape_t(']');
   }
-  shape_t ul(shape_t c1) {
-    return c1;
+  shape_t mldlr(Subsequence llb, Subsequence lb, Subsequence dl, shape_t x, Subsequence dr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + x + shape_t(']');
   }
-  shape_t addss(shape_t c1, Subsequence e) {
-    return c1;
+  shape_t ml(Subsequence llb, Subsequence lb, shape_t x, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + x + shape_t(']');
+  }
+  shape_t ul(shape_t x) {
+    return x;
+  }
+  shape_t addss(shape_t x, Subsequence r) {
+    return x;
   }
   shape_t nil(void) {
-    shape_t r;
-    return r;
+    shape_t res;
+    return res;
   }
   choice [shape_t] h([shape_t] i) {
     return unique(i);
@@ -171,111 +225,169 @@ algebra shape5 implements wuchty98Algebra(alphabet = char, comp = shape_t) {
 }
 
 algebra shape4 extends shape5 {
-  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + e + shape_t(']');
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + x + shape_t(']');
   }
 }
 
 algebra shape3 extends shape5 {
-  shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + e + shape_t(']');
+  shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t x, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + x + shape_t(']');
   }
-  shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + e + shape_t(']');
+  shape_t br(Subsequence llb, Subsequence lb, shape_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + x + shape_t(']');
   }
-  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + e + shape_t(']');
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + x + shape_t(']');
   }
 }
 
 algebra shape2 extends shape5 {
-  shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + shape_t('_') + e + shape_t(']');
+  shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t x, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + shape_t('_') + x + shape_t(']');
   }
-  shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + e + shape_t('_') + shape_t(']');
+  shape_t br(Subsequence llb, Subsequence lb, shape_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + x + shape_t('_') + shape_t(']');
   }
-  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + shape_t('_') + e + shape_t('_') + shape_t(']');
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + shape_t('_') + x + shape_t('_') + shape_t(']');
   }
 }
 
 algebra shape1 extends shape5 {
-  shape_t sadd(Subsequence lb, shape_t e) {
-    if (front(e) == '_') {
-      return e;
+  shape_t sadd(Subsequence lb, shape_t x) {
+    if (front(x) == '_') {
+      return x;
     } else {
-      return shape_t('_') + e;
+      return shape_t('_') + x;
     }
   }
-  shape_t cadd(shape_t x, shape_t e) {
-    if (back(x) == '_' && front(e) == '_') {
-      return x + tail(e);
+  shape_t cadd(shape_t x, shape_t y) {
+    if (back(x) == '_' && front(y) == '_') {
+      return x + tail(y);
     } else {
-      return x + e;
+      return x + y;
     }
   }
-  shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + shape_t('_') + e + shape_t(']');
+  shape_t edl(Subsequence llb, shape_t x, Subsequence rrb) {
+    return shape_t('_') + x;
   }
-  shape_t br(Subsequence llb, Subsequence lb, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + e + shape_t('_') + shape_t(']');
+  shape_t edr(Subsequence llb, shape_t x, Subsequence rrb) {
+    return x + shape_t('_');
   }
-  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t e, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return shape_t('[') + shape_t('_') + e + shape_t('_') + shape_t(']');
+  shape_t edlr(Subsequence llb, shape_t x, Subsequence rrb) {
+    return shape_t('_') + x + shape_t('_');
   }
-  shape_t app(shape_t x, shape_t e) {
-    if (back(x) == '_' && front(e) == '_') {
-      return x + tail(e);
+  shape_t bl(Subsequence llb, Subsequence lb, Subsequence lr, shape_t x, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + shape_t('_') + x + shape_t(']');
+  }
+  shape_t br(Subsequence llb, Subsequence lb, shape_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + x + shape_t('_') + shape_t(']');
+  }
+  shape_t il(Subsequence llb, Subsequence lb, Subsequence lr, shape_t x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return shape_t('[') + shape_t('_') + x + shape_t('_') + shape_t(']');
+  }
+  shape_t mldl(Subsequence llb, Subsequence lb, Subsequence dl, shape_t x, Subsequence rb, Subsequence rrb) {
+    if (front(x) == '_') {
+      return shape_t('[') + x + shape_t(']');
     } else {
-      return x + e;
+      return shape_t('[') + shape_t('_') + x + shape_t(']');
     }
   }
-  shape_t addss(shape_t c1, Subsequence e) {
-    if (back(c1) == '_') {
-      return c1;
+  shape_t mldr(Subsequence llb, Subsequence lb, shape_t x, Subsequence dr, Subsequence rb, Subsequence rrb) {
+    if (back(x) == '_') {
+      return shape_t('[') + x + shape_t(']');
     } else {
-      return c1 + shape_t('_');
+      return shape_t('[') + x + shape_t('_') + shape_t(']');
+    }
+  }
+  shape_t mldlr(Subsequence llb, Subsequence lb, Subsequence dl, shape_t x, Subsequence dr, Subsequence rb, Subsequence rrb) {
+    shape_t res;
+    if (front(x) == '_') {
+      res = x;
+    } else {
+      res = shape_t('_') + x;
+    }
+    if (back(x) == '_') {
+      res = x;
+    } else {
+      res = x + shape_t('_');
+    }
+    return shape_t('[') + x + shape_t(']');
+  }
+  shape_t addss(shape_t x, Subsequence r) {
+    if (back(x) == '_') {
+      return x;
+    } else {
+      return x + shape_t('_');
     }
   }
 }
 
-algebra mfe implements wuchty98Algebra(alphabet = char, comp = int) {
-  int sadd(Subsequence lb, int e) {
-    return e;
+
+algebra common_mfe implements commonAlgebra(alphabet = char, comp = int) {
+  int sadd(Subsequence lb, int x) {
+    return x;
   }
-  int cadd(int x, int e) {
-    return x + e;
+  int cadd(int x, int y) {
+    return x + y;
   }
-  int dlr(Subsequence lb, int e, Subsequence rb) {
-    return e + termaupenalty(lb, rb);
+  int edl(Subsequence llb, int x, Subsequence rrb) {
+    Subsequence stem;
+    stem.seq = llb.seq;
+    stem.i = llb.i+1;
+    stem.j = rrb.j;
+    return x + termaupenalty(stem, stem) + dl_energy(stem, stem);
   }
-  int sr(Subsequence lb, int e, Subsequence rb) {
-    return e + sr_energy(lb, rb);
+  int edr(Subsequence llb, int x, Subsequence rrb) {
+    Subsequence stem;
+    stem.seq = llb.seq;
+    stem.i = llb.i;
+    stem.j = rrb.j-1;
+    return x + termaupenalty(stem, stem) +                         dr_energy(stem, stem);
   }
-  int hl(Subsequence lb, Subsequence f1, Subsequence x, Subsequence f2, Subsequence rb) {
-    return hl_energy(f1, f2) + sr_energy(lb, rb);
+  int edlr(Subsequence llb, int x, Subsequence rrb) {
+    Subsequence stem;
+    stem.seq = llb.seq;
+    stem.i = llb.i+1;
+    stem.j = rrb.j-1;
+    return x + termaupenalty(stem, stem) + dl_energy(stem, stem) + dr_energy(stem, stem);
   }
-  int bl(Subsequence bl, Subsequence f1, Subsequence x, int e, Subsequence f2, Subsequence br) {
-    return e + bl_energy(f1, x, f2) + sr_energy(bl, br);
+  int drem(Subsequence llb, int x, Subsequence rrb) {
+    return x + termaupenalty(llb, rrb);
   }
-  int br(Subsequence bl, Subsequence f1, int e, Subsequence x, Subsequence f2, Subsequence br) {
-    return e + br_energy(f1, x, f2) + sr_energy(bl, br);
+  int sr(Subsequence llb, int x, Subsequence rrb) {
+    return x + sr_energy(llb, rrb);
   }
-  int il(Subsequence f1, Subsequence f2, Subsequence r1, int x, Subsequence r2, Subsequence f3, Subsequence f4) {
-    return x + il_energy(r1, r2) + sr_energy(f1, f4);
+  int hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+    return     sr_energy(llb, rrb) + hl_energy(lb, rb);
   }
-  int ml(Subsequence bl, Subsequence f1, int x, Subsequence f2, Subsequence br) {
-    return 380 + x + termaupenalty(f1, f2) + sr_energy(bl, br);
+  int bl(Subsequence llb, Subsequence lb, Subsequence lr, int x, Subsequence rb, Subsequence rrb) {
+    return x + sr_energy(llb, rrb) + bl_energy(lb, lr, rb);
   }
-  int app(int c1, int c) {
-    return c1 + c;
+  int br(Subsequence llb, Subsequence lb, int x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return x + sr_energy(llb, rrb) + br_energy(lb, rr, rb);
   }
-  int ul(int c1) {
-    return 40 + c1;
+  int il(Subsequence llb, Subsequence lb, Subsequence lr, int x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return x + sr_energy(llb, rrb) + il_energy(lr, rr);
   }
-  int addss(int c1, Subsequence e) {
-    return c1 + ss_energy(e);
+  int mldl(Subsequence llb, Subsequence lb, Subsequence dl, int x, Subsequence rb, Subsequence rrb) {
+    return x + sr_energy(llb, rrb) + 380 + termaupenalty(lb, rb) + dli_energy(lb, rb);
+  }
+  int mldr(Subsequence llb, Subsequence lb, int x, Subsequence dr, Subsequence rb, Subsequence rrb) {
+    return x + sr_energy(llb, rrb) + 380 + termaupenalty(lb, rb) +                      dri_energy(lb, rb);
+  }
+  int mldlr(Subsequence llb, Subsequence lb, Subsequence dl, int x, Subsequence dr, Subsequence rb, Subsequence rrb) {
+    return x + sr_energy(llb, rrb) + 380 + termaupenalty(lb, rb) + dli_energy(lb, rb) + dri_energy(lb, rb);
+  }
+  int ml(Subsequence llb, Subsequence lb, int x, Subsequence rb, Subsequence rrb) {
+    return x + sr_energy(llb, rrb) + 380 + termaupenalty(lb, rb);
+  }
+  int ul(int x) {
+    return x + 40;
+  }
+  int addss(int x, Subsequence r) {
+    return x + ss_energy(r);
   }
   int nil(void) {
     return 0;
@@ -285,80 +397,121 @@ algebra mfe implements wuchty98Algebra(alphabet = char, comp = int) {
   }
 }
 
-algebra p_func implements wuchty98Algebra(alphabet = char, comp = double) {
-  double sadd(Subsequence lb, double e) {
-    return e;
+algebra common_p_func implements commonAlgebra(alphabet = char, comp = double) {
+  double sadd(Subsequence lb, double x) {
+    return                                x;
   }
-  double cadd(double x, double e) {
-    return x * e;
+  double cadd(double x, double y) {
+    return                                x * y;
   }
-  double dlr(Subsequence lb, double e, Subsequence rb) {
-    return e * mk_pf(termaupenalty(lb, rb));
+  double edl(Subsequence llb, double x, Subsequence rrb) {
+    Subsequence stem;
+    stem.seq = llb.seq;
+    stem.i = llb.i+1;
+    stem.j = rrb.j;
+    return scale(1)                     * x * mk_pf(termaupenalty(stem, stem)) * mk_pf(dl_energy(stem, stem));
   }
-  double sr(Subsequence lb, double e, Subsequence rb) {
-    return scale(2) *e * mk_pf(sr_energy(lb, rb));
+  double edr(Subsequence llb, double x, Subsequence rrb) {
+    Subsequence stem;
+    stem.seq = llb.seq;
+    stem.i = llb.i;
+    stem.j = rrb.j-1;
+    return scale(1)                     * x * mk_pf(termaupenalty(stem, stem)) * mk_pf(dr_energy(stem, stem));
   }
-  double hl(Subsequence lb, Subsequence f1, Subsequence x, Subsequence f2, Subsequence rb) {
-    return scale(4+x.j-x.i) * mk_pf(hl_energy(f1, f2) + sr_energy(lb, rb));
+  double edlr(Subsequence llb, double x, Subsequence rrb) {
+    Subsequence stem;
+    stem.seq = llb.seq;
+    stem.i = llb.i+1;
+    stem.j = rrb.j-1;
+    return scale(2)                     * x * mk_pf(termaupenalty(stem, stem)) * mk_pf(dl_energy(stem, stem) + dr_energy(stem, stem));
   }
-  double bl(Subsequence bl, Subsequence f1, Subsequence x, double e, Subsequence f2, Subsequence br) {
-    return scale(4+x.j-x.i) * e * mk_pf(bl_energy(f1, x, f2) + sr_energy(bl, br));
+  double drem(Subsequence llb, double x, Subsequence rrb) {
+    return                                x * mk_pf(termaupenalty(llb, rrb));
   }
-  double br(Subsequence bl, Subsequence f1, double e, Subsequence x, Subsequence f2, Subsequence br) {
-    return scale(4+x.j-x.i) * e * mk_pf(br_energy(f1, x, f2) + sr_energy(bl, br));
+  double sr(Subsequence llb, double x, Subsequence rrb) {
+    return scale(2)                     * x * mk_pf(sr_energy(llb, rrb));
   }
-  double il(Subsequence f1, Subsequence f2, Subsequence r1, double x, Subsequence r2, Subsequence f3, Subsequence f4) {
-    return scale(4+r1.j-r1.i+r2.j-r2.i) * x * mk_pf(il_energy(r1, r2) + sr_energy(f1, f4));
+  double hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
+    return scale(4+r.j-r.i)                 * mk_pf(sr_energy(llb, rrb) + hl_energy(lb, rb));
   }
-  double ml(Subsequence bl, Subsequence f1, double x, Subsequence f2, Subsequence br) {
-    return scale(4) * x * mk_pf(380 + termaupenalty(f1, f2) + sr_energy(bl, br));
+  double bl(Subsequence llb, Subsequence lb, Subsequence lr, double x, Subsequence rb, Subsequence rrb) {
+    return scale(4+lr.j-lr.i)           * x * mk_pf(sr_energy(llb, rrb) + bl_energy(lb, lr, rb));
   }
-  double app(double c1, double c) {
-    return c1 * c;
+  double br(Subsequence llb, Subsequence lb, double x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return scale(4+rr.j-rr.i)           * x * mk_pf(sr_energy(llb, rrb) + br_energy(lb, rr, rb));
   }
-  double ul(double c1) {
-    return c1 * mk_pf(40);
+  double il(Subsequence llb, Subsequence lb, Subsequence lr, double x, Subsequence rr, Subsequence rb, Subsequence rrb) {
+    return scale(4+lr.j-lr.i+rr.j-rr.i) * x * mk_pf(sr_energy(llb, rrb) + il_energy(lr, rr));
   }
-  double addss(double c1, Subsequence e) {
-    return scale(e.j-e.i) * c1 * mk_pf(ss_energy(e));
+  double mldl(Subsequence llb, Subsequence lb, Subsequence dl, double x, Subsequence rb, Subsequence rrb) {
+    return scale(5)                     * x * mk_pf(380 + sr_energy(llb, rrb) + termaupenalty(lb, rb) + dli_energy(lb, rb));
+  }
+  double mldr(Subsequence llb, Subsequence lb, double x, Subsequence dr, Subsequence rb, Subsequence rrb) {
+    return scale(5)                     * x * mk_pf(380 + sr_energy(llb, rrb) + termaupenalty(lb, rb) + dri_energy(lb, rb));
+  }
+  double mldlr(Subsequence llb, Subsequence lb, Subsequence dl, double x, Subsequence dr, Subsequence rb, Subsequence rrb) {
+    return scale(6)                     * x * mk_pf(380 + sr_energy(llb, rrb) + termaupenalty(lb, rb) + dli_energy(lb, rb) + dri_energy(lb, rb));
+  }
+  double ml(Subsequence llb, Subsequence lb, double x, Subsequence rb, Subsequence rrb) {
+    return scale(4)                     * x * mk_pf(380 + sr_energy(llb, rrb) + termaupenalty(lb, rb));
+  }
+  double ul(double x) {
+    return                                x * mk_pf(40);
+  }
+  double addss(double x, Subsequence r) {
+    return scale(r.j-r.i)               * x * mk_pf(ss_energy(r));
   }
   double nil(void) {
-    return 1;
+    return                                1;
   }
   choice [double] h([double] i) {
     return list(sum(i));
   }
 }
+algebra count auto count;
+algebra enum auto enum;
+//~ ====== END common Algebras for Canonicals, Jens and Wuchty98 =====
 
-grammar wuchty98 uses wuchty98Algebra(axiom = struct) {
-  struct    = sadd(BASE, struct)    |
-              cadd(dangle, struct)  |
-              nil(EMPTY)            # h;
+algebra mfe extends common_mfe {
+  int nil(void) {
+    return 0; //dummy overload, because extentions of algebras can't be empty
+  }
+}
 
-  dangle    = dlr(LOC, closed, LOC) # h;
+algebra p_func extends common_p_func {
+  double nil(void) {
+    return 1; //dummy overload, because extentions of algebras can't be empty
+  }
+}
 
-  closed    = stack     | 
-              hairpin   |
-              leftB     | 
-              rightB    | 
-              iloop     | 
-              multiloop # h;
+grammar wuchty98 uses commonAlgebra(axiom = struct) {
+  struct    = sadd(BASE, struct)   |
+              cadd(dangle, struct) |
+              nil(EMPTY)           # h;
 
-  stack     = sr(BASE, closed, BASE) with basepairing # h;
+  dangle    = drem(LOC, closed, LOC) # h;
 
+  closed    = {stack                        | 
+               hairpin                      |
+               leftB                        | 
+               rightB                       | 
+               iloop                        | 
+               multiloop} with stackpairing # h;
+
+  stack     = sr(BASE,                                closed,                                BASE) with stackpairing # h;
   hairpin   = hl(BASE, BASE,                          REGION with minsize(3),          BASE, BASE) with stackpairing # h;
   leftB     = bl(BASE, BASE, REGION,                  closed,                          BASE, BASE) with stackpairing # h;
   rightB    = br(BASE, BASE,                          closed, REGION,                  BASE, BASE) with stackpairing # h;
   iloop     = il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) with stackpairing # h;
   multiloop = ml(BASE, BASE,                          ml_comps,                        BASE, BASE) with stackpairing # h;
 
-  ml_comps  = sadd(BASE, ml_comps)       |
-              app(ul(dangle), ml_comps1) # h ;
+  ml_comps  = sadd(BASE, ml_comps)        |
+              cadd(ul(dangle), ml_comps1) # h;
 
-  ml_comps1 = sadd(BASE, ml_comps1)      |
-              app(ul(dangle), ml_comps1) |
-              ul(dangle)                 |
-              addss(ul(dangle), REGION)  # h ;
+  ml_comps1 = sadd(BASE, ml_comps1)       |
+              cadd(ul(dangle), ml_comps1) |
+              ul(dangle)                  |
+              addss(ul(dangle), REGION)   # h;
 }
 
 instance count = wuchty98 (count);
