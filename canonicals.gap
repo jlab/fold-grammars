@@ -525,7 +525,7 @@ grammar canonicalsDangle uses commonAlgebra(axiom = struct) {
 
 instance pp = canonicalsDangle (shape5);
 
-instance shape5pfx = canonicalsDangle ((shape5 * p_func) );
+instance shape5pfx = canonicalsDangle ((shape5 * p_func) suchthat p_func_filter);
 instance shape4pfx = canonicalsDangle ((shape4 * p_func) suchthat p_func_filter);
 instance shape3pfx = canonicalsDangle ((shape3 * p_func) suchthat p_func_filter);
 instance shape2pfx = canonicalsDangle ((shape2 * p_func) suchthat p_func_filter);
