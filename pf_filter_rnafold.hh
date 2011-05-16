@@ -21,8 +21,8 @@
 
 }}} */
 
-#ifndef PF_FILTER_HH
-#define PF_FILTER_HH
+#ifndef PF_FILTER_RNAFOLD_HH
+#define PF_FILTER_RNAFOLD_HH
 
 /*
 List_Ref<std::pair<Shape, pfanswer> > out::h(List_Ref<std::pair<Shape, pfanswer> > i_orig)
@@ -39,13 +39,13 @@ List_Ref<std::pair<Shape, pfanswer> > out::h(List_Ref<std::pair<Shape, pfanswer>
 
 
 template <typename T>
-struct p_func_filter
+struct pfunc_filter
 {
 
   static double cutoff_prob;
 
   double sum;
-  p_func_filter()
+  pfunc_filter()
     : sum(0) {}
   void update(const T &src)
   {
@@ -65,13 +65,13 @@ inline bool operator==(const std::pair<Shape, std::pair<int, double> > &a, const
 }
 
 template <typename T>
-struct p_func_filter_allPP
+struct pfunc_filter_allPP
 {
 
   static double cutoff_prob;
 
   double sum;
-  p_func_filter_allPP()
+  pfunc_filter_allPP()
     : sum(0) {}
   void update(const T &src)
   {
@@ -88,10 +88,10 @@ struct p_func_filter_allPP
 #ifdef GAPC_MOD_TRANSLATION_UNIT
 
 template <typename T>
-double p_func_filter<T>::cutoff_prob = 0.000001;
+double pfunc_filter<T>::cutoff_prob = 0.000001;
 
 template <typename T>
-double p_func_filter_allPP<T>::cutoff_prob = 0.000001;
+double pfunc_filter_allPP<T>::cutoff_prob = 0.000001;
 
 
 #endif
