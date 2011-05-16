@@ -21,8 +21,8 @@
 
 }}} */
 
-#ifndef PF_FILTER_RNASHAPES_HH
-#define PF_FILTER_RNASHAPES_HH
+#ifndef PFUNC_FILTER_RNASHAPES_HH
+#define PFUNC_FILTER_RNASHAPES_HH
 
 /*
 List_Ref<std::pair<Shape, pfanswer> > out::h(List_Ref<std::pair<Shape, pfanswer> > i_orig)

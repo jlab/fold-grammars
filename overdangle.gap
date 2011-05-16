@@ -1,5 +1,5 @@
 import rna
-import pf_filter_rnafold
+import pfunc_filter_rnafold
 
 input rna
 
