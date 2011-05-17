@@ -1,6 +1,6 @@
 algebra alg_rnafold_pfunc implements sig_rnafold(alphabet = char, comp = double) {
   double sadd(Subsequence lb, double x) {
-    return                                x;
+    return scale(1) *                     x;
   }
   double cadd(double x, double y) {
     return                                x * y;
