@@ -46,6 +46,16 @@ instance mfeshape1pp = gra_macrostates(alg_macrostates_mfe * alg_rnashapes_shape
 instance count = gra_macrostates (count);
 //stop: instances used in the FoldingSpaces paper
 
+//start: instances used in for RapidShapes
+instance pf = gra_macrostates ( alg_macrostates_pfunc ) ;
+//~ instance shape5pfx = gra_macrostates ((alg_rnashapes_shape5 * alg_macrostates_pfunc) suchthat p_func_filter_all);
+//~ instance shape4pfx = gra_macrostates ((alg_rnashapes_shape4 * alg_macrostates_pfunc) suchthat p_func_filter_all);
+//~ instance shape3pfx = gra_macrostates ((alg_rnashapes_shape3 * alg_macrostates_pfunc) suchthat p_func_filter_all);
+//~ instance shape2pfx = gra_macrostates ((alg_rnashapes_shape2 * alg_macrostates_pfunc) suchthat p_func_filter_all);
+//~ instance shape1pfx = gra_macrostates ((alg_rnashapes_shape1 * alg_macrostates_pfunc) suchthat p_func_filter_all);
+//stop: instances used in for RapidShapes
+
+
 instance enum = gra_macrostates ( enum ) ;
 
 instance mfe = gra_macrostates ( alg_macrostates_mfe ) ;
@@ -61,7 +71,6 @@ instance shape5 = gra_macrostates ( alg_rnashapes_shape5 ) ;
 
 instance shape5mfe = gra_macrostates ( alg_rnashapes_shape5 * alg_macrostates_mfe ) ;
 
-instance pf = gra_macrostates ( alg_macrostates_pfunc ) ;
 instance shape5pf = gra_macrostates (alg_rnashapes_shape5 * alg_macrostates_pfunc);
 instance mfepppf = gra_macrostates( alg_macrostates_mfe * (alg_rnashapes_dotBracket * alg_macrostates_pfunc) ) ;
 
@@ -105,3 +114,4 @@ instance hcmfepp2 =  gra_macrostates ( (alg_rnashapes_helix_centers * alg_macros
 instance hcpp = gra_macrostates ( alg_rnashapes_helix_centers * alg_rnashapes_dotBracket ) ;
 
 instance hairpinCenterJan = gra_macrostates ( alg_rnashapes_hairpinCenter5 * (alg_rnashapes_dotBracket * alg_macrostates_mfe) );
+

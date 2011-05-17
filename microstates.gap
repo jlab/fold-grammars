@@ -52,6 +52,15 @@ instance mfeshape1pp = gra_microstates(alg_microstates_mfe * alg_rnafold_shape1 
 instance count = gra_microstates (count);
 //stop: instances used in the FoldingSpaces paper
 
+//start: instances used in for RapidShapes
+instance pf = gra_microstates ( alg_microstates_pfunc ) ;
+//~ instance shape5pfx = gra_microstates ((alg_rnashapes_shape5 * alg_microstates_pfunc) suchthat p_func_filter_all);
+//~ instance shape4pfx = gra_microstates ((alg_rnashapes_shape4 * alg_microstates_pfunc) suchthat p_func_filter_all);
+//~ instance shape3pfx = gra_microstates ((alg_rnashapes_shape3 * alg_microstates_pfunc) suchthat p_func_filter_all);
+//~ instance shape2pfx = gra_microstates ((alg_rnashapes_shape2 * alg_microstates_pfunc) suchthat p_func_filter_all);
+//~ instance shape1pfx = gra_microstates ((alg_rnashapes_shape1 * alg_microstates_pfunc) suchthat p_func_filter_all);
+//stop: instances used in for RapidShapes
+
 
 instance pp = gra_microstates (alg_rnafold_dotBracket);
 
