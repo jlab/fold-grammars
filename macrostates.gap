@@ -115,3 +115,5 @@ instance hcpp = gra_macrostates ( alg_rnashapes_helix_centers * alg_rnashapes_do
 
 instance hairpinCenterJan = gra_macrostates ( alg_rnashapes_hairpinCenter5 * (alg_rnashapes_dotBracket * alg_macrostates_mfe) );
 
+instance s5mp = gra_macrostates ( alg_rnashapes_shape5 * ( alg_macrostates_mfe % alg_macrostates_pfunc ) ) ;
+instance check = gra_macrostates ( alg_rnashapes_shape5 * alg_macrostates_pfunc);
