@@ -1,5 +1,5 @@
 //This is the grammar, developed by Bjoern Voss, for the probablistic shape analysis of RNAshapes 2006 release. It is also known as "canonicals_nonamb" in the Haskell version of RNAshapes, or "adpf_nonamb"
-grammar gra_macrostates uses sig_rnashapes(axiom = struct) {
+grammar gra_macrostate uses sig_rnashapes(axiom = struct) {
 	struct = left_dangle | trafo(noleft_dangle) | left_unpaired # h;
 
 	left_unpaired = sadd(BASE, left_unpaired) | sadd(BASE, left_dangle) # h;

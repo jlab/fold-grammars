@@ -1,4 +1,4 @@
-algebra alg_macrostates_mfe implements sig_rnashapes(alphabet = char, answer = mfeanswer) {
+algebra alg_macrostate_mfe implements sig_rnashapes(alphabet = char, answer = mfeanswer) {
 	mfeanswer sadd(Subsequence lb,mfeanswer e) {
 		mfeanswer res;
 		res.energy = e.energy;
@@ -360,7 +360,7 @@ algebra alg_macrostates_mfe implements sig_rnashapes(alphabet = char, answer = m
 }
 
 
-algebra alg_macrostates_mfeV2 implements sig_rnashapes(alphabet = char, answer = mfeanswer_v2) {
+algebra alg_macrostate_mfeV2 implements sig_rnashapes(alphabet = char, answer = mfeanswer_v2) {
 	mfeanswer_v2 sadd(Subsequence lb,mfeanswer_v2 e) {
 		mfeanswer_v2 res = e;
 		

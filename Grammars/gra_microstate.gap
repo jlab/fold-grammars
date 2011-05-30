@@ -1,5 +1,5 @@
-//the MicroStates grammar is also known as "canonicals" from the RNAshapes program.
-grammar gra_microstates uses sig_rnafold(axiom = struct) {
+//the MicroState grammar is also known as "canonicals" from the RNAshapes program.
+grammar gra_microstate uses sig_rnafold(axiom = struct) {
   struct    = sadd(BASE, struct)   |
               cadd(dangle, struct) |
               nil(EMPTY)           # h;

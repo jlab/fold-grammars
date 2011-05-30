@@ -1,4 +1,4 @@
-algebra alg_macrostates_pfunc implements sig_rnashapes(alphabet = char, answer = pfanswer) {
+algebra alg_macrostate_pfunc implements sig_rnashapes(alphabet = char, answer = pfanswer) {
 	pfanswer sadd(Subsequence lb,pfanswer e) {
 		pfanswer res = e;
 		
@@ -535,14 +535,14 @@ algebra alg_macrostates_pfunc implements sig_rnashapes(alphabet = char, answer =
 	}
 }
 
-algebra alg_macrostates_pfunc_filter_me extends alg_macrostates_pfunc {
+algebra alg_macrostate_pfunc_filter_me extends alg_macrostate_pfunc {
   choice [pfanswer] h([pfanswer] l)
   {
     return l;
   }
 }
 
-algebra alg_macrostates_pfunc_id extends alg_macrostates_pfunc {
+algebra alg_macrostate_pfunc_id extends alg_macrostate_pfunc {
   choice [pfanswer] h([pfanswer] l)
   {
     return l;
