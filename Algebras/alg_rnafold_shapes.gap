@@ -157,7 +157,7 @@ algebra alg_rnafold_shape1 extends alg_rnafold_shape5 {
     } else {
       res = x + shape_t('_');
     }
-    return shape_t('[') + x + shape_t(']');
+    return shape_t('[') + res + shape_t(']');
   }
   shape_t addss(shape_t x, Subsequence r) {
     if (back(x) == '_') {
