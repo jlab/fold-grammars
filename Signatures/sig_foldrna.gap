@@ -1,4 +1,4 @@
-signature sig_rnashapes(alphabet,answer) {
+signature sig_foldrna(alphabet,answer) {
 	answer sadd(Subsequence,answer);
 	answer cadd(answer,answer);
 	answer cadd_Pr(answer,answer);
@@ -7,18 +7,15 @@ signature sig_rnashapes(alphabet,answer) {
 	answer ambd(answer,Subsequence,answer);
 	answer ambd_Pr(answer,Subsequence,answer);
 	answer nil(Subsequence);
-	answer nil_Pr(Subsequence);
-	answer edl(Subsequence,answer);
-	answer edr(answer,Subsequence);
+	answer edl(Subsequence,answer,Subsequence);
+	answer edr(Subsequence,answer,Subsequence);
 	answer edlr(Subsequence,answer,Subsequence);
-	answer drem(answer);
-	answer is(answer);
+	answer drem(Subsequence,answer,Subsequence);
 	answer sr(Subsequence,answer,Subsequence);
 	answer hl(Subsequence,Subsequence,Subsequence,Subsequence,Subsequence);
-	answer sp(Subsequence,Subsequence,answer,Subsequence,Subsequence);
-	answer bl(Subsequence,answer);
-	answer br(answer,Subsequence);
-	answer il(Subsequence,answer,Subsequence);
+	answer bl(Subsequence, Subsequence, Subsequence, answer, Subsequence, Subsequence);
+	answer br(Subsequence, Subsequence, answer, Subsequence, Subsequence, Subsequence);
+	answer il(Subsequence, Subsequence, Subsequence, answer, Subsequence, Subsequence, Subsequence);
 	answer ml(Subsequence,Subsequence,answer,Subsequence,Subsequence);
 	answer mldr(Subsequence,Subsequence,answer,Subsequence,Subsequence,Subsequence);
 	answer mladr(Subsequence,Subsequence,answer,Subsequence,Subsequence,Subsequence);

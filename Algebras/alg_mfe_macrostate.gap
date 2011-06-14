@@ -1,4 +1,4 @@
-algebra alg_macrostate_mfe implements sig_rnashapes(alphabet = char, answer = mfeanswer) {
+algebra alg_mfe_macrostate implements sig_foldrna(alphabet = char, answer = mfeanswer) {
 	mfeanswer sadd(Subsequence lb,mfeanswer e) {
 		mfeanswer res;
 		res.energy = e.energy;
@@ -57,44 +57,33 @@ algebra alg_macrostate_mfe implements sig_rnashapes(alphabet = char, answer = mf
 		return res;
 	}
 
-	mfeanswer nil_Pr(Subsequence loc) {
+	mfeanswer edl(Subsequence lb,mfeanswer e, Subsequence rloc) {
 		mfeanswer res;
-		res.energy = 0;
-		res.firstStem = loc;
-		return res;
-	}
-
-	mfeanswer edl(Subsequence lb,mfeanswer e) {
-		mfeanswer res;
-		res.energy = e.energy + dl_energy(e.firstStem, e.firstStem);
+		res.energy = e.energy + dl_energy(e.firstStem, e.firstStem) + termaupenalty(e.firstStem, e.firstStem);
 		res.firstStem = e.firstStem;
 		return res;
 	}
 
-	mfeanswer edr(mfeanswer e,Subsequence rb) {
+	mfeanswer edr(Subsequence lloc, mfeanswer e,Subsequence rb) {
 		mfeanswer res;
-		res.energy = e.energy + dr_energy(e.firstStem, e.firstStem);
+		res.energy = e.energy + dr_energy(e.firstStem, e.firstStem) + termaupenalty(e.firstStem, e.firstStem);
 		res.firstStem = e.firstStem;
 		return res;
 	}
 
 	mfeanswer edlr(Subsequence lb,mfeanswer e,Subsequence rb) {
 		mfeanswer res;
-		res.energy = e.energy + dl_energy(e.firstStem, e.firstStem) + dr_energy(e.firstStem, e.firstStem);
+		res.energy = e.energy + dl_energy(e.firstStem, e.firstStem) + dr_energy(e.firstStem, e.firstStem) + termaupenalty(e.firstStem, e.firstStem);
 		res.firstStem = e.firstStem;
 		return res;
 	}
 
-	mfeanswer drem(mfeanswer e) {
-		return e;
-	}
-
-	mfeanswer is(mfeanswer e) {
-		mfeanswer res;
-		res.energy = e.energy + termaupenalty(e.firstStem, e.firstStem);
-		res.firstStem = e.firstStem;
+	mfeanswer drem(Subsequence lloc, mfeanswer e, Subsequence rloc) {
+		mfeanswer res = e;
+		res.energy = res.energy + termaupenalty(e.firstStem, e.firstStem);
 		return res;
 	}
+
 
 	mfeanswer sr(Subsequence lb,mfeanswer e,Subsequence rb) {
 		mfeanswer res;
@@ -121,53 +110,44 @@ algebra alg_macrostate_mfe implements sig_rnashapes(alphabet = char, answer = mf
 		return res;
 	}
 
-	mfeanswer sp(Subsequence llb,Subsequence lb,mfeanswer e,Subsequence rb,Subsequence rrb) {
+
+	mfeanswer bl(Subsequence llb,Subsequence lb,Subsequence lregion,mfeanswer e,Subsequence rb,Subsequence rrb) {
 		mfeanswer res;
 		res.firstStem.seq = llb.seq;
 		res.firstStem.i = llb.i;
 		res.firstStem.j = rrb.j;
-		
-		res.energy = e.energy + sr_energy(res.firstStem,res.firstStem);
-		return res;
-	}
-
-	mfeanswer bl(Subsequence lregion,mfeanswer e) {
-		mfeanswer res;
-		res.firstStem.seq = lregion.seq;
-		res.firstStem.i = lregion.i;
-		res.firstStem.j = e.firstStem.j;
 		
 		Subsequence innerStem;
 		innerStem.seq = lregion.seq;
 		innerStem.i = lregion.i-1;
 		innerStem.j = e.firstStem.j+1;
 		
-		res.energy = e.energy + bl_energy(innerStem,lregion,innerStem);
+		res.energy = e.energy + bl_energy(innerStem,lregion,innerStem) + sr_energy(res.firstStem,res.firstStem);
 		return res;
 	}
 
-	mfeanswer br(mfeanswer e,Subsequence rregion) {
+	mfeanswer br(Subsequence llb,Subsequence lb,mfeanswer e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		mfeanswer res;
-		res.firstStem.seq = rregion.seq;
-		res.firstStem.i = e.firstStem.i;
-		res.firstStem.j = rregion.j;
+		res.firstStem.seq = llb.seq;
+		res.firstStem.i = llb.i;
+		res.firstStem.j = rrb.j;
 		
 		Subsequence innerStem;
 		innerStem.seq = rregion.seq;
 		innerStem.i = e.firstStem.i-1;
 		innerStem.j = rregion.j+1;
 		
-		res.energy = e.energy + br_energy(innerStem, rregion, innerStem);  
+		res.energy = e.energy + br_energy(innerStem, rregion, innerStem) + sr_energy(res.firstStem,res.firstStem);  
 		return res;
 	}
 
-	mfeanswer il(Subsequence lregion,mfeanswer e,Subsequence rregion) {
+	mfeanswer il(Subsequence llb,Subsequence lb,Subsequence lregion,mfeanswer e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		mfeanswer res;
-		res.firstStem.seq = lregion.seq;
-		res.firstStem.i = lregion.i;
-		res.firstStem.j = rregion.j;
+		res.firstStem.seq = llb.seq;
+		res.firstStem.i = llb.i;
+		res.firstStem.j = rrb.j;
 		
-		res.energy = e.energy + il_energy(lregion, rregion);
+		res.energy = e.energy + il_energy(lregion, rregion) + sr_energy(res.firstStem,res.firstStem);  
 		return res;
 	}
 
@@ -360,7 +340,7 @@ algebra alg_macrostate_mfe implements sig_rnashapes(alphabet = char, answer = mf
 }
 
 
-algebra alg_macrostate_mfeV2 implements sig_rnashapes(alphabet = char, answer = mfeanswer_v2) {
+algebra alg_mfeV2_macrostate implements sig_foldrna(alphabet = char, answer = mfeanswer_v2) {
 	mfeanswer_v2 sadd(Subsequence lb,mfeanswer_v2 e) {
 		mfeanswer_v2 res = e;
 		
@@ -440,29 +420,18 @@ algebra alg_macrostate_mfeV2 implements sig_rnashapes(alphabet = char, answer = 
 		return res;
 	}
 
-	mfeanswer_v2 nil_Pr(Subsequence loc) {
-		mfeanswer_v2 res;
-		
-		res.energy = 0;
-		res.firstStem = loc;
-		res.lastStem = loc;
-		res.subword = loc;
-		
-		return res;
-	}
-
-	mfeanswer_v2 edl(Subsequence lb,mfeanswer_v2 e) {
+	mfeanswer_v2 edl(Subsequence lb,mfeanswer_v2 e, Subsequence rloc) {
 		mfeanswer_v2 res = e;
-		res.energy = e.energy + dl_energy(e.firstStem, e.firstStem);
+		res.energy = e.energy + dl_energy(e.firstStem, e.firstStem) + termaupenalty(e.firstStem, e.firstStem);
 		res.subword.i = lb.i;
 		
 		return res;
 	}
 
-	mfeanswer_v2 edr(mfeanswer_v2 e,Subsequence rb) {
+	mfeanswer_v2 edr(Subsequence lloc, mfeanswer_v2 e,Subsequence rb) {
 		mfeanswer_v2 res = e;
 		
-		res.energy = e.energy + dr_energy(e.firstStem, e.firstStem);
+		res.energy = e.energy + dr_energy(e.firstStem, e.firstStem) + termaupenalty(e.firstStem, e.firstStem);
 		res.subword.j = rb.j;
 		
 		return res;
@@ -471,22 +440,16 @@ algebra alg_macrostate_mfeV2 implements sig_rnashapes(alphabet = char, answer = 
 	mfeanswer_v2 edlr(Subsequence lb,mfeanswer_v2 e,Subsequence rb) {
 		mfeanswer_v2 res = e;
 		
-		res.energy = e.energy + dl_energy(e.firstStem, e.firstStem) + dr_energy(e.firstStem, e.firstStem);
+		res.energy = e.energy + dl_energy(e.firstStem, e.firstStem) + dr_energy(e.firstStem, e.firstStem) + termaupenalty(e.firstStem, e.firstStem);
 		res.subword.i = lb.i;
 		res.subword.j = rb.j;
 		
 		return res;
 	}
 
-	mfeanswer_v2 drem(mfeanswer_v2 e) {
-		return e;
-	}
-
-	mfeanswer_v2 is(mfeanswer_v2 e) {
+	mfeanswer_v2 drem(Subsequence lloc, mfeanswer_v2 e, Subsequence rloc) {
 		mfeanswer_v2 res = e;
-		
-		res.energy = e.energy + termaupenalty(e.firstStem, e.firstStem);
-		
+		res.energy = res.energy + termaupenalty(e.firstStem, e.firstStem);
 		return res;
 	}
 
@@ -523,54 +486,56 @@ algebra alg_macrostate_mfeV2 implements sig_rnashapes(alphabet = char, answer = 
 		return res;
 	}
 
-	mfeanswer_v2 sp(Subsequence llb,Subsequence lb,mfeanswer_v2 e,Subsequence rb,Subsequence rrb) {
+
+	mfeanswer_v2 bl(Subsequence llb,Subsequence lb,Subsequence lregion,mfeanswer_v2 e,Subsequence rb,Subsequence rrb) {
 		mfeanswer_v2 res = e;
 		
 		res.firstStem.seq = llb.seq;
 		res.firstStem.i = llb.i;
 		res.firstStem.j = rrb.j;
+
+		Subsequence innerStem;
+		innerStem.seq = lregion.seq;
+		innerStem.i = lregion.i-1;
+		innerStem.j = e.firstStem.j+1;
 		
-		res.energy = e.energy + sr_energy(res.firstStem,res.firstStem);
+		res.energy = e.energy + bl_energy(innerStem,lregion,innerStem) + sr_energy(res.firstStem,res.firstStem);
+		//~ res.subword.i = lregion.i;
 		res.lastStem = res.firstStem;
 		res.subword = res.firstStem;
 		
 		return res;
 	}
 
-	mfeanswer_v2 bl(Subsequence lregion,mfeanswer_v2 e) {
+	mfeanswer_v2 br(Subsequence llb,Subsequence lb,mfeanswer_v2 e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		mfeanswer_v2 res = e;
 		
-		Subsequence innerStem;
-		innerStem.seq = lregion.seq;
-		innerStem.i = lregion.i-1;
-		innerStem.j = e.firstStem.j+1;
-		
-		res.energy = e.energy + bl_energy(innerStem,lregion,innerStem);
-		res.subword.i = lregion.i;
-		
-		return res;
-	}
+		res.firstStem.seq = llb.seq;
+		res.firstStem.i = llb.i;
+		res.firstStem.j = rrb.j;
 
-	mfeanswer_v2 br(mfeanswer_v2 e,Subsequence rregion) {
-		mfeanswer_v2 res = e;
-		
 		Subsequence innerStem;
 		innerStem.seq = rregion.seq;
 		innerStem.i = e.firstStem.i-1;
 		innerStem.j = rregion.j+1;
 		
-		res.energy = e.energy + br_energy(innerStem, rregion, innerStem);  
-		res.subword.j = rregion.j;
+		res.energy = e.energy + br_energy(innerStem, rregion, innerStem) + sr_energy(res.firstStem,res.firstStem);
+		res.lastStem = res.firstStem;
+		res.subword = res.firstStem;
 		
 		return res;
 	}
 
-	mfeanswer_v2 il(Subsequence lregion,mfeanswer_v2 e,Subsequence rregion) {
+	mfeanswer_v2 il(Subsequence llb,Subsequence lb,Subsequence lregion,mfeanswer_v2 e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		mfeanswer_v2 res = e;
 		
-		res.energy = e.energy + il_energy(lregion, rregion);
-		res.subword.i = lregion.i;
-		res.subword.j = rregion.j;
+		res.firstStem.seq = llb.seq;
+		res.firstStem.i = llb.i;
+		res.firstStem.j = rrb.j;
+
+		res.energy = e.energy + il_energy(lregion, rregion) + sr_energy(res.firstStem,res.firstStem);
+		res.subword = res.firstStem;
+		res.lastStem = res.firstStem;
 		
 		return res;
 	}

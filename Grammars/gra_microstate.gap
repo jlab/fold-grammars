@@ -1,8 +1,8 @@
 //the MicroState grammar is also known as "canonicals" from the RNAshapes program.
-grammar gra_microstate uses sig_rnafold(axiom = struct) {
+grammar gra_microstate uses sig_foldrna(axiom = struct) {
   struct    = sadd(BASE, struct)   |
               cadd(dangle, struct) |
-              nil(EMPTY)           # h;
+              nil(LOC)           # h;
 
   dangle    = edl (BASE, closed, LOC ) |
               edr (LOC,  closed, BASE) | 
@@ -28,10 +28,10 @@ grammar gra_microstate uses sig_rnafold(axiom = struct) {
               mldlr(BASE, BASE, BASE,                    ml_comps, BASE,                    BASE, BASE) with stackpairing # h;
 
   ml_comps  = sadd(BASE, ml_comps)        |
-              cadd(ul(dangle), ml_comps1) # h;
+              cadd(incl(dangle), ml_comps1) # h;
 
   ml_comps1 = sadd(BASE, ml_comps1)       |
-              cadd(ul(dangle), ml_comps1) |
-              ul(dangle)                  |
-              addss(ul(dangle), REGION)   # h;
+              cadd(incl(dangle), ml_comps1) |
+              incl(dangle)                  |
+              addss(incl(dangle), REGION)   # h;
 }

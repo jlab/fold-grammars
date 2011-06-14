@@ -1,4 +1,4 @@
-algebra alg_rnashapes_helix_centers implements sig_rnashapes(alphabet = char, answer = Rope) {
+algebra alg_helix_centers implements sig_foldrna(alphabet = char, answer = Rope) {
 	Rope sadd(Subsequence b,Rope e) {
 		return e;
 	}
@@ -50,16 +50,12 @@ algebra alg_rnashapes_helix_centers implements sig_rnashapes(alphabet = char, an
 		return r;
 	}
 
-	Rope nil_Pr(Subsequence loc) {
-		Rope r;
-		return r;
-	}
 
-	Rope edl(Subsequence lb,Rope e) {
+	Rope edl(Subsequence lb,Rope e, Subsequence rloc) {
 		return e;
 	}
 
-	Rope edr(Rope e,Subsequence rb) {
+	Rope edr(Subsequence lloc, Rope e,Subsequence rb) {
 		return e;
 	}
 
@@ -67,11 +63,7 @@ algebra alg_rnashapes_helix_centers implements sig_rnashapes(alphabet = char, an
 		return e;
 	}
 
-	Rope drem(Rope e) {
-		return e;
-	}
-
-	Rope is(Rope e) {
+	Rope drem(Subsequence lloc, Rope e, Subsequence rloc) {
 		return e;
 	}
 
@@ -90,19 +82,15 @@ algebra alg_rnashapes_helix_centers implements sig_rnashapes(alphabet = char, an
 		return res;
 	}
 
-	Rope sp(Subsequence llb,Subsequence lb,Rope e,Subsequence rb,Subsequence rrb) {
+	Rope bl(Subsequence llb,Subsequence lb,Subsequence lregion,Rope e,Subsequence rb,Subsequence rrb) {
 		return e;
 	}
 
-	Rope bl(Subsequence lregion,Rope e) {
+	Rope br(Subsequence llb,Subsequence lb,Rope e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		return e;
 	}
 
-	Rope br(Rope e,Subsequence rregion) {
-		return e;
-	}
-
-	Rope il(Subsequence lregion,Rope e,Subsequence rregion) {
+	Rope il(Subsequence llb,Subsequence lb,Subsequence lregion,Rope e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		return e;
 	}
 
@@ -260,7 +248,7 @@ algebra alg_rnashapes_helix_centers implements sig_rnashapes(alphabet = char, an
 
 
 //hairpin center algebra is a copy of the helix center algebra, but considers only the center positions of loops within hairpins and not for multiloops.
-algebra alg_rnashapes_hairpinCenter5 implements sig_rnashapes(alphabet = char, answer = Rope) {
+algebra alg_hairpinCenter5 implements sig_foldrna(alphabet = char, answer = Rope) {
 	Rope sadd(Subsequence b,Rope e) {
 		Rope emptyShape;
 		Rope res;
@@ -323,16 +311,11 @@ algebra alg_rnashapes_hairpinCenter5 implements sig_rnashapes(alphabet = char, a
 		return r;
 	}
 
-	Rope nil_Pr(Subsequence loc) {
-		Rope r;
-		return r;
-	}
-
-	Rope edl(Subsequence lb,Rope e) {
+	Rope edl(Subsequence lb,Rope e, Subsequence rloc) {
 		return e;
 	}
 
-	Rope edr(Rope e,Subsequence rb) {
+	Rope edr(Subsequence lloc, Rope e,Subsequence rb) {
 		return e;
 	}
 
@@ -340,13 +323,10 @@ algebra alg_rnashapes_hairpinCenter5 implements sig_rnashapes(alphabet = char, a
 		return e;
 	}
 
-	Rope drem(Rope e) {
+	Rope drem(Subsequence lloc, Rope e, Subsequence rloc) {
 		return e;
 	}
 
-	Rope is(Rope e) {
-		return e;
-	}
 
 	Rope sr(Subsequence lb,Rope e,Subsequence rb) {
 		return e;
@@ -364,19 +344,19 @@ algebra alg_rnashapes_hairpinCenter5 implements sig_rnashapes(alphabet = char, a
 		return res;
 	}
 
-	Rope sp(Subsequence llb,Subsequence lb,Rope e,Subsequence rb,Subsequence rrb) {
+	//~ Rope sp(Subsequence llb,Subsequence lb,Rope e,Subsequence rb,Subsequence rrb) {
+		//~ return e;
+	//~ }
+
+	Rope bl(Subsequence llb,Subsequence lb,Subsequence lregion,Rope e,Subsequence rb,Subsequence rrb) {
 		return e;
 	}
 
-	Rope bl(Subsequence lregion,Rope e) {
+	Rope br(Subsequence llb,Subsequence lb,Rope e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		return e;
 	}
 
-	Rope br(Rope e,Subsequence rregion) {
-		return e;
-	}
-
-	Rope il(Subsequence lregion,Rope e,Subsequence rregion) {
+	Rope il(Subsequence llb,Subsequence lb,Subsequence lregion,Rope e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		return e;
 	}
 

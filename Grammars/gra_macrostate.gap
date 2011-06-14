@@ -1,22 +1,20 @@
 //This is the grammar, developed by Bjoern Voss, for the probablistic shape analysis of RNAshapes 2006 release. It is also known as "canonicals_nonamb" in the Haskell version of RNAshapes, or "adpf_nonamb"
-grammar gra_macrostate uses sig_rnashapes(axiom = struct) {
+grammar gra_macrostate uses sig_foldrna(axiom = struct) {
 	struct = left_dangle | trafo(noleft_dangle) | left_unpaired # h;
 
 	left_unpaired = sadd(BASE, left_unpaired) | sadd(BASE, left_dangle) # h;
 
-	left_dangle = ambd(edanglel, BASE, noleft_dangle) | cadd_Pr(edanglel, {noleft_dangle | nil_Pr(LOC)}) | cadd(edanglelr, {left_dangle | left_unpaired}) | nil(LOC) # h;
+	left_dangle = ambd(edanglel, BASE, noleft_dangle) | cadd_Pr(edanglel, {noleft_dangle | nil(LOC)}) | cadd(edanglelr, {left_dangle | left_unpaired}) | nil(LOC) # h;
 
-	noleft_dangle = cadd_Pr_Pr(edangler, {left_dangle | left_unpaired}) | cadd_Pr_Pr_Pr(nodangle, {noleft_dangle | nil_Pr(LOC)}) | ambd_Pr(nodangle, BASE, noleft_dangle) # h;
+	noleft_dangle = cadd_Pr_Pr(edangler, {left_dangle | left_unpaired}) | cadd_Pr_Pr_Pr(nodangle, {noleft_dangle | nil(LOC)}) | ambd_Pr(nodangle, BASE, noleft_dangle) # h;
 
-	edanglel = edl(BASE, initstem) # h;
+	edanglel = edl(BASE, closed, LOC) # h;
 
-	edangler = edr(initstem, BASE) # h;
+	edangler = edr(LOC, closed, BASE) # h;
 
-	edanglelr = edlr(BASE, initstem, BASE) # h;
+	edanglelr = edlr(BASE, closed, BASE) # h;
 
-	nodangle = drem(initstem) # h;
-
-	initstem = is(closed) # h;
+	nodangle = drem(LOC, closed, LOC) # h;
 
 	closed = stack | hairpin | multiloop | leftB | rightB | iloop # h;
 
@@ -54,10 +52,10 @@ grammar gra_macrostate uses sig_rnashapes(axiom = struct) {
 
 	hairpin = hl(BASE, BASE, REGION with minsize(3), BASE, BASE) with stackpairing # h;
 
-	leftB = sp(BASE, BASE, bl(REGION, closed), BASE, BASE) with stackpairing # h;
+	leftB = bl(BASE, BASE, REGION, closed, BASE, BASE) with stackpairing # h;
 
-	rightB = sp(BASE, BASE, br(closed, REGION), BASE, BASE) with stackpairing # h;
+	rightB = br(BASE, BASE, closed, REGION, BASE, BASE) with stackpairing # h;
 
-	iloop = sp(BASE, BASE, il(REGION with maxsize(30), closed, REGION with maxsize(30)), BASE, BASE) with stackpairing # h;
+	iloop = il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) with stackpairing # h;
 
 }

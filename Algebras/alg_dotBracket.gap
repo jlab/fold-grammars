@@ -1,4 +1,4 @@
-algebra alg_rnashapes_dotBracket implements sig_rnashapes(alphabet = char, answer = string) {
+algebra alg_dotBracket implements sig_foldrna(alphabet = char, answer = string) {
 	string sadd(Subsequence lb,string e) {
 		string res;
 		append(res, '.');
@@ -55,19 +55,14 @@ algebra alg_rnashapes_dotBracket implements sig_rnashapes(alphabet = char, answe
 		return r;
 	}
 
-	string nil_Pr(Subsequence loc) {
-		string r;
-		return r;
-	}
-
-	string edl(Subsequence lb,string e) {
+	string edl(Subsequence lb,string e, Subsequence loc) {
 		string res;
 		append(res, '.');
 		append(res, e);
 		return res;
 	}
 
-	string edr(string e,Subsequence rb) {
+	string edr(Subsequence loc, string e,Subsequence rb) {
 		string res;
 		append(res, e);
 		append(res, '.');
@@ -82,11 +77,7 @@ algebra alg_rnashapes_dotBracket implements sig_rnashapes(alphabet = char, answe
 		return res;
 	}
 
-	string drem(string e) {
-		return e;
-	}
-
-	string is(string e) {
+	string drem(Subsequence lloc, string e, Subsequence rloc) {
 		return e;
 	}
 
@@ -106,33 +97,32 @@ algebra alg_rnashapes_dotBracket implements sig_rnashapes(alphabet = char, answe
 		return res;
 	}
 
-	string sp(Subsequence llb,Subsequence lb,string e,Subsequence rb,Subsequence rrb) {
+
+	string bl(Subsequence llb,Subsequence lb,Subsequence lregion,string e,Subsequence rb,Subsequence rrb) {
 		string res;
 		append(res, "((",2);
+		append(res, '.', size(lregion));
 		append(res, e);
 		append(res, "))",2);
 		return res;
 	}
 
-	string bl(Subsequence lregion,string e) {
+	string br(Subsequence llb,Subsequence lb,string e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		string res;
-		append(res, '.', size(lregion));
+		append(res, "((",2);
 		append(res, e);
+		append(res, '.', size(rregion));
+		append(res, "))",2);
 		return res;
 	}
 
-	string br(string e,Subsequence rregion) {
+	string il(Subsequence llb,Subsequence lb,Subsequence lregion,string e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		string res;
-		append(res, e);
-		append(res, '.', size(rregion));
-		return res;
-	}
-
-	string il(Subsequence lregion,string e,Subsequence rregion) {
-		string res;
+		append(res, "((",2);
 		append(res, '.', size(lregion));
 		append(res, e);
 		append(res, '.', size(rregion));
+		append(res, "))",2);
 		return res;
 	}
 

@@ -1,4 +1,4 @@
-algebra alg_macrostate_pfunc implements sig_rnashapes(alphabet = char, answer = pfanswer) {
+algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pfanswer) {
 	pfanswer sadd(Subsequence lb,pfanswer e) {
 		pfanswer res = e;
 		
@@ -81,24 +81,10 @@ algebra alg_macrostate_pfunc implements sig_rnashapes(alphabet = char, answer = 
 		return res;
 	}
 
-	pfanswer nil_Pr(Subsequence loc) {
-		pfanswer res;
-		
-		res.pf.q1 = 1.0;
-		res.pf.q2 = 0.0;
-		res.pf.q3 = 0.0;
-		res.pf.q4 = 0.0;
-		res.firststem.i = seq_size(loc);
-		res.firststem.j = seq_size(loc);
-		res.firststem.seq = loc.seq;
-		
-		return res;
-	}
-
-	pfanswer edl(Subsequence lb,pfanswer e) {
+	pfanswer edl(Subsequence lb,pfanswer e, Subsequence rloc) {
 		pfanswer res = e;
 		
-		res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(dl_energy(e.firststem, e.firststem));
+		res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(dl_energy(e.firststem, e.firststem) + termaupenalty(e.firststem, e.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -106,10 +92,10 @@ algebra alg_macrostate_pfunc implements sig_rnashapes(alphabet = char, answer = 
 		return res;
 	}
 
-	pfanswer edr(pfanswer e,Subsequence rb) {
+	pfanswer edr(Subsequence lloc, pfanswer e,Subsequence rb) {
 		pfanswer res = e;
 		
-		res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(dr_energy(e.firststem, e.firststem));
+		res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(dr_energy(e.firststem, e.firststem) + termaupenalty(e.firststem, e.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -120,7 +106,7 @@ algebra alg_macrostate_pfunc implements sig_rnashapes(alphabet = char, answer = 
 	pfanswer edlr(Subsequence lb,pfanswer e,Subsequence rb) {
 		pfanswer res = e;
 		
-		res.pf.q1 = scale(2) * e.pf.q1 * mk_pf(dl_energy(e.firststem, e.firststem) + dr_energy(e.firststem, e.firststem));
+		res.pf.q1 = scale(2) * e.pf.q1 * mk_pf(dl_energy(e.firststem, e.firststem) + dr_energy(e.firststem, e.firststem) + termaupenalty(e.firststem, e.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -128,18 +114,14 @@ algebra alg_macrostate_pfunc implements sig_rnashapes(alphabet = char, answer = 
 		return res;
 	}
 
-	pfanswer drem(pfanswer e) {
-		return e;
-	}
-
-	pfanswer is(pfanswer e) {
+	pfanswer drem(Subsequence lloc, pfanswer e, Subsequence rloc) {
 		pfanswer res = e;
-		
+
 		res.pf.q1 = e.pf.q1 * mk_pf(termaupenalty(e.firststem, e.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
-		
+
 		return res;
 	}
 
@@ -177,31 +159,19 @@ algebra alg_macrostate_pfunc implements sig_rnashapes(alphabet = char, answer = 
 		return res;
 	}
 
-	pfanswer sp(Subsequence llb,Subsequence lb,pfanswer e,Subsequence rb,Subsequence rrb) {
+
+	pfanswer bl(Subsequence llb,Subsequence lb,Subsequence lregion,pfanswer e,Subsequence rb,Subsequence rrb) {
 		pfanswer res = e;
 		
 		res.firststem.i = llb.i;
 		res.firststem.j = rrb.j;
-		
-		res.pf.q1 = scale(4) * e.pf.q1 * mk_pf(sr_energy(res.firststem,res.firststem));
-		res.pf.q2 = 0.0;
-		res.pf.q3 = 0.0;
-		res.pf.q4 = 0.0;
-		
-		return res;
-	}
-
-	pfanswer bl(Subsequence lregion,pfanswer e) {
-		pfanswer res = e;
-		
-		res.firststem.i = lregion.i;
 		
 		Subsequence innerstem;
 		innerstem.seq = lregion.seq;
 		innerstem.i = lregion.i-1;
 		innerstem.j = e.firststem.j+1;
 		
-		res.pf.q1 = scale(lregion.j - lregion.i) * e.pf.q1 * mk_pf(bl_energy(innerstem,lregion,innerstem));
+		res.pf.q1 = scale(lregion.j - lregion.i + 4) * e.pf.q1 * mk_pf(bl_energy(innerstem,lregion,innerstem) + sr_energy(res.firststem,res.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -209,17 +179,18 @@ algebra alg_macrostate_pfunc implements sig_rnashapes(alphabet = char, answer = 
 		return res;
 	}
 
-	pfanswer br(pfanswer e,Subsequence rregion) {
+	pfanswer br(Subsequence llb,Subsequence lb,pfanswer e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		pfanswer res = e;
 		
-		res.firststem.j = rregion.j;
+		res.firststem.i = llb.i;
+		res.firststem.j = rrb.j;
 		
 		Subsequence innerstem;
 		innerstem.seq = rregion.seq;
 		innerstem.i = e.firststem.i-1;
 		innerstem.j = rregion.j+1;
 		
-		res.pf.q1 = scale(rregion.j - rregion.i) * e.pf.q1 * mk_pf(br_energy(innerstem, rregion, innerstem));
+		res.pf.q1 = scale(rregion.j - rregion.i + 4) * e.pf.q1 * mk_pf(br_energy(innerstem, rregion, innerstem) + sr_energy(res.firststem,res.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -227,13 +198,13 @@ algebra alg_macrostate_pfunc implements sig_rnashapes(alphabet = char, answer = 
 		return res;
 	}
 
-	pfanswer il(Subsequence lregion,pfanswer e,Subsequence rregion) {
+	pfanswer il(Subsequence llb,Subsequence lb,Subsequence lregion,pfanswer e,Subsequence rregion,Subsequence rb,Subsequence rrb) {
 		pfanswer res = e;
 		
-		res.firststem.i = lregion.i;
-		res.firststem.j = rregion.j;
+		res.firststem.i = llb.i;
+		res.firststem.j = rrb.j;
 		
-		res.pf.q1 = scale((lregion.j - lregion.i) + (rregion.j - rregion.i)) * e.pf.q1 * mk_pf(il_energy(lregion, rregion));
+		res.pf.q1 = scale((lregion.j - lregion.i) + (rregion.j - rregion.i) + 4) * e.pf.q1 * mk_pf(il_energy(lregion, rregion) + sr_energy(res.firststem,res.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -535,14 +506,14 @@ algebra alg_macrostate_pfunc implements sig_rnashapes(alphabet = char, answer = 
 	}
 }
 
-algebra alg_macrostate_pfunc_filter_me extends alg_macrostate_pfunc {
+algebra alg_pfunc_macrostate_filter_me extends alg_pfunc_macrostate {
   choice [pfanswer] h([pfanswer] l)
   {
     return l;
   }
 }
 
-algebra alg_macrostate_pfunc_id extends alg_macrostate_pfunc {
+algebra alg_pfunc_macrostate_id extends alg_pfunc_macrostate {
   choice [pfanswer] h([pfanswer] l)
   {
     return l;

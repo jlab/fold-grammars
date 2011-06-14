@@ -1,8 +1,8 @@
 //This grammar has been used the first time in the RNAsubopt work of Stefan Wuchty in 1998 and thus is also known as "wuchty98"
-grammar gra_nodangle uses sig_rnafold(axiom = struct) {
+grammar gra_nodangle uses sig_foldrna(axiom = struct) {
   struct    = sadd(BASE, struct)   |
               cadd(dangle, struct) |
-              nil(EMPTY)           # h;
+              nil(LOC)           # h;
 
   dangle    = drem(LOC, closed, LOC) # h;
 
@@ -21,10 +21,10 @@ grammar gra_nodangle uses sig_rnafold(axiom = struct) {
   multiloop = ml(BASE, BASE,                          ml_comps,                        BASE, BASE) with stackpairing # h;
 
   ml_comps  = sadd(BASE, ml_comps)        |
-              cadd(ul(dangle), ml_comps1) # h;
+              cadd(incl(dangle), ml_comps1) # h;
 
   ml_comps1 = sadd(BASE, ml_comps1)       |
-              cadd(ul(dangle), ml_comps1) |
-              ul(dangle)                  |
-              addss(ul(dangle), REGION)   # h;
+              cadd(incl(dangle), ml_comps1) |
+              incl(dangle)                  |
+              addss(incl(dangle), REGION)   # h;
 }
