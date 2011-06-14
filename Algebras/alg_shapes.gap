@@ -277,10 +277,10 @@ algebra alg_shape1 extends alg_shape5 {
 		} else {
 			res = shape_t('_') + x; //cannot happen in macrostates
 		}
-		if (back(x) == '_') {
-			res = x;
+		if (back(res) == '_') {
+			//res = x;
 		} else {
-			res = x + shape_t('_'); //cannot happen in macrostates
+			res = res + shape_t('_'); //cannot happen in macrostates
 		}
 		return shape_t('[') + res + shape_t(']');
 	}
