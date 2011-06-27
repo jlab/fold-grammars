@@ -279,6 +279,7 @@ algebra alg_shape1 extends alg_shape5 {
 		}
 		if (back(res) == '_') {
 			//res = x;
+			res = res; //GAP does not allow to have an empty block :-/
 		} else {
 			res = res + shape_t('_'); //cannot happen in macrostates
 		}
