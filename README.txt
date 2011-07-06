@@ -1,6 +1,6 @@
 == 1. Introduction ==
-This repository contains all necessary files to build various RNA folding pro-
-grams with the Algebraic Dynamic Programming (ADP) compiler "Bellmans GAP", 
+This repository contains all necessary files to build various RNA folding 
+programs with the Algebraic Dynamic Programming (ADP) compiler "Bellmans GAP", 
 written by Georg Sauthoff. Currently, there are four different Models / Grammars
 for RNA secondary structures available:
  - NoDangle
@@ -17,10 +17,10 @@ For example:
    its Vienna Dot Bracket representation: 
      mfe * dotBracket
  - computation of representative structures of different abstract shapes: 
-     mfe * shape5 * dotBracket
+     shape5 * mfe * dotBracket
  - computation of Boltzmann probabilities accumulated over all structures 
    of the same abstract shape: 
-     shape5 * (mfe % pfunc)
+     shape5 * pfunc
 
 == 2. Structure of repository ==
 The source code is split into several modules. We use the ".gap" file extension. 
@@ -28,9 +28,9 @@ A Bellmans GAP program consists of four components:
  1. Signature (kind of an interface for grammars and algebras)
     Currently, we provide two different signatures (subdir Signatures); their 
 	prefix is "sig_". One is for grammars as used in RNAfold - namely NoDangle, 
-	OverDangle and MicroState, thus it is called "sig_rnafold.gap". The second 
-	is for the more complex grammar of RNAshapes - namely MacroState, thus we 
-	call it "sig_rnashapes.gap".
+	OverDangle and MicroState, thus this signature is called "sig_rnafold.gap". 
+	The second is for the more complex grammar of RNAshapes - namely MacroState, 
+	thus we call this signature "sig_rnashapes.gap".
  2. Algebra (different scoring or classification schemas for evaluating and 
     selecting from the search space)
     Prefix for algebras is "alg_". At this moment, we have implemented four 
@@ -43,7 +43,7 @@ A Bellmans GAP program consists of four components:
     D. alg_rnafold_shapes: this file actually contains five algebras, one for 
 	   each shape abstraction level
     There exists extra versions of the algebras for the RNAshapes signature. 
-	This is necessary, since both types of grammars use different algebra 
+	These are necessary, since both types of grammars use different algebra 
 	functions and for MFE and Pfunc we also need special data types. In addition, 
 	we have an experimental alg_rnashapes_centers algebra, where we get less 
 	abstract than traditional shapes, because we also note their helix positions.
@@ -55,14 +55,14 @@ A Bellmans GAP program consists of four components:
 	MacroStates uses signature RNAshapes.
  4. Instances (the actual appliance of the three former things, where different 
 	combinations of algebras solve different tasks)
-    Instances are defined in the "main" file of a Bellmans GAP program, namly 
+    Instances are defined in the "main" file of a Bellmans GAP program, namely 
 	in "nodangle.gap", "overdangle.gap", "microstate.gap" and "macrostate.gap". 
 	They also include the other modules and contain some technical instructions, 
 	like including special functionality via C++ header files.
 
 == 3. Prerequisites ==
 Prerequisites for compiling an Instance are:
- - the Bellmans GAP compiler
+ - the Bellmans GAP compiler: http://www.gapc.eu/
    Georg kannst Du hier aufschreiben wie man da dran kommt?
  - Since Bellmans GAP compiler produces C++ target code, you need an C++ compiler. 
    We recommend "g++" and "make"
