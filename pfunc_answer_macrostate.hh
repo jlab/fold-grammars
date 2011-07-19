@@ -1,6 +1,6 @@
 
-#ifndef PFUNC_RNASHAPES_ANSWER_HH
-#define PFUNC_RNASHAPES_ANSWER_HH
+#ifndef PFUNC_ANSWER_MACROSTATE
+#define PFUNC_ANSWER_MACROSTATE
 
 	struct pftuple{
 		double q1;

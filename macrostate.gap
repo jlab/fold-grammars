@@ -1,6 +1,6 @@
 import rna
-import pfunc_rnashapes_answer
-import pfunc_filter_rnashapes
+import pfunc_answer_macrostate
+import pfunc_filter_macrostate
 
 input rna
 
