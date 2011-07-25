@@ -49,10 +49,17 @@ A Bellmans GAP program consists of four components:
 	are necessary, since both algebras use special data types in the MacroState 
 	model to keep track of different results for different dangling variants.
 	
+	E. Helix-Center (highly experimental)
 	In addition, we have an experimental alg_centers algebra, where we get less 
 	abstract than traditional shapes, because we also note their helix positions.
 	A collection of alternative center definitions is provided by Jiabin Huang 
-	(Uni Freiburg) in alg_hishapes.gap
+	(Uni Freiburg) in alg_hishapes.gap. To calculate the probability of a helix
+	at a explicit position, we need a grammar that ensures that each search space
+	candidate contains exactly one tagged helix (besides the completely unpaired
+	structure). Similar to base pair probabilities, we want to know the probability
+	of this helix independent of all other structural features of the remaining 
+	bases for the candidates. That's the purpose of gra_macrostate_centers.gap
+	in combination with macrostateCenter.gap.
  3. Grammar (spans the whole searchspace of the given problem in a combinatorial 
     way)
     The subdirectory "Grammars" contains four grammars for RNA folding. Prefix is 
