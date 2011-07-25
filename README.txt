@@ -51,6 +51,8 @@ A Bellmans GAP program consists of four components:
 	
 	In addition, we have an experimental alg_centers algebra, where we get less 
 	abstract than traditional shapes, because we also note their helix positions.
+	A collection of alternative center definitions is provided by Jiabin Huang 
+	(Uni Freiburg) in alg_hishapes.gap
  3. Grammar (spans the whole searchspace of the given problem in a combinatorial 
     way)
     The subdirectory "Grammars" contains four grammars for RNA folding. Prefix is 

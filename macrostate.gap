@@ -18,6 +18,7 @@ include "Algebras/alg_mfe_macrostate.gap"
 include "Algebras/alg_dotBracket.gap"
 include "Algebras/alg_shapes.gap"
 include "Algebras/alg_centers.gap"
+include "Algebras/alg_hishapes.gap"
 
 algebra count auto count ;
 algebra enum auto enum ;
@@ -117,3 +118,13 @@ instance hairpinCenterJan = gra_macrostate ( alg_hairpinCenter5 * (alg_dotBracke
 
 instance s5mp = gra_macrostate ( alg_shape5 * ( alg_mfe_macrostate % alg_pfunc_macrostate ) ) ;
 instance check = gra_macrostate ( alg_shape5 * alg_pfunc_macrostate);
+
+
+//Instances for Jiabin Huang's helix centers
+	// gapc hix.gap -i hix_h_mfepfx -o hix_h_mfepfx.cc -t --kbacktrack --kbest ==> a lot faster (0m1.199s for k=100)
+	// gapc hix.gap -i hix_h_mfepfx -o hix_h_mfepfx.cc -t --kbest ==> very very slow ( 0m41.506s for k=100)
+	instance hix_b_mfepfx = gra_macrostate(alg_hishape_b * (alg_mfe_macrostate % alg_pfunc_macrostate) * alg_dotBracket);    // consider hairpin, multi-, bulge- and internal-loops, additionally add a 'b' to end of bulge- and internal-loops
+	instance hix_m_mfepfx = gra_macrostate(alg_hishape_m * (alg_mfe_macrostate % alg_pfunc_macrostate) * alg_dotBracket);    // consider both hairpin- and multiloops, additionally add a 'm' to end of multiloops
+	instance hix_h_mfepfx = gra_macrostate(alg_hishape_h * (alg_mfe_macrostate % alg_pfunc_macrostate) * alg_dotBracket);    // only consider hairpin-loops
+	instance hix_mfe = gra_macrostate((alg_hishape_h/alg_mfe_macrostate) * alg_dotBracket);    // only consider hairpin-loops
+	instance p_func = gra_macrostate (alg_pfunc_macrostate);
