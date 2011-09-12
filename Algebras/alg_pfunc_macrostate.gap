@@ -1,6 +1,6 @@
 algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pfanswer) {
 	pfanswer sadd(Subsequence lb,pfanswer e) {
-		pfanswer res = e;
+		pfanswer res = e * mk_pf(sbase_energy());
 		
 		res.pf.q1 = scale(1) * e.pf.q1;
 		res.pf.q2 = 0.0;
@@ -84,7 +84,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 	pfanswer edl(Subsequence lb,pfanswer e, Subsequence rloc) {
 		pfanswer res = e;
 		
-		res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(dl_energy(e.firststem, e.firststem) + termaupenalty(e.firststem, e.firststem));
+		res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(dl_energy(e.firststem, e.firststem) + termau_energy(e.firststem, e.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -95,7 +95,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 	pfanswer edr(Subsequence lloc, pfanswer e,Subsequence rb) {
 		pfanswer res = e;
 		
-		res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(dr_energy(e.firststem, e.firststem) + termaupenalty(e.firststem, e.firststem));
+		res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(dr_energy(e.firststem, e.firststem) + termau_energy(e.firststem, e.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -106,7 +106,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 	pfanswer edlr(Subsequence lb,pfanswer e,Subsequence rb) {
 		pfanswer res = e;
 		
-		res.pf.q1 = scale(2) * e.pf.q1 * mk_pf(dl_energy(e.firststem, e.firststem) + dr_energy(e.firststem, e.firststem) + termaupenalty(e.firststem, e.firststem));
+		res.pf.q1 = scale(2) * e.pf.q1 * mk_pf(ext_mismatch_energy(e.firstStem, e.firstStem) + termau_energy(e.firststem, e.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -117,7 +117,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 	pfanswer drem(Subsequence lloc, pfanswer e, Subsequence rloc) {
 		pfanswer res = e;
 
-		res.pf.q1 = e.pf.q1 * mk_pf(termaupenalty(e.firststem, e.firststem));
+		res.pf.q1 = e.pf.q1 * mk_pf(termau_energy(e.firststem, e.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -151,7 +151,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		innerstem.i = lb.i;
 		innerstem.j = rb.j;
 		
-		res.pf.q1 = scale(region.j - region.i + 4) * mk_pf(hl_energy(innerstem, innerstem) + sr_energy(res.firststem,res.firststem));
+		res.pf.q1 = scale(region.j - region.i + 4) * mk_pf(hl_energy(region) + sr_energy(res.firststem,res.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -171,7 +171,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		innerstem.i = lregion.i-1;
 		innerstem.j = e.firststem.j+1;
 		
-		res.pf.q1 = scale(lregion.j - lregion.i + 4) * e.pf.q1 * mk_pf(bl_energy(innerstem,lregion,innerstem) + sr_energy(res.firststem,res.firststem));
+		res.pf.q1 = scale(lregion.j - lregion.i + 4) * e.pf.q1 * mk_pf(bl_energy(lregion,rb) + sr_energy(res.firststem,res.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -190,7 +190,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		innerstem.i = e.firststem.i-1;
 		innerstem.j = rregion.j+1;
 		
-		res.pf.q1 = scale(rregion.j - rregion.i + 4) * e.pf.q1 * mk_pf(br_energy(innerstem, rregion, innerstem) + sr_energy(res.firststem,res.firststem));
+		res.pf.q1 = scale(rregion.j - rregion.i + 4) * e.pf.q1 * mk_pf(br_energy(lb, rregion) + sr_energy(res.firststem,res.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -223,7 +223,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		innerstem.i = lb.i;
 		innerstem.j = rb.j;
 		
-		res.pf.q1 = scale(4) * sum_elems(e.pf) * mk_pf(380 + sr_energy(res.firststem,res.firststem) + termaupenalty(innerstem,innerstem));
+		res.pf.q1 = scale(4) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + sr_energy(res.firststem,res.firststem) + termau_energy(innerstem,innerstem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -242,7 +242,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		innerstem.i = lb.i;
 		innerstem.j = rb.j;
 		
-		res.pf.q1 = scale(5) * sum_elems(e.pf) * mk_pf(380 + dri_energy(innerstem,innerstem) + sr_energy(res.firststem,res.firststem) + termaupenalty(innerstem,innerstem));
+		res.pf.q1 = scale(5) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + dri_energy(innerstem,innerstem) + sr_energy(res.firststem,res.firststem) + termau_energy(innerstem,innerstem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -267,7 +267,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		amdangle = (e.pf.q1 + e.pf.q3) * mk_pf(min(dr_dangle_dg( wc_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase), dri_energy(innerstem,innerstem))) +
 			   (e.pf.q2 + e.pf.q4) * mk_pf(min(dr_dangle_dg(wob_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase), dri_energy(innerstem,innerstem)));
 		
-		res.pf.q1 = scale(5) * amdangle * mk_pf(380 + sr_energy(res.firststem,res.firststem) + termaupenalty(innerstem,innerstem));
+		res.pf.q1 = scale(5) * amdangle * mk_pf(ml_energy() + ul_energy() + sr_energy(res.firststem,res.firststem) + termau_energy(innerstem,innerstem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -286,7 +286,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		innerstem.i = lb.i;
 		innerstem.j = rb.j;
 		
-		res.pf.q1 = scale(6) * sum_elems(e.pf) * mk_pf(380 + dli_energy(innerstem,innerstem) + dri_energy(innerstem,innerstem) + sr_energy(res.firststem,res.firststem) + termaupenalty(innerstem,innerstem));
+		res.pf.q1 = scale(6) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + ml_mismatch_energy(innerstem,innerstem) + sr_energy(res.firststem,res.firststem) + termau_energy(innerstem,innerstem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -315,7 +315,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 			   e.pf.q3 * mk_pf(min(dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem, wob_comp(leftmostBasefirstStem)), dli_energy(innerstem,innerstem)) + min(dr_dangle_dg( wc_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase), dri_energy(innerstem,innerstem))) +
 			   e.pf.q4 * mk_pf(min(dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem, wob_comp(leftmostBasefirstStem)), dli_energy(innerstem,innerstem)) + min(dr_dangle_dg(wob_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase), dri_energy(innerstem,innerstem)));
 		
-		res.pf.q1 = scale(6) * amdangle * mk_pf(380 + sr_energy(res.firststem, res.firststem) + termaupenalty(innerstem,innerstem));
+		res.pf.q1 = scale(6) * amdangle * mk_pf(ml_energy() + ul_energy() + sr_energy(res.firststem, res.firststem) + termau_energy(innerstem,innerstem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -340,7 +340,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		amdangle = (e.pf.q1 * mk_pf(dli_energy(innerstem,innerstem)) + e.pf.q3) * mk_pf(min(dr_dangle_dg(wc_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase), dri_energy(innerstem,innerstem))) +
 			   (e.pf.q2 + e.pf.q4) * mk_pf(min(dr_dangle_dg(wob_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase), dri_energy(innerstem,innerstem)));
 		
-		res.pf.q1 = scale(6) * amdangle * mk_pf(380 + sr_energy(res.firststem,res.firststem) + termaupenalty(innerstem,innerstem));
+		res.pf.q1 = scale(6) * amdangle * mk_pf(ml_energy() + ul_energy() + sr_energy(res.firststem,res.firststem) + termau_energy(innerstem,innerstem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -365,7 +365,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		amdangle = (e.pf.q1 + e.pf.q2) * mk_pf(min(dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem, wc_comp(leftmostBasefirstStem)), dli_energy(innerstem,innerstem))) +
 			   (e.pf.q3 + e.pf.q4 * mk_pf(dri_energy(innerstem,innerstem))) * mk_pf(min(dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem, wob_comp(leftmostBasefirstStem)), dli_energy(innerstem,innerstem)));
 		
-		res.pf.q1 = scale(6) * amdangle * mk_pf(380 + sr_energy(res.firststem,res.firststem) + termaupenalty(innerstem,innerstem));
+		res.pf.q1 = scale(6) * amdangle * mk_pf(ml_energy() + ul_energy() + sr_energy(res.firststem,res.firststem) + termau_energy(innerstem,innerstem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -384,7 +384,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		innerstem.i = lb.i;
 		innerstem.j = rb.j;
 		
-		res.pf.q1 = scale(5) * sum_elems(e.pf) * mk_pf(380 + dli_energy(innerstem,innerstem) + sr_energy(res.firststem,res.firststem) + termaupenalty(innerstem,innerstem));
+		res.pf.q1 = scale(5) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + dli_energy(innerstem,innerstem) + sr_energy(res.firststem,res.firststem) + termau_energy(innerstem,innerstem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -409,7 +409,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		amdangle = (e.pf.q1 + e.pf.q2) * mk_pf(min(dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem,  wc_comp(leftmostBasefirstStem)), dli_energy(innerstem,innerstem))) +
 			   (e.pf.q3 + e.pf.q4) * mk_pf(min(dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem, wob_comp(leftmostBasefirstStem)), dli_energy(innerstem,innerstem)));
 		
-		res.pf.q1 = scale(5) * amdangle * mk_pf(380 + sr_energy(res.firststem,res.firststem) + termaupenalty(innerstem,innerstem));
+		res.pf.q1 = scale(5) * amdangle * mk_pf(ml_energy() + ul_energy() + sr_energy(res.firststem,res.firststem) + termau_energy(innerstem,innerstem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -433,7 +433,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		test.i = lregion.i;
 		test.j = lregion.j+1;
 
-		res.pf = mk_tuple(e.firststem, scale(lregion.j - lregion.i) * e.pf.q1 * mk_pf(40 + ss_energy(lregion)));
+		res.pf = mk_tuple(e.firststem, scale(lregion.j - lregion.i) * e.pf.q1 * mk_pf(ul_energy() + ss_energy(lregion)));
 		
 		return res;
 	}
@@ -452,7 +452,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 	pfanswer incl(pfanswer e) {
 		pfanswer res = e;
 		
-		res.pf = mk_tuple(e.firststem, e.pf.q1 * mk_pf(40));
+		res.pf = mk_tuple(e.firststem, e.pf.q1 * mk_pf(ul_energy()));
 
 		return res;
 	}
