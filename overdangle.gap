@@ -17,20 +17,20 @@ algebra enum auto enum;
 include "Algebras/alg_mfe.gap"
 algebra alg_mfe_overdangle extends alg_mfe {
   int drem(Subsequence llb, int x, Subsequence rrb) {
-    return x + termaupenalty(llb, rrb) + dl_energy(llb, rrb) + dr_energy(llb, rrb);
+    return x + termau_energy(llb, rrb) + ext_mismatch_energy(llb, rrb);
   }
   int ml(Subsequence llb, Subsequence lb, int x, Subsequence rb, Subsequence rrb) {
-    return x + sr_energy(llb, rrb) + 380 + termaupenalty(lb, rb) + dli_energy(lb, rb) + dri_energy(lb, rb);
+    return x + sr_energy(llb, rrb) + 380 + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
   }
 }
 
 include "Algebras/alg_pfunc.gap"
 algebra alg_pfunc_overdangle extends alg_pfunc {
   double drem(Subsequence llb, double x, Subsequence rrb) {
-    return                                x * mk_pf(termaupenalty(llb, rrb) + dl_energy(llb, rrb) + dr_energy(llb, rrb));
+    return                                x * mk_pf(termaupenalty(llb, rrb) + ext_mismatch_energy(llb, rrb));
   }
   double ml(Subsequence llb, Subsequence lb, double x, Subsequence rb, Subsequence rrb) {
-    return scale(4)                     * x * mk_pf(sr_energy(llb, rrb) + 380 + termaupenalty(lb, rb) + dli_energy(lb, rb) + dri_energy(lb, rb));
+    return scale(4)                     * x * mk_pf(sr_energy(llb, rrb) + 380 + termaupenalty(lb, rb) + ml_mismatch_energy(lb, rb));
   }
 }
 
