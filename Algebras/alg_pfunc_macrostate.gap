@@ -1,8 +1,8 @@
 algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pfanswer) {
 	pfanswer sadd(Subsequence lb,pfanswer e) {
-		pfanswer res = e * mk_pf(sbase_energy());
+		pfanswer res = e;
 		
-		res.pf.q1 = scale(1) * e.pf.q1;
+		res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(sbase_energy());
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -106,7 +106,7 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 	pfanswer edlr(Subsequence lb,pfanswer e,Subsequence rb) {
 		pfanswer res = e;
 		
-		res.pf.q1 = scale(2) * e.pf.q1 * mk_pf(ext_mismatch_energy(e.firstStem, e.firstStem) + termau_energy(e.firststem, e.firststem));
+ 		res.pf.q1 = scale(2) * e.pf.q1 * mk_pf(ext_mismatch_energy(e.firststem, e.firststem) + termau_energy(e.firststem, e.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
