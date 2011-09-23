@@ -26,11 +26,11 @@ algebra enum auto enum ;
 include "Grammars/gra_macrostate.gap"
 
 //start: instances used in the FoldingSpaces paper
-//~ instance shape5pfx = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-//~ instance shape4pfx = gra_macrostate ((alg_shape4 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-//~ instance shape3pfx = gra_macrostate ((alg_shape3 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-//~ instance shape2pfx = gra_macrostate ((alg_shape2 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-//~ instance shape1pfx = gra_macrostate ((alg_shape1 * alg_pfunc_macrostate) suchthat p_func_filter_all);
+instance shape5pfx = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat p_func_filter_all);
+instance shape4pfx = gra_macrostate ((alg_shape4 * alg_pfunc_macrostate) suchthat p_func_filter_all);
+instance shape3pfx = gra_macrostate ((alg_shape3 * alg_pfunc_macrostate) suchthat p_func_filter_all);
+instance shape2pfx = gra_macrostate ((alg_shape2 * alg_pfunc_macrostate) suchthat p_func_filter_all);
+instance shape1pfx = gra_macrostate ((alg_shape1 * alg_pfunc_macrostate) suchthat p_func_filter_all);
 
 instance shape5mfepfxpp = gra_macrostate (((alg_shape5 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat p_func_filter_allPP) * alg_dotBracket);  //always compile with --kbacktrace !
 instance shape4mfepfxpp = gra_macrostate (((alg_shape4 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat p_func_filter_allPP) * alg_dotBracket);  //always compile with --kbacktrace !
