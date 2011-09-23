@@ -5,17 +5,17 @@ algebra alg_pfunc implements sig_foldrna(alphabet = char, answer = double) {
   double cadd(double x, double y) {
     return                                x * y;
   }
-  double edl(Subsequence llb, double x, Subsequence rrb) {
+  double edl(Subsequence ldangle, double x, Subsequence rrb) {
     Subsequence llb = ldangle;
     llb.i = ldangle.i+1;
     return scale(1)                     * x * mk_pf(termau_energy(llb, rrb)) * mk_pf(dl_energy(llb, rrb));
   }
-  double edr(Subsequence llb, double x, Subsequence rrb) {
+  double edr(Subsequence llb, double x, Subsequence rdangle) {
     Subsequence rrb = rdangle;
     rrb.j = rdangle.j-1;
     return scale(1)                     * x * mk_pf(termau_energy(llb, rrb)) * mk_pf(dr_energy(llb, rrb));
   }
-  double edlr(Subsequence llb, double x, Subsequence rrb) {
+  double edlr(Subsequence ldangle, double x, Subsequence rdangle) {
     Subsequence llb = ldangle;
     llb.i = ldangle.i+1;
 	Subsequence rrb = rdangle;
