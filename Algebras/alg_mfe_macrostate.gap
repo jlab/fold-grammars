@@ -1,3 +1,37 @@
+/*
+Known problems with algebra mfe for grammar MacroState:
+1) Ambiguous dangling bases between two stems: This affects algebra functions ambd, ambd_Pr, mladr, mladlr, mldladr, mladldr and mladl, i.e. all functions combining two stem substructures with one base between them.
+   Here is an example. We have some left stem and the given right stem. A single A base sits between both and might dangle to the left or right. Lets assume it will dangle to the right stem. (All energie values are made up to keep it simple)
+
+    left-stem   right-stem
+    xxzzzzzyy A GGGGAAACUCUC
+    ((.....)) . (((.....))).	solution 1: -2.0 kcal/mol
+    ((.....)) . (((......)))	solution 2: -1.9 kcal/mol
+
+   With dynamic programming we would have first calculated the optimal result for left- and right-stem, before we put them all together. To keep the example small, let us further assume there are only two competing solutions for the right-stem subproblem, with energies:
+    GGGGAAACUCUC
+    (((.....))).	alternative 1	1.3 kcal/mol
+    (((......)))   alternative 2   1.6 kcal/mol
+   Thus we would discard alternative 2.
+   Now, we also consider the dangling A base and the left-stem. Remember A should dangle to the right-stem, thus we don't care about the left-stem for this example. If A dangles on the basepair G-U it creates -0.3 kcal/mol stabilizing energy, if it dangles on G-C it creates -0.7 kcal. Best energy for left-stem is - say - -3.0 kcal/mol with structure ((.....)) Thus combining all energies is, we get solution 1:
+   	-3.0 kcal/mol for left stem
+     + -0.3 kcal/mol for dangling
+     +  1.3 kcal/mol for right stem
+     = -2.0 kcal/mol with structure ((.....)).(((.....))).
+   But if we had kept alternative 2 we would have -3.0 kcal/mol + -0.7 kcal/mol + 1.6 kcal/mol = -2.1 kcal/mol with structure ((.....)).(((......))) for the better solution 2.
+   You see we violate Bellman's Principle of Optimallity at those algebra functions. Since dangling contributions have not too high values this effect is not often seen for real RNA inputs.
+
+2) Dangling alternatives for one stem: This affects algebra functions edlr and mldlr, i.e. all functions where bases on both sides of a stem dangle to it.
+   This effect can only be seen for Turner 2004 energy parameters.
+   Here is a concrete example:
+	UCCGGUGCGGG
+	.(((...))).		true MFE: -2.00 kcal/mol
+   The energy is a combination of -0.3 kcal/mol for the stacked hairpin loop plus -1.7 kcal/mol for the rightmost G dangling on the stack. The leftmost U a seen as an unpaired base.
+   To resemble this optimal candidate with MacroState we would need something like cadd(sadd(U), edr(sr(C,hl(C,G,GUG,C,G),G)) but such a candidate cannot be constructured with MacroState.
+   MacroStates candidate for the structure is cadd(edlr(U,sr(C,hl(C,G,GUG,C,G),G),G),nil())
+   For edlr the energy tables of external mismatches is consulted in Turner2004 which are significant different from dl_dangle and dr_dangle. In Turner 1999 edlr is just the sum of dl_dangle and dr_dangle.
+*/
+
 algebra alg_mfe_macrostate implements sig_foldrna(alphabet = char, answer = mfeanswer) {
 	mfeanswer sadd(Subsequence lb,mfeanswer e) {
 		mfeanswer res;
