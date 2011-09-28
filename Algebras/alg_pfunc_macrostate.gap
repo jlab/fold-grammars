@@ -105,8 +105,11 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 
 	pfanswer edlr(Subsequence lb,pfanswer e,Subsequence rb) {
 		pfanswer res = e;
+
+		//this minimization is necessary since Turner2004 parameters introduced the ext_mismatch_energy table. It now might happen, that dangling from one side only is better than dangling from both sides.
+ 		int help = min(min(ext_mismatch_energy(e.firststem, e.firststem), dl_energy(e.firststem, e.firststem)), dr_energy(e.firststem, e.firststem));
 		
- 		res.pf.q1 = scale(2) * e.pf.q1 * mk_pf(ext_mismatch_energy(e.firststem, e.firststem) + termau_energy(e.firststem, e.firststem));
+		res.pf.q1 = scale(2) * e.pf.q1 * mk_pf(help + termau_energy(e.firststem, e.firststem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
@@ -286,7 +289,10 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
 		innerstem.i = lb.i;
 		innerstem.j = rb.j;
 		
-		res.pf.q1 = scale(6) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + ml_mismatch_energy(innerstem,innerstem) + sr_energy(res.firststem,res.firststem) + termau_energy(innerstem,innerstem));
+		//this minimization is necessary since Turner2004 parameters introduced the ml_mismatch_energy table. It now might happen, that dangling from one side only is better than dangling from both sides.
+ 		int help = min(min(ml_mismatch_energy(innerstem,innerstem), dli_energy(innerstem,innerstem)), dri_energy(innerstem,innerstem));
+		
+		res.pf.q1 = scale(6) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + help + sr_energy(res.firststem,res.firststem) + termau_energy(innerstem,innerstem));
 		res.pf.q2 = 0.0;
 		res.pf.q3 = 0.0;
 		res.pf.q4 = 0.0;
