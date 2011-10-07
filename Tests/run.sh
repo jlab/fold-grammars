@@ -235,6 +235,5 @@ check_external()
 
 . ../config
 
-cd ../../paraltest/temp
 . ../stats.sh
 
