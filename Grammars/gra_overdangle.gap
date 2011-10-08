@@ -21,12 +21,12 @@ grammar gra_overdangle uses sig_foldrna(axiom = struct) {
                iloop                        | 
                multiloop} with stackpairing # h;
 
-  stack     = sr(BASE,                                closed,                                BASE) with stackpairing # h;
-  hairpin   = hl(BASE, BASE,                          REGION with minsize(3),          BASE, BASE) with stackpairing # h;
-  leftB     = bl(BASE, BASE, REGION,                  closed,                          BASE, BASE) with stackpairing # h;
-  rightB    = br(BASE, BASE,                          closed, REGION,                  BASE, BASE) with stackpairing # h;
-  iloop     = il(BASE, BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE, BASE) with stackpairing # h;
-  multiloop = ml(BASE, BASE,                          ml_comps,                        BASE, BASE) with stackpairing # h;
+  stack     =          sr(BASE,                          closed,                          BASE) with stackpairing # h;
+  hairpin   = sr(BASE, hl(BASE,                          REGION with minsize(3),          BASE) with basepairing, BASE) with stackpairing # h;
+  leftB     = sr(BASE, bl(BASE, REGION,                  closed,                          BASE) with basepairing, BASE) with stackpairing # h;
+  rightB    = sr(BASE, br(BASE,                          closed, REGION,                  BASE) with basepairing, BASE) with stackpairing # h;
+  iloop     = sr(BASE, il(BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE) with basepairing, BASE) with stackpairing # h;
+  multiloop = sr(BASE, ml(BASE,                          ml_comps,                        BASE) with basepairing, BASE) with stackpairing # h;
 
   ml_comps  = sadd(BASE, ml_comps)        |
               cadd(incl(dangle), ml_comps1) # h;

@@ -59,3 +59,9 @@ instance mfe = gra_microstate (alg_shape5 * alg_mfe) ;
 instance mfepp = gra_microstate (alg_mfe * alg_dotBracket);
 instance ppmfe = gra_microstate (alg_dotBracket * alg_mfe);
 
+//start: instances for unit tests
+instance testmfeshape3pp = gra_microstate(alg_mfe * alg_shape3 * alg_dotBracket);
+instance testdbshape5mfe = gra_microstate(alg_dotBracket * alg_shape5 * alg_mfe);
+instance testshape4mfepfdb = gra_microstate(alg_shape4 * (alg_mfe % alg_pfunc) * alg_dotBracket);
+instance testsampleshape2mfedb = gra_microstate( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
+//stop: instances for unit tests

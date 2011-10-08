@@ -5,52 +5,52 @@ algebra alg_pfunc implements sig_foldrna(alphabet = char, answer = double) {
   double cadd(double x, double y) {
     return                                x * y;
   }
-  double edl(Subsequence ldangle, double x, Subsequence rrb) {
-    Subsequence llb = ldangle;
-    llb.i = ldangle.i+1;
-    return scale(1)                     * x * mk_pf(termau_energy(llb, rrb)) * mk_pf(dl_energy(llb, rrb));
+  double edl(Subsequence ldangle, double x, Subsequence rb) {
+    Subsequence lb = ldangle;
+    lb.i = ldangle.i+1;
+    return scale(1)                     * x * mk_pf(termau_energy(lb, rb)) * mk_pf(dl_energy(lb, rb));
   }
-  double edr(Subsequence llb, double x, Subsequence rdangle) {
-    Subsequence rrb = rdangle;
-    rrb.j = rdangle.j-1;
-    return scale(1)                     * x * mk_pf(termau_energy(llb, rrb)) * mk_pf(dr_energy(llb, rrb));
+  double edr(Subsequence lb, double x, Subsequence rdangle) {
+    Subsequence rb = rdangle;
+    rb.j = rdangle.j-1;
+    return scale(1)                     * x * mk_pf(termau_energy(lb, rb)) * mk_pf(dr_energy(lb, rb));
   }
   double edlr(Subsequence ldangle, double x, Subsequence rdangle) {
-    Subsequence llb = ldangle;
-    llb.i = ldangle.i+1;
-	Subsequence rrb = rdangle;
-	rrb.j = rdangle.j-1;
-    return scale(2)                     * x * mk_pf(termau_energy(llb, rrb)) * mk_pf(ext_mismatch_energy(llb, rrb));
+    Subsequence lb = ldangle;
+    lb.i = ldangle.i+1;
+    Subsequence rb = rdangle;
+    rb.j = rdangle.j-1;
+    return scale(2)                     * x * mk_pf(termau_energy(lb, rb)) * mk_pf(ext_mismatch_energy(lb, rb));
   }
-  double drem(Subsequence llb, double x, Subsequence rrb) {
-    return                                x * mk_pf(termau_energy(llb, rrb));
+  double drem(Subsequence lb, double x, Subsequence rb) {
+    return                                x * mk_pf(termau_energy(lb, rb));
   }
-  double sr(Subsequence llb, double x, Subsequence rrb) {
-    return scale(2)                     * x * mk_pf(sr_energy(llb, rrb));
+  double sr(Subsequence lb, double x, Subsequence rb) {
+    return scale(2)                     * x * mk_pf(sr_energy(lb, rb));
   }
-  double hl(Subsequence llb, Subsequence lb, Subsequence r, Subsequence rb, Subsequence rrb) {
-    return scale(4+r.j-r.i)                 * mk_pf(sr_energy(llb, rrb) + hl_energy(r));
+  double hl(Subsequence lb, Subsequence r, Subsequence rb) {
+    return scale(2+r.j-r.i)                 * mk_pf(hl_energy(r));
   }
-  double bl(Subsequence llb, Subsequence lb, Subsequence lr, double x, Subsequence rb, Subsequence rrb) {
-    return scale(4+lr.j-lr.i)           * x * mk_pf(sr_energy(llb, rrb) + bl_energy(lr, rb));
+  double bl(Subsequence lb, Subsequence lr, double x, Subsequence rb) {
+    return scale(2+lr.j-lr.i)           * x * mk_pf(bl_energy(lr, rb));
   }
-  double br(Subsequence llb, Subsequence lb, double x, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return scale(4+rr.j-rr.i)           * x * mk_pf(sr_energy(llb, rrb) + br_energy(lb, rr));
+  double br(Subsequence lb, double x, Subsequence rr, Subsequence rb) {
+    return scale(2+rr.j-rr.i)           * x * mk_pf(br_energy(lb, rr));
   }
-  double il(Subsequence llb, Subsequence lb, Subsequence lr, double x, Subsequence rr, Subsequence rb, Subsequence rrb) {
-    return scale(4+lr.j-lr.i+rr.j-rr.i) * x * mk_pf(sr_energy(llb, rrb) + il_energy(lr, rr));
+  double il(Subsequence lb, Subsequence lr, double x, Subsequence rr, Subsequence rb) {
+    return scale(2+lr.j-lr.i+rr.j-rr.i) * x * mk_pf(il_energy(lr, rr));
   }
-  double mldl(Subsequence llb, Subsequence lb, Subsequence dl, double x, Subsequence rb, Subsequence rrb) {
-    return scale(5)                     * x * mk_pf(ml_energy() + ul_energy() + sr_energy(llb, rrb) + termau_energy(lb, rb) + dli_energy(lb, rb));
+  double mldl(Subsequence lb, Subsequence dl, double x, Subsequence rb) {
+    return scale(3)                     * x * mk_pf(ml_energy() + ul_energy() + termau_energy(lb, rb) + dli_energy(lb, rb));
   }
-  double mldr(Subsequence llb, Subsequence lb, double x, Subsequence dr, Subsequence rb, Subsequence rrb) {
-    return scale(5)                     * x * mk_pf(ml_energy() + ul_energy() + sr_energy(llb, rrb) + termau_energy(lb, rb) + dri_energy(lb, rb));
+  double mldr(Subsequence lb, double x, Subsequence dr, Subsequence rb) {
+    return scale(3)                     * x * mk_pf(ml_energy() + ul_energy() + termau_energy(lb, rb) + dri_energy(lb, rb));
   }
-  double mldlr(Subsequence llb, Subsequence lb, Subsequence dl, double x, Subsequence dr, Subsequence rb, Subsequence rrb) {
-    return scale(6)                     * x * mk_pf(ml_energy() + ul_energy() + sr_energy(llb, rrb) + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb));
+  double mldlr(Subsequence lb, Subsequence dl, double x, Subsequence dr, Subsequence rb) {
+    return scale(4)                     * x * mk_pf(ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb));
   }
-  double ml(Subsequence llb, Subsequence lb, double x, Subsequence rb, Subsequence rrb) {
-    return scale(4)                     * x * mk_pf(ml_energy() + ul_energy() + sr_energy(llb, rrb) + termau_energy(lb, rb));
+  double ml(Subsequence lb, double x, Subsequence rb) {
+    return scale(2)                     * x * mk_pf(ml_energy() + ul_energy() + termau_energy(lb, rb));
   }
   double incl(double x) {
     return                                x * mk_pf(ul_energy());
@@ -70,15 +70,22 @@ algebra alg_pfunc implements sig_foldrna(alphabet = char, answer = double) {
   double combine(double le,double re) {return 0;}
   double trafo(double e) {return 0;}
   double ssadd(Subsequence lb,double e) {return 0;}
-  double mladl(Subsequence llb,Subsequence lb,Subsequence dl,double e,Subsequence rb,Subsequence rrb) {return 0;}
-  double mladldr(Subsequence llb,Subsequence lb,Subsequence dl,double e,Subsequence dr,Subsequence rb,Subsequence rrb) {return 0;}
-  double mldladr(Subsequence llb,Subsequence lb,Subsequence dl,double e,Subsequence dr,Subsequence rb,Subsequence rrb) {return 0;}
-  double mladlr(Subsequence llb,Subsequence lb,Subsequence dl,double e,Subsequence dr,Subsequence rb,Subsequence rrb) {return 0;}
-  double mladr(Subsequence llb,Subsequence lb,double e,Subsequence dr,Subsequence rb,Subsequence rrb) {return 0;}
+  double mladl(Subsequence lb,Subsequence dl,double e,Subsequence rb) {return 0;}
+  double mladldr(Subsequence lb,Subsequence dl,double e,Subsequence dr,Subsequence rb) {return 0;}
+  double mldladr(Subsequence lb,Subsequence dl,double e,Subsequence dr,Subsequence rb) {return 0;}
+  double mladlr(Subsequence lb,Subsequence dl,double e,Subsequence dr,Subsequence rb) {return 0;}
+  double mladr(Subsequence lb,double e,Subsequence dr,Subsequence rb) {return 0;}
   double ambd_Pr(double le,Subsequence b,double re) {return 0;}
   double ambd(double le,Subsequence b,double re) {return 0;}
   double cadd_Pr_Pr_Pr(double le,double re) {return 0;}
   double cadd_Pr_Pr(double le,double re) {return 0;}
   double cadd_Pr(double le,double re) {return 0;}
 
+}
+
+algebra alg_pfunc_id extends alg_pfunc {
+  choice [double] h([double] l)
+  {
+    return l;
+  }
 }
