@@ -18,6 +18,7 @@ include "Algebras/alg_mfe.gap"
 include "Algebras/alg_pfunc.gap"
 
 include "Grammars/gra_microstate.gap"
+include "Grammars/gra_microstate_lp.gap"
 
 //start: instances used in the FoldingSpaces paper
 instance shape5pfx = gra_microstate ((alg_shape5 * alg_pfunc) suchthat pfunc_filter);
@@ -58,10 +59,15 @@ instance mfe = gra_microstate (alg_shape5 * alg_mfe) ;
 
 instance mfepp = gra_microstate (alg_mfe * alg_dotBracket);
 instance ppmfe = gra_microstate (alg_dotBracket * alg_mfe);
+instance ppmfeLP = gra_microstate_lp (alg_dotBracket * alg_mfe);
 
 //start: instances for unit tests
-instance testmfeshape3pp = gra_microstate(alg_mfe * alg_shape3 * alg_dotBracket);
-instance testdbshape5mfe = gra_microstate(alg_dotBracket * alg_shape5 * alg_mfe);
-instance testshape4mfepfdb = gra_microstate(alg_shape4 * (alg_mfe % alg_pfunc) * alg_dotBracket);
-instance testsampleshape2mfedb = gra_microstate( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
+instance testmfeshape3pp   = gra_microstate(alg_mfe * alg_shape3 * alg_dotBracket);
+instance testLPmfeshape3pp = gra_microstate_lp(alg_mfe * alg_shape3 * alg_dotBracket);
+instance testdbshape5mfe   = gra_microstate(alg_dotBracket * alg_shape5 * alg_mfe);
+instance testLPdbshape5mfe = gra_microstate_lp(alg_dotBracket * alg_shape5 * alg_mfe);
+instance testshape4mfepfdb   = gra_microstate(alg_shape4 * (alg_mfe % alg_pfunc) * alg_dotBracket);
+instance testLPshape4mfepfdb = gra_microstate_lp(alg_shape4 * (alg_mfe % alg_pfunc) * alg_dotBracket);
+instance testsampleshape2mfedb   = gra_microstate( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
+instance testLPsampleshape2mfedb = gra_microstate_lp( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
 //stop: instances for unit tests

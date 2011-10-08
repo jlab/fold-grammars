@@ -35,6 +35,7 @@ algebra alg_pfunc_overdangle extends alg_pfunc {
 }
 
 include "Grammars/gra_overdangle.gap"
+include "Grammars/gra_overdangle_lp.gap"
 
 //start: instances used in the FoldingSpaces paper
 instance shape5pfx = gra_overdangle ((alg_shape5 * alg_pfunc_overdangle) suchthat pfunc_filter);
@@ -70,10 +71,15 @@ instance pf = gra_overdangle (alg_pfunc_overdangle);
 
 instance mfepp = gra_overdangle (alg_mfe_overdangle * alg_dotBracket);
 instance ppmfe = gra_overdangle (alg_dotBracket * alg_shape5 * alg_mfe_overdangle);
+instance ppmfeLP = gra_overdangle_lp (alg_dotBracket * alg_mfe_overdangle);
 
 //start: instances for unit tests
-instance testmfeshape3pp = gra_overdangle(alg_mfe * alg_shape3 * alg_dotBracket);
-instance testdbshape5mfe = gra_overdangle(alg_dotBracket * alg_shape5 * alg_mfe);
-instance testshape4mfepfdb = gra_overdangle(alg_shape4 * (alg_mfe % alg_pfunc) * alg_dotBracket);
-instance testsampleshape2mfedb = gra_overdangle( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
+instance testmfeshape3pp   = gra_overdangle(alg_mfe * alg_shape3 * alg_dotBracket);
+instance testLPmfeshape3pp = gra_overdangle_lp(alg_mfe * alg_shape3 * alg_dotBracket);
+instance testdbshape5mfe   = gra_overdangle(alg_dotBracket * alg_shape5 * alg_mfe);
+instance testLPdbshape5mfe = gra_overdangle_lp(alg_dotBracket * alg_shape5 * alg_mfe);
+instance testshape4mfepfdb   = gra_overdangle(alg_shape4 * (alg_mfe % alg_pfunc) * alg_dotBracket);
+instance testLPshape4mfepfdb = gra_overdangle_lp(alg_shape4 * (alg_mfe % alg_pfunc) * alg_dotBracket);
+instance testsampleshape2mfedb   = gra_overdangle( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
+instance testLPsampleshape2mfedb = gra_overdangle_lp( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
 //stop: instances for unit tests

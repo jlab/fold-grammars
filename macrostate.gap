@@ -24,6 +24,7 @@ algebra count auto count ;
 algebra enum auto enum ;
 
 include "Grammars/gra_macrostate.gap"
+include "Grammars/gra_macrostate_lp.gap"
 
 //start: instances used in the FoldingSpaces paper
 instance shape5pfx = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat p_func_filter_all);
@@ -61,6 +62,7 @@ instance enum = gra_macrostate ( enum ) ;
 
 instance mfe = gra_macrostate ( alg_mfe_macrostate ) ;
 instance ppmfe = gra_macrostate ( alg_dotBracket * alg_mfe_macrostate ) ;
+instance ppmfeLP = gra_macrostate_lp ( alg_dotBracket * alg_mfe_macrostate ) ;
 instance mfepp = gra_macrostate ( alg_mfe_macrostate * alg_dotBracket ) ;
 
 instance mfev2 = gra_macrostate ( alg_mfeV2_macrostate ) ;
@@ -130,8 +132,12 @@ instance check = gra_macrostate ( alg_shape5 * alg_pfunc_macrostate);
 	instance p_func = gra_macrostate (alg_pfunc_macrostate);
 
 //start: instances for unit tests
-instance testmfeshape3pp = gra_macrostate(alg_mfe_macrostate * alg_shape3 * alg_dotBracket);
-instance testdbshape5mfe = gra_macrostate(alg_dotBracket * alg_shape5 * alg_mfe_macrostate);
-instance testshape4mfepfdb = gra_macrostate(alg_shape4 * (alg_mfe_macrostate % alg_pfunc_macrostate) * alg_dotBracket);
-instance testsampleshape2mfedb = gra_macrostate( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * (alg_shape2 * alg_mfe_macrostate * alg_dotBracket) ) suchthat sample_filter_pf ); //compile with --sample !
+instance testmfeshape3pp   = gra_macrostate(alg_mfe_macrostate * alg_shape3 * alg_dotBracket);
+instance testLPmfeshape3pp = gra_macrostate_lp(alg_mfe_macrostate * alg_shape3 * alg_dotBracket);
+instance testdbshape5mfe   = gra_macrostate(alg_dotBracket * alg_shape5 * alg_mfe_macrostate);
+instance testLPdbshape5mfe = gra_macrostate_lp(alg_dotBracket * alg_shape5 * alg_mfe_macrostate);
+instance testshape4mfepfdb   = gra_macrostate(alg_shape4 * (alg_mfe_macrostate % alg_pfunc_macrostate) * alg_dotBracket);
+instance testLPshape4mfepfdb = gra_macrostate_lp(alg_shape4 * (alg_mfe_macrostate % alg_pfunc_macrostate) * alg_dotBracket);
+instance testsampleshape2mfedb   = gra_macrostate( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * (alg_shape2 * alg_mfe_macrostate * alg_dotBracket) ) suchthat sample_filter_pf ); //compile with --sample !
+instance testLPsampleshape2mfedb = gra_macrostate_lp( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * (alg_shape2 * alg_mfe_macrostate * alg_dotBracket) ) suchthat sample_filter_pf ); //compile with --sample !
 //stop: instances for unit tests
