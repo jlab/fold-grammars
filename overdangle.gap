@@ -70,6 +70,7 @@ instance shape5 = gra_overdangle (alg_shape5);
 instance pf = gra_overdangle (alg_pfunc_overdangle);
 
 instance mfepp = gra_overdangle (alg_mfe_overdangle * alg_dotBracket);
+instance mfeppLP = gra_overdangle_lp (alg_mfe_overdangle * alg_dotBracket);
 instance ppmfe = gra_overdangle (alg_dotBracket * alg_shape5 * alg_mfe_overdangle);
 instance ppmfeLP = gra_overdangle_lp (alg_dotBracket * alg_mfe_overdangle);
 

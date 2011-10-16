@@ -56,6 +56,7 @@ instance shape5count = gra_nodangle(alg_shape5 * count);
 instance pretty = gra_nodangle(alg_dotBracket);
 
 instance mfepp = gra_nodangle(alg_mfe * alg_dotBracket);
+instance mfeppLP = gra_nodangle_lp(alg_mfe * alg_dotBracket);
 instance ppmfe = gra_nodangle(alg_dotBracket * alg_mfe);
 instance ppmfeLP = gra_nodangle_lp(alg_dotBracket * alg_mfe);
 

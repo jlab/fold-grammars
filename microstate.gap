@@ -58,6 +58,7 @@ instance shape5pf = gra_microstate (alg_shape5 * alg_pfunc);
 instance mfe = gra_microstate (alg_shape5 * alg_mfe) ;
 
 instance mfepp = gra_microstate (alg_mfe * alg_dotBracket);
+instance mfeppLP = gra_microstate_lp (alg_mfe * alg_dotBracket);
 instance ppmfe = gra_microstate (alg_dotBracket * alg_mfe);
 instance ppmfeLP = gra_microstate_lp (alg_dotBracket * alg_mfe);
 

@@ -64,6 +64,7 @@ instance mfe = gra_macrostate ( alg_mfe_macrostate ) ;
 instance ppmfe = gra_macrostate ( alg_dotBracket * alg_mfe_macrostate ) ;
 instance ppmfeLP = gra_macrostate_lp ( alg_dotBracket * alg_mfe_macrostate ) ;
 instance mfepp = gra_macrostate ( alg_mfe_macrostate * alg_dotBracket ) ;
+instance mfeppLP = gra_macrostate_lp ( alg_mfe_macrostate * alg_dotBracket ) ;
 
 instance mfev2 = gra_macrostate ( alg_mfeV2_macrostate ) ;
 instance ppmfev2 = gra_macrostate ( alg_dotBracket * alg_mfeV2_macrostate ) ;
