@@ -10,7 +10,7 @@ type base_t = extern
 type shape_t = shape
 
 include "Signatures/sig_foldrna_eval.gap"
-//~ include "Algebras/alg_dotBracket.gap"
+include "Algebras/alg_dotBracket_eval.gap"
 //~ include "Algebras/alg_shapes.gap"
 
 algebra count auto count;
@@ -46,7 +46,9 @@ include "Grammars/gra_nodangle_eval.gap"
 
 
 instance enum = gra_nodangle_eval (enum);
+instance count = gra_nodangle_eval (count);
 instance mfe = gra_nodangle_eval (alg_mfe_eval);
+instance pp = gra_nodangle_eval (alg_dotBracket_eval);
 
 //~ instance shape5pfxpp = gra_nodangle (((alg_shape5 * alg_pfunc) suchthat p_func_filter) * alg_dotBracket);
 //~ instance shapemfepf = gra_nodangle(alg_shape5 * (alg_mfe % alg_pfunc) * alg_dotBracket);
