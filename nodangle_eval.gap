@@ -4,9 +4,8 @@ import unpairedfilter
 
 input <rna, raw>
 
-type Rope = extern
-
 type base_t = extern
+type Rope = extern
 type shape_t = shape
 
 include "Signatures/sig_foldrna_eval.gap"

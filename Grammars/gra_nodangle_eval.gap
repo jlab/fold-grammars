@@ -21,12 +21,12 @@ grammar gra_nodangle_eval uses sig_foldrna_eval(axiom = struct) {
                iloop                        | 
                multiloop} # h;
 
-  stack     =                    sr(<BASE, isOpen>,                                                              closed,                                                                                                                  <BASE, isClose>) # h;
-  hairpin   = sr(<BASE, isOpen>, hl(<BASE, isOpen>,                                                              <REGION with minsize(3), ROPE with unpaired> with samesize,                                                              <BASE, isClose>), <BASE, isClose>) # h;
-  leftB     = sr(<BASE, isOpen>, bl(<BASE, isOpen>, <REGION, ROPE with unpaired> with samesize,                  closed,                                                                                                                  <BASE, isClose>), <BASE, isClose>) # h;
-  rightB    = sr(<BASE, isOpen>, br(<BASE, isOpen>,                                                              closed,                                                     <REGION, ROPE with unpaired> with samesize,                  <BASE, isClose>), <BASE, isClose>) # h;
-  iloop     = sr(<BASE, isOpen>, il(<BASE, isOpen>, <REGION with maxsize(30), ROPE with unpaired> with samesize, closed,                                                     <REGION with maxsize(30), ROPE with unpaired> with samesize, <BASE, isClose>), <BASE, isClose>) # h;
-  multiloop = sr(<BASE, isOpen>, ml(<BASE, isOpen>,                                                              ml_comps,                                                                                                                <BASE, isClose>), <BASE, isClose>) # h;
+  stack     = sr(<BASE, isOpen>,                                             closed,                                                                                 <BASE, isClose>) # h;
+  hairpin   = hl(<BASE, isOpen>,                                             <REGION, ROPE with unpaired> with samesize,                                             <BASE, isClose>) # h;
+  leftB     = bl(<BASE, isOpen>, <REGION, ROPE with unpaired> with samesize, closed,                                                                                 <BASE, isClose>) # h;
+  rightB    = br(<BASE, isOpen>,                                             closed,                                     <REGION, ROPE with unpaired> with samesize, <BASE, isClose>) # h;
+  iloop     = il(<BASE, isOpen>, <REGION, ROPE with unpaired> with samesize, closed,                                     <REGION, ROPE with unpaired> with samesize, <BASE, isClose>) # h;
+  multiloop = ml(<BASE, isOpen>,                                             ml_comps,                                                                               <BASE, isClose>) # h;
 
   ml_comps  = sadd(<BASE, isBase>, ml_comps)        |
               cadd(incl(dangle), ml_comps1) # h;
@@ -35,7 +35,7 @@ grammar gra_nodangle_eval uses sig_foldrna_eval(axiom = struct) {
               cadd(incl(dangle), ml_comps1) |
               incl(dangle)                  |
               addss(incl(dangle), <REGION, ROPE with unpaired> with samesize)   # h;
-			   
+
   isBase  = CHAR('.');
   isOpen  = CHAR('(');
   isClose = CHAR(')');
