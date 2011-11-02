@@ -1,11 +1,47 @@
 #ifndef THRESH_HH
 #define THRESH_HH
 
-static const int gapThresh = 50;
-static const float covarWeight = 0.0;
+static const float cfactor = 1.0; //Set the weight of the covariance term in the energy function (default=`1.0')
+static const float nfactor = 1.0; //Set the penalty for non-compatible sequences in the covariance term of the energy function (default=`1.0')
+static const int MINPSCORE = -200;
 
 #include <rtlib/table.hh>
 #include <rtlib/rna.hh>
+
+static int bp_index(char x, char y)
+{
+  switch (x) {
+    case A_BASE : switch (y) {
+        case U_BASE : return AU_BP;
+        case GAP_BASE : return N_BP;
+      }
+      break;
+    case C_BASE : switch (y) {
+        case G_BASE : return CG_BP;
+        case GAP_BASE : return N_BP;
+      }
+      break;
+    case G_BASE : switch (y) {
+        case C_BASE : return GC_BP;
+        case U_BASE : return GU_BP;
+        case GAP_BASE : return N_BP;
+      }
+      break;
+    case U_BASE : switch (y) {
+        case G_BASE : return UG_BP;
+        case A_BASE : return UA_BP;
+        case GAP_BASE : return N_BP;
+      }
+      break;
+    case GAP_BASE : switch (y) {
+		case GAP_BASE : return NO_BP;
+	  }
+	  break;
+  }
+  return N_BP;
+}
+
+
 
 //needed for internal loops, because the Vienna guys say that the combined length of left and right unpaired regions can not exceed XXX nucleotides.
 template<typename alphabet, typename pos_type, typename T>
@@ -32,88 +68,60 @@ struct TA {
   { t.get_tabulated(i, j) = x; }
 };
 
-inline bool basepairing(char a, char b)
-{
-  switch (a) {
-    case A_BASE :
-      switch (b) {
-        case U_BASE : return true;
-      }
-      break;
-    case U_BASE :
-      switch (b) {
-        case A_BASE : return true;
-        case G_BASE : return true;
-      }
-      break;
-    case G_BASE :
-      switch (b) {
-        case C_BASE : return true;
-        case U_BASE : return true;
-      }
-      break;
-    case C_BASE :
-      switch (b) {
-        case G_BASE : return true;
-      }
-      break;
-  }
-  return false;
-}
-
-/*
-returns the contribution of two bases forming a pair (r,s) which have mutated from the original pair (p,q).
-if (p,q) and (r,s) are indeed valid basepairs and both, opening and closing position, have mutated into another base, the contribution is 2.0
-if (p,q) and (r,s) are indeed valid basepairs but only opening xor closing position have mutated into another base, the contributiuon is 1.0
-contribution is 0.0 in all other cases.
-*/
-inline
-int contribution(char p, char q, char r, char s) {
-  if (basepairing(p,q) && basepairing(r,s)) {
-	if ((p != r) && (q != s)) {
-		return 2;
-	}
-	if (((p == r) || (q == s)) && not((p==r) && (q==s))) {
-		return 1;
-	}
-  }
-  return 0;
-}
-
 
 inline
-float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b, float covarWeight)
+float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b, float cfactor, float nfactor)
 {
   typedef Table::Quadratic<float, Table::CYK> table_t;
   static table_t table;
   static bool compute = true;
   TA<float> array(table);
   if (compute) {
+    int olddm[7][7]={{0,0,0,0,0,0,0}, /* hamming distance between pairs */
+                     {0,0,2,2,1,2,2} /* CG */,
+                     {0,2,0,1,2,2,2} /* GC */,
+                     {0,2,1,0,2,1,2} /* GU */,
+                     {0,1,2,2,0,2,1} /* UG */,
+                     {0,2,2,1,2,0,2} /* AU */,
+                     {0,2,2,2,1,2,0} /* UA */};
+
 	table.init(*seq.seq, "covariance");
-	unsigned int i,j,k,l;
+	unsigned int i,j,s,k,l;
 	for (i = 0; i < seq_size(seq); i++) {
 	  for (j = i+1+3; j < seq_size(seq); j++) {
-		int sum = 0;
-		int numNoBP = 0;
-		int noDoubleGap = 0;
-		for (k = 0; k < rows(seq); k++) {
-		  for (l = k+1; l < rows(seq); l++) {
-			sum += contribution(column(seq_char(seq,i),k), column(seq_char(seq,j),k), column(seq_char(seq,i),l), column(seq_char(seq,j),l));
-		  }
-		  if ((not basepairing(column(seq_char(seq,i),k), column(seq_char(seq,j),k))) || (((column(seq_char(seq,i),k) == GAP_BASE) && (column(seq_char(seq,j),k) != GAP_BASE)) || ((column(seq_char(seq,i),k) != GAP_BASE) && (column(seq_char(seq,j),k) == GAP_BASE)))) {
-			numNoBP++;
-		  }
-		  if ((column(seq_char(seq,i),k) == GAP_BASE) && (column(seq_char(seq,j),k))) {
-			noDoubleGap++;
-		  }
-		}
-		float covariance = covarWeight * 100.0 * (0.0 - (((float) sum) / ((float) (rows(seq) * rows(seq)))) + ((float) numNoBP / (float) (rows(seq))));
-		array(i,j) = covariance;
+		int pfreq[8]={0,0,0,0,0,0,0,0};
+		for (s=0; s<rows(seq); s++) {
+          int type = bp_index(column(seq_char(seq,i),s), column(seq_char(seq,j),s));
+          pfreq[type]++;
+        }
+		double score = 0.0;
+		if (pfreq[0]*2+pfreq[7] > int(rows(seq))) { 
+		  array(i,j) = -2.0 * MINPSCORE; 
+		} else {
+		  for (k=1,score=0; k<=6; k++) { /* ignore pairtype 7 (gap-gap) */
+            for (l=k; l<=6; l++) {
+              score += pfreq[k]*pfreq[l]*olddm[k][l];
+		    }
+	      }
+          float covariance = cfactor * ((100.0*score)/float(rows(seq)) - nfactor*100.0*(float(pfreq[0]) + float(pfreq[7])*0.25));
+		  array(i,j) = covariance * -1.0/float(rows(seq));
+	    }
+		//~ fprintf(stderr, "cov(%i,%i) = %f\n", i+1,j+1,array(i,j)*-1*float(rows(seq)));
 	  }
 	}
 	compute = false;
   }
   return array(a, b);
+}
+
+template<typename alphabet, typename pos_type, typename T>
+inline bool alignmentpairing(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, float cfactor, float nfactor)
+{
+  if (j<=i+1) {
+    return false;
+  }
+  Basic_Subsequence<alphabet, pos_type> sub(seq, i, j);
+  return float(covscore(sub, int(i), int(j)-1, cfactor, nfactor)*-1*rows(sub)) >= float(MINPSCORE);
 }
 
 
@@ -145,22 +153,27 @@ inline std::ostream &operator<<(std::ostream &s, const mfecovar &pfa) {
 
 inline bool operator==(const mfecovar &a, const mfecovar &b) {
  //~ std::cerr << "XXX\n";
-	return fabs(a.mfe+a.covar-b.mfe-b.covar) == 0.0;
+	return fabs(a.mfe+a.covar-b.mfe-b.covar) <= 0.001;
+	//~ return fabs(a.mfe-b.mfe) <= 0.001;
 }
 inline bool operator!=(const mfecovar &a, const mfecovar &b) {
 	return !(a == b);
 }
 inline bool operator>(const mfecovar &a, const mfecovar &b) {
 	return (a.mfe+a.covar) > (b.mfe+b.covar);
+	//~ return (a.mfe) > (b.mfe);
 }
 inline bool operator<(const mfecovar &a, const mfecovar &b) {
 	return (a.mfe+a.covar) < (b.mfe+b.covar);
+	//~ return (a.mfe) < (b.mfe);
 }
 inline bool operator>=(const mfecovar &a, const mfecovar &b) {
 	return (a.mfe+a.covar) >= (b.mfe+b.covar);
+	//~ return (a.mfe) >= (b.mfe);
 }
 inline bool operator<=(const mfecovar &a, const mfecovar &b) {
 	return (a.mfe+a.covar) <= (b.mfe+b.covar);
+	//~ return (a.mfe) <= (b.mfe);
 }
 inline mfecovar operator+(const mfecovar &a, const mfecovar &b) {
 	mfecovar res;
@@ -171,6 +184,10 @@ inline mfecovar operator+(const mfecovar &a, const mfecovar &b) {
 
 inline void empty(mfecovar &e) {e.empty_ = true; }
 inline bool is_empty(const mfecovar &e) { return e.empty_; }
+
+
+
+
 
 
 

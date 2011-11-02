@@ -19,14 +19,14 @@ grammar gra_ali_nodangle uses sig_foldrna(axiom = struct) {
                leftB                        | 
                rightB                       | 
                iloop                        | 
-               multiloop} with stackpairing(gapThresh) # h;
+               multiloop} with alignmentpairing(cfactor, nfactor) # h;
 
-  stack     =          sr(BASE,                          closed,                          BASE) with stackpairing(gapThresh) # h;
-  hairpin   = sr(BASE, hl(BASE,                          REGION with minsize(3),          BASE) with basepairing(gapThresh), BASE) with stackpairing(gapThresh) # h;
-  leftB     = sr(BASE, bl(BASE, REGION,                  closed,                          BASE) with basepairing(gapThresh), BASE) with stackpairing(gapThresh) # h;
-  rightB    = sr(BASE, br(BASE,                          closed, REGION,                  BASE) with basepairing(gapThresh), BASE) with stackpairing(gapThresh) # h;
-  iloop     = sr(BASE, il(BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE) with basepairing(gapThresh), BASE) with stackpairing(gapThresh) # h;
-  multiloop = sr(BASE, ml(BASE,                          ml_comps,                        BASE) with basepairing(gapThresh), BASE) with stackpairing(gapThresh) # h;
+  stack     =          sr(BASE,                          closed,                          BASE) with alignmentpairing(cfactor, nfactor) # h;
+  hairpin   = sr(BASE, hl(BASE,                          REGION with minsize(3),          BASE) with alignmentpairing(cfactor, nfactor), BASE) with alignmentpairing(cfactor, nfactor) # h;
+  leftB     = sr(BASE, bl(BASE, REGION with maxsize(30), closed,                          BASE) with alignmentpairing(cfactor, nfactor), BASE) with alignmentpairing(cfactor, nfactor) # h;
+  rightB    = sr(BASE, br(BASE,                          closed, REGION with maxsize(30), BASE) with alignmentpairing(cfactor, nfactor), BASE) with alignmentpairing(cfactor, nfactor) # h;
+  iloop     = sr(BASE, il(BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE) with alignmentpairing(cfactor, nfactor), BASE) with alignmentpairing(cfactor, nfactor) # h;
+  multiloop = sr(BASE, ml(BASE,                          ml_comps,                        BASE) with alignmentpairing(cfactor, nfactor), BASE) with alignmentpairing(cfactor, nfactor) # h;
 
   ml_comps  = sadd(BASE, ml_comps)          |
               cadd(incl(dangle), ml_comps1) # h;

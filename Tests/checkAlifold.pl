@@ -102,6 +102,7 @@ sub eval {
 }
 
 sub run {
+	my $EPSILON = 0.01;
 	my ($refHash_family, $version) = @_;
 
 	return "too many sequences" if (keys(%{$refHash_family->{sequences}}) > 50);
@@ -120,11 +121,11 @@ sub run {
 #~ print $out."\n"; die;
 	my @orig;
 	if ($version eq '1.8.5') {
-		@orig = qx(cat tmp | $binVienna185 -cv 0.0 -nc 0.0 -d0 -noLP -T $TEMPERATURE 2> /dev/null);
+		@orig = qx(cat tmp | $binVienna185 -cv 1.0 -nc 1.0 -d0 -noLP -T $TEMPERATURE 2> /dev/null);
 	} else {
-		@orig = qx(cat tmp | $binVienna200 --cfactor 0.0 --nfactor 0.0 -d0 --noLP -T $TEMPERATURE 2> /dev/null);
+		@orig = qx(cat tmp | $binVienna200 --cfactor 1.0 --nfactor 1.0 -d0 --noLP -T $TEMPERATURE 2> /dev/null);
 	}
-	
+#~ print Dumper \@orig; die;	
 	#'((((.(((.(((..((((((.(((((.(((......))).))))))))))).....))).))))))) (-22.77 = -21.51 +  -1.26)
 	my ($origStructure, $origMFE, $origCovar) = ($orig[1] =~ m/^(.+?)\s+\(\s*-?\d+\.?\d*\s+=\s+(.+?)\s+\+\s+(.+?)\)/);
 	
@@ -152,7 +153,7 @@ sub run {
 		}
 	}
 	
-	if (($gapStructure eq $origStructure) && (abs(($gapMFE/100)-$origMFE + ($gapCovar/100)-$origCovar) < 0.1)) {
+	if (($gapStructure eq $origStructure) && (abs(($gapMFE/100)-$origMFE + ($gapCovar/100)-$origCovar) < $EPSILON)) {
 		print $refHash_family->{familyname}."\tEqual\n";
 	} else {
 		print $refHash_family->{familyname}."\tno seqs: ".(keys(%{$refHash_family->{sequences}}))."\tali length: ".length($refHash_family->{GCinformation}->{SS_cons})."\n";
@@ -161,7 +162,7 @@ sub run {
 		print "=== has ".(($gapStructure eq $origStructure) ? "equal" : "DIFFERENT")." structure ===\n";
 	}
 	
-	if (abs(($gapMFE/100)-$origMFE + ($gapCovar/100)-$origCovar) < 0.01) {
+	if (abs(($gapMFE/100)-$origMFE + ($gapCovar/100)-$origCovar) < $EPSILON) {
 		return "equal";
 	} else {
 		return "diff";
