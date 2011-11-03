@@ -189,6 +189,54 @@ inline bool is_empty(const mfecovar &e) { return e.empty_; }
 
 
 
+typedef Basic_Subsequence<M_Char, unsigned> TUSubsequence;
+struct mfecovar_macrostate {
+  float mfe;
+  float covar;
+  TUSubsequence firstStem;
+  TUSubsequence lastStem;
+  bool empty_;
+  mfecovar_macrostate() : empty_(false) {}
+
+};
+
+inline std::ostream &operator<<(std::ostream &s, const mfecovar_macrostate &tuple) {
+  if (tuple.empty_)
+    s << 'E';
+  else            
+    s << "( " << tuple.mfe + tuple.covar << " = " << tuple.mfe << " + " << tuple.covar << " )";
+  return s;
+}
+
+inline bool operator==(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return fabs(a.mfe+a.covar-b.mfe-b.covar) <= 0.001;
+}
+inline bool operator!=(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return !(a == b);
+}
+inline bool operator>(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return (a.mfe+a.covar) > (b.mfe+b.covar);
+}
+inline bool operator<(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return (a.mfe+a.covar) < (b.mfe+b.covar);
+}
+inline bool operator>=(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return (a.mfe+a.covar) >= (b.mfe+b.covar);
+}
+inline bool operator<=(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return (a.mfe+a.covar) <= (b.mfe+b.covar);
+}
+inline mfecovar_macrostate operator+(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	mfecovar_macrostate res;
+	res.mfe = a.mfe + b.mfe;
+	res.covar = a.covar + b.covar;
+	res.firstStem = a.firstStem;
+	res.lastStem = b.lastStem;
+	return res;
+}
+
+inline void empty(mfecovar_macrostate &e) {e.empty_ = true; }
+inline bool is_empty(const mfecovar_macrostate &e) { return e.empty_; }
 
 
 #endif

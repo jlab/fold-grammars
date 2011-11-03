@@ -1,4 +1,4 @@
-algebra alg_mfe_eval implements sig_foldrna_eval(alphabet = char, answer = int) {
+algebra alg_eval_mfe implements sig_eval_foldrna(alphabet = char, answer = int) {
   int sadd(<Subsequence lb, char lbDB>, int x) {
     return x + sbase_energy();
   }
@@ -26,19 +26,23 @@ algebra alg_mfe_eval implements sig_foldrna_eval(alphabet = char, answer = int) 
     return x + termau_energy(lb, rb);
   }
   int sr(<Subsequence lb, char lbDB>, int x, <Subsequence rb, char rbDB>) {
+	fprintf(stderr, "sr_energy(%i,%i): %i\n", lb.i+1, rb.j, sr_energy(lb, rb));
     return x + sr_energy(lb, rb);
   }
   int hl(<Subsequence lb, char lbDB>, <Subsequence r, Rope rDB>, <Subsequence rb, char rbDB>) {
-    return     hl_energy(r);
+    fprintf(stderr, "hl_energy(%i,%i): %i\n", r.i, r.j+1, hl_energy(r));
+	return     hl_energy(r);
   }
   int bl(<Subsequence lb, char lbDB>, <Subsequence lr, Rope lrDB>, int x, <Subsequence rb, char rbDB>) {
+	fprintf(stderr, "bl_energy(%i,%i): %i\n", lb.i+1, rb.j, bl_energy(lr, rb));
     return x + bl_energy(lr, rb);
   }
   int br(<Subsequence lb, char lbDB>, int x, <Subsequence rr, Rope rrDB>, <Subsequence rb, char rbDB>) {
     return x + br_energy(lb, rr);
   }
   int il(<Subsequence lb, char lbDB>, <Subsequence lr, Rope lrDB>, int x, <Subsequence rr, Rope rrDB>, <Subsequence rb, char rbDB>) {
-    return x + il_energy(lr, rr);
+	fprintf(stderr, "il_energy(%i,%i)(%i,%i): %i\n", lr.i, rr.j+1, lr.j+1, rr.i,  il_energy(lr, rr));
+	return x + il_energy(lr, rr);
   }
   int mldl(<Subsequence lb, char lbDB>, <Subsequence dl, char dlDB>, int x, <Subsequence rb, char rbDB>) {
     return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + dli_energy(lb, rb);

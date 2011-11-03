@@ -249,7 +249,7 @@ algebra alg_ali_dotBracket implements sig_foldrna(alphabet = M_Char, answer = st
 
   choice [string] h([string] i) {
     //~ return list(minimum(i));
-    return i;
-	  //~ return unique(i);
+    //~ return i;
+	  return unique(i);
   }
 }

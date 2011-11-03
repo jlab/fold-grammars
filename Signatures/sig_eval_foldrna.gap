@@ -1,4 +1,4 @@
-signature sig_foldrna_eval(alphabet,answer) {
+signature sig_eval_foldrna(alphabet,answer) {
 	answer sadd(<Subsequence, char>,answer);
 	answer cadd(answer,answer);
 	answer cadd_Pr(answer,answer);

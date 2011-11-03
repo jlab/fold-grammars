@@ -1,4 +1,4 @@
-algebra alg_dotBracket_eval implements sig_foldrna_eval(alphabet = char, answer = string) {
+algebra alg_eval_dotBracket implements sig_eval_foldrna(alphabet = char, answer = string) {
   string sadd(<Subsequence lb, char lbDB>,string e) {
     string res;
     append(res, '.');

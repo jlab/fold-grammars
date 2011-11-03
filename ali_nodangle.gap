@@ -21,8 +21,9 @@ include "Grammars/gra_ali_nodangle.gap"
 include "Grammars/gra_ali_nodangle_lp.gap"
 
 instance count = gra_ali_nodangle (count);
-
-instance testalifold = gra_ali_nodangle (alg_ali_mfe * alg_ali_dotBracket);
-instance testLPalifold = gra_ali_nodangle_lp (alg_ali_mfe * alg_ali_dotBracket);
 instance enum = gra_ali_nodangle (enum);
 
+//start: instances for unit tests
+instance testalifold = gra_ali_nodangle (alg_ali_mfe * alg_ali_dotBracket);
+instance testLPalifold = gra_ali_nodangle_lp (alg_ali_mfe * alg_ali_dotBracket);
+//stop: instances for unit tests

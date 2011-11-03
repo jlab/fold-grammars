@@ -7,7 +7,7 @@
 //    epsilon = EMPTY
 //    r = REGION
 //  For consistency with MacroState nil has a LOC terminal parser instead of an EMPTY terminal parser.
-grammar gra_nodangle_eval uses sig_foldrna_eval(axiom = struct) {
+grammar gra_eval_nodangle uses sig_foldrna_eval(axiom = struct) {
   struct    = sadd(<BASE, isBase>, struct)   |
               cadd(dangle, struct) |
               nil(<LOC, LOC>)           # h;
