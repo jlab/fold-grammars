@@ -1,5 +1,5 @@
-#ifndef THRESH_HH
-#define THRESH_HH
+#ifndef ALIFOLD_HH
+#define ALIFOLD_HH
 
 static const float cfactor = 1.0; //Set the weight of the covariance term in the energy function (default=`1.0')
 static const float nfactor = 1.0; //Set the penalty for non-compatible sequences in the covariance term of the energy function (default=`1.0')
@@ -113,6 +113,93 @@ float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b, flo
   }
   return array(a, b);
 }
+
+#include "rope.hh"
+/* 
+   simple consensus sequence (most frequent character) 
+*/
+template<typename X>
+void append_consensus(rope::Ref<X> &str, const Basic_Subsequence<M_Char, unsigned> &seq)
+{
+  static char *consensus;
+  static bool compute = true;
+  unsigned i;
+  if (compute) {
+	unsigned int s,max,maxIndex;
+	consensus = (char *) malloc ((seq_size(seq)+1) * sizeof(char));
+	for (i = 0; i < seq_size(seq); i++) {
+	  unsigned int freq[6]={0,0,0,0,0,0};
+	  for (s=0; s<rows(seq); s++) {
+		freq[(int) column(seq_char(seq,i),s)]++;
+	  }
+	  max = 0;
+	  maxIndex = GAP_BASE;
+	  for (s=0; s < 6; ++s) {
+		if (freq[s] > max) {
+		  max = freq[s];
+		  maxIndex = s;
+		}
+	  }
+	  consensus[i] = base_to_char(maxIndex);
+	}
+	compute = false;
+  }
+  for (i = seq.i; i < seq.j; i++) {
+	str.append(consensus[i]);
+  }
+}
+
+/* 
+   append_mis displays the 'most informative sequence' (Freyhult et al 2004),
+   elements in columns with frequency greater than the background
+   frequency are projected into iupac notation. Columns where gaps are
+   over-represented are in lower case.
+*/
+template<typename X>
+void append_mis(rope::Ref<X> &str, const Basic_Subsequence<M_Char, unsigned> &seq)
+{
+  static char *consensus;
+  static bool compute = true;
+  unsigned i;
+  if (compute) {
+	/* IUP nucleotide classes indexed by a bit string of the present bases */
+    /* A C AC G AG CG ACG U AU CU ACU GU AGU CGU ACGU */
+    static char IUP[17] = "-ACMGRSVUWYHKDBN";
+	consensus = (char *) malloc ((seq_size(seq)+1) * sizeof(char));
+
+	unsigned int bgfreq[6] = {0,0,0,0,0,0};
+    unsigned int s;
+	for (i=0; i<seq_size(seq); i++) {
+	  for (s=0; s<rows(seq); s++) {
+	  	bgfreq[(unsigned int) column(seq_char(seq,i),s)]++;
+	  }
+    }
+
+	unsigned int c;
+	for (i=0; i<seq_size(seq); i++) {
+	  unsigned int freq[6] = {0,0,0,0,0,0};
+	  unsigned int code = 0;
+	  for (s=0; s<rows(seq); s++) {
+	  	freq[(unsigned int) column(seq_char(seq,i),s)]++;
+	  }
+	  for (c=U_BASE; c>=A_BASE; c--) {
+	  	code <<=1;
+	  	if (freq[c]*seq_size(seq)>=bgfreq[c]) code++;
+	  }
+	  consensus[i] = IUP[code];
+	  if (freq[GAP_BASE]*seq_size(seq)>bgfreq[GAP_BASE])
+	  	consensus[i] = tolower(IUP[code]);
+	}
+
+	compute = false;
+  }
+  for (i = seq.i; i < seq.j; i++) {
+	str.append(consensus[i]);
+  }
+}
+
+
+
 
 template<typename alphabet, typename pos_type, typename T>
 inline bool alignmentpairing(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, float cfactor, float nfactor)

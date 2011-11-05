@@ -1,6 +1,6 @@
 import rna
 import pfunc_filter_foldrna
-import thresh
+import alifold
 
 input rna
 
@@ -12,6 +12,9 @@ type mfecovar = extern
 
 include "Signatures/sig_foldrna.gap"
 include "Algebras/alg_ali_dotBracket.gap"
+include "Algebras/alg_ali_shapes.gap"
+include "Algebras/alg_ali_hishapes.gap"
+include "Algebras/alg_ali_mis.gap"
 
 algebra count auto count;
 algebra enum auto enum;
@@ -23,6 +26,7 @@ include "Grammars/gra_ali_microstate_lp.gap"
 
 instance count = gra_ali_microstate (count);
 instance enum = gra_ali_microstate (enum);
+instance shape5mfepp = gra_ali_microstate ((alg_ali_shape5 * alg_ali_mfe) * alg_ali_dotBracket); // compile with --kbacktrace if you also choose kbest!
 
 //start: instances for unit tests
 instance testalifold   = gra_ali_microstate    (alg_ali_mfe * alg_ali_dotBracket);

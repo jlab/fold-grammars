@@ -1,6 +1,6 @@
 import rna
 import pfunc_filter_foldrna
-import thresh
+import alifold
 
 input rna
 
@@ -12,6 +12,7 @@ type mfecovar = extern
 
 include "Signatures/sig_foldrna.gap"
 include "Algebras/alg_ali_dotBracket.gap"
+include "Algebras/alg_ali_mis.gap"
 
 algebra count auto count;
 algebra enum auto enum;
