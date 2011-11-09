@@ -1,6 +1,5 @@
 import rna
 import pfunc_filter_foldrna
-import unpairedfilter
 
 input <rna, raw>
 
