@@ -39,7 +39,7 @@ check_new_old_eq macrostate.gap unused testshape4mfepfdb   GGCGAGCGAGCCCCGGGCGGA
 check_new_old_eq macrostate.gap unused testLPshape4mfepfdb GGCGAGCGAGCCCCGGGCGGACGCGCGCCCGAAACGGG  prob.LP
 
 GAPC="$BASE/gapc -t -I../../ --sample"
-LDLIBS_EXTRA="$BASE/librna1999/rnalib.o  -lgslcblas -lgsl"
+LDLIBS_EXTRA="$BASE/librna1999/rnalib.o  -lgsl -lgslcblas"
 RUN_CPP_FLAGS="-t 27.0 -r 10"
 GSL_RNG_SEED=42
 export GSL_RNG_SEED
