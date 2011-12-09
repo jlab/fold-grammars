@@ -5,7 +5,9 @@ set -u
 NO_CONFIG_MF="foo"
 export NO_CONFIG_MF
 
-GAPC=/home/sjanssen/Desktop/Turner2004/Gapc/gapc
+BASE="../../../../adpc-tng-multi/"
+
+GAPC=$BASE/gapc
 GHC=ghc
 MAKE=make
 MAKEFLAGS=-I../..
@@ -13,18 +15,18 @@ MAKEFLAGS=-I../..
 TEMP=./temp
 GRAMMAR=../
 LHS_DIR=..
-RTLIB=/home/sjanssen/local/gapc/include/rtlib/
-CPPFLAGS_EXTRA="-I../.. -I/home/sjanssen/local/gapc/include/librna/ -O -DNDEBUG"
+RTLIB=$BASE/rtlib/
+CPPFLAGS_EXTRA="-I../.. -I$BASE/librna -O -DNDEBUG"
 LDLIBS_EXTRA=""
 RUN_CPP_FLAGS=""
 
 KSH="ksh"
 
 
-if [ -e /home/sjanssen/Desktop/Turner2004/Gapc/config.mf ]; then
-  CONFIG_MF=/home/sjanssen/Desktop/Turner2004/Gapc/config.mf
+if [ -e $BASE/config.mf ]; then
+  CONFIG_MF=$BASE/config.mf
 else
-  CONFIG_MF=/home/sjanssen/Desktop/Turner2004/Gapc/config/generic.mf
+  CONFIG_MF=$BASE/config/generic.mf
 fi
 
 err_count=0
