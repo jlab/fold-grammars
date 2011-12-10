@@ -169,6 +169,7 @@ inline pftuple mk_tuple(const Subsequence &stem, double x) {
 #ifdef USE_GSL
 
 #include "sample.hh"
+// fuehrt das hier nicht zu falschen Ergebnissen, wenn nur nach q1 gefragt wird??
 struct PfanswerToDouble
 {
   double operator()(const pfanswer &pf) const
@@ -176,7 +177,6 @@ struct PfanswerToDouble
     return pf.pf.q1;
   }
 };
-
 template<typename S, typename T, typename pos_int>
 inline
 List_Ref<std::pair<S, T>, pos_int>
@@ -185,6 +185,9 @@ sample_filter_pf(List_Ref<std::pair<S, T>, pos_int> &x)
   return sample_filter(x, PfanswerToDouble());
 }
 
+
+
+//only used in sample_filter_pf_all, see below
 struct PfanswerToDoubleAll
 {
   double operator()(const pfanswer &pf) const
@@ -193,6 +196,7 @@ struct PfanswerToDoubleAll
   }
 };
 
+// used in macrostate.gap, e.g. for: "instance pfsampleshape5all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape5 ) suchthat sample_filter_pf_all ) ; //compile with --sample !"
 template<typename S, typename T, typename pos_int>
 inline
 List_Ref<std::pair<S, T>, pos_int>
