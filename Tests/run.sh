@@ -62,7 +62,8 @@ mkdir -p $TEMP
 cd $TEMP
 
 echo include $CONFIG_MF > gapc_local.mf
-printf RT_LDLIBS=\\n $CONFIG_MF >> gapc_local.mf
+printf RT_LDLIBS=\\n  >> gapc_local.mf
+printf RT_LDLIBS04=\\n  >> gapc_local.mf
 
 cmp_new_old_output()
 {
