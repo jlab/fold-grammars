@@ -5,7 +5,7 @@ set -u
 NO_CONFIG_MF="foo"
 export NO_CONFIG_MF
 
-BASE="../../../../adpc-tng-multi/"
+BASE="../../../Turner2004/Gapc/"
 
 GAPC=$BASE/gapc
 GHC=ghc
