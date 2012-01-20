@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Getopt::Long;
-
+use StefansTools;
 use Data::Dumper;
 
 sub usage() {
@@ -55,13 +55,13 @@ EOF
 	die;
 }
 
-my $BINNAME = "sampling";
+my $BINNAME = "sampling_MacroState_";
 my $inputsequence = undef;
 my $fastaInputFile = undef;
 my $samplingiterations = 1000;
 my $shapeLevel = 5;
 my $help = undef;
-my $header = "";
+my $header = "raw input";
 my $binDir = "./";
 
 &GetOptions(	"inputSequence=s"	=> \$inputsequence,
@@ -73,61 +73,59 @@ my $binDir = "./";
 
 usage() if (defined $help);
 
+my @results = ();
+
 if ((not defined $inputsequence) && (not defined $fastaInputFile)) {
 	if (@ARGV == 1) {
-		$inputsequence = $ARGV[0];
+		push @results, {sequence => $header, result => sample({sequence => $ARGV[0], header => $header, comments => ""}, $samplingiterations, $shapeLevel, $binDir)};
 	} else {
-		while(my $line = <STDIN>) {
-			chomp $line;
-			$inputsequence .= $line;
-		}	
+		@results = @{StefansTools::applyFunctionToFastaFile(\*STDIN, \&sample, $samplingiterations, $shapeLevel, $binDir)};
 	}
 } elsif (defined $fastaInputFile) {
-	open (IN, $fastaInputFile) || die "can't open '$fastaInputFile'\n";
-		while (my $line = <IN>) {
-			chomp $line;
-			$line =~ s/\r//g;
-			
-			if ($line =~ m/^\s*\>(.+)/) {
-				#header
-				die "$0 can handle only single fasta sequence files!" if ($header ne "");
-				$header .= $1;
-			} elsif ($line =~ m/^\s*;/) {
-				#very uncommon fasta comment
-			} elsif ($line =~ m/^\s*$/) {
-				#empty line
-			} else {
-				$inputsequence .= $line;
-			}
-		}
-	close (IN);
+	@results = @{StefansTools::applyFunctionToFastaFile($fastaInputFile, \&sample, $samplingiterations, $shapeLevel, $binDir)};	
+} elsif (defined $inputsequence) {
+	push @results, {sequence => $header, result => sample({sequence => $inputsequence, header => $header, comments => ""}, $samplingiterations, $shapeLevel, $binDir)};
 }
 
-$inputsequence = lc($inputsequence);
-$inputsequence =~ s/t/u/g;
-if ($inputsequence =~ m/([^acgu])/) {
-	die "Your input sequence contains non nucleotide characters. E.g. '$1'\n";
-}
-
-$binDir .= '/' if (substr($binDir, 0, 1) ne '/');
-if (not -e $binDir.$BINNAME.$shapeLevel) {
-	die "can't execute sampling binary '$binDir.$BINNAME.$shapeLevel'\n";
-}
-
-my $noShapes = 0;
-my %shapes = ();
-foreach my $line (split(m/\n/, qx(${binDir}${BINNAME}${shapeLevel} -r $samplingiterations $inputsequence))) {
-	if ($line =~ m/^\(\s+\S+\s+,\s+((\[|\]|\_)+)\s+\)/) {
-		$noShapes++;
-		$shapes{$1}++;
-	} elsif ($line =~ m/^Answer:\s*$/) {
-	} else {
-		print STDERR "unexpected line: '$line'\n";
+foreach my $refHash_result (@results) {
+	print ">".$refHash_result->{sequence}."\n";
+	my %shapes = %{$refHash_result->{result}->[0]};
+	my $noShapes = $refHash_result->{result}->[1];
+	foreach my $shape (sort {$shapes{$b} <=> $shapes{$a}} keys(%shapes)) {
+		print sprintf("%.7f", $shapes{$shape} / $noShapes)."\t".$shape."\n";
 	}
-}
-foreach my $shape (sort {$shapes{$b} <=> $shapes{$a}} keys(%shapes)) {
-	print sprintf("%.7f", $shapes{$shape} / $noShapes)."\t".$shape."\n";
+	print "//\n";
 }
 
+sub sample {
+	my ($refHash_fasta, $samplingiterations, $shapeLevel, $binDir) = @_;
+	
+	$inputsequence = lc($refHash_fasta->{sequence});
+	$inputsequence =~ s/t/u/g;
+	if ($inputsequence =~ m/([^acgu])/) {
+		die "Your input sequence '".$refHash_fasta->{header}."' contains non nucleotide characters. E.g. '$1'\n";
+	}
 
+	$binDir = StefansTools::extendPath(StefansTools::absFilename($binDir)).$BINNAME.$shapeLevel;
+	if (not -e $binDir) {
+		die "can't execute sampling binary '$binDir'\n";
+	}
 
+	my $noShapes = 0;
+	my %shapes = ();
+	my ($statusSampling, $errorSampling, $outSampling, $durationSampling) = StefansTools::execute($binDir." -r ".$samplingiterations." ".$inputsequence);
+	if ($statusSampling) {
+		die "can't run sampling:\n$errorSampling";
+	}
+	foreach my $line (split(m/\n/, $outSampling)) {
+		if ($line =~ m/^\(\s+\S+\s+,\s+((\[|\]|\_)+)\s+\)/) {
+			$noShapes++;
+			$shapes{$1}++;
+		} elsif ($line =~ m/^Answer:\s*$/) {
+		} else {
+			print STDERR "unexpected line: '$line'\n";
+		}
+	}
+
+	return [\%shapes, $noShapes];
+}
