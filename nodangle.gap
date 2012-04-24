@@ -49,7 +49,7 @@ instance enum = gra_nodangle (enum);
 instance shapemfepf = gra_nodangle(alg_shape5 * (alg_mfe % alg_pfunc) * alg_dotBracket);
 
 instance shape5pf = gra_nodangle(alg_shape5 * alg_pfunc);
-instance pf = gra_nodangle_lp (alg_pfunc);
+instance pfAll_lp = gra_nodangle_lp (alg_pfunc); //this instance is used for outside computation of base pair probabilities
 instance mfe = gra_nodangle (alg_shape5 * alg_mfe) ;
 instance shape2 = gra_nodangle(alg_shape2);
 instance shape5 = gra_nodangle(alg_shape5);
