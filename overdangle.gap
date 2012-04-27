@@ -17,7 +17,7 @@ algebra enum auto enum;
 include "Algebras/alg_mfe.gap"
 algebra alg_mfe_overdangle extends alg_mfe {
   int drem(Subsequence lb, int x, Subsequence rb) {
-    return x + termau_energy(lb, rb) + ext_mismatch_energy(lb, rb) +9876;
+    return x + termau_energy(lb, rb) + ext_mismatch_energy(lb, rb);
   }
   int ml(Subsequence lb, int x, Subsequence rb) {
     return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
