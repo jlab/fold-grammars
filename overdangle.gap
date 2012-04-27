@@ -17,7 +17,7 @@ algebra enum auto enum;
 include "Algebras/alg_mfe.gap"
 algebra alg_mfe_overdangle extends alg_mfe {
   int drem(Subsequence lb, int x, Subsequence rb) {
-    return x + termau_energy(lb, rb) + ext_mismatch_energy(lb, rb);
+    return x + termau_energy(lb, rb) + ext_mismatch_energy(lb, rb) +9876;
   }
   int ml(Subsequence lb, int x, Subsequence rb) {
     return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
@@ -75,12 +75,12 @@ instance ppmfe = gra_overdangle (alg_dotBracket * alg_shape5 * alg_mfe_overdangl
 instance ppmfeLP = gra_overdangle_lp (alg_dotBracket * alg_mfe_overdangle);
 
 //start: instances for unit tests
-instance testmfeshape3pp   = gra_overdangle(alg_mfe * alg_shape3 * alg_dotBracket);
-instance testLPmfeshape3pp = gra_overdangle_lp(alg_mfe * alg_shape3 * alg_dotBracket);
-instance testdbshape5mfe   = gra_overdangle(alg_dotBracket * alg_shape5 * alg_mfe);
-instance testLPdbshape5mfe = gra_overdangle_lp(alg_dotBracket * alg_shape5 * alg_mfe);
-instance testshape4mfepfdb   = gra_overdangle(alg_shape4 * (alg_mfe % alg_pfunc) * alg_dotBracket);
-instance testLPshape4mfepfdb = gra_overdangle_lp(alg_shape4 * (alg_mfe % alg_pfunc) * alg_dotBracket);
-instance testsampleshape2mfedb   = gra_overdangle( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
-instance testLPsampleshape2mfedb = gra_overdangle_lp( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
+instance testmfeshape3pp   = gra_overdangle(alg_mfe_overdangle * alg_shape3 * alg_dotBracket);
+instance testLPmfeshape3pp = gra_overdangle_lp(alg_mfe_overdangle * alg_shape3 * alg_dotBracket);
+instance testdbshape5mfe   = gra_overdangle(alg_dotBracket * alg_shape5 * alg_mfe_overdangle);
+instance testLPdbshape5mfe = gra_overdangle_lp(alg_dotBracket * alg_shape5 * alg_mfe_overdangle);
+instance testshape4mfepfdb   = gra_overdangle(alg_shape4 * (alg_mfe_overdangle % alg_pfunc_overdangle) * alg_dotBracket);
+instance testLPshape4mfepfdb = gra_overdangle_lp(alg_shape4 * (alg_mfe_overdangle % alg_pfunc_overdangle) * alg_dotBracket);
+instance testsampleshape2mfedb   = gra_overdangle( ( (alg_pfunc_overdangle | alg_pfunc_id ) * (alg_shape2 * alg_mfe_overdangle * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
+instance testLPsampleshape2mfedb = gra_overdangle_lp( ( (alg_pfunc_overdangle | alg_pfunc_id ) * (alg_shape2 * alg_mfe_overdangle * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
 //stop: instances for unit tests
