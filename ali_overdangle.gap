@@ -22,7 +22,7 @@ algebra alg_ali_mfe_overdangle extends alg_ali_mfe {
   mfecovar drem(Subsequence lb, mfecovar x, Subsequence rb) {
 	mfecovar res = x;
 	res.mfe = x.mfe + ((termau_energy(lb, rb) + ext_mismatch_energy(lb, rb)) / float(rows(lb)));
-    res.covar = x.covar + covscore(lb, lb.i, rb.i, cfactor, nfactor);
+    res.covar = x.covar;
 	return res;
   }
   mfecovar ml(Subsequence lb, mfecovar x, Subsequence rb) {
