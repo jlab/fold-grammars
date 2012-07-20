@@ -5,26 +5,26 @@ set -u
 NO_CONFIG_MF="foo"
 export NO_CONFIG_MF
 
-BASE="../../../Turner2004/Gapc/"
+BASE="/home/sjanssen/local/gapc"
 
-GAPC=$BASE/gapc
+GAPC=$BASE/bin/gapc
 GHC=ghc
 MAKE=make
-MAKEFLAGS=-I../..
+MAKEFLAGS=
 
 TEMP=./temp
 GRAMMAR=../
 LHS_DIR=..
-RTLIB=$BASE/rtlib/
-CPPFLAGS_EXTRA="-I../.. -I$BASE/librna -O -DNDEBUG"
+RTLIB=$BASE/include/rtlib/
+CPPFLAGS_EXTRA="-I../../ -O -DNDEBUG"
 LDLIBS_EXTRA=""
 RUN_CPP_FLAGS=""
 
 KSH="ksh"
 
 
-if [ -e $BASE/config.mf ]; then
-  CONFIG_MF=$BASE/config.mf
+if [ -e $BASE/share/gapc/config.mf ]; then
+  CONFIG_MF=$BASE/share/gapc/config.mf
 else
   CONFIG_MF=$BASE/config/generic.mf
 fi
