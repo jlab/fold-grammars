@@ -1,5 +1,6 @@
 import rna
 import pfunc_filter_foldrna
+import mferange
 
 input rna
 
@@ -71,3 +72,5 @@ instance testLPshape4mfepfdb = gra_nodangle_lp(alg_shape4 * (alg_mfe % alg_pfunc
 instance testsampleshape2mfedb   = gra_nodangle( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
 instance testLPsampleshape2mfedb = gra_nodangle_lp( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
 //stop: instances for unit tests
+
+instance erangeshapeanalysis5 = gra_nodangle((alg_shape5 * (alg_mfe * alg_dotBracket)) suchthat range_shape_mfe_db);
