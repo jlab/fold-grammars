@@ -1,0 +1,253 @@
+//innards for computing K-type pseudoknots
+  //middleNoDangling is a special rules for the third loop region in K-type pseudoknots
+  middleNoDangling                                          = pk_comps  
+                                                              # h;
+
+  //middleNoCoaxStack is a special rules for the forth loop region in K-type pseudoknots
+  middleNoCoaxStack(int betaRightInner, int alphaLeftInner) = nil       (LOC)                                                                             |
+                                                              middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
+                                                              midregion (      pk_comps                                      )                            |
+                                                              middl     (BASE, pk_comps      ; betaRightInner                )                            |
+                                                              middr     (      pk_comps, BASE;                 alphaLeftInner)                            |
+                                                              middlr    (BASE, pk_comps, BASE; betaRightInner, alphaLeftInner) 
+                                                              # h;
+          
+
+  //computes csrPKs, given left and right borders of the subword, namely i and j AND the right stop position for alpha-helix, namely l. Thus we only iterate over k.
+  help_pknot_free_k(int ll, int startK) = 
+    .[
+      int i = t_0_i;
+      int j = t_0_j;
+      int l = ll;
+       
+      if (i+11 <= j) {
+        int alphamaxlen = second(stacklen(t_0_seq, i, l));
+        if (alphamaxlen >= 2) {
+          for (int k = startK; k <= l-4; k=k+1) {
+            int alphareallen = min(alphamaxlen, k-i-1);
+            if (alphareallen < 2) {
+              continue;
+            }
+            int betamaxlen = second(stacklen(t_0_seq, k, j));
+            if (betamaxlen < 2) {
+              continue;
+            }
+            int betatemplen = min(betamaxlen, j-l-2);
+            if (betatemplen < 2) {
+              continue;
+            }
+            int betareallen = min(betatemplen, l-k-alphareallen);
+            if (betareallen < 2) {
+              continue;
+            }
+            int stackenergies = 
+                  first(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
+                + first(stacklen(t_0_seq, k,                j               ))  // maximal beta helix
+                - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1))  // reduced part of alpha helix
+                - first(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
+  
+            INNER(CODE);
+          }
+        }
+      }
+     ].
+    {
+      pknot(REGION, REGION, REGION) .{
+        pknot(REGION[i, i+alphareallen],
+        front[i+alphareallen+1, k] .(j).,
+        REGION[k, k+betareallen],
+        middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
+        REGION[l-alphareallen, l],
+        back[l, j-betareallen-2] .(i).,
+        REGION[j-betareallen, j] ;
+        stackenergies) 
+      }.
+    } # hKnot;  
+
+  //computes csrPKs, given left and right borders of the subword, namely i and j AND the left start position for beta-helix, namely k. Thus we only iterate over l.	
+  help_pknot_free_l(int k, int endL) = 
+    .[
+      int i = t_0_i;
+      int j = t_0_j;
+      if (i+11 <= j) {
+        int betamaxlen = second(stacklen(t_0_seq, k, j));
+        if (betamaxlen >= 2) {
+          for (int l = k+4; l <= endL; l=l+1) {
+             int alphamaxlen = second(stacklen(t_0_seq, i, l));
+             if (alphamaxlen < 2) {
+               continue;
+             }
+             int alphareallen = min(alphamaxlen, k-i-1);
+             if (alphareallen < 2) {
+               continue;
+             }
+             int betatemplen = min(betamaxlen, j-l-2);
+             if (betatemplen < 2) {
+               continue;
+             }
+             int betareallen = min(betatemplen, l-k-alphareallen);
+             if (betareallen < 2) {
+               continue;
+             }
+             int stackenergies = 
+                   first(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
+                 + first(stacklen(t_0_seq, k,                j               ))  // maximal beta helix
+                 - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1))  // reduced part of alpha helix
+                 - first(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
+
+             INNER(CODE);
+          }
+        }
+      }
+     ].
+    {
+      pknot(REGION, REGION, REGION) .{
+        pknot(REGION[i, i+alphareallen],
+        front[i+alphareallen+1, k] .(j).,
+        REGION[k, k+betareallen],
+        middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
+        REGION[l-alphareallen, l],
+        back[l, j-betareallen-2] .(i).,
+        REGION[j-betareallen, j] ;
+        stackenergies) 
+      }.
+    } # hKnot; 
+
+  //computes csrKHs with Strategy A, whose first half consists of an optimal csrPK and the right half of a suboptimal csrPK, given also inner boundary k. Has to be used together with help_pkiss_Aright.
+  help_pkiss_Aleft   = 
+    .[
+      int i = t_0_i;
+      int j = t_0_j;
+
+      for (int m = i+3*minLengthKissingHairpinStems+7; m<=j-minLengthKissingHairpinStems-1; m=m+1) {
+        mfeanswer leftPK = get_pk(i, m);
+        if (is_empty(leftPK)) {
+          continue;
+        }
+        int h = leftPK.betaLeftOuter;
+        int k = leftPK.alphaRightOuter;
+        int alphamaxlen = second(stacklen(t_0_seq, i, k));
+        if (alphamaxlen < minLengthKissingHairpinStems) {
+          continue;
+        }
+        int alphareallen = min(alphamaxlen, h-i-1);
+        if (alphareallen < minLengthKissingHairpinStems) {
+          continue;
+        }
+        int betamaxlen = second(stacklen(t_0_seq, h, m));
+        if (betamaxlen < 2) {
+          continue;
+        }
+        mfeanswer rightPK = get_pk_free_k(h, j, m, k+2);
+        if (is_empty(rightPK)) {
+          continue;
+        }
+        int l = rightPK.betaLeftOuter;
+        int gammamaxlen = second(stacklen(t_0_seq, l, j));
+        if (gammamaxlen < minLengthKissingHairpinStems) {
+          continue;
+        }
+        int gammareallen = min(gammamaxlen, j-m-1);
+        if (gammareallen < minLengthKissingHairpinStems) {
+          continue;
+        }
+        int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
+        if (betareallen < 2) {
+          continue;
+        }
+        int stackenergies = first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                          + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
+                          + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
+                          - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                          - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
+                          - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
+
+        INNER(CODE);
+      }
+     ].
+    {
+      pkiss(REGION, REGION, REGION, REGION, REGION  ) .{
+        pkiss(REGION[i, i+alphareallen],                                                    //alpha open
+        front[i+alphareallen+1, h] .(m).,                                                   //front
+        REGION[h, h+betareallen],                                                           //beta open
+        middle[h+betareallen, k-alphareallen] .(m-betareallen, i+alphareallen).,            //middle 1
+        REGION[k-alphareallen, k],                                                          //alpha close
+        middleNoDangling[k+1, l-1],                                                         //middle 2
+        REGION[l, l+gammareallen],                                                          //gamma open
+        middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen)., //middle 3
+        REGION[m-betareallen, m],                                                           //beta close
+        back[m, j-gammareallen-1] .(h).,                                                    //back
+        REGION[j-gammareallen, j] ;                                                         //gamma close
+        stackenergies)
+      }.
+    } # hKnot;
+
+  //computes csrKHs with Strategy A, whose second half consists of an optimal csrPK and the left half of a suboptimal csrPK, given also inner boundary l. Has to be used together with help_pkiss_Aleft.
+  help_pkiss_Aright   = 
+    .[
+      int i = t_0_i;
+      int j = t_0_j;
+
+      for (int h = i+minLengthKissingHairpinStems+1; h<=j-3*minLengthKissingHairpinStems-7; h=h+1) {
+        mfeanswer rightPK = get_pk(h, j);
+        if (is_empty(rightPK)) {
+          continue;
+        }
+        int l = rightPK.betaLeftOuter;
+        int m = rightPK.alphaRightOuter;
+        int gammamaxlen = second(stacklen(t_0_seq, l, j));
+        if (gammamaxlen < minLengthKissingHairpinStems) {
+          continue;
+        }
+        int gammareallen = min(gammamaxlen, j-m-1);
+        if (gammareallen < minLengthKissingHairpinStems) {
+          continue;
+        }
+        int betamaxlen = second(stacklen(t_0_seq, h, m));
+        if (betamaxlen < 2) {
+          continue;
+        }
+        mfeanswer leftPK = get_pk_free_l(i, m, h, l-2);
+        if (is_empty(leftPK)) {
+          continue;
+        }
+        int k = leftPK.alphaRightOuter;
+        int alphamaxlen = second(stacklen(t_0_seq, i, k));
+        if (alphamaxlen < minLengthKissingHairpinStems) {
+          continue;
+        }
+        int alphareallen = min(alphamaxlen, h-i-1);
+        if (alphareallen < minLengthKissingHairpinStems) {
+          continue;
+        }
+        int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
+        if (betareallen < 2) {
+          continue;
+        }
+        int stackenergies = first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                          + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
+                          + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
+                          - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                          - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
+                          - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
+
+        INNER(CODE);
+      }
+     ].
+    {
+      pkiss(REGION, REGION, REGION, REGION, REGION  ) .{
+        pkiss(REGION[i, i+alphareallen],                                                    //alpha open
+        front[i+alphareallen+1, h] .(m).,                                                   //front
+        REGION[h, h+betareallen],                                                           //beta open
+        middle[h+betareallen, k-alphareallen] .(m-betareallen, i+alphareallen).,            //middle 1
+        REGION[k-alphareallen, k],                                                          //alpha close
+        middleNoDangling[k+1, l-1],                                                         //middle 2
+        REGION[l, l+gammareallen],                                                          //gamma open
+        middleNoCoaxStack[l+gammareallen, m-betareallen] .(j-gammareallen, h+betareallen)., //middle 3
+        REGION[m-betareallen, m],                                                           //beta close
+        back[m, j-gammareallen-1] .(h).,                                                    //back
+        REGION[j-gammareallen, j] ;                                                         //gamma close
+        stackenergies)
+      }.
+    } # hKnot;
+//end: innards for computing K-type pseudoknots
