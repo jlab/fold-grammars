@@ -1,26 +1,5 @@
 //This is the grammar, developed by Bjoern Voss, for the probablistic shape analysis of RNAshapes 2006 release. It is also known as "canonicals_nonamb" in the Haskell version of RNAshapes, or "adpf_nonamb"
 
-//For better reading, we applied some renaming for the 2011 BMC Bioinformatics "Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction" paper by S. Janssen et al.:
-//  Terminal parsers:
-//    b = BASE
-//    loc = LOC
-//    epsilon = EMPTY
-//    r = REGION
-//  Non-Terminals:
-//    left_dg = left_dangle
-//    noleft_dg = noleft_dangle
-//    edgl = edanglel
-//    edgr = edangler
-//    edglr = edanglelr
-//    nodg = nodangle
-//    mc1 = ml_comps1
-//    mc2 = ml_comps2
-//    mc3 = ml_comps3
-//    mc4 = ml_comps4
-//    mcadd1 = no_dl_no_ss_end
-//    mcadd2 = dl_or_ss_left_no_ss_end
-//    mcadd3 = dl_or_ss_left_ss_end
-//    mcadd4 = no_dl_ss_end
 grammar gra_macrostate uses sig_foldrna(axiom = struct) {
   struct = left_dangle | trafo(noleft_dangle) | left_unpaired # h;
 
@@ -40,15 +19,15 @@ grammar gra_macrostate uses sig_foldrna(axiom = struct) {
 
   closed = stack | hairpin | multiloop | leftB | rightB | iloop # h;
 
-  multiloop = {sr(BASE, mldl   (BASE, BASE, ml_comps1,       BASE) with basepairing, BASE) | 
-               sr(BASE, mladl  (BASE, BASE, ml_comps2,       BASE) with basepairing, BASE) | 
-               sr(BASE, mldr   (BASE,       ml_comps3, BASE, BASE) with basepairing, BASE) | 
-               sr(BASE, mladr  (BASE,       ml_comps2, BASE, BASE) with basepairing, BASE) | 
-               sr(BASE, mldlr  (BASE, BASE, ml_comps4, BASE, BASE) with basepairing, BASE) | 
-               sr(BASE, mladlr (BASE, BASE, ml_comps2, BASE, BASE) with basepairing, BASE) | 
-               sr(BASE, mldladr(BASE, BASE, ml_comps1, BASE, BASE) with basepairing, BASE) | 
-               sr(BASE, mladldr(BASE, BASE, ml_comps3, BASE, BASE) with basepairing, BASE) | 
-               sr(BASE, ml     (BASE,       ml_comps2,       BASE) with basepairing, BASE)} with stackpairing # h;
+  multiloop = {sr(BASE, mldl   (BASE, BASE, ml_comps1,       BASE), BASE) | 
+               sr(BASE, mladl  (BASE, BASE, ml_comps2,       BASE), BASE) | 
+               sr(BASE, mldr   (BASE,       ml_comps3, BASE, BASE), BASE) | 
+               sr(BASE, mladr  (BASE,       ml_comps2, BASE, BASE), BASE) | 
+               sr(BASE, mldlr  (BASE, BASE, ml_comps4, BASE, BASE), BASE) | 
+               sr(BASE, mladlr (BASE, BASE, ml_comps2, BASE, BASE), BASE) | 
+               sr(BASE, mldladr(BASE, BASE, ml_comps1, BASE, BASE), BASE) | 
+               sr(BASE, mladldr(BASE, BASE, ml_comps3, BASE, BASE), BASE) | 
+               sr(BASE, ml     (BASE,       ml_comps2,       BASE), BASE)} with stackpairing # h;
 
   ml_comps1 = combine(block_dl, no_dl_no_ss_end) | combine(block_dlr, dl_or_ss_left_no_ss_end) | acomb(block_dl, BASE, no_dl_no_ss_end) # h;
 
@@ -70,10 +49,10 @@ grammar gra_macrostate uses sig_foldrna(axiom = struct) {
 
   dl_or_ss_left_ss_end = ml_comps4 | block_dlr | addss(block_dlr, REGION) # h;
 
-  stack =            sr(BASE,                          closed,                          BASE) with stackpairing # h;
-  hairpin = sr(BASE, hl(BASE,                          REGION with minsize(3),          BASE) with basepairing, BASE) with stackpairing # h;
-  leftB =   sr(BASE, bl(BASE, REGION,                  closed,                          BASE) with basepairing, BASE) with stackpairing # h;
-  rightB =  sr(BASE, br(BASE,                          closed, REGION,                  BASE) with basepairing, BASE) with stackpairing # h;
-  iloop =   sr(BASE, il(BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE) with basepairing, BASE) with stackpairing # h;
+  stack =            sr(BASE,                          closed,                          BASE) with basepairing # h;
+  hairpin = sr(BASE, hl(BASE,                          REGION with minsize(3),          BASE), BASE) with stackpairing # h;
+  leftB =   sr(BASE, bl(BASE, REGION with maxsize(30), closed,                          BASE), BASE) with stackpairing # h;
+  rightB =  sr(BASE, br(BASE,                          closed, REGION with maxsize(30), BASE), BASE) with stackpairing # h;
+  iloop =   sr(BASE, il(BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE), BASE) with stackpairing # h;
 
 }

@@ -1,26 +1,3 @@
-//This is the grammar, developed by Bjoern Voss, for the probablistic shape analysis of RNAshapes 2006 release. It is also known as "canonicals_nonamb" in the Haskell version of RNAshapes, or "adpf_nonamb"
-
-//For better reading, we applied some renaming for the 2011 BMC Bioinformatics "Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction" paper by S. Janssen et al.:
-//  Terminal parsers:
-//    b = BASE
-//    loc = LOC
-//    epsilon = EMPTY
-//    r = REGION
-//  Non-Terminals:
-//    left_dg = left_dangle
-//    noleft_dg = noleft_dangle
-//    edgl = edanglel
-//    edgr = edangler
-//    edglr = edanglelr
-//    nodg = nodangle
-//    mc1 = ml_comps1
-//    mc2 = ml_comps2
-//    mc3 = ml_comps3
-//    mc4 = ml_comps4
-//    mcadd1 = no_dl_no_ss_end
-//    mcadd2 = dl_or_ss_left_no_ss_end
-//    mcadd3 = dl_or_ss_left_ss_end
-//    mcadd4 = no_dl_ss_end
 grammar gra_ali_macrostate_lp uses sig_foldrna(axiom = struct) {
   struct = left_dangle | trafo(noleft_dangle) | left_unpaired # h;
 
