@@ -51,25 +51,25 @@ grammar gra_macrostate_centers uses sig_foldrna(axiom = struct) {
   closedTag = stackTag | hairpinTag | multiloopPre | leftBTag | rightBTag | iloopTag # h;
   closed    = stack    | hairpin    | multiloop    | leftB    | rightB    | iloop    # h;
 
-  multiloopPre = {sr(BASE, mldl   (BASE, BASE, ml_comps1Pre,        BASE) with basepairing, BASE) | 
-                  sr(BASE, mladl  (BASE, BASE, ml_comps2Pre,        BASE) with basepairing, BASE) | 
-                  sr(BASE, mldr   (BASE,       ml_comps3Pre,  BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, mladr  (BASE,       ml_comps2Pre,  BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, mldlr  (BASE, BASE, ml_comps4Pre,  BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, mladlr (BASE, BASE, ml_comps2Pre,  BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, mldladr(BASE, BASE, ml_comps1Pre,  BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, mladldr(BASE, BASE, ml_comps3Pre,  BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, ml     (BASE,       ml_comps2Pre,        BASE) with basepairing, BASE)} with stackpairing # h;
+  multiloopPre = {sr(BASE, mldl   (BASE, BASE, ml_comps1Pre,        BASE) with basepair, BASE) | 
+                  sr(BASE, mladl  (BASE, BASE, ml_comps2Pre,        BASE) with basepair, BASE) | 
+                  sr(BASE, mldr   (BASE,       ml_comps3Pre,  BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, mladr  (BASE,       ml_comps2Pre,  BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, mldlr  (BASE, BASE, ml_comps4Pre,  BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, mladlr (BASE, BASE, ml_comps2Pre,  BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, mldladr(BASE, BASE, ml_comps1Pre,  BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, mladldr(BASE, BASE, ml_comps3Pre,  BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, ml     (BASE,       ml_comps2Pre,        BASE) with basepair, BASE)} with stackpairing # h;
 
-  multiloop =    {sr(BASE, mldl   (BASE, BASE, ml_comps1Post,       BASE) with basepairing, BASE) | 
-                  sr(BASE, mladl  (BASE, BASE, ml_comps2Post,       BASE) with basepairing, BASE) | 
-                  sr(BASE, mldr   (BASE,       ml_comps3Post, BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, mladr  (BASE,       ml_comps2Post, BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, mldlr  (BASE, BASE, ml_comps4Post, BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, mladlr (BASE, BASE, ml_comps2Post, BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, mldladr(BASE, BASE, ml_comps1Post, BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, mladldr(BASE, BASE, ml_comps3Post, BASE, BASE) with basepairing, BASE) | 
-                  sr(BASE, ml     (BASE,       ml_comps2Post,       BASE) with basepairing, BASE)} with stackpairing # h;
+  multiloop =    {sr(BASE, mldl   (BASE, BASE, ml_comps1Post,       BASE) with basepair, BASE) | 
+                  sr(BASE, mladl  (BASE, BASE, ml_comps2Post,       BASE) with basepair, BASE) | 
+                  sr(BASE, mldr   (BASE,       ml_comps3Post, BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, mladr  (BASE,       ml_comps2Post, BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, mldlr  (BASE, BASE, ml_comps4Post, BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, mladlr (BASE, BASE, ml_comps2Post, BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, mldladr(BASE, BASE, ml_comps1Post, BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, mladldr(BASE, BASE, ml_comps3Post, BASE, BASE) with basepair, BASE) | 
+                  sr(BASE, ml     (BASE,       ml_comps2Post,       BASE) with basepair, BASE)} with stackpairing # h;
 
   ml_comps1Pre  = combine(block_dl, no_dl_no_ss_endPre)  | combine(block_dlr, dl_or_ss_left_no_ss_endPre)  | acomb(block_dl, BASE, no_dl_no_ss_endPre)  | combine(block_dlTag, no_dl_no_ss_endPost) | combine(block_dlrTag, dl_or_ss_left_no_ss_endPost) | acomb(block_dlTag, BASE, no_dl_no_ss_endPost) # h;
   ml_comps1Post = combine(block_dl, no_dl_no_ss_endPost) | combine(block_dlr, dl_or_ss_left_no_ss_endPost) | acomb(block_dl, BASE, no_dl_no_ss_endPost) # h;
@@ -101,18 +101,18 @@ grammar gra_macrostate_centers uses sig_foldrna(axiom = struct) {
   dl_or_ss_left_ss_endPre  = ml_comps4Pre  | block_dlrTag | addss(block_dlrTag, REGION) # h;
   dl_or_ss_left_ss_endPost = ml_comps4Post | block_dlr    | addss(block_dlr,    REGION) # h;
 
-  stack      =          sr(BASE,                          closed,                             BASE) with stackpairing # h;
-  stackTag   =          sr(BASE,                          closedTag,                          BASE) with stackpairing # h;
+  stack      =          sr(BASE,                          closed,                             BASE) with basepair # h;
+  stackTag   =          sr(BASE,                          closedTag,                          BASE) with basepair # h;
 
-  hairpin    = sr(BASE, hl(BASE,                          REGION with minsize(3),             BASE) with basepairing, BASE) with stackpairing # h;
-  hairpinTag = sr(BASE, hl(BASE,                          REGION with minsize(3),             BASE) with basepairing, BASE) with stackpairing # h;
+  hairpin    = sr(BASE, hl(BASE,                          REGION with minsize(3),             BASE) with basepair, BASE) with basepair # h;
+  hairpinTag = sr(BASE, hl(BASE,                          REGION with minsize(3),             BASE) with basepair, BASE) with basepair # h;
 
-  leftB      = sr(BASE, bl(BASE, REGION,                  closed,                             BASE) with basepairing, BASE) with stackpairing # h;
-  leftBTag   = sr(BASE, bl(BASE, REGION,                  closedTag,                          BASE) with basepairing, BASE) with stackpairing # h;
+  leftB      = sr(BASE, bl(BASE, REGION,                  closed,                             BASE) with basepair, BASE) with basepair # h;
+  leftBTag   = sr(BASE, bl(BASE, REGION,                  closedTag,                          BASE) with basepair, BASE) with basepair # h;
 
-  rightB     = sr(BASE, br(BASE,                          closed, REGION,                     BASE) with basepairing, BASE) with stackpairing # h;
-  rightBTag  = sr(BASE, br(BASE,                          closedTag, REGION,                  BASE) with basepairing, BASE) with stackpairing # h;
+  rightB     = sr(BASE, br(BASE,                          closed, REGION,                     BASE) with basepair, BASE) with basepair # h;
+  rightBTag  = sr(BASE, br(BASE,                          closedTag, REGION,                  BASE) with basepair, BASE) with basepair # h;
 
-  iloop      = sr(BASE, il(BASE, REGION with maxsize(30), closed, REGION with maxsize(30),    BASE) with basepairing, BASE) with stackpairing # h;
-  iloopTag   = sr(BASE, il(BASE, REGION with maxsize(30), closedTag, REGION with maxsize(30), BASE) with basepairing, BASE) with stackpairing # h;
+  iloop      = sr(BASE, il(BASE, REGION with maxsize(30), closed, REGION with maxsize(30),    BASE) with basepair, BASE) with basepair # h;
+  iloopTag   = sr(BASE, il(BASE, REGION with maxsize(30), closedTag, REGION with maxsize(30), BASE) with basepair, BASE) with basepair # h;
 }

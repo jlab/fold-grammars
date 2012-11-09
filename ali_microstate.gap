@@ -21,14 +21,14 @@ algebra alg_enum auto enum;
 
 include "Algebras/alg_ali_mfe.gap"
 
-include "Grammars/gra_ali_microstate.gap"
-include "Grammars/gra_ali_microstate_lp.gap"
+include "Grammars/gra_microstate.gap"
+include "Grammars/gra_microstate_lp.gap"
 
-instance count = gra_ali_microstate (alg_count);
-instance enum = gra_ali_microstate (alg_enum);
-instance shape5mfepp = gra_ali_microstate ((alg_ali_shape5 * alg_ali_mfe) * alg_ali_dotBracket); // compile with --kbacktrace if you also choose kbest!
+instance count = gra_microstate (alg_count);
+instance enum = gra_microstate (alg_enum);
+instance shape5mfepp = gra_microstate ((alg_ali_shape5 * alg_ali_mfe) * alg_ali_dotBracket); // compile with --kbacktrace if you also choose kbest!
 
 //start: instances for unit tests
-instance testalifold   = gra_ali_microstate    (alg_ali_mfe * alg_ali_dotBracket);
-instance testLPalifold = gra_ali_microstate_lp (alg_ali_mfe * alg_ali_dotBracket);
+instance testalifold   = gra_microstate    (alg_ali_mfe * alg_ali_dotBracket);
+instance testLPalifold = gra_microstate_lp (alg_ali_mfe * alg_ali_dotBracket);
 //stop: instances for unit tests

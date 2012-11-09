@@ -1,6 +1,7 @@
 //the MicroState grammar is also known as "canonicals" from the RNAshapes program.
 
 //For consistency with MacroState nil has a LOC terminal parser instead of an EMPTY terminal parser.
+//applying "basepair" instead of the build-in "basepairing" or "stackpairing" to be general enough to handle single sequence and alignment predictions. Remember to import singlefold.hh or alifold.hh!
 grammar gra_microstate_lp uses sig_foldrna(axiom = struct) {
   struct    = sadd(BASE, struct)   |
               cadd(dangle, struct) |
@@ -18,16 +19,16 @@ grammar gra_microstate_lp uses sig_foldrna(axiom = struct) {
                iloop      | 
                multiloop} # h;
 
-  stack     =          sr   (BASE,                          closed,                            BASE) with basepairing # h;
-  hairpin   =          hl   (BASE,                          REGION with minsize(3),            BASE) with basepairing # h;
-  leftB     =          bl   (BASE, REGION with maxsize(30), closed,                            BASE) with basepairing # h;
-  rightB    =          br   (BASE,                          closed,   REGION with maxsize(30), BASE) with basepairing # h;
-  iloop     =          il   (BASE, REGION with maxsize(30), closed,   REGION with maxsize(30), BASE) with basepairing # h;
+  stack     =          sr   (BASE,                          closed,                            BASE) with basepair # h;
+  hairpin   =          hl   (BASE,                          REGION with minsize(3),            BASE) with basepair # h;
+  leftB     =          bl   (BASE, REGION with maxsize(30), closed,                            BASE) with basepair # h;
+  rightB    =          br   (BASE,                          closed,   REGION with maxsize(30), BASE) with basepair # h;
+  iloop     =          il   (BASE, REGION with maxsize(30), closed,   REGION with maxsize(30), BASE) with basepair # h;
   
-  multiloop =          ml   (BASE,                          ml_comps,                          BASE) with basepairing |
-                       mldl (BASE, BASE,                    ml_comps,                          BASE) with basepairing |
-                       mldr (BASE,                          ml_comps, BASE,                    BASE) with basepairing |
-                       mldlr(BASE, BASE,                    ml_comps, BASE,                    BASE) with basepairing # h;
+  multiloop =          ml   (BASE,                          ml_comps,                          BASE) with basepair |
+                       mldl (BASE, BASE,                    ml_comps,                          BASE) with basepair |
+                       mldr (BASE,                          ml_comps, BASE,                    BASE) with basepair |
+                       mldlr(BASE, BASE,                    ml_comps, BASE,                    BASE) with basepair # h;
 
   ml_comps  = sadd(BASE, ml_comps)        |
               cadd(incl(dangle), ml_comps1) # h;

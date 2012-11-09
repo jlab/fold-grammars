@@ -1,5 +1,6 @@
 //This is the grammar, developed by Bjoern Voss, for the probablistic shape analysis of RNAshapes 2006 release. It is also known as "canonicals_nonamb" in the Haskell version of RNAshapes, or "adpf_nonamb"
 
+//applying "basepair" instead of the build-in "basepairing" or "stackpairing" to be general enough to handle single sequence and alignment predictions. Remember to import singlefold.hh or alifold.hh!
 grammar gra_macrostate uses sig_foldrna(axiom = struct) {
   struct = left_dangle | trafo(noleft_dangle) | left_unpaired # h;
 
@@ -19,15 +20,15 @@ grammar gra_macrostate uses sig_foldrna(axiom = struct) {
 
   closed = stack | hairpin | multiloop | leftB | rightB | iloop # h;
 
-  multiloop = {sr(BASE, mldl   (BASE, BASE, ml_comps1,       BASE), BASE) | 
-               sr(BASE, mladl  (BASE, BASE, ml_comps2,       BASE), BASE) | 
-               sr(BASE, mldr   (BASE,       ml_comps3, BASE, BASE), BASE) | 
-               sr(BASE, mladr  (BASE,       ml_comps2, BASE, BASE), BASE) | 
-               sr(BASE, mldlr  (BASE, BASE, ml_comps4, BASE, BASE), BASE) | 
-               sr(BASE, mladlr (BASE, BASE, ml_comps2, BASE, BASE), BASE) | 
-               sr(BASE, mldladr(BASE, BASE, ml_comps1, BASE, BASE), BASE) | 
-               sr(BASE, mladldr(BASE, BASE, ml_comps3, BASE, BASE), BASE) | 
-               sr(BASE, ml     (BASE,       ml_comps2,       BASE), BASE)} with stackpairing # h;
+  multiloop = {sr(BASE, mldl   (BASE, BASE, ml_comps1,       BASE) with basepair, BASE) with basepair | 
+               sr(BASE, mladl  (BASE, BASE, ml_comps2,       BASE) with basepair, BASE) with basepair | 
+               sr(BASE, mldr   (BASE,       ml_comps3, BASE, BASE) with basepair, BASE) with basepair | 
+               sr(BASE, mladr  (BASE,       ml_comps2, BASE, BASE) with basepair, BASE) with basepair | 
+               sr(BASE, mldlr  (BASE, BASE, ml_comps4, BASE, BASE) with basepair, BASE) with basepair | 
+               sr(BASE, mladlr (BASE, BASE, ml_comps2, BASE, BASE) with basepair, BASE) with basepair | 
+               sr(BASE, mldladr(BASE, BASE, ml_comps1, BASE, BASE) with basepair, BASE) with basepair | 
+               sr(BASE, mladldr(BASE, BASE, ml_comps3, BASE, BASE) with basepair, BASE) with basepair | 
+               sr(BASE, ml     (BASE,       ml_comps2,       BASE) with basepair, BASE) with basepair} # h;
 
   ml_comps1 = combine(block_dl, no_dl_no_ss_end) | combine(block_dlr, dl_or_ss_left_no_ss_end) | acomb(block_dl, BASE, no_dl_no_ss_end) # h;
 
@@ -49,10 +50,10 @@ grammar gra_macrostate uses sig_foldrna(axiom = struct) {
 
   dl_or_ss_left_ss_end = ml_comps4 | block_dlr | addss(block_dlr, REGION) # h;
 
-  stack =            sr(BASE,                          closed,                          BASE) with basepairing # h;
-  hairpin = sr(BASE, hl(BASE,                          REGION with minsize(3),          BASE), BASE) with stackpairing # h;
-  leftB =   sr(BASE, bl(BASE, REGION with maxsize(30), closed,                          BASE), BASE) with stackpairing # h;
-  rightB =  sr(BASE, br(BASE,                          closed, REGION with maxsize(30), BASE), BASE) with stackpairing # h;
-  iloop =   sr(BASE, il(BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE), BASE) with stackpairing # h;
+  stack =            sr(BASE,                          closed,                          BASE) with basepair # h;
+  hairpin = sr(BASE, hl(BASE,                          REGION with minsize(3),          BASE) with basepair, BASE) with basepair # h;
+  leftB =   sr(BASE, bl(BASE, REGION with maxsize(30), closed,                          BASE) with basepair, BASE) with basepair # h;
+  rightB =  sr(BASE, br(BASE,                          closed, REGION with maxsize(30), BASE) with basepair, BASE) with basepair # h;
+  iloop =   sr(BASE, il(BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE) with basepair, BASE) with basepair # h;
 
 }

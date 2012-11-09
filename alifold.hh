@@ -202,7 +202,7 @@ void append_mis(rope::Ref<X> &str, const Basic_Subsequence<M_Char, unsigned> &se
 
 
 template<typename alphabet, typename pos_type, typename T>
-inline bool alignmentpairing(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, float cfactor, float nfactor)
+inline bool basepair(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j)
 {
   if (j<=i+1) {
     return false;

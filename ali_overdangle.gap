@@ -33,13 +33,13 @@ algebra alg_ali_mfe_overdangle extends alg_ali_mfe {
   }
 }
 
-include "Grammars/gra_ali_overdangle.gap"
-include "Grammars/gra_ali_overdangle_lp.gap"
+include "Grammars/gra_overdangle.gap"
+include "Grammars/gra_overdangle_lp.gap"
 
-instance count = gra_ali_overdangle (alg_count);
-instance enum = gra_ali_overdangle (alg_enum);
+instance count = gra_overdangle (alg_count);
+instance enum = gra_overdangle (alg_enum);
 
 //start: instances for unit tests
-instance testalifold   = gra_ali_overdangle    (alg_ali_mfe_overdangle * alg_ali_dotBracket);
-instance testLPalifold = gra_ali_overdangle_lp (alg_ali_mfe_overdangle * alg_ali_dotBracket);
+instance testalifold   = gra_overdangle    (alg_ali_mfe_overdangle * alg_ali_dotBracket);
+instance testLPalifold = gra_overdangle_lp (alg_ali_mfe_overdangle * alg_ali_dotBracket);
 //stop: instances for unit tests
