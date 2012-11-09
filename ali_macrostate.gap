@@ -14,8 +14,8 @@ include "Signatures/sig_foldrna.gap"
 include "Algebras/alg_ali_dotBracket.gap"
 include "Algebras/alg_ali_mis.gap"
 
-algebra count auto count;
-algebra enum auto enum;
+algebra alg_count auto count;
+algebra alg_enum auto enum;
 
 include "Algebras/alg_ali_mfe_macrostate.gap"
 

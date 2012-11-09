@@ -11,8 +11,8 @@ include "Signatures/sig_foldrna.gap"
 include "Algebras/alg_dotBracket.gap"
 include "Algebras/alg_shapes.gap"
 
-algebra count auto count;
-algebra enum auto enum;
+algebra alg_count auto count;
+algebra alg_enum auto enum;
 
 include "Algebras/alg_mfe.gap"
 algebra alg_mfe_overdangle extends alg_mfe {
@@ -56,12 +56,12 @@ instance mfeshape3pp = gra_overdangle(alg_mfe_overdangle * alg_shape3 * alg_dotB
 instance mfeshape2pp = gra_overdangle(alg_mfe_overdangle * alg_shape2 * alg_dotBracket);
 instance mfeshape1pp = gra_overdangle(alg_mfe_overdangle * alg_shape1 * alg_dotBracket);
 
-instance count = gra_overdangle (count);
+instance count = gra_overdangle (alg_count);
 //stop: instances used in the FoldingSpaces paper
 
 
 instance pp = gra_overdangle (alg_dotBracket);
-instance enum = gra_overdangle (enum);
+instance enum = gra_overdangle (alg_enum);
 
 instance shape5pf = gra_overdangle (alg_shape5 * alg_pfunc_overdangle);
 instance mfe = gra_overdangle (alg_shape5 * alg_mfe_overdangle) ;

@@ -16,16 +16,16 @@ include "Algebras/alg_ali_shapes.gap"
 include "Algebras/alg_ali_hishapes.gap"
 include "Algebras/alg_ali_mis.gap"
 
-algebra count auto count;
-algebra enum auto enum;
+algebra alg_count auto count;
+algebra alg_enum auto enum;
 
 include "Algebras/alg_ali_mfe.gap"
 
 include "Grammars/gra_ali_microstate.gap"
 include "Grammars/gra_ali_microstate_lp.gap"
 
-instance count = gra_ali_microstate (count);
-instance enum = gra_ali_microstate (enum);
+instance count = gra_ali_microstate (alg_count);
+instance enum = gra_ali_microstate (alg_enum);
 instance shape5mfepp = gra_ali_microstate ((alg_ali_shape5 * alg_ali_mfe) * alg_ali_dotBracket); // compile with --kbacktrace if you also choose kbest!
 
 //start: instances for unit tests

@@ -12,8 +12,8 @@ include "Signatures/sig_foldrna.gap"
 include "Algebras/alg_dotBracket.gap"
 include "Algebras/alg_shapes.gap"
 
-algebra count auto count;
-algebra enum auto enum;
+algebra alg_count auto count;
+algebra alg_enum auto enum;
 
 include "Algebras/alg_mfe.gap"
 include "Algebras/alg_pfunc.gap"
@@ -40,11 +40,11 @@ instance mfeshape3pp = gra_nodangle(alg_mfe * alg_shape3 * alg_dotBracket);
 instance mfeshape2pp = gra_nodangle(alg_mfe * alg_shape2 * alg_dotBracket);
 instance mfeshape1pp = gra_nodangle(alg_mfe * alg_shape1 * alg_dotBracket);
 
-instance count = gra_nodangle (count);
+instance count = gra_nodangle (alg_count);
 //stop: instances used in the FoldingSpaces paper
 
 
-instance enum = gra_nodangle (enum);
+instance enum = gra_nodangle (alg_enum);
 
 //~ instance shape5pfxpp = gra_nodangle (((alg_shape5 * alg_pfunc) suchthat p_func_filter) * alg_dotBracket);
 instance shapemfepf = gra_nodangle(alg_shape5 * (alg_mfe % alg_pfunc) * alg_dotBracket);
@@ -54,7 +54,7 @@ instance pfAll_lp = gra_nodangle_lp (alg_pfunc); //this instance is used for out
 instance mfe = gra_nodangle (alg_shape5 * alg_mfe) ;
 instance shape2 = gra_nodangle(alg_shape2);
 instance shape5 = gra_nodangle(alg_shape5);
-instance shape5count = gra_nodangle(alg_shape5 * count);
+instance shape5count = gra_nodangle(alg_shape5 * alg_count);
 instance pretty = gra_nodangle(alg_dotBracket);
 
 instance mfepp = gra_nodangle(alg_mfe * alg_dotBracket);

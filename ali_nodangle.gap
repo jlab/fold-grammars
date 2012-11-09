@@ -15,15 +15,15 @@ include "Algebras/alg_ali_dotBracket.gap"
 include "Algebras/alg_ali_consensus.gap"
 include "Algebras/alg_ali_mis.gap"
 
-algebra count auto count;
-algebra enum auto enum;
+algebra alg_count auto count;
+algebra alg_enum auto enum;
 
 include "Algebras/alg_ali_mfe.gap"
 include "Grammars/gra_ali_nodangle.gap"
 include "Grammars/gra_ali_nodangle_lp.gap"
 
-instance count = gra_ali_nodangle (count);
-instance enum = gra_ali_nodangle (enum);
+instance count = gra_ali_nodangle (alg_count);
+instance enum = gra_ali_nodangle (alg_enum);
 instance rnaalifold = gra_ali_nodangle (alg_ali_mfe * (alg_ali_dotBracket * alg_ali_consensus));
 
 //start: instances for unit tests

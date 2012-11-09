@@ -20,8 +20,8 @@ include "Algebras/alg_shapes.gap"
 include "Algebras/alg_centers.gap"
 include "Algebras/alg_hishapes.gap"
 
-algebra count auto count ;
-algebra enum auto enum ;
+algebra alg_count auto count ;
+algebra alg_enum auto enum ;
 
 include "Grammars/gra_macrostate.gap"
 include "Grammars/gra_macrostate_lp.gap"
@@ -45,7 +45,7 @@ instance mfeshape3pp = gra_macrostate(alg_mfe_macrostate * alg_shape3 * alg_dotB
 instance mfeshape2pp = gra_macrostate(alg_mfe_macrostate * alg_shape2 * alg_dotBracket);
 instance mfeshape1pp = gra_macrostate(alg_mfe_macrostate * alg_shape1 * alg_dotBracket);
 
-instance count = gra_macrostate (count);
+instance count = gra_macrostate (alg_count);
 //stop: instances used in the FoldingSpaces paper
 
 //start: instances used in for RapidShapes
@@ -58,7 +58,7 @@ instance pf = gra_macrostate ( alg_pfunc_macrostate ) ;
 //stop: instances used in for RapidShapes
 
 
-instance enum = gra_macrostate ( enum ) ;
+instance enum = gra_macrostate ( alg_enum ) ;
 
 instance mfe = gra_macrostate ( alg_mfe_macrostate ) ;
 instance ppmfe = gra_macrostate ( alg_dotBracket * alg_mfe_macrostate ) ;

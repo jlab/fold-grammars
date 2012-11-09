@@ -14,8 +14,8 @@ include "Signatures/sig_foldrna.gap"
 include "Algebras/alg_ali_dotBracket.gap"
 include "Algebras/alg_ali_mis.gap"
 
-algebra count auto count;
-algebra enum auto enum;
+algebra alg_count auto count;
+algebra alg_enum auto enum;
 
 include "Algebras/alg_ali_mfe.gap"
 algebra alg_ali_mfe_overdangle extends alg_ali_mfe {
@@ -36,8 +36,8 @@ algebra alg_ali_mfe_overdangle extends alg_ali_mfe {
 include "Grammars/gra_ali_overdangle.gap"
 include "Grammars/gra_ali_overdangle_lp.gap"
 
-instance count = gra_ali_overdangle (count);
-instance enum = gra_ali_overdangle (enum);
+instance count = gra_ali_overdangle (alg_count);
+instance enum = gra_ali_overdangle (alg_enum);
 
 //start: instances for unit tests
 instance testalifold   = gra_ali_overdangle    (alg_ali_mfe_overdangle * alg_ali_dotBracket);

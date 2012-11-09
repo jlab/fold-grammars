@@ -769,11 +769,11 @@ algebra alg_HairpinCenter implements sig_foldrna(alphabet = char, answer = strin
 	}
 }
 
-algebra count auto count ;
-algebra enum auto enum ;
+algebra alg_count auto count ;
+algebra alg_enum auto enum ;
 
 include "Grammars/gra_macrostate_centers.gap"
 
-instance count = gra_macrostate_centers (count);
-instance enum = gra_macrostate_centers (enum);
+instance count = gra_macrostate_centers (alg_count);
+instance enum = gra_macrostate_centers (alg_enum);
 instance centerpfx = gra_macrostate_centers(alg_HairpinCenter * alg_pfunc_macrostate);

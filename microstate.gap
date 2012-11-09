@@ -11,8 +11,8 @@ include "Signatures/sig_foldrna.gap"
 include "Algebras/alg_dotBracket.gap"
 include "Algebras/alg_shapes.gap"
 
-algebra count auto count;
-algebra enum auto enum;
+algebra alg_count auto count;
+algebra alg_enum auto enum;
 
 include "Algebras/alg_mfe.gap"
 include "Algebras/alg_pfunc.gap"
@@ -39,7 +39,7 @@ instance mfeshape3pp = gra_microstate(alg_mfe * alg_shape3 * alg_dotBracket);
 instance mfeshape2pp = gra_microstate(alg_mfe * alg_shape2 * alg_dotBracket);
 instance mfeshape1pp = gra_microstate(alg_mfe * alg_shape1 * alg_dotBracket);
 
-instance count = gra_microstate (count);
+instance count = gra_microstate (alg_count);
 //stop: instances used in the FoldingSpaces paper
 
 //start: instances used in for RapidShapes
