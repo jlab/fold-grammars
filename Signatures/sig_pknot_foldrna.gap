@@ -1,4 +1,4 @@
-signature sig_foldrna_pknot(alphabet, comp, compKnot) {
+signature sig_pknot_foldrna(alphabet, comp, compKnot) {
   comp sadd(Subsequence, comp);
   comp cadd(comp, comp);
   comp nil(Subsequence);
