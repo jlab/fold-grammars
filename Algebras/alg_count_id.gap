@@ -1,4 +1,4 @@
-algebra count_id implements sig_foldrna(alphabet = char, answer = int) {
+algebra alg_count_id implements sig_foldrna(alphabet = char, answer = int) {
   int sadd(Subsequence b,int e) {
     return e;
   }
@@ -110,7 +110,7 @@ algebra count_id implements sig_foldrna(alphabet = char, answer = int) {
   }
 }
 
-algebra count_own extends count {
+algebra alg_count_own extends count {
   choice [long] h([long] i) {
     return i;
   }
