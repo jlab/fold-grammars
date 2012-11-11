@@ -12,20 +12,23 @@ grammar gra_eval_nodangle uses sig_eval_foldrna(axiom = struct) {
               cadd(dangle, struct) |
               nil(<LOC, LOC>)           # h;
 
-  dangle    = drem(<LOC, LOC>, closed, <LOC, LOC>) # h;
+  dangle    = drem(<LOC, LOC>, strong, <LOC, LOC>) # h;
+	
+  //~ strong    = sr(<BASE, isOpen>, weak, <BASE, isClose>) # h; //noLP: no lonely base-pairs, Vienna: --noLP
+  strong    =                    weak                   # h; //LP: allow lonely base-pairs, Vienna: default
 
-  closed    = {stack                        | 
+  weak      = {stack                        | 
                hairpin                      |
                leftB                        | 
                rightB                       | 
                iloop                        | 
                multiloop} # h;
 
-  stack     = sr(<BASE, isOpen>,                                                  closed,                                                                                           <BASE, isClose>) # h;
+  stack     = sr(<BASE, isOpen>,                                                  weak,                                                                                             <BASE, isClose>) # h;
   hairpin   = hl(<BASE, isOpen>,                                                  <REGION, ROPE with onlychar('.')> with samesize,                                                  <BASE, isClose>) # h;
-  leftB     = bl(<BASE, isOpen>, <REGION, ROPE with onlychar('.')> with samesize, closed,                                                                                           <BASE, isClose>) # h;
-  rightB    = br(<BASE, isOpen>,                                                  closed,                                          <REGION, ROPE with onlychar('.')> with samesize, <BASE, isClose>) # h;
-  iloop     = il(<BASE, isOpen>, <REGION, ROPE with onlychar('.')> with samesize, closed,                                          <REGION, ROPE with onlychar('.')> with samesize, <BASE, isClose>) # h;
+  leftB     = bl(<BASE, isOpen>, <REGION, ROPE with onlychar('.')> with samesize, strong,                                                                                           <BASE, isClose>) # h;
+  rightB    = br(<BASE, isOpen>,                                                  strong,                                          <REGION, ROPE with onlychar('.')> with samesize, <BASE, isClose>) # h;
+  iloop     = il(<BASE, isOpen>, <REGION, ROPE with onlychar('.')> with samesize, strong,                                          <REGION, ROPE with onlychar('.')> with samesize, <BASE, isClose>) # h;
   multiloop = ml(<BASE, isOpen>,                                                  ml_comps,                                                                                         <BASE, isClose>) # h;
 
   ml_comps  = sadd(<BASE, isBase>, ml_comps)        |

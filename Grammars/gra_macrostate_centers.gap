@@ -36,40 +36,45 @@ grammar gra_macrostate_centers uses sig_foldrna(axiom = struct) {
   noleft_danglePre  = cadd_Pr_Pr(edangler, {left_danglePre | left_unpairedPre})   | cadd_Pr_Pr_Pr(nodangle, noleft_danglePre)               | ambd_Pr(nodangle, BASE, noleft_danglePre)  | cadd_Pr_Pr(edanglerTag, {left_danglePost | left_unpairedPost}) | cadd_Pr_Pr_Pr(nodangleTag, {noleft_danglePost | nil(LOC)}) | ambd_Pr(nodangleTag, BASE, noleft_danglePost) # h;
   noleft_danglePost = cadd_Pr_Pr(edangler, {left_danglePost | left_unpairedPost}) | cadd_Pr_Pr_Pr(nodangle, {noleft_danglePost | nil(LOC)}) | ambd_Pr(nodangle, BASE, noleft_danglePost) # h;
 
-  edanglelTag = edl(BASE, closedTag, LOC) # h;
-  edanglel    = edl(BASE, closed, LOC)    # h;
+  edanglelTag = edl(BASE, strongTag, LOC) # h;
+  edanglel    = edl(BASE, strong, LOC)    # h;
 
-  edanglerTag = edr(LOC, closedTag, BASE) # h;
-  edangler    = edr(LOC, closed, BASE)    # h;
+  edanglerTag = edr(LOC, strongTag, BASE) # h;
+  edangler    = edr(LOC, strong, BASE)    # h;
 
-  edanglelrTag = edlr(BASE, closedTag, BASE) # h;
-  edanglelr    = edlr(BASE, closed, BASE)    # h;
+  edanglelrTag = edlr(BASE, strongTag, BASE) # h;
+  edanglelr    = edlr(BASE, strong, BASE)    # h;
 
-  nodangleTag = drem(LOC, closedTag, LOC) # h;
-  nodangle    = drem(LOC, closed, LOC)    # h;
+  nodangleTag = drem(LOC, strongTag, LOC) # h;
+  nodangle    = drem(LOC, strong, LOC)    # h;
 
-  closedTag = stackTag | hairpinTag | multiloopPre | leftBTag | rightBTag | iloopTag # h;
-  closed    = stack    | hairpin    | multiloop    | leftB    | rightB    | iloop    # h;
+  strongTag   = sr(BASE, weakTag, BASE) with basepair # h; //noLP: no lonely base-pairs, Vienna: --noLP
+  strong      = sr(BASE, weak,    BASE) with basepair # h; //noLP: no lonely base-pairs, Vienna: --noLP
+  //~ strongTag   =          weakTag                      # h; //LP: allow lonely base-pairs, Vienna: default
+  //~ strong      =          weak                         # h; //LP: allow lonely base-pairs, Vienna: default
 
-  multiloopPre = {sr(BASE, mldl   (BASE, BASE, ml_comps1Pre,        BASE) with basepair, BASE) | 
-                  sr(BASE, mladl  (BASE, BASE, ml_comps2Pre,        BASE) with basepair, BASE) | 
-                  sr(BASE, mldr   (BASE,       ml_comps3Pre,  BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, mladr  (BASE,       ml_comps2Pre,  BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, mldlr  (BASE, BASE, ml_comps4Pre,  BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, mladlr (BASE, BASE, ml_comps2Pre,  BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, mldladr(BASE, BASE, ml_comps1Pre,  BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, mladldr(BASE, BASE, ml_comps3Pre,  BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, ml     (BASE,       ml_comps2Pre,        BASE) with basepair, BASE)} with stackpairing # h;
+  weakTag = stackTag | hairpinTag | multiloopPre | leftBTag | rightBTag | iloopTag # h;
+  weak    = stack    | hairpin    | multiloop    | leftB    | rightB    | iloop    # h;
 
-  multiloop =    {sr(BASE, mldl   (BASE, BASE, ml_comps1Post,       BASE) with basepair, BASE) | 
-                  sr(BASE, mladl  (BASE, BASE, ml_comps2Post,       BASE) with basepair, BASE) | 
-                  sr(BASE, mldr   (BASE,       ml_comps3Post, BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, mladr  (BASE,       ml_comps2Post, BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, mldlr  (BASE, BASE, ml_comps4Post, BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, mladlr (BASE, BASE, ml_comps2Post, BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, mldladr(BASE, BASE, ml_comps1Post, BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, mladldr(BASE, BASE, ml_comps3Post, BASE, BASE) with basepair, BASE) | 
-                  sr(BASE, ml     (BASE,       ml_comps2Post,       BASE) with basepair, BASE)} with stackpairing # h;
+  multiloopPre = {mldl   (BASE, BASE, ml_comps1Pre,        BASE) with basepair | 
+                  mladl  (BASE, BASE, ml_comps2Pre,        BASE) with basepair | 
+                  mldr   (BASE,       ml_comps3Pre,  BASE, BASE) with basepair | 
+                  mladr  (BASE,       ml_comps2Pre,  BASE, BASE) with basepair | 
+                  mldlr  (BASE, BASE, ml_comps4Pre,  BASE, BASE) with basepair | 
+                  mladlr (BASE, BASE, ml_comps2Pre,  BASE, BASE) with basepair | 
+                  mldladr(BASE, BASE, ml_comps1Pre,  BASE, BASE) with basepair | 
+                  mladldr(BASE, BASE, ml_comps3Pre,  BASE, BASE) with basepair | 
+                  ml     (BASE,       ml_comps2Pre,        BASE) with basepair} with basepair # h;
+
+  multiloop =    {mldl   (BASE, BASE, ml_comps1Post,       BASE) with basepair | 
+                  mladl  (BASE, BASE, ml_comps2Post,       BASE) with basepair | 
+                  mldr   (BASE,       ml_comps3Post, BASE, BASE) with basepair | 
+                  mladr  (BASE,       ml_comps2Post, BASE, BASE) with basepair | 
+                  mldlr  (BASE, BASE, ml_comps4Post, BASE, BASE) with basepair | 
+                  mladlr (BASE, BASE, ml_comps2Post, BASE, BASE) with basepair | 
+                  mldladr(BASE, BASE, ml_comps1Post, BASE, BASE) with basepair | 
+                  mladldr(BASE, BASE, ml_comps3Post, BASE, BASE) with basepair | 
+                  ml     (BASE,       ml_comps2Post,       BASE) with basepair} with basepair # h;
 
   ml_comps1Pre  = combine(block_dl, no_dl_no_ss_endPre)  | combine(block_dlr, dl_or_ss_left_no_ss_endPre)  | acomb(block_dl, BASE, no_dl_no_ss_endPre)  | combine(block_dlTag, no_dl_no_ss_endPost) | combine(block_dlrTag, dl_or_ss_left_no_ss_endPost) | acomb(block_dlTag, BASE, no_dl_no_ss_endPost) # h;
   ml_comps1Post = combine(block_dl, no_dl_no_ss_endPost) | combine(block_dlr, dl_or_ss_left_no_ss_endPost) | acomb(block_dl, BASE, no_dl_no_ss_endPost) # h;
@@ -101,18 +106,18 @@ grammar gra_macrostate_centers uses sig_foldrna(axiom = struct) {
   dl_or_ss_left_ss_endPre  = ml_comps4Pre  | block_dlrTag | addss(block_dlrTag, REGION) # h;
   dl_or_ss_left_ss_endPost = ml_comps4Post | block_dlr    | addss(block_dlr,    REGION) # h;
 
-  stack      =          sr(BASE,                          closed,                             BASE) with basepair # h;
-  stackTag   =          sr(BASE,                          closedTag,                          BASE) with basepair # h;
+  stack      = sr(BASE,                          weak,                               BASE) with basepair # h;
+  stackTag   = sr(BASE,                          weakTag,                            BASE) with basepair # h;
 
-  hairpin    = sr(BASE, hl(BASE,                          REGION with minsize(3),             BASE) with basepair, BASE) with basepair # h;
-  hairpinTag = sr(BASE, hl(BASE,                          REGION with minsize(3),             BASE) with basepair, BASE) with basepair # h;
+  hairpin    = hl(BASE,                          REGION with minsize(3),             BASE) with basepair # h;
+  hairpinTag = hl(BASE,                          REGION with minsize(3),             BASE) with basepair # h;
 
-  leftB      = sr(BASE, bl(BASE, REGION,                  closed,                             BASE) with basepair, BASE) with basepair # h;
-  leftBTag   = sr(BASE, bl(BASE, REGION,                  closedTag,                          BASE) with basepair, BASE) with basepair # h;
+  leftB      = bl(BASE, REGION,                  strong,                             BASE) with basepair # h;
+  leftBTag   = bl(BASE, REGION,                  strongTag,                          BASE) with basepair # h;
 
-  rightB     = sr(BASE, br(BASE,                          closed, REGION,                     BASE) with basepair, BASE) with basepair # h;
-  rightBTag  = sr(BASE, br(BASE,                          closedTag, REGION,                  BASE) with basepair, BASE) with basepair # h;
+  rightB     = br(BASE,                          strong, REGION,                     BASE) with basepair # h;
+  rightBTag  = br(BASE,                          strongTag, REGION,                  BASE) with basepair # h;
 
-  iloop      = sr(BASE, il(BASE, REGION with maxsize(30), closed, REGION with maxsize(30),    BASE) with basepair, BASE) with basepair # h;
-  iloopTag   = sr(BASE, il(BASE, REGION with maxsize(30), closedTag, REGION with maxsize(30), BASE) with basepair, BASE) with basepair # h;
+  iloop      = il(BASE, REGION with maxsize(30), strong, REGION with maxsize(30),    BASE) with basepair # h;
+  iloopTag   = il(BASE, REGION with maxsize(30), strongTag, REGION with maxsize(30), BASE) with basepair # h;
 }
