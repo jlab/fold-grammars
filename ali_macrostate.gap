@@ -20,10 +20,8 @@ algebra alg_enum auto enum;
 include "Algebras/alg_ali_mfe_macrostate.gap"
 
 include "Grammars/gra_macrostate.gap"
-include "Grammars/gra_macrostate_lp.gap"
 
 
 //start: instances for unit tests
-instance testalifold   = gra_macrostate    (alg_ali_mfe_macrostate * alg_ali_dotBracket);
-instance testLPalifold = gra_macrostate_lp (alg_ali_mfe_macrostate * alg_ali_dotBracket);
+instance testalifold   = gra_macrostate(alg_ali_mfe_macrostate * alg_ali_dotBracket);
 //stop: instances for unit tests

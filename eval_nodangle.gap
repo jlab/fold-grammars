@@ -18,7 +18,6 @@ include "Algebras/alg_eval_mfe.gap"
 //~ include "Algebras/alg_pfunc.gap"
 
 include "Grammars/gra_eval_nodangle.gap"
-//~ include "Grammars/gra_nodangle_lp.gap"
 
 
 

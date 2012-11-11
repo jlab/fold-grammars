@@ -37,24 +37,12 @@ cleanForLocomotif:
 	rm -f Algebras/alg_pfunc_macrostate.gap
 	rm -f Algebras/alg_shapes.gap
 	rm -f Algebras/alg_shapes_rope.gap
-	rm -f Grammars/gra_ali_macrostate.gap
-	rm -f Grammars/gra_ali_macrostate_lp.gap
-	rm -f Grammars/gra_ali_microstate.gap
-	rm -f Grammars/gra_ali_microstate_lp.gap
-	rm -f Grammars/gra_ali_nodangle.gap
-	rm -f Grammars/gra_ali_nodangle_lp.gap
-	rm -f Grammars/gra_ali_overdangle.gap
-	rm -f Grammars/gra_ali_overdangle_lp.gap
 	rm -f Grammars/gra_eval_nodangle.gap
 	rm -f Grammars/gra_locomotif_overdangle.gap
 	rm -f Grammars/gra_macrostate.gap
 	rm -f Grammars/gra_macrostate_centers.gap
-	rm -f Grammars/gra_macrostate_lp.gap
 	rm -f Grammars/gra_microstate.gap
-	rm -f Grammars/gra_microstate_lp.gap
 	rm -f Grammars/gra_nodangle.gap
-	rm -f Grammars/gra_nodangle_lp.gap
 	rm -f Grammars/gra_overdangle.gap
-	rm -f Grammars/gra_overdangle_lp.gap
 	rm -f Signatures/sig_eval_foldrna.gap
 	rm -f Signatures/sig_foldrna.gap

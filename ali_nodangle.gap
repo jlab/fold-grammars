@@ -20,13 +20,11 @@ algebra alg_enum auto enum;
 
 include "Algebras/alg_ali_mfe.gap"
 include "Grammars/gra_nodangle.gap"
-include "Grammars/gra_nodangle_lp.gap"
 
 instance count = gra_nodangle (alg_count);
 instance enum = gra_nodangle (alg_enum);
 instance rnaalifold = gra_nodangle (alg_ali_mfe * (alg_ali_dotBracket * alg_ali_consensus));
 
 //start: instances for unit tests
-instance testalifold = gra_nodangle (alg_ali_mfe * alg_ali_dotBracket);
-instance testLPalifold = gra_nodangle_lp (alg_ali_mfe * alg_ali_dotBracket);
+instance testalifold = gra_nodangle(alg_ali_mfe * alg_ali_dotBracket);
 //stop: instances for unit tests

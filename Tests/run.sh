@@ -11,6 +11,7 @@ GAPC=$BASE/bin/gapc
 GHC=ghc
 MAKE=make
 MAKEFLAGS=
+PERL=perl
 
 TEMP=./temp
 GRAMMAR=../
@@ -52,6 +53,7 @@ if [ ! -d $TEMP/$REF ]; then
 fi
 
 BASE_DIR="`pwd`"
+$PERL makeLPgrammars.pl generate
 
 . ./tool.sh
 
@@ -240,3 +242,4 @@ check_external()
 
 . ../stats.sh
 
+$PERL makeLPgrammars.pl clean

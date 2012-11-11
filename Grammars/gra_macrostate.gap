@@ -10,25 +10,28 @@ grammar gra_macrostate uses sig_foldrna(axiom = struct) {
 
   noleft_dangle = cadd_Pr_Pr(edangler, {left_dangle | left_unpaired}) | cadd_Pr_Pr_Pr(nodangle, {noleft_dangle | nil(LOC)}) | ambd_Pr(nodangle, BASE, noleft_dangle) # h;
 
-  edanglel = edl(BASE, closed, LOC) # h;
+  edanglel = edl(BASE, strong, LOC) # h;
 
-  edangler = edr(LOC, closed, BASE) # h;
+  edangler = edr(LOC, strong, BASE) # h;
 
-  edanglelr = edlr(BASE, closed, BASE) # h;
+  edanglelr = edlr(BASE, strong, BASE) # h;
 
-  nodangle = drem(LOC, closed, LOC) # h;
+  nodangle = drem(LOC, strong, LOC) # h;
 
-  closed = stack | hairpin | multiloop | leftB | rightB | iloop # h;
+  strong   = sr(BASE, weak, BASE) with basepair # h; //noLP: no lonely base-pairs, Vienna: --noLP
+  //~ strong   =          weak                      # h; //LP: allow lonely base-pairs, Vienna: default
 
-  multiloop = {sr(BASE, mldl   (BASE, BASE, ml_comps1,       BASE) with basepair, BASE) with basepair | 
-               sr(BASE, mladl  (BASE, BASE, ml_comps2,       BASE) with basepair, BASE) with basepair | 
-               sr(BASE, mldr   (BASE,       ml_comps3, BASE, BASE) with basepair, BASE) with basepair | 
-               sr(BASE, mladr  (BASE,       ml_comps2, BASE, BASE) with basepair, BASE) with basepair | 
-               sr(BASE, mldlr  (BASE, BASE, ml_comps4, BASE, BASE) with basepair, BASE) with basepair | 
-               sr(BASE, mladlr (BASE, BASE, ml_comps2, BASE, BASE) with basepair, BASE) with basepair | 
-               sr(BASE, mldladr(BASE, BASE, ml_comps1, BASE, BASE) with basepair, BASE) with basepair | 
-               sr(BASE, mladldr(BASE, BASE, ml_comps3, BASE, BASE) with basepair, BASE) with basepair | 
-               sr(BASE, ml     (BASE,       ml_comps2,       BASE) with basepair, BASE) with basepair} # h;
+  weak = stack | hairpin | multiloop | leftB | rightB | iloop # h;
+
+  multiloop = {mldl   (BASE, BASE, ml_comps1,       BASE) with basepair  | 
+               mladl  (BASE, BASE, ml_comps2,       BASE) with basepair  | 
+               mldr   (BASE,       ml_comps3, BASE, BASE) with basepair  | 
+               mladr  (BASE,       ml_comps2, BASE, BASE) with basepair  | 
+               mldlr  (BASE, BASE, ml_comps4, BASE, BASE) with basepair  | 
+               mladlr (BASE, BASE, ml_comps2, BASE, BASE) with basepair  | 
+               mldladr(BASE, BASE, ml_comps1, BASE, BASE) with basepair  | 
+               mladldr(BASE, BASE, ml_comps3, BASE, BASE) with basepair  | 
+               ml     (BASE,       ml_comps2,       BASE) with basepair} # h;
 
   ml_comps1 = combine(block_dl, no_dl_no_ss_end) | combine(block_dlr, dl_or_ss_left_no_ss_end) | acomb(block_dl, BASE, no_dl_no_ss_end) # h;
 
@@ -50,10 +53,10 @@ grammar gra_macrostate uses sig_foldrna(axiom = struct) {
 
   dl_or_ss_left_ss_end = ml_comps4 | block_dlr | addss(block_dlr, REGION) # h;
 
-  stack =            sr(BASE,                          closed,                          BASE) with basepair # h;
-  hairpin = sr(BASE, hl(BASE,                          REGION with minsize(3),          BASE) with basepair, BASE) with basepair # h;
-  leftB =   sr(BASE, bl(BASE, REGION with maxsize(30), closed,                          BASE) with basepair, BASE) with basepair # h;
-  rightB =  sr(BASE, br(BASE,                          closed, REGION with maxsize(30), BASE) with basepair, BASE) with basepair # h;
-  iloop =   sr(BASE, il(BASE, REGION with maxsize(30), closed, REGION with maxsize(30), BASE) with basepair, BASE) with basepair # h;
+  stack   = sr(BASE,                          weak,                            BASE) with basepair # h;
+  hairpin = hl(BASE,                          REGION with minsize(3),          BASE) with basepair # h;
+  leftB   = bl(BASE, REGION with maxsize(30), strong,                          BASE) with basepair # h;
+  rightB  = br(BASE,                          strong, REGION with maxsize(30), BASE) with basepair # h;
+  iloop   = il(BASE, REGION with maxsize(30), strong, REGION with maxsize(30), BASE) with basepair # h;
 
 }
