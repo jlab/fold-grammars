@@ -3,33 +3,36 @@ grammar gra_locomotif_microstate uses sig_pknot_foldrna(axiom = struct) {
               cadd({dangle | dangleknot}, struct) |		//the dangleknot alternative is for pseudoknots
               nil(LOC)           # h;
 
-  dangle    = edl (BASE, sr(BASE, closed, BASE) with basepair, LOC ) |
-              edr (LOC,  sr(BASE, closed, BASE) with basepair, BASE) | 
-              edlr(BASE, sr(BASE, closed, BASE) with basepair, BASE) |
-              drem(LOC,  sr(BASE, closed, BASE) with basepair, LOC ) # h;
+  dangle    = edl (BASE, strong, LOC ) |
+              edr (LOC,  strong, BASE) | 
+              edlr(BASE, strong, BASE) |
+              drem(LOC,  strong, LOC ) # h;
 
   dangleknot = pk   (      knot        ) |		//for pseudoknots
                kndl (BASE, knot        ) |		//for pseudoknots
                kndr (      knot,   BASE) |		//for pseudoknots
                kndlr(BASE, knot,   BASE) # h;	//for pseudoknots
 
-  closed    = {stack                    | 
+  strong    = sr(BASE, weak, BASE) with basepair # h; //noLP: no lonely base-pairs, Vienna: --noLP
+  //~ strong    =          weak                      # h; //LP: allow lonely base-pairs, Vienna: default
+
+  weak      = {stack                    | 
                hairpin                  |
                leftB                    | 
                rightB                   | 
                iloop                    | 
                multiloop} with basepair # h;
 
-  stack     = sr   (BASE,                          closed,                                                        BASE) # h;
-  hairpin   = hl   (BASE,                          REGION with minsize(3),                                        BASE) # h;
-  leftB     = bl   (BASE, REGION,                  sr(BASE, closed, BASE) with basepair,                          BASE) # h;
-  rightB    = br   (BASE,                          sr(BASE, closed, BASE) with basepair, REGION,                  BASE) # h;
-  iloop     = il   (BASE, REGION with maxsize(30), sr(BASE, closed, BASE) with basepair, REGION with maxsize(30), BASE) # h;
+  stack     = sr   (BASE,                          weak,                              BASE) # h;
+  hairpin   = hl   (BASE,                          REGION with minsize(3),            BASE) # h;
+  leftB     = bl   (BASE, REGION,                  strong,                            BASE) # h;
+  rightB    = br   (BASE,                          strong,   REGION,                  BASE) # h;
+  iloop     = il   (BASE, REGION with maxsize(30), strong,   REGION with maxsize(30), BASE) # h;
   
-  multiloop = ml   (BASE,                          ml_comps,                                                         BASE) |
-              mldl (BASE, BASE,                    ml_comps,                                                         BASE) |
-              mldr (BASE,                          ml_comps,                                BASE,                    BASE) |
-              mldlr(BASE, BASE,                    ml_comps,                                BASE,                    BASE) # h;
+  multiloop = ml   (BASE,                          ml_comps,                          BASE) |
+              mldl (BASE, BASE,                    ml_comps,                          BASE) |
+              mldr (BASE,                          ml_comps, BASE,                    BASE) |
+              mldlr(BASE, BASE,                    ml_comps, BASE,                    BASE) # h;
 
   ml_comps  = sadd(BASE, ml_comps)             |
               cadd(mldangle, ml_comps1)        |
