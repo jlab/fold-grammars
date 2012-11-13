@@ -105,16 +105,16 @@ instance shapemfepp = gra_macrostate ( (alg_shape5 * alg_mfe_macrostate) * alg_d
 
 instance shape5mfepp = gra_macrostate ( alg_mfe_macrostate * (alg_shape5 * alg_dotBracket));
 
-instance hc = gra_macrostate ( alg_helix_centers ) ;
-instance mfehc =  gra_macrostate ( alg_mfe_macrostate * alg_helix_centers );
-instance hcmfe =  gra_macrostate ( alg_helix_centers * alg_mfe_macrostate ) ;
-instance mfehcpp =  gra_macrostate ( (alg_mfe_macrostate * alg_helix_centers) * alg_dotBracket );
+instance hc = gra_macrostate ( alg_hishape_h ) ;
+instance mfehc =  gra_macrostate ( alg_mfe_macrostate * alg_hishape_h );
+instance hcmfe =  gra_macrostate ( alg_hishape_h * alg_mfe_macrostate ) ;
+instance mfehcpp =  gra_macrostate ( (alg_mfe_macrostate * alg_hishape_h) * alg_dotBracket );
 
-instance hcmfepp =  gra_macrostate ( alg_helix_centers * (alg_dotBracket * alg_mfe_macrostate) ); // XXX use hcmfepp2 instead - currently optimization pass does not change the product-tree
-instance hcmfepp2 =  gra_macrostate ( (alg_helix_centers * alg_mfe_macrostate) * alg_dotBracket );
-instance hcpp = gra_macrostate ( alg_helix_centers * alg_dotBracket ) ;
+instance hcmfepp =  gra_macrostate ( alg_hishape_h * (alg_dotBracket * alg_mfe_macrostate) ); // XXX use hcmfepp2 instead - currently optimization pass does not change the product-tree
+instance hcmfepp2 =  gra_macrostate ( (alg_hishape_h * alg_mfe_macrostate) * alg_dotBracket );
+instance hcpp = gra_macrostate ( alg_hishape_h * alg_dotBracket ) ;
 
-instance hairpinCenterJan = gra_macrostate ( alg_hairpinCenter5 * (alg_dotBracket * alg_mfe_macrostate) );
+instance hairpinCenterJan = gra_macrostate ( alg_hishape_h * (alg_dotBracket * alg_mfe_macrostate) );
 
 instance s5mp = gra_macrostate ( alg_shape5 * ( alg_mfe_macrostate % alg_pfunc_macrostate ) ) ;
 instance check = gra_macrostate ( alg_shape5 * alg_pfunc_macrostate);

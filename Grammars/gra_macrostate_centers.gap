@@ -109,8 +109,8 @@ grammar gra_macrostate_centers uses sig_foldrna(axiom = struct) {
   stack      = sr(BASE,                          weak,                               BASE) with basepair # h;
   stackTag   = sr(BASE,                          weakTag,                            BASE) with basepair # h;
 
-  hairpin    = hl(BASE,                          REGION with minsize(3),             BASE) with basepair # h;
-  hairpinTag = hl(BASE,                          REGION with minsize(3),             BASE) with basepair # h;
+  hairpin    = hl   (BASE,                          REGION with minsize(3),             BASE) with basepair # h;
+  hairpinTag = hlTag(BASE,                          REGION with minsize(3),             BASE) with basepair # h;
 
   leftB      = bl(BASE, REGION,                  strong,                             BASE) with basepair # h;
   leftBTag   = bl(BASE, REGION,                  strongTag,                          BASE) with basepair # h;
