@@ -111,7 +111,7 @@ algebra alg_count_id implements sig_foldrna(alphabet = char, answer = int) {
 }
 
 algebra alg_count_own extends count {
-  choice [long] h([long] i) {
+  choice [int] h([int] i) {
     return i;
   }
 }
