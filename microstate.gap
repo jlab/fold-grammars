@@ -9,14 +9,14 @@ type Rope = extern
 type shape_t = shape
 
 include "Signatures/sig_foldrna.gap"
-include "Algebras/alg_dotBracket.gap"
-include "Algebras/alg_shapes.gap"
+include "Algebras/DotBracket/alg_dotBracket.gap"
+include "Algebras/Shapes/alg_shapes.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
 
-include "Algebras/alg_mfe.gap"
-include "Algebras/alg_pfunc.gap"
+include "Algebras/MFE/alg_mfe.gap"
+include "Algebras/Pfunc/alg_pfunc.gap"
 
 include "Grammars/gra_microstate.gap"
 

@@ -593,12 +593,6 @@ algebra alg_pfunc_macrostate_id extends alg_pfunc_macrostate {
 }
 
 
-//~ include "Algebras/alg_mfe_macrostate.gap"
-//~ include "Algebras/alg_dotBracket.gap"
-//~ include "Algebras/alg_shapes.gap"
-//~ include "Algebras/alg_centers.gap"
-//~ include "Algebras/alg_hishapes.gap"
-
 algebra alg_HairpinCenter implements sig_foldrna(alphabet = char, answer = string) {
 	string sadd(Subsequence lb,string e) {
 		return e;

@@ -14,12 +14,11 @@ type base_t = extern
 type Rope = extern
 
 include "Signatures/sig_foldrna.gap"
-include "Algebras/alg_pfunc_macrostate.gap"
-include "Algebras/alg_mfe_macrostate.gap"
-include "Algebras/alg_dotBracket.gap"
-include "Algebras/alg_shapes.gap"
-include "Algebras/alg_centers.gap"
-include "Algebras/alg_hishapes.gap"
+include "Algebras/Pfunc/alg_pfunc_macrostate.gap"
+include "Algebras/MFE/alg_mfe_macrostate.gap"
+include "Algebras/DotBracket/alg_dotBracket.gap"
+include "Algebras/Shapes/alg_shapes.gap"
+include "Algebras/Shapes/alg_hishapes.gap"
 
 algebra alg_count auto count ;
 algebra alg_enum auto enum ;

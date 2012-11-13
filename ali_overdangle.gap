@@ -11,13 +11,13 @@ type M_Char = extern
 type mfecovar = extern
 
 include "Signatures/sig_foldrna.gap"
-include "Algebras/alg_ali_dotBracket.gap"
+include "Algebras/DotBracket/alg_ali_dotBracket.gap"
 include "Algebras/alg_ali_mis.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
 
-include "Algebras/alg_ali_mfe.gap"
+include "Algebras/MFE/alg_ali_mfe.gap"
 algebra alg_ali_mfe_overdangle extends alg_ali_mfe {
   mfecovar drem(Subsequence lb, mfecovar x, Subsequence rb) {
 	mfecovar res = x;

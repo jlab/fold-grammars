@@ -9,13 +9,13 @@ type Rope = extern
 type shape_t = shape
 
 include "Signatures/sig_foldrna.gap"
-include "Algebras/alg_dotBracket.gap"
-include "Algebras/alg_shapes.gap"
+include "Algebras/DotBracket/alg_dotBracket.gap"
+include "Algebras/Shapes/alg_shapes.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
 
-include "Algebras/alg_mfe.gap"
+include "Algebras/MFE/alg_mfe.gap"
 algebra alg_mfe_overdangle extends alg_mfe {
   int drem(Subsequence lb, int x, Subsequence rb) {
     return x + termau_energy(lb, rb) + ext_mismatch_energy(lb, rb);
@@ -25,7 +25,7 @@ algebra alg_mfe_overdangle extends alg_mfe {
   }
 }
 
-include "Algebras/alg_pfunc.gap"
+include "Algebras/Pfunc/alg_pfunc.gap"
 algebra alg_pfunc_overdangle extends alg_pfunc {
   double drem(Subsequence lb, double x, Subsequence rb) {
     return                                x * mk_pf(termau_energy(lb, rb) + ext_mismatch_energy(lb, rb));

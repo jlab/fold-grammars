@@ -15,9 +15,9 @@ include "Signatures/sig_pknot_foldrna.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
-include "Algebras/alg_pknot_dotBracket.gap"
-include "Algebras/alg_pknot_mfe.gap"
-include "Algebras/alg_pknot_pfunc.gap"
+include "Algebras/DotBracket/alg_pknot_dotBracket.gap"
+include "Algebras/MFE/alg_pknot_mfe.gap"
+include "Algebras/Pfunc/alg_pknot_pfunc.gap"
 
 include "Grammars/gra_locomotif_microstate.gap"
 
