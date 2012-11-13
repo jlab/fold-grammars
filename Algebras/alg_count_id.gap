@@ -109,9 +109,3 @@ algebra alg_count_id implements sig_foldrna(alphabet = char, answer = int) {
     return i;
   }
 }
-
-algebra alg_count_own extends count {
-  choice [int] h([int] i) {
-    return i;
-  }
-}
