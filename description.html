@@ -1,0 +1,139 @@
+<text>
+<h2>Description of the Bellman's GAP Repository: Fold-Grammars</h2>
+Bellman's GAP is a domain specific language and compiler for dynamic programming over sequence data. It's name is derived from &quot;Bellman's Principle of Optimality, Grammars, Algebras, and Products&quot;.
+A Bellman's GAP repository is an archive of re-usable modules.
+
+Repositories are provided for code sharing. If you have modules to share, write to  Stefan Janssen <a href="mailto:stefan.janssen@uni-bielefeld.de">stefan.janssen@uni-bielefeld.de</a>
+
+A typical program in Bellman's GAP contains four elements:
+<ol>
+<li>a signature, defining functions available in grammars which must be implemented in algebras,</li>
+<li>one or more algebras, evaluating a candidate from the search space and applying the objective function,</li>
+<li>one or more grammars, defining a search space of solution caniddates</li>
+<li>one or more executable program instances, combining a grammar with a product of algebras.</li>
+</ol>
+
+<h3>Naming conventions</h3>
+Although GAP-L (Bellman's GAP language) allows arbitrary names, i.e. they must match the regular expression [A-Z_a-z][A-Z_a-z0-9]*, for signatures, algebras and grammars, we restrict ourselves for a better reading to the following naming convention:
+<ul>
+<li>signature names start with the prefix &quot;sig_&quot;</li>
+<li>algebra names start with the prefix &quot;alg_&quot;</li>
+<li>grammar names start with the prefix &quot;gra_&quot;</li>
+<ul>
+<li>for large grammars, sub-fragments are outsourced in files starting with &quot;grapart_&quot;</li>
+</ul>
+</ul>
+We don't have a naming convention for instances, since they appear in a program just once.
+
+Names and file extensions for source code files can be chosen freely, but we prefer to use &quot;.gap&quot; for the file extension. Furthermore, if we split components of our program, we use the prefixes for the filenames as well.
+
+<h3>Repository content of Fold-Grammars</h3>
+This repository is a collection of components (algebras, grammars, ...) for dynamic programming problems covering RNA secondary structure predictions. It covers the fields of:
+<ul>
+<li>single structure prediction (similar to RNAfold),</li>
+<li>prediction of structures for alignments (similar to RNAalifold) [filenames with &quot;ali_&quot;], </li>
+<li>sequence structure evaluation (similar to RNAeval) [filenames with &quot;eval_&quot;] ,</li>
+<li>abstract shape analysis (similar the RNAshapes) and HIshapes, and</li>
+<li>pseudoknot prediction (similar to pknotsRG and pKiss) [filenames with &quot;pknot_&quot;].</li>
+</ul>
+
+To capture different handling of dangling bases  implemented in various programs, we provide the four different grammars (for details see <a href="http://www.biomedcentral.com/1471-2105/12/429/">Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction</a>) Compared to the supplementary file of that paper, we refined the grammars a little for more comfortable support of dangling bases. This does not change their folding space. We also introduced filters for maximal loop length for bulges to be closer to the Vienna RNA package, the only difference is, that the size of both unpaired regions of internal loops may not exceed 30 bases in Vienna RNA; we allow up to 30 bases on each side.)
+<ul>
+<li>&quot;nodangle&quot; (no energy contributions of dangling bases at all),</li>
+<li>&quot;overdangle&quot; (available or not, bases next to a stem always dangle from both sides to this stem),</li>
+<li>&quot;microstate&quot; (by increasing the search space a lot, best of all four possibilities for dangling onto a stem is selected. OK for MFE computations, but wrong for probabilistic analyses) and</li>
+<li>&quot;macrostate&quot; (unambiguous handling of dangling bases, i.e. no search space inflation and dangling only available bases onto a stem. Violating Bellman's principle of optimality for MFE computations, but correct for probabilistic analyses by using a four component vector, instead of a single partition function value. This component trick is the reason for some special algebra versions for macrostate.)</li>
+</ul>
+
+<h3>Repository structure</h3>
+We massively use GAP-L's functionality of including source code fragments to maintain a clear structure of available components. Another advantage is the re-usability of components if they share the same signature. 
+</text>
+
+<sourcedirectory>Signatures</sourcedirectory>
+<sourcefile>Signatures/sig_foldrna.gap</sourcefile>
+<sourcefile>Signatures/sig_eval_foldrna.gap</sourcefile>
+<sourcefile>Signatures/sig_pknot_foldrna.gap</sourcefile>
+<sourcedirectory>Grammars</sourcedirectory>
+<sourcefile>Grammars/gra_nodangle.gap</sourcefile>
+<sourcefile>Grammars/gra_overdangle.gap</sourcefile>
+<sourcefile>Grammars/gra_microstate.gap</sourcefile>
+<sourcefile>Grammars/gra_macrostate.gap</sourcefile>
+<sourcefile>Grammars/gra_macrostate_center.gap</sourcefile>
+<sourcefile>Grammars/gra_eval_nodangle.gap</sourcefile>
+<sourcefile>Grammars/gra_locomotif_microstate.gap</sourcefile>
+<sourcefile>Grammars/grapart_pkinnards.gap</sourcefile>
+<sourcefile>Grammars/grapart_pknotsrg.gap</sourcefile>
+<sourcefile>Grammars/grapart_pkissA.gap</sourcefile>
+<sourcedirectory>Algebras</sourcedirectory>
+<sourcedirectory>Algebras/DotBracket</sourcedirectory>
+<sourcefile>Algebras/DotBracket/alg_dotBracket.gap</sourcefile>
+<sourcefile>Algebras/DotBracket/alg_pknot_dotBracket.gap</sourcefile>
+<sourcefile>Algebras/DotBracket/alg_ali_dotBracket.gap</sourcefile>
+<sourcefile>Algebras/DotBracket/alg_eval_dotBracket.gap</sourcefile>
+<sourcedirectory>Algebras/MFE</sourcedirectory>
+<sourcefile>Algebras/MFE/alg_mfe.gap</sourcefile>
+<sourcefile>Algebras/MFE/alg_mfe_macrostate.gap</sourcefile>
+<sourcefile>Algebras/MFE/alg_pknot_mfe.gap</sourcefile>
+<sourcefile>Algebras/MFE/alg_ali_mfe.gap</sourcefile>
+<sourcefile>Algebras/MFE/alg_ali_mfe_macrostate.gap</sourcefile>
+<sourcefile>Algebras/MFE/alg_eval_mfe.gap</sourcefile>
+<sourcedirectory>Algebras/Pfunc</sourcedirectory>
+<sourcefile>Algebras/Pfunc/alg_pfunc.gap</sourcefile>
+<sourcefile>Algebras/Pfunc/alg_pfunc_macrostate.gap</sourcefile>
+<sourcefile>Algebras/Pfunc/alg_pknot_pfunc.gap</sourcefile>
+<sourcedirectory>Algebras/Shapes</sourcedirectory>
+<sourcefile>Algebras/Shapes/alg_shapes.gap</sourcefile>
+<sourcefile>Algebras/Shapes/alg_hishapes.gap</sourcefile>
+<sourcefile>Algebras/Shapes/alg_ali_shapes.gap</sourcefile>
+<sourcefile>Algebras/Shapes/alg_ali_hishapes.gap</sourcefile>
+<sourcefile>Algebras/Shapes/alg_shapes_rope.gap</sourcefile>
+<sourcefile>Algebras/alg_basepairMax.gap</sourcefile>
+<sourcefile>Algebras/alg_count_id.gap</sourcefile>
+<sourcefile>Algebras/alg_ali_consensus.gap</sourcefile>
+<sourcefile>Algebras/alg_ali_mis.gap</sourcefile>
+<text>
+At the root directory are all the &quot;main&quot; GAP-L files for the actual application of an algebra(product) to a grammar and an input. They mainly contain the declaration of instances, inclusion of code fragments like signatures, grammars and algebras and import statements for external functionality, found in *.hh files.
+Some exceptions are:
+<ul>
+<li>overdangle.gap and ali_overdangle.gap: they overwrite the mfe and partition function algebra-functions drem and ml to realize the overdangling instead of nodangling.</li>
+<li>MacrostateCenter.gap: previously we mentioned the need for computing the probability of hairpins. To do so, the signature must be extended by one algebra-function, which is unfortunately impossible by heritage within GAP-L. Thus, we need special signature, algebras and grammars. The later is externalized in the file <a href="Grammars/gra_macrostate_centers.gap">Grammars/gra_macrostate_centers.gap</a>.</li>
+<li>structure2shape.gap: often it is necessary to convert a Vienna-Dot-Bracket string into a shape string. This can be done with this file, but it is very inefficient to do within ADP - compared to other parser techniques.</li>
+</ul>
+</text>
+<sourcedirectory>RNApackage</sourcedirectory>
+<sourcedirectory>Tests</sourcedirectory>
+<text>
+We need a lot of functionality, which is not part of Bellman's GAP. These functions come via the *.hh files, and must be imported to the GAP-L main files. Unfortunately, imports are only possible at the beginning of a program, thus we cannot import a *.hh file from within an specific algebra file, even if its functions are only used in this algebra. Importing from different subdirectories is impossible as well. So it gets a bit crowded in the root directory.
+</text>
+stacklen.hh
+singlefold.hh
+pKiss_tables.hh
+pKiss_extras.hh
+pkenergy.hh
+pfunc_filter_foldrna.hh
+pfunc_filter_macrostate.hh
+pfunc_answer_macrostate.hh
+mferange.hh
+alifold.hh
+<text>
+<h3>Prerequisites</h3>
+Prerequisites for compiling an Instance are:
+<ul>
+<li>the Bellmans GAP compiler: <a href="http://www.gapc.eu/">http://www.gapc.eu/</a> DAS BIBISERV DIRECTORY</li>
+<li>Since Bellmans GAP compiler produces C++ target code, you need an C++ compiler.</li>
+<li>We recommend &quot;g++&quot; and &quot;make&quot;</li>
+<li>some editor to optionally modify the program.</li>
+</ul>
+
+<h3>How to compile an instance</h3>
+Let us assume you want to build a program, which computes the best minimal free energy secondary structure, i.e. its energy value in kcal/mol plus its Vienna Dot Bracket representation for the NoDangle grammar:
+<ol>
+<li>enter any console and cd to our repository</li>
+<li>generate C++ target code with Bellmans GAP compiler for the predefined instance &quot;mfepp&quot; by typing: &quot;gapc -i mfepp -t nodangle.gap&quot;</li>
+<li>compile the generated target code via &quot;make -f out.mf&quot;</li>
+<li>use the new binary &quot;./out ACUGACUAGCUAGUCGUUAC&quot;</li>
+</ol>
+See <a href="http://www.gapc.eu/faq.html">http://www.gapc.eu/faq.html</a> for more information about Bellmans GAP compiler. BIBISERV
+
+<h3>References</h3>
+<h3>Contributors</h3>

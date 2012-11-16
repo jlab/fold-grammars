@@ -1,0 +1,2 @@
+given an alignment, this algebra computes a consensus sequence. It simply is the most frequent character at each position. Should several different characters appear with maximal frequency they are sorted according to the GAP-L internal enumeration construct, which currently is enum base_t { N_BASE, A_BASE, C_BASE, G_BASE, U_BASE, GAP_BASE };, and the first is selected.
+The real magic is externalized in the file <a href="../alifold.hh">alifold.hh</a>.
