@@ -277,10 +277,7 @@ algebra alg_shape1 extends alg_shape5 {
     } else {
       res = shape_t('_') + x; //cannot happen in macrostates
     }
-    if (back(res) == '_') {
-      //res = x;
-      res = res; //GAP does not allow to have an empty block :-/
-    } else {
+    if (back(res) != '_') {
       res = res + shape_t('_'); //cannot happen in macrostates
     }
     return shape_t('[') + res + shape_t(']');
@@ -305,6 +302,5 @@ algebra alg_shape1 extends alg_shape5 {
       return x + shape_t('_'); //cannot happen in macrostates, because we know that x has at least one unpaired base and thus we already have the '_'
     }
   }
-
 }
 

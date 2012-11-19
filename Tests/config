@@ -82,3 +82,7 @@ LDLIBS_EXTRA="-lrna"
 RUN_CPP_FLAGS="$PARAMSET2004"
 check_new_old_eq microstate.gap   unused mfepp UUGCGCCGAUGGUUUGAGCAGCAACGCGAUCUACUUUCCAUCAGGAU triloop
 
+GAPC="$BASE/bin/gapc -t -I../../"
+LDLIBS_EXTRA="-lrna"
+RUN_CPP_FLAGS=""
+check_new_old_eq macrostate.gap unused testdbshape1 GACGACAUCGUAUGGUACGUUGAGUCGAGCGAUCG shape1

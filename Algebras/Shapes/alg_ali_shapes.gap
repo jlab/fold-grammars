@@ -277,10 +277,7 @@ algebra alg_ali_shape1 extends alg_ali_shape5 {
     } else {
       res = shape_t('_') + x; //cannot happen in macrostates
     }
-    if (back(res) == '_') {
-      //res = x;
-      res = res; //GAP does not allow to have an empty block :-/
-    } else {
+    if (back(res) != '_') {
       res = res + shape_t('_'); //cannot happen in macrostates
     }
     return shape_t('[') + res + shape_t(']');
