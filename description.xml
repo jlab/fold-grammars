@@ -1,18 +1,17 @@
-<?xml version="1.0"?>
-<description>
-<element id="1" description="descr 1">
+<?xml version="1.0" encoding="UTF-8"?>
+<description xmlns="http://bibiserv.techfak.uni-bielefeld.de/fold-grammars"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://bibiserv.techfak.uni-bielefeld.de/fold-grammars
+http://bibiserv.techfak.uni-bielefeld.de/xsd/fold-grammars.xsd">
+<element id="id1" descr="Fold-Grammars">
 <html>
-
-<h2>Description of the Bellman's GAP Repository: Fold-Grammars</h2> 
-Bellman's GAP is a domain
+<div xmlns="http://www.w3.org/1999/xhtml">
+<h2>Description of the Bellman's GAP Repository: Fold-Grammars</h2> Bellman's GAP is a domain
 specific language and compiler for dynamic programming over sequence data. It's name is derived from
 &quot;Bellman's Principle of Optimality, Grammars, Algebras, and Products&quot;. A Bellman's GAP
 repository is an archive of re-usable modules. Repositories are provided for code sharing. If you
-have modules to share, write to Stefan Janssen <a href="mailto:stefan.janssen@uni-bielefeld.de"
->stefan.janssen@uni-bielefeld.de</a> 
-
-A typical program in Bellman's GAP contains four elements: 
-<ol>
+have modules to share, write to Stefan Janssen <a
+href="mailto:stefan.janssen@uni-bielefeld.de">stefan.janssen@uni-bielefeld.de</a> A typical program in Bellman's GAP contains four elements: <ol>
 <li>a signature, defining functions available in grammars which must be implemented in
 algebras,</li>
 <li>one or more algebras, evaluating a candidate from the search space and applying the objective
@@ -20,19 +19,17 @@ function,</li>
 <li>one or more grammars, defining a search space of solution caniddates</li>
 <li>one or more executable program instances, combining a grammar with a product of algebras.</li>
 </ol>
-
-<h3>Naming conventions</h3> 
-Although GAP-L (Bellman's GAP language) allows arbitrary names, i.e.
+<h3>Naming conventions</h3> Although GAP-L (Bellman's GAP language) allows arbitrary names, i.e.
 they must match the regular expression [A-Z_a-z][A-Z_a-z0-9]*, for signatures, algebras and
-grammars, we restrict ourselves for a better reading to the following naming convention: 
-<ul>
+grammars, we restrict ourselves for a better reading to the following naming convention: <ul>
 <li>signature names start with the prefix &quot;sig_&quot;</li>
 <li>algebra names start with the prefix &quot;alg_&quot;</li>
 <li>grammar names start with the prefix &quot;gra_&quot;</li>
-<ul>
+<li><ul>
 <li>for large grammars, sub-fragments are outsourced in files starting with
 &quot;grapart_&quot;</li>
 </ul>
+</li>
 </ul> 
 
 We don't have a naming convention for instances, since they appear in a program just once.
@@ -49,7 +46,8 @@ RNA secondary structure predictions. It covers the fields of: <ul>
 <li>pseudoknot prediction (similar to pknotsRG and pKiss) [filenames with &quot;pknot_&quot;].</li>
 </ul> To capture different handling of dangling bases implemented in various programs, we provide
 the four different grammars (for details see <a
-href="http://www.biomedcentral.com/1471-2105/12/429/">Lost in folding space? Comparing four variants
+href="http://www.biomedcentral.com/1471-2105/12/429/"
+>Lost in folding space? Comparing four variants
 of the thermodynamic model for RNA secondary structure prediction</a>) Compared to the supplementary
 file of that paper, we refined the grammars a little for more comfortable support of dangling bases.
 This does not change their folding space. We also introduced filters for maximal loop length for
@@ -70,64 +68,63 @@ versions for macrostate.)</li>
 </ul>
 <h3>Repository structure</h3> We massively use GAP-L's functionality of including source code
 fragments to maintain a clear structure of available components. Another advantage is the
-re-usability of components if they share the same signature. </html>
-
+re-usability of components if they share the same signature. 
+</div>
+</html>
 <structure>
-<dir name="Signatures">
- <file name="sig_foldrna.gap"/>
- <file name="sig_eval_foldrna.gap"/>
- <file name="sig_pknot_foldrna.gap"/>
+<dir descr="Signatures">
+<file id="sig_foldrna.gap" ref="Signatures/sig_foldrna.gap"/>
+<file id="sig_eval_foldrna.gap" ref="Signatures/sig_eval_foldrna.gap"/>
+<file id="sig_pknot_foldrna.gap" ref="Signatures/sig_pknot_foldrna.gap"/>
 </dir>
-<dir name="Grammars">
-<file name="gra_nodangle.gap"/>
-<file name="gra_overdangle.gap"/>
-<file name="gra_microstate.gap"/>
-<file name="gra_macrostate.gap"/>
-<file name="gra_macrostate_center.gap"/>
-<file name="gra_eval_nodangle.gap"/>
-<file name="gra_locomotif_microstate.gap"/>
-<file name="grapart_pkinnards.gap"/>
-<file name="grapart_pknotsrg.gap"/>
-<file name="grapart_pkissA.gap"/>
+<dir descr="Grammars" >
+<file id="gra_nodangle.gap"/>
+<file id="gra_overdangle.gap"/>
+<file id="gra_microstate.gap"/>
+<file id="gra_macrostate.gap"/>
+<file id="gra_macrostate_center.gap"/>
+<file id="gra_eval_nodangle.gap"/>
+<file id="gra_locomotif_microstate.gap"/>
+<file id="grapart_pkinnards.gap"/>
+<file id="grapart_pknotsrg.gap"/>
+<file id="grapart_pkissA.gap"/>
 </dir>
-<dir name="Algebras">
-<dir name="DotBracket">
-<file name="alg_dotBracket.gap"/>
-<file name="alg_pknot_dotBracket.gap"/>
-<file name="alg_ali_dotBracket.gap"/>
-<file name="alg_eval_dotBracket.gap"/>
+<dir descr="Algebras">
+<dir descr="DotBracket">
+<file id="alg_dotBracket.gap"/>
+<file id="alg_pknot_dotBracket.gap"/>
+<file id="alg_ali_dotBracket.gap"/>
+<file id="alg_eval_dotBracket.gap"/>
 </dir>
-<dir name="MFE">
-<file name="alg_mfe.gap"/>
-<file name="alg_mfe_macrostate.gap"/>
-<file name="alg_pknot_mfe.gap"/>
-<file name="alg_ali_mfe.gap"/>
-<file name="alg_ali_mfe_macrostate.gap"/>
-<file name="alg_eval_mfe.gap"/>
+<dir descr="MFE">
+<file id="alg_mfe.gap"/>
+<file id="alg_mfe_macrostate.gap"/>
+<file id="alg_pknot_mfe.gap"/>
+<file id="alg_ali_mfe.gap"/>
+<file id="alg_ali_mfe_macrostate.gap"/>
+<file id="alg_eval_mfe.gap"/>
 </dir>
-<dir name="Pfunc">
-<file name="alg_pfunc.gap"/>
-<file name="alg_pfunc_macrostate.gap"/>
-<file name="alg_pknot_pfunc.gap"/>
+<dir descr="Pfunc">
+<file id="alg_pfunc.gap"/>
+<file id="alg_pfunc_macrostate.gap"/>
+<file id="alg_pknot_pfunc.gap"/>
 </dir>
-<dir name="Shapes">
-<file name="alg_shapes.gap"/>
-<file name="alg_hishapes.gap"/>
-<file name="alg_ali_shapes.gap"/>
-<file name="alg_ali_hishapes.gap"/>
-<file name="alg_shapes_rope.gap"/>
+<dir descr="Shapes">
+<file id="alg_shapes.gap"/>
+<file id="alg_hishapes.gap"/>
+<file id="alg_ali_shapes.gap"/>
+<file id="alg_ali_hishapes.gap"/>
+<file id="alg_shapes_rope.gap"/>
 </dir>
-
-<file name="alg_basepairMax.gap"/>
-<file name="alg_count_id.gap"/>
-<file name="alg_ali_consensus.gap"/>
-<file name="alg_ali_mis.gap"/>
+<file id="alg_basepairMax.gap"/>
+<file id="alg_count_id.gap"/>
+<file id="alg_ali_consensus.gap"/>
+<file id="alg_ali_mis.gap"/>
 </dir>
 </structure>
 </element>
-
-<element id="2" description="descr 2">
-<html> At the root directory are all the &quot;main&quot; GAP-L files for the actual application of
+<element id="id2" descr="descr 2">
+<html> <div xmlns="http://www.w3.org/1999/xhtml">At the root directory are all the &quot;main&quot; GAP-L files for the actual application of
 an algebra(product) to a grammar and an input. They mainly contain the declaration of instances,
 inclusion of code fragments like signatures, grammars and algebras and import statements for
 external functionality, found in *.hh files. Some exceptions are: <ul>
@@ -136,46 +133,45 @@ algebra-functions drem and ml to realize the overdangling instead of nodangling.
 <li>MacrostateCenter.gap: previously we mentioned the need for computing the probability of
 hairpins. To do so, the signature must be extended by one algebra-function, which is unfortunately
 impossible by heritage within GAP-L. Thus, we need special signature, algebras and grammars. The
-later is externalized in the file <a href="Grammars/gra_macrostate_centers.gap"
->Grammars/gra_macrostate_centers.gap</a>.</li>
+later is externalized in the file <a
+href="Grammars/gra_macrostate_centers.gap">Grammars/gra_macrostate_centers.gap</a>.</li>
 <li>structure2shape.gap: often it is necessary to convert a Vienna-Dot-Bracket string into a shape
 string. This can be done with this file, but it is very inefficient to do within ADP - compared to
 other parser techniques.</li>
 </ul>
+</div>
 </html>
 <structure>
- <dir>RNApackage
-  <dir>Tests</dir>
- </dir>
+<dir descr="RNApackage">
+<dir descr="Tests"/>
+</dir>
 </structure>
 </element>
-
-
-<element id="3" description="descr 3">
+<element id="id3" descr="descr 3">
 <html> We need a lot of functionality, which is not part of Bellman's GAP. These functions come via
 the *.hh files, and must be imported to the GAP-L main files. Unfortunately, imports are only
 possible at the beginning of a program, thus we cannot import a *.hh file from within an specific
 algebra file, even if its functions are only used in this algebra. Importing from different
 subdirectories is impossible as well. So it gets a bit crowded in the root directory. </html>
-<structure> 
- <file name="stacklen.hh"/> 
- <file name="singlefold.hh"/>
- <file name="pKiss_tables.hh"/>
- <file name="pKiss_extras.hh"/> 
- <file name="pkenergy.hh"/>
- <file name="pfunc_filter_foldrna.hh"/> 
- <file name="pfunc_filter_macrostate.hh "/>
- <file name="pfunc_answer_macrostate.hh" />
- <file name="mferange.hh"/>
- <file name="alifold.hh"/>
+<structure>
+<file id="stacklen.hh"/>
+<file id="singlefold.hh"/>
+<file id="pKiss_tables.hh"/>
+<file id="pKiss_extras.hh"/>
+<file id="pkenergy.hh"/>
+<file id="pfunc_filter_foldrna.hh"/>
+<file id="pfunc_filter_macrostate.hh "/>
+<file id="pfunc_answer_macrostate.hh"/>
+<file id="mferange.hh"/>
+<file id="alifold.hh"/>
 </structure>
 </element>
-
-
-<element id="4" description="descr 4">
+<element id="prerequisites" descr="Prerequisites">
 <html>
-<h3>Prerequisites</h3> Prerequisites for compiling an Instance are: <ul>
-<li>the Bellmans GAP compiler: <a href="http://bibiserv.cebitec.uni-bielefeld.de/gapc">http://bibiserv.cebitec.uni-bielefeld.de/gapc</a></li>
+<div xmlns="http://www.w3.org/1999/xhtml">
+Prerequisites for compiling an Instance are: <ul>
+<li>the Bellmans GAP compiler: <a href="http://bibiserv.cebitec.uni-bielefeld.de/gapc"
+>http://bibiserv.cebitec.uni-bielefeld.de/gapc</a></li>
 <li>Since Bellmans GAP compiler produces C++ target code, you need an C++ compiler.</li>
 <li>We recommend &quot;g++&quot; and &quot;make&quot;</li>
 <li>some editor to optionally modify the program.</li>
@@ -188,10 +184,24 @@ Bracket representation for the NoDangle grammar: <ol>
 &quot;mfepp&quot; by typing: &quot;gapc -i mfepp -t nodangle.gap&quot;</li>
 <li>compile the generated target code via &quot;make -f out.mf&quot;</li>
 <li>use the new binary &quot;./out ACUGACUAGCUAGUCGUUAC&quot;</li>
-</ol> See <a href="http://bibiserv.cebitec.uni-bielefeld.de/gapc">GAPC FAQ</a> for more information
+</ol> See <a href="http://bibiserv.cebitec.uni-bielefeld.de/gapc"
+>GAPC FAQ</a> for more information
 about Bellmans GAP compiler.
-<h3>References</h3>
-<h3>Contributors</h3>
+</div>
 </html>
+</element>
+
+<element id="references" descr="References">
+<html>
+<div xmlns="http://www.w3.org/1999/xhtml">
+references missing ...
+</div>
+</html>
+</element>
+
+<element id="contributors" descr="Contributors">
+<html><div xmlns="http://www.w3.org/1999/xhtml">
+contributor list missing ...
+</div></html>
 </element>
 </description>
