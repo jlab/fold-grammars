@@ -43,6 +43,25 @@ instance mfeshape1pp = gra_nodangle(alg_mfe * alg_shape1 * alg_dotBracket);
 instance count = gra_nodangle (alg_count);
 //stop: instances used in the FoldingSpaces paper
 
+//start: instances used in for RapidShapes
+instance pf = gra_nodangle ( alg_pfunc ) ;
+instance pfsampleshape5all = gra_nodangle ( ( (alg_pfunc | alg_pfunc_id ) * alg_shape5 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape4all = gra_nodangle ( ( (alg_pfunc | alg_pfunc_id ) * alg_shape4 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape3all = gra_nodangle ( ( (alg_pfunc | alg_pfunc_id ) * alg_shape3 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape2all = gra_nodangle ( ( (alg_pfunc | alg_pfunc_id ) * alg_shape2 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape1all = gra_nodangle ( ( (alg_pfunc | alg_pfunc_id ) * alg_shape1 ) suchthat sample_filter ) ; //compile with --sample !
+instance shape5mfe = gra_nodangle ( alg_shape5 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape4mfe = gra_nodangle ( alg_shape4 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape3mfe = gra_nodangle ( alg_shape3 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape2mfe = gra_nodangle ( alg_shape2 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape1mfe = gra_nodangle ( alg_shape1 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+//~ instance shape5pfx = gra_nodangle ((alg_shape5 * alg_pfunc) suchthat p_func_filte);
+//~ instance shape4pfx = gra_nodangle ((alg_shape4 * alg_pfunc) suchthat p_func_filte);
+//~ instance shape3pfx = gra_nodangle ((alg_shape3 * alg_pfunc) suchthat p_func_filte);
+//~ instance shape2pfx = gra_nodangle ((alg_shape2 * alg_pfunc) suchthat p_func_filte);
+//~ instance shape1pfx = gra_nodangle ((alg_shape1 * alg_pfunc) suchthat p_func_filter);
+//stop: instances used in for RapidShapes
+
 
 instance enum = gra_nodangle (alg_enum);
 

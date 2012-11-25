@@ -54,6 +54,11 @@ instance pfsampleshape4all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfun
 instance pfsampleshape3all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape3 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
 instance pfsampleshape2all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape2 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
 instance pfsampleshape1all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape1 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
+instance shape5mfe = gra_macrostate ( alg_shape5 * alg_mfe_macrostate ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape4mfe = gra_macrostate ( alg_shape4 * alg_mfe_macrostate ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape3mfe = gra_macrostate ( alg_shape3 * alg_mfe_macrostate ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape2mfe = gra_macrostate ( alg_shape2 * alg_mfe_macrostate ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape1mfe = gra_macrostate ( alg_shape1 * alg_mfe_macrostate ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
 //~ instance shape5pfx = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat p_func_filter_all);
 //~ instance shape4pfx = gra_macrostate ((alg_shape4 * alg_pfunc_macrostate) suchthat p_func_filter_all);
 //~ instance shape3pfx = gra_macrostate ((alg_shape3 * alg_pfunc_macrostate) suchthat p_func_filter_all);
@@ -75,7 +80,6 @@ instance mfev2pp = gra_macrostate ( alg_mfeV2_macrostate * alg_dotBracket ) ;
 instance pretty = gra_macrostate ( alg_dotBracket ) ;
 instance shape5 = gra_macrostate ( alg_shape5 ) ;
 
-instance shape5mfe = gra_macrostate ( alg_shape5 * alg_mfe_macrostate ) ;
 
 instance shape5pf = gra_macrostate (alg_shape5 * alg_pfunc_macrostate);
 instance mfepppf = gra_macrostate( alg_mfe_macrostate * (alg_dotBracket * alg_pfunc_macrostate) ) ;

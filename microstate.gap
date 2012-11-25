@@ -44,13 +44,22 @@ instance count = gra_microstate (alg_count);
 
 //start: instances used in for RapidShapes
 instance pf = gra_microstate ( alg_pfunc ) ;
-//~ instance shape5pfx = gra_microstate ((alg_shape5 * alg_pfunc) suchthat pfunc_filter);
-//~ instance shape4pfx = gra_microstate ((alg_shape4 * alg_pfunc) suchthat pfunc_filter);
-//~ instance shape3pfx = gra_microstate ((alg_shape3 * alg_pfunc) suchthat pfunc_filter);
-//~ instance shape2pfx = gra_microstate ((alg_shape2 * alg_pfunc) suchthat pfunc_filter);
-//~ instance shape1pfx = gra_microstate ((alg_shape1 * alg_pfunc) suchthat pfunc_filter);
+instance pfsampleshape5all = gra_microstate ( ( (alg_pfunc | alg_pfunc_id ) * alg_shape5 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape4all = gra_microstate ( ( (alg_pfunc | alg_pfunc_id ) * alg_shape4 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape3all = gra_microstate ( ( (alg_pfunc | alg_pfunc_id ) * alg_shape3 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape2all = gra_microstate ( ( (alg_pfunc | alg_pfunc_id ) * alg_shape2 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape1all = gra_microstate ( ( (alg_pfunc | alg_pfunc_id ) * alg_shape1 ) suchthat sample_filter ) ; //compile with --sample !
+instance shape5mfe = gra_microstate ( alg_shape5 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape4mfe = gra_microstate ( alg_shape4 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape3mfe = gra_microstate ( alg_shape3 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape2mfe = gra_microstate ( alg_shape2 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+instance shape1mfe = gra_microstate ( alg_shape1 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
+//~ instance shape5pfx = gra_microstate ((alg_shape5 * alg_pfunc) suchthat p_func_filte);
+//~ instance shape4pfx = gra_microstate ((alg_shape4 * alg_pfunc) suchthat p_func_filte);
+//~ instance shape3pfx = gra_microstate ((alg_shape3 * alg_pfunc) suchthat p_func_filte);
+//~ instance shape2pfx = gra_microstate ((alg_shape2 * alg_pfunc) suchthat p_func_filte);
+//~ instance shape1pfx = gra_microstate ((alg_shape1 * alg_pfunc) suchthat p_func_filter);
 //stop: instances used in for RapidShapes
-
 
 instance pp = gra_microstate (alg_dotBracket);
 

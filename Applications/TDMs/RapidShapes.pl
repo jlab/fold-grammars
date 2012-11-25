@@ -40,6 +40,13 @@ where options are:
 					A number of 1000 (which is the default) should be 
 					sufficient, but could be increased to gain better estimates.
 					
+  --kbest         : alternative to the above sampling of shapes. In this mode, 
+                    RapidShapes first performs a simple shape analysis for the 
+					best 'kbest' shapes. Choice of an appropriate value for 
+					--kbest is not easy, since it depends on sequence length
+					and base composition.
+					(Cannot be set together with --sampleSetSize.)
+					
   --alpha         : RapidShapes computes individual shape class probabilities 
                     until either alpha percent of the folding space is explored 
 					or nor more guessed shape classes are uncomputed. 
@@ -70,23 +77,33 @@ my $settings = {
 	temperature => undef,
 	energyParamfile => undef,
 	header => "unknown sequence",
+	kbest => undef,
 };
 
 my $helpIsHelp = 0;
+my $helpSampleSetSize = 0;
+my $helpKbest = 0;
 
 &GetOptions( 	
 	"grammar=s"		=> \$settings->{grammar},
 	"shapeLevel=i"	=> \$settings->{shapeLevel},
-	"sampleSetSize=i"	=> \$settings->{sampleSetSize},
+	"sampleSetSize=i"	=> \$helpSampleSetSize,
 	"alpha=f"			=> \$settings->{alpha},
 	"temperature=f" => \$settings->{temperature},
 	"paramfile=s" =>\$settings->{energyParamfile},
 	"name=s" => \$settings->{header},
+	"kbest=i" => \$helpKbest,
 );
 usage() if (($helpIsHelp == 1) || (@ARGV != 1));
 die "grammar '$settings->{grammar}' is not available. Available grammars are: '".join("','", keys(%PerlSettings::TDMfiles))."'.\n" if (not exists $PerlSettings::TDMfiles{$settings->{grammar}});
 die "shape level ".$settings->{shapeLevel}." is not available. Please select between 1 to 5!\n" if ($settings->{shapeLevel} !~ m/1|2|3|4|5/);
 die "energy parameter files '".$settings->{energyParamfile}."' is not available.\n" if ((defined $settings->{energyParamfile}) && (not -e $settings->{energyParamfile}));
+if (($helpSampleSetSize != 0) && ($helpKbest != 0)) {
+	die "--sampleSetSize and --kbest cannot be set at the same time!\n";
+} else {
+	$settings->{sampleSetSize} = $helpSampleSetSize if ($helpSampleSetSize != 0);
+	$settings->{kbest} = $helpKbest if ($helpKbest != 0);
+}
 if (defined $settings->{temperature}) {
 	$settings->{temperature} = "-T ".$settings->{temperature};
 } else {
@@ -104,9 +121,14 @@ my ($inputSequence) = @ARGV;
 
 my $workingDirectory = qx(pwd); chomp $workingDirectory;
 
-#1) guess shape classes via stochastical backtracing
-	my @shapes = @{guessShapesSampling($inputSequence, $settings, $workingDirectory)};
-	
+#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
+	my @shapes = ();
+	if (defined $settings->{kbest}) {
+		@shapes = @{guessShapesKbest($inputSequence, $settings, $workingDirectory)};
+	} else {
+		@shapes = @{guessShapesSampling($inputSequence, $settings, $workingDirectory)};
+	}
+
 #2) determining partition function value for complete search space	
 	my $pfAll = getPFall($inputSequence, $settings, $workingDirectory);
 	
@@ -170,7 +192,7 @@ sub getPFall {
 sub guessShapesSampling {
 	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
 	
-	print STDERR "step 1: guess shapes to be further analyzed via TDMs ... ";
+	print STDERR "step 1: guess shapes, via sampling, to be further analyzed via TDMs ... ";
 	my $bin_sample = $PerlSettings::TDMfiles{$refHash_settings->{grammar}}.'.pfsampleshape'.$refHash_settings->{shapeLevel}.'all';
 	if (not -e $bin_sample) {
 		print STDERR "compiling programm to estimate shape class frequencies for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapeLevel}." ... ";
@@ -191,13 +213,45 @@ sub guessShapesSampling {
 	
 	return \@shapes;
 }
+
+sub guessShapesKbest {
+	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
+	
+	print STDERR "step 1: guess shapes, via simple shape analysis, to be further analyzed via TDMs ... ";
+	my $bin_ssa = $PerlSettings::TDMfiles{$refHash_settings->{grammar}}.'.shape'.$refHash_settings->{shapeLevel}.'mfe';
+	if (not -e $bin_ssa) {
+		print STDERR "compiling programm to perform simple shape analysis for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapeLevel}." ... ";
+		compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, 'shape'.$refHash_settings->{shapeLevel}.'mfe', "-t --kbest", '', $workingDirectory);
+		print STDERR "done.\n";
+	}
+	my %kbestShapes = ();
+
+	foreach my $line (split(m/\r?\n/, qx(./$bin_ssa $refHash_settings->{temperature} $refHash_settings->{energyParamfile} -r $refHash_settings->{sampleSetSize} -k $refHash_settings->{kbest} $inputSequence))) {
+		if ($line =~ m/\(\s+(\S+)\s,\s\((.+?), <\d+, \d+>, <\d+, \d+>\s*\)\s+\)/) {      #( [[[]]][] , (-250, <0, 25>, <0, 0>) ), just for macrostate
+			$kbestShapes{$1} = $2;
+		} elsif ($line =~ m/\(\s+(\S+)\s+,\s+(.+?)\s+\)/) { #( [_[_[[]_]_]] , 70 )
+			$kbestShapes{$1} = $2;
+		}
+	}
+	my @shapes = ();
+	foreach my $shape (sort {$kbestShapes{$a} <=> $kbestShapes{$b}} keys(%kbestShapes)) {
+		push @shapes, {shapestring => $shape, mfe => $kbestShapes{$shape}/100};
+	}
+	print STDERR "found ".scalar(@shapes)." promising shapes.\n";
+	
+	return \@shapes;
+}
 	
 sub parsePFanswer {
 	my @inputrows = @_;
 	
 	foreach my $line (split(m/\r?\n/, join("\n", @inputrows))) {
 		if (($line !~ m/^\s*$/) && ($line !~ m/Answer/)) {
-			return $line;
+			if ($line =~ m/\[\]/) {
+				return 0; #it might happen that the input sequence does not fit a shape class at all. Thus, GAP answer is the empty list [] which should be interpreted as 0.
+			} else {
+				return $line;
+			}
 		}
 	}
 	
@@ -253,6 +307,8 @@ sub compileGAP {
 
 	print STDERR "==== compileGAP: 3 of 5) translating GAP programm to C++ code:" if ($VERBOSE);
 	my $gapcResult = qx($PerlSettings::BINARIES{gapc} -i $instance $gapcFlags $gapFile 2>&1);
+#~ print Dumper $gapcResult; 
+#~ die;
 	die "compileGAP: '$gapMainFile' does not contain instance '$instance'!\n" if ($gapcResult =~ m/Could not find instance/);
 	print STDERR " done.\n" if ($VERBOSE == 1);
 	print STDERR "\n$gapcResult\n" if ($VERBOSE>1);
