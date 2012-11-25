@@ -49,6 +49,11 @@ instance count = gra_macrostate (alg_count);
 
 //start: instances used in for RapidShapes
 instance pf = gra_macrostate ( alg_pfunc_macrostate ) ;
+instance pfsampleshape5all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape5 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
+instance pfsampleshape4all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape4 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
+instance pfsampleshape3all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape3 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
+instance pfsampleshape2all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape2 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
+instance pfsampleshape1all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape1 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
 //~ instance shape5pfx = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat p_func_filter_all);
 //~ instance shape4pfx = gra_macrostate ((alg_shape4 * alg_pfunc_macrostate) suchthat p_func_filter_all);
 //~ instance shape3pfx = gra_macrostate ((alg_shape3 * alg_pfunc_macrostate) suchthat p_func_filter_all);
@@ -88,12 +93,6 @@ instance shape5pfxall = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) such
 
 
 instance pfsampleshape = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape5 ) suchthat sample_filter_pf ) ; //compile with --sample !
-
-instance pfsampleshape5all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape5 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
-instance pfsampleshape4all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape4 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
-instance pfsampleshape3all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape3 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
-instance pfsampleshape2all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape2 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
-instance pfsampleshape1all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape1 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
 
 instance pfsampleshrep = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * (alg_shape5 * alg_mfe_macrostate * alg_dotBracket) ) suchthat sample_filter_pf ) ; //compile with --sample !
 
