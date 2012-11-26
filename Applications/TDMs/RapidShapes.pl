@@ -148,7 +148,7 @@ if (defined $settings->{energyParamfile}) {
 } else {
 	$settings->{energyParamfile} = "";
 }
-$settings->{header} = substr($settings->{header}, 1) if (substr($settings->{header}, 1, 1) eq '>');
+$settings->{header} = substr($settings->{header}, 1) if (substr($settings->{header}, 0, 1) eq '>');
 
 my ($inputSequence) = @ARGV;
 
@@ -183,6 +183,7 @@ if (defined $settings->{clusterFasta}) {
 		print ARRAY 'sequencepos=`'.$PerlSettings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+2" | '.$PerlSettings::BINARIES{bc}.'`; '."\n";
 		print ARRAY 'header=`'.$PerlSettings::BINARIES{head}.' -n $headerpos $sequenceFile | '.$PerlSettings::BINARIES{tail}.' -1`; '."\n";
 		print ARRAY 'sequence=`'.$PerlSettings::BINARIES{head}.' -n $sequencepos $sequenceFile | '.$PerlSettings::BINARIES{tail}.' -1`;'."\n";
+		print ARRAY 'uname -a'."\n";
 		my $command = "";
 		$command .= " --grammar=".$settings->{grammar} if (defined $settings->{grammar});
 		$command .= " --shapeLevel=".$settings->{shapeLevel} if (defined $settings->{shapeLevel});
@@ -206,7 +207,9 @@ if (defined $settings->{clusterFasta}) {
 	my $bin_pfall = compilePFall($settings, $workingDirectory);
 	my $bin_tdmGenerator = compileGenerator($settings, $workingDirectory);
 	
-	print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G -l linh=1 $arrayJob\n";
+	my $arch = '-l arch="sol-amd64"';
+	$arch = '-l linh=1' if (qx($PerlSettings::BINARIES{uname} -o) =~ m/Sun/i);
+	print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G $arch $arrayJob\n";
 } else {
 	#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
 		my @shapes = ();

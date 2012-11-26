@@ -5,7 +5,7 @@ use warnings;
 
 package PerlSettings;
 
-our $rootDir = '/home/sjanssen/Desktop/fold-grammars/'; #must point to the root directory of the fold-grammars repository!
+our $rootDir = '/vol/cluster-data/sjanssen/fold-grammars/'; #must point to the root directory of the fold-grammars repository!
 
 our $tmpdir = '/tmp/'; #temporary directory
 our $fileseparater = '/'; #character that separates directories in a path, / in unix but \ in windows
@@ -17,7 +17,7 @@ our %BINARIES = (
 	'cp', 'cp',
 	'mv', 'mv',
 	'pwd', 'pwd',
-	'gapc', '/home/sjanssen/bin/gapc',
+	'gapc', '/vol/gapc/bin/gapc',
 	'make', 'make',
 	'grep', 'grep',
 	'echo', 'echo',
@@ -28,6 +28,7 @@ our %BINARIES = (
 	'tail', 'tail',
 	'perl', 'perl',
 	'readlink', 'readlink',
+	'uname', 'uname',
 );
 
 our %TDMfiles = (
