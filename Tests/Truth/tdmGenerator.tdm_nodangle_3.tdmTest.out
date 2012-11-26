@@ -1,0 +1,40 @@
+Answer: 
+grammar gra_nodangle uses sig_foldrna(axiom = struct) {
+  struct = struct__LLJLLLLJJLJJJJ # h;
+  weak__LJ = stack__LJ | hairpin__LJ # h;
+  stack__LJ = sr(BASE, weak__LJ, BASE) with basepair # h;
+  struct___ = nil(LOC) | sadd(BASE, struct___) # h;
+  dangle__LJ = drem(LOC, strong__LJ,LOC) # h;
+  strong__LJ = sr(BASE, weak__LJ, BASE) with basepair # h;
+  weak__LLJJ = iloop__LLJJ | leftB__LLJJ | stack__LLJJ | rightB__LLJJ # h;
+  hairpin__LJ = hl(BASE, REGION with minsize(3), BASE) with basepair # h;
+  iloop__LLJJ = il(BASE, REGION with maxsize(30), strong__LJ, REGION with maxsize(30), BASE) with basepair # h;
+  leftB__LLJJ = bl(BASE, REGION with maxsize(30), strong__LJ, BASE) with basepair # h;
+  stack__LLJJ = sr(BASE, weak__LLJJ, BASE) with basepair # h;
+  dangle__LLJJ = drem(LOC, strong__LLJJ,LOC) # h;
+  ml_comps__LJ = incl(dangle__LJ) | sadd(BASE, ml_comps__LJ) | addss(incl(dangle__LJ), REGION) # h;
+  rightB__LLJJ = br(BASE, strong__LJ, REGION with maxsize(30), BASE) with basepair # h;
+  strong__LLJJ = sr(BASE, weak__LLJJ, BASE) with basepair # h;
+  weak__LLLJJLJJ = stack__LLLJJLJJ | multiloop__LLLJJLJJ # h;
+  stack__LLLJJLJJ = sr(BASE, weak__LLLJJLJJ, BASE) with basepair # h;
+  ml_comps__LLJJLJ = sadd(BASE, ml_comps__LLJJLJ) | cadd(incl(dangle__LLJJ), ml_comps__LJ) # h;
+  strong__LLLJJLJJ = sr(BASE, weak__LLLJJLJJ, BASE) with basepair # h;
+  weak__LLLLJJLJJJ = iloop__LLLLJJLJJJ | leftB__LLLLJJLJJJ | stack__LLLLJJLJJJ | rightB__LLLLJJLJJJ # h;
+  iloop__LLLLJJLJJJ = il(BASE, REGION with maxsize(30), strong__LLLJJLJJ, REGION with maxsize(30), BASE) with basepair # h;
+  leftB__LLLLJJLJJJ = bl(BASE, REGION with maxsize(30), strong__LLLJJLJJ, BASE) with basepair # h;
+  stack__LLLLJJLJJJ = sr(BASE, weak__LLLLJJLJJJ, BASE) with basepair # h;
+  dangle__LLLLJJLJJJ = drem(LOC, strong__LLLLJJLJJJ,LOC) # h;
+  rightB__LLLLJJLJJJ = br(BASE, strong__LLLJJLJJ, REGION with maxsize(30), BASE) with basepair # h;
+  strong__LLLLJJLJJJ = sr(BASE, weak__LLLLJJLJJJ, BASE) with basepair # h;
+  multiloop__LLLJJLJJ = ml(BASE, ml_comps__LLJJLJ, BASE) with basepair # h;
+  ml_comps__LLLLJJLJJJ = incl(dangle__LLLLJJLJJJ) | sadd(BASE, ml_comps__LLLLJJLJJJ) | addss(incl(dangle__LLLLJJLJJJ), REGION) # h;
+  weak__LLJLLLLJJLJJJJ = stack__LLJLLLLJJLJJJJ | multiloop__LLJLLLLJJLJJJJ # h;
+  stack__LLJLLLLJJLJJJJ = sr(BASE, weak__LLJLLLLJJLJJJJ, BASE) with basepair # h;
+  dangle__LLJLLLLJJLJJJJ = drem(LOC, strong__LLJLLLLJJLJJJJ,LOC) # h;
+  ml_comps__LJLLLLJJLJJJ = sadd(BASE, ml_comps__LJLLLLJJLJJJ) | cadd(incl(dangle__LJ), ml_comps__LLLLJJLJJJ) # h;
+  strong__LLJLLLLJJLJJJJ = sr(BASE, weak__LLJLLLLJJLJJJJ, BASE) with basepair # h;
+  struct__LLJLLLLJJLJJJJ = sadd(BASE, struct__LLJLLLLJJLJJJJ) | cadd(dangle__LLJLLLLJJLJJJJ, struct___) # h;
+  multiloop__LLJLLLLJJLJJJJ = ml(BASE, ml_comps__LJLLLLJJLJJJ, BASE) with basepair # h;
+}
+
+

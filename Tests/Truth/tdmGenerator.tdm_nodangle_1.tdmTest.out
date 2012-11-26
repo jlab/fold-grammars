@@ -1,0 +1,34 @@
+Answer: 
+grammar gra_nodangle uses sig_foldrna(axiom = struct) {
+  struct = struct___L_L_L_L_LJJ_JJL_LJJ_J # h;
+  weak__LJ = stack__LJ | hairpin__LJ # h;
+  stack__LJ = sr(BASE, weak__LJ, BASE) with basepair # h;
+  strong__LJ = sr(BASE, weak__LJ, BASE) with basepair # h;
+  hairpin__LJ = hl(BASE, REGION with minsize(3), BASE) with basepair # h;
+  weak__L_LJJ = leftB__L_LJJ | stack__L_LJJ # h;
+  leftB__L_LJJ = bl(BASE, REGION with maxsize(30), strong__LJ, BASE) with basepair # h;
+  stack__L_LJJ = sr(BASE, weak__L_LJJ, BASE) with basepair # h;
+  dangle__L_LJJ = drem(LOC, strong__L_LJJ,LOC) # h;
+  strong__L_LJJ = sr(BASE, weak__L_LJJ, BASE) with basepair # h;
+  weak__L_L_LJJ_J = iloop__L_L_LJJ_J | stack__L_L_LJJ_J # h;
+  iloop__L_L_LJJ_J = il(BASE, REGION with maxsize(30), strong__L_LJJ, REGION with maxsize(30), BASE) with basepair # h;
+  ml_comps__L_LJJ_ = addss(incl(dangle__L_LJJ), REGION) # h;
+  stack__L_L_LJJ_J = sr(BASE, weak__L_L_LJJ_J, BASE) with basepair # h;
+  strong__L_L_LJJ_J = sr(BASE, weak__L_L_LJJ_J, BASE) with basepair # h;
+  weak__L_L_L_LJJ_JJ = leftB__L_L_L_LJJ_JJ | stack__L_L_L_LJJ_JJ # h;
+  leftB__L_L_L_LJJ_JJ = bl(BASE, REGION with maxsize(30), strong__L_L_LJJ_J, BASE) with basepair # h;
+  stack__L_L_L_LJJ_JJ = sr(BASE, weak__L_L_L_LJJ_JJ, BASE) with basepair # h;
+  dangle__L_L_L_LJJ_JJ = drem(LOC, strong__L_L_L_LJJ_JJ,LOC) # h;
+  strong__L_L_L_LJJ_JJ = sr(BASE, weak__L_L_L_LJJ_JJ, BASE) with basepair # h;
+  weak__L_L_L_L_LJJ_JJL_LJJ_J = stack__L_L_L_L_LJJ_JJL_LJJ_J | multiloop__L_L_L_L_LJJ_JJL_LJJ_J # h;
+  ml_comps__L_L_L_LJJ_JJL_LJJ_ = cadd(incl(dangle__L_L_L_LJJ_JJ), ml_comps__L_LJJ_) # h;
+  stack__L_L_L_L_LJJ_JJL_LJJ_J = sr(BASE, weak__L_L_L_L_LJJ_JJL_LJJ_J, BASE) with basepair # h;
+  dangle__L_L_L_L_LJJ_JJL_LJJ_J = drem(LOC, strong__L_L_L_L_LJJ_JJL_LJJ_J,LOC) # h;
+  ml_comps___L_L_L_LJJ_JJL_LJJ_ = sadd(BASE, ml_comps__L_L_L_LJJ_JJL_LJJ_) | sadd(BASE, ml_comps___L_L_L_LJJ_JJL_LJJ_) # h;
+  strong__L_L_L_L_LJJ_JJL_LJJ_J = sr(BASE, weak__L_L_L_L_LJJ_JJL_LJJ_J, BASE) with basepair # h;
+  struct__L_L_L_L_LJJ_JJL_LJJ_J = dangle__L_L_L_L_LJJ_JJL_LJJ_J # h;
+  struct___L_L_L_L_LJJ_JJL_LJJ_J = sadd(BASE, struct__L_L_L_L_LJJ_JJL_LJJ_J) | sadd(BASE, struct___L_L_L_L_LJJ_JJL_LJJ_J) # h;
+  multiloop__L_L_L_L_LJJ_JJL_LJJ_J = ml(BASE, ml_comps___L_L_L_LJJ_JJL_LJJ_, BASE) with basepair # h;
+}
+
+

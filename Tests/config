@@ -86,3 +86,29 @@ GAPC="$BASE/bin/gapc -t -I../../"
 LDLIBS_EXTRA="-lrna"
 RUN_CPP_FLAGS=""
 check_new_old_eq macrostate.gap unused testdbshape1 GACGACAUCGUAUGGUACGUUGAGUCGAGCGAUCG shape1
+
+#checks for TDM generation
+GAPC="$BASE/bin/gapc -t -I../../"
+LDLIBS_EXTRA=""
+RUN_CPP_FLAGS=""
+check_new_old_eq tdmGenerator.gap unused tdm_nodangle_5 [][[][[][]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_nodangle_4 [[[[[][[]]]]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_nodangle_3 [[][[[[]][]]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_nodangle_2 [_[]_][_[_[_[]]]_] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_nodangle_1 _[_[_[_[_[]]_]][_[]]_] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_overdangle_5 [][[][[][]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_overdangle_4 [[[[[][[]]]]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_overdangle_3 [[][[[[]][]]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_overdangle_2 [_[]_][_[_[_[]]]_] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_overdangle_1 _[_[_[_[_[]]_]][_[]]_] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_microstate_5 [][[][[][]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_microstate_4 [[[[[][[]]]]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_microstate_3 [[][[[[]][]]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_microstate_2 [_[]_][_[_[_[]]]_] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_microstate_1 _[_[_[_[_[]]_]][_[]]_] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_macrostate_5 [][[][[][]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_macrostate_4 [[[[[][[]]]]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_macrostate_3 [[][[[[]][]]]] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_macrostate_2 [_[]_][_[_[_[]]]_] tdmTest
+check_new_old_eq tdmGenerator.gap unused tdm_macrostate_1 _[_[_[_[_[]]_]][_[]]_] tdmTest
+
