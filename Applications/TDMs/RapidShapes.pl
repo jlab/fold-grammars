@@ -1,12 +1,24 @@
 #!/usr/bin/env perl
 
+#~ ToDos: 
+#~ - dieses Skript erweitert, damit es
+	#~ - einen Clusterlauf vorbereitet
+	#~ - im Array Job funktioniert
+
+
+
 use lib "../";
 
 use strict;
 use warnings;
 use Data::Dumper;
 use PerlSettings;
+use PerlUtils;
 use Getopt::Long;
+
+my $CONST_GM_SAMPLE = "sample";
+my $CONST_GM_KBEST = "kbest";
+my $CONST_GM_LIST = "list";
 
 sub usage() {
 	print STDERR <<EOF;
@@ -33,19 +45,44 @@ where options are:
 					ignored, thus only ordering and nesting of hairpins and 
 					multiloops are shown. Default is level 5.
 					
-  --sampleSetSize : in a prephase, shape classes are guessed to be checked 
-                    later on. This guessing is based on stochstical backtracing.
-					The sample set size defines how many structures should be 
-					drawn to estimate frequencies of shape class probabilities. 
+  --guessMode     : The first step of RapidShapes is to somehow guess promising
+                    shape classes, whoes probability is exactly computed via
+					thermodynamic matchers later on.
+					RapidShapes provides three different ways of "guessing"
+					these shape classes:
+					A) "sample"
+					   estimate shape frequencies via sampling a specific 
+					   number of secondary structure from the folding-space, 
+					   via stochastical backtracing.
+					   (default in RapidShapes)
+					B) "kbest"
+					   a simple shape class analysis is performed and the 
+					   kbest energetically ordered shape classes are selected.
+					C) "list"
+					   If you have an alternative method of guessing shapes,
+ 					   you can also provide a list of these shape classes.
+					   Take care, that your input sequence can fold into these
+					   shapes at all!
+					Set the guess mode as one of the strings "sample" (which is
+					default), "kbest" or "list".
+					
+  --sampleSetSize : Only for '--guessMode=sample'. Shape class guessing is based
+                    on stochstical backtracing. The sample set size defines how 
+					many structures should be drawn to estimate frequencies of 
+					shape class probabilities. 
 					A number of 1000 (which is the default) should be 
 					sufficient, but could be increased to gain better estimates.
 					
-  --kbest         : alternative to the above sampling of shapes. In this mode, 
-                    RapidShapes first performs a simple shape analysis for the 
-					best 'kbest' shapes. Choice of an appropriate value for 
-					--kbest is not easy, since it depends on sequence length
-					and base composition.
-					(Cannot be set together with --sampleSetSize.)
+  --kbest         : Only for '--guessMode=kbest'. In "kbest" mode, RapidShapes 
+                    first performs a simple shape analysis for the best 'kbest' 
+					shapes. Choice of an appropriate value for --kbest is not 
+					easy, since it depends on sequence length and base 
+					composition.
+					
+  --list          : Only for '--guessMode=list'. You might want to manually
+                    provide a list of shape classes that should be checked via
+					TDMs. Individual shapes are separated by whitespaces, 
+					commas or semicolons.
 					
   --alpha         : RapidShapes computes individual shape class probabilities 
                     until either alpha percent of the folding space is explored 
@@ -64,6 +101,11 @@ where options are:
   
   --name          : set a name for the input sequence, i.e. the header for a  
                     fasta like output.
+					
+  --cluster       : You might want to compute probabilities for a multipe fasta
+                    file. If you have a Oracle Grid Engin at your fingertips,
+					you can prepare an array job for fasta file by providing it
+					here to the parameter --cluster.
 
 EOF
 	exit(0);
@@ -72,38 +114,38 @@ EOF
 my $settings = {
 	grammar => 'macrostate',
 	shapeLevel => 5,
-	sampleSetSize => 1000,
 	alpha => 0.9,
 	temperature => undef,
 	energyParamfile => undef,
 	header => "unknown sequence",
+	guessMode => $CONST_GM_SAMPLE,
+	sampleSetSize => 1000,
 	kbest => undef,
+	list => "",
+	clusterFasta => undef,
 };
 
 my $helpIsHelp = 0;
-my $helpSampleSetSize = 0;
-my $helpKbest = 0;
 
 &GetOptions( 	
 	"grammar=s"		=> \$settings->{grammar},
 	"shapeLevel=i"	=> \$settings->{shapeLevel},
-	"sampleSetSize=i"	=> \$helpSampleSetSize,
 	"alpha=f"			=> \$settings->{alpha},
 	"temperature=f" => \$settings->{temperature},
 	"paramfile=s" =>\$settings->{energyParamfile},
 	"name=s" => \$settings->{header},
-	"kbest=i" => \$helpKbest,
+	"guessMode=s" => \$settings->{guessMode},
+	"sampleSetSize=i"	=> \$settings->{sampleSetSize},
+	"kbest=i" => \$settings->{kbest},
+	"list=s" => \$settings->{list},
+	"cluster=s" => \$settings->{clusterFasta},
 );
-usage() if (($helpIsHelp == 1) || (@ARGV != 1));
+usage() if (($helpIsHelp == 1) || ((@ARGV != 1) && (not defined $settings->{clusterFasta})));
 die "grammar '$settings->{grammar}' is not available. Available grammars are: '".join("','", keys(%PerlSettings::TDMfiles))."'.\n" if (not exists $PerlSettings::TDMfiles{$settings->{grammar}});
 die "shape level ".$settings->{shapeLevel}." is not available. Please select between 1 to 5!\n" if ($settings->{shapeLevel} !~ m/1|2|3|4|5/);
 die "energy parameter files '".$settings->{energyParamfile}."' is not available.\n" if ((defined $settings->{energyParamfile}) && (not -e $settings->{energyParamfile}));
-if (($helpSampleSetSize != 0) && ($helpKbest != 0)) {
-	die "--sampleSetSize and --kbest cannot be set at the same time!\n";
-} else {
-	$settings->{sampleSetSize} = $helpSampleSetSize if ($helpSampleSetSize != 0);
-	$settings->{kbest} = $helpKbest if ($helpKbest != 0);
-}
+die "unknown guessMode '".$settings->{guessMode}."', available modes are '".join("','", ($CONST_GM_SAMPLE, $CONST_GM_KBEST, $CONST_GM_LIST))."'.\n" if (($settings->{guessMode} ne $CONST_GM_SAMPLE) && ($settings->{guessMode} ne $CONST_GM_KBEST) && ($settings->{guessMode} ne $CONST_GM_LIST));
+die "cannot read provided fasta file '".$settings->{clusterFasta}."' for cluster job preparation.\n" if ((defined $settings->{clusterFasta}) && (not -e $settings->{clusterFasta}));
 if (defined $settings->{temperature}) {
 	$settings->{temperature} = "-T ".$settings->{temperature};
 } else {
@@ -121,57 +163,109 @@ my ($inputSequence) = @ARGV;
 
 my $workingDirectory = qx(pwd); chomp $workingDirectory;
 
-#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
-	my @shapes = ();
-	if (defined $settings->{kbest}) {
-		@shapes = @{guessShapesKbest($inputSequence, $settings, $workingDirectory)};
-	} else {
-		@shapes = @{guessShapesSampling($inputSequence, $settings, $workingDirectory)};
-	}
-
-#2) determining partition function value for complete search space	
-	my $pfAll = getPFall($inputSequence, $settings, $workingDirectory);
+if (defined $settings->{clusterFasta}) {
+	my ($fastaDir, $fastaFile) = @{separateDirAndFile($settings->{clusterFasta})};
 	
-#3) compile TDM generator if not available
-	print STDERR "step 3: compute exact probabilities for guessed shapes:\n";
-	my $bin_tdmGenerator = $PerlSettings::TDMgenerator.'.tdm_'.$settings->{grammar}.'_'.$settings->{shapeLevel};
-	if (not -e $bin_tdmGenerator) {
-		print STDERR "compiling TDM generator for '".$settings->{grammar}."', shape level ".$settings->{shapeLevel}." ... ";
-		compileGAP($PerlSettings::rootDir.$PerlSettings::TDMgenerator, 'tdm_'.$settings->{grammar}.'_'.$settings->{shapeLevel}, "-t", '', $workingDirectory);
-		print STDERR "done.\n";
-	}
-	my $pfShapeSum = 0;
-	foreach my $shape (@shapes) {
-		my $ljshape = $shape->{shapestring};
-		$ljshape =~ s/\[/L/g;
-		$ljshape =~ s/\]/J/g;
-		print STDERR "\t".$shape->{shapestring}."\tcompiling ... ";
-		compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$settings->{grammar}}, "pf", "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&generateGrammar, $workingDirectory.'/'.$bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], "__".$ljshape);
-		print STDERR "done.\texecuting ... ";
-		my $tdmFile = $PerlSettings::TDMfiles{$settings->{grammar}}.".pf"."__".$ljshape;
-		my $pfShape = parsePFanswer(qx(./$tdmFile $settings->{temperature} $settings->{energyParamfile} $inputSequence));
-		$pfShapeSum += $pfShape;
-		$shape->{probability} = $pfShape/$pfAll;
-		print STDERR sprintf("%8.4f", $shape->{probability}*100)." %.\n";
-		unlink($tdmFile);
-		if ($pfShapeSum / $pfAll >= $settings->{alpha}) {
-			print STDERR "discovered more than the required ".sprintf("%.2f", $settings->{alpha}*100)." % of the folding space. Skip remaining shapes.\n";
-			foreach my $skippedShape (@shapes) {
-				$skippedShape->{probability} = 0 if (not exists $skippedShape->{probability});
+	my $errDir = $workingDirectory.'/'.$fastaFile.'.cluster/ERR';
+	my $outDir = $workingDirectory.'/'.$fastaFile.'.cluster/OUT';
+	my $reformattedFastafile = $workingDirectory.'/'.$fastaFile.'.cluster/'.$fastaFile;
+	my $arrayJob =  $workingDirectory.'/'.$fastaFile.'.cluster/array.sh';
+	
+	qx(mkdir -p $errDir) if (not -d $errDir);
+	qx(mkdir -p $outDir) if (not -d $outDir);
+	open (FASTA, "> ".$reformattedFastafile) || die "cannot write to '$reformattedFastafile': $1";
+		my @count = @{PerlUtils::applyFunctionToFastaFile($settings->{clusterFasta}, \&reformatFasta, \*FASTA)};
+	close (FASTA);
+	
+	open (ARRAY, "> ".$arrayJob) || die "cannot write to '$arrayJob': $1";		
+		print ARRAY '#!'.$PerlSettings::BINARIES{sh}."\n";
+		print ARRAY ''."\n";
+		print ARRAY '#$ -S '.$PerlSettings::BINARIES{sh}."\n";
+		print ARRAY '#$ -t 1-'.@count."\n";
+		print ARRAY '#$ -N RapidShapes_'.$fastaFile."\n";
+		print ARRAY '#$ -e '.$errDir."\n";
+		print ARRAY '#$ -o '.$outDir."\n";
+		print ARRAY ''."\n";
+		print ARRAY 'sequenceFile='.$reformattedFastafile."\n";
+		print ARRAY 'headerpos=`'.$PerlSettings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+1" | '.$PerlSettings::BINARIES{bc}.'`; '."\n";
+		print ARRAY 'sequencepos=`'.$PerlSettings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+2" | '.$PerlSettings::BINARIES{bc}.'`; '."\n";
+		print ARRAY 'header=`'.$PerlSettings::BINARIES{head}.' -n $headerpos $sequenceFile | '.$PerlSettings::BINARIES{tail}.' -1`; '."\n";
+		print ARRAY 'sequence=`'.$PerlSettings::BINARIES{head}.' -n $sequencepos $sequenceFile | '.$PerlSettings::BINARIES{tail}.' -1`;'."\n";
+		my $command = "";
+		$command .= " --grammar=".$settings->{grammar} if (defined $settings->{grammar});
+		$command .= " --shapeLevel=".$settings->{shapeLevel} if (defined $settings->{shapeLevel});
+		$command .= " --alpha=".$settings->{alpha} if (defined $settings->{alpha});
+		$command .= " --temperature=".$settings->{temperature} if ((defined $settings->{temperature}) && ($settings->{temperature} ne ""));
+		$command .= " --paramfile=".$settings->{energyParamfile} if ((defined $settings->{energyParamfile}) && ($settings->{energyParamfile} ne ""));
+		$command .= " --guessMode=".$settings->{guessMode} if (defined $settings->{guessMode});
+		$command .= " --sampleSetSize=".$settings->{sampleSetSize} if ((defined $settings->{sampleSetSize}) && ($settings->{guessMode} eq $CONST_GM_SAMPLE));
+		$command .= " --kbest=".$settings->{kbest} if ((defined $settings->{kbest}) && ($settings->{guessMode} eq $CONST_GM_KBEST));
+		$command .= " --list=".$settings->{list} if ((defined $settings->{list}) && ($settings->{guessMode} eq $CONST_GM_LIST));
+		$command .= ' --name="$header"';
+		$command .= '  "$sequence"';
+		print ARRAY $PerlSettings::BINARIES{perl}." ".PerlUtils::absFilename($0)." ".$command."\n";
+	close (ARRAY);
+	
+	print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G -l linh=1 $arrayJob\n";
+} else {
+	#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
+		my @shapes = ();
+		if ($settings->{guessMode} eq $CONST_GM_KBEST) {
+			@shapes = @{guessShapesKbest($inputSequence, $settings, $workingDirectory)};
+		} elsif ($settings->{guessMode} eq $CONST_GM_LIST) {
+			foreach my $s (split(m/\s+|,|;/, $settings->{list})) {		
+				push @shapes, {shapestring => $s};
 			}
-			last;
+			die "please specify at least one shape class via parameter --list.\n" if (@shapes <= 0);
+			print STDERR "step 1: using a provided list of ".@shapes." shapes.\n";		
+		} else {
+			@shapes = @{guessShapesSampling($inputSequence, $settings, $workingDirectory)};
 		}
-	}
-	print STDERR "\n";
-	
-#Output Results the same way RNAshapes does
-	print ">".$settings->{header}."\n";
-	print $inputSequence."\n";
-	foreach my $shape (sort {$b->{probability} <=> $a->{probability}} @shapes) {
-		print sprintf("%.7f", $shape->{probability})."  ".$shape->{shapestring}."\n" if ($shape->{probability} != 0);
-	}
-	#plus overall stop probability
-	print "\n".sprintf("%.7f", $pfShapeSum / $pfAll)."  sum\n";
+
+	#2) determining partition function value for complete search space	
+		my $pfAll = getPFall($inputSequence, $settings, $workingDirectory);
+		
+	#3) compile TDM generator if not available
+		print STDERR "step 3: compute exact probabilities for guessed shapes:\n";
+		my $bin_tdmGenerator = $PerlSettings::TDMgenerator.'.tdm_'.$settings->{grammar}.'_'.$settings->{shapeLevel};
+		if (not -e $bin_tdmGenerator) {
+			print STDERR "compiling TDM generator for '".$settings->{grammar}."', shape level ".$settings->{shapeLevel}." ... ";
+			compileGAP($PerlSettings::rootDir.$PerlSettings::TDMgenerator, 'tdm_'.$settings->{grammar}.'_'.$settings->{shapeLevel}, "-t", '', $workingDirectory);
+			print STDERR "done.\n";
+		}
+		my $pfShapeSum = 0;
+		foreach my $shape (@shapes) {
+			my $ljshape = $shape->{shapestring};
+			$ljshape =~ s/\[/L/g;
+			$ljshape =~ s/\]/J/g;
+			print STDERR "\t".$shape->{shapestring}."\tcompiling ... ";
+			compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$settings->{grammar}}, "pf", "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&generateGrammar, $workingDirectory.'/'.$bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], "__".$ljshape);
+			print STDERR "done.\texecuting ... ";
+			my $tdmFile = $PerlSettings::TDMfiles{$settings->{grammar}}.".pf"."__".$ljshape;
+			my $pfShape = parsePFanswer(qx(./$tdmFile $settings->{temperature} $settings->{energyParamfile} $inputSequence));
+			$pfShapeSum += $pfShape;
+			$shape->{probability} = $pfShape/$pfAll;
+			print STDERR sprintf("%8.4f", $shape->{probability}*100)." %.\n";
+			unlink($tdmFile);
+			if ($pfShapeSum / $pfAll >= $settings->{alpha}) {
+				print STDERR "discovered more than the required ".sprintf("%.2f", $settings->{alpha}*100)." % of the folding space. Skip remaining shapes.\n";
+				foreach my $skippedShape (@shapes) {
+					$skippedShape->{probability} = 0 if (not exists $skippedShape->{probability});
+				}
+				last;
+			}
+		}
+		print STDERR "\n";
+		
+	#Output Results the same way RNAshapes does
+		print ">".$settings->{header}."\n";
+		print $inputSequence."\n";
+		foreach my $shape (sort {$b->{probability} <=> $a->{probability}} @shapes) {
+			print sprintf("%.7f", $shape->{probability})."  ".$shape->{shapestring}."\n" if ($shape->{probability} != 0);
+		}
+		#plus overall stop probability
+		print "\n".sprintf("%.7f", $pfShapeSum / $pfAll)."  sum\n";
+}	
 
 sub getPFall {
 	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
@@ -260,7 +354,9 @@ sub parsePFanswer {
 	
 sub generateGrammar {
 	my ($tmpDir, $generator, $shape, $target) = @_;
-	qx($generator "$shape" | $PerlSettings::BINARIES{grep} -v "Answer" > $tmpDir/$target); 
+	my $result = qx($generator "$shape" | $PerlSettings::BINARIES{grep} -v "Answer");
+	die "not a valid shape string '".$shape."'!\n" if ($result =~ m/\[\]/);
+	qx($PerlSettings::BINARIES{echo} "$result" > $tmpDir/$target);
 }
 
 sub compileGAP {
@@ -307,8 +403,7 @@ sub compileGAP {
 
 	print STDERR "==== compileGAP: 3 of 5) translating GAP programm to C++ code:" if ($VERBOSE);
 	my $gapcResult = qx($PerlSettings::BINARIES{gapc} -i $instance $gapcFlags $gapFile 2>&1);
-#~ print Dumper $gapcResult; 
-#~ die;
+	
 	die "compileGAP: '$gapMainFile' does not contain instance '$instance'!\n" if ($gapcResult =~ m/Could not find instance/);
 	print STDERR " done.\n" if ($VERBOSE == 1);
 	print STDERR "\n$gapcResult\n" if ($VERBOSE>1);
@@ -359,4 +454,8 @@ sub separateDirAndFile { #input is a path to a specific file, output is a refere
 	}
 }
 
-
+sub reformatFasta {
+	my ($refHash_sequence, $refFileHandle) = @_;
+	print $refFileHandle ">".$refHash_sequence->{header}."\n".$refHash_sequence->{sequence}."\n\n";
+	return undef;
+}

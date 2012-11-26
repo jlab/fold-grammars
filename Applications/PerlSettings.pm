@@ -20,6 +20,14 @@ our %BINARIES = (
 	'gapc', '/home/sjanssen/bin/gapc',
 	'make', 'make',
 	'grep', 'grep',
+	'echo', 'echo',
+	'gunzip', 'gunzip',
+	'sh', '/bin/sh',
+	'bc', 'bc',
+	'head', 'head',
+	'tail', 'tail',
+	'perl', 'perl',
+	'readlink', 'readlink',
 );
 
 our %TDMfiles = (
@@ -29,3 +37,5 @@ our %TDMfiles = (
 	'nodangle', 'nodangle.gap',
 );
 our $TDMgenerator = 'tdmGenerator.gap';
+
+1;
