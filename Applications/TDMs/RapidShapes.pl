@@ -1,12 +1,4 @@
 #!/usr/bin/env perl
-
-#~ ToDos: 
-#~ - dieses Skript erweitert, damit es
-	#~ - einen Clusterlauf vorbereitet
-	#~ - im Array Job funktioniert
-
-
-
 use lib "../";
 
 use strict;
