@@ -198,6 +198,14 @@ if (defined $settings->{clusterFasta}) {
 		print ARRAY $PerlSettings::BINARIES{perl}." ".PerlUtils::absFilename($0)." ".$command."\n";
 	close (ARRAY);
 	
+	if ($settings->{guessMode} eq $CONST_GM_KBEST) {
+		my $bin_ssa = compileKbest($settings, $workingDirectory);
+	} else {
+		my $bin_sample = compileSample($settings, $workingDirectory);
+	}
+	my $bin_pfall = compilePFall($settings, $workingDirectory);
+	my $bin_tdmGenerator = compileGenerator($settings, $workingDirectory);
+	
 	print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G -l linh=1 $arrayJob\n";
 } else {
 	#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
@@ -219,12 +227,7 @@ if (defined $settings->{clusterFasta}) {
 		
 	#3) compile TDM generator if not available
 		print STDERR "step 3: compute exact probabilities for guessed shapes:\n";
-		my $bin_tdmGenerator = $PerlSettings::TDMgenerator.'.tdm_'.$settings->{grammar}.'_'.$settings->{shapeLevel};
-		if (not -e $bin_tdmGenerator) {
-			print STDERR "compiling TDM generator for '".$settings->{grammar}."', shape level ".$settings->{shapeLevel}." ... ";
-			compileGAP($PerlSettings::rootDir.$PerlSettings::TDMgenerator, 'tdm_'.$settings->{grammar}.'_'.$settings->{shapeLevel}, "-t", '', $workingDirectory);
-			print STDERR "done.\n";
-		}
+		my $bin_tdmGenerator = compileGenerator($settings, $workingDirectory);
 		my $pfShapeSum = 0;
 		foreach my $shape (@shapes) {
 			my $ljshape = $shape->{shapestring};
@@ -259,17 +262,54 @@ if (defined $settings->{clusterFasta}) {
 		print "\n".sprintf("%.7f", $pfShapeSum / $pfAll)."  sum\n";
 }	
 
-sub getPFall {
-	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
-	
-	print STDERR "step 2: computing partition function value for complete folding space ... ";
+sub compileSample {
+	my ($refHash_settings, $workingDirectory) = @_;
+	my $bin_sample = $PerlSettings::TDMfiles{$refHash_settings->{grammar}}.'.pfsampleshape'.$refHash_settings->{shapeLevel}.'all';
+	if (not -e $bin_sample) {
+		print STDERR "compiling programm to estimate shape class frequencies for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapeLevel}." ... ";
+		compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, 'pfsampleshape'.$refHash_settings->{shapeLevel}.'all', "-t --sample", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory);
+		print STDERR "done.\n";
+	}
+	return PerlUtils::absFilename($bin_sample);
+}
+sub compileKbest {
+	my ($refHash_settings, $workingDirectory) = @_;
+	my $bin_ssa = $PerlSettings::TDMfiles{$refHash_settings->{grammar}}.'.shape'.$refHash_settings->{shapeLevel}.'mfe';
+	if (not -e $bin_ssa) {
+		print STDERR "compiling programm to perform simple shape analysis for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapeLevel}." ... ";
+		compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, 'shape'.$refHash_settings->{shapeLevel}.'mfe', "-t --kbest", '', $workingDirectory);
+		print STDERR "done.\n";
+	}
+	return PerlUtils::absFilename($bin_ssa);
+}
+sub compilePFall {
+	my ($refHash_settings, $workingDirectory) = @_;
 	my $bin_pfall = $PerlSettings::TDMfiles{$refHash_settings->{grammar}}.'.pf';
 	if (not -e $bin_pfall) {
 		print STDERR "compiling programm to compute the partition function for complete folding space of grammar '".$refHash_settings->{grammar}."' ...";
 		compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, "pf", "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory);
 		print STDERR " done.\n";
 	}
-	my $pfAll = parsePFanswer(qx(./$bin_pfall $refHash_settings->{temperature} $refHash_settings->{energyParamfile} $inputSequence));
+	return PerlUtils::absFilename($bin_pfall);
+}
+sub compileGenerator {
+	my ($refHash_settings, $workingDirectory) = @_;
+	my $bin_tdmGenerator = $PerlSettings::TDMgenerator.'.tdm_'.$settings->{grammar}.'_'.$settings->{shapeLevel};
+	if (not -e $bin_tdmGenerator) {
+		print STDERR "compiling TDM generator for '".$settings->{grammar}."', shape level ".$settings->{shapeLevel}." ... ";
+		compileGAP($PerlSettings::rootDir.$PerlSettings::TDMgenerator, 'tdm_'.$settings->{grammar}.'_'.$settings->{shapeLevel}, "-t", '', $workingDirectory);
+		print STDERR "done.\n";
+	}
+	return PerlUtils::absFilename($bin_tdmGenerator);
+}
+
+
+sub getPFall {
+	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
+	
+	print STDERR "step 2: computing partition function value for complete folding space ... ";
+	my $bin_pfall = compilePFall($refHash_settings, $workingDirectory);
+	my $pfAll = parsePFanswer(qx($bin_pfall $refHash_settings->{temperature} $refHash_settings->{energyParamfile} $inputSequence));
 	print STDERR $pfAll.".\n";
 	
 	return $pfAll;
@@ -279,14 +319,9 @@ sub guessShapesSampling {
 	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
 	
 	print STDERR "step 1: guess shapes, via sampling, to be further analyzed via TDMs ... ";
-	my $bin_sample = $PerlSettings::TDMfiles{$refHash_settings->{grammar}}.'.pfsampleshape'.$refHash_settings->{shapeLevel}.'all';
-	if (not -e $bin_sample) {
-		print STDERR "compiling programm to estimate shape class frequencies for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapeLevel}." ... ";
-		compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, 'pfsampleshape'.$refHash_settings->{shapeLevel}.'all', "-t --sample", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory);
-		print STDERR "done.\n";
-	}
+	my $bin_sample = compileSample($refHash_settings, $workingDirectory);
 	my %sampledShapes = ();
-	foreach my $line (split(m/\r?\n/, qx(./$bin_sample $refHash_settings->{temperature} $refHash_settings->{energyParamfile} -r $refHash_settings->{sampleSetSize} $inputSequence))) {
+	foreach my $line (split(m/\r?\n/, qx($bin_sample $refHash_settings->{temperature} $refHash_settings->{energyParamfile} -r $refHash_settings->{sampleSetSize} $inputSequence))) {
 		if ($line =~ m/\d+\s+,\s+(\S+)\s+\)/) {
 			$sampledShapes{$1}++;
 		}
@@ -304,15 +339,10 @@ sub guessShapesKbest {
 	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
 	
 	print STDERR "step 1: guess shapes, via simple shape analysis, to be further analyzed via TDMs ... ";
-	my $bin_ssa = $PerlSettings::TDMfiles{$refHash_settings->{grammar}}.'.shape'.$refHash_settings->{shapeLevel}.'mfe';
-	if (not -e $bin_ssa) {
-		print STDERR "compiling programm to perform simple shape analysis for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapeLevel}." ... ";
-		compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, 'shape'.$refHash_settings->{shapeLevel}.'mfe', "-t --kbest", '', $workingDirectory);
-		print STDERR "done.\n";
-	}
+	my $bin_ssa = compileKbest($refHash_settings, $workingDirectory);
 	my %kbestShapes = ();
 
-	foreach my $line (split(m/\r?\n/, qx(./$bin_ssa $refHash_settings->{temperature} $refHash_settings->{energyParamfile} -r $refHash_settings->{sampleSetSize} -k $refHash_settings->{kbest} $inputSequence))) {
+	foreach my $line (split(m/\r?\n/, qx($bin_ssa $refHash_settings->{temperature} $refHash_settings->{energyParamfile} -r $refHash_settings->{sampleSetSize} -k $refHash_settings->{kbest} $inputSequence))) {
 		if ($line =~ m/\(\s+(\S+)\s,\s\((.+?), <\d+, \d+>, <\d+, \d+>\s*\)\s+\)/) {      #( [[[]]][] , (-250, <0, 25>, <0, 0>) ), just for macrostate
 			$kbestShapes{$1} = $2;
 		} elsif ($line =~ m/\(\s+(\S+)\s+,\s+(.+?)\s+\)/) { #( [_[_[[]_]_]] , 70 )
