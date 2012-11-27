@@ -243,14 +243,10 @@ if (defined $settings->{clusterFasta}) {
 			} elsif ($settings->{grammar} eq 'overdangle') {
 				$alg_pfunc = "alg_pfunc_overdangle";
 			}
-			compileGAP("PROD", $PerlSettings::rootDir.$PerlSettings::TDMfiles{$settings->{grammar}}, $alg_pfunc, "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&generateGrammar, $bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], "pf".$settings->{shapeLevel}."__".$ljshape);
-			print STDERR "done.\texecuting ... "; 
-			my $tdmFile = $PerlSettings::TDMfiles{$settings->{grammar}}.".pf".$settings->{shapeLevel}."__".$ljshape;
-			my $pfShape = parsePFanswer(qx(./$tdmFile $settings->{temperature} $settings->{energyParamfile} $inputSequence));
+			my $pfShape = compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&generateGrammar, $bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $inputSequence], "pf".$settings->{shapeLevel}."__".$ljshape);
 			$pfShapeSum += $pfShape;
 			$shape->{probability} = $pfShape/$pfAll;
 			print STDERR sprintf("%8.4f", $shape->{probability}*100)." %.\n";
-			unlink($tdmFile);
 			if ($pfShapeSum / $pfAll >= $settings->{alpha}) {
 				print STDERR "discovered more than the required ".sprintf("%.2f", $settings->{alpha}*100)." % of the folding space. Skip remaining shapes.\n";
 				foreach my $skippedShape (@shapes) {
@@ -284,7 +280,7 @@ sub compileSample {
 		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
 			$alg_pfunc = "alg_pfunc_overdangle";
 		}
-		compileGAP("PROD", $PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, "(((".$alg_pfunc." | ".$alg_pfunc."_id) * alg_shape".$refHash_settings->{shapeLevel}.") suchthat ".$filter.")", "-t --sample", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, "pfsampleshape".$refHash_settings->{shapeLevel}."all");
+		$bin_sample = compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, '-p "((('.$alg_pfunc.' | '.$alg_pfunc.'_id) * alg_shape'.$refHash_settings->{shapeLevel}.') suchthat '.$filter.')"', "-t --sample", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, "pfsampleshape".$refHash_settings->{shapeLevel}."all");
 		print STDERR "done.\n";
 	}
 	return PerlUtils::absFilename($bin_sample);
@@ -300,7 +296,7 @@ sub compileKbest {
 		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
 			$alg_mfe = "alg_mfe_overdangle";
 		}
-		compileGAP("PROD", $PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, '(alg_shape'.$refHash_settings->{shapeLevel}.' * '.$alg_mfe.")", "-t --kbest", '', $workingDirectory, undef, "shape".$refHash_settings->{shapeLevel}."mfe");
+		$bin_ssa = compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, '-p "(alg_shape'.$refHash_settings->{shapeLevel}.' * '.$alg_mfe.')"', "-t --kbest", '', $workingDirectory, undef, undef, "shape".$refHash_settings->{shapeLevel}."mfe");
 		print STDERR "done.\n";
 	}
 	return PerlUtils::absFilename($bin_ssa);
@@ -316,7 +312,7 @@ sub compilePFall {
 		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
 			$alg_pfunc = "alg_pfunc_overdangle";
 		}
-		compileGAP("PROD", $PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, $alg_pfunc, "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, "pf");
+		$bin_pfall = compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, "pf");
 		print STDERR " done.\n";
 	}
 	return PerlUtils::absFilename($bin_pfall);
@@ -326,7 +322,7 @@ sub compileGenerator {
 	my $bin_tdmGenerator = $PerlSettings::TDMgenerator.'.tdm_'.$settings->{grammar}.'_'.$settings->{shapeLevel};
 	if (not -e $bin_tdmGenerator) {
 		print STDERR "compiling TDM generator for '".$settings->{grammar}."', shape level ".$settings->{shapeLevel}." ... ";
-		compileGAP("INST", $PerlSettings::rootDir.$PerlSettings::TDMgenerator, 'tdm_'.$settings->{grammar}.'_'.$settings->{shapeLevel}, "-t", '', $workingDirectory, undef, "tdm_".$settings->{grammar}."_".$settings->{shapeLevel});
+		$bin_tdmGenerator = compileGAP($PerlSettings::rootDir.$PerlSettings::TDMgenerator, '-i tdm_'.$settings->{grammar}.'_'.$settings->{shapeLevel}, "-t", '', $workingDirectory, undef, undef, "tdm_".$settings->{grammar}."_".$settings->{shapeLevel});
 		print STDERR "done.\n";
 	}
 	return PerlUtils::absFilename($bin_tdmGenerator);
@@ -410,18 +406,22 @@ sub generateGrammar {
 	qx($PerlSettings::BINARIES{echo} "$result" > $tmpDir/$target);
 }
 
+sub runTDM {
+	my ($tmpDir, $refHash_settings, $inputSequence) = @_;
+	print STDERR "done.\texecuting ... "; 
+	my $pfShape = parsePFanswer(qx($tmpDir/out $refHash_settings->{temperature} $refHash_settings->{energyParamfile} $inputSequence));
+	return $pfShape;
+}
+
 sub compileGAP {
-	my $CONST_PROD = "PROD";
-	my $CONST_INST = "INST";
-	
 	my (
-		$type, #PROD = thrid argument is a product, INST = third argument is an instance
 		$gapMainFile, #file of that gapc program that should be compiled
-		$prodInst, #the product of algebras (and maybe filters) that should be compiled
+		$prodInst, #the product of algebras (and maybe filters) that should be compiled or the name of an instance. Must have a -p or -i !
 		$gapcFlags, #additional flags for the GAPc compiler, e.g. -t or --sample
 		$makeFlags, #additional flags for the make command, e.g. CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast" to use the fastmath versions of the RNA libraries
 		$targetDirectory, #directory to which the compiled binary should be moved after compilation
 		$rewriteSub, #a ref to a list. if not undef: a function call which should be exectuted after copies files into tmpdir, but before translation via gapc. Necessary for TDM generation. First element is the function reference, following elements are parameters for the function. Before call, the tmpdir name is added as first argument for the function to be called.
+		$executionSub, #same as rewriteSub, but this function is called after compilation. Instead of the name of the new binary the result of this run is returned and the binary is never copied to the target directory.
 		$binSuffix, #a suffix that is appended to the binary name
 	) = @_;
 
@@ -457,14 +457,7 @@ sub compileGAP {
 	chdir ($tmpDir) || die "cannot change into temporary directory '$tmpDir': $!;";
 
 	print STDERR "==== compileGAP: 3 of 5) translating GAP programm to C++ code:" if ($VERBOSE);
-	my $gapcResult = undef;
-	if ($type eq 'PROD') {
-		$gapcResult = qx($PerlSettings::BINARIES{gapc} -p "$prodInst" $gapcFlags $gapFile 2>&1);
-	} elsif ($type eq 'INST') {
-		$gapcResult = qx($PerlSettings::BINARIES{gapc} -i "$prodInst" $gapcFlags $gapFile 2>&1);
-	} else {
-		die "compileGAP: you have to choose between $CONST_PROD or $CONST_INST if you call me!\n";
-	}
+	my $gapcResult = qx($PerlSettings::BINARIES{gapc} $prodInst $gapcFlags $gapFile 2>&1);
 	die "compileGAP: '$gapMainFile' does not contain all necessary algebras to compile '$prodInst'!\n" if ($gapcResult =~ m/Algebra .+? not defined/);
 	die "compileGAP: '$gapMainFile' does not contain instance '$prodInst'!\n" if ($gapcResult =~ m/Could not find instance/);
 	
@@ -476,12 +469,23 @@ sub compileGAP {
 	print STDERR " done.\n" if ($VERBOSE == 1);
 	print STDERR "\n$makeResult\n" if ($VERBOSE>1);
 	
-	print STDERR "==== compileGAP: 5 of 5) copy binary '$gapFile.$binSuffix' to target directory '$targetDirectory' ... " if ($VERBOSE);
-	my $mvResult = qx($PerlSettings::BINARIES{mv} out $targetDirectory/$gapFile.$binSuffix);
-	print STDERR "done\n" if ($VERBOSE);
+	my $answer = undef;
+	if (not defined $executionSub) {
+		print STDERR "==== compileGAP: 5 of 5) copy binary '$gapFile.$binSuffix' to target directory '$targetDirectory' ... " if ($VERBOSE);
+		$answer = $targetDirectory.'/'.$gapFile.'.'.$binSuffix;
+		my $mvResult = qx($PerlSettings::BINARIES{mv} out $answer);
+		print STDERR "done.\n" if ($VERBOSE);
+	} else {
+		print STDERR "==== compileGAP: 5 of 5) execute new binary ... " if ($VERBOSE);
+		my $function = shift(@{$executionSub});
+		$answer = $function->($tmpDir, @{$executionSub});
+		print STDERR "done.\n" if ($VERBOSE);
+	}
 	
 	chdir($pwd);
 	qx($PerlSettings::BINARIES{rm} -rf $tmpDir);
+	
+	return $answer;
 }
 
 sub findDependentFiles { # a gap program can have inclusion of other gap files + import of external functionality via .hh files. This method collects all files which the file given to this method depends on
