@@ -117,12 +117,12 @@ if ($settings->{clusterFasta} != 0) {
 		print ARRAY '#$ -e '.$errDir."\n";
 		print ARRAY '#$ -o '.$outDir."\n";
 		print ARRAY ''."\n";
-		print ARRAY 'job=`'.$PerlSettings::BINARIES{head}.' -n $SGE_TASK_ID | '.$PerlSettings::BINARIES{tail}.' -1'."\n";
+		print ARRAY 'job=`'.$PerlSettings::BINARIES{head}.' -n $SGE_TASK_ID | '.$PerlSettings::BINARIES{tail}.' -1`'."\n";
 		print ARRAY 'uname -a'."\n";
 		my $command = "";
 		$command .= " --temperature=".$settings->{temperature} if ((defined $settings->{temperature}) && ($settings->{temperature} ne ""));
 		$command .= " --paramfile=".$settings->{energyParamfile} if ((defined $settings->{energyParamfile}) && ($settings->{energyParamfile} ne ""));
-		$command .= '  "$sequence"';
+		$command .= '  "'.$inputSequence.'"';
 		print ARRAY $PerlSettings::BINARIES{perl}." ".PerlUtils::absFilename($0).' $job '.$command."\n";
 	close (ARRAY);
 		
