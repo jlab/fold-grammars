@@ -6,6 +6,114 @@ use warnings;
 
 package PerlUtils;
 
+sub compileGAP {
+	my (
+		$gapMainFile, #file of that gapc program that should be compiled
+		$prodInst, #the product of algebras (and maybe filters) that should be compiled or the name of an instance. Must have a -p or -i !
+		$gapcFlags, #additional flags for the GAPc compiler, e.g. -t or --sample
+		$makeFlags, #additional flags for the make command, e.g. CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast" to use the fastmath versions of the RNA libraries
+		$targetDirectory, #directory to which the compiled binary should be moved after compilation
+		$rewriteSub, #a ref to a list. if not undef: a function call which should be exectuted after copies files into tmpdir, but before translation via gapc. Necessary for TDM generation. First element is the function reference, following elements are parameters for the function. Before call, the tmpdir name is added as first argument for the function to be called.
+		$executionSub, #same as rewriteSub, but this function is called after compilation. Instead of the name of the new binary the result of this run is returned and the binary is never copied to the target directory.
+		$binSuffix, #a suffix that is appended to the binary name
+	) = @_;
+
+	my $pwd = qx($PerlSettings::BINARIES{pwd}); chomp $pwd;
+	$targetDirectory = $pwd if ((not defined $targetDirectory) || ($targetDirectory eq ""));
+	$binSuffix = "" if (not defined $binSuffix);
+	my ($gapDir, $gapFile) = @{separateDirAndFile($gapMainFile)};
+	
+	my $VERBOSE = 0; #0=no output on STDERR, 1=prints just perl messages to STDERR; 2=also prints gapc + make outputs
+
+	my $tmpDir = $PerlSettings::tmpdir."/compileGAP_".$gapFile."_".$$."/";
+	#~ my $tmpDir = $PerlSettings::tmpdir."tdm_/";
+	qx($PerlSettings::BINARIES{rm} -rf $tmpDir);
+	print STDERR "==== compileGAP: 1 of 5) create temporary directory '$tmpDir'.\n" if ($VERBOSE);
+	mkdir($tmpDir) || die "cannot create working directory '$tmpDir': $!";
+
+	print STDERR "==== compileGAP: 2 of 5) copy necessary GAP files into temporary directory ..." if ($VERBOSE); 
+	foreach my $file (@{findDependentFiles($gapDir, $gapFile)}) {
+		my $unrootedGapfile = substr($file, length($gapDir));
+		my ($subDir) = @{separateDirAndFile($unrootedGapfile)};
+		qx($PerlSettings::BINARIES{mkdir} -p $tmpDir$subDir) if (defined $subDir);
+		my $copy = qx($PerlSettings::BINARIES{cp} -vr $file $tmpDir$unrootedGapfile);
+		#~ print STDERR "copy source file: ".$copy if ($VERBOSE);
+	}
+	print STDERR " done.\n" if ($VERBOSE);
+
+	#execute an additional function between the processes of copying necessary files into tmp dir and translating program. Usecase: TDMs, replace prototype grammar by a shape specific one.
+	if (defined $rewriteSub) {
+		my $function = shift(@{$rewriteSub});
+		$function->($tmpDir, @{$rewriteSub});
+	}
+
+	chdir ($tmpDir) || die "cannot change into temporary directory '$tmpDir': $!;";
+
+	print STDERR "==== compileGAP: 3 of 5) translating GAP programm to C++ code:" if ($VERBOSE);
+	my $gapcResult = qx($PerlSettings::BINARIES{gapc} $prodInst $gapcFlags $gapFile 2>&1);
+	die "compileGAP: '$gapMainFile' does not contain all necessary algebras to compile '$prodInst'!\n" if ($gapcResult =~ m/Algebra .+? not defined/);
+	die "compileGAP: '$gapMainFile' does not contain instance '$prodInst'!\n" if ($gapcResult =~ m/Could not find instance/);
+	
+	print STDERR " done.\n" if ($VERBOSE == 1);
+	print STDERR "\n$gapcResult\n" if ($VERBOSE>1);
+	
+	print STDERR "==== compileGAP: 4 of 5) compiling C++ code to binary: " if ($VERBOSE);
+	my $makeResult = qx($PerlSettings::BINARIES{make} -f out.mf $makeFlags);
+	print STDERR " done.\n" if ($VERBOSE == 1);
+	print STDERR "\n$makeResult\n" if ($VERBOSE>1);
+	
+	my $answer = undef;
+	if (not defined $executionSub) {
+		print STDERR "==== compileGAP: 5 of 5) copy binary '$gapFile.$binSuffix' to target directory '$targetDirectory' ... " if ($VERBOSE);
+		$answer = $targetDirectory.'/'.$gapFile.'.'.$binSuffix;
+		my $mvResult = qx($PerlSettings::BINARIES{mv} out $answer);
+		print STDERR "done.\n" if ($VERBOSE);
+	} else {
+		print STDERR "==== compileGAP: 5 of 5) execute new binary ... " if ($VERBOSE);
+		my $function = shift(@{$executionSub});
+		$answer = $function->($tmpDir, @{$executionSub});
+		print STDERR "done.\n" if ($VERBOSE);
+	}
+	
+	chdir($pwd);
+	qx($PerlSettings::BINARIES{rm} -rf $tmpDir);
+	
+	return $answer;
+}
+
+sub findDependentFiles { # a gap program can have inclusion of other gap files + import of external functionality via .hh files. This method collects all files which the file given to this method depends on
+	my ($rootDir, $sourcefile) = @_;
+	
+	my @dependentFiles = ($rootDir.$sourcefile);
+	foreach my $line (split(m/\r?\n/, qx($PerlSettings::BINARIES{cat} $rootDir$sourcefile))) {
+		if ($line =~ m/include\s+"(.+)"/) {
+			push @dependentFiles, @{findDependentFiles($rootDir, $1)};
+		} elsif ($line =~ m/import\s+(\S+)/) {
+			my $headerFile = $rootDir.$1.".hh";
+			push @dependentFiles, $headerFile if (-e $headerFile);
+		}
+	}
+	
+	return \@dependentFiles;
+}
+
+sub separateDirAndFile { #input is a path to a specific file, output is a reference to a two element list. First element is the directory, second the file itself
+	my ($file) = @_;
+	
+	if ($file =~ m/$PerlSettings::fileseparater/) {
+		my $endPos = length($file)-1;
+		for (my $i = length($file)-1; $i >= 0; $i--) {
+			if (substr($file, $i, 1) eq $PerlSettings::fileseparater) {
+				$endPos = $i;
+				last;
+			}
+		}
+		return [substr($file, 0, $endPos+1), substr($file, $endPos+1)];
+	} else {
+		return [undef, $file];
+	}
+}
+
 sub applyFunctionToFastaFile {
 	#fuer jede Sequenz einer evtl. sehr grossen Fasta-Datei soll eine Funktion (Sub) ausgefuehrt werden. Dabei soll nicht zuerst die _gesamte_ Datei eingelesen werden und dann alle Sequenzen abgearbeitet werden. Statt dessen soll die Datei zeilenweise eingelesen werden und immer dann wenn eine Sequenz zuende ist (erkennbar daran, dass ein weiterer Header folgt) soll eine beliebige Funktion ausgefuehrt werden. So wird vermieden, dass der Speicher bei sehr grossen Fasta-files auslaueft.
 	#als Parameter erwartet die Funktion zum einen den Pfad zur Fasta-Datei und zum Anderen eine _Referenz_ auf die aufzurufende Funktion. Anschliessend koennen noch beliebig viele Argumente angegeben werden, die ohne weitere Beachtung als Eingabeparameter an die aufzurufende Funktion weitergeleitet werden.
@@ -83,6 +191,24 @@ sub absFilename {
 	chomp $afn;
 	
 	return $afn;
+}
+
+sub generateGrammar {
+	my ($tmpDir, $generator, $shape, $target) = @_;
+	my $result = qx($generator "$shape" | $PerlSettings::BINARIES{grep} -v "Answer");
+	die "not a valid shape string '".$shape."'!\n" if ($result =~ m/\[\]/);
+	qx($PerlSettings::BINARIES{echo} "$result" > $tmpDir/$target);
+}
+
+sub compileGenerator {
+	my ($refHash_settings, $workingDirectory) = @_;
+	my $bin_tdmGenerator = $PerlSettings::TDMgenerator.'.tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapeLevel};
+	if (not -e $bin_tdmGenerator) {
+		print STDERR "compiling TDM generator for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapeLevel}." ... ";
+		$bin_tdmGenerator = PerlUtils::compileGAP($PerlSettings::rootDir.$PerlSettings::TDMgenerator, '-i tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapeLevel}, "-t", '', $workingDirectory, undef, undef, "tdm_".$refHash_settings->{grammar}."_".$refHash_settings->{shapeLevel});
+		print STDERR "done.\n";
+	}
+	return PerlUtils::absFilename($bin_tdmGenerator);
 }
 
 1;
