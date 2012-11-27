@@ -3,33 +3,35 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://bibiserv.techfak.uni-bielefeld.de/fold-grammars
 http://bibiserv.techfak.uni-bielefeld.de/xsd/fold-grammars.xsd">
-<element id="id1" descr="Fold-Grammars">
+<element id="intoduction" descr="GAP Components">
 <html>
 <div xmlns="http://www.w3.org/1999/xhtml">
-<h2>Description of the Bellman's GAP Repository: Fold-Grammars</h2> Bellman's GAP is a domain
+<h2>Description of the Bellman's GAP Repository: Fold-Grammars</h2> 
+<p>Bellman's GAP is a domain
 specific language and compiler for dynamic programming over sequence data. It's name is derived from
 &quot;Bellman's Principle of Optimality, Grammars, Algebras, and Products&quot;. A Bellman's GAP
 repository is an archive of re-usable modules. Repositories are provided for code sharing. If you
 have modules to share, write to Stefan Janssen <a
-href="mailto:stefan.janssen@uni-bielefeld.de">stefan.janssen@uni-bielefeld.de</a> A typical program in Bellman's GAP contains four elements: <ol>
+href="mailto:stefan.janssen@uni-bielefeld.de">stefan.janssen@uni-bielefeld.de</a></p> 
+<p>A typical program in Bellman's GAP contains four elements: <ol>
 <li>a signature, defining functions available in grammars which must be implemented in
 algebras,</li>
 <li>one or more algebras, evaluating a candidate from the search space and applying the objective
 function,</li>
-<li>one or more grammars, defining a search space of solution caniddates</li>
+<li>one or more grammars, defining a search space of solution candidates</li>
 <li>one or more executable program instances, combining a grammar with a product of algebras.</li>
 </ol>
+</p>
 <h3>Naming conventions</h3> Although GAP-L (Bellman's GAP language) allows arbitrary names, i.e.
 they must match the regular expression [A-Z_a-z][A-Z_a-z0-9]*, for signatures, algebras and
 grammars, we restrict ourselves for a better reading to the following naming convention: <ul>
 <li>signature names start with the prefix &quot;sig_&quot;</li>
 <li>algebra names start with the prefix &quot;alg_&quot;</li>
 <li>grammar names start with the prefix &quot;gra_&quot;</li>
-<li><ul>
+<ul>
 <li>for large grammars, sub-fragments are outsourced in files starting with
 &quot;grapart_&quot;</li>
 </ul>
-</li>
 </ul> 
 
 We don't have a naming convention for instances, since they appear in a program just once.
@@ -38,20 +40,20 @@ Names and file extensions for source code files can be chosen freely, but we pre
 the prefixes for the filenames as well. <h3>Repository content of Fold-Grammars</h3> This repository
 is a collection of components (algebras, grammars, ...) for dynamic programming problems covering
 RNA secondary structure predictions. It covers the fields of: <ul>
-<li>single structure prediction (similar to RNAfold),</li>
-<li>prediction of structures for alignments (similar to RNAalifold) [filenames with
+<li>single structure prediction (similar to <a href="http://rna.tbi.univie.ac.at/cgi-bin/RNAfold.cgi">RNAfold</a>),</li>
+<li>prediction of structures for alignments (similar to <a href="http://rna.tbi.univie.ac.at/cgi-bin/RNAalifold.cgi">RNAalifold</a>) [filenames with
 &quot;ali_&quot;], </li>
-<li>sequence structure evaluation (similar to RNAeval) [filenames with &quot;eval_&quot;] ,</li>
-<li>abstract shape analysis (similar the RNAshapes) and HIshapes, and</li>
-<li>pseudoknot prediction (similar to pknotsRG and pKiss) [filenames with &quot;pknot_&quot;].</li>
+<li>sequence structure evaluation (similar to <a href="http://www.tbi.univie.ac.at/~ronny/RNA/RNAeval.html">RNAeval</a>) [filenames with &quot;eval_&quot;] ,</li>
+<li>abstract shape analysis (similar the <a href="http://bibiserv.cebitec.uni-bielefeld.de/rnashapes/">RNAshapes</a>) and HIshapes, and</li>
+<li>pseudoknot prediction (similar to <a href="http://bibiserv.cebitec.uni-bielefeld.de/pknotsrg/">pknotsRG</a> and <a href="http://bibiserv.cebitec.uni-bielefeld.de/pkiss/">pKiss</a>) [filenames with &quot;pknot_&quot;].</li>
 </ul> To capture different handling of dangling bases implemented in various programs, we provide
 the four different grammars (for details see <a
 href="http://www.biomedcentral.com/1471-2105/12/429/"
 >Lost in folding space? Comparing four variants
 of the thermodynamic model for RNA secondary structure prediction</a>) Compared to the supplementary
-file of that paper, we refined the grammars a little for more comfortable support of dangling bases.
+file of that paper, we refined the grammars a little for more comfortable support of lonely base-pairs.
 This does not change their folding space. We also introduced filters for maximal loop length for
-bulges to be closer to the Vienna RNA package, the only difference is, that the size of both
+bulges to be closer to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna RNA package</a>, the only difference is, that the size of both
 unpaired regions of internal loops may not exceed 30 bases in Vienna RNA; we allow up to 30 bases on
 each side.) <ul>
 <li>&quot;nodangle&quot; (no energy contributions of dangling bases at all),</li>
@@ -78,52 +80,52 @@ re-usability of components if they share the same signature.
 <file id="sig_pknot_foldrna.gap" ref="Signatures/sig_pknot_foldrna.gap"/>
 </dir>
 <dir descr="Grammars" >
-<file id="gra_nodangle.gap"/>
-<file id="gra_overdangle.gap"/>
-<file id="gra_microstate.gap"/>
-<file id="gra_macrostate.gap"/>
-<file id="gra_macrostate_center.gap"/>
-<file id="gra_eval_nodangle.gap"/>
-<file id="gra_locomotif_microstate.gap"/>
-<file id="grapart_pkinnards.gap"/>
-<file id="grapart_pknotsrg.gap"/>
-<file id="grapart_pkissA.gap"/>
+<file id="gra_nodangle.gap" ref="Grammars/gra_nodangle.gap"/>
+<file id="gra_overdangle.gap" ref="Grammars/gra_overdangle.gap"/>
+<file id="gra_microstate.gap" ref="Grammars/gra_microstate.gap"/>
+<file id="gra_macrostate.gap" ref="Grammars/gra_macrostate.gap"/>
+<file id="gra_macrostate_center.gap" ref="Grammars/gra_macrostate_centers.gap"/>
+<file id="gra_eval_nodangle.gap" ref="Grammars/gra_eval_nodangle.gap"/>
+<file id="gra_locomotif_microstate.gap" ref="Grammars/gra_locomotif_microstate.gap"/>
+<file id="grapart_pkinnards.gap" ref="Grammars/grapart_pkinnards.gap"/>
+<file id="grapart_pknotsrg.gap" ref="Grammars/grapart_pknotsrg.gap"/>
+<file id="grapart_pkissA.gap" ref="Grammars/grapart_pkissA.gap"/>
 </dir>
 <dir descr="Algebras">
 <dir descr="DotBracket">
-<file id="alg_dotBracket.gap"/>
-<file id="alg_pknot_dotBracket.gap"/>
-<file id="alg_ali_dotBracket.gap"/>
-<file id="alg_eval_dotBracket.gap"/>
+<file id="alg_dotBracket.gap" ref="Algebras/DotBracket/alg_dotBracket.gap"/>
+<file id="alg_pknot_dotBracket.gap" ref="Algebras/DotBracket/alg_pknot_dotBracket.gap"/>
+<file id="alg_ali_dotBracket.gap" ref="Algebras/DotBracket/alg_ali_dotBracket.gap"/>
+<file id="alg_eval_dotBracket.gap" ref="Algebras/DotBracket/alg_eval_dotBracket.gap"/>
 </dir>
 <dir descr="MFE">
-<file id="alg_mfe.gap"/>
-<file id="alg_mfe_macrostate.gap"/>
-<file id="alg_pknot_mfe.gap"/>
-<file id="alg_ali_mfe.gap"/>
-<file id="alg_ali_mfe_macrostate.gap"/>
-<file id="alg_eval_mfe.gap"/>
+<file id="alg_mfe.gap" ref="Algebras/MFE/alg_mfe.gap"/>
+<file id="alg_mfe_macrostate.gap" ref="Algebras/MFE/alg_mfe_macrostate.gap"/>
+<file id="alg_pknot_mfe.gap" ref="Algebras/MFE/alg_pknot_mfe.gap"/>
+<file id="alg_ali_mfe.gap" ref="Algebras/MFE/alg_ali_mfe.gap"/>
+<file id="alg_ali_mfe_macrostate.gap" ref="Algebras/MFE/alg_ali_mfe_macrostate.gap"/>
+<file id="alg_eval_mfe.gap" ref="Algebras/MFE/alg_eval_mfe.gap"/>
 </dir>
 <dir descr="Pfunc">
-<file id="alg_pfunc.gap"/>
-<file id="alg_pfunc_macrostate.gap"/>
-<file id="alg_pknot_pfunc.gap"/>
+<file id="alg_pfunc.gap" ref="Algebras/Pfunc/alg_pfunc.gap"/>
+<file id="alg_pfunc_macrostate.gap" ref="Algebras/Pfunc/alg_pfunc_macrostate.gap"/>
+<file id="alg_pknot_pfunc.gap" ref="Algebras/Pfunc/alg_pknot_pfunc.gap"/>
 </dir>
 <dir descr="Shapes">
-<file id="alg_shapes.gap"/>
-<file id="alg_hishapes.gap"/>
-<file id="alg_ali_shapes.gap"/>
-<file id="alg_ali_hishapes.gap"/>
-<file id="alg_shapes_rope.gap"/>
+<file id="alg_shapes.gap" ref="Algebras/Shapes/alg_shapes.gap"/>
+<file id="alg_hishapes.gap" ref="Algebras/Shapes/alg_hishapes.gap"/>
+<file id="alg_ali_shapes.gap" ref="Algebras/Shapes/alg_ali_shapes.gap"/>
+<file id="alg_ali_hishapes.gap" ref="Algebras/Shapes/alg_ali_hishapes.gap"/>
+<file id="alg_shapes_rope.gap" ref="Algebras/Shapes/alg_shapes_rope.gap"/>
 </dir>
-<file id="alg_basepairMax.gap"/>
-<file id="alg_count_id.gap"/>
-<file id="alg_ali_consensus.gap"/>
-<file id="alg_ali_mis.gap"/>
+<file id="alg_basepairMax.gap" ref="Algebras/alg_basepairMax.gap"/>
+<file id="alg_count_id.gap" ref="Algebras/alg_count_id.gap"/>
+<file id="alg_ali_consensus.gap" ref="Algebras/alg_ali_consensus.gap"/>
+<file id="alg_ali_mis.gap" ref="Algebras/alg_ali_mis.gap"/>
 </dir>
 </structure>
 </element>
-<element id="id2" descr="descr 2">
+<element id="mainfile" descr="Programs">
 <html> <div xmlns="http://www.w3.org/1999/xhtml">At the root directory are all the &quot;main&quot; GAP-L files for the actual application of
 an algebra(product) to a grammar and an input. They mainly contain the declaration of instances,
 inclusion of code fragments like signatures, grammars and algebras and import statements for
@@ -147,23 +149,23 @@ other parser techniques.</li>
 </dir>
 </structure>
 </element>
-<element id="id3" descr="descr 3">
+<element id="externalfunctionality" descr="External Functionality">
 <html> We need a lot of functionality, which is not part of Bellman's GAP. These functions come via
 the *.hh files, and must be imported to the GAP-L main files. Unfortunately, imports are only
 possible at the beginning of a program, thus we cannot import a *.hh file from within an specific
 algebra file, even if its functions are only used in this algebra. Importing from different
 subdirectories is impossible as well. So it gets a bit crowded in the root directory. </html>
 <structure>
-<file id="stacklen.hh"/>
-<file id="singlefold.hh"/>
-<file id="pKiss_tables.hh"/>
-<file id="pKiss_extras.hh"/>
-<file id="pkenergy.hh"/>
-<file id="pfunc_filter_foldrna.hh"/>
-<file id="pfunc_filter_macrostate.hh "/>
-<file id="pfunc_answer_macrostate.hh"/>
-<file id="mferange.hh"/>
-<file id="alifold.hh"/>
+<file id="stacklen.hh" ref="stacklen.hh"/>
+<file id="singlefold.hh" ref="singlefold.hh"/>
+<file id="pKiss_tables.hh" ref="pKiss_tables.hh"/>
+<file id="pKiss_extras.hh" ref="pKiss_extras.hh"/>
+<file id="pkenergy.hh" ref="pkenergy.hh"/>
+<file id="pfunc_filter_foldrna.hh" ref="pfunc_filter_foldrna.hh"/>
+<file id="pfunc_filter_macrostate.hh" ref="pfunc_filter_macrostate.hh"/>
+<file id="pfunc_answer_macrostate.hh" ref="pfunc_answer_macrostate.hh"/>
+<file id="mferange.hh" ref="mferange.hh"/>
+<file id="alifold.hh" ref="alifold.hh"/>
 </structure>
 </element>
 <element id="prerequisites" descr="Prerequisites">
@@ -194,7 +196,11 @@ about Bellmans GAP compiler.
 <element id="references" descr="References">
 <html>
 <div xmlns="http://www.w3.org/1999/xhtml">
-references missing ...
+<a href="http://www.biomedcentral.com/1471-2105/12/429/">Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction</a>
+<a href="http://onlinelibrary.wiley.com/doi/10.1002/%28SICI%291097-0282%28199902%2949:2%3C145::AID-BIP4%3E3.0.CO;2-G/abstract">Complete suboptimal folding of RNA and the stability of secondary structures</a>
+<a href="http://nar.oupjournals.org/cgi/content/abstract/32/16/4843">Abstract Shapes of RNA</a>
+<a href="http://rnajournal.cshlp.org/content/early/2012/10/24/rna.033548.112.short">Abstract folding space analysis based on helices</a>
+<a href="http://bibiserv.techfak.uni-bielefeld.de/pkiss/pkiss_paper.pdf">Prediction of RNA secondary structure including kissing hairpin motifs.</a>
 </div>
 </html>
 </element>
@@ -205,3 +211,10 @@ contributor list missing ...
 </div></html>
 </element>
 </description>
+
+<!-- 
+ToDos:
+ - bei internem Link wird falsches file gehighlited
+ - Texte fuer "Grammars" Ebene?
+ - ueber Source code Anzeige: link zum download des files
+-->
