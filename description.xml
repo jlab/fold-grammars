@@ -74,12 +74,12 @@ re-usability of components if they share the same signature.
 </div>
 </html>
 <structure>
-<dir descr="Signatures">
+<dir descr="1. Signatures">
 <file id="sig_foldrna.gap" ref="Signatures/sig_foldrna.gap"/>
 <file id="sig_eval_foldrna.gap" ref="Signatures/sig_eval_foldrna.gap"/>
 <file id="sig_pknot_foldrna.gap" ref="Signatures/sig_pknot_foldrna.gap"/>
 </dir>
-<dir descr="Grammars" >
+<dir descr="2. Grammars" >
 <file id="gra_nodangle.gap" ref="Grammars/gra_nodangle.gap"/>
 <file id="gra_overdangle.gap" ref="Grammars/gra_overdangle.gap"/>
 <file id="gra_microstate.gap" ref="Grammars/gra_microstate.gap"/>
@@ -91,7 +91,7 @@ re-usability of components if they share the same signature.
 <file id="grapart_pknotsrg.gap" ref="Grammars/grapart_pknotsrg.gap"/>
 <file id="grapart_pkissA.gap" ref="Grammars/grapart_pkissA.gap"/>
 </dir>
-<dir descr="Algebras">
+<dir descr="3. Algebras">
 <dir descr="DotBracket">
 <file id="alg_dotBracket.gap" ref="Algebras/DotBracket/alg_dotBracket.gap"/>
 <file id="alg_pknot_dotBracket.gap" ref="Algebras/DotBracket/alg_pknot_dotBracket.gap"/>
@@ -131,12 +131,12 @@ an algebra(product) to a grammar and an input. They mainly contain the declarati
 inclusion of code fragments like signatures, grammars and algebras and import statements for
 external functionality, found in *.hh files. Some exceptions are: <ul>
 <li>overdangle.gap and ali_overdangle.gap: they overwrite the mfe and partition function
-algebra-functions drem and ml to realize the overdangling instead of nodangling.</li>
+algebra-functions <span class="code">drem</span> and <span class="code">ml</span> to realize the overdangling instead of nodangling.</li>
 <li>MacrostateCenter.gap: previously we mentioned the need for computing the probability of
-hairpins. To do so, the signature must be extended by one algebra-function, which is unfortunately
-impossible by heritage within GAP-L. Thus, we need special signature, algebras and grammars. The
+hairpins. To do so, the signature must be extended by one algebra-function. <!-- TODO which is unfortunately
+impossible by heritage within GAP-L.--> Thus, we need special signature, algebras and grammars. The
 later is externalized in the file <a
-href="Grammars/gra_macrostate_centers.gap">Grammars/gra_macrostate_centers.gap</a>.</li>
+href="?id=gra_macrostate_centers.gap">gra_macrostate_centers.gap</a>.</li>
 <li>structure2shape.gap: often it is necessary to convert a Vienna-Dot-Bracket string into a shape
 string. This can be done with this file, but it is very inefficient to do within ADP - compared to
 other parser techniques.</li>
@@ -201,6 +201,8 @@ about Bellmans GAP compiler.
 <a href="http://nar.oupjournals.org/cgi/content/abstract/32/16/4843">Abstract Shapes of RNA</a>
 <a href="http://rnajournal.cshlp.org/content/early/2012/10/24/rna.033548.112.short">Abstract folding space analysis based on helices</a>
 <a href="http://bibiserv.techfak.uni-bielefeld.de/pkiss/pkiss_paper.pdf">Prediction of RNA secondary structure including kissing hairpin motifs.</a>
+<a href="http://bioinformatics.oxfordjournals.org/content/26/5/632.short">Faster computation of exact RNA shape probabilities</a>
+<a href="http://www.biomedcentral.com/1741-7007/4/5/">Complete probabilistic analysis of RNA shapes</a>
 </div>
 </html>
 </element>
@@ -214,7 +216,11 @@ contributor list missing ...
 
 <!-- 
 ToDos:
- - bei internem Link wird falsches file gehighlited
+ - bei internem Link wird falsches file gehighlighted
  - Texte fuer "Grammars" Ebene?
  - ueber Source code Anzeige: link zum download des files
+ - navigation verhaelt sich komisch, wenn man Sachen einklappen möchte
+ - anderes highlighting für *.hh?
+ - text fuer Program als 4. Punkt von GAP Components?
+ - highlighting für alifold.hh kommt mit Kommentar nicht klar
 -->
