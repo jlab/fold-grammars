@@ -124,7 +124,6 @@ re-usability of components if they share the same signature.
 <file id="alg_ali_mis.gap" ref="Algebras/alg_ali_mis.gap"/>
 </dir>
 </structure>
-</element>
 <element id="mainfile" descr="Programs">
 <html> <div xmlns="http://www.w3.org/1999/xhtml">At the root directory are all the &quot;main&quot; GAP-L files for the actual application of
 an algebra(product) to a grammar and an input. They mainly contain the declaration of instances,
@@ -148,6 +147,8 @@ other parser techniques.</li>
 <dir descr="Tests"/>
 </dir>
 </structure>
+</element>
+
 </element>
 <element id="externalfunctionality" descr="External Functionality">
 <html> We need a lot of functionality, which is not part of Bellman's GAP. These functions come via
@@ -217,10 +218,10 @@ contributor list missing ...
 <!-- 
 ToDos:
  - bei internem Link wird falsches file gehighlighted
- - Texte fuer "Grammars" Ebene?
+ - Texte fuer "Grammars" Ebene?: Sollte durch geschickte schalchteln klappen.
  - ueber Source code Anzeige: link zum download des files
  - navigation verhaelt sich komisch, wenn man Sachen einklappen möchte
  - anderes highlighting für *.hh?
- - text fuer Program als 4. Punkt von GAP Components?
- - highlighting für alifold.hh kommt mit Kommentar nicht klar
+ + text fuer Program als 4. Punkt von GAP Components?
+ + highlighting für alifold.hh kommt mit Kommentar nicht klar
 -->
