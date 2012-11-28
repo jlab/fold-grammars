@@ -218,10 +218,10 @@ contributor list missing ...
 <!-- 
 ToDos:
  - bei internem Link wird falsches file gehighlighted
- - Texte fuer "Grammars" Ebene?: Sollte durch geschickte schalchteln klappen.
- - ueber Source code Anzeige: link zum download des files
+ + Texte fuer "Grammars" Ebene?: Sollte durch geschickte schalchteln klappen.
+ + ueber Source code Anzeige: link zum download des files
  - navigation verhaelt sich komisch, wenn man Sachen einklappen möchte
- - anderes highlighting für *.hh?
+ + anderes highlighting für *.hh?
  + text fuer Program als 4. Punkt von GAP Components?
  + highlighting für alifold.hh kommt mit Kommentar nicht klar
 -->
