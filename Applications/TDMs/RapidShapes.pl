@@ -208,7 +208,7 @@ if (defined $settings->{clusterFasta}) {
 	my $bin_tdmGenerator = PerlUtils::compileGenerator($settings, $workingDirectory);
 	
 	my $arch = '-l arch="sol-amd64"';
-	$arch = '-l linh=1' if (qx($PerlSettings::BINARIES{uname} -o) =~ m/Sun/i);
+	$arch = '-l linh=1' if (qx($PerlSettings::BINARIES{uname} -o) !~ m/Sun/i);
 	print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G $arch $arrayJob\n";
 } else {
 	#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy

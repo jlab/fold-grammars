@@ -55,7 +55,7 @@ file of that paper, we refined the grammars a little for more comfortable suppor
 This does not change their folding space. We also introduced filters for maximal loop length for
 bulges to be closer to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna RNA package</a>, the only difference is, that the size of both
 unpaired regions of internal loops may not exceed 30 bases in Vienna RNA; we allow up to 30 bases on
-each side.) <ul>
+each side.) <ul class="grammars">
 <li>&quot;nodangle&quot; (no energy contributions of dangling bases at all),</li>
 <li>&quot;overdangle&quot; (available or not, bases next to a stem always dangle from both sides to
 this stem),</li>
@@ -74,83 +74,81 @@ re-usability of components if they share the same signature.
 </div>
 </html>
 <structure>
-<dir descr="1. Signatures">
-<file id="sig_foldrna.gap" ref="Signatures/sig_foldrna.gap"/>
-<file id="sig_eval_foldrna.gap" ref="Signatures/sig_eval_foldrna.gap"/>
-<file id="sig_pknot_foldrna.gap" ref="Signatures/sig_pknot_foldrna.gap"/>
-</dir>
-<dir descr="2. Grammars" >
-<file id="gra_nodangle.gap" ref="Grammars/gra_nodangle.gap"/>
-<file id="gra_overdangle.gap" ref="Grammars/gra_overdangle.gap"/>
-<file id="gra_microstate.gap" ref="Grammars/gra_microstate.gap"/>
-<file id="gra_macrostate.gap" ref="Grammars/gra_macrostate.gap"/>
-<file id="gra_macrostate_center.gap" ref="Grammars/gra_macrostate_centers.gap"/>
-<file id="gra_eval_nodangle.gap" ref="Grammars/gra_eval_nodangle.gap"/>
-<file id="gra_locomotif_microstate.gap" ref="Grammars/gra_locomotif_microstate.gap"/>
-<file id="grapart_pkinnards.gap" ref="Grammars/grapart_pkinnards.gap"/>
-<file id="grapart_pknotsrg.gap" ref="Grammars/grapart_pknotsrg.gap"/>
-<file id="grapart_pkissA.gap" ref="Grammars/grapart_pkissA.gap"/>
-</dir>
-<dir descr="3. Algebras">
-<dir descr="DotBracket">
-<file id="alg_dotBracket.gap" ref="Algebras/DotBracket/alg_dotBracket.gap"/>
-<file id="alg_pknot_dotBracket.gap" ref="Algebras/DotBracket/alg_pknot_dotBracket.gap"/>
-<file id="alg_ali_dotBracket.gap" ref="Algebras/DotBracket/alg_ali_dotBracket.gap"/>
-<file id="alg_eval_dotBracket.gap" ref="Algebras/DotBracket/alg_eval_dotBracket.gap"/>
-</dir>
-<dir descr="MFE">
-<file id="alg_mfe.gap" ref="Algebras/MFE/alg_mfe.gap"/>
-<file id="alg_mfe_macrostate.gap" ref="Algebras/MFE/alg_mfe_macrostate.gap"/>
-<file id="alg_pknot_mfe.gap" ref="Algebras/MFE/alg_pknot_mfe.gap"/>
-<file id="alg_ali_mfe.gap" ref="Algebras/MFE/alg_ali_mfe.gap"/>
-<file id="alg_ali_mfe_macrostate.gap" ref="Algebras/MFE/alg_ali_mfe_macrostate.gap"/>
-<file id="alg_eval_mfe.gap" ref="Algebras/MFE/alg_eval_mfe.gap"/>
-</dir>
-<dir descr="Pfunc">
-<file id="alg_pfunc.gap" ref="Algebras/Pfunc/alg_pfunc.gap"/>
-<file id="alg_pfunc_macrostate.gap" ref="Algebras/Pfunc/alg_pfunc_macrostate.gap"/>
-<file id="alg_pknot_pfunc.gap" ref="Algebras/Pfunc/alg_pknot_pfunc.gap"/>
-</dir>
-<dir descr="Shapes">
-<file id="alg_shapes.gap" ref="Algebras/Shapes/alg_shapes.gap"/>
-<file id="alg_hishapes.gap" ref="Algebras/Shapes/alg_hishapes.gap"/>
-<file id="alg_ali_shapes.gap" ref="Algebras/Shapes/alg_ali_shapes.gap"/>
-<file id="alg_ali_hishapes.gap" ref="Algebras/Shapes/alg_ali_hishapes.gap"/>
-<file id="alg_shapes_rope.gap" ref="Algebras/Shapes/alg_shapes_rope.gap"/>
-</dir>
-<file id="alg_basepairMax.gap" ref="Algebras/alg_basepairMax.gap"/>
-<file id="alg_count_id.gap" ref="Algebras/alg_count_id.gap"/>
-<file id="alg_ali_consensus.gap" ref="Algebras/alg_ali_consensus.gap"/>
-<file id="alg_ali_mis.gap" ref="Algebras/alg_ali_mis.gap"/>
-</dir>
+	<dir descr="1. Signatures">
+		<file id="sig_foldrna.gap" ref="Signatures/sig_foldrna.gap"/>
+		<file id="sig_eval_foldrna.gap" ref="Signatures/sig_eval_foldrna.gap"/>
+		<file id="sig_pknot_foldrna.gap" ref="Signatures/sig_pknot_foldrna.gap"/>
+	</dir>
+	<dir descr="2. Grammars" >
+		<file id="gra_nodangle.gap" ref="Grammars/gra_nodangle.gap"/>
+		<file id="gra_overdangle.gap" ref="Grammars/gra_overdangle.gap"/>
+		<file id="gra_microstate.gap" ref="Grammars/gra_microstate.gap"/>
+		<file id="gra_macrostate.gap" ref="Grammars/gra_macrostate.gap"/>
+		<file id="gra_macrostate_center.gap" ref="Grammars/gra_macrostate_centers.gap"/>
+		<file id="gra_eval_nodangle.gap" ref="Grammars/gra_eval_nodangle.gap"/>
+		<file id="gra_locomotif_microstate.gap" ref="Grammars/gra_locomotif_microstate.gap"/>
+		<file id="grapart_pkinnards.gap" ref="Grammars/grapart_pkinnards.gap"/>
+		<file id="grapart_pknotsrg.gap" ref="Grammars/grapart_pknotsrg.gap"/>
+		<file id="grapart_pkissA.gap" ref="Grammars/grapart_pkissA.gap"/>
+	</dir>
+	<element id="Algebras" descr="3. Algebras">
+		<html>Spanning a search space with a grammar is useless unless we evaluate (and select) the candidates with an algebra. The following algebras are available and solve many of the known and elsewhere implemented RNA related problems. Due to the power and re-usability of algebra products simple combination of existing algebras might easily solve new emerging problems. We describe in the following the toolbox of our algebras.</html>
+		<structure>
+			<dir descr="DotBracket">
+				<file id="alg_dotBracket.gap" ref="Algebras/DotBracket/alg_dotBracket.gap"/>
+				<file id="alg_pknot_dotBracket.gap" ref="Algebras/DotBracket/alg_pknot_dotBracket.gap"/>
+				<file id="alg_ali_dotBracket.gap" ref="Algebras/DotBracket/alg_ali_dotBracket.gap"/>
+				<file id="alg_eval_dotBracket.gap" ref="Algebras/DotBracket/alg_eval_dotBracket.gap"/>
+			</dir>
+			<dir descr="MFE">
+				<file id="alg_mfe.gap" ref="Algebras/MFE/alg_mfe.gap"/>
+				<file id="alg_mfe_macrostate.gap" ref="Algebras/MFE/alg_mfe_macrostate.gap"/>
+				<file id="alg_pknot_mfe.gap" ref="Algebras/MFE/alg_pknot_mfe.gap"/>
+				<file id="alg_ali_mfe.gap" ref="Algebras/MFE/alg_ali_mfe.gap"/>
+				<file id="alg_ali_mfe_macrostate.gap" ref="Algebras/MFE/alg_ali_mfe_macrostate.gap"/>
+				<file id="alg_eval_mfe.gap" ref="Algebras/MFE/alg_eval_mfe.gap"/>
+			</dir>
+			<dir descr="Pfunc">
+				<file id="alg_pfunc.gap" ref="Algebras/Pfunc/alg_pfunc.gap"/>
+				<file id="alg_pfunc_macrostate.gap" ref="Algebras/Pfunc/alg_pfunc_macrostate.gap"/>
+				<file id="alg_pknot_pfunc.gap" ref="Algebras/Pfunc/alg_pknot_pfunc.gap"/>
+			</dir>
+			<dir descr="Shapes">
+				<file id="alg_shapes.gap" ref="Algebras/Shapes/alg_shapes.gap"/>
+				<file id="alg_hishapes.gap" ref="Algebras/Shapes/alg_hishapes.gap"/>
+				<file id="alg_ali_shapes.gap" ref="Algebras/Shapes/alg_ali_shapes.gap"/>
+				<file id="alg_ali_hishapes.gap" ref="Algebras/Shapes/alg_ali_hishapes.gap"/>
+				<file id="alg_shapes_rope.gap" ref="Algebras/Shapes/alg_shapes_rope.gap"/>
+			</dir>
+			<file id="alg_basepairMax.gap" ref="Algebras/alg_basepairMax.gap"/>
+			<file id="alg_count_id.gap" ref="Algebras/alg_count_id.gap"/>
+			<file id="alg_ali_consensus.gap" ref="Algebras/alg_ali_consensus.gap"/>
+			<file id="alg_ali_mis.gap" ref="Algebras/alg_ali_mis.gap"/>
+		</structure>
+	</element>
 </structure>
-<element id="mainfile" descr="Programs">
+<element id="programs" descr="4. Programs">
 <html> <div xmlns="http://www.w3.org/1999/xhtml">At the root directory are all the &quot;main&quot; GAP-L files for the actual application of
 an algebra(product) to a grammar and an input. They mainly contain the declaration of instances,
 inclusion of code fragments like signatures, grammars and algebras and import statements for
 external functionality, found in *.hh files. Some exceptions are: <ul>
-<li>overdangle.gap and ali_overdangle.gap: they overwrite the mfe and partition function
-algebra-functions <span class="code">drem</span> and <span class="code">ml</span> to realize the overdangling instead of nodangling.</li>
-<li>MacrostateCenter.gap: previously we mentioned the need for computing the probability of
+<li>&quot;overdangle.gap&quot; and &quot;ali_overdangle.gap&quot;: they overwrite the mfe and partition function
+algebra-functions <code>drem</code> and <code>ml</code> to realize the overdangling instead of nodangling.</li>
+<li>&quot;MacrostateCenter.gap&quot;: previously we mentioned the need for computing the probability of
 hairpins. To do so, the signature must be extended by one algebra-function. <!-- TODO which is unfortunately
 impossible by heritage within GAP-L.--> Thus, we need special signature, algebras and grammars. The
 later is externalized in the file <a
-href="?id=gra_macrostate_centers.gap">gra_macrostate_centers.gap</a>.</li>
-<li>structure2shape.gap: often it is necessary to convert a Vienna-Dot-Bracket string into a shape
+href="?id=gra_macrostate_centers.gap">Grammars/gra_macrostate_centers.gap</a>.</li>
+<li>&quot;structure2shape.gap&quot;: often it is necessary to convert a Vienna-Dot-Bracket string into a shape
 string. This can be done with this file, but it is very inefficient to do within ADP - compared to
 other parser techniques.</li>
 </ul>
 </div>
 </html>
-<structure>
-<dir descr="RNApackage">
-<dir descr="Tests"/>
-</dir>
-</structure>
 </element>
 
 </element>
-<element id="externalfunctionality" descr="External Functionality">
+<element id="externalfunctionality" ref="Algebras/" descr="Extending GAP">
 <html> We need a lot of functionality, which is not part of Bellman's GAP. These functions come via
 the *.hh files, and must be imported to the GAP-L main files. Unfortunately, imports are only
 possible at the beginning of a program, thus we cannot import a *.hh file from within an specific
@@ -169,25 +167,42 @@ subdirectories is impossible as well. So it gets a bit crowded in the root direc
 <file id="alifold.hh" ref="alifold.hh"/>
 </structure>
 </element>
+
+<element id="misc" descr="Misc">
+	<structure>
+		<element id="Applications" descr="Applications">
+			<html>Whilst the algorithms are written in GAP-L, programs we develope often have to provide some more functionality then just printing a result. Interaction with the user, combining different GAP-L runs / programs, formatting the output, run tests, prepare grid engine array-jobs is all done via simple Perl scripts. The &quot;Applications&quot; directory contains those program specific Perl scripts, plus a module &quot;PerlUtils.pm&quot; for common routines and a second module &quot;PerlSettings.pm&quot; where you can centralized </html>
+		</element>
+		<element id="RNApackage" descr="RNApackage">
+			<html>Is a very preliminary and incomplete attempt to automatically build numerous instances and tie them together with an command line interface with the aim to distribute our software. You should not use any of those files ;-)</html>
+		</element>
+		<element id="Tests" descr="Tests">
+			<html><p>This directory contains a test framework, stolen from Georg Sauthoff, to run some regression tests for the software in this repository. The &quot;truth&quot; is delivered in form of files in the subdirectory &quot;Truth/&quot;, which are outputs of controlled previous runs, which hopefully were correct.</p>
+<p>The file &quot;config&quot; lists all available tests. To run them, go into the Tests directory and type <code>ksh run.sh ../Truth</code>. You also find some Perl scripts, which I used to check consistency to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna-Package</a>.</p>
+<p>All our grammars do not support lonely base-pairs, because we don't think that they should be considered for stable structures. Furthermore there are no associated energy parameters for them. Should you still want to see structures with lonely base-pairs in your search space, you could easily modify the rule <code>strong = sr(BASE, weak, BASE) with basepair # h</code> to just <code>strong = weak # h</code>. To do this automatically, run the script &quot;makeLPgrammars.pl&quot; with parameter <code>generate</code> and have a look at all the new &quot;*.autoLP&quot; files in the root directory and the &quot;Grammars&quot; directory.</p></html>
+		</element>
+	</structure>
+</element>
+
 <element id="prerequisites" descr="Prerequisites">
 <html>
 <div xmlns="http://www.w3.org/1999/xhtml">
 Prerequisites for compiling an Instance are: <ul>
-<li>the Bellmans GAP compiler: <a href="http://bibiserv.cebitec.uni-bielefeld.de/gapc"
->http://bibiserv.cebitec.uni-bielefeld.de/gapc</a></li>
+<li>the Bellmans GAP compiler: <a href="http://bibiserv.cebitec.uni-bielefeld.de/bellmansgap"
+>http://bibiserv.cebitec.uni-bielefeld.de/bellmansgap</a></li>
 <li>Since Bellmans GAP compiler produces C++ target code, you need an C++ compiler.</li>
-<li>We recommend &quot;g++&quot; and &quot;make&quot;</li>
+<li>We recommend <code>g++</code> and <code>make</code></li>
 <li>some editor to optionally modify the program.</li>
 </ul>
 <h3>How to compile an instance</h3> Let us assume you want to build a program, which computes the
-best minimal free energy secondary structure, i.e. its energy value in kcal/mol plus its Vienna Dot
-Bracket representation for the NoDangle grammar: <ol>
-<li>enter any console and cd to our repository</li>
+best <a href="?id=alg_mfe.gap">minimal free energy</a> secondary structure, i.e. its energy value in kcal/mol plus its <a href="?id=alg_dotBracket.gap">Vienna Dot Bracket</a> representation for the <a href="?id=gra_nodangle.gap">NoDangle grammar</a>: 
+<ol>
+<li>enter any console and <code>cd</code> to the repository</li>
 <li>generate C++ target code with Bellmans GAP compiler for the predefined instance
-&quot;mfepp&quot; by typing: &quot;gapc -i mfepp -t nodangle.gap&quot;</li>
-<li>compile the generated target code via &quot;make -f out.mf&quot;</li>
-<li>use the new binary &quot;./out ACUGACUAGCUAGUCGUUAC&quot;</li>
-</ol> See <a href="http://bibiserv.cebitec.uni-bielefeld.de/gapc"
+<code>mfepp</code> by typing: <code>gapc -i mfepp -t nodangle.gap</code></li>
+<li>compile the generated target code via <code>make -f out.mf</code></li>
+<li>use the new binary <code>./out ACUGACUAGCUAGUCGUUAC</code></li>
+</ol> See <a href="http://bibiserv.cebitec.uni-bielefeld.de/bellmansgap"
 >GAPC FAQ</a> for more information
 about Bellmans GAP compiler.
 </div>
@@ -197,31 +212,65 @@ about Bellmans GAP compiler.
 <element id="references" descr="References">
 <html>
 <div xmlns="http://www.w3.org/1999/xhtml">
-<a href="http://www.biomedcentral.com/1471-2105/12/429/">Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction</a>
-<a href="http://onlinelibrary.wiley.com/doi/10.1002/%28SICI%291097-0282%28199902%2949:2%3C145::AID-BIP4%3E3.0.CO;2-G/abstract">Complete suboptimal folding of RNA and the stability of secondary structures</a>
-<a href="http://nar.oupjournals.org/cgi/content/abstract/32/16/4843">Abstract Shapes of RNA</a>
-<a href="http://rnajournal.cshlp.org/content/early/2012/10/24/rna.033548.112.short">Abstract folding space analysis based on helices</a>
-<a href="http://bibiserv.techfak.uni-bielefeld.de/pkiss/pkiss_paper.pdf">Prediction of RNA secondary structure including kissing hairpin motifs.</a>
-<a href="http://bioinformatics.oxfordjournals.org/content/26/5/632.short">Faster computation of exact RNA shape probabilities</a>
-<a href="http://www.biomedcentral.com/1741-7007/4/5/">Complete probabilistic analysis of RNA shapes</a>
+<ul class="references">
+<li>
+	<span class="authors">Jiabin Huang, Rolf Backofen, Bj&#246;rn Vo&#223;</span><br/>
+	<span class="title"><a href="http://rnajournal.cshlp.org/content/early/2012/10/24/rna.033548.112.short">Abstract folding space analysis based on helices</a></span><br/>
+	in <span class="journal">RNA, 2012</span>
+</li>
+<li>
+	<span class="authors">Stefan Janssen, Christian Schudoma, Gerhard Steger, Robert Giegerich</span><br/>
+	<span class="title"><a href="http://www.biomedcentral.com/1471-2105/12/429/">Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction</a></span><br/>
+	in <span class="journal">BMC Bioinformatics, 12(1), Pages 429 ff., 2011</span>
+</li>
+<li>
+	<span class="authors">Corinna Theis, Stefan Janssen, Robert Giegerich</span><br/>
+	<span class="title"><a href="http://bibiserv.techfak.uni-bielefeld.de/pkiss/pkiss_paper.pdf">Prediction of RNA secondary structure including kissing hairpin motifs.</a></span><br/>
+	in <span class="journal">Proceedings of the 10th Workshop on Algorithms in Bioinformatics (WABI 2010), LNBI 6293, Pages:52-64, 2010</span>
+</li>
+<li>
+	<span class="authors">Bj&#246;rn Vo&#223;, Robert Giegerich, Marc Rehmsmeier,</span><br/>
+	<span class="title"><a href="http://www.biomedcentral.com/1741-7007/4/5/">Complete probabilistic analysis of RNA shapes</a></span><br/>
+	in <span class="journal">BMC Biol, 4(1) , Pages:5, 2006</span>
+</li>
+<li>
+	<span class="authors">Robert Giegerich, Bj&#246;rn Vo&#223;, Marc Rehmsmeier</span><br/>
+	<span class="title"><a href="http://nar.oupjournals.org/cgi/content/abstract/32/16/4843">Abstract Shapes of RNA</a></span><br/>
+	in <span class="journal">Nucl. Acids Res. 32(16): 4843-4851, 2004</span>
+</li>
+<li>
+	<span class="authors">Stefan Janssen, Robert Giegerich,</span><br/>
+	<span class="title"><a href="http://bioinformatics.oxfordjournals.org/content/26/5/632.short">Faster computation of exact RNA shape probabilities</a></span><br/>
+	in <span class="journal">Bioinformatics, 26(5) , Pages:632-639, 2010</span>
+</li>
+<li class="references">
+	<span class="authors">Stefan Wuchty, Walter Fontana, Ivo L. Hofacker, Peter Schuster</span><br/>
+	<span class="title"><a href="http://onlinelibrary.wiley.com/doi/10.1002/%28SICI%291097-0282%28199902%2949:2%3C145::AID-BIP4%3E3.0.CO;2-G/abstract">Complete suboptimal folding of RNA and the stability of secondary structures</a></span><br/>
+	in <span class="journal">Biopolymers, Volume 49, Issue 2, pages 145-165, February 1999</span>
+</li>
+</ul>
 </div>
 </html>
 </element>
 
 <element id="contributors" descr="Contributors">
 <html><div xmlns="http://www.w3.org/1999/xhtml">
-contributor list missing ...
+Following people contributed to this repository:
+<ul>
+	<li><b>Jiabin Huang</b> (<a href="mailto:jiabin.huang@biologie.uni-freiburg.de">jiabin.huang@biologie.uni-freiburg.de</a>) developed the program <a href="http://www.cyanolab.de/software/RNAHeliCes.htm">RNAHeliCes</a>, based on this repository and kindly provided <a href="?id=alg_hishapes.gap">Algebras/Shapes/alg_hishapes.gap</a> and <a href="?id=alg_ali_hishapes.gap">Algebras/Shapes/alg_ali_hishapes</a>, capturing his core idea. He also inspired <a href="?id=gra_macrostate_center.gap">Grammars/gra_macrostate_center.gap</a></li>
+</ul>
 </div></html>
 </element>
 </description>
 
 <!-- 
 ToDos:
+ + ist das anzuzeigende "Teil" ein "element" und kein "file" dann wird die ID als Ueberschrift verwendet, besser waere es hier die descr zu verwenden.
  - bei internem Link wird falsches file gehighlighted
  + Texte fuer "Grammars" Ebene?: Sollte durch geschickte schalchteln klappen.
  + ueber Source code Anzeige: link zum download des files
  - navigation verhaelt sich komisch, wenn man Sachen einklappen möchte
  + anderes highlighting für *.hh?
  + text fuer Program als 4. Punkt von GAP Components?
- + highlighting für alifold.hh kommt mit Kommentar nicht klar
+ + highlighting für alifold.hh kommt mit Kommentar nicht klar. Jetzt wird der Kommentar in alg_mfe_macrostate.gap nicht korrekt markiert. Hab es wieder zurueckgestellt. Da alifold.hh nun C++ highlighting ist klappt gerade beides :-)
 -->
