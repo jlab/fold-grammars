@@ -1,18 +1,3 @@
-//innards for computing K-type pseudoknots
-  //middleNoDangling is a special rules for the third loop region in K-type pseudoknots
-  middleNoDangling                                          = pk_comps  
-                                                              # h;
-
-  //middleNoCoaxStack is a special rules for the forth loop region in K-type pseudoknots
-  middleNoCoaxStack(int betaRightInner, int alphaLeftInner) = nil       (LOC)                                                                             |
-                                                              middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
-                                                              midregion (      pk_comps                                      )                            |
-                                                              middl     (BASE, pk_comps      ; betaRightInner                )                            |
-                                                              middr     (      pk_comps, BASE;                 alphaLeftInner)                            |
-                                                              middlr    (BASE, pk_comps, BASE; betaRightInner, alphaLeftInner) 
-                                                              # h;
-          
-
   //computes csrPKs, given left and right borders of the subword, namely i and j AND the right stop position for alpha-helix, namely l. Thus we only iterate over k.
   help_pknot_free_k(int ll, int startK) = 
     .[

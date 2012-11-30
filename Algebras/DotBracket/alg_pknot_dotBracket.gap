@@ -1,60 +1,60 @@
-algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp = string_t, compKnot = string_t) {
-//begin: copy and paste from non-crossing algebra
-  string_t sadd(Subsequence lb, string_t e) {
-    string_t res;
+algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp = Rope, compKnot = Rope) {
+//begin: copy and paste from non-crossing algebra, but we have to use Rope instead of strings, since we need more than chars ().
+  Rope sadd(Subsequence lb, Rope e) {
+    Rope res;
     append(res, '.');
     append(res, e);
     return res;
   }
 
-  string_t cadd(string_t le,string_t re) {
-    string_t res;
+  Rope cadd(Rope le,Rope re) {
+    Rope res;
     append(res, le);
     append(res, re);
     return res;
   }
 
-  string_t nil(Subsequence loc) {
-    string_t r;
+  Rope nil(Subsequence loc) {
+    Rope r;
     return r;
   }
 
-  string_t edl(Subsequence lb,string_t e, Subsequence loc) {
-    string_t res;
+  Rope edl(Subsequence lb,Rope e, Subsequence loc) {
+    Rope res;
     append(res, '.');
     append(res, e);
     return res;
   }
 
-  string_t edr(Subsequence loc, string_t e,Subsequence rb) {
-    string_t res;
+  Rope edr(Subsequence loc, Rope e,Subsequence rb) {
+    Rope res;
     append(res, e);
     append(res, '.');
     return res;
   }
 
-  string_t edlr(Subsequence lb,string_t e,Subsequence rb) {
-    string_t res;
+  Rope edlr(Subsequence lb,Rope e,Subsequence rb) {
+    Rope res;
     append(res, '.');
     append(res, e);
     append(res, '.');
     return res;
   }
 
-  string_t drem(Subsequence lloc, string_t e, Subsequence rloc) {
+  Rope drem(Subsequence lloc, Rope e, Subsequence rloc) {
     return e;
   }
 
-  string_t sr(Subsequence lb,string_t e,Subsequence rb) {
-    string_t res;
+  Rope sr(Subsequence lb,Rope e,Subsequence rb) {
+    Rope res;
     append(res, '(');
     append(res, e);
     append(res, ')');
     return res;
   }
 
-  string_t hl(Subsequence lb,Subsequence region,Subsequence rb) {
-    string_t res;
+  Rope hl(Subsequence lb,Subsequence region,Subsequence rb) {
+    Rope res;
     append(res, '(');
     append(res, '.', size(region));
     append(res, ')');
@@ -62,8 +62,8 @@ algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp 
   }
 
 
-  string_t bl(Subsequence lb,Subsequence lregion,string_t e,Subsequence rb) {
-    string_t res;
+  Rope bl(Subsequence lb,Subsequence lregion,Rope e,Subsequence rb) {
+    Rope res;
     append(res, '(');
     append(res, '.', size(lregion));
     append(res, e);
@@ -71,8 +71,8 @@ algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp 
     return res;
   }
 
-  string_t br(Subsequence lb,string_t e,Subsequence rregion,Subsequence rb) {
-    string_t res;
+  Rope br(Subsequence lb,Rope e,Subsequence rregion,Subsequence rb) {
+    Rope res;
     append(res, '(');
     append(res, e);
     append(res, '.', size(rregion));
@@ -80,8 +80,8 @@ algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp 
     return res;
   }
 
-  string_t il(Subsequence lb,Subsequence lregion,string_t e,Subsequence rregion,Subsequence rb) {
-    string_t res;
+  Rope il(Subsequence lb,Subsequence lregion,Rope e,Subsequence rregion,Subsequence rb) {
+    Rope res;
     append(res, '(');
     append(res, '.', size(lregion));
     append(res, e);
@@ -90,16 +90,16 @@ algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp 
     return res;
   }
 
-  string_t ml(Subsequence lb,string_t e,Subsequence rb) {
-    string_t res;
+  Rope ml(Subsequence lb,Rope e,Subsequence rb) {
+    Rope res;
     append(res, '(');
     append(res, e);
     append(res, ')');
     return res;
   }
 
-  string_t mldr(Subsequence lb,string_t e,Subsequence dr,Subsequence rb) {
-    string_t res;
+  Rope mldr(Subsequence lb,Rope e,Subsequence dr,Subsequence rb) {
+    Rope res;
     append(res, '(');
     append(res, e);
     append(res, '.');
@@ -107,8 +107,8 @@ algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp 
     return res;
   }
 
-  string_t mldlr(Subsequence lb,Subsequence dl,string_t e,Subsequence dr,Subsequence rb) {
-    string_t res;
+  Rope mldlr(Subsequence lb,Subsequence dl,Rope e,Subsequence dr,Subsequence rb) {
+    Rope res;
     append(res, '(');
     append(res, '.');
     append(res, e);
@@ -117,8 +117,8 @@ algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp 
     return res;
   }
 
-  string_t mldl(Subsequence lb,Subsequence dl,string_t e,Subsequence rb) {
-    string_t res;
+  Rope mldl(Subsequence lb,Subsequence dl,Rope e,Subsequence rb) {
+    Rope res;
     append(res, '(');
     append(res, '.');
     append(res, e);
@@ -126,26 +126,26 @@ algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp 
     return res;
   }
 
-  string_t addss(string_t e,Subsequence rb) {
-    string_t res;
+  Rope addss(Rope e,Subsequence rb) {
+    Rope res;
     append(res, e);
     append(res, '.', size(rb));
     return res;
   }
 
-  string_t incl(string_t e) {
+  Rope incl(Rope e) {
     return e;
   }
 //end: copy and paste from non-crossing algebra  
   
   
 
-  string_t pk(string_t x) {
+  Rope pk(Rope x) {
     return x;
   }
 
-  string_t pknot(Subsequence a, string_t frt, Subsequence b, string_t mid, Subsequence at, string_t bck, Subsequence bt ; int stackenergies) {
-    string_t res;
+  Rope pknot(Subsequence a, Rope frt, Subsequence b, Rope mid, Subsequence at, Rope bck, Subsequence bt ; int stackenergies) {
+    Rope res;
     
 	append(res, '[', size(a));
     append(res, '.');
@@ -160,8 +160,8 @@ algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp 
     return res;
   }
 
-  string_t pkiss(Subsequence a, string_t front, Subsequence b, string_t middle1, Subsequence aPrime, string_t middle2, Subsequence c, string_t middle3, Subsequence bPrime, string_t back, Subsequence cPrime; int stackenergies) {
-    string_t res;
+  Rope pkiss(Subsequence a, Rope front, Subsequence b, Rope middle1, Subsequence aPrime, Rope middle2, Subsequence c, Rope middle3, Subsequence bPrime, Rope back, Subsequence cPrime; int stackenergies) {
+    Rope res;
     
 	append(res, '[', size(a));
     append(res, '.');
@@ -182,101 +182,101 @@ algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp 
     return res;
   }
   
-  string_t kndl(Subsequence ld, string_t x) {
-    string_t res;
+  Rope kndl(Subsequence ld, Rope x) {
+    Rope res;
     append(res, '.');
     append(res, x);
     return res;
   }
 
-  string_t kndr(string_t x, Subsequence rd) {
-    string_t res;
+  Rope kndr(Rope x, Subsequence rd) {
+    Rope res;
     append(res, x);
     append(res, '.');
     return res;
   }
 
-  string_t kndlr(Subsequence ld, string_t x, Subsequence rd) {
-    string_t res;
+  Rope kndlr(Subsequence ld, Rope x, Subsequence rd) {
+    Rope res;
     append(res, '.');
     append(res, x);
     append(res, '.');
     return res;
   }
 
-  string_t pkml(string_t x) {
+  Rope pkml(Rope x) {
     return x;
   }
 
-  string_t frd(string_t x, Subsequence ld; int betaRightOuter) {
-    string_t res;
+  Rope frd(Rope x, Subsequence ld; int betaRightOuter) {
+    Rope res;
     append(res, x);
     append(res, '.');
     return res;
   }
 
-  string_t emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
-    string_t res;
+  Rope emptymid(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    Rope res;
     return res;
   }
 
-  string_t midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
-    string_t res;
+  Rope midbase(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    Rope res;
     append(res, '.');
     return res;
   }
 
-  string_t middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
-    string_t res;
+  Rope middlro(Subsequence m; int betaRightInner, int alphaLeftInner) {
+    Rope res;
     append(res, "..", 2);
     return res;
   }
 
-  string_t midregion(string_t x) {
+  Rope midregion(Rope x) {
     return x;
   }
 
-  string_t middl(Subsequence ld, string_t x;  int betaRightInner) {
-    string_t res;
+  Rope middl(Subsequence ld, Rope x;  int betaRightInner) {
+    Rope res;
     append(res, '.');
     append(res, x);
     return res;
   }
 
-  string_t middr(string_t x, Subsequence rd;  int alphaLeftInner) {
-    string_t res;
+  Rope middr(Rope x, Subsequence rd;  int alphaLeftInner) {
+    Rope res;
     append(res, x);
     append(res, '.');
     return res;
   }
 
-  string_t middlr(Subsequence ld, string_t x, Subsequence rd; int betaRightInner, int alphaLeftInner) {
-    string_t res;
+  Rope middlr(Subsequence ld, Rope x, Subsequence rd; int betaRightInner, int alphaLeftInner) {
+    Rope res;
     append(res, '.');
     append(res, x);
     append(res, '.');
     return res;
   }
 
-  string_t bkd(Subsequence rd, string_t x; int alphaLeftOuter) {
-    string_t res;
+  Rope bkd(Subsequence rd, Rope x; int alphaLeftOuter) {
+    Rope res;
     append(res, '.');
     append(res, x);
     return res;
   }
  
-  string_t sadd_pk(Subsequence base, string_t x) {
-    string_t res;
+  Rope sadd_pk(Subsequence base, Rope x) {
+    Rope res;
     append(res, '.');
     append(res, x);
     return res;
   }
 
-  choice [string_t] h([string_t] i) {
+  choice [Rope] h([Rope] i) {
     return unique(i); //unique is necessary for microstate-like grammars
   }
 
-  choice [string_t] hKnot([string_t] i) {
+  choice [Rope] hKnot([Rope] i) {
     return unique(i); //unique is necessary for microstate-like grammars
   }
 }
