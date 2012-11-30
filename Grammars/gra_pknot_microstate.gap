@@ -1,4 +1,4 @@
-grammar gra_locomotif_microstate uses sig_pknot_foldrna(axiom = struct) {
+grammar gra_pknot_microstate uses sig_pknot_foldrna(axiom = struct) {
   struct    = sadd(BASE, struct)   |
               cadd({dangle | dangleknot}, struct) |		//the dangleknot alternative is for pseudoknots
               nil(LOC)           # h;
@@ -57,18 +57,17 @@ grammar gra_locomotif_microstate uses sig_pknot_foldrna(axiom = struct) {
    At most alternatives you find "include"s, which hide the index hacking details for the realisations of pseudoknots.
 */
 
-/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy A */
+/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy A #~#pKissA#~# */
   include "Grammars/grapart_pkissA.gap" //include this file, if grammar contains K-type pseudoknots
-  knot      =  help_pknot_free_kl							// for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG
-														    // next four lines are for K-type pseudoknots, aka canonical simple recursive kissing hairpins, which are calculated by pKiss - here with strategy A
+  knot      =  help_pknot_free_kl							// for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG. Next four lines are for K-type pseudoknots, aka canonical simple recursive kissing hairpins, which are calculated by pKiss - here with strategy A
             | {help_pknot_free_k .(0, 0). 					//A: lookup table for PKs in csrKHs left computation
             |  help_pknot_free_l .(0, 0). }  with ignore 	//A: lookup table for PKs in csrKHs right computation
             |  help_pkiss_Aleft 							//A: csrKHs left (optimal csrPK on the left half, suboptimal PK on the right)
             |  help_pkiss_Aright 							//A: csrKHs right (optimal csrPK on the right half, suboptimal PK on the left)
 			# hKnot;
+/* END of pKiss strategy A code. #~#pKissA#~# <-- this tag is for automatic conversion between strategies, mainly for testing. Please don't change it */
 
-
-/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy B */
+/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy B #~#pKissB#~# */
   //~ include "Grammars/grapart_pkissB.gap" //include this file, if grammar contains K-type pseudoknots
   //~ include "Grammars/grapart_pkissBC.gap"
   //~ knot      =  help_pknot_free_kl_3D						//B: csrPKs AND lookup table for PKs in csrKH computation
@@ -76,25 +75,30 @@ grammar gra_locomotif_microstate uses sig_pknot_foldrna(axiom = struct) {
             //~ |  help_pkiss_B .(false).						//B: csrKHs whose indices l and k may cross each other
             //~ |  help_pkiss_B .(true).						//B: csrKHs whose indices l and k can't cross because of an arbitrary boundary
             //~ # hKnot;
+/* END of pKiss strategy B code. #~#pKissB#~# <-- this tag is for automatic conversion between strategies, mainly for testing. Please don't change it */
 
 
-/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy C */
+/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy C #~#pKissC#~# */
   //~ include "Grammars/grapart_pkissC.gap" //C: contains help_pkiss_C
   //~ include "Grammars/grapart_pkissBC.gap"
   //~ knot      =  help_pknot_free_kl					//C: csrPKs
             //~ | {help_pknot .(0, 0). } with ignore	//C: lookup table for PKs in csrKHs computation
             //~ |  help_pkiss_C							//C: csrPKs
             //~ # hKnot;
+/* END of pKiss strategy C code. #~#pKissC#~# <-- this tag is for automatic conversion between strategies, mainly for testing. Please don't change it */
 
 
-/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy D */
+/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy D #~#pKissD#~# */
   //~ include "Grammars/grapart_pkissD.gap" //D: contains help_pkiss_D
   //~ knot      =  help_pknot_free_kl	//D: csrPKs
 		    //~ |  help_pkiss_D			//D: csrKHs
             //~ # hKnot;
+/* END of pKiss strategy D code. #~#pKissD#~# <-- this tag is for automatic conversion between strategies, mainly for testing. Please don't change it */
 
 
-/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy A */
+/* Code for H-type pseudoknots. #~#pknotsRG#~# */
   //~ knot      =  help_pknot_free_kl							// for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG
             //~ # hKnot;
+/* END of pknotsRG code. #~#pknotsRG#~# <-- this tag is for automatic conversion between strategies, mainly for testing. Please don't change it */
+
 }

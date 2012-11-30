@@ -1,5 +1,5 @@
 import rna
-import stacklen
+import stacklen //precomputation of energetically best non-interrupted stems for all subwords i to j
 import pkenergy //some energy constants for pseudoknots + minimal stem length
 import pkextras //special functions for different strategies of pKiss and its index hacking, e.g. 3D-Tables, finding compatible H-type pseudoknots, ...
 //~ import pkshape //for a smart hashable "string" with chars []{}<>()._
@@ -8,7 +8,7 @@ import singlefold //necessary to redefine the meaning of the filter "basepair". 
 input rna
 
 type Rope = extern
-//~ type pkshape_t = extern
+type pkshape_t = extern
 type mfeanswer = (int energy, int betaLeftOuter, int alphaRightOuter)
 type pfuncanswer = (double pfunc, int betaLeftOuter, int alphaRightOuter)
 //~ type dotBracket_t = pkshape_t
@@ -23,8 +23,15 @@ algebra alg_enum auto enum;
 include "Algebras/DotBracket/alg_pknot_dotBracket.gap"
 include "Algebras/MFE/alg_pknot_mfe.gap"
 include "Algebras/Pfunc/alg_pknot_pfunc.gap"
+//~ include "Algebras/Shapes/alg_pknot_shapes.gap"
 
-include "Grammars/gra_locomotif_microstate.gap"
+include "Grammars/gra_pknot_microstate.gap"
 
-instance mfepp = gra_locomotif_microstate(alg_pknot_mfe * alg_pknot_dotBracket); //compile with --kbacktrace --tab-all !
-instance count = gra_locomotif_microstate(alg_count);
+instance mfepp = gra_pknot_microstate(alg_pknot_mfe * alg_pknot_dotBracket); //compile with --kbacktrace --tab-all !
+instance count = gra_pknot_microstate(alg_count);
+//~ instance shape5pf = gra_pknot_microstate(alg_pknot_shape5 * (alg_pknot_mfe % alg_pknot_pfunc)); //compile with --tab-all
+//~ instance shape5mfedb = gra_pknot_microstate(alg_pknot_shape5 * (alg_pknot_mfe * alg_pknot_dotBracket)); //compile with --tab-all
+
+//~ TODOS:
+//~ - profiling against Peter Steffens pknotsRG version in ADPc
+//~ - minLengthKissingHairpinStems and pkissinit (currently defined in pkenergy.hh) should be command line parameters

@@ -112,3 +112,12 @@ check_new_old_eq tdmGenerator.gap unused tdm_macrostate_3 [[][[[[]][]]]] tdmTest
 check_new_old_eq tdmGenerator.gap unused tdm_macrostate_2 [_[]_][_[_[_[]]]_] tdmTest
 check_new_old_eq tdmGenerator.gap unused tdm_macrostate_1 _[_[_[_[_[]]_]][_[]]_] tdmTest
 
+GAPC="$BASE/bin/gapc --tab-all --kbacktrace --no-coopt -I../../"
+LDLIBS_EXTRA="-lrna"
+RUN_CPP_FLAGS=""
+RUN_CPP_FLAGS="$PARAMSET1999"
+check_new_old_eq pKiss.gap.auto_pKissA unused mfepp AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUUUAACUACGUUUGAUACAAGUAGAGUAUUGG pkissA
+check_new_old_eq pKiss.gap.auto_pKissB unused mfepp AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUUUAACUACGUUUGAUACAAGUAGAGUAUUGG pkissB
+check_new_old_eq pKiss.gap.auto_pKissC unused mfepp AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUUUAACUACGUUUGAUACAAGUAGAGUAUUGG pkissC
+check_new_old_eq pKiss.gap.auto_pKissD unused mfepp AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUUUAACUACGUUUGAUACAAGUAGAGUAUUGG pkissD
+check_new_old_eq pKiss.gap.auto_pknotsRG unused mfepp AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUUUAACUACGUUUGAUACAAGUAGAGUAUUGG pknotsRG

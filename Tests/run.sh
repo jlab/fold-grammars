@@ -53,7 +53,8 @@ if [ ! -d $TEMP/$REF ]; then
 fi
 
 BASE_DIR="`pwd`"
-$PERL makeLPgrammars.pl generate
+$PERL makeLPgrammars.pl generate #generate special grammars that allow lonely basepairs from the standard noLP grammars
+$PERL makeStrategiespKiss.pl generate #generate special grammars for all fife different strategies of pKiss (A-D + pknotsRG)
 
 . ./tool.sh
 
@@ -240,6 +241,8 @@ check_external()
 
 . ../config
 
+$PERL ../makeLPgrammars.pl clean
+$PERL ../makeStrategiespKiss.pl clean #remove special grammars for all fife different strategies of pKiss (A-D + pknotsRG)
+
 . ../stats.sh
 
-$PERL makeLPgrammars.pl clean
