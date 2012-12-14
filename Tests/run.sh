@@ -5,7 +5,7 @@ set -u
 NO_CONFIG_MF="foo"
 export NO_CONFIG_MF
 
-BASE="/home/sjanssen/local/gapc"
+BASE="/stefan"
 
 GAPC=$BASE/bin/gapc
 GHC=ghc
