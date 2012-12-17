@@ -1,10 +1,10 @@
 VIENNA_SOURCEDIR = /home/sjanssen/Desktop/Turner2004/ViennaRNA-2.0.5/
 VIENNA_TAREGTDIR = Vienna/
-
 FOLDGRAMMARSDIR = /home/sjanssen/Desktop/fold-grammars/
-GAPC_BASEDIR = /home/sjanssen/Desktop/Turner2004/Gapc/
-LIBRNA = /home/sjanssen/Desktop/Turner2004/Gapc/librna/
-LIBRNA_DIR = -Xlinker -rpath -Xlinker /home/sjanssen/Desktop/Turner2004/Gapc/librna -L/home/sjanssen/Desktop/Turner2004/Gapc/librna
+GAPC_BASEDIR = /stefan/
+
+INCLUDES = -I $(GAPC_BASEDIR)/include/rtlib -I $(GAPC_BASEDIR)/include/librna -I $(GAPC_BASEDIR)/include -I ../
+LIBDIRS = -Xlinker -rpath -Xlinker $(GAPC_BASEDIR)lib/ -L$(GAPC_BASEDIR)lib/
 
 CPPFLAGS = -g3 -O0 -Wall -Wnon-virtual-dtor -Wno-parentheses -fmessage-length=0	#for debugging
 #~ CPPFLAGS = -g -O3 -DNDEBUG -Wall -Wnon-virtual-dtor -Wno-parentheses -fmessage-length=0	#for production
@@ -44,14 +44,14 @@ compile:
 	gengetopt < RNAshapes.ggo
 	g++ -c RNAshapes_cmdl.c
 	gcc -I $(VIENNA_TAREGTDIR)H/ -c $(VIENNA_TAREGTDIR)lib/utils.c -o utils.o
-	g++ -I $(GAPC_BASEDIR)rtlib/ -I $(GAPC_BASEDIR) -I $(LIBRNA) $(CPPFLAGS) -c $(GAPC_BASEDIR)rtlib/string.cc -o string.o
-	g++ -I $(GAPC_BASEDIR) -I $(GAPC_BASEDIR)rtlib/ -I $(LIBRNA) $(CPPFLAGS) -MMD -MP -o shape5mfedb.o -c shape5mfedb.cc
-	g++ -I $(GAPC_BASEDIR) -I $(GAPC_BASEDIR)rtlib/ -I $(LIBRNA) $(CPPFLAGS) -MMD -MP -o shape4mfedb.o -c shape4mfedb.cc
-	g++ -I $(GAPC_BASEDIR) -I $(GAPC_BASEDIR)rtlib/ -I $(LIBRNA) $(CPPFLAGS) -MMD -MP -o shape3mfedb.o -c shape3mfedb.cc
-	g++ -I $(GAPC_BASEDIR) -I $(GAPC_BASEDIR)rtlib/ -I $(LIBRNA) $(CPPFLAGS) -MMD -MP -o shape2mfedb.o -c shape2mfedb.cc
-	g++ -I $(GAPC_BASEDIR) -I $(GAPC_BASEDIR)rtlib/ -I $(LIBRNA) $(CPPFLAGS) -MMD -MP -o shape1mfedb.o -c shape1mfedb.cc
-	g++ -I $(VIENNA_TAREGTDIR)H/ -I $(GAPC_BASEDIR) -I $(GAPC_BASEDIR)rtlib/ -I $(LIBRNA) $(CPPFLAGS) -MMD -MP -MF"RNAshapes.d" -MT"RNAshapes.d" -o RNAshapes.o -c RNAshapes.cc
-	g++ -o RNAshapes RNAshapes_cmdl.o RNAshapes.o string.o shape5mfedb.o shape4mfedb.o shape3mfedb.o shape2mfedb.o shape1mfedb.o utils.o $(LIBRNA_DIR) -lrna
+	g++ $(INCLUDES) $(CPPFLAGS) -c $(GAPC_BASEDIR)include/rtlib/string.cc -o string.o
+	g++ $(INCLUDES) $(CPPFLAGS) -MMD -MP -o shape5mfedb.o -c shape5mfedb.cc
+	g++ $(INCLUDES) $(CPPFLAGS) -MMD -MP -o shape4mfedb.o -c shape4mfedb.cc
+	g++ $(INCLUDES) $(CPPFLAGS) -MMD -MP -o shape3mfedb.o -c shape3mfedb.cc
+	g++ $(INCLUDES) $(CPPFLAGS) -MMD -MP -o shape2mfedb.o -c shape2mfedb.cc
+	g++ $(INCLUDES) $(CPPFLAGS) -MMD -MP -o shape1mfedb.o -c shape1mfedb.cc
+	g++ -I $(VIENNA_TAREGTDIR)H/ $(INCLUDES) $(CPPFLAGS) -MMD -MP -MF"RNAshapes.d" -MT"RNAshapes.d" -o RNAshapes.o -c RNAshapes.cc
+	g++ -o RNAshapes RNAshapes_cmdl.o RNAshapes.o string.o shape5mfedb.o shape4mfedb.o shape3mfedb.o shape2mfedb.o shape1mfedb.o utils.o $(LIBDIRS) -lrna
 	
 
 	
