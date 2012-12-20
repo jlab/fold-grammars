@@ -3,7 +3,7 @@
     .[
       int i = t_0_i;
       int j = t_0_j;
-      if (i+3<=k && k+4<=lindex && lindex+4<=j) { // &&  i+11 <= j) {
+      if (i+2+1<=k && k+2*2<=lindex && lindex+2+2<=j) { // &&  i+11 <= j) {
         int betamaxlen = second(stacklen(t_0_seq, k, j));
         if (betamaxlen >= 2) {
           int alphamaxlen = second(stacklen(t_0_seq, i, lindex));

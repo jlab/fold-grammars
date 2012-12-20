@@ -1,7 +1,35 @@
 #ifndef PKEXTRAS_HH
 #define PKEXTRAS_HH
 
+static const int npp = 10; //penalty for an unpaired base inside a pseudoknot
+static const int pkmlinit = 600; //additional penalty for a pseudoknot inside front, middle or back of an existing outer pseudoknot
+inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
+	return gapc::Opts::getOpts()->energyPenaltyHtype;
+}
+inline static int pkissinit() { //initialization cost for opening a new kissing hairpin. Default is 1200.
+	return gapc::Opts::getOpts()->energyPenaltyKtype;
+}
+inline static int minLengthKissingHairpinStems() { //minimal length of those two stems in a KH that form the hairpins, not the crossing stem of the kiss. Default is 2
+	return gapc::Opts::getOpts()->minimalHelixLength;
+}
+
+
+
 /* START: everything for strategy A: finding compatible pseudoknots */
+	inline mfeanswer get_pk_fn(mfeanswer candidate) {
+		return candidate;
+	}
+	
+	inline mfeanswer get_pk_fn(const List_Ref<mfeanswer> &subopts) {
+		mfeanswer res;
+		empty(res);
+		if (!is_empty(subopts)) {
+			res = minimum(subopts)->front();
+		}
+		return res;
+	}
+
+	
 	template<typename V, typename I>
 	inline mfeanswer get_pk_fn(const Hash::Ref<V, I > &t) {
 		//typename Hash::Ref<V, I > hash_h;
@@ -22,37 +50,40 @@
 		}
 		return a;
 	}
+	
+	//~ inline mfeanswer get_pk_fn(const mfeanswer &a) { 
+		//~ return a; 
+	//~ }
+	
+	//~ template<typename B>
+	//~ inline mfeanswer &get_pk_fn(std::pair<mfeanswer, B> &p) { 
+		//~ return p.first; 
+	//~ }
 
-	inline mfeanswer get_pk_fn(const mfeanswer &a) { 
-		return a; 
-	}
+	//~ template<typename T, typename pos_int>
+	//~ inline mfeanswer get_pk_fn(List_Ref<T, pos_int> &l) {
+		//~ List<T, pos_int> &x = l.ref();
+		//~ mfeanswer a;
+		//~ typename List<T, pos_int>::iterator i = x.begin();
+		//~ if (i == x.end()) {
+			//~ empty(a);
+			//~ return a;
+		//~ }
+		//~ a = get_pk_fn(*i);
+		//~ ++i;
+		//~ for (; i != x.end(); ++i) {
+			//~ mfeanswer t = get_pk_fn(*i);
+			//~ if (t < a) {
+				//~ a = t;
+			//~ }
+		//~ }
+		//~ return a;
+	//~ }
 
-	template<typename B>
-	inline mfeanswer &get_pk_fn(std::pair<mfeanswer, B> &p) { 
-		return p.first; 
-	}
-
-	template<typename T, typename pos_int>
-	inline mfeanswer get_pk_fn(List_Ref<T, pos_int> &l) {
-		List<T, pos_int> &x = l.ref();
-		mfeanswer a;
-		typename List<T, pos_int>::iterator i = x.begin();
-		if (i == x.end()) {
-			empty(a);
-			return a;
-		}
-		a = get_pk_fn(*i);
-		++i;
-		for (; i != x.end(); ++i) {
-			mfeanswer t = get_pk_fn(*i);
-			if (t < a) {
-				a = t;
-			}
-		}
-		return a;
-	}
-
-	#define get_pk(i, m) get_pk_fn( nt_help_pknot_free_kl(i, m) )
+	
+	#define get_pk_free_kl(i, m) get_pk_fn( nt_help_pknot_free_kl(i, m) )	//for strategy A
+	#define get_pk(i,j,k,l) get_pk_fn( nt_help_pknot(i,j,k,l) )	 //for strategy B and strategy C
+	
 	#define get_pk_free_k(h, j, m, l) get_pk_fn( nt_help_pknot_free_k(h, j, m, l) )
 	#define get_pk_free_l(i, m, h, l) get_pk_fn( nt_help_pknot_free_l(i, m, h, l) )
 /* END: everything for strategy A: finding compatible pseudoknots */
@@ -150,6 +181,8 @@ inline bool ignore(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
 	inline void set(ThreeD &o, int i, int j, int l, int k, int mfe, int n) {
 	  o.set(i,j,l,k,mfe,n);
 	}
+	
+	
 /* END: everything for three dimensional tables in GAP, this is for strategy B */
 
 
@@ -170,22 +203,22 @@ inline pos_type size(const Basic_Sequence<alphabet, pos_type> &seq) {
 	}
 
 	inline int rpk_energy(int k) {
-		assert(k<rpk.size());
+		assert((unsigned int) k < rpk.size());
 		return rpk[k].first;
 	}
 
 	inline int rpk_index(int k) {
-		assert(k<rpk.size());
+		assert((unsigned int) k < rpk.size());
 		return rpk[k].second;
 	}
 
 	inline void rpk_set(int k) {
-		assert(k+1<rpk.size());
+		assert((unsigned int) k+1 < rpk.size());
 		rpk[k] = rpk[k+1];
 	}
 
 	inline void rpk_set(int k, int e, int i) {
-		assert(k<rpk.size());
+		assert((unsigned int) k < rpk.size());
 		rpk[k] = std::make_pair(e, i);
 	}
 /* END: everything for strategy C */

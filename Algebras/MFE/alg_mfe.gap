@@ -83,3 +83,8 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = int) {
 
 }
 
+algebra alg_mfe_subopt extends alg_mfe {
+  kscoring choice [int] h([int] i) {
+    return mfeSubopt(i);
+  }
+}

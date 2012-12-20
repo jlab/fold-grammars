@@ -106,7 +106,7 @@ algebra alg_pknot_pfunc implements sig_pknot_foldrna(alphabet = char, comp = dou
     
     res.pfunc =    scale(3) 									// for the 1+2 explicitly unpaired bases in the PK
 				 * mk_pf(stackenergies)                		 	// stacking energies
-                 * mk_pf(pkinit)                                // initiation energy for pk
+                 * mk_pf(pkinit())                              // initiation energy for pk
                  * mk_pf(3*npp)                                 // penalty for 1+2 explicitly unpaired bases
                  * front                                 		// energy from front substructure
                  * middle                                		// energy from middle substructure
@@ -158,7 +158,7 @@ algebra alg_pknot_pfunc implements sig_pknot_foldrna(alphabet = char, comp = dou
 
 	res.pfunc  =   scale(4)
 				 * mk_pf(stackenergies)                         // stacking energies
-                 * mk_pf(pkissinit)                             // initiation energy for pk
+                 * mk_pf(pkissinit())                           // initiation energy for pk
                  * mk_pf(4*npp)                                 // penalty for 1+2+1 explicitly unpaired bases
                  * front                                 		// energy from front substructure
                  * middle1                               		// energy from middle1 substructure

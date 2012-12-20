@@ -4,27 +4,27 @@
       int i = t_0_i;
       int j = t_0_j;
 
-      for (int h = i+minLengthKissingHairpinStems+1; h<=j-3*minLengthKissingHairpinStems-7; h=h+1) {
-        for (int k = h+minLengthKissingHairpinStems+2; k<=j-2*minLengthKissingHairpinStems-5; k=k+1) {
-          for (int l = k+2; l<=j-2*minLengthKissingHairpinStems-3; l=l+1) {
-            for (int m = l+minLengthKissingHairpinStems+2; m<=j-minLengthKissingHairpinStems-1; m=m+1) {
-              if (i+minLengthKissingHairpinStems+1>h || h+minLengthKissingHairpinStems+2>k || k+2>l || l+minLengthKissingHairpinStems+2>m || m+minLengthKissingHairpinStems+1>j) {
+      for (int h = i+minLengthKissingHairpinStems()+1; h<=j-3*minLengthKissingHairpinStems()-2*2-3; h=h+1) {
+        for (int k = h+2+minLengthKissingHairpinStems(); k<=j-2*minLengthKissingHairpinStems()-2-3; k=k+1) {
+          for (int l = k+2; l<=j-2*minLengthKissingHairpinStems()-2-1; l=l+1) {
+            for (int m = l+2+minLengthKissingHairpinStems(); m<=j-minLengthKissingHairpinStems()-1; m=m+1) {
+              if (i+minLengthKissingHairpinStems()+1>h || h+2+minLengthKissingHairpinStems()>k || k+2>l || l+2+minLengthKissingHairpinStems()>m || m+minLengthKissingHairpinStems()+1>j) {
                 continue;
               }
               int alphamaxlen = second(stacklen(t_0_seq, i, k));
-              if (alphamaxlen < minLengthKissingHairpinStems) {
+              if (alphamaxlen < minLengthKissingHairpinStems()) {
                 continue;
               }
               int alphareallen = min(alphamaxlen, h-i-1);
-              if (alphareallen < minLengthKissingHairpinStems) {
+              if (alphareallen < minLengthKissingHairpinStems()) {
                 continue;
               }
               int gammamaxlen = second(stacklen(t_0_seq, l, j));
-              if (gammamaxlen < minLengthKissingHairpinStems) {
+              if (gammamaxlen < minLengthKissingHairpinStems()) {
                 continue;
               }
               int gammareallen = min(gammamaxlen, j-m-1);
-              if (gammareallen < minLengthKissingHairpinStems) {
+              if (gammareallen < minLengthKissingHairpinStems()) {
                 continue;
               }
               int betamaxlen = second(stacklen(t_0_seq, h, m));

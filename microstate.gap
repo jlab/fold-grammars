@@ -1,6 +1,7 @@
 import rna
 import pfunc_filter_foldrna
 import singlefold //necessary to redefine the meaning of the filter "basepair". In singlefold this filter directly calles the build-in "basepairing" filter, in alignmentfold it gets hard codes parameters and returns true or false with dependance to the number of gaps in the rows
+import mferange
 
 input rna
 

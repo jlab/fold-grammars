@@ -1,6 +1,7 @@
 import rna
 import pfunc_filter_foldrna
 import singlefold //necessary to redefine the meaning of the filter "basepair". In singlefold this filter directly calles the build-in "basepairing" filter, in alignmentfold it gets hard codes parameters and returns true or false with dependance to the number of gaps in the rows
+import mferange
 
 input rna
 
@@ -22,6 +23,9 @@ algebra alg_mfe_overdangle extends alg_mfe {
   }
   int ml(Subsequence lb, int x, Subsequence rb) {
     return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
+  }
+  kscoring choice [int] h([int] i) {
+    return mfeSubopt(i);
   }
 }
 

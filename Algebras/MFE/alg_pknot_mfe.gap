@@ -96,7 +96,7 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, 
     res.alphaRightOuter = aPrime.j;
     
     res.energy =   stackenergies                         // stacking energies
-                 + pkinit                                // initiation energy for pk
+                 + pkinit()                              // initiation energy for pk
                  + 3*npp                                 // penalty for 1+2 explicitly unpaired bases
                  + front                                 // energy from front substructure
                  + middle                                // energy from middle substructure
@@ -147,7 +147,7 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, 
     res.alphaRightOuter = aPrime.j;
 
 	res.energy =   stackenergies                         // stacking energies
-                 + pkissinit                             // initiation energy for pk
+                 + pkissinit()                           // initiation energy for pk
                  + 4*npp                                 // penalty for 1+2+1 explicitly unpaired bases
                  + front                                 // energy from front substructure
                  + middle1                               // energy from middle1 substructure
@@ -292,5 +292,15 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, 
 
   choice [mfeanswer] hKnot([mfeanswer] i) {
     return list(minimum(i));
+  }
+}
+
+algebra alg_pknot_mfe_subopt extends alg_pknot_mfe {
+  kscoring choice [int] h([int] i) {
+    return mfeSubopt(i);
+  }
+
+  kscoring choice [mfeanswer] hKnot([mfeanswer] i) {
+    return mfeSuboptKnot(i);
   }
 }
