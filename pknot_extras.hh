@@ -1,5 +1,7 @@
-#ifndef PKEXTRAS_HH
-#define PKEXTRAS_HH
+#ifndef PKNOT_EXTRAS_HH
+#define PKNOT_EXTRAS_HH
+
+#include "pseudoknot_opts.hh"
 
 static const int npp = 10; //penalty for an unpaired base inside a pseudoknot
 static const int pkmlinit = 600; //additional penalty for a pseudoknot inside front, middle or back of an existing outer pseudoknot
@@ -93,6 +95,13 @@ inline static int minLengthKissingHairpinStems() { //minimal length of those two
 template<typename alphabet, typename pos_type, typename T>
 inline bool ignore(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
   return false;
+}
+
+template<typename alphabet, typename pos_type, typename T>
+inline bool selectStrategy(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const char strategy) {
+	//std::cerr << "strategy: " << strategy << std::endl;
+	return gapc::Opts::getOpts()->strategy == strategy;
+//  return false;
 }
 
 
