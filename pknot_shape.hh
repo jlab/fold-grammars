@@ -1,5 +1,5 @@
-#ifndef PKSHAPE_HH
-#define PKSHAPE_HH
+#ifndef PKNOT_SHAPE_HH
+#define PKNOT_SHAPE_HH
 
 template<typename alphabet, typename pos_type, typename T>
 inline bool midsize(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, int a, int l) {

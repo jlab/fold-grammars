@@ -1,5 +1,5 @@
-#ifndef ENFORCE_HH
-#define ENFORCE_HH
+#ifndef PKNOT_ENFORCE_HH
+#define PKNOT_ENFORCE_HH
 
 struct pktype {
   bool isH;

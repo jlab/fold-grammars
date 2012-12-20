@@ -1,7 +1,6 @@
 import rna
 import stacklen //precomputation of energetically best non-interrupted stems for all subwords i to j
-import pknot_energy //some energy constants for pseudoknots + minimal stem length
-import pknot_extras //special functions for different strategies of pKiss and its index hacking, e.g. 3D-Tables, finding compatible H-type pseudoknots, ...
+import pknot_extras //special functions for different strategies of pKiss and its index hacking, e.g. 3D-Tables, finding compatible H-type pseudoknots, ... + some energy constants for pseudoknots + minimal stem length
 import pknot_enforce
 //~ import pknot_shape //for a smart hashable "string" with chars []{}<>()._
 import singlefold //necessary to redefine the meaning of the filter "basepair". In singlefold this filter directly calles the build-in "basepairing" filter, in alignmentfold it gets hard codes parameters and returns true or false with dependance to the number of gaps in the rows

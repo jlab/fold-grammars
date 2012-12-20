@@ -49,56 +49,37 @@ grammar gra_pknot_microstate uses sig_pknot_foldrna(axiom = struct) {
   include "Grammars/grapart_pkinnards.gap" //include this file, if grammar contains pseudoknots of any kind
   include "Grammars/grapart_pknotsrg.gap"  //include this file, if grammar contains H-type pseudoknots
 
-/* 
-   In the following is code for the pseudoknot productions. There are fife different implementations of the non-terminal "knot".
-   We suggest the first one for pseudoknots of types H (as in pknotsRG) and K (as in pKiss). The later ones are computed with pKiss strategy A, which is a heuristic but turned out to perform well.
-   Should you don't want to compute K type pseudoknots with startegy A, you can alternatively switch to startegies B, C or D if you comment in the according implementations of "knot".
-   The last alternative is for computing just H type pseudoknots, but no K types at all.
-   At most alternatives you find "include"s, which hide the index hacking details for the realisations of pseudoknots.
-*/
-
-/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy A #~#pKissA#~# */
   include "Grammars/grapart_pkissA.gap" //include this file, if grammar contains K-type pseudoknots
-  knot      =  help_pknot_free_kl							// for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG. Next four lines are for K-type pseudoknots, aka canonical simple recursive kissing hairpins, which are calculated by pKiss - here with strategy A
+  include "Grammars/grapart_pkissB.gap" //include this file, if grammar contains K-type pseudoknots
+  include "Grammars/grapart_pkissBC.gap"
+  include "Grammars/grapart_pkissC.gap" //C: contains help_pkiss_C
+  include "Grammars/grapart_pkissD.gap" //D: contains help_pkiss_D
+  
+  knot = {strategyA} with selectStrategy('A')
+       | {strategyB} with selectStrategy('B') 
+       | {strategyC} with selectStrategy('C') 
+       | {strategyD} with selectStrategy('D')
+       | {pknotsRG } with selectStrategy('P') 
+       # hKnot;
+  
+  strategyA =  help_pknot_free_kl							//for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG.
             | {help_pknot_free_k .(0, 0). 					//A: lookup table for PKs in csrKHs left computation
             |  help_pknot_free_l .(0, 0). }  with ignore 	//A: lookup table for PKs in csrKHs right computation
             |  help_pkiss_Aleft 							//A: csrKHs left (optimal csrPK on the left half, suboptimal PK on the right)
             |  help_pkiss_Aright 							//A: csrKHs right (optimal csrPK on the right half, suboptimal PK on the left)
 			# hKnot;
-/* END of pKiss strategy A code. #~#pKissA#~# <-- this tag is for automatic conversion between strategies, mainly for testing. Please don't change it */
-
-/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy B #~#pKissB#~# */
-  //~ include "Grammars/grapart_pkissB.gap" //include this file, if grammar contains K-type pseudoknots
-  //~ include "Grammars/grapart_pkissBC.gap"
-  //~ knot      =  help_pknot_free_kl_3D						//B: csrPKs AND lookup table for PKs in csrKH computation
-            //~ | {help_pknot .(0, 0). } with ignore			//B: lookup table for PKs given all four indices, in csrKHs computation
-            //~ |  help_pkiss_B .(false).						//B: csrKHs whose indices l and k may cross each other
-            //~ |  help_pkiss_B .(true).						//B: csrKHs whose indices l and k can't cross because of an arbitrary boundary
-            //~ # hKnot;
-/* END of pKiss strategy B code. #~#pKissB#~# <-- this tag is for automatic conversion between strategies, mainly for testing. Please don't change it */
-
-
-/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy C #~#pKissC#~# */
-  //~ include "Grammars/grapart_pkissC.gap" //C: contains help_pkiss_C
-  //~ include "Grammars/grapart_pkissBC.gap"
-  //~ knot      =  help_pknot_free_kl					//C: csrPKs
-            //~ | {help_pknot .(0, 0). } with ignore	//C: lookup table for PKs in csrKHs computation
-            //~ |  help_pkiss_C							//C: csrPKs
-            //~ # hKnot;
-/* END of pKiss strategy C code. #~#pKissC#~# <-- this tag is for automatic conversion between strategies, mainly for testing. Please don't change it */
-
-
-/* Code for H- and K-type pseudoknots, later are computed by pKiss strategy D #~#pKissD#~# */
-  //~ include "Grammars/grapart_pkissD.gap" //D: contains help_pkiss_D
-  //~ knot      =  help_pknot_free_kl	//D: csrPKs
-		    //~ |  help_pkiss_D			//D: csrKHs
-            //~ # hKnot;
-/* END of pKiss strategy D code. #~#pKissD#~# <-- this tag is for automatic conversion between strategies, mainly for testing. Please don't change it */
-
-
-/* Code for H-type pseudoknots. #~#pknotsRG#~# */
-  //~ knot      =  help_pknot_free_kl							// for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG
-            //~ # hKnot;
-/* END of pknotsRG code. #~#pknotsRG#~# <-- this tag is for automatic conversion between strategies, mainly for testing. Please don't change it */
-
+  strategyB =  help_pknot_free_kl_3D						//B: csrPKs AND lookup table for PKs in csrKH computation
+            | {help_pknot .(0, 0). } with ignore			//B: lookup table for PKs given all four indices, in csrKHs computation
+            |  help_pkiss_B .(false).						//B: csrKHs whose indices l and k may cross each other
+            |  help_pkiss_B .(true).						//B: csrKHs whose indices l and k can't cross because of an arbitrary boundary
+            # hKnot;
+  strategyC =  help_pknot_free_kl					        //for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG.
+            | {help_pknot .(0, 0). } with ignore	        //C: lookup table for PKs in csrKHs computation
+            |  help_pkiss_C							        //C: csrPKs
+            # hKnot;        
+  strategyD =  help_pknot_free_kl	                        //for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG.
+		    |  help_pkiss_D			                        //D: csrKHs
+            # hKnot;
+  pknotsRG  =  help_pknot_free_kl							//for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG
+            # hKnot;
 }
