@@ -8,7 +8,7 @@ cleanForLocomotif:
 	rm -f eval_nodangle.gap
 	rm -f macrostate.gap
 	rm -f macrostateCenter.gap
-	rm -f mferange.hh
+	rm -f mfesubopt.hh
 	rm -f microstate.gap
 	rm -f nodangle.gap
 	rm -f overdangle.gap

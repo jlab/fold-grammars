@@ -38,7 +38,7 @@ gapc:
 	cp $(FOLDGRAMMARSDIR)shape1mfedb.cc .
 	
 	cp $(FOLDGRAMMARSDIR)pfunc_filter_foldrna.hh .
-	cp $(FOLDGRAMMARSDIR)mferange.hh .
+	cp $(FOLDGRAMMARSDIR)mfesubopt.hh .
 	
 compile:
 	gengetopt < RNAshapes.ggo
