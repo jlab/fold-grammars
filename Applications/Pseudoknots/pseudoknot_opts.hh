@@ -77,6 +77,7 @@ class Opts {
     unsigned int delta;
     unsigned int repeats;
     unsigned k;
+    char strategy;
 
 		Opts();
         ~Opts();

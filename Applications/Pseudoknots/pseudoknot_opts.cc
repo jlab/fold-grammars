@@ -1,5 +1,7 @@
 #include "pseudoknot_opts.hh"
 #include "rna.hh"
+#include <stdio.h>
+#include <ctype.h>
 
 gapc::Opts::Opts()
 :
@@ -18,7 +20,8 @@ gapc::Opts::Opts()
 				window_increment(0),
 				delta(0),
 				repeats(1),
-				k(3)
+				k(3),
+				strategy('A')
 
 {
 }
@@ -71,6 +74,12 @@ void gapc::Opts::help(char **argv)
 			<< "   This affects only the stems of both hairpins, not their kissing helix!" << std::endl
 			<< "   Default is 2. Only positive numbers are allowed." << std::endl
 			<< "" << std::endl
+			<< "-s <char> select pseudoknot strategy." << std::endl
+			<< "   To speed up computation, you can limit the number of bases involved in a " << std::endl
+			<< "   pseudoknot (and all it's loop regions) by giving <int-value>. " << std::endl
+			<< "   Default is 'A', without ticks." << std::endl
+			<< "   Available strategies are 'A','B','C','D' and 'P'." << std::endl
+			<< "" << std::endl
 //			<< "-s <int-value> Set a maximal pseudoknot size." << std::endl
 //			<< "   To speed up computation, you can limit the number of bases involved in a " << std::endl
 //			<< "   pseudoknot (and all it's loop regions) by giving <int-value>. " << std::endl
@@ -107,7 +116,7 @@ void gapc::Opts::parse(int argc, char **argv)
 #endif
 					"t:T:P:"
 					"c:e:x:y:z:"
-//					"s:"
+					"s:"
 					"hd:r:k:")) != -1) {
 		switch (o) {
 		case 'f':
@@ -168,6 +177,9 @@ void gapc::Opts::parse(int argc, char **argv)
 //		case 's':
 //			maximalPseudoknotSize = std::atoi(optarg);
 //			break;
+		case 's':
+			strategy = toupper(*optarg);
+			break;
 		case 'x':
 			energyPenaltyHtype = std::atof(optarg)*100;
 			break;
@@ -224,8 +236,12 @@ void gapc::Opts::parse(int argc, char **argv)
 //	if (maximalPseudoknotSize < 1) {
 //		throw OptException("maximal pseudoknot size (-s) cannot be less then 1!");
 //	}
+	if ((strategy != 'A') && (strategy != 'B') && (strategy != 'C') && (strategy != 'D') && (strategy != 'P')) {
+		throw OptException("Invalid strategy. Please select one out of 'A', 'B', 'C', 'D' or 'P'!");
+	}
 	if (minimalHelixLength < 1) {
 		throw OptException("minimal length of pseudoknot helices (-z) cannot be less then 1!");
 	}
+
 }
 
