@@ -4,9 +4,9 @@
       int i = t_0_i;
       int j = t_0_j;
       if (i+2+1<=k && k+2*2<=lindex && lindex+2+2<=j) { // &&  i+11 <= j) {
-        int betamaxlen = second(stacklen(t_0_seq, k, j));
+        int betamaxlen = length(stacklen(t_0_seq, k, j));
         if (betamaxlen >= 2) {
-          int alphamaxlen = second(stacklen(t_0_seq, i, lindex));
+          int alphamaxlen = length(stacklen(t_0_seq, i, lindex));
           if (alphamaxlen >= 2) {
             int alphareallen = min(alphamaxlen, k-i-1);
             if (alphareallen >= 2) {
@@ -15,10 +15,10 @@
                 int betareallen = min(betatemplen, lindex-k-alphareallen);
                 if (betareallen >= 2) {
                   int stackenergies = 
-                        first(stacklen(t_0_seq, i,                lindex               ))  // maximal alpha helix
-                      + first(stacklen(t_0_seq, k,                j               ))       // maximal beta helix
-                      - first(stacklen(t_0_seq, i+alphareallen-1, lindex-alphareallen+1))  // reduced part of alpha helix
-                      - first(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1));      // reduced part of beta helix
+                        energy(stacklen(t_0_seq, i,                lindex               ))  // maximal alpha helix
+                      + energy(stacklen(t_0_seq, k,                j               ))       // maximal beta helix
+                      - energy(stacklen(t_0_seq, i+alphareallen-1, lindex-alphareallen+1))  // reduced part of alpha helix
+                      - energy(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1));      // reduced part of beta helix
           
                   INNER(CODE);
                 }

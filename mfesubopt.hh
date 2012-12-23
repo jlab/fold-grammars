@@ -1,7 +1,23 @@
 #ifndef MFERANGE_HH
 #define MFERANGE_HH
 
-#include "pseudoknot_opts.hh"
+#ifdef WITH_MFERANGE_OPTIONS
+	//use command line parameter options to define the range of suboptimal answers, depending on MFE.
+	#include "pseudoknot_opts.hh"
+	inline int getSuboptRange(int mfe) {
+		int range = mfe + int(gapc::Opts::getOpts()->energydeviation_absolute*100);
+		if (isnan(gapc::Opts::getOpts()->energydeviation_absolute)) {
+			range = mfe * (100 - gapc::Opts::getOpts()->energydeviation_relative*(mfe < 0 ? 1 : -1))/100;
+		}
+		return range;
+	}
+#else
+	//if compiled with no special options to ask for energy range, use 5% of MFE as a default.
+	inline int getSuboptRange(int mfe) {
+		return mfe * (100 - 5*(mfe < 0 ? 1 : -1))/100;
+	}
+#endif
+
 
 #include <algorithm>
 template <typename Iterator>
@@ -10,12 +26,7 @@ inline List_Ref<int> mfeSubopt(std::pair<Iterator, Iterator> i) {
 	List_Ref<int> answers; //init list, that should hold all selected candidates
 
 	if (!is_empty(minValue)) {
-		int range = minValue + int(gapc::Opts::getOpts()->energydeviation_absolute*100);
-		if (isnan(gapc::Opts::getOpts()->energydeviation_absolute)) {
-			range = minValue * (100 - gapc::Opts::getOpts()->energydeviation_relative*(minValue < 0 ? 1 : -1))/100;
-		}
-//std::cerr << "-e (abs): " << gapc::Opts::getOpts()->energydeviation_absolute << ", -c (rel): " << gapc::Opts::getOpts()->energydeviation_relative << ", mfe: " << minValue << ", range: " << range << "\n";
-//		int range = minValue + int(1.0*100);
+		int range = getSuboptRange(minValue);
 		for (Iterator it = i.first; it != i.second; ++it) {
 			int val = *it;
 			if (val <= range) {
@@ -33,11 +44,7 @@ inline List_Ref<mfeanswer> mfeSuboptKnot(std::pair<Iterator, Iterator> i) {
 	List_Ref<mfeanswer> answers; //init list, that should hold all selected candidates
 
 	if (!is_empty(minValue)) {
-		int range = minValue.energy + int(gapc::Opts::getOpts()->energydeviation_absolute*100);
-		if (isnan(gapc::Opts::getOpts()->energydeviation_absolute)) {
-			range = minValue.energy * (100 - gapc::Opts::getOpts()->energydeviation_relative*(minValue < 0 ? 1 : -1))/100;
-		}
-//		int range = minValue.energy + int(1.0*100);
+		int range = getSuboptRange(minValue.energy);
 		for (Iterator it = i.first; it != i.second; ++it) {
 			mfeanswer val = *it;
 			if (val.energy <= range) {

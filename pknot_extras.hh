@@ -1,19 +1,41 @@
 #ifndef PKNOT_EXTRAS_HH
 #define PKNOT_EXTRAS_HH
 
-#include "pseudoknot_opts.hh"
+#ifdef WITH_PKNOT_OPTIONS
+	//use command line parameter options to define energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy
+	#include "pseudoknot_opts.hh"
+	inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
+		return gapc::Opts::getOpts()->energyPenaltyHtype;
+	}
+	inline static int pkissinit() { //initialization cost for opening a new kissing hairpin. Default is 1200.
+		return gapc::Opts::getOpts()->energyPenaltyKtype;
+	}
+	inline static int minLengthKissingHairpinStems() { //minimal length of those two stems in a KH that form the hairpins, not the crossing stem of the kiss. Default is 2
+		return gapc::Opts::getOpts()->minimalHelixLength;
+	}
+	template<typename alphabet, typename pos_type, typename T>
+	inline bool selectStrategy(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const char strategy) {
+		return gapc::Opts::getOpts()->strategy == strategy;
+	}
+#else
+	//if compiled with no special options to ask for energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy.
+	inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
+		return 900;
+	}
+	inline static int pkissinit() { //initialization cost for opening a new kissing hairpin. Default is 1200.
+		return 1200;
+	}
+	inline static int minLengthKissingHairpinStems() { //minimal length of those two stems in a KH that form the hairpins, not the crossing stem of the kiss. Default is 2
+		return 2;
+	}
+	template<typename alphabet, typename pos_type, typename T>
+	inline bool selectStrategy(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const char strategy) {
+		return 'A' == strategy;
+	}
+#endif
 
 static const int npp = 10; //penalty for an unpaired base inside a pseudoknot
 static const int pkmlinit = 600; //additional penalty for a pseudoknot inside front, middle or back of an existing outer pseudoknot
-inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
-	return gapc::Opts::getOpts()->energyPenaltyHtype;
-}
-inline static int pkissinit() { //initialization cost for opening a new kissing hairpin. Default is 1200.
-	return gapc::Opts::getOpts()->energyPenaltyKtype;
-}
-inline static int minLengthKissingHairpinStems() { //minimal length of those two stems in a KH that form the hairpins, not the crossing stem of the kiss. Default is 2
-	return gapc::Opts::getOpts()->minimalHelixLength;
-}
 
 
 
@@ -95,13 +117,6 @@ inline static int minLengthKissingHairpinStems() { //minimal length of those two
 template<typename alphabet, typename pos_type, typename T>
 inline bool ignore(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
   return false;
-}
-
-template<typename alphabet, typename pos_type, typename T>
-inline bool selectStrategy(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const char strategy) {
-	//std::cerr << "strategy: " << strategy << std::endl;
-	return gapc::Opts::getOpts()->strategy == strategy;
-//  return false;
 }
 
 

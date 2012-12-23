@@ -8,7 +8,7 @@
         for (int m = h+2*minLengthKissingHairpinStems()+2*2+2; m<=j-minLengthKissingHairpinStems()-1; m=m+1) {
           rpk_setup(m-2-minLengthKissingHairpinStems());
           for (int k = m-minLengthKissingHairpinStems()-2-2; k>=h+minLengthKissingHairpinStems()+2; k=k-1) {
-            int betamaxlen = second(stacklen(t_0_seq, h, m));
+            int betamaxlen = length(stacklen(t_0_seq, h, m));
             if (betamaxlen < 2) {
               continue;
             }
@@ -24,7 +24,7 @@
             }
             int l = rpk_index(k);
 
-			int alphamaxlen = second(stacklen(t_0_seq, i, k));
+			int alphamaxlen = length(stacklen(t_0_seq, i, k));
             if (alphamaxlen < minLengthKissingHairpinStems()) {
               continue;
             }
@@ -36,7 +36,7 @@
             if (k+2>l || l+2+minLengthKissingHairpinStems()>m) {
               continue;
             }
-            int gammamaxlen = second(stacklen(t_0_seq, l, j));
+            int gammamaxlen = length(stacklen(t_0_seq, l, j));
             if (gammamaxlen < minLengthKissingHairpinStems()) {
               continue;
             }
@@ -48,12 +48,12 @@
             if (betareallen < 2) {
               continue;
             }
-            int stackenergies =   first(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
-                                + first(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
-                                + first(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
-                                - first(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
-                                - first(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
-                                - first(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
+            int stackenergies =   energy(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                                + energy(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
+                                + energy(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
+                                - energy(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                                - energy(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
+                                - energy(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
             INNER(CODE);
           }
         }

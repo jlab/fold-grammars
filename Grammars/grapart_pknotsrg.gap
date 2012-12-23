@@ -6,7 +6,7 @@
       int j = t_0_j;
       if (i+11 < j) {
         for (int l = i+7; l <= j-4; l=l+1) {
-          int alphamaxlen = second(stacklen(t_0_seq, i, l));
+          int alphamaxlen = length(stacklen(t_0_seq, i, l));
           if (alphamaxlen < 2) {
             continue;
           }
@@ -15,7 +15,7 @@
             if (alphareallen < 2) {
               continue;
             }
-            int betamaxlen = second(stacklen(t_0_seq, k, j));
+            int betamaxlen = length(stacklen(t_0_seq, k, j));
             if (betamaxlen < 2) {
               continue;
             }
@@ -28,10 +28,10 @@
               continue;
             }
             int stackenergies = 
-                  first(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
-                + first(stacklen(t_0_seq, k,                j               ))  // maximal beta helix
-                - first(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1))  // reduced part of alpha helix
-                - first(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
+                  energy(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
+                + energy(stacklen(t_0_seq, k,                j               ))  // maximal beta helix
+                - energy(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1))  // reduced part of alpha helix
+                - energy(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
   
             INNER(CODE);
           }
