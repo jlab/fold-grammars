@@ -13,6 +13,9 @@
 	inline static int minLengthKissingHairpinStems() { //minimal length of those two stems in a KH that form the hairpins, not the crossing stem of the kiss. Default is 2
 		return gapc::Opts::getOpts()->minimalHelixLength;
 	}
+	inline static int maxPseudoknotSize() {
+		return gapc::Opts::getOpts()->maximalPseudoknotSize;
+	}
 	template<typename alphabet, typename pos_type, typename T>
 	inline bool selectStrategy(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const char strategy) {
 		return gapc::Opts::getOpts()->strategy == strategy;
@@ -27,6 +30,9 @@
 	}
 	inline static int minLengthKissingHairpinStems() { //minimal length of those two stems in a KH that form the hairpins, not the crossing stem of the kiss. Default is 2
 		return 2;
+	}
+	inline static int maxPseudoknotSize() {
+		return std::numeric_limits<int>::max();
 	}
 	template<typename alphabet, typename pos_type, typename T>
 	inline bool selectStrategy(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const char strategy) {

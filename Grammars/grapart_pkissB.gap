@@ -3,7 +3,7 @@
     .[
       int i = t_0_i;
       int j = t_0_j;
-      if (i+4*2+3 < j) {
+      if ((i+4*2+3 < j)  && (j-i <= maxPseudoknotSize())) {
         for (int l = i+3*2+1; l <= j-2*2; l=l+1) {
           int alphamaxlen = length(stacklen(t_0_seq, i, l));
           if (alphamaxlen < 2) {
@@ -70,52 +70,54 @@
       int i = t_0_i;
       int j = t_0_j;
 
-      for (int m = i+3+3*minLengthKissingHairpinStems()+2*2; m<=j-minLengthKissingHairpinStems()-1; m=m+1) {
-        for (int h = i+minLengthKissingHairpinStems()+1; h<=m-2*minLengthKissingHairpinStems()-2*2-2; h=h+1) {
-          int betamaxlen = length(stacklen(t_0_seq, h, m));
-          if (betamaxlen < 2) {
-            continue;
+	  if (j-i <= maxPseudoknotSize()) {
+        for (int m = i+3+3*minLengthKissingHairpinStems()+2*2; m<=j-minLengthKissingHairpinStems()-1; m=m+1) {
+          for (int h = i+minLengthKissingHairpinStems()+1; h<=m-2*minLengthKissingHairpinStems()-2*2-2; h=h+1) {
+            int betamaxlen = length(stacklen(t_0_seq, h, m));
+            if (betamaxlen < 2) {
+              continue;
+            }
+            int n = size(t_0_seq);
+            int k = get_index(subopt_left, i, m, h, n);
+            int l = get_index(subopt_right, h, j, m, n);
+            if (useSplitpoint) {
+              k = get_index(subopt_left_heuristic, i, m, h, n);
+              l = get_index(subopt_right_heuristic, h, j, m, n);
+            }
+            if (k > j || l > j)
+              continue;
+            if (l < k+2)
+              continue;
+            int alphamaxlen = length(stacklen(t_0_seq, i, k));
+            if (alphamaxlen < minLengthKissingHairpinStems()) {
+              continue;
+            }
+            int alphareallen = min(alphamaxlen, h-i-1);
+            if (alphareallen < minLengthKissingHairpinStems()) {
+              continue;
+            }
+            int gammamaxlen = length(stacklen(t_0_seq, l, j));
+            if (gammamaxlen < minLengthKissingHairpinStems()) {
+              continue;
+            }
+            int gammareallen = min(gammamaxlen, j-m-1);
+            if (gammareallen < minLengthKissingHairpinStems()) {
+              continue;
+            }
+            int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
+            if (betareallen < 2) {
+              continue;
+            }
+            int stackenergies =   energy(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                                + energy(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
+                                + energy(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
+                                - energy(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                                - energy(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
+                                - energy(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
+            INNER(CODE);
           }
-          int n = size(t_0_seq);
-          int k = get_index(subopt_left, i, m, h, n);
-          int l = get_index(subopt_right, h, j, m, n);
-          if (useSplitpoint) {
-            k = get_index(subopt_left_heuristic, i, m, h, n);
-            l = get_index(subopt_right_heuristic, h, j, m, n);
-          }
-          if (k > j || l > j)
-            continue;
-          if (l < k+2)
-            continue;
-          int alphamaxlen = length(stacklen(t_0_seq, i, k));
-          if (alphamaxlen < minLengthKissingHairpinStems()) {
-            continue;
-          }
-          int alphareallen = min(alphamaxlen, h-i-1);
-          if (alphareallen < minLengthKissingHairpinStems()) {
-            continue;
-          }
-          int gammamaxlen = length(stacklen(t_0_seq, l, j));
-          if (gammamaxlen < minLengthKissingHairpinStems()) {
-            continue;
-          }
-          int gammareallen = min(gammamaxlen, j-m-1);
-          if (gammareallen < minLengthKissingHairpinStems()) {
-            continue;
-          }
-          int betareallen = min(min(betamaxlen, k-h-alphareallen), min(betamaxlen, m-l-gammareallen));
-          if (betareallen < 2) {
-            continue;
-          }
-          int stackenergies =   energy(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
-                              + energy(stacklen(t_0_seq, h,                m               ))  // maximal beta helix
-                              + energy(stacklen(t_0_seq, l,                j               ))  // maximal gamma helix
-                              - energy(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
-                              - energy(stacklen(t_0_seq, h+betareallen -1, m-betareallen +1))  // reduced part of beta helix
-                              - energy(stacklen(t_0_seq, l+gammareallen-1, j-gammareallen+1)); // reduced part of gamma helix
-          INNER(CODE);
         }
-      }
+	  }
      ].
     {
       pkiss(REGION, REGION, REGION, REGION, REGION) .{

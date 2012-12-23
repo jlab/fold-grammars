@@ -1,8 +1,6 @@
-NAME_MFE=mfe
-NAME_ENFORCE=enforce
 CXXFLAGS_EXTRA=""
-OPTIONSPARSER=pseudoknot_opts
 WINDOWMODE=
+OPTIONSPARSER=pseudoknot_opts
 OUTNAME=out
 
 all: mfe subopt enforce
@@ -20,7 +18,7 @@ simple:
 	make compile OUTNAME="simple"
 
 enforce:
-	gapc -I ../../ -p "(alg_pknot_pktype * alg_pknot_mfe) * alg_pknot_dotBracket" ../../pKiss.gap --kbacktrace --tab-all $(WINDOWMODE) -o $(NAME_ENFORCE).cc
+	gapc -I ../../ -p "(alg_pknot_pktype * alg_pknot_mfe) * alg_pknot_dotBracket" ../../pKiss.gap --kbacktrace --tab-all $(WINDOWMODE) -o $@.cc
 	make compile OUTNAME="enforce"
 
 compile:

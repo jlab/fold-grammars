@@ -4,7 +4,7 @@
     .[
       int i = t_0_i;
       int j = t_0_j;
-      if (i+11 < j) {
+      if ((i+11 < j) && (j-i <= maxPseudoknotSize())) {
         for (int l = i+7; l <= j-4; l=l+1) {
           int alphamaxlen = length(stacklen(t_0_seq, i, l));
           if (alphamaxlen < 2) {

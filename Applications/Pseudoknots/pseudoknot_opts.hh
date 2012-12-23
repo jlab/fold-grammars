@@ -92,7 +92,7 @@ class Opts {
     #endif
     				energydeviation_relative(10.0),
     				energydeviation_absolute(std::numeric_limits<float>::quiet_NaN()),
-    //				maximalPseudoknotSize(std::numeric_limits<int>::max()),
+    				maximalPseudoknotSize(std::numeric_limits<int>::max()),
     				minimalHelixLength(2),
     				energyPenaltyHtype(900.0),
     				energyPenaltyKtype(1200.0),
@@ -154,17 +154,18 @@ class Opts {
 				<< "   Default is 2. Only positive numbers are allowed." << std::endl
 				<< "" << std::endl
 				<< "-s <char> select pseudoknot strategy." << std::endl
-				<< "   To speed up computation, you can limit the number of bases involved in a " << std::endl
-				<< "   pseudoknot (and all it's loop regions) by giving <int-value>. " << std::endl
+				<< "   There are four different strategies how to compute kissing hairpins (K-type pseudoknots)."
+				<< "   We suggest A, see our paper for details." << std::endl
+				<< "   If you choose 'P' only H-type pseudoknots can be computed." << std::endl
 				<< "   Default is 'A', without ticks." << std::endl
 				<< "   Available strategies are 'A','B','C','D' and 'P'." << std::endl
 				<< "" << std::endl
-	//			<< "-s <int-value> Set a maximal pseudoknot size." << std::endl
-	//			<< "   To speed up computation, you can limit the number of bases involved in a " << std::endl
-	//			<< "   pseudoknot (and all it's loop regions) by giving <int-value>. " << std::endl
-	//			<< "   By default, there is no limitation, i.e. -s is set to input length. " << std::endl
-	//			<< "   Only positive numbers are allowed." << std::endl
-	//			<< "" << std::endl
+				<< "-l <int-value> Set a maximal pseudoknot size." << std::endl
+				<< "   To speed up computation, you can limit the number of bases involved in a " << std::endl
+				<< "   pseudoknot (and all it's loop regions) by giving <int-value>. " << std::endl
+				<< "   By default, there is no limitation, i.e. -l is set to input length. " << std::endl
+				<< "   Only positive numbers are allowed." << std::endl
+				<< "" << std::endl
 				<< "-x <float-value> Set init. energy penalty for an H-type pseudoknot [9.00]" << std::endl
 				<< "   Thermodynamic energy parameters for pseudoknots have not been measured in a " << std::endl
 				<< "   wet lab, yet. Thus, you might want to set the penalty for opening a H-type " << std::endl
@@ -194,7 +195,7 @@ class Opts {
 		#endif
 						"t:T:P:"
 						"c:e:x:y:z:"
-						"s:"
+						"s:l:"
 						"hd:r:k:")) != -1) {
 			switch (o) {
 			case 'f':
@@ -252,9 +253,9 @@ class Opts {
 			case 'z':
 				minimalHelixLength = std::atoi(optarg);
 				break;
-		//		case 's':
-		//			maximalPseudoknotSize = std::atoi(optarg);
-		//			break;
+			case 'l':
+				maximalPseudoknotSize = std::atoi(optarg);
+				break;
 			case 's':
 				strategy = toupper(*optarg);
 				break;
@@ -311,9 +312,9 @@ class Opts {
 				throw OptException("window_increment >= window_size");
 		}
 		librna_read_param_file(par_filename);
-		//	if (maximalPseudoknotSize < 1) {
-		//		throw OptException("maximal pseudoknot size (-s) cannot be less then 1!");
-		//	}
+		if (maximalPseudoknotSize < 1) {
+			throw OptException("maximal pseudoknot size (-l) cannot be less then 1!");
+		}
 		if ((strategy != 'A') && (strategy != 'B') && (strategy != 'C') && (strategy != 'D') && (strategy != 'P')) {
 			throw OptException("Invalid strategy. Please select one out of 'A', 'B', 'C', 'D' or 'P'!");
 		}
