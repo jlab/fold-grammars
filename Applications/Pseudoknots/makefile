@@ -25,7 +25,6 @@ enforce:
 
 compile:
 	sed -i "s%generic_main.cc >> $(OUTNAME)_main.cc%generic_main.cc >> $(OUTNAME)_main.cc\n\tsed -i 's|gapc::Opts opts;||' $(OUTNAME)_main.cc\n\tsed -i 's|\\\([^_]\\\)opts\\\.|\\\1gapc::Opts::getOpts()->|g' $(OUTNAME)_main.cc\n\tsed -i s'|obj.init(opts);|obj.init(\\\*gapc::Opts::getOpts());|g' $(OUTNAME)_main.cc\n\tsed -i 's|#include \"rtlib/generic_opts.hh\"|#include \"$(OPTIONSPARSER).hh\"|' $(OUTNAME)_main.cc%" $(OUTNAME).mf
-	sed -i 's%CXXFILES = \(.*\)%CXXFILES = \1 $(OPTIONSPARSER).cc%' $(OUTNAME).mf
 	sed -i 's%#include <rtlib/generic_opts.hh>%#include "$(OPTIONSPARSER).hh"%' $(OUTNAME).hh $(OUTNAME).cc
 	@if [ "$(WINDOWMODE)" != "" ]; \
 	then \
