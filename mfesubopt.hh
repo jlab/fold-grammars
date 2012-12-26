@@ -60,7 +60,35 @@ inline uint32_t hashable_value(const mfeanswer& candidate) {
 }
 
 
+inline int getEnergy(const mfeanswer &x) {
+	return x.energy;
+}
+inline int getEnergy(const int x) {
+	return x;
+}
+template<typename MFE, typename SHAPE, typename DOTBRACKET>
+inline List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > suboptShapeClasses(List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > candidateList) {
+	if (candidateList.ref().is_empty()) {
+		return candidateList;
+	} else {
+		List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > answers = List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >();
+		int mfe = std::numeric_limits<int>::max();
+		for (typename List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >::iterator it = candidateList.ref().begin(); it != candidateList.ref().end(); ++it) {
+			int energy = getEnergy((*it).first.second);
+			if (mfe > energy) {
+				mfe = energy;
+			}
+		}
+		int range = getSuboptRange(mfe);
+		for (typename List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >::iterator it = candidateList.ref().begin(); it != candidateList.ref().end(); ++it) {
 
+			if (getEnergy((*it).first.second) <= range) {
+				answers->push_back(*it);
+			}
+		}
+		return answers;
+	}
+}
 
 
 

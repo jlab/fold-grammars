@@ -1,13 +1,20 @@
 algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, comp = pkshape_t, compKnot = pkshape_t) {
-  pkshape_t sadd(Subsequence b, pkshape_t x) {
-    return x;
+  pkshape_t sadd(Subsequence b, pkshape_t e) {
+    pkshape_t emptyShape;
+    
+    if (e == emptyShape) {
+      return pkshape_t('_') + e;
+    } else {
+      return e;
+    }
   }
 
-  pkshape_t cadd(pkshape_t x, pkshape_t y) {
-    pkshape_t res;
-    append(res, x);
-    append(res, y);
-    return res;
+  pkshape_t cadd(pkshape_t le, pkshape_t re) {
+    if (re == '_') {
+      return le;
+    } else {
+      return le + re;
+    }
   }
 
   pkshape_t nil(Subsequence loc) {
@@ -38,13 +45,13 @@ algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, comp = pk
   pkshape_t pknot(Subsequence a, pkshape_t frt, Subsequence b, pkshape_t mid, Subsequence at, pkshape_t bck, Subsequence bt; int stackenergies) {
     pkshape_t res;
 	  
-    append(res, '[');
-    append(res, frt);
     append(res, '{');
+    append(res, frt);
+    append(res, '<');
     append(res, mid);
-    append(res, ']');
-    append(res, bck);
     append(res, '}');
+    append(res, bck);
+    append(res, '>');
 	  
     return res;
   }
@@ -52,17 +59,17 @@ algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, comp = pk
   pkshape_t pkiss(Subsequence a, pkshape_t frt, Subsequence b, pkshape_t middle1, Subsequence aPrime, pkshape_t middle2, Subsequence c, pkshape_t middle3, Subsequence bPrime, pkshape_t bck, Subsequence cPrime; int stackenergies) {
     pkshape_t res;
 	  
-    append(res, '[');
-    append(res, frt);
     append(res, '{');
-    append(res, middle1);
-    append(res, ']');
-    append(res, middle2);
+    append(res, frt);
     append(res, '<');
-    append(res, middle3);
+    append(res, middle1);
     append(res, '}');
-    append(res, bck);
+    append(res, middle2);
+    append(res, '(');
+    append(res, middle3);
     append(res, '>');
+    append(res, bck);
+    append(res, ')');
 	  
     return res;
   }
@@ -85,7 +92,8 @@ algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, comp = pk
 
   pkshape_t hl(Subsequence lb, Subsequence r, Subsequence rb) {
     pkshape_t res;
-    append(res, "[]", 2);
+    append(res, '[');
+	append(res, ']');
     return res;
   }
 
@@ -195,6 +203,14 @@ algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, comp = pk
   choice [pkshape_t] hKnot([pkshape_t] i) {
     return unique(i);
   }
+  
+  // following two algebrafunctions are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped.
+  pkshape_t localKnot(Subsequence posLeft, pkshape_t knot, Subsequence posRight) {
+    return knot;	  
+  }
+  pkshape_t skipBase(Subsequence lb, pkshape_t x) {
+    return x;
+  }
 }
 
 algebra alg_pknot_shape4 extends alg_pknot_shape5 {
@@ -303,28 +319,55 @@ algebra alg_pknot_shape1 extends alg_pknot_shape5 {
   pkshape_t pknot(Subsequence a, pkshape_t frt, Subsequence b, pkshape_t mid, Subsequence at, pkshape_t bck, Subsequence bt ; int stackenergies) {
     pkshape_t res;
     
-    if (front(frt) == '_') {
-      append(res, '[');
-    } else {
-      append(res, '[');
-      append(res, '_');
-    }
+	append(res, '{');
+	if (front(frt) != '_') {
+		append(res, '_');
+	}
 	append(res, frt);
-    append(res, '{');
-    append(res, mid);
-    append(res, ']');
-    if (back(bck) == '_') {
-      append(res, bck);
-    } else {
-      append(res, bck);
-      append(res, '_');
-    }
-    append(res, '}');
+	append(res, '<');
+	append(res, mid);
+	append(res, '}');
+	append(res, bck);
+	if (back(bck) != '_') {
+		append(res, '_');
+	}
+	append(res, '>');
     
     return res;
   }
-  pkshape_t pkiss(Subsequence a, pkshape_t front, Subsequence b, pkshape_t middle1, Subsequence aPrime, pkshape_t middle2, Subsequence c, pkshape_t middle3, Subsequence bPrime, pkshape_t back, Subsequence cPrime; int stackenergies) {
-    return front;
+  pkshape_t pkiss(Subsequence a, pkshape_t frt, Subsequence b, pkshape_t middle1, Subsequence aPrime, pkshape_t middle2, Subsequence c, pkshape_t middle3, Subsequence bPrime, pkshape_t bck, Subsequence cPrime; int stackenergies) {
+    pkshape_t res;
+    pkshape_t emptyShape;
+	  
+    append(res, '{');
+	if (front(frt) != '_') {
+		append(res, '_');
+	}
+    append(res, frt);
+    append(res, '<');
+    append(res, middle1);
+    append(res, '}');
+	if (middle2 == emptyShape) {
+		append(res, '_');
+	} else {
+		if (front(middle2) != '_') {
+			append(res, '_');
+		}
+		append(res, middle2);
+		if (back(middle2) != '_') {
+			append(res, '_');
+		}
+	}
+    append(res, '(');
+    append(res, middle3);
+    append(res, '>');
+    append(res, bck);
+	if (back(bck) != '_') {
+		append(res, '_');
+	}
+    append(res, ')');
+	  
+    return res;
   }
 
   pkshape_t kndl(Subsequence ld, pkshape_t x) {
@@ -482,25 +525,4 @@ algebra alg_pknot_shape1 extends alg_pknot_shape5 {
 	  return res;
     }
   }
-  pkshape_t pss(Subsequence base, pkshape_t x) {
-    if (front(x) == '_') {
-      return x;
-    } else {
-      pkshape_t res;
-      append(res, '_');
-      append(res, x);
-      return res;
-    }
-  }
-
-  // following two algebrafunctions are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped.
-  pkshape_t localKnot(Subsequence posLeft, pkshape_t knot, Subsequence posRight) {
-    return knot;	  
-  }
-  pkshape_t skipBase(Subsequence lb, pkshape_t x) {
-    return x;
-  }
 }
-
-
-

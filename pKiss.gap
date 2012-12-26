@@ -2,7 +2,7 @@ import rna
 import pknot_stems //precomputation of energetically best non-interrupted stems for all subwords i to j
 import pknot_extras //special functions for different strategies of pKiss and its index hacking, e.g. 3D-Tables, finding compatible H-type pseudoknots, ... + some energy constants for pseudoknots + minimal stem length
 import pknot_enforce
-//~ import pknot_shape //for a smart hashable "string" with chars []{}<>()._
+import pknot_shape //for a smart hashable "string" with chars []{}<>()._
 import singlefold //necessary to redefine the meaning of the filter "basepair". In singlefold this filter directly calles the build-in "basepairing" filter, in alignmentfold it gets hard codes parameters and returns true or false with dependance to the number of gaps in the rows
 import mfesubopt
 
@@ -26,7 +26,7 @@ include "Algebras/DotBracket/alg_pknot_dotBracket.gap"
 include "Algebras/MFE/alg_pknot_mfe.gap"
 include "Algebras/Pfunc/alg_pknot_pfunc.gap"
 include "Algebras/alg_pknot_pktype.gap"
-//~ include "Algebras/Shapes/alg_pknot_shapes.gap"
+include "Algebras/Shapes/alg_pknot_shapes.gap"
 
 include "Grammars/gra_pknot_microstate.gap"
 

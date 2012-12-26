@@ -1,5 +1,7 @@
-TARGETS=mfe mfe_window subopt subopt_window enforce enforce_window local
+TARGETS=mfe mfe_window subopt subopt_window enforce enforce_window local shape
+SHAPELEVELS=5 4 3 2 1
 
+#~ CXXFLAGS_EXTRA="-O3 -DNDEBUG"
 CXXFLAGS_EXTRA=""
 OPTIONSPARSER=pknot_options
 GRAMMARFILE=../../Grammars/gra_pknot_microstate.gap
@@ -41,6 +43,17 @@ local:
 	mv $(GRAMMARFILE).original $(GRAMMARFILE)
 	make compile OUTNAME="local"
 
+shape:
+	for level in `echo "$(SHAPELEVELS)"`; do \
+		gapc -I ../../ -p "((alg_pknot_shape$${level} * alg_pknot_mfe) * alg_pknot_dotBracket) suchthat suboptShapeClasses" ../../pKiss.gap --kbacktrace --tab-all --no-coopt-class -o $@$${level}.cc; \
+		make compile OUTNAME="shape$${level}"; \
+	done
+
+shape_window:
+	for level in `echo "$(SHAPELEVELS)"`; do \
+		gapc -I ../../ -p "((alg_pknot_shape$${level} * alg_pknot_mfe) * alg_pknot_dotBracket) suchthat suboptShapeClasses" ../../pKiss.gap --kbacktrace --tab-all --no-coopt-class --window-mode -o $@$${level}.cc; \
+		make compile OUTNAME="shape_window$${level}"; \
+	done
 
 #~ simple:
 	#~ gapc -I ../../ -p "alg_pknot_mfe" ../../pKiss.gap --tab-all $(WINDOWMODE) -o $@.cc
@@ -63,9 +76,13 @@ compile:
 
 clean:
 	for program in `echo "$(TARGETS)"`; do rm -f $${program}.*; rm -f $${program}_*; done
+	for level in `echo "$(SHAPELEVELS)"`; do rm -f shape$${level}.*; rm -f shape$${level}_*; done
+	for level in `echo "$(SHAPELEVELS)"`; do rm -f shape_window$${level}.*; rm -f shape_window$${level}_*; done
 	rm -f $(OPTIONSPARSER).o
 	rm -f $(OPTIONSPARSER).d
 	rm -f string.*
 	
 cleandist: clean
 	for program in `echo "$(TARGETS)"`; do rm -f $(PROGRAMPREFIX)$${program}; done
+	for level in `echo "$(SHAPELEVELS)"`; do rm -f $(PROGRAMPREFIX)shape$${level}; done
+	for level in `echo "$(SHAPELEVELS)"`; do rm -f $(PROGRAMPREFIX)shape_window$${level}; done
