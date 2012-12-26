@@ -279,5 +279,19 @@ algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp 
   choice [Rope] hKnot([Rope] i) {
     return unique(i); //unique is necessary for microstate-like grammars
   }
+  
+  // following two algebrafunctions are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped.
+  Rope localKnot(Subsequence posLeft, Rope knot, Subsequence posRight) {
+	Rope res;
+    append(res, (posLeft.i+1));
+    append(res, " ", 1);
+    append(res, knot);
+    append(res, " ", 1);
+    append(res, (posRight.i+1));
+    return res;	  
+  }
+  Rope skipBase(Subsequence lb, Rope x) {
+    return x;
+  }
 }
 

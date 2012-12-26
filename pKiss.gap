@@ -1,5 +1,5 @@
 import rna
-import stacklen //precomputation of energetically best non-interrupted stems for all subwords i to j
+import pknot_stems //precomputation of energetically best non-interrupted stems for all subwords i to j
 import pknot_extras //special functions for different strategies of pKiss and its index hacking, e.g. 3D-Tables, finding compatible H-type pseudoknots, ... + some energy constants for pseudoknots + minimal stem length
 import pknot_enforce
 //~ import pknot_shape //for a smart hashable "string" with chars []{}<>()._
@@ -17,7 +17,6 @@ type pktype = extern
 //~ type dotBracket_t = pkshape_t
 //~ type string_t = Rope
 //~ type shape_t = shape
-//~ type myBool = int
 
 include "Signatures/sig_pknot_foldrna.gap"
 
@@ -38,4 +37,3 @@ instance count = gra_pknot_microstate(alg_count);
 
 //~ TODOS:
 //~ - profiling against Peter Steffens pknotsRG version in ADPc
-//~ - minLengthKissingHairpinStems and pkissinit (currently defined in pkenergy.hh) should be command line parameters

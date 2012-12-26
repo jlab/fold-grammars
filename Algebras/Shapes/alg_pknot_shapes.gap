@@ -492,6 +492,14 @@ algebra alg_pknot_shape1 extends alg_pknot_shape5 {
       return res;
     }
   }
+
+  // following two algebrafunctions are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped.
+  pkshape_t localKnot(Subsequence posLeft, pkshape_t knot, Subsequence posRight) {
+    return knot;	  
+  }
+  pkshape_t skipBase(Subsequence lb, pkshape_t x) {
+    return x;
+  }
 }
 
 

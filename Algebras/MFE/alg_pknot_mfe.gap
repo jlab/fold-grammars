@@ -293,6 +293,14 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, 
   choice [mfeanswer] hKnot([mfeanswer] i) {
     return list(minimum(i));
   }
+  
+  // following two algebrafunctions are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped.
+  int localKnot(Subsequence posLeft, mfeanswer knot, Subsequence posRight) {
+	return knot.energy;
+  }
+  int skipBase(Subsequence lb, int x) {
+    return x;
+  }
 }
 
 algebra alg_pknot_mfe_subopt extends alg_pknot_mfe {

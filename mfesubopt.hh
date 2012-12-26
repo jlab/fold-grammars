@@ -3,7 +3,7 @@
 
 #ifdef WITH_MFERANGE_OPTIONS
 	//use command line parameter options to define the range of suboptimal answers, depending on MFE.
-	#include "pseudoknot_opts.hh"
+	#include "pknot_options.hh"
 	inline int getSuboptRange(int mfe) {
 		int range = mfe + int(gapc::Opts::getOpts()->energydeviation_absolute*100);
 		if (isnan(gapc::Opts::getOpts()->energydeviation_absolute)) {

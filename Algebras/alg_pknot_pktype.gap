@@ -175,5 +175,12 @@ algebra alg_pknot_pktype implements sig_pknot_foldrna(alphabet = char, comp = pk
   choice [pktype] hKnot([pktype] i) {
     return unique(i);
   }
-}
 
+  // following two algebrafunctions are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped.
+  pktype localKnot(Subsequence posLeft, pktype knot, Subsequence posRight) {
+	return knot;
+  }
+  pktype skipBase(Subsequence lb, pktype x) {
+    return x;
+  }  
+}

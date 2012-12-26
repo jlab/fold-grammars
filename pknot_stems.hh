@@ -10,8 +10,8 @@
 // 
 
 
-#ifndef stacklen_window_hh
-#define stacklen_window_hh
+#ifndef pknot_stems_hh
+#define pknot_stems_hh
 
 #include "rtlib/adp.hh"
 
@@ -22,7 +22,7 @@ typedef Basic_Subsequence<char, unsigned> TUSubsequence;
 
 #ifdef WINDOW_MODE
 #ifdef WITH_PKNOT_OPTIONS
-#include "pseudoknot_opts.hh"
+#include "pknot_options.hh"
 #endif
 class stacklen_window {
 

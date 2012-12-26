@@ -1,3 +1,9 @@
+/*
+	To compute pseudoknots the way pknotsRG and pKiss does, it is necessary to precompute for all subwords (i,j) their maximal (=longest and energetically most stable), un-interrupted stems.
+	This precomputation is outsourced in the file pknot_stems.hh for normal- and for window-mode.
+	If you want to change this precomputation, you can use this file, you are currently reading, as a starter.
+*/
+
 import rna
 input rna
 

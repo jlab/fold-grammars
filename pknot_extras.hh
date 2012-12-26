@@ -3,7 +3,7 @@
 
 #ifdef WITH_PKNOT_OPTIONS
 	//use command line parameter options to define energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy
-	#include "pseudoknot_opts.hh"
+	#include "pknot_options.hh"
 	inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
 		return gapc::Opts::getOpts()->energyPenaltyHtype;
 	}

@@ -82,4 +82,9 @@ grammar gra_pknot_microstate uses sig_pknot_foldrna(axiom = struct) {
             # hKnot;
   pknotsRG  =  help_pknot_free_kl							//for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG
             # hKnot;
+			
+  // following three  non-terminals are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped. The according makefile just replaces the axiom.
+  local = skipBase(BASE, local) | cadd(localKnot, endLocal) # h;
+  endLocal = skipBase(BASE, endLocal) | nil(LOC) # h;
+  localKnot = localKnot(LOC, knot, LOC) # h;
 }

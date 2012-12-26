@@ -36,4 +36,8 @@ signature sig_pknot_foldrna(alphabet, comp, compKnot) {
   comp sadd_pk(Subsequence, comp);
   choice [comp] h([comp]);
   choice [compKnot] hKnot([compKnot]);
+  
+  // following two algebrafunctions are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped.
+  comp localKnot(Subsequence, compKnot, Subsequence);
+  comp skipBase(Subsequence, comp);
 }
