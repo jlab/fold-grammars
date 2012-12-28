@@ -84,6 +84,7 @@ class Opts {
     char strategy;
     float lowProbabilityFilter;
     unsigned int shapelevel;
+    bool allowLonelyBasepairs;
 
     Opts()
     :
@@ -105,7 +106,8 @@ class Opts {
     				k(3),
     				strategy('A'),
     				lowProbabilityFilter(0.000001),
-    				shapelevel(5)
+    				shapelevel(5),
+    				allowLonelyBasepairs(false)
 
     {
     }
@@ -191,6 +193,8 @@ class Opts {
 				<< "" << std::endl
 				<< "-q <int-value> Set shape abstraction level [5]" << std::endl
 				<< "" << std::endl
+				<< "-u <int-value> 1 = allow lonely base pairs, 0 = don't allow them [0]" << std::endl
+				<< "" << std::endl
 				<< "-f <file> Read input from a file" << std::endl
 				<< "" << std::endl
 				<< "-h Print this help." << std::endl
@@ -208,7 +212,7 @@ class Opts {
 		#endif
 						"t:T:P:"
 						"c:e:x:y:z:"
-						"s:l:F:q:"
+						"s:l:F:q:u:"
 						"hd:r:k:")) != -1) {
 			switch (o) {
 			case 'f':
@@ -284,6 +288,9 @@ class Opts {
 			case 'q':
 				shapelevel = std::atoi(optarg);
 				break;
+			case 'u':
+				allowLonelyBasepairs = (std::atoi(optarg) >= 1);
+				break;
 			case 'k':
 				k = std::atoi(optarg);
 				break;
@@ -346,7 +353,6 @@ class Opts {
 		if (shapelevel <= 0 || shapelevel >= 6) {
 			throw OptException("Shape are only defined for levels 5, 4, 3, 2 and 1.");
 		}
-
 		}
 
 

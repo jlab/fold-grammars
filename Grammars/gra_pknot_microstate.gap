@@ -13,8 +13,8 @@ grammar gra_pknot_microstate uses sig_pknot_foldrna(axiom = struct) {
                kndr (      knot,   BASE) |		//for pseudoknots
                kndlr(BASE, knot,   BASE) # h;	//for pseudoknots
 
-  strong    = sr(BASE, weak, BASE) with basepair # h; //noLP: no lonely base-pairs, Vienna: --noLP
-  //~ strong    =          weak                      # h; //LP: allow lonely base-pairs, Vienna: default
+  strong    = {sr(BASE, weak, BASE) with basepair} with allowLonelyBasepairs(false) | 
+			  {		   weak                      } with allowLonelyBasepairs(true)  # h;
 
   weak      = {stack                    | 
                hairpin                  |

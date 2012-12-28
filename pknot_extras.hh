@@ -26,6 +26,10 @@
 	inline bool selectStrategy(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const char strategy) {
 		return gapc::Opts::getOpts()->strategy == strategy;
 	}
+	template<typename alphabet, typename pos_type, typename T>
+	inline bool allowLonelyBasepairs(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const bool isLonelyBP) {
+		return gapc::Opts::getOpts()->strategy == strategy;
+	}
 #else
 	//if compiled with no special options to ask for energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy.
 	inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
@@ -92,37 +96,7 @@ static const int pkmlinit = 600; //additional penalty for a pseudoknot inside fr
 		}
 		return a;
 	}
-	
-	//~ inline mfeanswer get_pk_fn(const mfeanswer &a) { 
-		//~ return a; 
-	//~ }
-	
-	//~ template<typename B>
-	//~ inline mfeanswer &get_pk_fn(std::pair<mfeanswer, B> &p) { 
-		//~ return p.first; 
-	//~ }
-
-	//~ template<typename T, typename pos_int>
-	//~ inline mfeanswer get_pk_fn(List_Ref<T, pos_int> &l) {
-		//~ List<T, pos_int> &x = l.ref();
-		//~ mfeanswer a;
-		//~ typename List<T, pos_int>::iterator i = x.begin();
-		//~ if (i == x.end()) {
-			//~ empty(a);
-			//~ return a;
-		//~ }
-		//~ a = get_pk_fn(*i);
-		//~ ++i;
-		//~ for (; i != x.end(); ++i) {
-			//~ mfeanswer t = get_pk_fn(*i);
-			//~ if (t < a) {
-				//~ a = t;
-			//~ }
-		//~ }
-		//~ return a;
-	//~ }
-
-	
+		
 	#define get_pk_free_kl(i, m) get_pk_fn( nt_help_pknot_free_kl(i, m) )	//for strategy A
 	#define get_pk(i,j,k,l) get_pk_fn( nt_help_pknot(i,j,k,l) )	 //for strategy B and strategy C
 	
