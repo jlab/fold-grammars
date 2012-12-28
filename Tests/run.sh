@@ -53,8 +53,6 @@ if [ ! -d $TEMP/$REF ]; then
 fi
 
 BASE_DIR="`pwd`"
-$PERL makeLPgrammars.pl generate #generate special grammars that allow lonely basepairs from the standard noLP grammars
-$PERL makeStrategiespKiss.pl generate #generate special grammars for all fife different strategies of pKiss (A-D + pknotsRG)
 
 . ./tool.sh
 
@@ -93,7 +91,7 @@ check_new_old_eq()
   temp=$failed
 
   cpp_base=${1%%.*}
-  build_cpp $GRAMMAR/$1 $cpp_base $3
+  build_cpp $GRAMMAR/$1 $cpp_base $3 $2
   run_cpp $cpp_base $3 $4 $5
   cmp_new_old_output $cpp_base $REF $3 $5
 
@@ -125,7 +123,7 @@ check_feature()
   temp=$failed
 
   cpp_base=${1%%.*}
-  build_cpp $GRAMMAR/$1 $cpp_base $2
+  build_cpp $GRAMMAR/$1 $cpp_base $2 ""
   run_cpp $cpp_base $2 $3 $4
 
   run_check_feature $cpp_base $2 $4 $5 "${@:6}"
@@ -240,9 +238,6 @@ check_external()
 }
 
 . ../config
-
-$PERL ../makeLPgrammars.pl clean
-$PERL ../makeStrategiespKiss.pl clean #remove special grammars for all fife different strategies of pKiss (A-D + pknotsRG)
 
 . ../stats.sh
 

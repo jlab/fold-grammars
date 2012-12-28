@@ -1,5 +1,4 @@
 import rna
-import probabilities
 import alifold
 
 input rna

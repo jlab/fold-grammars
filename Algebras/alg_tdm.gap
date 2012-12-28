@@ -992,7 +992,7 @@ algebra alg_tdm_macrostate_1 extends alg_tdm_macrostate_5 {
 	return "grammar gra_macrostate uses sig_foldrna(axiom = struct) {\n" + toRope(x) + "}\n";
   }
   rules unpaired_macrostate(rules x) {
-    rules res;
+    rules res = x;
 	insertProduction(res, "struct", "nil(LOC)");
 	insertProduction(res, "struct", "left_unpairedEnd");
     return res;

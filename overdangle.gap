@@ -24,9 +24,6 @@ algebra alg_mfe_overdangle extends alg_mfe {
   int ml(Subsequence lb, int x, Subsequence rb) {
     return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
   }
-  kscoring choice [int] h([int] i) {
-    return mfeSubopt(i);
-  }
 }
 
 include "Algebras/Pfunc/alg_pfunc.gap"

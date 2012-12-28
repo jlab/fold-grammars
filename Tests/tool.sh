@@ -14,6 +14,9 @@ build_cpp()
     INST="-i $3"
   fi
   log ${GAPC} ${GAPC_EXTRA} $1 -o $2.cc $INST
+  if [ $4 == "rna" ]; then 
+	log perl ../../Applications/addRNAoptions.pl $2.mf
+  fi
   log ${MAKE} ${MAKEFLAGS} -f $2.mf RTLIB\=$RTLIB CPPFLAGS_EXTRA\="${CPPFLAGS_EXTRA}" LDLIBS_EXTRA\="${LDLIBS_EXTRA}" GSLLIBS=""
 }
 

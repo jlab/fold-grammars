@@ -32,7 +32,7 @@ sub compileGAP {
 	mkdir($tmpDir) || die "cannot create working directory '$tmpDir': $!";
 
 	print STDERR "==== compileGAP: 2 of 5) copy necessary GAP files into temporary directory ..." if ($VERBOSE); 
-	foreach my $file (@{findDependentFiles($gapDir, $gapFile)}) {
+	foreach my $file ((@{findDependentFiles($gapDir, $gapFile)}, $gapDir.'/typesRNAfolding.hh', $gapDir.'/rnaoptions_defaults.hh')) {
 		my $unrootedGapfile = substr($file, length($gapDir));
 		my ($subDir) = @{separateDirAndFile($unrootedGapfile)};
 		qx($PerlSettings::BINARIES{mkdir} -p $tmpDir$subDir) if (defined $subDir);

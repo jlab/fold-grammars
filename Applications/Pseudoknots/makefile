@@ -61,15 +61,8 @@ probs_window:
 
 
 compile:
-	sed -i "s%generic_main.cc >> $(OUTNAME)_main.cc%generic_main.cc >> $(OUTNAME)_main.cc\n\tsed -i 's|gapc::Opts opts;||' $(OUTNAME)_main.cc\n\tsed -i 's|\\\([^_]\\\)opts\\\.|\\\1gapc::Opts::getOpts()->|g' $(OUTNAME)_main.cc\n\tsed -i s'|obj.init(opts);|obj.init(\\\*gapc::Opts::getOpts());|g' $(OUTNAME)_main.cc\n\tsed -i 's|#include \"rtlib/generic_opts.hh\"|#include \"rnaoptions.hh\"|' $(OUTNAME)_main.cc%" $(OUTNAME).mf
-	sed -i 's%#include <rtlib/generic_opts.hh>%#include "rnaoptions.hh"%' $(OUTNAME).hh $(OUTNAME).cc
-	@if [ "$(WINDOWMODE)" != "" ]; \
-	then \
-		sed -i "s|.*#define WINDOW_MODE|#define WINDOW_MODE|" ../../rnaoptions.hh; \
-	else \
-		sed -i "s|.*#define WINDOW_MODE|//#define WINDOW_MODE|" ../../rnaoptions.hh; \
-	fi
-	make -f $(OUTNAME).mf CPPFLAGS_EXTRA="-I ../../ -I ./ -DWITH_RNAOPTIONS" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
+	perl ../addRNAoptions.pl $(OUTNAME).mf
+	make -f $(OUTNAME).mf CPPFLAGS_EXTRA="-I ../../ -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
 	mv $(OUTNAME) $(PROGRAMPREFIX)$(OUTNAME)
 
 

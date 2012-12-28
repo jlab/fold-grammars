@@ -24,8 +24,6 @@
 #ifndef GENERIC_OPTS_HH
 #define GENERIC_OPTS_HH
 
-//#define WINDOW_MODE
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
