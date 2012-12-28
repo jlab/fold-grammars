@@ -2,7 +2,6 @@ TARGETS=mfe mfe_window subopt subopt_window enforce enforce_window local shape p
 
 #~ CXXFLAGS_EXTRA="-O3 -DNDEBUG"
 CXXFLAGS_EXTRA=-O3 -DNDEBUG
-OPTIONSPARSER=pknot_options
 GRAMMARFILE=../../Grammars/gra_pknot_microstate.gap
 PROGRAMPREFIX=pKiss_
 
@@ -62,22 +61,20 @@ probs_window:
 
 
 compile:
-	sed -i "s%generic_main.cc >> $(OUTNAME)_main.cc%generic_main.cc >> $(OUTNAME)_main.cc\n\tsed -i 's|gapc::Opts opts;||' $(OUTNAME)_main.cc\n\tsed -i 's|\\\([^_]\\\)opts\\\.|\\\1gapc::Opts::getOpts()->|g' $(OUTNAME)_main.cc\n\tsed -i s'|obj.init(opts);|obj.init(\\\*gapc::Opts::getOpts());|g' $(OUTNAME)_main.cc\n\tsed -i 's|#include \"rtlib/generic_opts.hh\"|#include \"$(OPTIONSPARSER).hh\"|' $(OUTNAME)_main.cc%" $(OUTNAME).mf
-	sed -i 's%#include <rtlib/generic_opts.hh>%#include "$(OPTIONSPARSER).hh"%' $(OUTNAME).hh $(OUTNAME).cc
+	sed -i "s%generic_main.cc >> $(OUTNAME)_main.cc%generic_main.cc >> $(OUTNAME)_main.cc\n\tsed -i 's|gapc::Opts opts;||' $(OUTNAME)_main.cc\n\tsed -i 's|\\\([^_]\\\)opts\\\.|\\\1gapc::Opts::getOpts()->|g' $(OUTNAME)_main.cc\n\tsed -i s'|obj.init(opts);|obj.init(\\\*gapc::Opts::getOpts());|g' $(OUTNAME)_main.cc\n\tsed -i 's|#include \"rtlib/generic_opts.hh\"|#include \"rnaoptions.hh\"|' $(OUTNAME)_main.cc%" $(OUTNAME).mf
+	sed -i 's%#include <rtlib/generic_opts.hh>%#include "rnaoptions.hh"%' $(OUTNAME).hh $(OUTNAME).cc
 	@if [ "$(WINDOWMODE)" != "" ]; \
 	then \
-		sed -i "s|.*#define WINDOW_MODE|#define WINDOW_MODE|" $(OPTIONSPARSER).hh; \
+		sed -i "s|.*#define WINDOW_MODE|#define WINDOW_MODE|" ../../rnaoptions.hh; \
 	else \
-		sed -i "s|.*#define WINDOW_MODE|//#define WINDOW_MODE|" $(OPTIONSPARSER).hh; \
+		sed -i "s|.*#define WINDOW_MODE|//#define WINDOW_MODE|" ../../rnaoptions.hh; \
 	fi
-	make -f $(OUTNAME).mf CPPFLAGS_EXTRA="-I ../../ -I ./ -DWITH_PKNOT_OPTIONS -DWITH_MFERANGE_OPTIONS" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
+	make -f $(OUTNAME).mf CPPFLAGS_EXTRA="-I ../../ -I ./ -DWITH_RNAOPTIONS" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
 	mv $(OUTNAME) $(PROGRAMPREFIX)$(OUTNAME)
 
 
 clean:
 	for program in `echo "$(TARGETS)"`; do rm -f $${program}.*; rm -f $${program}_*; done
-	rm -f $(OPTIONSPARSER).o
-	rm -f $(OPTIONSPARSER).d
 	rm -f string.*
 	
 cleandist: clean

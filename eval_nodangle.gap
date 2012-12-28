@@ -1,5 +1,6 @@
 import rna
-import pfunc_filter_foldrna
+import probabilities
+import singlefold
 
 input <rna, raw>
 

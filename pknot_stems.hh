@@ -22,7 +22,7 @@ typedef Basic_Subsequence<char, unsigned> TUSubsequence;
 
 #ifdef WINDOW_MODE
 #ifdef WITH_PKNOT_OPTIONS
-#include "pknot_options.hh"
+#include "rnaoptions.hh"
 #endif
 class stacklen_window {
 

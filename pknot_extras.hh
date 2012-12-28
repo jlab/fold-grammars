@@ -1,73 +1,23 @@
 #ifndef PKNOT_EXTRAS_HH
 #define PKNOT_EXTRAS_HH
 
-#ifdef WITH_PKNOT_OPTIONS
-	//use command line parameter options to define energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy
-	#include "pknot_options.hh"
-	inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
-		return gapc::Opts::getOpts()->energyPenaltyHtype;
-	}
-	inline static int pkissinit() { //initialization cost for opening a new kissing hairpin. Default is 1200.
-		return gapc::Opts::getOpts()->energyPenaltyKtype;
-	}
-	inline static int minLengthKissingHairpinStems() { //minimal length of those two stems in a KH that form the hairpins, not the crossing stem of the kiss. Default is 2
-		return gapc::Opts::getOpts()->minimalHelixLength;
-	}
-	inline static int maxPseudoknotSize() {
-		return gapc::Opts::getOpts()->maximalPseudoknotSize;
-	}
-	inline static float lowProbabilityFilter() { //heuristically filtering out shapes with in very low initial probability. Default is 10^-6
-		return gapc::Opts::getOpts()->lowProbabilityFilter;
-	}
-	inline static int shapelevel() {
-		return gapc::Opts::getOpts()->shapelevel;
-	}
-	template<typename alphabet, typename pos_type, typename T>
-	inline bool selectStrategy(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const char strategy) {
-		return gapc::Opts::getOpts()->strategy == strategy;
-	}
-	template<typename alphabet, typename pos_type, typename T>
-	inline bool allowLonelyBasepairs(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const bool isLonelyBP) {
-		return gapc::Opts::getOpts()->strategy == strategy;
-	}
-#else
-	//if compiled with no special options to ask for energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy.
-	inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
-		return 900;
-	}
-	inline static int pkissinit() { //initialization cost for opening a new kissing hairpin. Default is 1200.
-		return 1200;
-	}
-	inline static int minLengthKissingHairpinStems() { //minimal length of those two stems in a KH that form the hairpins, not the crossing stem of the kiss. Default is 2
-		return 2;
-	}
-	inline static int maxPseudoknotSize() {
-		return std::numeric_limits<int>::max();
-	}
-	inline static float lowProbabilityFilter() {
-		return 0.000001;
-	}
-	inline static int shapelevel() {
-		return 5;
-	}
-	template<typename alphabet, typename pos_type, typename T>
-	inline bool selectStrategy(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const char strategy) {
-		return 'A' == strategy;
-	}
-#endif
-
 static const int npp = 10; //penalty for an unpaired base inside a pseudoknot
 static const int pkmlinit = 600; //additional penalty for a pseudoknot inside front, middle or back of an existing outer pseudoknot
 
+/* START: for computation with suboptimals */
+	#include "rnaoptions_defaults.hh"
+	#include "typesRNAfolding.hh"
+	
 
+/* END: for computation with suboptimals */
 
 /* START: everything for strategy A: finding compatible pseudoknots */
-	inline mfeanswer get_pk_fn(mfeanswer candidate) {
+	inline answer_pknot_mfe get_pk_fn(answer_pknot_mfe candidate) {
 		return candidate;
 	}
 	
-	inline mfeanswer get_pk_fn(const List_Ref<mfeanswer> &subopts) {
-		mfeanswer res;
+	inline answer_pknot_mfe get_pk_fn(const List_Ref<answer_pknot_mfe> &subopts) {
+		answer_pknot_mfe res;
 		empty(res);
 		if (!is_empty(subopts)) {
 			res = minimum(subopts)->front();
@@ -75,12 +25,11 @@ static const int pkmlinit = 600; //additional penalty for a pseudoknot inside fr
 		return res;
 	}
 
-	
 	template<typename V, typename I>
-	inline mfeanswer get_pk_fn(const Hash::Ref<V, I > &t) {
+	inline answer_pknot_mfe get_pk_fn(const Hash::Ref<V, I > &t) {
 		//typename Hash::Ref<V, I > hash_h;
 		Hash::Ref<V, I> &hash = const_cast<Hash::Ref<V, I>&>(t);
-		mfeanswer a;
+		answer_pknot_mfe a;
 		typename Hash::Ref<V,I>::iterator i = hash.ref().begin();
 		if (i == hash.ref().end()) {
 			empty(a);
@@ -89,7 +38,7 @@ static const int pkmlinit = 600; //additional penalty for a pseudoknot inside fr
 		a = (*i).second;
 		++i;
 		for (; i != hash.ref().end(); ++i) {
-			mfeanswer b = (*i).second;
+			answer_pknot_mfe b = (*i).second;
 			if (b < a) {
 				a = b;
 			}

@@ -1,12 +1,12 @@
 import rna
-import pfunc_answer_macrostate
-import pfunc_filter_macrostate
+import typesRNAfolding
 import singlefold //necessary to redefine the meaning of the filter "basepair". In singlefold this filter directly calles the build-in "basepairing" filter, in alignmentfold it gets hard codes parameters and returns true or false with dependance to the number of gaps in the rows
+import probabilities
 
 input rna
 
-type pfanswer = extern
-type mfeanswer = (int energy, Subsequence firstStem, Subsequence lastStem)
+type answer_macrostate_pfunc = extern
+type answer_macrostate_mfe = extern
 type mfeanswer_dbg = (int energy, Subsequence firstStem, Subsequence lastStem, string rep)
 type mfeanswer_v2 = (int energy, Subsequence firstStem, Subsequence lastStem, Subsequence subword, string rep)
 type shape_t = shape
@@ -26,17 +26,17 @@ algebra alg_enum auto enum ;
 include "Grammars/gra_macrostate.gap"
 
 //start: instances used in the FoldingSpaces paper
-instance shape5pfx = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-instance shape4pfx = gra_macrostate ((alg_shape4 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-instance shape3pfx = gra_macrostate ((alg_shape3 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-instance shape2pfx = gra_macrostate ((alg_shape2 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-instance shape1pfx = gra_macrostate ((alg_shape1 * alg_pfunc_macrostate) suchthat p_func_filter_all);
+instance shape5pfx = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
+instance shape4pfx = gra_macrostate ((alg_shape4 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
+instance shape3pfx = gra_macrostate ((alg_shape3 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
+instance shape2pfx = gra_macrostate ((alg_shape2 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
+instance shape1pfx = gra_macrostate ((alg_shape1 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
 
-instance shape5mfepfxpp = gra_macrostate (((alg_shape5 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat p_func_filter_allPP) * alg_dotBracket);  //always compile with --kbacktrace !
-instance shape4mfepfxpp = gra_macrostate (((alg_shape4 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat p_func_filter_allPP) * alg_dotBracket);  //always compile with --kbacktrace !
-instance shape3mfepfxpp = gra_macrostate (((alg_shape3 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat p_func_filter_allPP) * alg_dotBracket);  //always compile with --kbacktrace !
-instance shape2mfepfxpp = gra_macrostate (((alg_shape2 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat p_func_filter_allPP) * alg_dotBracket);  //always compile with --kbacktrace !
-instance shape1mfepfxpp = gra_macrostate (((alg_shape1 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat p_func_filter_allPP) * alg_dotBracket);  //always compile with --kbacktrace !
+instance shape5mfepfxpp = gra_macrostate (((alg_shape5 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat filterLowProbShapes) * alg_dotBracket);  //always compile with --kbacktrace !
+instance shape4mfepfxpp = gra_macrostate (((alg_shape4 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat filterLowProbShapes) * alg_dotBracket);  //always compile with --kbacktrace !
+instance shape3mfepfxpp = gra_macrostate (((alg_shape3 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat filterLowProbShapes) * alg_dotBracket);  //always compile with --kbacktrace !
+instance shape2mfepfxpp = gra_macrostate (((alg_shape2 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat filterLowProbShapes) * alg_dotBracket);  //always compile with --kbacktrace !
+instance shape1mfepfxpp = gra_macrostate (((alg_shape1 * (alg_mfe_macrostate % alg_pfunc_macrostate)) suchthat filterLowProbShapes) * alg_dotBracket);  //always compile with --kbacktrace !
 
 instance mfeshape5pp = gra_macrostate(alg_mfe_macrostate * alg_shape5 * alg_dotBracket);
 instance mfeshape4pp = gra_macrostate(alg_mfe_macrostate * alg_shape4 * alg_dotBracket);
@@ -59,11 +59,11 @@ instance shape4mfe = gra_macrostate ( alg_shape4 * alg_mfe_macrostate ) ; //for 
 instance shape3mfe = gra_macrostate ( alg_shape3 * alg_mfe_macrostate ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
 instance shape2mfe = gra_macrostate ( alg_shape2 * alg_mfe_macrostate ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
 instance shape1mfe = gra_macrostate ( alg_shape1 * alg_mfe_macrostate ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
-//~ instance shape5pfx = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-//~ instance shape4pfx = gra_macrostate ((alg_shape4 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-//~ instance shape3pfx = gra_macrostate ((alg_shape3 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-//~ instance shape2pfx = gra_macrostate ((alg_shape2 * alg_pfunc_macrostate) suchthat p_func_filter_all);
-//~ instance shape1pfx = gra_macrostate ((alg_shape1 * alg_pfunc_macrostate) suchthat p_func_filter_all);
+//~ instance shape5pfx = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
+//~ instance shape4pfx = gra_macrostate ((alg_shape4 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
+//~ instance shape3pfx = gra_macrostate ((alg_shape3 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
+//~ instance shape2pfx = gra_macrostate ((alg_shape2 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
+//~ instance shape1pfx = gra_macrostate ((alg_shape1 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
 //stop: instances used in for RapidShapes
 
 
@@ -93,7 +93,7 @@ instance mfepppf = gra_macrostate( alg_mfe_macrostate * (alg_dotBracket * alg_pf
 
 
 
-instance shape5pfxall = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat p_func_filter_1_all);
+instance shape5pfxall = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
 
 
 instance pfsampleshape = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape5 ) suchthat sample_filter_pf ) ; //compile with --sample !

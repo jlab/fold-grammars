@@ -1,7 +1,7 @@
 import rna
-import pfunc_filter_foldrna
 import singlefold //necessary to redefine the meaning of the filter "basepair". In singlefold this filter directly calles the build-in "basepairing" filter, in alignmentfold it gets hard codes parameters and returns true or false with dependance to the number of gaps in the rows
 import mfesubopt
+import probabilities
 
 input rna
 
@@ -22,17 +22,17 @@ include "Algebras/Pfunc/alg_pfunc.gap"
 include "Grammars/gra_nodangle.gap"
 
 //start: instances used in the FoldingSpaces paper
-instance shape5pfx = gra_nodangle ((alg_shape5 * alg_pfunc) suchthat pfunc_filter);
-instance shape4pfx = gra_nodangle ((alg_shape4 * alg_pfunc) suchthat pfunc_filter);
-instance shape3pfx = gra_nodangle ((alg_shape3 * alg_pfunc) suchthat pfunc_filter);
-instance shape2pfx = gra_nodangle ((alg_shape2 * alg_pfunc) suchthat pfunc_filter);
-instance shape1pfx = gra_nodangle ((alg_shape1 * alg_pfunc) suchthat pfunc_filter);
+instance shape5pfx = gra_nodangle ((alg_shape5 * alg_pfunc) suchthat filterLowProbShapes);
+instance shape4pfx = gra_nodangle ((alg_shape4 * alg_pfunc) suchthat filterLowProbShapes);
+instance shape3pfx = gra_nodangle ((alg_shape3 * alg_pfunc) suchthat filterLowProbShapes);
+instance shape2pfx = gra_nodangle ((alg_shape2 * alg_pfunc) suchthat filterLowProbShapes);
+instance shape1pfx = gra_nodangle ((alg_shape1 * alg_pfunc) suchthat filterLowProbShapes);
 
-instance shape5mfepfxpp = gra_nodangle (((alg_shape5 * (alg_mfe % alg_pfunc)) suchthat pfunc_filter_allPP) * alg_dotBracket);  //must be compiled with --kbacktrace !
-instance shape4mfepfxpp = gra_nodangle (((alg_shape4 * (alg_mfe % alg_pfunc)) suchthat pfunc_filter_allPP) * alg_dotBracket);  //must be compiled with --kbacktrace !
-instance shape3mfepfxpp = gra_nodangle (((alg_shape3 * (alg_mfe % alg_pfunc)) suchthat pfunc_filter_allPP) * alg_dotBracket);  //must be compiled with --kbacktrace !
-instance shape2mfepfxpp = gra_nodangle (((alg_shape2 * (alg_mfe % alg_pfunc)) suchthat pfunc_filter_allPP) * alg_dotBracket);  //must be compiled with --kbacktrace !
-instance shape1mfepfxpp = gra_nodangle (((alg_shape1 * (alg_mfe % alg_pfunc)) suchthat pfunc_filter_allPP) * alg_dotBracket);  //must be compiled with --kbacktrace !
+instance shape5mfepfxpp = gra_nodangle (((alg_shape5 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
+instance shape4mfepfxpp = gra_nodangle (((alg_shape4 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
+instance shape3mfepfxpp = gra_nodangle (((alg_shape3 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
+instance shape2mfepfxpp = gra_nodangle (((alg_shape2 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
+instance shape1mfepfxpp = gra_nodangle (((alg_shape1 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
                   
 instance mfeshape5pp = gra_nodangle(alg_mfe * alg_shape5 * alg_dotBracket);
 instance mfeshape4pp = gra_nodangle(alg_mfe * alg_shape4 * alg_dotBracket);
@@ -55,17 +55,17 @@ instance shape4mfe = gra_nodangle ( alg_shape4 * alg_mfe ) ; //for guessing shap
 instance shape3mfe = gra_nodangle ( alg_shape3 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
 instance shape2mfe = gra_nodangle ( alg_shape2 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
 instance shape1mfe = gra_nodangle ( alg_shape1 * alg_mfe ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
-//~ instance shape5pfx = gra_nodangle ((alg_shape5 * alg_pfunc) suchthat p_func_filte);
-//~ instance shape4pfx = gra_nodangle ((alg_shape4 * alg_pfunc) suchthat p_func_filte);
-//~ instance shape3pfx = gra_nodangle ((alg_shape3 * alg_pfunc) suchthat p_func_filte);
-//~ instance shape2pfx = gra_nodangle ((alg_shape2 * alg_pfunc) suchthat p_func_filte);
-//~ instance shape1pfx = gra_nodangle ((alg_shape1 * alg_pfunc) suchthat p_func_filter);
+//~ instance shape5pfx = gra_nodangle ((alg_shape5 * alg_pfunc) suchthat filterLowProbShapes);
+//~ instance shape4pfx = gra_nodangle ((alg_shape4 * alg_pfunc) suchthat filterLowProbShapes);
+//~ instance shape3pfx = gra_nodangle ((alg_shape3 * alg_pfunc) suchthat filterLowProbShapes);
+//~ instance shape2pfx = gra_nodangle ((alg_shape2 * alg_pfunc) suchthat filterLowProbShapes);
+//~ instance shape1pfx = gra_nodangle ((alg_shape1 * alg_pfunc) suchthat filterLowProbShapes);
 //stop: instances used in for RapidShapes
 
 
 instance enum = gra_nodangle (alg_enum);
 
-//~ instance shape5pfxpp = gra_nodangle (((alg_shape5 * alg_pfunc) suchthat p_func_filter) * alg_dotBracket);
+//~ instance shape5pfxpp = gra_nodangle (((alg_shape5 * alg_pfunc) suchthat filterLowProbShapes) * alg_dotBracket);
 instance shapemfepf = gra_nodangle(alg_shape5 * (alg_mfe % alg_pfunc) * alg_dotBracket);
 
 instance shape5pf = gra_nodangle(alg_shape5 * alg_pfunc);

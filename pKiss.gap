@@ -1,4 +1,5 @@
 import rna
+import typesRNAfolding
 import pknot_stems //precomputation of energetically best non-interrupted stems for all subwords i to j
 import pknot_extras //special functions for different strategies of pKiss and its index hacking, e.g. 3D-Tables, finding compatible H-type pseudoknots, ... + some energy constants for pseudoknots + minimal stem length
 import pknot_enforce
@@ -11,8 +12,8 @@ input rna
 
 type Rope = extern
 type pkshape_t = extern
-type mfeanswer = (int energy, int betaLeftOuter, int alphaRightOuter)
-type pfuncanswer = (double pfunc, int betaLeftOuter, int alphaRightOuter)
+type answer_pknot_mfe = extern
+type answer_pknot_pfunc = extern
 type pktype = extern
 
 //~ type dotBracket_t = pkshape_t

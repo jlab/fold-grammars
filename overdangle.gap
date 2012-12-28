@@ -1,7 +1,7 @@
 import rna
-import pfunc_filter_foldrna
 import singlefold //necessary to redefine the meaning of the filter "basepair". In singlefold this filter directly calles the build-in "basepairing" filter, in alignmentfold it gets hard codes parameters and returns true or false with dependance to the number of gaps in the rows
 import mfesubopt
+import probabilities
 
 input rna
 
@@ -47,17 +47,17 @@ algebra alg_pfunc_overdangle_id extends alg_pfunc_overdangle {
 include "Grammars/gra_overdangle.gap"
 
 //start: instances used in the FoldingSpaces paper
-instance shape5pfx = gra_overdangle ((alg_shape5 * alg_pfunc_overdangle) suchthat pfunc_filter);
-instance shape4pfx = gra_overdangle ((alg_shape4 * alg_pfunc_overdangle) suchthat pfunc_filter);
-instance shape3pfx = gra_overdangle ((alg_shape3 * alg_pfunc_overdangle) suchthat pfunc_filter);
-instance shape2pfx = gra_overdangle ((alg_shape2 * alg_pfunc_overdangle) suchthat pfunc_filter);
-instance shape1pfx = gra_overdangle ((alg_shape1 * alg_pfunc_overdangle) suchthat pfunc_filter);
+instance shape5pfx = gra_overdangle ((alg_shape5 * alg_pfunc_overdangle) suchthat filterLowProbShapes);
+instance shape4pfx = gra_overdangle ((alg_shape4 * alg_pfunc_overdangle) suchthat filterLowProbShapes);
+instance shape3pfx = gra_overdangle ((alg_shape3 * alg_pfunc_overdangle) suchthat filterLowProbShapes);
+instance shape2pfx = gra_overdangle ((alg_shape2 * alg_pfunc_overdangle) suchthat filterLowProbShapes);
+instance shape1pfx = gra_overdangle ((alg_shape1 * alg_pfunc_overdangle) suchthat filterLowProbShapes);
 
-instance shape5mfepfxpp = gra_overdangle (((alg_shape5 * (alg_mfe_overdangle % alg_pfunc_overdangle)) suchthat pfunc_filter_allPP) * alg_dotBracket);  //must be compiled with --kbacktrace !
-instance shape4mfepfxpp = gra_overdangle (((alg_shape4 * (alg_mfe_overdangle % alg_pfunc_overdangle)) suchthat pfunc_filter_allPP) * alg_dotBracket);  //must be compiled with --kbacktrace !
-instance shape3mfepfxpp = gra_overdangle (((alg_shape3 * (alg_mfe_overdangle % alg_pfunc_overdangle)) suchthat pfunc_filter_allPP) * alg_dotBracket);  //must be compiled with --kbacktrace !
-instance shape2mfepfxpp = gra_overdangle (((alg_shape2 * (alg_mfe_overdangle % alg_pfunc_overdangle)) suchthat pfunc_filter_allPP) * alg_dotBracket);  //must be compiled with --kbacktrace !
-instance shape1mfepfxpp = gra_overdangle (((alg_shape1 * (alg_mfe_overdangle % alg_pfunc_overdangle)) suchthat pfunc_filter_allPP) * alg_dotBracket);  //must be compiled with --kbacktrace !
+instance shape5mfepfxpp = gra_overdangle (((alg_shape5 * (alg_mfe_overdangle % alg_pfunc_overdangle)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
+instance shape4mfepfxpp = gra_overdangle (((alg_shape4 * (alg_mfe_overdangle % alg_pfunc_overdangle)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
+instance shape3mfepfxpp = gra_overdangle (((alg_shape3 * (alg_mfe_overdangle % alg_pfunc_overdangle)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
+instance shape2mfepfxpp = gra_overdangle (((alg_shape2 * (alg_mfe_overdangle % alg_pfunc_overdangle)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
+instance shape1mfepfxpp = gra_overdangle (((alg_shape1 * (alg_mfe_overdangle % alg_pfunc_overdangle)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
                   
 instance mfeshape5pp = gra_overdangle(alg_mfe_overdangle * alg_shape5 * alg_dotBracket);
 instance mfeshape4pp = gra_overdangle(alg_mfe_overdangle * alg_shape4 * alg_dotBracket);
@@ -80,11 +80,11 @@ instance shape4mfe = gra_overdangle ( alg_shape4 * alg_mfe_overdangle ) ; //for 
 instance shape3mfe = gra_overdangle ( alg_shape3 * alg_mfe_overdangle ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
 instance shape2mfe = gra_overdangle ( alg_shape2 * alg_mfe_overdangle ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
 instance shape1mfe = gra_overdangle ( alg_shape1 * alg_mfe_overdangle ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
-//~ instance shape5pfx = gra_overdangle ((alg_shape5 * alg_pfunc_overdangle) suchthat p_func_filte);
-//~ instance shape4pfx = gra_overdangle ((alg_shape4 * alg_pfunc_overdangle) suchthat p_func_filte);
-//~ instance shape3pfx = gra_overdangle ((alg_shape3 * alg_pfunc_overdangle) suchthat p_func_filte);
-//~ instance shape2pfx = gra_overdangle ((alg_shape2 * alg_pfunc_overdangle) suchthat p_func_filte);
-//~ instance shape1pfx = gra_overdangle ((alg_shape1 * alg_pfunc_overdangle) suchthat p_func_filter);
+//~ instance shape5pfx = gra_overdangle ((alg_shape5 * alg_pfunc_overdangle) suchthat filterLowProbShapes);
+//~ instance shape4pfx = gra_overdangle ((alg_shape4 * alg_pfunc_overdangle) suchthat filterLowProbShapes);
+//~ instance shape3pfx = gra_overdangle ((alg_shape3 * alg_pfunc_overdangle) suchthat filterLowProbShapes);
+//~ instance shape2pfx = gra_overdangle ((alg_shape2 * alg_pfunc_overdangle) suchthat filterLowProbShapes);
+//~ instance shape1pfx = gra_overdangle ((alg_shape1 * alg_pfunc_overdangle) suchthat filterLowProbShapes);
 //stop: instances used in for RapidShapes
 
 instance pp = gra_overdangle (alg_dotBracket);

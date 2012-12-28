@@ -1,4 +1,4 @@
-algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, compKnot = mfeanswer) {
+algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, compKnot = answer_pknot_mfe) {
 //begin: copy and paste from non-crossing algebra
   int sadd(Subsequence lb, int x) {
     return x + sbase_energy();
@@ -65,12 +65,12 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, 
 //end: copy and paste from non-crossing algebra  
 
 
-  int pk(mfeanswer x) {
+  int pk(answer_pknot_mfe x) {
     return x.energy;
   }
 
-  mfeanswer pknot(Subsequence a, int front, Subsequence b, int middle, Subsequence aPrime, int back, Subsequence bPrime ; int stackenergies) {
-    mfeanswer res;
+  answer_pknot_mfe pknot(Subsequence a, int front, Subsequence b, int middle, Subsequence aPrime, int back, Subsequence bPrime ; int stackenergies) {
+    answer_pknot_mfe res;
 	
     Subsequence alphaOuter;
     alphaOuter.seq = a.seq;
@@ -110,8 +110,8 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, 
     
 	return res;
   }
-  mfeanswer pkiss(Subsequence a, int front, Subsequence b, int middle1, Subsequence aPrime, int middle2, Subsequence c, int middle3, Subsequence bPrime, int back, Subsequence cPrime; int stackenergies) {
-    mfeanswer res;
+  answer_pknot_mfe pkiss(Subsequence a, int front, Subsequence b, int middle1, Subsequence aPrime, int middle2, Subsequence c, int middle3, Subsequence bPrime, int back, Subsequence cPrime; int stackenergies) {
+    answer_pknot_mfe res;
 	
 	Subsequence alphaOuter;
     alphaOuter.seq = a.seq;
@@ -169,7 +169,7 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, 
 	return res;
 
   }
-  int kndl(Subsequence ld, mfeanswer x) {
+  int kndl(Subsequence ld, answer_pknot_mfe x) {
     Subsequence alpha;
     alpha.seq = ld.seq;
     alpha.i = ld.i+1;
@@ -178,7 +178,7 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, 
     return x.energy + npp + dl_energy(alpha, alpha);
   }
 
-  int kndr(mfeanswer x, Subsequence rd) {
+  int kndr(answer_pknot_mfe x, Subsequence rd) {
     Subsequence beta;
     beta.seq = rd.seq;
     beta.i = x.betaLeftOuter;
@@ -187,7 +187,7 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, 
     return x.energy + npp + dr_energy(beta, beta);
   }
 
-  int kndlr(Subsequence ld, mfeanswer x, Subsequence rd) {
+  int kndlr(Subsequence ld, answer_pknot_mfe x, Subsequence rd) {
     Subsequence alpha;
     alpha.seq = ld.seq;
     alpha.i = ld.i+1;
@@ -290,12 +290,12 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, comp = int, 
     return list(minimum(i));
   }
 
-  choice [mfeanswer] hKnot([mfeanswer] i) {
+  choice [answer_pknot_mfe] hKnot([answer_pknot_mfe] i) {
     return list(minimum(i));
   }
   
   // following two algebrafunctions are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped.
-  int localKnot(Subsequence posLeft, mfeanswer knot, Subsequence posRight) {
+  int localKnot(Subsequence posLeft, answer_pknot_mfe knot, Subsequence posRight) {
 	return knot.energy;
   }
   int skipBase(Subsequence lb, int x) {
@@ -308,7 +308,7 @@ algebra alg_pknot_mfe_subopt extends alg_pknot_mfe {
     return mfeSubopt(i);
   }
 
-  kscoring choice [mfeanswer] hKnot([mfeanswer] i) {
+  kscoring choice [answer_pknot_mfe] hKnot([answer_pknot_mfe] i) {
     return mfeSuboptKnot(i);
   }
 }

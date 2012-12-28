@@ -17,7 +17,7 @@
                 continue;
               }
   
-              mfeanswer optPK = get_pk(h,j,k+2,m);
+              answer_pknot_mfe optPK = get_pk(h,j,k+2,m);
               if ((!is_empty(optPK)) && (optPK.energy < rpk_energy(k+1))) {
                 rpk_set(k, optPK.energy, optPK.betaLeftOuter);
               } else {

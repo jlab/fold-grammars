@@ -4,10 +4,10 @@ grammar gra_eval_nodangle uses sig_eval_foldrna(axiom = struct) {
               nil(<LOC, LOC>)           # h;
 
   dangle    = drem(<LOC, LOC>, strong, <LOC, LOC>) # h;
-	
-  //~ strong    = sr(<BASE, isOpen>, weak, <BASE, isClose>) # h; //noLP: no lonely base-pairs, Vienna: --noLP
-  strong    =                    weak                   # h; //LP: allow lonely base-pairs, Vienna: default
 
+  strong    = {sr(<BASE, isOpen>, weak, <BASE, isClose>)} with allowLonelyBasepairs(false) | 
+			  {		              weak                  } with allowLonelyBasepairs(true)  # h;
+	
   weak      = {stack                        | 
                hairpin                      |
                leftB                        | 

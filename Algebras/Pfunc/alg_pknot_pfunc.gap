@@ -2,13 +2,13 @@
 // 1) verwenden wir ja absichtlich nur canonische / repräsentative Pseudoknoten und nicht alle im Suchraum (potentiell müssten die Wahrscheinlichkeiten also unterschätzt werden)
 // 2) die Dangles von außen auf die beiden PK Stems werden nicht korrekt addiert. Um diese für MFE richtig berechnen zu können werden die Indizes der inneren Basenpaar-Partner mitgeschleppt um später den Dangle berechnen zu können. Bei Pfunc wird aber einfach die Summe über alle verschiedenen Indizes genommen und darauf dann nur EINE Art von Dangling berechnet!
 // im Moment braucht das generierte Programm noch einen manuellen Schuppser: in X.hh muss folgendes an passender Stelle eingefuegt werden:
-//pfuncanswer operator+=(const pfuncanswer &other) const
+//answer_pknot_pfunc operator+=(const answer_pknot_pfunc &other) const
 //{
 //assert(!empty_); assert(!other.empty_);
-//return pfuncanswer(pfunc + other.pfunc);
+//return answer_pknot_pfunc(pfunc + other.pfunc);
 //}
 
-algebra alg_pknot_pfunc implements sig_pknot_foldrna(alphabet = char, comp = double, compKnot = pfuncanswer) {
+algebra alg_pknot_pfunc implements sig_pknot_foldrna(alphabet = char, comp = double, compKnot = answer_pknot_pfunc) {
 //begin: copy and paste from non-crossing algebra
   double sadd(Subsequence lb, double x) {
     return scale(1) *                     x * mk_pf(sbase_energy());
@@ -74,12 +74,12 @@ algebra alg_pknot_pfunc implements sig_pknot_foldrna(alphabet = char, comp = dou
   }
 //end: copy and paste from non-crossing algebra  
 
-  double pk(pfuncanswer x) {
+  double pk(answer_pknot_pfunc x) {
     return x.pfunc;
   }
 
-  pfuncanswer pknot(Subsequence a, double front, Subsequence b, double middle, Subsequence aPrime, double back, Subsequence bPrime ; int stackenergies) {
-    pfuncanswer res;
+  answer_pknot_pfunc pknot(Subsequence a, double front, Subsequence b, double middle, Subsequence aPrime, double back, Subsequence bPrime ; int stackenergies) {
+    answer_pknot_pfunc res;
 	
     Subsequence alphaOuter;
     alphaOuter.seq = a.seq;
@@ -120,8 +120,8 @@ algebra alg_pknot_pfunc implements sig_pknot_foldrna(alphabet = char, comp = dou
     
 	return res;
   }
-  pfuncanswer pkiss(Subsequence a, double front, Subsequence b, double middle1, Subsequence aPrime, double middle2, Subsequence c, double middle3, Subsequence bPrime, double back, Subsequence cPrime; int stackenergies) {
-    pfuncanswer res;
+  answer_pknot_pfunc pkiss(Subsequence a, double front, Subsequence b, double middle1, Subsequence aPrime, double middle2, Subsequence c, double middle3, Subsequence bPrime, double back, Subsequence cPrime; int stackenergies) {
+    answer_pknot_pfunc res;
 	
 	Subsequence alphaOuter;
     alphaOuter.seq = a.seq;
@@ -180,7 +180,7 @@ algebra alg_pknot_pfunc implements sig_pknot_foldrna(alphabet = char, comp = dou
 	return res;
 
   }
-  double kndl(Subsequence ld, pfuncanswer x) {
+  double kndl(Subsequence ld, answer_pknot_pfunc x) {
     Subsequence alpha;
     alpha.seq = ld.seq;
     alpha.i = ld.i+1;
@@ -189,7 +189,7 @@ algebra alg_pknot_pfunc implements sig_pknot_foldrna(alphabet = char, comp = dou
     return scale(1) * x.pfunc * mk_pf(npp + dl_energy(alpha, alpha));
   }
 
-  double kndr(pfuncanswer x, Subsequence rd) {
+  double kndr(answer_pknot_pfunc x, Subsequence rd) {
     Subsequence beta;
     beta.seq = rd.seq;
     beta.i = x.betaLeftOuter;
@@ -198,7 +198,7 @@ algebra alg_pknot_pfunc implements sig_pknot_foldrna(alphabet = char, comp = dou
     return scale(1) * x.pfunc * mk_pf(npp + dr_energy(beta, beta));
   }
 
-  double kndlr(Subsequence ld, pfuncanswer x, Subsequence rd) {
+  double kndlr(Subsequence ld, answer_pknot_pfunc x, Subsequence rd) {
     Subsequence alpha;
     alpha.seq = ld.seq;
     alpha.i = ld.i+1;
@@ -300,12 +300,12 @@ algebra alg_pknot_pfunc implements sig_pknot_foldrna(alphabet = char, comp = dou
     return list(sum(i));
   }
 
-  choice [pfuncanswer] hKnot([pfuncanswer] i) {
+  choice [answer_pknot_pfunc] hKnot([answer_pknot_pfunc] i) {
     return list(sum(i));
   }
 
   // following two algebrafunctions are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped.
-  double localKnot(Subsequence posLeft, pfuncanswer knot, Subsequence posRight) {
+  double localKnot(Subsequence posLeft, answer_pknot_pfunc knot, Subsequence posRight) {
 	return knot.pfunc;
   }
   double skipBase(Subsequence lb, double x) {

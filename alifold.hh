@@ -1,6 +1,8 @@
 #ifndef ALIFOLD_HH
 #define ALIFOLD_HH
 
+#include "rnaoptions_defaults.hh"
+
 static const float cfactor = 1.0; //Set the weight of the covariance term in the energy function (default=`1.0')
 static const float nfactor = 1.0; //Set the penalty for non-compatible sequences in the covariance term of the energy function (default=`1.0')
 static const int MINPSCORE = -200;

@@ -12,8 +12,8 @@ grammar gra_microstate uses sig_foldrna(axiom = struct) {
               edlr(BASE, strong, BASE) |
               drem(LOC,  strong, LOC ) # h;
 	
-  strong    = sr(BASE, weak, BASE) with basepair # h; //noLP: no lonely base-pairs, Vienna: --noLP
-  //~ strong    =          weak                      # h; //LP: allow lonely base-pairs, Vienna: default
+  strong    = {sr(BASE, weak, BASE) with basepair} with allowLonelyBasepairs(false) | 
+			  {		    weak                     } with allowLonelyBasepairs(true)  # h;
 
   weak      = {stack      | 
                hairpin    |

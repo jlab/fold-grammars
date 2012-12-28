@@ -1,12 +1,11 @@
 import rna
-import pfunc_answer_macrostate
-import pfunc_filter_macrostate
 import singlefold //necessary to redefine the meaning of the filter "basepair". In singlefold this filter directly calles the build-in "basepairing" filter, in alignmentfold it gets hard codes parameters and returns true or false with dependance to the number of gaps in the rows
+import probabilities
 
 input rna
 
-type pfanswer = extern
-type mfeanswer = (int energy, Subsequence firstStem, Subsequence lastStem)
+type answer_macrostate_pfunc = extern
+type answer_macrostate_mfe = extern
 type mfeanswer_dbg = (int energy, Subsequence firstStem, Subsequence lastStem, string rep)
 type mfeanswer_v2 = (int energy, Subsequence firstStem, Subsequence lastStem, Subsequence subword, string rep)
 type shape_t = shape
@@ -50,9 +49,9 @@ signature sig_foldrna(alphabet,answer) {
 	choice [answer] h([answer]);
 }
 
-algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pfanswer) {
-  pfanswer sadd(Subsequence lb,pfanswer e) {
-    pfanswer res = e;
+algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = answer_macrostate_pfunc) {
+  answer_macrostate_pfunc sadd(Subsequence lb,answer_macrostate_pfunc e) {
+    answer_macrostate_pfunc res = e;
     
     res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(sbase_energy());
     res.pf.q2 = 0.0;
@@ -62,8 +61,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer cadd(pfanswer le,pfanswer re) {
-    pfanswer res = le;
+  answer_macrostate_pfunc cadd(answer_macrostate_pfunc le,answer_macrostate_pfunc re) {
+    answer_macrostate_pfunc res = le;
     
     res.pf.q1 = le.pf.q1 * re.pf.q1;
     res.pf.q2 = 0.0;
@@ -73,8 +72,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer cadd_Pr(pfanswer le,pfanswer re) {
-    pfanswer res = le;
+  answer_macrostate_pfunc cadd_Pr(answer_macrostate_pfunc le,answer_macrostate_pfunc re) {
+    answer_macrostate_pfunc res = le;
     
     res.pf.q1 = le.pf.q1 * sum_elems(re.pf);
     res.pf.q2 = 0.0;
@@ -84,24 +83,24 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer cadd_Pr_Pr(pfanswer le,pfanswer re) {
-    pfanswer res = le;
+  answer_macrostate_pfunc cadd_Pr_Pr(answer_macrostate_pfunc le,answer_macrostate_pfunc re) {
+    answer_macrostate_pfunc res = le;
     
     res.pf = mk_tuple(le.firststem, le.pf.q1 * re.pf.q1);
     
     return res;
   }
 
-  pfanswer cadd_Pr_Pr_Pr(pfanswer le,pfanswer re) {
-    pfanswer res = le;
+  answer_macrostate_pfunc cadd_Pr_Pr_Pr(answer_macrostate_pfunc le,answer_macrostate_pfunc re) {
+    answer_macrostate_pfunc res = le;
     
     res.pf = mk_tuple(le.firststem, le.pf.q1 * sum_elems(re.pf));
     
     return res;
   }
 
-  pfanswer ambd(pfanswer le,Subsequence b,pfanswer re) {
-    pfanswer res = le;
+  answer_macrostate_pfunc ambd(answer_macrostate_pfunc le,Subsequence b,answer_macrostate_pfunc re) {
+    answer_macrostate_pfunc res = le;
     
     res.pf.q1 = scale(1) * check_tuple(le.pf.q1, le.firststem, re.firststem, b, re.pf);
     res.pf.q2 = 0.0;
@@ -111,16 +110,16 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer ambd_Pr(pfanswer le,Subsequence b,pfanswer re) {
-    pfanswer res = le;
+  answer_macrostate_pfunc ambd_Pr(answer_macrostate_pfunc le,Subsequence b,answer_macrostate_pfunc re) {
+    answer_macrostate_pfunc res = le;
     
     res.pf = mk_tuple(le.firststem, scale(1) * check_tuple(le.pf.q1, le.firststem, re.firststem, b, re.pf));
     
     return res;
   }
 
-  pfanswer nil(Subsequence loc) {
-    pfanswer res;
+  answer_macrostate_pfunc nil(Subsequence loc) {
+    answer_macrostate_pfunc res;
     
     res.pf.q1 = 1.0;
     res.pf.q2 = 0.0;
@@ -133,8 +132,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer edl(Subsequence lb,pfanswer e, Subsequence rloc) {
-    pfanswer res = e;
+  answer_macrostate_pfunc edl(Subsequence lb,answer_macrostate_pfunc e, Subsequence rloc) {
+    answer_macrostate_pfunc res = e;
     
     res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(dl_energy(e.firststem, e.firststem) + termau_energy(e.firststem, e.firststem));
     res.pf.q2 = 0.0;
@@ -144,8 +143,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer edr(Subsequence lloc, pfanswer e,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc edr(Subsequence lloc, answer_macrostate_pfunc e,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(dr_energy(e.firststem, e.firststem) + termau_energy(e.firststem, e.firststem));
     res.pf.q2 = 0.0;
@@ -155,8 +154,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer edlr(Subsequence lb,pfanswer e,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc edlr(Subsequence lb,answer_macrostate_pfunc e,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
 
     //this minimization is necessary since Turner2004 parameters introduced the ext_mismatch_energy table. It now might happen, that dangling from one side only is better than dangling from both sides.
      int help = min(min(ext_mismatch_energy(e.firststem, e.firststem), dl_energy(e.firststem, e.firststem)), dr_energy(e.firststem, e.firststem));
@@ -169,8 +168,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer drem(Subsequence lloc, pfanswer e, Subsequence rloc) {
-    pfanswer res = e;
+  answer_macrostate_pfunc drem(Subsequence lloc, answer_macrostate_pfunc e, Subsequence rloc) {
+    answer_macrostate_pfunc res = e;
 
     res.pf.q1 = e.pf.q1 * mk_pf(termau_energy(e.firststem, e.firststem));
     res.pf.q2 = 0.0;
@@ -180,8 +179,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer sr(Subsequence lb,pfanswer e,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc sr(Subsequence lb,answer_macrostate_pfunc e,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -194,8 +193,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer hl(Subsequence lb,Subsequence region,Subsequence rb) {
-    pfanswer res;
+  answer_macrostate_pfunc hl(Subsequence lb,Subsequence region,Subsequence rb) {
+    answer_macrostate_pfunc res;
     
     res.firststem.seq = lb.seq;
     res.firststem.i = lb.i;
@@ -209,8 +208,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer hlTag(Subsequence lb,Subsequence region,Subsequence rb) {
-    pfanswer res;
+  answer_macrostate_pfunc hlTag(Subsequence lb,Subsequence region,Subsequence rb) {
+    answer_macrostate_pfunc res;
     
     res.firststem.seq = lb.seq;
     res.firststem.i = lb.i;
@@ -225,8 +224,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
   }
 
 
-  pfanswer bl(Subsequence lb,Subsequence lregion,pfanswer e,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc bl(Subsequence lb,Subsequence lregion,answer_macrostate_pfunc e,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -239,8 +238,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer br(Subsequence lb,pfanswer e,Subsequence rregion,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc br(Subsequence lb,answer_macrostate_pfunc e,Subsequence rregion,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -253,8 +252,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer il(Subsequence lb,Subsequence lregion,pfanswer e,Subsequence rregion,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc il(Subsequence lb,Subsequence lregion,answer_macrostate_pfunc e,Subsequence rregion,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -267,8 +266,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer ml(Subsequence lb,pfanswer e,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc ml(Subsequence lb,answer_macrostate_pfunc e,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -281,8 +280,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
   
-  pfanswer mldr(Subsequence lb,pfanswer e,Subsequence dr,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc mldr(Subsequence lb,answer_macrostate_pfunc e,Subsequence dr,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -295,8 +294,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer mladr(Subsequence lb,pfanswer e,Subsequence dr,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc mladr(Subsequence lb,answer_macrostate_pfunc e,Subsequence dr,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -315,8 +314,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer mldlr(Subsequence lb,Subsequence dl,pfanswer e,Subsequence dr,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc mldlr(Subsequence lb,Subsequence dl,answer_macrostate_pfunc e,Subsequence dr,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -332,8 +331,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer mladlr(Subsequence lb,Subsequence dl,pfanswer e,Subsequence dr,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc mladlr(Subsequence lb,Subsequence dl,answer_macrostate_pfunc e,Subsequence dr,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -356,8 +355,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer mldladr(Subsequence lb,Subsequence dl,pfanswer e,Subsequence dr,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc mldladr(Subsequence lb,Subsequence dl,answer_macrostate_pfunc e,Subsequence dr,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -376,8 +375,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer mladldr(Subsequence lb,Subsequence dl,pfanswer e,Subsequence dr,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc mladldr(Subsequence lb,Subsequence dl,answer_macrostate_pfunc e,Subsequence dr,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -396,8 +395,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer mldl(Subsequence lb,Subsequence dl,pfanswer e,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc mldl(Subsequence lb,Subsequence dl,answer_macrostate_pfunc e,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -410,8 +409,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer mladl(Subsequence lb,Subsequence dl,pfanswer e,Subsequence rb) {
-    pfanswer res = e;
+  answer_macrostate_pfunc mladl(Subsequence lb,Subsequence dl,answer_macrostate_pfunc e,Subsequence rb) {
+    answer_macrostate_pfunc res = e;
     
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
@@ -430,16 +429,16 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer addss(pfanswer e,Subsequence rregion) {
-    pfanswer res = e;
+  answer_macrostate_pfunc addss(answer_macrostate_pfunc e,Subsequence rregion) {
+    answer_macrostate_pfunc res = e;
     
     res.pf = mult_tup(scale(rregion.j - rregion.i) * mk_pf(ss_energy(rregion)), e.pf);
 
     return res;
   }
 
-  pfanswer ssadd(Subsequence lregion,pfanswer e) {
-    pfanswer res = e;
+  answer_macrostate_pfunc ssadd(Subsequence lregion,answer_macrostate_pfunc e) {
+    answer_macrostate_pfunc res = e;
     
     Subsequence test;
     test.seq = lregion.seq;
@@ -451,8 +450,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer trafo(pfanswer e) {
-    pfanswer res = e;
+  answer_macrostate_pfunc trafo(answer_macrostate_pfunc e) {
+    answer_macrostate_pfunc res = e;
     
     res.pf.q1 = sum_elems(e.pf);
     res.pf.q2 = 0.0;
@@ -462,16 +461,16 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer incl(pfanswer e) {
-    pfanswer res = e;
+  answer_macrostate_pfunc incl(answer_macrostate_pfunc e) {
+    answer_macrostate_pfunc res = e;
     
     res.pf = mk_tuple(e.firststem, e.pf.q1 * mk_pf(ul_energy()));
 
     return res;
   }
 
-  pfanswer combine(pfanswer le,pfanswer re) {
-    pfanswer res = le;
+  answer_macrostate_pfunc combine(answer_macrostate_pfunc le,answer_macrostate_pfunc re) {
+    answer_macrostate_pfunc res = le;
     
     res.firststem = le.firststem;
     
@@ -483,8 +482,8 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  pfanswer acomb(pfanswer le,Subsequence b,pfanswer re) {
-    pfanswer res = le;
+  answer_macrostate_pfunc acomb(answer_macrostate_pfunc le,Subsequence b,answer_macrostate_pfunc re) {
+    answer_macrostate_pfunc res = le;
     
     res.firststem = le.firststem;
     
@@ -513,21 +512,21 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = pf
     return res;
   }
 
-  choice [pfanswer] h([pfanswer] i) {
+  choice [answer_macrostate_pfunc] h([answer_macrostate_pfunc] i) {
     return list(sum(i));
     //~ return i;
   }
 }
 
 algebra alg_pfunc_macrostate_filter_me extends alg_pfunc_macrostate {
-  choice [pfanswer] h([pfanswer] l)
+  choice [answer_macrostate_pfunc] h([answer_macrostate_pfunc] l)
   {
     return l;
   }
 }
 
 algebra alg_pfunc_macrostate_id extends alg_pfunc_macrostate {
-  choice [pfanswer] h([pfanswer] l)
+  choice [answer_macrostate_pfunc] h([answer_macrostate_pfunc] l)
   {
     return l;
   }

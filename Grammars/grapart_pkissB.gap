@@ -34,7 +34,7 @@
             INNER(CODE);
             int n = size(t_0_seq);
             if (!is_empty(answers)) {
-			  mfeanswer mfe = get_pk(i,j,k,l);
+			  answer_pknot_mfe mfe = get_pk(i,j,k,l);
               if (mfe.energy < get_energy(subopt_left, i, j, k, n))
                 set(subopt_left, i, j, k, l, mfe.energy, n);
               int splitPositionLeft = k+(j-k)/2;

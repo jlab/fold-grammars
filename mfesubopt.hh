@@ -1,23 +1,7 @@
 #ifndef MFERANGE_HH
 #define MFERANGE_HH
 
-#ifdef WITH_MFERANGE_OPTIONS
-	//use command line parameter options to define the range of suboptimal answers, depending on MFE.
-	#include "pknot_options.hh"
-	inline int getSuboptRange(int mfe) {
-		int range = mfe + int(gapc::Opts::getOpts()->energydeviation_absolute*100);
-		if (isnan(gapc::Opts::getOpts()->energydeviation_absolute)) {
-			range = mfe * (100 - gapc::Opts::getOpts()->energydeviation_relative*(mfe < 0 ? 1 : -1))/100;
-		}
-		return range;
-	}
-#else
-	//if compiled with no special options to ask for energy range, use 5% of MFE as a default.
-	inline int getSuboptRange(int mfe) {
-		return mfe * (100 - 5*(mfe < 0 ? 1 : -1))/100;
-	}
-#endif
-
+#include "typesRNAfolding.hh"
 
 #include <algorithm>
 template <typename Iterator>
@@ -37,16 +21,24 @@ inline List_Ref<int> mfeSubopt(std::pair<Iterator, Iterator> i) {
 	return unique(answers);
 }
 
+inline int getEnergy(const int x) {
+	return x;
+}
+
+inline int getEnergy(const answer_pknot_mfe &x) {
+	return x.energy;
+}
+
 // a version for pseudoknot components, i.e. all those answers that must also carry internal stem partners for correct computation of dangling energies
 template <typename Iterator>
-inline List_Ref<mfeanswer> mfeSuboptKnot(std::pair<Iterator, Iterator> i) {
-	mfeanswer minValue = minimum(i); //find mfe value
-	List_Ref<mfeanswer> answers; //init list, that should hold all selected candidates
+inline List_Ref<answer_pknot_mfe> mfeSuboptKnot(std::pair<Iterator, Iterator> i) {
+	answer_pknot_mfe minValue = minimum(i); //find mfe value
+	List_Ref<answer_pknot_mfe> answers; //init list, that should hold all selected candidates
 
 	if (!is_empty(minValue)) {
 		int range = getSuboptRange(minValue.energy);
 		for (Iterator it = i.first; it != i.second; ++it) {
-			mfeanswer val = *it;
+			answer_pknot_mfe val = *it;
 			if (val.energy <= range) {
 				push_back(answers, val);
 			}
@@ -55,17 +47,8 @@ inline List_Ref<mfeanswer> mfeSuboptKnot(std::pair<Iterator, Iterator> i) {
 	return unique(answers);
 }
 
-inline uint32_t hashable_value(const mfeanswer& candidate) {
-  return candidate.energy; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values 
-}
 
 
-inline int getEnergy(const mfeanswer &x) {
-	return x.energy;
-}
-inline int getEnergy(const int x) {
-	return x;
-}
 template<typename MFE, typename SHAPE, typename DOTBRACKET>
 inline List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > suboptShapeClasses(List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > candidateList) {
 	if (candidateList.ref().is_empty()) {

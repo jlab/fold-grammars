@@ -36,7 +36,8 @@ algebra alg_tdm_overdangle_5 implements sig_tdm(alphabet = char, answer = rules,
   }
   rules strong(rules x) { // levels: all = forces structure to have or don't have lonely basepairs. Last is default.
 	rules res = x;
-	insertProduction(res, "strong__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");  
+	insertProduction(res, "strong__"+res.shape, "{sr(BASE, weak__"+res.shape+", BASE) with basepair} with allowLonelyBasepairs(false)");  
+	insertProduction(res, "strong__"+res.shape, "{weak__"+res.shape+"} with allowLonelyBasepairs(true)");  
 	insertProduction(res, "weak__"+res.shape, "stack__"+res.shape);
 	insertProduction(res, "weak__"+res.shape, "leftB__"+res.shape);
 	insertProduction(res, "weak__"+res.shape, "rightB__"+res.shape);
@@ -158,7 +159,8 @@ algebra alg_tdm_overdangle_5 implements sig_tdm(alphabet = char, answer = rules,
 algebra alg_tdm_overdangle_4 extends alg_tdm_overdangle_5 {
   rules strong(rules x) { // levels: all = forces structure to have or don't have lonely basepairs. Last is default.
 	rules res = x;
-	insertProduction(res, "strong__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");  
+	insertProduction(res, "strong__"+res.shape, "{sr(BASE, weak__"+res.shape+", BASE) with basepair} with allowLonelyBasepairs(false)");  
+	insertProduction(res, "strong__"+res.shape, "{weak__"+res.shape+"} with allowLonelyBasepairs(true)");  
 	insertProduction(res, "weak__"+res.shape, "stack__"+res.shape);
 	insertProduction(res, "weak__"+res.shape, "leftB__"+res.shape);
 	insertProduction(res, "weak__"+res.shape, "rightB__"+res.shape);
@@ -179,7 +181,8 @@ algebra alg_tdm_overdangle_4 extends alg_tdm_overdangle_5 {
 algebra alg_tdm_overdangle_3 extends alg_tdm_overdangle_5 {
   rules strong(rules x) { // levels: all = forces structure to have or don't have lonely basepairs. Last is default.
 	rules res = x;
-	insertProduction(res, "strong__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");  
+	insertProduction(res, "strong__"+res.shape, "{sr(BASE, weak__"+res.shape+", BASE) with basepair} with allowLonelyBasepairs(false)");  
+	insertProduction(res, "strong__"+res.shape, "{weak__"+res.shape+"} with allowLonelyBasepairs(true)");  
 	insertProduction(res, "weak__"+res.shape, "stack__"+res.shape);
 	insertProduction(res, "stack__" +res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");
 	return res;
@@ -200,7 +203,8 @@ algebra alg_tdm_overdangle_3 extends alg_tdm_overdangle_5 {
 algebra alg_tdm_overdangle_2 extends alg_tdm_overdangle_5 {
   rules strong(rules x) { // levels: all = forces structure to have or don't have lonely basepairs. Last is default.
 	rules res = x;
-	insertProduction(res, "strong__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");  
+	insertProduction(res, "strong__"+res.shape, "{sr(BASE, weak__"+res.shape+", BASE) with basepair} with allowLonelyBasepairs(false)");  
+	insertProduction(res, "strong__"+res.shape, "{weak__"+res.shape+"} with allowLonelyBasepairs(true)");  
 	insertProduction(res, "weak__"+res.shape, "stack__"+res.shape);
 	insertProduction(res, "stack__" +res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");
 	return res;
@@ -255,7 +259,8 @@ algebra alg_tdm_overdangle_1 extends alg_tdm_overdangle_5 {
   }
   rules strong(rules x) { // levels: all = forces structure to have or don't have lonely basepairs. Last is default.
 	rules res = x;
-	insertProduction(res, "strong__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");  
+	insertProduction(res, "strong__"+res.shape, "{sr(BASE, weak__"+res.shape+", BASE) with basepair} with allowLonelyBasepairs(false)");  
+	insertProduction(res, "strong__"+res.shape, "{weak__"+res.shape+"} with allowLonelyBasepairs(true)");  
 	insertProduction(res, "weak__"+res.shape, "stack__"+res.shape);
 	insertProduction(res, "stack__" +res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");
 	return res;
@@ -537,7 +542,8 @@ algebra alg_tdm_microstate_1 extends alg_tdm_overdangle_5 {
   }
   rules strong(rules x) {
     rules res = x;
-	insertProduction(res, "strong__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");
+	insertProduction(res, "strong__"+res.shape, "{sr(BASE, weak__"+res.shape+", BASE) with basepair} with allowLonelyBasepairs(false)");  
+	insertProduction(res, "strong__"+res.shape, "{weak__"+res.shape+"} with allowLonelyBasepairs(true)");  
 	insertProduction(res, "weak__"+res.shape, "stack__"+res.shape);
 	insertProduction(res, "stack__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");
     return res;
@@ -780,7 +786,8 @@ algebra alg_tdm_macrostate_5 extends alg_tdm_overdangle_5 {
   rules strong(rules x) { // levels: all = forces structure to have or don't have lonely basepairs. Last is default.
 	rules res = x;
 	
-	insertProduction(res, "strong__"+x.shape, "sr(BASE, weak__"+x.shape+", BASE) with basepair");
+	insertProduction(res, "strong__"+res.shape, "{sr(BASE, weak__"+res.shape+", BASE) with basepair} with allowLonelyBasepairs(false)");  
+	insertProduction(res, "strong__"+res.shape, "{weak__"+res.shape+"} with allowLonelyBasepairs(true)");  
 	insertProduction(res, "weak__"+res.shape, "stack__"+res.shape);
 	insertProduction(res, "weak__"+res.shape, "leftB__"+res.shape);
 	insertProduction(res, "weak__"+res.shape, "rightB__"+res.shape);
@@ -901,7 +908,8 @@ algebra alg_tdm_macrostate_5 extends alg_tdm_overdangle_5 {
 algebra alg_tdm_macrostate_4 extends alg_tdm_macrostate_5 {
   rules strong(rules x) { // levels: all = forces structure to have or don't have lonely basepairs. Last is default.
 	rules res = x;
-	insertProduction(res, "strong__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");  
+	insertProduction(res, "strong__"+res.shape, "{sr(BASE, weak__"+res.shape+", BASE) with basepair} with allowLonelyBasepairs(false)");  
+	insertProduction(res, "strong__"+res.shape, "{weak__"+res.shape+"} with allowLonelyBasepairs(true)");  
 	insertProduction(res, "weak__"+res.shape, "stack__"+res.shape);
 	insertProduction(res, "weak__"+res.shape, "leftB__"+res.shape);
 	insertProduction(res, "weak__"+res.shape, "rightB__"+res.shape);
@@ -924,7 +932,8 @@ algebra alg_tdm_macrostate_4 extends alg_tdm_macrostate_5 {
 algebra alg_tdm_macrostate_3 extends alg_tdm_macrostate_5 {
   rules strong(rules x) { // levels: all = forces structure to have or don't have lonely basepairs. Last is default.
 	rules res = x;
-	insertProduction(res, "strong__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");  
+	insertProduction(res, "strong__"+res.shape, "{sr(BASE, weak__"+res.shape+", BASE) with basepair} with allowLonelyBasepairs(false)");  
+	insertProduction(res, "strong__"+res.shape, "{weak__"+res.shape+"} with allowLonelyBasepairs(true)");  
 	insertProduction(res, "weak__"+res.shape, "stack__"+res.shape);
 	insertProduction(res, "stack__" +res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");
 	insertProduction(res, "left_unpairedEnd", "sadd(BASE, left_unpairedEnd)");
@@ -947,7 +956,8 @@ algebra alg_tdm_macrostate_3 extends alg_tdm_macrostate_5 {
 algebra alg_tdm_macrostate_2 extends alg_tdm_macrostate_5 {
   rules strong(rules x) { // levels: all = forces structure to have or don't have lonely basepairs. Last is default.
 	rules res = x;
-	insertProduction(res, "strong__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");  
+	insertProduction(res, "strong__"+res.shape, "{sr(BASE, weak__"+res.shape+", BASE) with basepair} with allowLonelyBasepairs(false)");  
+	insertProduction(res, "strong__"+res.shape, "{weak__"+res.shape+"} with allowLonelyBasepairs(true)");  
 	insertProduction(res, "weak__"+res.shape, "stack__"+res.shape);
 	insertProduction(res, "stack__" +res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");
 	insertProduction(res, "left_unpairedEnd", "sadd(BASE, left_unpairedEnd)");
@@ -1264,7 +1274,8 @@ algebra alg_tdm_macrostate_1 extends alg_tdm_macrostate_5 {
   }
   rules strong(rules x) {
 	rules res = x;
-	insertProduction(res, "strong__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");
+	insertProduction(res, "strong__"+res.shape, "{sr(BASE, weak__"+res.shape+", BASE) with basepair} with allowLonelyBasepairs(false)");  
+	insertProduction(res, "strong__"+res.shape, "{weak__"+res.shape+"} with allowLonelyBasepairs(true)");  
 	insertProduction(res, "weak__"+res.shape, "stack__"+res.shape);
 	insertProduction(res, "stack__"+res.shape, "sr(BASE, weak__"+res.shape+", BASE) with basepair");
 	return res;

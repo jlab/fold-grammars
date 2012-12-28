@@ -1,6 +1,6 @@
 import rna
-import pfunc_filter_foldrna
 import alifold
+import probabilities
 
 input rna
 

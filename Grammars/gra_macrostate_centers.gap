@@ -25,10 +25,10 @@ grammar gra_macrostate_centers uses sig_foldrna(axiom = struct) {
   nodangleTag = drem(LOC, strongTag, LOC) # h;
   nodangle    = drem(LOC, strong, LOC)    # h;
 
-  strongTag   = sr(BASE, weakTag, BASE) with basepair # h; //noLP: no lonely base-pairs, Vienna: --noLP
-  strong      = sr(BASE, weak,    BASE) with basepair # h; //noLP: no lonely base-pairs, Vienna: --noLP
-  //~ strongTag   =          weakTag                      # h; //LP: allow lonely base-pairs, Vienna: default
-  //~ strong      =          weak                         # h; //LP: allow lonely base-pairs, Vienna: default
+  strongTAG = {sr(BASE, weakTag, BASE) with basepair} with allowLonelyBasepairs(false) | 
+			  {		    weakTag                     } with allowLonelyBasepairs(true)  # h;
+  strong    = {sr(BASE, weak,    BASE) with basepair} with allowLonelyBasepairs(false) | 
+			  {		    weak                        } with allowLonelyBasepairs(true)  # h;
 
   weakTag = stackTag | hairpinTag | multiloopPre | leftBTag | rightBTag | iloopTag # h;
   weak    = stack    | hairpin    | multiloop    | leftB    | rightB    | iloop    # h;

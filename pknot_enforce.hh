@@ -1,6 +1,8 @@
 #ifndef PKNOT_ENFORCE_HH
 #define PKNOT_ENFORCE_HH
 
+#include "typesRNAfolding.hh"
+
 struct pktype {
   bool isH;
   bool isK;
@@ -36,7 +38,7 @@ inline bool operator==(const pktype &a, const pktype &b) {
 }
 
 template<typename PKTYPE, typename MFE, typename I>
-inline mfeanswer get_pk_fn(const Hash::Ref<std::pair<PKTYPE, MFE> , I > &candidate) {
+inline answer_pknot_mfe get_pk_fn(const Hash::Ref<std::pair<PKTYPE, MFE> , I > &candidate) {
 	Hash::Ref<std::pair<PKTYPE, MFE> , I > &hash = const_cast<Hash::Ref<std::pair<PKTYPE, MFE> , I >&>(candidate);
 	MFE res;
 	typename Hash::Ref<std::pair<PKTYPE, MFE> , I >::iterator it = hash.ref().begin();
