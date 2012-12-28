@@ -1,14 +1,15 @@
-TARGETS=mfe mfe_window subopt subopt_window enforce enforce_window local shape
+TARGETS=mfe mfe_window subopt subopt_window enforce enforce_window local shape probs
 SHAPELEVELS=5 4 3 2 1
 
 #~ CXXFLAGS_EXTRA="-O3 -DNDEBUG"
-CXXFLAGS_EXTRA=""
+CXXFLAGS_EXTRA=-O3 -DNDEBUG
 OPTIONSPARSER=pknot_options
 GRAMMARFILE=../../Grammars/gra_pknot_microstate.gap
 PROGRAMPREFIX=pKiss_
 
 WINDOWMODE=
 OUTNAME=out
+FASTLIBRNA=
 
 all: $(TARGETS)
 
@@ -55,9 +56,11 @@ shape_window:
 		make compile OUTNAME="shape_window$${level}"; \
 	done
 
-#~ simple:
-	#~ gapc -I ../../ -p "alg_pknot_mfe" ../../pKiss.gap --tab-all $(WINDOWMODE) -o $@.cc
-	#~ make compile OUTNAME="simple"
+probs:
+	for level in `echo "$(SHAPELEVELS)"`; do \
+		gapc -I ../../ -p "((alg_pknot_shape$${level} * (alg_pknot_mfe % alg_pknot_pfunc)) suchthat filterLowProbShapes) * alg_pknot_dotBracket" ../../pKiss.gap --no-coopt-class --kbacktrace --tab-all -o $@$${level}.cc; \
+		make compile OUTNAME="probs$${level}" FASTLIBRNA="LDLIBS=-lrnafast" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA) -ffast-math"; \
+	done
 
 
 
@@ -70,7 +73,7 @@ compile:
 	else \
 		sed -i "s|.*#define WINDOW_MODE|//#define WINDOW_MODE|" $(OPTIONSPARSER).hh; \
 	fi
-	make -f $(OUTNAME).mf CPPFLAGS_EXTRA="-I ../../ -I ./ -DWITH_PKNOT_OPTIONS -DWITH_MFERANGE_OPTIONS" CXXFLAGS_EXTRA=$(CXXFLAGS_EXTRA)
+	make -f $(OUTNAME).mf CPPFLAGS_EXTRA="-I ../../ -I ./ -DWITH_PKNOT_OPTIONS -DWITH_MFERANGE_OPTIONS" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
 	mv $(OUTNAME) $(PROGRAMPREFIX)$(OUTNAME)
 
 

@@ -82,6 +82,7 @@ class Opts {
     unsigned int repeats;
     unsigned k;
     char strategy;
+    float lowProbabilityFilter;
 
     Opts()
     :
@@ -101,7 +102,8 @@ class Opts {
     				delta(0),
     				repeats(1),
     				k(3),
-    				strategy('A')
+    				strategy('A'),
+    				lowProbabilityFilter(0.000001)
 
     {
     }
@@ -178,6 +180,13 @@ class Opts {
 				<< "   pseudoknot yourself. " << std::endl
 				<< "   Default is +12.00 kcal/mol." << std::endl
 				<< "" << std::endl
+				<< "-F <float-value> Set probability cutoff filter [0.000001]" << std::endl
+				<< "   This option sets a barrier for filtering out results with very low" << std::endl
+				<< "   probabilities during calculation. The default value here is 0.000001," << std::endl
+				<< "   which gives a significant speedup compared to a disabled filter. Note" << std::endl
+				<< "   that this filter can have a slight influence on the overall results. To" << std::endl
+				<< "   disable this filter, use option -F 0." << std::endl
+				<< "" << std::endl
 				<< "-f <file> Read input from a file" << std::endl
 				<< "" << std::endl
 				<< "-h Print this help." << std::endl
@@ -195,7 +204,7 @@ class Opts {
 		#endif
 						"t:T:P:"
 						"c:e:x:y:z:"
-						"s:l:"
+						"s:l:F:"
 						"hd:r:k:")) != -1) {
 			switch (o) {
 			case 'f':
@@ -265,6 +274,9 @@ class Opts {
 			case 'y':
 				energyPenaltyKtype = std::atof(optarg)*100;
 				break;
+			case 'F':
+				lowProbabilityFilter = std::atof(optarg);
+				break;
 			case 'k':
 				k = std::atoi(optarg);
 				break;
@@ -321,7 +333,9 @@ class Opts {
 		if (minimalHelixLength < 1) {
 			throw OptException("minimal length of pseudoknot helices (-z) cannot be less then 1!");
 		}
-
+		if (lowProbabilityFilter >= 1) {
+			throw OptException("filter for low probabilities cannot be equal or larger than 1.0, because all results would be ruled out!");
+		}
 		}
 
 

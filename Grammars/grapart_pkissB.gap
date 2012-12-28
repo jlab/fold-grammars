@@ -3,7 +3,7 @@
     .[
       int i = t_0_i;
       int j = t_0_j;
-      if ((i+4*2+3 < j)  && (j-i <= maxPseudoknotSize())) {
+      if ((i+4*2+3 <= j)  && (j-i <= maxPseudoknotSize())) {
         for (int l = i+3*2+1; l <= j-2*2; l=l+1) {
           int alphamaxlen = length(stacklen(t_0_seq, i, l));
           if (alphamaxlen < 2) {
