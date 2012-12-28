@@ -19,6 +19,9 @@
 	inline static float lowProbabilityFilter() { //heuristically filtering out shapes with in very low initial probability. Default is 10^-6
 		return gapc::Opts::getOpts()->lowProbabilityFilter;
 	}
+	inline static int shapelevel() {
+		return gapc::Opts::getOpts()->shapelevel;
+	}
 	template<typename alphabet, typename pos_type, typename T>
 	inline bool selectStrategy(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const char strategy) {
 		return gapc::Opts::getOpts()->strategy == strategy;
@@ -39,6 +42,9 @@
 	}
 	inline static float lowProbabilityFilter() {
 		return 0.000001;
+	}
+	inline static int shapelevel() {
+		return 5;
 	}
 	template<typename alphabet, typename pos_type, typename T>
 	inline bool selectStrategy(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, const char strategy) {
