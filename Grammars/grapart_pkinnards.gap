@@ -11,10 +11,10 @@
   middle(int betaRightInner, int alphaLeftInner)            = emptymid  (REGION0        ; betaRightInner, alphaLeftInner) with minsize(0) with maxsize(0) |
                                                               midbase   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(1) with maxsize(1) |
                                                               middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
-                                                              midregion (      cadd(mldangle, pk_comps)                                      )                            |
-                                                              middl     (BASE, cadd(mldangle, pk_comps)      ; betaRightInner                )                            |
-                                                              middr     (      cadd(mldangle, pk_comps), BASE;                 alphaLeftInner)                            |
-                                                              middlr    (BASE, cadd(mldangle, pk_comps), BASE; betaRightInner, alphaLeftInner) 
+                                                              midregion (      pk_comps                                      )                            |
+                                                              middl     (BASE, pk_comps      ; betaRightInner                )                            |
+                                                              middr     (      pk_comps, BASE;                 alphaLeftInner)                            |
+                                                              middlr    (BASE, pk_comps, BASE; betaRightInner, alphaLeftInner)  
                                                               # h;
 
   back(int alphaLeftOuter) = pk_comps               |
@@ -29,8 +29,8 @@
   //middleNoCoaxStack is a special rules for the forth loop region in K-type pseudoknots
   middleNoCoaxStack(int betaRightInner, int alphaLeftInner) = nil       (LOC)                                                                             |
                                                               middlro   (REGION0        ; betaRightInner, alphaLeftInner) with minsize(2) with maxsize(2) |
-                                                              midregion (      cadd(mldangle, pk_comps)                                      )                            |
-                                                              middl     (BASE, cadd(mldangle, pk_comps)      ; betaRightInner                )                            |
-                                                              middr     (      cadd(mldangle, pk_comps), BASE;                 alphaLeftInner)                            |
-                                                              middlr    (BASE, cadd(mldangle, pk_comps), BASE; betaRightInner, alphaLeftInner) 
+                                                              midregion (      pk_comps                                      )                            |
+                                                              middl     (BASE, pk_comps      ; betaRightInner                )                            |
+                                                              middr     (      pk_comps, BASE;                 alphaLeftInner)                            |
+                                                              middlr    (BASE, pk_comps, BASE; betaRightInner, alphaLeftInner) 
                                                               # h;

@@ -66,26 +66,26 @@ struct PkAlph {
 
 typedef Fiber<size_t, unsigned char, PkAlph<size_t, unsigned char> > pkshape_t;
 
-inline char front(const pkshape_t &a, char r = 0) {
-  typedef pkshape_t X;
-  typename X::iterator i = a.begin();
+template<typename SHAPE>
+inline char front(const SHAPE &a, char r = 0) {
+  typename SHAPE::iterator i = a.begin();
   if (i == a.end())
     return r;
   return *i;
 }
 
-inline char back(const pkshape_t &a, char r = 0) {
-  typedef pkshape_t X;
-  typename X::reverse_iterator i = a.rbegin();
+template<typename SHAPE>
+inline char back(const SHAPE &a, char r = 0) {
+  typename SHAPE::reverse_iterator i = a.rbegin();
   if (i == a.rend())
     return r;
   return *i;
 }
 
-inline pkshape_t tail(const pkshape_t &a) {
-  typedef pkshape_t X;
-  X x;
-  typename X::iterator i = a.begin();
+template<typename SHAPE>
+inline SHAPE tail(const SHAPE &a) {
+  SHAPE x;
+  typename SHAPE::iterator i = a.begin();
   if (i != a.end()) {
     ++i;
   }
