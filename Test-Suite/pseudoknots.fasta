@@ -1,0 +1,83 @@
+>HCV 229E_63
+CGGGGCUCUAGUGCCGCUCGACUAGAGCCCUGUAACAGUUAUGGACCACGAGCAGUCCAUGUA
+;((((((((((((...[[[[[)))))))))))).......(((((((..]]]]].)))))))..	biol. truth
+
+>CoxB3_69
+ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
+;.((((((((((((.[[[[[[.........)))))))))))).....((.(((((.]]]]]]))))).))	biol. truth
+
+>satRPV_73
+ACAGAGCGCGUACUGUCUGACGACGUAUCCGCGCGGACUAGAAGGCUGGUGCCUCGUCCAACAAAUAGAUACA
+;((((.[[[[[..))))........(((((]]]]]((((....((((....)))).))))........))))).	biol. truth
+
+>Ni VS_45
+AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
+;..((((...[[[)))).....(((((((((.]]].))))))))).	biol. truth
+
+>HDV-It g_88
+UGGCCGGCAUGGUCCCAGCCUCCUCGCUGGCGCCGGCUGGGCAACAUUCCGAGGGGACCGUCCCCUCGGUAAUGGCGAAUGGGACCCA
+;.(((((((..[[[[[[[{{{.[[.....}}})))))))]]....(((((((((((((...))))))))).)))).....]]]]]]]..	biol. truth
+
+>Hs_SRP-pkn_47
+GCCGGGCGCGGUGGCGCGUGCCUGUAGUCCCAGCUACUCGGGAGGCU
+;(((.((((((.[[[[.)))))).....((((.]]]]...))))))).	biol. truth
+
+>Coxsackie_115
+UUUUAGAUUACAGACAAUUUGAAAUAAUUUAGAUUGGCUUAACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAAAAAA
+;((((....{.{{{.{{{{{{{{{....}}}}}}}}}.}}}.}[[[[[[[[[[[[.{{{{{{.........]]]]]]]]]]]].....((.(((((.}}}}}}))))).))))))	biol. truth
+
+>PDB_00352# RNA SSTRAND database# External source: RCSB Protein Data Bank 1E8O, number of molecules: 1# The secondary structure annotation was obtained with RNAview
+gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
+;koennte ein wahrer KH sein!!! CORE OF THE ALU DOMAIN OF THE MAMMALIAN SRP
+;(((((((((((((..[[))))))))....((((.]].....)))))))))	biol. truth
+
+>PDB_00749# RNA SSTRAND database# External source: RCSB Protein Data Bank 1U8D, number of molecules: 1# The secondary structure annotation was obtained with RNAview
+GGACAUAUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGACUAUGUCC
+;koennte ein wahrer KH sein!!! Guanine riboswitch bound to hypoxanthine
+;(((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..)))))))	biol. truth
+
+>PDB_00828# RNA SSTRAND database# External source: RCSB Protein Data Bank 1Y26, number of molecules: 1# The secondary structure annotation was obtained with RNAview
+CGCUUCAUAUAAUCCUAAUGAUAUGGUUUGGGAGUUUCUACCAAGAGCCUUAAACUCUUGAUUAUGAAGUG
+;koennte ein wahrer KH sein!!! A-riboswitch-adenine complex
+;(((((((((...(((((((.[[[.[[)))))))........((((((]]..]]]))))))..)))))))))	biol. truth
+
+>PDB_00829# RNA SSTRAND database# External source: RCSB Protein Data Bank 1Y27, number of molecules: 1# The secondary structure annotation was obtained with RNAview
+gGAUCAUAUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGACUAUGGUC
+;koennte ein wahrer KH sein!!! G-riboswitch-guanine complex
+;.(((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..)))))))	biol. truth
+
+>PDB_00944# RNA SSTRAND database# External source: RCSB Protein Data Bank 2B57, number of molecules: 1# The secondary structure annotation was obtained with RNAview
+GACAUAUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGAUUAUGUC
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+;((((((.....(((((.[[[.[[)))))..........((((((]]..]]]))))))..))))))	biol. truth
+
+>PDB_01020# RNA SSTRAND database# External source: RCSB Protein Data Bank 2EES, number of molecules: 1# The secondary structure annotation was obtained with RNAview
+GGACAUUUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGACAAUGUCCa
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+;.((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..))))))..	biol. truth
+
+>PDB_01021# RNA SSTRAND database# External source: RCSB Protein Data Bank 2EET, number of molecules: 1# The secondary structure annotation was obtained with RNAview
+GGACAUGUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGACCAUGUCCa
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+;.((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..))))))..	biol. truth
+
+>PDB_01022# RNA SSTRAND database# External source: RCSB Protein Data Bank 2EEU, number of molecules: 1# The secondary structure annotation was obtained with RNAview
+GGACAUAAAAUCGCGUGGAUAUGGCACGCAAGUUUCUUCCGGGCACCGUAAAUGUCCGACUAUGUCCa
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+;(((((((.....(((((.[[..[[)))))..........((((((]]...]]))))))..))))))).	biol. truth
+
+>PDB_01023# RNA SSTRAND database# External source: RCSB Protein Data Bank 2EEV, number of molecules: 1# The secondary structure annotation was obtained with RNAview
+GGACAUACAAUCGCGUGGAUAUGGCACGCAAGUUUCUGCCGGGCACCGUAAAUGUCCGACUAUGUCCa
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+;(((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..))))))).	biol. truth
+
+>PDB_01024# RNA SSTRAND database# External source: RCSB Protein Data Bank 2EEW, number of molecules: 1# The secondary structure annotation was obtained with RNAview
+GGACAUAUAAUCGCGUGGAUAUGGCACGCAAGCUUCUACCGGGCACCGUAAAUGUCCGACUAUGUCCa
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+;(((((((.....(((((.[[..[[)))))..........((((((]]...]]))))))..))))))).	biol. truth
+
+>PDB_01066# RNA SSTRAND database# External source: RCSB Protein Data Bank 2G9C, number of molecules: 1# The secondary structure annotation was obtained with RNAview
+GGACAUAUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGAUUAUGUCCu
+;koennte ein wahrer KH sein!!! Purine Riboswitch
+;(((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..))))))).	biol. truth
+

@@ -37,6 +37,12 @@
 		}
 		return range;
 	}
+	inline unsigned int getWindowSize() {
+		return gapc::Opts::getOpts()->window_size;
+	}
+	inline unsigned int getWindowIncrement() {
+		return gapc::Opts::getOpts()->window_increment;
+	}
 #else
 	//if compiled with no special options to ask for energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy.
 	inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
@@ -67,6 +73,12 @@
 	}
 	inline int getSuboptRange(int mfe) { //if compiled with no special options to ask for energy range, use 5% of MFE as a default.
 		return mfe * (100 - 5*(mfe < 0 ? 1 : -1))/100;
+	}
+	inline unsigned int getWindowSize() {
+		return 7;
+	}
+	inline unsigned int getWindowIncrement() {
+		return 1;
 	}
 #endif
 	

@@ -21,9 +21,10 @@ typedef Basic_Subsequence<char, unsigned> TUSubsequence;
 #include "rna.hh"
 
 #ifdef WINDOW_MODE
-#ifdef WITH_PKNOT_OPTIONS
+#ifdef WITH_RNAOPTIONS
 #include "rnaoptions.hh"
 #endif
+#include "rnaoptions_defaults.hh"
 class stacklen_window {
 
   public:
@@ -363,9 +364,7 @@ std::pair<int, int>  sr(const TUSubsequence & p_l, const std::pair<int, int> & p
 
 int end_l(const TUSubsequence & e)
 {
-#line 33 "stacklen.gap"
   return 0;
-#line 206 "stacklen_window.cc"
 }
 
 int h_l(List_Ref<int> i)
@@ -378,25 +377,19 @@ template <typename Iterator>
 int h_l(std::pair<Iterator, Iterator> i)
 
 {
-#line 36 "stacklen.gap"
   return maximum(i);
-#line 221 "stacklen_window.cc"
 }
 
 int sr_l(const TUSubsequence & l, int x, const TUSubsequence & r)
 {
-#line 30 "stacklen.gap"
   return (1 + x);
-#line 228 "stacklen_window.cc"
 }
 
 
 
 int end_r(const TUSubsequence & e)
 {
-#line 21 "stacklen.gap"
   return 0;
-#line 237 "stacklen_window.cc"
 }
 
 int h_r(List_Ref<int> i)
@@ -409,16 +402,12 @@ template <typename Iterator>
 int h_r(std::pair<Iterator, Iterator> i)
 
 {
-#line 24 "stacklen.gap"
   return minimum(i);
-#line 252 "stacklen_window.cc"
 }
 
 int sr_r(const TUSubsequence & l, int x, const TUSubsequence & r)
 {
-#line 18 "stacklen.gap"
   return (x + sr_energy(l, r));
-#line 259 "stacklen_window.cc"
 }
 
   public:
@@ -466,11 +455,7 @@ inline std::pair<int, unsigned> stacklen(const Basic_Sequence<C> &seq, U a, U b)
 	if (!compute) {
 		return pkStems.nt_stack(a,b);
 	} else {
-		#ifdef WITH_PKNOT_OPTIONS
-		pkStems.init(seq, 16, 1);
-		#else
-		pkStems.init(seq,window_size, window_increment);
-		#endif
+		pkStems.init(seq, getWindowSize(), getWindowIncrement());
 		pkStems.run();
 		return pkStems.nt_stack(a,b);
 	}

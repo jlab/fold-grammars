@@ -1,0 +1,63 @@
+>Frameshift SARS-CoV
+UUUAAACGGGUUUGCGGUGUAAGUGCAGCCCGUCUUACACCGUGCGGCACAGGCACUAGUACUGAUGUCGUCUACAGGGCUU
+;.............((((((((((...[[[[[[[))))))))))(((((((((.........))).))))))..]].]]]]].
+
+>Frameshift VMV
+GGGAAACAACAGGAGGGGGCCACGUGUGGUGCCGUCCGCGCCCCCUAUGUUGUAACAGAAGCACCACC
+;.............(((((((.....[[[[[[[.......)))))))..............]]]]]]].
+
+>Ribozyme EC-RNaseP
+GAAGCUGACCAGACAGUCGCCGCUUCGUCGUCGUCCUCUUCGGGGGAGACGGGCGGAGGGGAGGAAAGUCCGGGCUCCAUAGGGCAGGGUGCCAGGUAACGCCUGGGGGGGAAACCCACGACCAGUGCAACAGAGAGCAAACCGCCGAUGGCCCGCGCAAGCGGGAUCAGGUAAGGGUGAAAGGGUGCGGUAAGAGCGCACCGCGCGGCUGGUAACAGUCCGUGGCACGGUAAACUCCACCCGGAGCAAGGCCAAAUAGGGGUUCAUAAGGUACGGCCCGUACUGAACCCGGGUAGGCUGCUUGAGCCAGUGAGCGAUUGCUGGCCUAGAUGAAUGACUGUCCACGACAGAACCCGGCUUAUCGGUCAGUUUCACCU
+;((((((((((((((((((.((.((((((((((.(((((....))))))))).)))))).))...[.[[.[[[[[((((...[[[[.(((((((((((...))))))((((....))).)((...((((.............(((((..((((((((....))))).))))))..)).......((((((.......))))))(((((((((....))).))))).)...))..)))))))))))))...((((......((((((....(((((.]]]]))))))))))).....))))......((((((((....))))))))..........)))))))..........]]]]]]]].).))))))))))....
+
+>Ribozyme HDV
+UGGCCGGCAUGGUCCCAGCCUCCUCGCUGGCGCCGGCUGGGCAACAUUCCGAGGGGACCGUCCCCUCGGUAAUGGCGAAUGGGACCC
+;.(((((((..[[[[[[[(((.[[.....))))))))))]]....(((((((((((((...))))))))).)))).....]]]]]]].
+
+>Ribozyme glmS-Ba
+CGCCAGAACUGGCACCAUUGCACUCCGGUGCCAGUUGACGAGGUGGGGUUUAUCGAGAUUUCGGCGGAUGACUCCCGGUUGUUCAUCACAACCGCAAGCUUUUACUUAAAUCAUUAAGGUGACUUAGUGGACAAAGGUGAAAGUGUGAUGA
+;((((.(((((((((((..........))))))))))..(((...[[[[[[..)))(....))))))...]]]]]]((((((.[[[[[[))))))...((((((((((...((((((((....))))))))....)))))))))).]]]]]]
+
+>UTRs BCV
+UAAAGAGAAUGAACCUUAUGUCGGCACCUGGUGGUAAGCCCUCGCAGGAAAGUCGGGAUAAGGCACUCUCUAUCAGAAUGGAUGUCUUGCUGCUAUAAUAGAUAGAGAAGGUUAUAGCAGACUAU
+;.............((((((.(((((.((((..............))))...))))).))))))...((((((((...............[[[[[[[[[[.))))))))..]]]]]]]]]].....
+
+>UTRs BaMV
+AACGUUGCAUGAUCGUAAAACAUGCCCGGCUUACCGUGAGCCGCCUUUGAAAGAAAGGUUUACACGGACUCUGUUGCGUUACGCACGUACCUAACCCGUGCCAGCAGAAUAAAGACCUUUUGGUUUCUACAGUUUUUUCCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+;......(((((.........)))))(((((((.....)))))))((((.....))))........((..(((((((......(((((.........)))))))))))).......))((((((.........[[[[[[))))))...]]]]]].................
+
+>UTRs HPeV1
+UUUGAAAGGGGUCUCCUAGAGAGCUUGGCCGUCGGGCCUUAUACCCCGACUUGCUGAGCUUCUCUAGGAGAGUCCCUUUCCCAGCCUUGGGGUGGCUGGUCAAUAAAAACCCCCAU
+;...((((((((((((((((((((((((((.((((((........))))))..))))))))).))))))))).))))))))((((((..[[[[[)))))).........]]]]]...
+
+>Telomerase Tthe-telo
+AUACCCGCUUAAUUCAUUCAGAUCUGUAAUAGAACUGUCAUUCAACCCCAAAAAUCUAGUGCUGAUAUAACCUUCACCAAUUAGGUUCAAAUAAGUGGUAAUGCGGGACAAAAGACUAUCGACAUUUGAUACACUAUUUAUCAAUGGAUGUCUUAUUUU
+;...(((((..........(((.(((.....))).)))...............................((((...[[[[.[[[))))....]]].]]]]...)))))....(((((.(((..((((.((((.......)))))))))))))))).....
+
+>Riboswitch SAM-I
+GGCUUAUCAAGAGAGGUGGAGGGACUGGCCCGAUGAAACCCGGCAACCAGAAAUGGUGCCAAUUCCUGCAGCGGAAACGUUGAAAGAUGAGCCA
+;((((((((....(.(((((((((.[[[[)))...)))))))(((..(((....))).)))...(]]]](((((....)))))..))))))))).
+
+>Riboswitch preQ1
+AGAUGUGCUAGCAAAACCAUCUUUAAAAAACUAG
+;(((((..[[[[......)))))........]]]]
+
+>IRES PSIV
+GCUGACUAUGUGAUCUUAUUAAAAUUAGGUUAAAUUUCGAGGUUAAAAAUAGUUUUAAUAUUGCUAUAGUCUUAGAGGUCUUGUAUAUUUAUACUUACCACACAAGAUGGACCGGAGCAGCCCUCCAAUAUCUAGUGUACCCUCGUGCUCGCUCAAACAUUAAGUGGUGUUGUGCGAAAAGAAUCUCACUUCAA
+;...(((((((......(((((((((((..........[[[[[.......)))))))))))....))))))).....(((((.((((....)))).....[[[[.[[[[)))))((((.....))))...]]]].]]]]..]]]]]...((((...(((((.[[[[[)))))..)))).........]]]]]...
+
+>IRES CSFV
+GACUAGCCGUAGUGGCGAGCUCCCUGGGUGGUCUAAGUCCUGAGUACAGGACAGUCGUCAGUAGUUCGACGUGAGCAGAAGCCCACCUCGAGAUGCUAUGUGGACGAGGGCAUGCCCAAGACACACCUUAACCUAGCGGGGGUCGUUAGGGUGAAAUCACACCAUGUGAUGGGAGUACGACCUGAUAGGGUGCUGCAGAGGCCCACUAUUAGGCUAGUAUAAAAAUCUCUGCUGUACAUGGCAC
+;.(((((((.((((((((.((((((.(((((((((..((((((....))))))..(((((.((((.((((.(((.((....)).))).))))....))))...)))))(((....))).)))).)))))..(((((((((....)))))))))...(((((.....))))))))))).))((((....))))...[[[[[[[.))))))...))))))).......]]]]]]]............
+
+>mRNA S15
+CUGGGAUCGCUGAAUUAGAGAUCGGCGUCCUUUCAUUCUAUAUACUUUGGAGUUUUAAAAUGUCUCUAAGUACU
+;..((((.((((((.[[[[[[[))))))))))...............................]]]]]]].....
+
+>mRNA repZ
+AAGGAAAACCCCCACUAUCUUUCUUACGAACUUGGCGGAACGACGAAAGAUAGUGGGGGCCUCACAGAAUACGGGUAAAGUAUAAUGAAACCGUACCAGAGAUUCAACCCUGUGCAGUGUAUAAAUACACGGCACAAUCGCUCCGCCAU
+;.(((....(((((((((((((((.........[[[[[[[.[[[.)))))))))))))))))).......(((((................)))))...............(((((.((((......)))).))))).]]].]]]]]]].
+
+>tmRNA EColi
+GGGGCUGAUUCUGGAUUCGACGGGAUUUGCGAAACCCAAGGUGCAUGCCGAGGGGCGGUUGGCCUCGUAAAAAGCCGCAAAAAAUAGUCGCAAACGACGAAAACUACGCUUUAGCAGCUUAAUAACCUGCUUAGAGCCCUCUCUCCCUAGCCUCCGCUCUUAGGACGGGGAUCAAGAGAGGUCAAACCCAAAAGAGAUCGCGUGGAAGCCCUGCCUGGGGUUGAAGCGUUAAAACUUAAUCAGGCUAGUUUGUUAGUGGCGUGUCCGUCCGCAGCUGGCAAGCGAAUGUAAAGACUGACUAAGCAUGUAGUACCGAGGAUGUAGGAAUUUCGGACGCGGGUUCAACUCCCGCCAGCUCCACCA
+;(((((((.............((((((((.......((..((((((((((((((.[[[[[[..))))).....]]]]]].............................((((((((((.........)))).))))))(((((((((((..(((...[[[[[)))..))))....)))))))..........]]]]]...((((...((((..[[[[[[))))...))))..........]]]]]]..((((((((((.(((.[[[.[[[))).)))))))))).........]]].]]]...)))))...))))..))......))))))))...(((((.......))))))))))))....

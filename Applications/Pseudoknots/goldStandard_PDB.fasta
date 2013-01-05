@@ -1,0 +1,2472 @@
+>PDB_00005.dp
+GGGAGCUCAACUCUCCCCCCCUUUUCCGAGGGUCAUCGGAACCA
+;(((((.......)))))[[[...((((((]]]...))))))...
+
+>PDB_00747.dp
+gGCCGUGUGCCUUGCGCCGGGAAACCACGCAAGGGAUGGUGUCAAAUUCGGCGAAACCUAAGCGCCCGCCCGGGCGUAUGGCAACGCCGAGCCAAGCUUCGCAGCCAUUGCACUCCGGCUGCGAUGAAGGUGUAGAGACUAGACGGCACCCACCUAAGGCAAACGCUAUGGUGAAGGCAUAGUCCAGGGAGUGGCGaAAGCCACACAAACCAGACGGCCCAu
+;(((((({{{(((((((..(((..))).)))))))...((((((....(((((((((((...((((((....))))))..)))))))))))(((.((((((((((((..........))))))))))))))).....[[[[[...))))))((((...(((....)))..))))......]]]]].(((((((((((..))))))...))))).))))))}}}
+
+>PDB_00804.dp
+GCGGGGGUUGCCGAGCCUGGUCAAAGGCGGGGGACUCAAGAUCCCCUCCCGUAGGGGUUCCGGGGUUCGAAUCCCCGCCCCCGCACCAGCGGGGGUUGCCGAGCCUGGUCAAAGGCGGGGGACUCAAGAUCCCCUCCCGUAGGGGUUCCGGGGUUCGAAUCCCCGCCCCCGCACCA
+;((((((([[(((]]...........)))((((((.......))))))(((....)))...(((((.......))))))))))))....(((((((..(((.............)))((((((.......))))))(((....)))...(((((.......))))))))))))....
+
+>PDB_00908.dp
+gGCCGUGUGCCUUGCGCCGGGAAACCACGCAAGGGAUGGUGUCAAAUUCGGCGAAACCUAAGCGCCCGCCCGGGCGUAUGGCAACGCCGAGCCAAGCUUCGCAGCCAUUGCACUCCGGCUGCGAUGAAGGUGUAGAGACUAGACGGCACCCACCUAAGGCAAACGCUAUGGUGAAGGCAUAGUCCAGGGAGUGGCGaAAGCCACACAAACCAGACGGCCCAu
+;(((((({{{((((((((.(((..)))))))))))...((((((....(((((..((((...((((((....))))))..))))..)))))(((..((((((((................)))))))).))).....[[[[[...))))))((((...(((....)))..))))......]]]]].(((((((((((..))))))...))))).))))))}}}
+
+>PDB_01009.dp
+GCCAGGGUGGCAGAGGGGCUUUGCGGCGGACUGCAGAUCCGCUUUACCCCGGUUCGAAUCCGGGCCCUGGC
+;((((((([[(((]].......)))..((((.......))))......(((((.......))))))))))))
+
+>PDB_01010.dp
+GCCAGGGUGGCAGAGGGGCUUUGCGGCGGACUGCAGAUCCGCUUUACCCCGGUUCGAAUCCGGGCCCUGGC
+;..((((([[(((]].......)))..(((((.....)))))......(((((.......))))))))))..
+
+>PDB_01300.dp
+AAGCGCCGGACUUAAAGCCAUGGCUUUAAGUUGACGAGAGCAGGGUUUAUCGAGACAUCGGCGGGUGCCCUGCGGUCUCCUGCGACCGUUAGAGGACUGGAAAACCACAGGCGACUGUGGCAUAGAGCAGUCCGGGCAGGAa
+;...(((((((((((((((....))))))))))..(((...[[[[[[...)))......)))))...]]]]]]{{{{{.(((((}}}}}....(((((((..((((((((((..))))))))))....))))))).)))))..
+
+>PKB1: Bovine Leukemia Virus (BLV)
+AAAAAACUAAUAGAGGGGGGACUUAGCGCCCCCCAAACCGUAACCCC
+;..............[[[[[[.....(((]]]]]]....)))......
+
+>PKB2: Beet Western-Yellows Virus (BWYV)
+GGGAAACGGAGUGCGCGGCACCGUCCGCGGAACAAACGGAGAAGGCAGCU
+;.............[[[[[..((((]]]]]......))))...........
+
+>PKB3: Equine Infectious Anemic Virus (EIAV)
+AAAAAACGGGAAGCAAGGGGCUCAAGGGAGGCCCCAGAAACAAACUUUCCCGAU
+;................[[[[[[...((((]]]]]]............))))...
+
+>PKB4: Feline Immunodeficiency Virus (FIV)
+GGGAAACUGGAAGGCGGGGCGAGCUGCAGCCCCAGUGAAUCAAAUGCAGC
+;...............[[[[[..((((((]]]]]...........))))))
+
+>PKB5: turnip yellow mosaic virus (TYMV)
+CGGGUGCAACUCCCGCCCCUCUUCCGAGGGUCAUCGGAACC
+;...............(((....[[[[[)))...]]]]]...
+
+>PKB6: kennedya yellow mosaic virus (KYMV-BP)
+GGGGUGCAACUCCCCCGUCUAUCCUGGACGUCACCAGGACCA
+;...............(((...[[[[[[)))...]]]]]]...
+
+>PKB7: cacao yellow mosaic virus (CaYMV)
+GGUGGUGCAACUCCCCCGUCCUCCCGAACGUCAUCGGGACCA
+;................(((..[[[[[[)))...]]]]]]...
+
+>PKB8: physalis mottle virus (PhyMV)
+UGGGUGCAACUCCCCCCCCUUCCGUGGGUAACGGAAACCA
+;..............(((..[[[[[[)))..]]]]]]....
+
+>PKB9: desmodium yellow mottle virus (DYMV)
+GGGGUGCAACUCCCCCGUCUAUCCUGGACGUCACCAGGACCA
+;...............(((...[[[[[[)))...]]]]]]...
+
+>PKB10: ononis yellow mosaic virus (OYMV)
+UGGGUUCAACUCCCCCCCUUUUCCGAGGGUAUCGGAAACC
+;..............(((...[[[[[[)))..]]]]]]...
+
+>PKB11: clitoria yellow vein virus (CYVV)
+UGGGUGCAACCCCCCCGUCCAUCUCGAACGUCAUCGAGACCA
+;...............(((...[[[[[[)))...]]]]]]...
+
+>PKB12: wild cucumber mosaic virus (WCMV)
+CGGGUGCAACCCCCCCUCCCCCCGUAGGUUAACGGGACCA
+;..............(((...[[[[[)))...]]]]]....
+
+>PKB13: calopogonium yellow vein virus (CaYVV)
+GGGGUGCGACUCCCCCGUCUAUCCUGAACGUCAUCAGGACCA
+;...............(((...[[[[[[)))...]]]]]]...
+
+>PKB14: andean potato latent virus (APLV)
+CGGGUGCGACUCCCCCCCCUCCUGUGGGCUACAGGAACCA
+;..............(((..[[[[[[)))..]]]]]]....
+
+>PKB15: eggplant mosaic virus (EMV)
+UGGGUGCGACUCCCCCCCCUCCCGUGGGUCAACGGGAACCA
+;..............(((..[[[[[[)))...]]]]]]....
+
+>PKB16: okra mosaic virus (OMV)
+GGGGUGCAACUCCCCCGCCCAUCUCGAGCGUCAUCGAGACCA
+;...............(((...[[[[[[)))...]]]]]]...
+
+>PKB17: tobacco mosaic virus (CcTMV)
+GGGGAGCAUUACCCCCCCAAAACCCUGGGGAUACAGGGCCCA
+;...............(((....[[[[[)))...]]]]]....
+
+>PKB18: tobacco mosaic virus (TMV)
+GGGGUUCGAAUCCCCCCGUUACCCCCGGUAGGGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB19: pepper mild mottle virus (PMMV-I)
+GGGGUUCGAAUCCCCCCCGAACCGCGGGUAGCGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB20: cucumber green mottle mosaic virus (CGMMV)
+GGGGUUCGAAUCCCCCCUUUUCCCCGGGUAGGGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB21: tobacco mosaic virus (TMV-L)
+GGGAUUCGAAUUCCCCCGGAACCCCCGGUUGGGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB22: satellite tobacco mosaic virus (STMV)
+GGGGUUCGAAUCCCUCCCUAACCGCGGGUAAGCGGCCCA
+;...............(((...[[[[)))...]]]]....
+
+>PKB23: tobacco mild green mosaic virus (TMGMV)
+GAGGUUCGAAUCCUCCCGUAACCGCCGGUAGCGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB24: paprika mild mottle virus (PaMMV)
+GGGGUUCGAAUCCCCCCUUUACCCCGGGUAUGGGGCCCA
+;...............(((...[[[[)))...]]]]....
+
+>PKB25: turnip vein-clearing virus (TVCV)
+GAGGUUCGAAUCCUCCCUAACCCCGGGUAGGGGCCCA
+;...............(((..[[[[)))..]]]]....
+
+>PKB26: oilseed rape mosaic virus (ORMV)
+GAGGUUCGAAUCCUCCCUAACCCCGGGUAGGGGCCCA
+;...............(((..[[[[)))..]]]]....
+
+>PKB27: pepper mild mottle virus (PMMV-S)
+GGGGUUCGAAUCCCCCCCGAACCGCGGGUAGCGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB28: odontoglossum ringspot virus (ORSV-S1)
+GGGAUUCGAAUUCCCCCUUACCUCGGGUAGAGGCCCA
+;...............(((..[[[[)))..]]]]....
+
+>PKB29: tobacco mosaic virus (TMVcg)
+GAGGUUCGAAUCCUCCCUAACCCCGGGUAGGGGCCCA
+;...............(((..[[[[)))..]]]]....
+
+>PKB30: soil-borne wheat mosaic virus (SBWMV1)
+GGGGUUCAAAUCCCCCCCGAACCGGAGGGUUAUCCGGCCCA
+;...............(((...[[[[[)))...]]]]]....
+
+>PKB31: soil-borne wheat mosaic virus (SBWMV2)
+GGGGUUCAAUUCCCCCCCCAUCCGGAGGGUUAUCCGGCCC
+;...............(((...[[[[[)))...]]]]]...
+
+>PKB32: potato mop-top virus (PMTV2)
+GGGUGCAACUCCCCCCCCCUUGGAGGGUAUCCAAGACC
+;.............(((..[[[[[[)))..]]]]]]...
+
+>PKB33: peanut clump virus (PCV1)
+GGUGCAAAUCCCCCGCUGAAACGGAGCGAUAUCCGUCCCA
+;.............(((....[[[[[)))...]]]]]....
+
+>PKB34: peanut clump virus (PCV2)
+GGUGCAAAUCCCCCGCUGAAACGGAGCGAUAUCCGUCCCA
+;.............(((....[[[[[)))...]]]]]....
+
+>PKB35: Indian peanut clump virus (IPCV1)
+GGUGCAAAUCCCCCGCCGAUACGGAGCGAUAUCCGUCCCA
+;.............(((....[[[[[)))...]]]]]....
+
+>PKB36: beet soil-borne virus (BSBV1)
+GGGGUGCAAAUCCCCCCCUUUACUUGAGGGAAAUCAAGCCC
+;...............(((....[[[[[)))...]]]]]...
+
+>PKB37: beet soil-borne virus (BSBV2)
+GGGGUGCAAAUCCCCCCCUUAACUUGAGGGAAAUCAAGCCC
+;...............(((....[[[[[)))...]]]]]...
+
+>PKB38: beet soil-borne virus (BSBV3)
+GGGGUGCAACUCCCCCCCUUAACUAGAGGGAAAUCUAGCCC
+;...............(((....[[[[[)))...]]]]]...
+
+>PKB39: beet virus Q (BVQ1)
+GGGGUGCAAAUCCCCCCCUAACUUGAGGGAAAUCAAGCCCC
+;...............(((...[[[[[)))...]]]]]....
+
+>PKB40: beet virus Q (BVQ2)
+GGGGUGCAAAUCCCCCCCUAACUUGAGGGAAAUCAAGCCC
+;...............(((...[[[[[)))...]]]]]...
+
+>PKB41: beet virus Q (BVQ3)
+GGGGUGCAAAUCCCCCCCUAACUUGAGGGAAAUCAAGCCCC
+;...............(((...[[[[[)))...]]]]]....
+
+>PKB42: potato leafroll virus (PLRV-W)
+UUUAAAUGGGCGAGCGGCACCGCCCGCCAAAACAAACGG
+;.............((((..[[[.)))).........]]]
+
+>PKB43: potato leafroll virus (PLRV-S)
+UUUAAAUGGGCAAGCGGCACCGUCCGCCAAAACAAACGG
+;.............((((..[[[[))))........]]]]
+
+>PKB44: cucurbit aphid-borne yellows virus (CABYV)
+GGGAAACGGGCAGGCGGCGGCGACCGCCGAAACAACCGC
+;............(((((..[[[.)))))........]]]
+
+>PKB45: pea enation mosaic virus (PEMV)
+GGGAAACGGAUUAUUCCGGUCGACUCCGGAGAAACAAAGUC
+;.............((((((..[[[[))))))......]]]]
+
+>PKB46: barley yellow dwarf virus (BYDV-NY-RPV)
+GGGAAACGGGAAGGCGGCGGCGUCCGCCGUAACAAACGC
+;............(((((..[[[[))))).......]]]]
+
+>PKB47: Moloney murine leukemia virus (Mo-MuLV)
+UAGGGAGGUCAGGGUCAGGAGCCCCCCCCUGAACCCAGGAUAACCCUCAAAGUCGGGGGGC
+;...........((((((((.[[[[[[[)))).))))..................]]]]]]]
+
+>PKB48: spleen necrosis virus (SNV)
+UAGGGCCGUCAGGGUUCUCCCGCCCUCCGUGAACCCAGGCUAAAAGUUAAGGUAGGGGGGC
+;...........((((((.(..[[[[[[[).))))))..................]]]]]]]
+
+>PKB49: E.coli (Ec_PK1)
+CGAGGGGCGGUUGGCCUCGUAAAAAGCCGC
+;(((((.[[[[[[..))))).....]]]]]]
+
+>PKB50: E.coli (Ec_PK2)
+CCUCUCUCCCUAGCCUCCGCUCUUAGGACGGGGAUCAAGAGAGGUCAAACCCAAAAGAG
+;(((((((((((..(((...[[[[[)))..))))....)))))))..........]]]]]
+
+>PKB51: E.coli (Ec_PK3)
+GCGUGGAAGCCCUGCCUGGGGUUGAAGCGUUAAAACUUAAUCAGGC
+;((((...(((((.[[[[[)))))...))))...........]]]]]
+
+>PKB52: E.coli (Ec_PK4)
+GUUUGUUAGUGGCGUGUCCGUCCGCAGCUGGCAAGCGAAUGUAAAGACUGAC
+;((((((((((.(((.[[[.[[[))).)))))))))).........]]].]]]
+
+>PKB53: tobacco mosaic virus (TMV_UPD-PK1)
+ACGGAUUGUGUCCGUAAUCACA
+;..(((.[[[[))).....]]]]
+
+>PKB54: tobacco mosaic virus (TMV_UPD-PK2)
+CGUGGUGCGUACGAUAACGCAU
+;(((.[[[[[[)))...]]]]]]
+
+>PKB55: tobacco mosaic virus (TMV_UPD-PK3)
+AGUGUUUUUCCCUCCACUUAAAUCGAAGGG
+;((((.....[[[[[))))......].]]]]
+
+>PKB56: odontoglossum ringspot virus (ORSV-S1_UPD3-PK1)
+UAACGUUGAUAGUGUUGAACUAUC
+;((((((.[[[[))))))...]]]]
+
+>PKB57: tobacco mosaic virus (TMV_PKbulge)
+UGUGUCUUGGAUCGCGCGGGUCAAAUGUAUAUGGUUCAUAUACAUCCGCAGGCACGUAAUAAAGCGA
+;(((((((....[[[[((((.....((((((((.....))))))))))))))))))).......]]]]
+
+>PKB58: odontoglossum ringspot virus (ORSV-S1_UPD1-PK3)
+AGUGUUUGUCCCUCCACUUAAAUCGAAGGG
+;((((.....[[[[[))))......].]]]]
+
+>PKB59: odontoglossum ringspot virus (ORSV-S1_UPD1-PK2)
+CGUGGUGCAUACGAUAAUGCAU
+;(((.[[[[[[)))...]]]]]]
+
+>PKB60: odontoglossum ringspot virus (ORSV-S1_UPD2-PK3)
+AGUGUUUAUCCCUCCACUUGAAUCGAAGGG
+;((((.....[[[[[))))......].]]]]
+
+>PKB61: odontoglossum ringspot virus (ORSV-S1_UPD2-PK2)
+CGUUGUGUACACGAUAGUACAU
+;(((.[[[[[[)))...]]]]]]
+
+>PKB62: odontoglossum ringspot virus (ORSV-S1_UPD3-PK3)
+AGUGGUUAUCCCUCCACUUAAAUCGAAGGG
+;((((.....[[[[[))))......].]]]]
+
+>PKB63: odontoglossum ringspot virus (ORSV-S1_UPD3-PK2)
+CGUGGUGCAUACGAUAAUGCAU
+;(((.[[[[[[)))...]]]]]]
+
+>PKB64: E.coli (Ec_16S-PKcentre)
+AAAUUGAAGAGUUUGAUCAUGGCUCA~AUGAAU
+;........(((((...[[[.))))).~.]]]..
+
+>PKB65: E.coli (Ec_16S-PK505/526)
+GCACCGGCUAACUCCGUGCCAGCAGCCGCGGUAAUACGGAGGGUGC
+;((((((((...[[[[[[[......))).......]]]]]]])))))
+
+>PKB66:  (TPK-70.28)
+CAAGAACCGGACGGGUGAGAACCGAGACAAACACCCACCA
+;.......(((..[[[[[....))).......]]]]]....
+
+>PKB67: Legionella pneumophila (Lp_PK1)
+CGAGAAGGAGAUCUCUCGUAAAUAAGACUC
+;(((((..[[[.[[))))).......]]]]]
+
+>PKB68: Legionella pneumophila (Lp_PK2)
+GUUAAACCAUCACUGUGUACUGGCCAAUAAACCCAGUAUCCCGUUCGACCGAGCCCGCUUAUCGGUAU
+;(((.(((....((((.[[[[[[[..........)))).....))).)))............]]]]]]]
+
+>PKB69: Legionella pneumophila (Lp_PK3)
+CGGUCAUAAGAGAUAAGCUAGCGUCCUAAUCUAUCCCGGGUUAUGGCGCGAAACUCAGGGA
+;(((((((((........................[[[[[[[))))))).))...]]].]]]]
+
+>PKB70: Legionella pneumophila (Lp_PK4)
+GCUGUGUAUCAUCCUGCCCGUCGGAGGAGCCACAGUUAAAUUCAAAAGACAAGGC
+;((((((..((.(((.[[[.[[[))).))..))))))...........]]]..]]]
+
+>PKB72: E.coli (Ec_S15)
+GGGAUCGCUGAAUUAGAGAUCGGCGUCCUUUCAUUCUAUAUACUUUGGAGUUUUAAAAUGUCUCUAA
+;((((.((((((.[[[[[[[))))))))))...............................]]]]]]]
+
+>PKB73: T2 bacteriophage (T2_gene32)
+CUGACCAGCUAUGAGGUCAUACAUCGUCAUAGC
+;.(((((.[[[[[[[))))).......]]]]]]]
+
+>PKB74: bacteriophage T4 (T4_gene32)
+UGCCAGCUAUGAGGUAAAGUGUCAUAGC
+;((((.[[[[[[[)))).....]]]]]]]
+
+>PKB76: hepatitis delta virus ("Italy" variant) (HDV-It_ag)
+GGGUCGGCAUGGCAUCUCCACCUCCUCGCGGUCCGACCUGGGCAUCCGAAGGAGGACGCACGUCCACUCGGAUGGCUAAGGGAGAGCCA
+;(((((((........[[[[(((.......))))))))))...(((((((....((((....))))..)))))))......]]]].....
+
+>PKB77: Tetrahymena thermophila (Tt-LSU_P3/P7)
+AGACCGUCAAA~CACAGACUAAAUGUCGGUCGGGGAAGAUGUAUUCUUCUCAUAAGAUAUAGUCGG
+;.(((((.((..~..[.[[[[[..)).))))).(((((((.....)))))))........]]]]]].
+
+>PKB78: AKV murine leukemia virus (AKV-MuLV)
+UAGGGGGGUCAGGGUCAGGAGCCCCCCCCUGAACCCAGGAUAACCCUCACUGUCGGGGGGCA
+;...........((((((((.[[[[[[[)))).))))..................]]]]]]].
+
+>PKB79: gibbon ape leukemia virus (GaLV)
+UAGGGGAGUCAGGGUUCGGACCCCCUCCCCGAACCUAGGGUAACACUGACUGUGGAGGGGA
+;...........((((((((..[[[[[[[)))))))).................]]]]]]].
+
+>PKB80: mouse mammary tumor virus (MMTV_gag/pro)
+AAAAAACUUGUAAAGGGGCAGUCCCCUAGCCCCGCUCAAAAGGGGGAUG
+;..............(((((.[[[[[[[.)))))........]]]]]]].
+
+>PKB81:  (oligo_PK5)
+GCGAUUUCUGACCGCUUUUUUGUCAG
+;(((....[[[[[)))......]]]]]
+
+>PKB82: tobacco mosaic virus (TMV-L_UPD-PK1)
+AUAAAGUUUGUGUUUCUAAAACACAC
+;..(((...[[[[)))......]]]].
+
+>PKB83: tobacco mosaic virus (TMV-L_UPD-PK2)
+ACGUGGUACGUACGAUAACGUACA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB84: tobacco mosaic virus (TMV-L_UPD-PK3)
+CAGUGUUUUUCCCUCCACUUAAAUCGAAGGGU
+;.((((.....[[[[[))))......].]]]].
+
+>PKB85: tobacco mosaic virus (CcTMV_UPD-PK1)
+AAGUUUGGUCGUACUUAACGACCU
+;.(((..[[[[[[)))..]]]]]].
+
+>PKB86: tobacco mosaic virus (CcTMV_UPD-PK2)
+UAGGGGCUUACCGAAAUAAGCC
+;.(((.[[[[[)))...]]]]].
+
+>PKB87: tobacco mosaic virus (CcTMV_UPD-PK3)
+CCGUGUUUAAGAGUCCACGCAAAUCGAACUCU
+;.((((.....[[[[[))))......].]]]].
+
+>PKB88: Feline leukemia virus (FeLV)
+UAGGAGAGUCAGGGCCAGGACCCCCCCCCCUGAGCCCAGGAUAACCUUAAGAAUAGGGGGGC
+;...........((((((((...[[[[[[)))).))))..................]]]]]].
+
+>PKB89: cucumber green mottle mosaic virus (CGMMV_UPD-PK1)
+ACCUCGAAAGCUUAGUUUCGAGGGUCUUCUGAU
+;.((((((((..[[[[)))))))).....]]]].
+
+>PKB90: cucumber green mottle mosaic virus (CGMMV_UPD-PK2)
+UGGUGGUGCACACCAAAGUGCAUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB91: cucumber green mottle mosaic virus (CGMMV_UPD-PK3)
+UAGUGCUUUCCCGUUCACUUAAAUCGAACGGUU
+;.((((.....[[[[[))))......].]]]]..
+
+>PKB92: tobacco mild green mosaic virus (TMGMV_UPD-PK1)
+AAAGUCGCUGAAGACUUAAAAUUCAGG
+;.(((((.[[[[[)))))....]]]]].
+
+>PKB93: tobacco mild green mosaic virus (TMGMV_UPD-PK2)
+GGGUGGCUGAUACCAAAAUCAGCA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB94: tobacco mild green mosaic virus (TMGMV_UPD-PK3)
+CAGUGGUUGUUCGUCCACUUAAAUAUAACGAUU
+;.((((.....[[[[.))))........]]]]..
+
+>PKB95: pepper mild mottle virus (PMMV-S_UPD-PK1)
+AGUUGGACGAACAUUAAACGUCC
+;.(((.[[[[)))......]]]].
+
+>PKB96: pepper mild mottle virus (PMMV-S_UPD-PK2)
+CCGUGGCGAGUACGAUAACUCGUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB97: pepper mild mottle virus (PMMV-S_UPD-PK3)
+UAGUGUUUUUCCCUCCACUUAAAUCGAAGGGU
+;.((((.....[[[[[))))......].]]]].
+
+>PKB98: baboon endogenous virus (BaEV)
+UAGGGGUGUCAGGGCUCUGGAGCCCCCCCCGAGCCCCGGCUAACUCUAUCUGUAGGGGGGCA
+;...........((((((.((.[[[[[[[))))))))..................]]]]]]].
+
+>PKB99: Cas-Br-E murine leukemia virus (Cas-Br-E-MuLV)
+UAGGGGGGUCGGGGUCAGGAGCCCCCCCCUGAACCCAGGAUAACCCUCAAAGUCGGGGGGCAA
+;...........((((((((.[[[[[[[)))).))))..................]]]]]]]..
+
+>PKB100: satellite tobacco mosaic virus (STMV_UPD2-PK1)
+AAGCCUUUUGGAUCGAAGGUUAAACGAUCCG
+;.((((((..[[[[[[))))))...]]]]]].
+
+>PKB101: satellite tobacco mosaic virus (STMV_UPD2-PK2)
+CGCUCCUCGCUUGAGCUUGAGGCGGC
+;.((((.[[[[[[))))...]]]]]].
+
+>PKB102: satellite tobacco mosaic virus (STMV_UPD2-PK3)
+GCGUAUCUCUUAUGUCAACAGAGA
+;.((((.[[[[)))).....]]]].
+
+>PKB103: satellite tobacco mosaic virus (STMV_UPD1-PK1)
+CGCCGACGUGGCUGUAUAAUACGUC
+;.(((.[[[[)))........]]]].
+
+>PKB104: satellite tobacco mosaic virus (STMV_UPD1-PK2)
+UCGUUGACAAGUACGAAAUCUUGUUA
+;.(((.[[[[[[.)))....]]]]]].
+
+>PKB105: satellite tobacco mosaic virus (STMV_UPD1-PK3)
+UAGUGUUUUUCCCUCCACUUAAAUCGAAGGGU
+;.((((.....[[[[[))))......].]]]].
+
+>PKB106: infectious bronchitis virus (IBV)
+UUUAAACGGGUACGGGGUAGCAGUGAGGCUCGGCUGAUACCCCUUG~AAGCGAGCCUU
+;.............(((((((((((.[[[[[[[)))))))))))...~...]]]]]]].
+
+>PKB107: simian retrovirus-1 (SRV1_gag/pro)
+GGGAAACGGACUGAGGGGCCAGCCCCAGGCCCCGAAACAAGCUUAUGGGGCG
+;..............((((((.[[[[[[))))))............]]]]]].
+
+>PKB108: Tetrahymena thermophila (T.the_telo)
+UAUAACCUUCACCAAUUAGGUUCAAAUAAGUGGUA
+;...((((...[[[[[[[[))))....]]]]]]]].
+
+>PKB109: beet virus Q (BVQ1_UPD-PKc)
+UUGUGGUGCAUACAAUAAUGCAUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB110: beet virus Q (BVQ1_UPD-PKb)
+UAGUGUUUGCCGUUCCACUUAAAUCGAAACGGA
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB111: beet virus Q (BVQ2_UPD-PKc)
+ACGUGGUGCAUACGUUAAUGCAUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB112: beet virus Q (BVQ2_UPD-PKb)
+UAGUGUUUUUCGUUCCACUUAAAUCGAAACGAU
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB113: beet virus Q (BVQ3_UPD-PKc)
+UCGUGGUGCAUACGAAAAUGCAUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB114: beet virus Q (BVQ3_UPD-PKb)
+UAGUGUUUACCGUUCCACUUAAAUCGAAACGGA
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB115: beet soil-borne virus (BSBV1_UPD-PKc)
+CGGUAGCGCGAACCUUAUCGCGCA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB116: beet soil-borne virus (BSBV1_UPD-PKb)
+CAGUGUUUUGAAGUCCACUUAAAUAGAACUUCU
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB117: beet soil-borne virus (BSBV2_UPD-PKc)
+ACGUGGGUUAUACGAUAAUAACCG
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB118: beet soil-borne virus (BSBV2_UPD-PKb)
+CGGUGCUUUUAUGUUCACCGAAAUCGAACAUAC
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB119: beet soil-borne virus (BSBV3_UPD-PKc)
+ACGUGGCGAAUACGAUAAUUCGUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB120: beet soil-borne virus (BSBV3_UPD-PKb)
+UAGUGUUCGUGGAUAACACUUUAAUUAAGAUUCAUA
+;.((((((.[[[[[[)))))).........]]]]]].
+
+>PKB121: satellite tobacco necrosis virus 1 (STNV1_PK1)
+AAGCAGUCCCAGCUCUGCAUUGGGAA
+;.(((..[[[[[)))......]]]]].
+
+>PKB122: satellite tobacco necrosis virus 1 (STNV1_PK2)
+UACUACUUGCUCAUUUGUAGUCUAAAUGAGA
+;.(((((...[[[[[[[)))))..]]]]]]].
+
+>PKB123: satellite tobacco necrosis virus 1 (STNV1_PK3)
+GACGUUGGCCUCGACGUGUCGAGGUG
+;.((((..[[[[[[))))..]]]]]].
+
+>PKB124: satellite tobacco necrosis virus 2 (STNV2_PK1)
+CAGUAGUCCUGAACUAGUAAAUCAGGACC
+;.(((.[[[[[[[)))......]]]]]]].
+
+>PKB125: satellite tobacco necrosis virus 2 (STNV2_PK2)
+CCAUUCCCACUAGUGUAUUAGUGGA
+;.(((..[[[[[[)))...]]]]]].
+
+>PKB126: satellite tobacco necrosis virus 2 (STNV2_PK3)
+GAACGAGGCCCCGCGUGAAUUGGGGUG
+;..(((..[[[[[[)))....]]]]]].
+
+>PKB127: equine arteritis virus (EAV)
+GUUAAACUGAGAGCGCCCCACAUCUUUCCCGGCGAUGUGGGGCGU~GCCCGGGACUU
+;.............(((((((((((..[[[[[[.))))))))))).~..]]]]]]...
+
+>PKB128: Berne virus (BEV)
+UUUAAACUGUUGAGAGGUGCCUGGAGCGCCUGCAGGCAUCUCUGUU~UAUAAUGCAGGCA
+;............(((((((((((....[[[[[)))))))))))...~.......]]]]].
+
+>PKB129: E.coli (Ec_16S-PK570/866)
+GCGUAAA~UGUCGACUUGGAGGUUGUGCCCUUGAGGCGUGGCUUCCGGAGCUAACGCGUUAAGUCGACC
+;..((...~.[[[[[[..((((((((((((.....))))))))))))...[[..))]].....]]]]]].
+
+>PKB130: tobacco rattle virus (TRV-PSG)
+AGGGGUAAAACCCCUCGCCUACGUAAGCGUUAUUACGCCC
+;...............(((...[[[[[)))...]]]]]...
+
+>PKB131:  (NGF-H1)
+CGCUCAACUCAUGGAGCGCAAGACGAAUAGCUACAUAUUCGACAUGAG
+;(((((..[[[[[[))))).....((((((......)))))).]]]]]]
+
+>PKB132:  (NGF-L2)
+CGCUCAACCUCAGAGCGCAAGAGUCGAACGAAUACAGUUCGACAUGAGG
+;(((((..[[[[[))))).....(((((((.......))))))).]]]]]
+
+>PKB133:  (NGF-L6)
+CGCUCAACUCAUGGAGCGCACGACGGAUCACCAUCGAUUCGACAUGAG
+;(((((..[[[[[[))))).....((((((......)))))).]]]]]]
+
+>PKB134: brome mosaic virus (BMV3)
+UCUAGGUGCCUUUGAGAGUUACUCUUUGCUCUCUUCGGAAGAACCCUUAGGGGUUCGUGCAUGGGCUUGCAUAGCAAGUCUUAGAAUGCGGGUACCGUACAGUGUUGAAAAACACUGUAAAUCUCUAAAAGAGACCA
+;....(((((((..((((((..[[[[[[)))))).......((((((....))))))..(((((((((((.....)))))))....))))))))))).((((((((......))))))))........]]]]]]....
+
+>PKB135: broad bean mottle virus (BBMV3)
+AAGAUAUCUGUACCGUCUUCUCCCCGACGGUUUCAAUCCAUAGCUUCACGUUGUGUAGCGUAGGUGGAAGGUAUCGUGUGGUGUAUAAACACCACAUAGUCUCUUAGGGGAGACCA
+;..(((((((..((((((..[[[[[[)))))).....(((((.((((((.....))))))....))))))))))))(((((((((....))))))))).........]]]]]]....
+
+>PKB136: cowpea chlorotic mottle virus (CCMV3)
+AGCUGCCCUUGGGUUUUACUCCUUGAACCCUUCGGAAGAACUCUUUGGAGUUCGUACCAGUACCUCACAUAGUGAGGUAAUAAGACUGGUGGGCAGCGCCUAGUCGAAAGACUAGGUGAUCUCUAAGGAGACCA
+;.(((((((..((((((..[[[[[[)))))).......((((((....))))))..((((((((((((.....)))))))......))))))))))))((((((((....)))))))).......]]]]]]....
+
+>PKB137: cucumber mosaic virus (CMV3)
+AGGUACCCUUGAAAUCACCUCCUAGAUUUCUUCGGAAGGGCUUCGUGAGAAGCUCGUGCACGGUAAUACACUGAUAUUACCAAGAGUGCGGGUAUCGCCUGUGGUUUUCCACAGGUUCUCCAUAAGGAGACCA
+;.(((((((..((((((..[[[[[.)))))).......(((((((....)))))))..(((((((((((......)))))))....)))))))))))((((((((....))))))))........]]]]]....
+
+>PKB138: barley stripe mosaic virus (BSMVbeta)
+AUUGGUAUGUAAGCUACAACUUCCGGUAGCUGCGUCACACUUUAAGAGUGUGCAUACUGAGCCGAAGCUCAGCUUCGGUCCCCCAAGGGAAGACCA
+;.((((((((..((((((..[[[[[.))))))....((((((.....)))))))))))))).((((((.....)))))).........]]]]]....
+
+>PKB139: tobacco mosaic virus (TMV-L_PKbulge)
+UAGUGUCUUGGAGCGCGCGGAGUAAACAUAUAUGGUUCAUAUAUGUCCGUAGGCACGUAAAAAAAGCGAG
+;..((((((....[[[[((((.....((((((((.....)))))))))))))))))).........]]]].
+
+>PKB140: cucumber green mottle mosaic virus (CGMMV_PKbulge)
+UUUGCUCAUUGGUUUGCGGAAACCUCUCACGUGUGACGUUGAAGUUUCUAUGGGCAGUAAUUCUGCAAG
+;.((((((((....[[[[((((((.((..(((.....))).)).)))))))))))))).......]]]].
+
+>PKB141: tobacco mild green mosaic virus (TMGMV_PKbulge)
+UUGUCAUAUCUGGAUCCAACAGUUAAACCAUGUGAUGGUGUAUACUGUGGUAUGGCGUAAAACAUCGGAG
+;.(((((((((....[[[.(((((...((((.....))))....)))))))))))))).........]]].
+
+>PKB142: satellite tobacco mosaic virus (STMV_PKbulge)
+UUUUGUUUUGGUCUUCCCGAACGCAUACGUUAGUGUGACUACCGUUGUUCGAAACAAGUAAAACAGGAAGG
+;.(((((((....[[[[[((((((...(((.(((.....))).)))))))))))))))).......]]]]].
+
+>PKB143: pepper mild mottle virus (PMMV-S_PKbulge)
+UUGUCGUUGGGAUGGAACGCAAUUAAAUACAUGUGUGACGUGUAUUUGCGAACGACGUAAUUAUUUUUCAG
+;.(((((((....[[[[[(((....(((((((((.....)))))))))))))))))))........]]]]].
+
+>PKB144: odontoglossum ringspot virus (ORSV-S1_PKbulge1)
+UUGUGUAUAUGGAUCAUGCGGAUAAAGUUAUACUGGUGCAGUAUAACCCGUUAUACACAUAAAAUUAUGAG
+;.((((((((....[[[[((((.....((((((((.....)))))))))))))))))))).......]]]].
+
+>PKB145: odontoglossum ringspot virus (ORSV-S1_PKbulge2)
+UUGUGUCAGACGCGUGUAAGGAGUGGUCAACCUUACGACACAUUUAAAUAAUGCGUCC
+;.(((((..[[[[[[(((((((.........)))))))))))).........]]]]]].
+
+>PKB146: odontoglossum ringspot virus (ORSV-S1_PKbulge3)
+UUUCACUGCGGAUAUGUAGGUUUCCUCGGUGAAUAUAAAACUUAUAUCCC
+;.(((((...[[[[[((.(((...))))))))))...........]]]]].
+
+>PKB147: Saccharomyces cerevisiae (Sc_18S-PKE21-7/8)
+AUAAUAGAAUAGGACGUUUGGUUCUAUUUUGUUGGUUUCUAGGACCAUCGU
+;.((((((((((...[[..[[[[[[)))))))))).......]]]]]].]].
+
+>PKB148: Escherichia coli (Ec_23S-PKG12)
+CACGAAGGUUGGCUAAUCCUGGUCGGACAUCAGGAGGUUAGUGCAAUGGCAUAAGCCAGCUUG~GGUCAUAGU
+;.((..((((((((((.((((((.......))))))...)).....[[[......)))))))).~.))]]]...
+
+>PKB149: Escherichia coli (Ec_RNaseP-P4)
+AGACAGUCGCCGCUUCGUCGUCGUCCUCUUCGGGGGAGACGGGCGGAGGGGAGGAAAGUCCGGGC~UGACUGUCCACGACAGAACCCGGCUUA
+;.(((((((.((.((((((((((.(((((....))))))))).)))))).))....[[[.[[[[[.~.)))))))..........]]]]]]]].
+
+>PKB150: Escherichia coli (Ec_RNaseP-P6)
+GCUCCAUAGGGCAGGGUGC~UAAACUCCACCCGGAGC~AGGUACGGCCCGUACUG
+;.((((...[[[[.(((((.~.......))))))))).~.(((((.]]]]))))).
+
+>PKB151: barley stripe mosaic virus (BSMVbeta_UPD-PK1)
+AAAUGUUUGAUCAGAUCAUUCAAAUCUGAUGG
+;.((((....[[[[[[[))))...]]]]]]]..
+
+>PKB152: barley stripe mosaic virus (BSMVbeta_UPD-PK2)
+UGGUGCCCAUCAACCAUAUGAUGGGA
+;.(((.[[[[[[[)))...]]]]]]].
+
+>PKB153: barley stripe mosaic virus (BSMVbeta_UPD-PK3)
+GAGUGUUUGCAAGUCCACUAUAAUCGAACUUGA
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB154: brome mosaic virus (BMV3_UPD-PK1)
+GAGCCCCUGACUGGGUUAAAGUCACA
+;.(((((.[[[[[)))))..]]]]]..
+
+>PKB155: brome mosaic virus (BMV3_UPD-PK2)
+CCCUUGUCUCAGGUAGAGACC
+;.(((.[[[[[)))..]]]]].
+
+>PKB156: brome mosaic virus (BMV3_UPD-PK3)
+ACUUUGGCUAAGGUUAAAAGCUU
+;.(((.[[[[)))......]]]].
+
+>PKB157: brome mosaic virus (BMV3_UPD-PK4)
+UUGUUGAAUCAGUACAAUAACUGAUA
+;.(((...[[[[[[)))...]]]]]].
+
+>PKB158: tobacco rattle virus, strain PSG (TRV-PSG2_PK1)
+CUUUAAGGGACCUUGUGAAAUUCAAGGG
+;.((((.....[[[[[))))...]]]]].
+
+>PKB159: tobacco rattle virus, strain PSG (TRV-PSG2_PK2)
+GGGCGGGUGUCGCCAGAAAUCACCG
+;.(((.[[[[[.)))....].]]]].
+
+>PKB160: tobacco rattle virus, strain PSG (TRV-PSG2_PK3)
+CGAUACUACUAGUUGUAUCAAAACAAAACUAA
+;.(((((...[[[[[))))).......]]]]].
+
+>PKB161: tobacco rattle virus, strain PSG (TRV-PSG2_PK4)
+AGGUGGAUGUUACCAUAAACAUUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB162: tobacco rattle virus, strain PSG (TRV-PSG2_PK5)
+UAAUGUCGCAGGUGGCAUUUUAAAAUAAGACCUGA
+;.((((((.[[[[[))))))..........]]]]].
+
+>PKB163: Homo sapiens (Hs_SRP-pkn)
+GCCGGGCGCGGUGGCGCGUGCCUGUAGUCCCAGCUACUCGGGAGGCU
+;(((.((((((.[[[[.)))))).....((((.]]]]...))))))).
+
+>PKB164: poa semilatent virus (PSLVbeta)
+AUUGGUAUGUAAGCUACUUCUUCCAGUAGCUGCGUCAUAACAUCAAGGUUAUGCAUACUGAGCCGAAGCUCAGCUUCGGUCCUCCAAGGAAGACCA
+;.((((((((..((((((..[[[[[.))))))....((((((......)))))))))))))).((((((.....))))))........]]]]]....
+
+>PKB165: poa semilatent virus (PSLVbeta_UPD-PK1)
+AUUGCCACUGUGGAAAUCAGUGA
+;.(((.[[[[[)))....]]]]].
+
+>PKB166: poa semilatent virus (PSLVbeta_UPD-PK2)
+CGGUUUUAUCUACCAUAAGAUAAA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB167: poa semilatent virus (PSLVbeta_UPD-PK3)
+AAGUGUUUUCAUGUCCACUUAAAUCGAACAUGAAC
+;.((((..[[[[[[[[))))......].]]]]]]].
+
+>PKB168: lychnis ringspot virus (LRSVbeta)
+AUUGGUGAUUAUUUCCGCUUACUCCUGUGCGGAUGCAACAAUGUUUUGACAUUGAUCACUGAGUUUCAGACUGACUAACAGUCUGGGAUCCCCCAAGGGAGACCA
+;.((((((((....(((((...[[[[[..))))).....((((((....)))))))))))))).((((((((((.....))))))))))........]]]]]....
+
+>PKB169: Coxsackie B virus (CoxB3)
+ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAAAAAA
+;.((((((((((((.[[[[[[.........)))))))))))).....((.(((((.]]]]]]))))).))....
+
+>PKB170: plasmid ColIb-P9 (ColIb-P9_repZ)
+AAGGAAAACCCCCACUAUCUUUCUUACGAACUUGGCGGAACGACGAAAGAUAGUGGGGGCCUC~AUCGCUCCGCCAU
+;.(((....(((((((((((((((.........[[[[[[[.[[[.)))))))))))))))))).~.]]].]]]]]]].
+
+>PKB171: human coronavirus 229E (HCV_229E)
+UUUAAACGAGUCCGGGGCUCUAGUGCCGCUCGACUAGAGCCCUGUAA~CAGUUAUGGACCACGAGCAGUCCAUGUA
+;............((((((((((((...[[[[[))))))))))))...~....(((((((..]]]]].)))))))..
+
+>PKB172: bamboo mosaic virus (BaMV)
+CUUUUGGUUUCUACAGUUUUUUCCAAAAAAAAAAAAAAA
+;.((((((.........[[[[[[))))))...]]]]]]..
+
+>PKB173: Satellite cereal yellow dwarf virus-RPV RNA (satRPV)
+ACAGAGCGCGUACUGUCUGACGACGUAUCCGCGCGGACUAGAAGGCUGGUGCCUCGUCCAACAAAUAGAUACA
+;((((.[[[[[..))))........(((((]]]]]((((....((((....)))).))))........))))).
+
+>PKB174: Rous sarcoma virus (RSV)
+AAAUUUAUAGGGAGGGCCACUGUUCUCACUGUUGCGCUACAUCUGGCUAUUCCGCUCAAAUGGAAGCCAGACCACACGCCUGUGUGGAUUGACCAGUGGCCCCUCCCUGAAGGUAAACUUGUAGCGCU
+;........((((((((((((((...........[[[[[[[[((((((..(((((......)))))))))))((((((....))))))......))))))))).)))))...........]]]]]]]].
+
+>PKB175:  (biotin-PK)
+CACCGACCAUAGGCUCGGGUUGCCAGAGGUUCCACACUUUCAUCGAAAAGCCUAUGC
+;.(((((.[[[[[[[)))))..............................]]]]]]].
+
+>PKB176:  (biotin-PK-AN69.1)
+GGACCGUCAGAGGACACGGUUAAAAAGUCCUCU
+;..(((((..[[[[[[)))))......]]]]]].
+
+>PKB177: Rattus rattus (black rat) (Rr_ODCanti)
+UGCUCCUGAUGUCCCUCACCCACCCCUGAAGAUCCCAGGUGGGCGAGGGAACAGUCAGCGGGAUCACAGU
+;............(((((.((((((......[[[[[[.)))))).)))))..........]]]]]].....
+
+>PKB178: Neurospora intermedia (Ni_VS)
+AAGGGCGUCGUCGCCCCGAG~UCGUAGCAGUUGACUACUGUUAUGU
+;..((((...[[[))))....~.(((((((((.]]].))))))))).
+
+>PKB179: plasmid pMU407.1 (IncL/M) (pMU407_repBA)
+AACCCCCUGAUCCUAUUUCAGAACUUUGGCCGGCUCGGAAUAGAAUCAGGGGGUG~CCCGGCCAAUAUG
+;.((((((((((.(((((((.((...[[[[[[[[.))))))))).)))))))))).~.]]]]]]]]....
+
+>PKB180: plasmid pMU720 (IncB) (pMU720_repBA)
+ACCCCCACUAUUUUUCCUCGAACUUGGCGGAACGCAGAAAAAUAAUGGGGGCC~GCUCCGCCAUA
+;.((((((.((((((((..((....[[[[[[[.))..)))))))).))))))..~..]]]]]]]..
+
+>PKB181: hepatitis C virus (HCV_IRES)
+CCUCCCGGGAGA~ACUGCCUGAUAGGGUGCUUGCGAGUGCCCCGGGAGGUCUCGUAG
+;(((((((((((.~.))(((......)))((.[[[[[[.))))))))))).]]]]]].
+
+>PKB182: soil-borne rye mosaic virus (SBRMV1-PKa)
+GGGGUUCAAAUCCCCCCCCGAACCGGAGGGUUAUCCGGCCCA
+;...............(((....[[[[[)))...]]]]]....
+
+>PKB183: soil-borne rye mosaic virus (SBRMV1-UPD-PKb)
+ACGUCGUGCAGUACGGUAAACUGCACA
+;.(((.[[[[[[[)))....]]]]]]].
+
+>PKB184: soil-borne rye mosaic virus (SBRMV1_UPD-PKc)
+UUCUGUUUUUCGAACAGAUGUAAAUCGAAGA
+;.(((((.[[[[[[)))))......]]]]]].
+
+>PKB185: soil-borne rye mosaic virus (SBRMV1_UPD-PKd)
+ACGUGGCCAUCACGAUAGAUGGUU
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB186: soil-borne rye mosaic virus (SBRMV1_UPD-PKe)
+AAGCCUAUUUGUACGGGUUGAGUACAAAC
+;.(((((.[[[[[..)))))....]]]]].
+
+>PKB187: soil-borne rye mosaic virus (SBRMV1_UPD-PKf)
+GCCGCUGGGAUUGCGGAUUAUAAAUCG
+;.((((...[[[[))))......]]]].
+
+>PKB188: soil-borne rye mosaic virus (SBRMV1_UPD-PKg)
+UCGUUGCCGUCACGAUAGACGGA
+;.(((..[[[[[)))...]]]]].
+
+>PKB189: soil-borne rye mosaic virus (SBRMV1_UPD-PKh)
+AGUCUAACAUGUCGGGCUGAGACAUGUC
+;.((((.[[[[[[[))))...]]]]]]].
+
+>PKB190: Plautia stali intestine virus (PSIV_IRES)
+CUCGCUCAAACAUUAAGUGGUGUUGUGCGAAAAGAAUCUCACUUCAA
+;.((((...(((((.[[[[[)))))..)))).........]]]]]...
+
+>PKB191: alfalfa mosaic virus (AMV3)
+AGGUAUGAAGUCCUAUUCGCUCCUGAUAGGAUCGACUUCAUAUUGCUUAUAUAUGUGCUAACGCACAUAUAUAAAUGCUCAUGCAAAACUGCAUGAAUGCCCCUAAGGGAUGC
+;.((((((((((((((((...[[[[))))))....))))))))))..((((((((((((....))))))))))))....(((((((....))))))).........]]]]....
+
+>PKB192: bacteriophage Q-beta (Qbeta_PKldX)
+AAUAAAGCAGU~UGAGAGGGGGAUCUGCUUUGCCCUCUCUCCUCCCA
+;..((((((((.~.[[[[[[[[[..))))))))]]]]]]]]]......
+
+>PKB193: Escherichia coli (Ec_rpmI)
+ACAGAUGAAGGCGACUAUCAGGUAAAACUCCGCAGCCUGAUUCGCUUUCUCGA~AUGCGAAGUGGAAGUUAUUAAAAUGCCAA
+;.(.((.((((((((..(((((((....[[.[[[[)))))))))))))))))).~.]]]].]](((..(((.....))).))).
+
+>PKB194: soil-borne wheat mosaic virus (SBWMV1_UPD-PKb)
+UACGCUGUACAGUGCGUUAAACUGUACA
+;..(((.[[[[[[[)))....]]]]]]].
+
+>PKB195: soil-borne wheat mosaic virus (SBWMV1_UPD-PKc)
+CUCUGUUGAUCAAACAGAAAUAAAUUGAUUA
+;.(((((.[[[[[[)))))......]]]]]].
+
+>PKB196: soil-borne wheat mosaic virus (SBWMV1_UPD-PKd)
+ACGCGGUCAUUGCGAUAAAUGACU
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB197: soil-borne wheat mosaic virus (SBWMV1_UPD-PKe)
+GAACCUAUUUGCUCGGGUUGAGUGCAAAC
+;..((((.[[[[[..)))).....]]]]].
+
+>PKB198: soil-borne wheat mosaic virus (SBWMV1_UPD-PKf)
+ACCGCCUGAUUAGCGGUCUACAAGUUAAUCGA
+;.((((..[[[[[)))).........]]]]]..
+
+>PKB199: soil-borne wheat mosaic virus (SBWMV1_UPD-PKg)
+UCGUGGUCAGUACGAUAACUGAU
+;.(((..[[[[[)))...]]]]].
+
+>PKB200: soil-borne wheat mosaic virus (SBWMV1_UPD-PKh)
+AGUCUAAUUUGUCGGGCUGAGACAAAUC
+;.((((.[[[[[[[))))...]]]]]]].
+
+>PKB201: soil-borne wheat mosaic virus (SBWMV2_UPD-PKb)
+GGCGUUCUACAGUACGUUUAAACUGUAGG
+;..(((.[[[[[[[))).....]]]]]]].
+
+>PKB202: soil-borne wheat mosaic virus (SBWMV2_UPD-PKi)
+UGGUGCUUGUUAUUUCACCUAAAUCGAAAUAACG
+;.((((...[[[[[[[)))).......]]]]]]].
+
+>PKB203: soil-borne wheat mosaic virus (SBWMV2_UPD-PKk)
+ACGUGGUCUUCACGAUAGAAGAUG
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB204: soil-borne wheat mosaic virus (SBWMV2_UPD-PKl)
+CAGAGUUAUCAUACUCUAUAAACUAUGAC
+;.((((...[[[[[))))......]]]]].
+
+>PKB205: Palmaria palmata (Pp_18S-PKE23-9/12)
+UUAGAGUGUUCAAAGCCAGGCGUUUGCCGUGAAUACAUUAGCAUGGAA
+;.((..((.[[[[..))(((((....))).))..))........]]]].
+
+>PKB206: Homo sapiens (Hs_PrP)
+GCCUCAUGGUGGUGGCUGGGGGCAGCCUCAUGGUGGUGGCUGGGG
+;...((((((.............[[[[[))))))....]]]]]...
+
+>PKB207: Bos Taurus (cow) (Bt_PrP)
+GCCCCAUGGAGGUGGCUGGGGCCAGCCUCAUGGAGGUGGCUGGGG
+;...((((((............[[[[[[))))))....]]]]]]..
+
+>PKB208: Bovine viral diarrhea virus (BVDV_IRES)
+GGGUAGCAACAGUGGUGA~ACAGCCUGAUAGGGUGCUGCAGAGGCCCACUGUAUUGCUACUAAAAAUCUCUGCU
+;.((((((((((((((((.~.))((((....))))...[[[[[[[.)))))))..))))))).....]]]]]]].
+
+>PKB209: Classical swine fever virus (hog cholera virus) (CSFV_IRES)
+GACUAGCCGUAGUGGCGA~ACGACCUGAUAGGGUGCUGCAGAGGCCCACUAUUAGGCUAGUAUAAAAAUCUCUGCUG
+;.((((((((((((((((.~.))((((....))))...[[[[[[[.)))))))..))))))).......]]]]]]]..
+
+>PKB210: Bordetella pertussis (Bp_PK2)
+CCGCUGCACUGAUCUGUCCUUGGGUCAGGCGGGGGAAGGCAACUUCCCAGGGGGCAACCCCGAACCGCAGCAGCGACAUUCACAAGGAAU
+;.((((((..(((...[[[[[[[..))).((((((((((....)))))).((((....))))...)))).)))))).......]]]]]]].
+
+>PKB211: Plautia stali intestine virus (PSIV_IRES-PKII)
+UGACUAUGUGAUCUUAUUAAAAUUAGGUUAAAUUUCGAGGUUAAAAAUAGUUUUAAUAUUGCUAUAGUCU~ACCCUCGUGC
+;.(((((((......(((((((((((..........[[[[[.......)))))))))))....))))))).~..]]]]]...
+
+>PKB212: Plautia stali intestine virus (PSIV_IRES-PKIII)
+AGGUCUUGUAUAUUUAUACUUACCACACAAGAUGGACCGGAGCAGCCCUCCAAUAUCUAGUGUA
+;.((((..((((....)))).....[[[[.[[[[[))))((((.....))))..]]]]].]]]].
+
+>PKB213: Himetobi P virus (HiPV_IRES-PKI)
+CAGCCUUGUAGUUUUAGUGGACUUUAGGCUAAAGAAUUUCACUAG
+;.(((((...((((.[[[[[))))..))))).........]]]]].
+
+>PKB214: Himetobi P virus (HiPV_IRES-PKII)
+CGAAAAUGUGUGAUCUGAUUAGAAGUAAGAAAAUUCCUAGUUAUAAUAUUUUUAAUACUGCUACAUUUUUA~ACCUAGGUGC
+;.(((((((((.......((((((((((........[[[[[......)))))))))).....))))))))).~..]]]]]...
+
+>PKB215: Himetobi P virus (HiPV_IRES-PKIII)
+GACCCUUAGUUAUUUAGCUUUACCGCCCAGGAUGGGGUGCAGCGUUCCUGCAAUAUCCAGGGCA
+;.((((..((((....)))).....[[[[.[[[[[))))((((.....))))..]]]]].]]]].
+
+>PKB216: Drosophila C virus (DCV_IRES-PKI)
+CUUCUUAUAUGAUUAGGUUGUCAUUUAGAAUAAGAAAAUAACCUG
+;.((((...(((((.[[[[[)))))..)))).........]]]]].
+
+>PKB217: lactate dehydrogenase-elevating virus, strain C (LDV-C)
+UUUAAACUGCUAGCCACCUCUGGUCUCGACCGCUGUACUAGAGGUGGGCUGACGGUGUYUGGCGAUGCGGUCA
+;.............(((((((((((...[[[[[[...)))))))))))...................]]]]]].
+
+>PKB218: Porcine reproductive and respiratory syndrome virus, North American isolate (16244B) (PRRSV-16244B)
+UUUAAACUGCUAGCCGCCAGCGGCUUGACCCGCUGUGGUCGCGGCGGCUUGGUUGUUACUGAGACAGCGGUA
+;............((((((.((((((....[[[[[[[))))))))))))...............]]]]]]]..
+
+>PKB219: Drosophila C virus (DCV_IRES-PKII)
+AGUUAAGAUGUGAUCUUGCUUCCUUAUACAAUUUUGAGAGGUUAAUAAGAAGGAAGUAGUGCUAUCUUAAUA~ACCCUCUCUGC
+;.(((((((((......(((((((((..........[[[[[[........)))))))))....))))))))).~..]]]]]]...
+
+>PKB220: Drosophila C virus (DCV_IRES-PKIII)
+UUAGGUUAACUAUUUAGUUUUACUGUUCAGGAUGCCUAUUGGCAGCCCCAUAAUAUCCAGGACA
+;.((((..((((....)))).....[[[[.[[[[[)))).(((.....)))...]]]]].]]]].
+
+>PKB221: Cricket paralysis virus (CrPV_IRES-PKI)
+CGGUUUUUCAGAUUAGGUAGUCGAAAAACCUAAGAAAUUUACCUG
+;.((((((...(((.[[[[[)))..)))))).........]]]]].
+
+>PKB222: Cricket paralysis virus (CrPV_IRES-PKII)
+GCAAAAAUGUGAUCUUGCUUGUAAAUACAAUUUUGAGAGGUUAAUAAAUUACAAGUAGUGCUAUUUUUGU~CCCUCUCUGC
+;.((((((((......(((((((((..........[[[[[[........)))))))))....)))))))).~.]]]]]]...
+
+>PKB223: Cricket paralysis virus (CrPV_IRES-PKIII)
+UUAGGUUAGCUAUUUAGCUUUACGUUCCAGGAUGCCUAGUGGCAGCCCCACAAUAUCCAGGAAG
+;.((((..((((....)))).....[[[[.[[[[[))))((((.....))))..]]]]].]]]].
+
+>PKB224: Triatoma virus (TrV_IRES-PKI)
+UUUCCUAUACCUCGAGUCGGGUUUGGAAUCUAAGGUUGACUCG
+;.((((...((((.[[[[[))))..)))).........]]]]].
+
+>PKB225: Triatoma virus (TrV_IRES-PKII)
+CUUGACUAUGUGAUCUUGCUUUCGUAAUAAAAUUCUGUACAUAAAAGUCGAAAGUAUUGCUAUAGUUAAG~UGUACAGAAUU
+;.(((((((((......((((((((.........[[[[[[[........))))))))....))))))))).~.]]]]]]]...
+
+>PKB226: Triatoma virus (TrV_IRES-PKIII)
+UGCGCUUGCCUAUUUAGGCAUACUUCUCAGGAUGGCGCGUUGCAGUCCAACAAGAUCCAGGGAC
+;.((((..((((....)))).....[[[[.[[[[.))))((((.....))))...]]]].]]]].
+
+>PKB227: Black queen cell virus (BQCV_IRES-PKI)
+AUGUUUAGAAGAUUAGGUAGUCUCUAAACAGAACAAUUUACCUG
+;.(((((...((((.[[[[[))))..)))))........]]]]].
+
+>PKB228: Black queen cell virus (BQCV_IRES-PKII)
+ACCAACAAUGUGAUCUUGCUUGCGGAGGCAAAAUUUGCACAGUAUAAAAUCUGCAAGUAGUGCUAUUGUUGGA~AACUGUGCU
+;.(((((((((......((((((((((..........[[[[[[[......))))))))))....))))))))).~.]]]]]]].
+
+>PKB229: Black queen cell virus (BQCV_IRES-PKIII)
+AUCACCGUACCUAUUUAGGUUUACGCUCCAAGAUCGGUGGAUAGCAGCCCUAUCAAUAUCUAGGAGA
+;..((((..((((....)))).....[[[[.[[[[.))))(((((.....)))))...]]]].]]]].
+
+>PKB230: Rhopalosiphum padi virus (RhPV_IRES-PKI)
+CAGGAGAGCAUACGCUAGGUCGCGUUGACUAUCCUUAUAUAUGACCUG
+;.((((.((((.((((.[[[[[)))))).)).)))).......]]]]].
+
+>PKB231: Rhopalosiphum padi virus (RhPV_IRES-PKII)
+UAGUGUUGUGUGAUCUUGCGCGAUAAAUGCUGACGUGAAAACGUUGCGUAUUGCUACAACACUU~ACGUCAC
+;.(((((((((......((((((((......[[[[[.......))))))))....))))))))).~.]]]]].
+
+>PKB232: Rhopalosiphum padi virus (RhPV_IRES-PKIII)
+UUGGUUAGCUAUUUAGCUUUACUAAUCAAGACGCCGUCGUGCAGCCCACAAAAGUCUAGAUA
+;.(((..((((....))))......[[[.[[[[.)))..(((.....)))....]]]].]]].
+
+>PKB233: Porcine reproductive and respiratory syndrome virus, European Lelystad strain (LV) (PRRSV-LV)
+UUUAAACUGUUAGCCGCCAGCGGCUUGACCCGCUGUGGCCGCGGCGGCCUAGUUGUGACUGAAACGGCGGU
+;............((((((.((((((....[[[[[[[))))))))))))...............]]]]]]].
+
+>PKB234: Variovorax paradoxus (Vp_PK2)
+GCCUUGCAACAGUUGGCCGAUGGGCUGGGCAAGGGGGUCUGGAGCAAUCCUGACCUCCCGGCUGCAAGGAUAACUACAUGGGCU
+;.((((((..(((...[[[[[[[..))).(((((((((((((((....))))))))))))))).)))))).......]]]]]]].
+
+>PKB235: Giardiavirus (GLV_IRES)
+GGAGACCCAUGGAGAGUCUCCAGAGGUUCCUAAGGCCUCGAUCGCGCCUGCCGGGAGGCAGAAUGUCCCGGUUCUCC
+;((((((....[[[[[)))))).(((((.......)))))..........(((((((.........)))))))]]]]]
+
+>PKB236: Homo sapiens (IFNG_PK)
+CAUUGUUCUGAUCAUCUGAAGAUCAGCUAUUAGAAGAGAAAGAUCAGUUAAGUCCUUUGGACCUGAUCAGCUUGAUACAAGAACUACUGAUUUCAACUUCUUUGGCUUAAUUCUCUCGGA
+;.......((((((([[[[[[[[..[[[[[..[[[[[....[[[[[[[[..[[[..[[[[....))))))).......]]]].]]]]]]]]]]]...]]]]].]]]]]....]]].]]]]]
+
+>PKB237: West Nile virus (WNV_PK3end)
+ACCUGGGAUAGACUAGGGGAUCUUCUGCUCUGCACAACCAGCCACACGGCACAGUGCGCCGACAUAGGUGGCUGGUGGUGCUAGAACACAGGAUCU
+;.(((((..[[[[)))))......]]]].(((((((.(((((((((.((((.......))))......))))))))).)))).)))...........
+
+>PKB238: Dengue virus type 2 (DEN2_PK1)
+AUGGGGGCCCAAGGUGAGAUGAAGCUGUAGUCUCACUGGAAGGACUAGAGGUUAGAGGAGACCCCCCCAAAACAAAAAACAGCA
+;.((((((((...((((((((...[[[[[.))))))))....))......((((......)))))))))).........]]]]].
+
+>PKB239: human immunodeficiency virus type 1 (Mal isolate) (HIV1_lrPK)
+UGCUUAAGCCUCAAUAAAGCUUGCCUUGAGUGCCUCAAGCAG~AUAUAGACUGAAACAUUUAGUAUGGGCAAGCAGGGAGC
+;.((((..(((((((....[[[[[[[))))).))...))))..~.(((..((((((...)))))))))]]]]]]].......
+
+>PKB240: beet chlorosis virus (BChV)
+GGGAAAUGGACUGAGCGGCGCCGACCGCCAAACAACCGGCA
+;..............((((.[[[[.))))........]]]].
+
+>PKB241: Montana Myotis leukoencephalitis virus (MMLV_PKb)
+AGAGAGUUAUUCGCUCCUCUCGAGAUUGAGCGGC
+;.(((((....[[[[[[)))))......]]]]]].
+
+>PKB242: Rio Bravo virus (RBV_PKb)
+UGAGGUUUUUCCCCUCCCUCAUGAUGAGGGGAAG
+;.((((...[[[[[[[[)))).....]]]]]]]].
+
+>PKB243: Homo sapiens (hTER)
+GGCGUAGGCGCCGUGCUUUUGCUCCCCGCGCGCUGUUUUUCUCGCUGACUUUCAGCGGGCGGAAAAGCCUCGGCCUGCCGCCUUCCACCGUUCAUUCUAGAGCAAACAAAAAAUGUCAGCU
+;.((((((((.....(((((.......(((((((((........[[[[[[[[[)))))))))..)))))....))))).))).............................]]].]]]]]].
+
+>PKB244: hepatitis A virus (HAV)
+UUAAACAAAUUUUCUUAAAAUUUCUGAGGUUUGUUUAUUUCUUUUAUCAGUAAAU
+;.((((((((((.........[[[[[[[)))))))))).........]]]].]]].
+
+>PKB245: Human Parechovirus 1 (HPeV1)
+CCCAGCCUUGGGGUGGCUGGUCAAUAAAAACCCCC
+;.((((((..[[[[[)))))).........]]]]].
+
+>PKB246: Hepatitis C Virus (HCV)
+GACCGTGCACCATGAGCACGAATCCTAAACCTCA
+;((.((((.....[[[[))))..))......]]]]
+
+>PKB247: Nemesia ring necrosis virus (NeRNV_PKa)
+CCCCUGUCCCGGGUAGGGAACC
+;.(((..[[[[)))..]]]]...
+
+>PKB248: Nemesia ring necrosis virus (NeRNV_PKb)
+UGUUCCUUGGAUUGCUACGUUCACCAGAUUUGUGUAAUCUGGCCGUUAGGAACUUAAAAUUGCGCG
+;.((((((.....[[[((((....(((((((.....))))))).))))))))))........]]]..
+
+>PKB249: Nemesia ring necrosis virus (NeRNV_UPD-PK1)
+UAGUGUUUCGGCUUCCACUUAAAUCGAAAGCCA
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB250: Nemesia ring necrosis virus (NeRNV_UPD-PK2)
+GGGUGGCGCACACCACAGUGCGUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB251: Nemesia ring necrosis virus (NeRNV_UPD-PK3)
+CAGCCUCUCACAGCUUCCUCGUGAGG
+;.(((..[[[[[.))).....]]]]].
+
+>PKB252:  (ribox02)
+GGGAUCGUCAGUGCAUUGAGAUGUUUCUCAGACUGAUUAUCGUGAGACAGUGAUCUCGUGGUCAGUCCUAGUUUGGGGGCUGGUCCUCACGGUGGUAUCCCCAAGGGGUA
+;((((((.(((((...((((((....))))))))))).[[[[[[[[[.....)))))).....(((((((......)))))))...]]]]]]]]].((((((...))))))
+
+>PKB253: White Bream Virus (WBV)
+UUUAAACUGGUGGGGCAGUGUCUAGGAUUGACGUUAGACACUGCUUUUUGCCCGUUUCAAACAGGUGAAUACAAACCGUCAU
+;...........((((((((((((((...[[[[[)))))))))))))).............................]]]]].
+
+>PKB254: SARS coronavirus (SARS-CoV)
+UUUAAACGGGUUUGCGGUGUAAGUGCAGCCCGUCUUACACCGUGCGGCACAGGCACUAGUACUGAUGUCGUCUACAGGGCUU
+;............(((((((((((...[[[[[[[)))))))))))((((((((.........))).)))))...]].]]]]].
+
+>PKB255: mouse hepatitis virus (MHV)
+CUCUCUAUCAGAAUGGAUGUCUUGCUGUCAUAACAGAUAGAGAAGGUUGUGGCAGA
+;.((((((((...............[[[[[[[[[[.))))))))..]]]]]]]]]].
+
+>PKB256: bovine coronavirus (BCV)
+CUCUCUAUCAGAAUGGAUGUCUUGCUGCUAUAAUAGAUAGAGAAGGUUAUAGCAGA
+;.((((((((...............[[[[[[[[[[.))))))))..]]]]]]]]]].
+
+>PKB257: Mus musculus (mouse) (Mm_Edr)
+GGGAAACUCCCCGGCCCCGCUGUAGGGGGACCUUCAGCGACAGGGCCAGAACGAAUAAGGUCCCCA
+;............((((((((((...[[[[[[[[[)))))...))))).........]]]]]]]]].
+
+>PKB258: Homo sapiens (Hs_Ma3)
+GGGAAACGGGAACUGGGCUUGGGACAAGAGCCAUCCCAAGUCCAAGGCCAAGUAGGCUCG
+;.............(((((((((((...[[[[[.)))))))))))..........]]]]].
+
+>PKB259: potato yellow vein virus (PYVV1)
+CGGUAGAAAAGAUGGUUUAAACCACGCCUUCUACCAAGUUAGUAAAUAAAUAGGCGG
+;.((((((.....((((....))))[[[[[))))))................]]]]].
+
+>PKB260: potato yellow vein virus (PYVV2)
+AGUAGAAAAGUUGGUGCUUAGACCACGCCCUCUACCGUAAUAAUAGAUAAAUAGGCG
+;.(((((.....((((......))))[[[[.)))))..................]]]]
+
+>PKB261: potato yellow vein virus (PYVV3)
+CGGUAGAAAAGAUGGUUUGAAAACCACGCCUUCUACCAAUAUAGUAAAUAAAUAGGCGG
+;.((((((.....(((((....)))))[[[[[))))))................]]]]].
+
+>PKB262: cucumber yellows virus (CuYV1)
+CGUUUGGUCGAAUGCUACUAGAGCAGCCUGACCAAACUAGUAUUAGUAAAUAAAGG
+;.((((((((...((((.....)))).[[[))))))))................]]]
+
+>PKB263: cucurbit yellow stunting disorder virus (CYSDV1)
+CGACACUCUAAAGAGUUCCGUGAGGAACCACCUUGAGUGUCUAGUUAUAAAUAAACUAGGUC
+;.(((((((......(((((....))))).[[[[.)))))))................]]]].
+
+>PKB264: cucurbit yellow stunting disorder virus (CYSDV2)
+CGACACUCUAAAGUGUUCCAAGAGGAACCACCUUGAGUGUCUAGUUAUAAAUAAACUAGGUC
+;.(((((((......(((((....))))).[[[[.)))))))................]]]].
+
+>PKB265: sweet potato chlorotic stunt virus (SPCSV1)
+CGGUUUUCCUAAAUCGUCGUGAGACGGACCUUGGAAAACCUAGUAUUUAAAUAACUAGGUC
+;.((((((((.....((((....))))[[[[[.))))))))................]]]]]
+
+>PKB266: lettuce infectious yellows virus (LIYV1)
+UGUCUUCCUAAAAUCCUUGGAAGACUGUAUAUAUAGAAUAAAGGUCG
+;.(((((((......[[[[)))))))...............]]]]...
+
+>PKB267: little cherry virus 1 (LChV-1)
+AAUGCAACUUUUAAAUAGUUUAUCUGUUAAGAUAAACCACCUAGGUUGCAUAUAUAAAAAAUAAAAGGUGCC
+;.(((((((((.......((((((((....))))))))[[[[[)))))))))..............]]]]]..
+
+>PKB268: beet yellows virus (BYV)
+CUCCUAGCGAAGUCCCGCUAGGAAGAAAAAAUAAGGGCCG
+;.(((((((...[[[[.)))))))...........]]]]..
+
+>PKB269: citrus tristeza virus (CTV)
+AGUUCUCCUUAGAGUGUGUGUUGUUUACCCAACGCACUGUCCCUAUGGGGGGCCAACAUAGGUCCA
+;.(((((((.......((((((((......))))))))....[[[[[)))))))....]]]]]....
+
+>PKB270: Pineapple mealybug wilt associated virus - 2 (PMWaV-2)
+CAAAGUCCUAUAAACCUCAAUAAUCCCUCGUUAGGAGGGACACGCGAGGACUUUGGCGUGCC
+;.((((((((..............((((((.....))))))[[[[[.)))))))).]]]]]..
+
+>PKB271: Grapevine leafroll-associated virus - 2 (GLRaV-3)
+ACGCCAAAAUCCAAUUAAAGUUUGGGACCUAGGCGGGCCUCUUACGAGGCUAACUUAUCGACAAUAAGUUAGGUC
+;.((((.....((((.......))))[[[[[[))))((((((....))))))..................]]]]]]
+
+>PKB272: strawberry chlorotic fleck associated virus (SCFaV)
+ACUGUGAUUAUAAAAGUGGAGUACUAAAGUACCCACUACCUUUAAUCACAGACAAUAAAGGUCCAU
+;.((((((((.....(((((.((((....)))))))))[[[[[[)))))))).....]]]]]]....
+
+>PKB273: influenza A virus, strain A/PR/8/34 (IAV_PK_NS)
+UUCCAGGACAUACUGCUGAGGAUGUCAAAAAUGCAGUUGGAGUCCUCA
+;.(((((...........[[[[[[.............)))))]]]]]].
+
+>PKB274: influenza B virus, strain B/Victoria/02/1987 (IBV_PK_NS)
+ACUGAUGAUCUUACAGUGGAGGAUGAAGAAGAUGGCCAUCGGAUCCUCA
+;.((((((...........[[[[[[............))))))]]]]]].
+
+>PKB275: Bacillus subtilis (Bs_glmS_P3.1)
+CCGGCUGAGUGUGCAGAUCACAGCCGUAAGAAUUUCUUCAAACCAAGGGGGUGACUCCUUGAACAAAGAGAAAUCACAUGAUCUU
+;.((((((.......[[[[[[)))))).....(((((((.....(((((((....)))))))......)))))))....]]]]]].
+
+>PKB276: Bacillus subtilis (Bs_glmS_P1.1)
+CGCCCGAACUAAGCGCCCGGAAAAAGGCUUAGUUGACGAGGAUGGAGGUUAUCGAAUUUCGCGGAUCCUCCCG
+;.(((((((((((((............)))))))).........[[[[[....(((...))))))))]]]]]..
+
+>PKB277: tobacco etch virus (TEV_PK1)
+CGAAUCUCAAGCAAUCAAGCAUUCUACUUCUAUUGCA
+;.((((((...[[[[[..)).)))).......]]]]].
+
+>PKB278: tobacco etch virus (TEV_PK2)
+AUUUAAAUCAUUUCUUUUAAAGCAAAAGC
+;.((((((...[[[..))))))....]]].
+
+>PKB279: tobacco etch virus (TEV_PK3)
+CAAUUUUCUGAAAAUUUUCAC
+;.(((((..[[[))))).]]].
+
+>PKB280: Visna-Maedi virus (VMV)
+GGGAAACAACAGGAGGGGGCCACGUGUGGUGCCGUCCGCGCCCCCUAUGUUGUAACAGAAGCACCACC
+;.............(((((((.....[[[[[[[.......)))))))..............]]]]]]].
+
+>PKB281: sugarcane yellow leaf virus (ScYLV)
+GGGAAACGAGCCAAGUGGCGCCGACCACUUAAAAACACCGGAA
+;.............(((((..[[[.))))).........]]]..
+
+>PKB282: foot-and-mouth disease virus, serotype A (FMDV-A_PKI)
+CCGUCGUUUCCGACGUAAAAGGAAGCAA
+;.((((..[[[[)))).....]]]]....
+
+>PKB283: foot-and-mouth disease virus, serotype A (FMDV-A_PKII)
+CCGCCUGUCCCGGCGUUAAAGGGAAGUAA
+;.((((..[[[[)))).....]]]].....
+
+>PKB284: foot-and-mouth disease virus, serotype A (FMDV-A_PKIII)
+ACCGCCUACCCCGGCGUUAACGGGGAACAA
+;..((((..[[[[)))).....]]]].....
+
+>PKB285: foot-and-mouth disease virus, serotype O (FMDV-O1K_PKI)
+ACCGUCGUUCCCGACGUAAAAGGGAGG
+;..((((..[[[[)))).....]]]]..
+
+>PKB286: foot-and-mouth disease virus, serotype O (FMDV-O1K_PKII)
+ACCGUCCGGCCCGACGUAAAAGGGUGGUAA
+;..((((...[[[)))).....]]]......
+
+>PKB287: foot-and-mouth disease virus, serotype O (FMDV-O1K_PKIII)
+CCGUCUUUCCCGACGUUAAAGGGAUG
+;.((((..[[[[)))).....]]]]..
+
+>PKB288: foot-and-mouth disease virus, serotype O (FMDV-O1K_PKIV)
+CCUUCGCUCGGAAGUAAAACGACAA
+;.((((..[[[)))).....]]]...
+
+>PKB289: foot-and-mouth disease virus, serotype C (FMDV-C_PKI)
+ACCGUCGUUCCCGACGUAAAAGGGAUGU
+;..((((..[[[[)))).....]]]]...
+
+>PKB290: foot-and-mouth disease virus, serotype C (FMDV-C_PKII)
+ACCGUCUCUCCCGACGUUAAAGGGAUGUAA
+;..((((..[[[[)))).....]]]].....
+
+>PKB291: foot-and-mouth disease virus, serotype C (FMDV-C_PKIII)
+CCGCCUAUCCCGGCGUUAAUGGGAGG
+;.((((..[[[[)))).....]]]]..
+
+>PKB292: foot-and-mouth disease virus, serotype C (FMDV-C_PKIV)
+CCUUCACCUGGAAGUAAAACAGCAA
+;.((((..[[[)))).....]]]...
+
+>PKB293: encephalomyocarditis virus (EMCV-R_PKB)
+ACGUGAAGGCUACGAUAGUGCCAG
+;.((((..[[[)))).....]]]..
+
+>PKB294: encephalomyocarditis virus (EMCV-R_PKC)
+AGGGCGGGUACUGCCGUAAGUGCCA
+;..(((.[[[[[[)))...]]]]]].
+
+>PKB295: Mengovirus (Mengo_PKB)
+ACGUGAAGGCUACGAUAGUGCCAG
+;.((((..[[[)))).....]]]..
+
+>PKB296: Mengovirus (Mengo_PKC)
+AGGGCGGGUCCUGCCGAAAGUGCCAA
+;..(((.[[[.[[)))...]].]]]..
+
+>PKB297: hepatitis A virus (HAV_PK1)
+AAGUCCAUGGUGAGGGGACUUGAUACCUCACCG
+;.(((((..[[[[[[[))))).....]]]]]]].
+
+>PKB298: hepatitis A virus (HAV_PK2)
+CGCCGUUUGCCUAGGCUAUAGGCUAAAUU
+;.(((....[[[[[)))..]]]]]......
+
+>PKB299: Theiler's murine encephalomyelitis virus (TMEV)
+ACGCGGGUACUGCGAUAGUGCCACC
+;.(((.[[[[[[)))..]]]]]]...
+
+>PKB300:  (antiHIV1-RT_1.1)
+UCAAGAAUUCCGUUUUCAGUCGGGAAAAACUGAACAA
+;.......(((((..[[[[[[)))))...]]]]]]...
+
+>PKB301:  (antiHIV1-RT_1.3a)
+GAAUAUCUUCCGAAGCCGAACGGGAAAACCGGCAUCU
+;.......(((((..[[[[..)))))....]]]]....
+
+>PKB302:  (antiHIV1-NC_psi-50-1)
+GCCAGUGGUUUGCAAUGCUGGUCCGGUGCGU
+;(((((((...[[[[.)))))))....]]]].
+
+>PKB303: Bombyx mori (R2_retroPK)
+AGCCCCGAUGGACGGACCGCGAGGACCGUCAAGCCUAGCAGGUACCUUCGGGUGGGGCCUUGCGAUACCUGCGGGC
+;.(((((....(((((.((....)).)))))...[[[.[[[[[[(((....))))))))........]]]]]]]]].
+
+>PKB304: B. subtilis (SBU)
+AGAGGUUCUAGCUACACCCUCUAUAAAAAACUAA
+;(((((...[[[......)))))........]]].
+
+>PDB_00005.dp
+GGGAGCUCAACUCUCCCCCCCUUUUCCGAGGGUCAUCGGAACCA
+;(((((.......)))))[[[...((((((]]]...))))))...
+
+>PDB_00747.dp
+gGCCGUGUGCCUUGCGCCGGGAAACCACGCAAGGGAUGGUGUCAAAUUCGGCGAAACCUAAGCGCCCGCCCGGGCGUAUGGCAACGCCGAGCCAAGCUUCGCAGCCAUUGCACUCCGGCUGCGAUGAAGGUGUAGAGACUAGACGGCACCCACCUAAGGCAAACGCUAUGGUGAAGGCAUAGUCCAGGGAGUGGCGaAAGCCACACAAACCAGACGGCCCAu
+;(((((({{{(((((((..(((..))).)))))))...((((((....(((((((((((...((((((....))))))..)))))))))))(((.((((((((((((..........))))))))))))))).....[[[[[...))))))((((...(((....)))..))))......]]]]].(((((((((((..))))))...))))).))))))}}}
+
+>PDB_00804.dp
+GCGGGGGUUGCCGAGCCUGGUCAAAGGCGGGGGACUCAAGAUCCCCUCCCGUAGGGGUUCCGGGGUUCGAAUCCCCGCCCCCGCACCAGCGGGGGUUGCCGAGCCUGGUCAAAGGCGGGGGACUCAAGAUCCCCUCCCGUAGGGGUUCCGGGGUUCGAAUCCCCGCCCCCGCACCA
+;((((((([[(((]]...........)))((((((.......))))))(((....)))...(((((.......))))))))))))....(((((((..(((.............)))((((((.......))))))(((....)))...(((((.......))))))))))))....
+
+>PDB_00908.dp
+gGCCGUGUGCCUUGCGCCGGGAAACCACGCAAGGGAUGGUGUCAAAUUCGGCGAAACCUAAGCGCCCGCCCGGGCGUAUGGCAACGCCGAGCCAAGCUUCGCAGCCAUUGCACUCCGGCUGCGAUGAAGGUGUAGAGACUAGACGGCACCCACCUAAGGCAAACGCUAUGGUGAAGGCAUAGUCCAGGGAGUGGCGaAAGCCACACAAACCAGACGGCCCAu
+;(((((({{{((((((((.(((..)))))))))))...((((((....(((((..((((...((((((....))))))..))))..)))))(((..((((((((................)))))))).))).....[[[[[...))))))((((...(((....)))..))))......]]]]].(((((((((((..))))))...))))).))))))}}}
+
+>PDB_01009.dp
+GCCAGGGUGGCAGAGGGGCUUUGCGGCGGACUGCAGAUCCGCUUUACCCCGGUUCGAAUCCGGGCCCUGGC
+;((((((([[(((]].......)))..((((.......))))......(((((.......))))))))))))
+
+>PDB_01010.dp
+GCCAGGGUGGCAGAGGGGCUUUGCGGCGGACUGCAGAUCCGCUUUACCCCGGUUCGAAUCCGGGCCCUGGC
+;..((((([[(((]].......)))..(((((.....)))))......(((((.......))))))))))..
+
+>PDB_01300.dp
+AAGCGCCGGACUUAAAGCCAUGGCUUUAAGUUGACGAGAGCAGGGUUUAUCGAGACAUCGGCGGGUGCCCUGCGGUCUCCUGCGACCGUUAGAGGACUGGAAAACCACAGGCGACUGUGGCAUAGAGCAGUCCGGGCAGGAa
+;...(((((((((((((((....))))))))))..(((...[[[[[[...)))......)))))...]]]]]]{{{{{.(((((}}}}}....(((((((..((((((((((..))))))))))....))))))).)))))..
+
+>PKB1: Bovine Leukemia Virus (BLV)
+AAAAAACUAAUAGAGGGGGGACUUAGCGCCCCCCAAACCGUAACCCC
+;..............[[[[[[.....(((]]]]]]....)))......
+
+>PKB2: Beet Western-Yellows Virus (BWYV)
+GGGAAACGGAGUGCGCGGCACCGUCCGCGGAACAAACGGAGAAGGCAGCU
+;.............[[[[[..((((]]]]]......))))...........
+
+>PKB3: Equine Infectious Anemic Virus (EIAV)
+AAAAAACGGGAAGCAAGGGGCUCAAGGGAGGCCCCAGAAACAAACUUUCCCGAU
+;................[[[[[[...((((]]]]]]............))))...
+
+>PKB4: Feline Immunodeficiency Virus (FIV)
+GGGAAACUGGAAGGCGGGGCGAGCUGCAGCCCCAGUGAAUCAAAUGCAGC
+;...............[[[[[..((((((]]]]]...........))))))
+
+>PKB5: turnip yellow mosaic virus (TYMV)
+CGGGUGCAACUCCCGCCCCUCUUCCGAGGGUCAUCGGAACC
+;...............(((....[[[[[)))...]]]]]...
+
+>PKB6: kennedya yellow mosaic virus (KYMV-BP)
+GGGGUGCAACUCCCCCGUCUAUCCUGGACGUCACCAGGACCA
+;...............(((...[[[[[[)))...]]]]]]...
+
+>PKB7: cacao yellow mosaic virus (CaYMV)
+GGUGGUGCAACUCCCCCGUCCUCCCGAACGUCAUCGGGACCA
+;................(((..[[[[[[)))...]]]]]]...
+
+>PKB8: physalis mottle virus (PhyMV)
+UGGGUGCAACUCCCCCCCCUUCCGUGGGUAACGGAAACCA
+;..............(((..[[[[[[)))..]]]]]]....
+
+>PKB9: desmodium yellow mottle virus (DYMV)
+GGGGUGCAACUCCCCCGUCUAUCCUGGACGUCACCAGGACCA
+;...............(((...[[[[[[)))...]]]]]]...
+
+>PKB10: ononis yellow mosaic virus (OYMV)
+UGGGUUCAACUCCCCCCCUUUUCCGAGGGUAUCGGAAACC
+;..............(((...[[[[[[)))..]]]]]]...
+
+>PKB11: clitoria yellow vein virus (CYVV)
+UGGGUGCAACCCCCCCGUCCAUCUCGAACGUCAUCGAGACCA
+;...............(((...[[[[[[)))...]]]]]]...
+
+>PKB12: wild cucumber mosaic virus (WCMV)
+CGGGUGCAACCCCCCCUCCCCCCGUAGGUUAACGGGACCA
+;..............(((...[[[[[)))...]]]]]....
+
+>PKB13: calopogonium yellow vein virus (CaYVV)
+GGGGUGCGACUCCCCCGUCUAUCCUGAACGUCAUCAGGACCA
+;...............(((...[[[[[[)))...]]]]]]...
+
+>PKB14: andean potato latent virus (APLV)
+CGGGUGCGACUCCCCCCCCUCCUGUGGGCUACAGGAACCA
+;..............(((..[[[[[[)))..]]]]]]....
+
+>PKB15: eggplant mosaic virus (EMV)
+UGGGUGCGACUCCCCCCCCUCCCGUGGGUCAACGGGAACCA
+;..............(((..[[[[[[)))...]]]]]]....
+
+>PKB16: okra mosaic virus (OMV)
+GGGGUGCAACUCCCCCGCCCAUCUCGAGCGUCAUCGAGACCA
+;...............(((...[[[[[[)))...]]]]]]...
+
+>PKB17: tobacco mosaic virus (CcTMV)
+GGGGAGCAUUACCCCCCCAAAACCCUGGGGAUACAGGGCCCA
+;...............(((....[[[[[)))...]]]]]....
+
+>PKB18: tobacco mosaic virus (TMV)
+GGGGUUCGAAUCCCCCCGUUACCCCCGGUAGGGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB19: pepper mild mottle virus (PMMV-I)
+GGGGUUCGAAUCCCCCCCGAACCGCGGGUAGCGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB20: cucumber green mottle mosaic virus (CGMMV)
+GGGGUUCGAAUCCCCCCUUUUCCCCGGGUAGGGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB21: tobacco mosaic virus (TMV-L)
+GGGAUUCGAAUUCCCCCGGAACCCCCGGUUGGGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB22: satellite tobacco mosaic virus (STMV)
+GGGGUUCGAAUCCCUCCCUAACCGCGGGUAAGCGGCCCA
+;...............(((...[[[[)))...]]]]....
+
+>PKB23: tobacco mild green mosaic virus (TMGMV)
+GAGGUUCGAAUCCUCCCGUAACCGCCGGUAGCGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB24: paprika mild mottle virus (PaMMV)
+GGGGUUCGAAUCCCCCCUUUACCCCGGGUAUGGGGCCCA
+;...............(((...[[[[)))...]]]]....
+
+>PKB25: turnip vein-clearing virus (TVCV)
+GAGGUUCGAAUCCUCCCUAACCCCGGGUAGGGGCCCA
+;...............(((..[[[[)))..]]]]....
+
+>PKB26: oilseed rape mosaic virus (ORMV)
+GAGGUUCGAAUCCUCCCUAACCCCGGGUAGGGGCCCA
+;...............(((..[[[[)))..]]]]....
+
+>PKB27: pepper mild mottle virus (PMMV-S)
+GGGGUUCGAAUCCCCCCCGAACCGCGGGUAGCGGCCCA
+;...............(((...[[[[)))..]]]]....
+
+>PKB28: odontoglossum ringspot virus (ORSV-S1)
+GGGAUUCGAAUUCCCCCUUACCUCGGGUAGAGGCCCA
+;...............(((..[[[[)))..]]]]....
+
+>PKB29: tobacco mosaic virus (TMVcg)
+GAGGUUCGAAUCCUCCCUAACCCCGGGUAGGGGCCCA
+;...............(((..[[[[)))..]]]]....
+
+>PKB30: soil-borne wheat mosaic virus (SBWMV1)
+GGGGUUCAAAUCCCCCCCGAACCGGAGGGUUAUCCGGCCCA
+;...............(((...[[[[[)))...]]]]]....
+
+>PKB31: soil-borne wheat mosaic virus (SBWMV2)
+GGGGUUCAAUUCCCCCCCCAUCCGGAGGGUUAUCCGGCCC
+;...............(((...[[[[[)))...]]]]]...
+
+>PKB32: potato mop-top virus (PMTV2)
+GGGUGCAACUCCCCCCCCCUUGGAGGGUAUCCAAGACC
+;.............(((..[[[[[[)))..]]]]]]...
+
+>PKB33: peanut clump virus (PCV1)
+GGUGCAAAUCCCCCGCUGAAACGGAGCGAUAUCCGUCCCA
+;.............(((....[[[[[)))...]]]]]....
+
+>PKB34: peanut clump virus (PCV2)
+GGUGCAAAUCCCCCGCUGAAACGGAGCGAUAUCCGUCCCA
+;.............(((....[[[[[)))...]]]]]....
+
+>PKB35: Indian peanut clump virus (IPCV1)
+GGUGCAAAUCCCCCGCCGAUACGGAGCGAUAUCCGUCCCA
+;.............(((....[[[[[)))...]]]]]....
+
+>PKB36: beet soil-borne virus (BSBV1)
+GGGGUGCAAAUCCCCCCCUUUACUUGAGGGAAAUCAAGCCC
+;...............(((....[[[[[)))...]]]]]...
+
+>PKB37: beet soil-borne virus (BSBV2)
+GGGGUGCAAAUCCCCCCCUUAACUUGAGGGAAAUCAAGCCC
+;...............(((....[[[[[)))...]]]]]...
+
+>PKB38: beet soil-borne virus (BSBV3)
+GGGGUGCAACUCCCCCCCUUAACUAGAGGGAAAUCUAGCCC
+;...............(((....[[[[[)))...]]]]]...
+
+>PKB39: beet virus Q (BVQ1)
+GGGGUGCAAAUCCCCCCCUAACUUGAGGGAAAUCAAGCCCC
+;...............(((...[[[[[)))...]]]]]....
+
+>PKB40: beet virus Q (BVQ2)
+GGGGUGCAAAUCCCCCCCUAACUUGAGGGAAAUCAAGCCC
+;...............(((...[[[[[)))...]]]]]...
+
+>PKB41: beet virus Q (BVQ3)
+GGGGUGCAAAUCCCCCCCUAACUUGAGGGAAAUCAAGCCCC
+;...............(((...[[[[[)))...]]]]]....
+
+>PKB42: potato leafroll virus (PLRV-W)
+UUUAAAUGGGCGAGCGGCACCGCCCGCCAAAACAAACGG
+;.............((((..[[[.)))).........]]]
+
+>PKB43: potato leafroll virus (PLRV-S)
+UUUAAAUGGGCAAGCGGCACCGUCCGCCAAAACAAACGG
+;.............((((..[[[[))))........]]]]
+
+>PKB44: cucurbit aphid-borne yellows virus (CABYV)
+GGGAAACGGGCAGGCGGCGGCGACCGCCGAAACAACCGC
+;............(((((..[[[.)))))........]]]
+
+>PKB45: pea enation mosaic virus (PEMV)
+GGGAAACGGAUUAUUCCGGUCGACUCCGGAGAAACAAAGUC
+;.............((((((..[[[[))))))......]]]]
+
+>PKB46: barley yellow dwarf virus (BYDV-NY-RPV)
+GGGAAACGGGAAGGCGGCGGCGUCCGCCGUAACAAACGC
+;............(((((..[[[[))))).......]]]]
+
+>PKB47: Moloney murine leukemia virus (Mo-MuLV)
+UAGGGAGGUCAGGGUCAGGAGCCCCCCCCUGAACCCAGGAUAACCCUCAAAGUCGGGGGGC
+;...........((((((((.[[[[[[[)))).))))..................]]]]]]]
+
+>PKB48: spleen necrosis virus (SNV)
+UAGGGCCGUCAGGGUUCUCCCGCCCUCCGUGAACCCAGGCUAAAAGUUAAGGUAGGGGGGC
+;...........((((((.(..[[[[[[[).))))))..................]]]]]]]
+
+>PKB49: E.coli (Ec_PK1)
+CGAGGGGCGGUUGGCCUCGUAAAAAGCCGC
+;(((((.[[[[[[..))))).....]]]]]]
+
+>PKB50: E.coli (Ec_PK2)
+CCUCUCUCCCUAGCCUCCGCUCUUAGGACGGGGAUCAAGAGAGGUCAAACCCAAAAGAG
+;(((((((((((..(((...[[[[[)))..))))....)))))))..........]]]]]
+
+>PKB51: E.coli (Ec_PK3)
+GCGUGGAAGCCCUGCCUGGGGUUGAAGCGUUAAAACUUAAUCAGGC
+;((((...(((((.[[[[[)))))...))))...........]]]]]
+
+>PKB52: E.coli (Ec_PK4)
+GUUUGUUAGUGGCGUGUCCGUCCGCAGCUGGCAAGCGAAUGUAAAGACUGAC
+;((((((((((.(((.[[[.[[[))).)))))))))).........]]].]]]
+
+>PKB53: tobacco mosaic virus (TMV_UPD-PK1)
+ACGGAUUGUGUCCGUAAUCACA
+;..(((.[[[[))).....]]]]
+
+>PKB54: tobacco mosaic virus (TMV_UPD-PK2)
+CGUGGUGCGUACGAUAACGCAU
+;(((.[[[[[[)))...]]]]]]
+
+>PKB55: tobacco mosaic virus (TMV_UPD-PK3)
+AGUGUUUUUCCCUCCACUUAAAUCGAAGGG
+;((((.....[[[[[))))......].]]]]
+
+>PKB56: odontoglossum ringspot virus (ORSV-S1_UPD3-PK1)
+UAACGUUGAUAGUGUUGAACUAUC
+;((((((.[[[[))))))...]]]]
+
+>PKB57: tobacco mosaic virus (TMV_PKbulge)
+UGUGUCUUGGAUCGCGCGGGUCAAAUGUAUAUGGUUCAUAUACAUCCGCAGGCACGUAAUAAAGCGA
+;(((((((....[[[[((((.....((((((((.....))))))))))))))))))).......]]]]
+
+>PKB58: odontoglossum ringspot virus (ORSV-S1_UPD1-PK3)
+AGUGUUUGUCCCUCCACUUAAAUCGAAGGG
+;((((.....[[[[[))))......].]]]]
+
+>PKB59: odontoglossum ringspot virus (ORSV-S1_UPD1-PK2)
+CGUGGUGCAUACGAUAAUGCAU
+;(((.[[[[[[)))...]]]]]]
+
+>PKB60: odontoglossum ringspot virus (ORSV-S1_UPD2-PK3)
+AGUGUUUAUCCCUCCACUUGAAUCGAAGGG
+;((((.....[[[[[))))......].]]]]
+
+>PKB61: odontoglossum ringspot virus (ORSV-S1_UPD2-PK2)
+CGUUGUGUACACGAUAGUACAU
+;(((.[[[[[[)))...]]]]]]
+
+>PKB62: odontoglossum ringspot virus (ORSV-S1_UPD3-PK3)
+AGUGGUUAUCCCUCCACUUAAAUCGAAGGG
+;((((.....[[[[[))))......].]]]]
+
+>PKB63: odontoglossum ringspot virus (ORSV-S1_UPD3-PK2)
+CGUGGUGCAUACGAUAAUGCAU
+;(((.[[[[[[)))...]]]]]]
+
+>PKB64: E.coli (Ec_16S-PKcentre)
+AAAUUGAAGAGUUUGAUCAUGGCUCA~AUGAAU
+;........(((((...[[[.))))).~.]]]..
+
+>PKB65: E.coli (Ec_16S-PK505/526)
+GCACCGGCUAACUCCGUGCCAGCAGCCGCGGUAAUACGGAGGGUGC
+;((((((((...[[[[[[[......))).......]]]]]]])))))
+
+>PKB66:  (TPK-70.28)
+CAAGAACCGGACGGGUGAGAACCGAGACAAACACCCACCA
+;.......(((..[[[[[....))).......]]]]]....
+
+>PKB67: Legionella pneumophila (Lp_PK1)
+CGAGAAGGAGAUCUCUCGUAAAUAAGACUC
+;(((((..[[[.[[))))).......]]]]]
+
+>PKB68: Legionella pneumophila (Lp_PK2)
+GUUAAACCAUCACUGUGUACUGGCCAAUAAACCCAGUAUCCCGUUCGACCGAGCCCGCUUAUCGGUAU
+;(((.(((....((((.[[[[[[[..........)))).....))).)))............]]]]]]]
+
+>PKB69: Legionella pneumophila (Lp_PK3)
+CGGUCAUAAGAGAUAAGCUAGCGUCCUAAUCUAUCCCGGGUUAUGGCGCGAAACUCAGGGA
+;(((((((((........................[[[[[[[))))))).))...]]].]]]]
+
+>PKB70: Legionella pneumophila (Lp_PK4)
+GCUGUGUAUCAUCCUGCCCGUCGGAGGAGCCACAGUUAAAUUCAAAAGACAAGGC
+;((((((..((.(((.[[[.[[[))).))..))))))...........]]]..]]]
+
+>PKB72: E.coli (Ec_S15)
+GGGAUCGCUGAAUUAGAGAUCGGCGUCCUUUCAUUCUAUAUACUUUGGAGUUUUAAAAUGUCUCUAA
+;((((.((((((.[[[[[[[))))))))))...............................]]]]]]]
+
+>PKB73: T2 bacteriophage (T2_gene32)
+CUGACCAGCUAUGAGGUCAUACAUCGUCAUAGC
+;.(((((.[[[[[[[))))).......]]]]]]]
+
+>PKB74: bacteriophage T4 (T4_gene32)
+UGCCAGCUAUGAGGUAAAGUGUCAUAGC
+;((((.[[[[[[[)))).....]]]]]]]
+
+>PKB76: hepatitis delta virus ("Italy" variant) (HDV-It_ag)
+GGGUCGGCAUGGCAUCUCCACCUCCUCGCGGUCCGACCUGGGCAUCCGAAGGAGGACGCACGUCCACUCGGAUGGCUAAGGGAGAGCCA
+;(((((((........[[[[(((.......))))))))))...(((((((....((((....))))..)))))))......]]]].....
+
+>PKB77: Tetrahymena thermophila (Tt-LSU_P3/P7)
+AGACCGUCAAA~CACAGACUAAAUGUCGGUCGGGGAAGAUGUAUUCUUCUCAUAAGAUAUAGUCGG
+;.(((((.((..~..[.[[[[[..)).))))).(((((((.....)))))))........]]]]]].
+
+>PKB78: AKV murine leukemia virus (AKV-MuLV)
+UAGGGGGGUCAGGGUCAGGAGCCCCCCCCUGAACCCAGGAUAACCCUCACUGUCGGGGGGCA
+;...........((((((((.[[[[[[[)))).))))..................]]]]]]].
+
+>PKB79: gibbon ape leukemia virus (GaLV)
+UAGGGGAGUCAGGGUUCGGACCCCCUCCCCGAACCUAGGGUAACACUGACUGUGGAGGGGA
+;...........((((((((..[[[[[[[)))))))).................]]]]]]].
+
+>PKB80: mouse mammary tumor virus (MMTV_gag/pro)
+AAAAAACUUGUAAAGGGGCAGUCCCCUAGCCCCGCUCAAAAGGGGGAUG
+;..............(((((.[[[[[[[.)))))........]]]]]]].
+
+>PKB81:  (oligo_PK5)
+GCGAUUUCUGACCGCUUUUUUGUCAG
+;(((....[[[[[)))......]]]]]
+
+>PKB82: tobacco mosaic virus (TMV-L_UPD-PK1)
+AUAAAGUUUGUGUUUCUAAAACACAC
+;..(((...[[[[)))......]]]].
+
+>PKB83: tobacco mosaic virus (TMV-L_UPD-PK2)
+ACGUGGUACGUACGAUAACGUACA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB84: tobacco mosaic virus (TMV-L_UPD-PK3)
+CAGUGUUUUUCCCUCCACUUAAAUCGAAGGGU
+;.((((.....[[[[[))))......].]]]].
+
+>PKB85: tobacco mosaic virus (CcTMV_UPD-PK1)
+AAGUUUGGUCGUACUUAACGACCU
+;.(((..[[[[[[)))..]]]]]].
+
+>PKB86: tobacco mosaic virus (CcTMV_UPD-PK2)
+UAGGGGCUUACCGAAAUAAGCC
+;.(((.[[[[[)))...]]]]].
+
+>PKB87: tobacco mosaic virus (CcTMV_UPD-PK3)
+CCGUGUUUAAGAGUCCACGCAAAUCGAACUCU
+;.((((.....[[[[[))))......].]]]].
+
+>PKB88: Feline leukemia virus (FeLV)
+UAGGAGAGUCAGGGCCAGGACCCCCCCCCCUGAGCCCAGGAUAACCUUAAGAAUAGGGGGGC
+;...........((((((((...[[[[[[)))).))))..................]]]]]].
+
+>PKB89: cucumber green mottle mosaic virus (CGMMV_UPD-PK1)
+ACCUCGAAAGCUUAGUUUCGAGGGUCUUCUGAU
+;.((((((((..[[[[)))))))).....]]]].
+
+>PKB90: cucumber green mottle mosaic virus (CGMMV_UPD-PK2)
+UGGUGGUGCACACCAAAGUGCAUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB91: cucumber green mottle mosaic virus (CGMMV_UPD-PK3)
+UAGUGCUUUCCCGUUCACUUAAAUCGAACGGUU
+;.((((.....[[[[[))))......].]]]]..
+
+>PKB92: tobacco mild green mosaic virus (TMGMV_UPD-PK1)
+AAAGUCGCUGAAGACUUAAAAUUCAGG
+;.(((((.[[[[[)))))....]]]]].
+
+>PKB93: tobacco mild green mosaic virus (TMGMV_UPD-PK2)
+GGGUGGCUGAUACCAAAAUCAGCA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB94: tobacco mild green mosaic virus (TMGMV_UPD-PK3)
+CAGUGGUUGUUCGUCCACUUAAAUAUAACGAUU
+;.((((.....[[[[.))))........]]]]..
+
+>PKB95: pepper mild mottle virus (PMMV-S_UPD-PK1)
+AGUUGGACGAACAUUAAACGUCC
+;.(((.[[[[)))......]]]].
+
+>PKB96: pepper mild mottle virus (PMMV-S_UPD-PK2)
+CCGUGGCGAGUACGAUAACUCGUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB97: pepper mild mottle virus (PMMV-S_UPD-PK3)
+UAGUGUUUUUCCCUCCACUUAAAUCGAAGGGU
+;.((((.....[[[[[))))......].]]]].
+
+>PKB98: baboon endogenous virus (BaEV)
+UAGGGGUGUCAGGGCUCUGGAGCCCCCCCCGAGCCCCGGCUAACUCUAUCUGUAGGGGGGCA
+;...........((((((.((.[[[[[[[))))))))..................]]]]]]].
+
+>PKB99: Cas-Br-E murine leukemia virus (Cas-Br-E-MuLV)
+UAGGGGGGUCGGGGUCAGGAGCCCCCCCCUGAACCCAGGAUAACCCUCAAAGUCGGGGGGCAA
+;...........((((((((.[[[[[[[)))).))))..................]]]]]]]..
+
+>PKB100: satellite tobacco mosaic virus (STMV_UPD2-PK1)
+AAGCCUUUUGGAUCGAAGGUUAAACGAUCCG
+;.((((((..[[[[[[))))))...]]]]]].
+
+>PKB101: satellite tobacco mosaic virus (STMV_UPD2-PK2)
+CGCUCCUCGCUUGAGCUUGAGGCGGC
+;.((((.[[[[[[))))...]]]]]].
+
+>PKB102: satellite tobacco mosaic virus (STMV_UPD2-PK3)
+GCGUAUCUCUUAUGUCAACAGAGA
+;.((((.[[[[)))).....]]]].
+
+>PKB103: satellite tobacco mosaic virus (STMV_UPD1-PK1)
+CGCCGACGUGGCUGUAUAAUACGUC
+;.(((.[[[[)))........]]]].
+
+>PKB104: satellite tobacco mosaic virus (STMV_UPD1-PK2)
+UCGUUGACAAGUACGAAAUCUUGUUA
+;.(((.[[[[[[.)))....]]]]]].
+
+>PKB105: satellite tobacco mosaic virus (STMV_UPD1-PK3)
+UAGUGUUUUUCCCUCCACUUAAAUCGAAGGGU
+;.((((.....[[[[[))))......].]]]].
+
+>PKB106: infectious bronchitis virus (IBV)
+UUUAAACGGGUACGGGGUAGCAGUGAGGCUCGGCUGAUACCCCUUG~AAGCGAGCCUU
+;.............(((((((((((.[[[[[[[)))))))))))...~...]]]]]]].
+
+>PKB107: simian retrovirus-1 (SRV1_gag/pro)
+GGGAAACGGACUGAGGGGCCAGCCCCAGGCCCCGAAACAAGCUUAUGGGGCG
+;..............((((((.[[[[[[))))))............]]]]]].
+
+>PKB108: Tetrahymena thermophila (T.the_telo)
+UAUAACCUUCACCAAUUAGGUUCAAAUAAGUGGUA
+;...((((...[[[[[[[[))))....]]]]]]]].
+
+>PKB109: beet virus Q (BVQ1_UPD-PKc)
+UUGUGGUGCAUACAAUAAUGCAUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB110: beet virus Q (BVQ1_UPD-PKb)
+UAGUGUUUGCCGUUCCACUUAAAUCGAAACGGA
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB111: beet virus Q (BVQ2_UPD-PKc)
+ACGUGGUGCAUACGUUAAUGCAUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB112: beet virus Q (BVQ2_UPD-PKb)
+UAGUGUUUUUCGUUCCACUUAAAUCGAAACGAU
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB113: beet virus Q (BVQ3_UPD-PKc)
+UCGUGGUGCAUACGAAAAUGCAUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB114: beet virus Q (BVQ3_UPD-PKb)
+UAGUGUUUACCGUUCCACUUAAAUCGAAACGGA
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB115: beet soil-borne virus (BSBV1_UPD-PKc)
+CGGUAGCGCGAACCUUAUCGCGCA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB116: beet soil-borne virus (BSBV1_UPD-PKb)
+CAGUGUUUUGAAGUCCACUUAAAUAGAACUUCU
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB117: beet soil-borne virus (BSBV2_UPD-PKc)
+ACGUGGGUUAUACGAUAAUAACCG
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB118: beet soil-borne virus (BSBV2_UPD-PKb)
+CGGUGCUUUUAUGUUCACCGAAAUCGAACAUAC
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB119: beet soil-borne virus (BSBV3_UPD-PKc)
+ACGUGGCGAAUACGAUAAUUCGUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB120: beet soil-borne virus (BSBV3_UPD-PKb)
+UAGUGUUCGUGGAUAACACUUUAAUUAAGAUUCAUA
+;.((((((.[[[[[[)))))).........]]]]]].
+
+>PKB121: satellite tobacco necrosis virus 1 (STNV1_PK1)
+AAGCAGUCCCAGCUCUGCAUUGGGAA
+;.(((..[[[[[)))......]]]]].
+
+>PKB122: satellite tobacco necrosis virus 1 (STNV1_PK2)
+UACUACUUGCUCAUUUGUAGUCUAAAUGAGA
+;.(((((...[[[[[[[)))))..]]]]]]].
+
+>PKB123: satellite tobacco necrosis virus 1 (STNV1_PK3)
+GACGUUGGCCUCGACGUGUCGAGGUG
+;.((((..[[[[[[))))..]]]]]].
+
+>PKB124: satellite tobacco necrosis virus 2 (STNV2_PK1)
+CAGUAGUCCUGAACUAGUAAAUCAGGACC
+;.(((.[[[[[[[)))......]]]]]]].
+
+>PKB125: satellite tobacco necrosis virus 2 (STNV2_PK2)
+CCAUUCCCACUAGUGUAUUAGUGGA
+;.(((..[[[[[[)))...]]]]]].
+
+>PKB126: satellite tobacco necrosis virus 2 (STNV2_PK3)
+GAACGAGGCCCCGCGUGAAUUGGGGUG
+;..(((..[[[[[[)))....]]]]]].
+
+>PKB127: equine arteritis virus (EAV)
+GUUAAACUGAGAGCGCCCCACAUCUUUCCCGGCGAUGUGGGGCGU~GCCCGGGACUU
+;.............(((((((((((..[[[[[[.))))))))))).~..]]]]]]...
+
+>PKB128: Berne virus (BEV)
+UUUAAACUGUUGAGAGGUGCCUGGAGCGCCUGCAGGCAUCUCUGUU~UAUAAUGCAGGCA
+;............(((((((((((....[[[[[)))))))))))...~.......]]]]].
+
+>PKB129: E.coli (Ec_16S-PK570/866)
+GCGUAAA~UGUCGACUUGGAGGUUGUGCCCUUGAGGCGUGGCUUCCGGAGCUAACGCGUUAAGUCGACC
+;..((...~.[[[[[[..((((((((((((.....))))))))))))...[[..))]].....]]]]]].
+
+>PKB130: tobacco rattle virus (TRV-PSG)
+AGGGGUAAAACCCCUCGCCUACGUAAGCGUUAUUACGCCC
+;...............(((...[[[[[)))...]]]]]...
+
+>PKB131:  (NGF-H1)
+CGCUCAACUCAUGGAGCGCAAGACGAAUAGCUACAUAUUCGACAUGAG
+;(((((..[[[[[[))))).....((((((......)))))).]]]]]]
+
+>PKB132:  (NGF-L2)
+CGCUCAACCUCAGAGCGCAAGAGUCGAACGAAUACAGUUCGACAUGAGG
+;(((((..[[[[[))))).....(((((((.......))))))).]]]]]
+
+>PKB133:  (NGF-L6)
+CGCUCAACUCAUGGAGCGCACGACGGAUCACCAUCGAUUCGACAUGAG
+;(((((..[[[[[[))))).....((((((......)))))).]]]]]]
+
+>PKB134: brome mosaic virus (BMV3)
+UCUAGGUGCCUUUGAGAGUUACUCUUUGCUCUCUUCGGAAGAACCCUUAGGGGUUCGUGCAUGGGCUUGCAUAGCAAGUCUUAGAAUGCGGGUACCGUACAGUGUUGAAAAACACUGUAAAUCUCUAAAAGAGACCA
+;....(((((((..((((((..[[[[[[)))))).......((((((....))))))..(((((((((((.....)))))))....))))))))))).((((((((......))))))))........]]]]]]....
+
+>PKB135: broad bean mottle virus (BBMV3)
+AAGAUAUCUGUACCGUCUUCUCCCCGACGGUUUCAAUCCAUAGCUUCACGUUGUGUAGCGUAGGUGGAAGGUAUCGUGUGGUGUAUAAACACCACAUAGUCUCUUAGGGGAGACCA
+;..(((((((..((((((..[[[[[[)))))).....(((((.((((((.....))))))....))))))))))))(((((((((....))))))))).........]]]]]]....
+
+>PKB136: cowpea chlorotic mottle virus (CCMV3)
+AGCUGCCCUUGGGUUUUACUCCUUGAACCCUUCGGAAGAACUCUUUGGAGUUCGUACCAGUACCUCACAUAGUGAGGUAAUAAGACUGGUGGGCAGCGCCUAGUCGAAAGACUAGGUGAUCUCUAAGGAGACCA
+;.(((((((..((((((..[[[[[[)))))).......((((((....))))))..((((((((((((.....)))))))......))))))))))))((((((((....)))))))).......]]]]]]....
+
+>PKB137: cucumber mosaic virus (CMV3)
+AGGUACCCUUGAAAUCACCUCCUAGAUUUCUUCGGAAGGGCUUCGUGAGAAGCUCGUGCACGGUAAUACACUGAUAUUACCAAGAGUGCGGGUAUCGCCUGUGGUUUUCCACAGGUUCUCCAUAAGGAGACCA
+;.(((((((..((((((..[[[[[.)))))).......(((((((....)))))))..(((((((((((......)))))))....)))))))))))((((((((....))))))))........]]]]]....
+
+>PKB138: barley stripe mosaic virus (BSMVbeta)
+AUUGGUAUGUAAGCUACAACUUCCGGUAGCUGCGUCACACUUUAAGAGUGUGCAUACUGAGCCGAAGCUCAGCUUCGGUCCCCCAAGGGAAGACCA
+;.((((((((..((((((..[[[[[.))))))....((((((.....)))))))))))))).((((((.....)))))).........]]]]]....
+
+>PKB139: tobacco mosaic virus (TMV-L_PKbulge)
+UAGUGUCUUGGAGCGCGCGGAGUAAACAUAUAUGGUUCAUAUAUGUCCGUAGGCACGUAAAAAAAGCGAG
+;..((((((....[[[[((((.....((((((((.....)))))))))))))))))).........]]]].
+
+>PKB140: cucumber green mottle mosaic virus (CGMMV_PKbulge)
+UUUGCUCAUUGGUUUGCGGAAACCUCUCACGUGUGACGUUGAAGUUUCUAUGGGCAGUAAUUCUGCAAG
+;.((((((((....[[[[((((((.((..(((.....))).)).)))))))))))))).......]]]].
+
+>PKB141: tobacco mild green mosaic virus (TMGMV_PKbulge)
+UUGUCAUAUCUGGAUCCAACAGUUAAACCAUGUGAUGGUGUAUACUGUGGUAUGGCGUAAAACAUCGGAG
+;.(((((((((....[[[.(((((...((((.....))))....)))))))))))))).........]]].
+
+>PKB142: satellite tobacco mosaic virus (STMV_PKbulge)
+UUUUGUUUUGGUCUUCCCGAACGCAUACGUUAGUGUGACUACCGUUGUUCGAAACAAGUAAAACAGGAAGG
+;.(((((((....[[[[[((((((...(((.(((.....))).)))))))))))))))).......]]]]].
+
+>PKB143: pepper mild mottle virus (PMMV-S_PKbulge)
+UUGUCGUUGGGAUGGAACGCAAUUAAAUACAUGUGUGACGUGUAUUUGCGAACGACGUAAUUAUUUUUCAG
+;.(((((((....[[[[[(((....(((((((((.....)))))))))))))))))))........]]]]].
+
+>PKB144: odontoglossum ringspot virus (ORSV-S1_PKbulge1)
+UUGUGUAUAUGGAUCAUGCGGAUAAAGUUAUACUGGUGCAGUAUAACCCGUUAUACACAUAAAAUUAUGAG
+;.((((((((....[[[[((((.....((((((((.....)))))))))))))))))))).......]]]].
+
+>PKB145: odontoglossum ringspot virus (ORSV-S1_PKbulge2)
+UUGUGUCAGACGCGUGUAAGGAGUGGUCAACCUUACGACACAUUUAAAUAAUGCGUCC
+;.(((((..[[[[[[(((((((.........)))))))))))).........]]]]]].
+
+>PKB146: odontoglossum ringspot virus (ORSV-S1_PKbulge3)
+UUUCACUGCGGAUAUGUAGGUUUCCUCGGUGAAUAUAAAACUUAUAUCCC
+;.(((((...[[[[[((.(((...))))))))))...........]]]]].
+
+>PKB147: Saccharomyces cerevisiae (Sc_18S-PKE21-7/8)
+AUAAUAGAAUAGGACGUUUGGUUCUAUUUUGUUGGUUUCUAGGACCAUCGU
+;.((((((((((...[[..[[[[[[)))))))))).......]]]]]].]].
+
+>PKB148: Escherichia coli (Ec_23S-PKG12)
+CACGAAGGUUGGCUAAUCCUGGUCGGACAUCAGGAGGUUAGUGCAAUGGCAUAAGCCAGCUUG~GGUCAUAGU
+;.((..((((((((((.((((((.......))))))...)).....[[[......)))))))).~.))]]]...
+
+>PKB149: Escherichia coli (Ec_RNaseP-P4)
+AGACAGUCGCCGCUUCGUCGUCGUCCUCUUCGGGGGAGACGGGCGGAGGGGAGGAAAGUCCGGGC~UGACUGUCCACGACAGAACCCGGCUUA
+;.(((((((.((.((((((((((.(((((....))))))))).)))))).))....[[[.[[[[[.~.)))))))..........]]]]]]]].
+
+>PKB150: Escherichia coli (Ec_RNaseP-P6)
+GCUCCAUAGGGCAGGGUGC~UAAACUCCACCCGGAGC~AGGUACGGCCCGUACUG
+;.((((...[[[[.(((((.~.......))))))))).~.(((((.]]]]))))).
+
+>PKB151: barley stripe mosaic virus (BSMVbeta_UPD-PK1)
+AAAUGUUUGAUCAGAUCAUUCAAAUCUGAUGG
+;.((((....[[[[[[[))))...]]]]]]]..
+
+>PKB152: barley stripe mosaic virus (BSMVbeta_UPD-PK2)
+UGGUGCCCAUCAACCAUAUGAUGGGA
+;.(((.[[[[[[[)))...]]]]]]].
+
+>PKB153: barley stripe mosaic virus (BSMVbeta_UPD-PK3)
+GAGUGUUUGCAAGUCCACUAUAAUCGAACUUGA
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB154: brome mosaic virus (BMV3_UPD-PK1)
+GAGCCCCUGACUGGGUUAAAGUCACA
+;.(((((.[[[[[)))))..]]]]]..
+
+>PKB155: brome mosaic virus (BMV3_UPD-PK2)
+CCCUUGUCUCAGGUAGAGACC
+;.(((.[[[[[)))..]]]]].
+
+>PKB156: brome mosaic virus (BMV3_UPD-PK3)
+ACUUUGGCUAAGGUUAAAAGCUU
+;.(((.[[[[)))......]]]].
+
+>PKB157: brome mosaic virus (BMV3_UPD-PK4)
+UUGUUGAAUCAGUACAAUAACUGAUA
+;.(((...[[[[[[)))...]]]]]].
+
+>PKB158: tobacco rattle virus, strain PSG (TRV-PSG2_PK1)
+CUUUAAGGGACCUUGUGAAAUUCAAGGG
+;.((((.....[[[[[))))...]]]]].
+
+>PKB159: tobacco rattle virus, strain PSG (TRV-PSG2_PK2)
+GGGCGGGUGUCGCCAGAAAUCACCG
+;.(((.[[[[[.)))....].]]]].
+
+>PKB160: tobacco rattle virus, strain PSG (TRV-PSG2_PK3)
+CGAUACUACUAGUUGUAUCAAAACAAAACUAA
+;.(((((...[[[[[))))).......]]]]].
+
+>PKB161: tobacco rattle virus, strain PSG (TRV-PSG2_PK4)
+AGGUGGAUGUUACCAUAAACAUUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB162: tobacco rattle virus, strain PSG (TRV-PSG2_PK5)
+UAAUGUCGCAGGUGGCAUUUUAAAAUAAGACCUGA
+;.((((((.[[[[[))))))..........]]]]].
+
+>PKB163: Homo sapiens (Hs_SRP-pkn)
+GCCGGGCGCGGUGGCGCGUGCCUGUAGUCCCAGCUACUCGGGAGGCU
+;(((.((((((.[[[[.)))))).....((((.]]]]...))))))).
+
+>PKB164: poa semilatent virus (PSLVbeta)
+AUUGGUAUGUAAGCUACUUCUUCCAGUAGCUGCGUCAUAACAUCAAGGUUAUGCAUACUGAGCCGAAGCUCAGCUUCGGUCCUCCAAGGAAGACCA
+;.((((((((..((((((..[[[[[.))))))....((((((......)))))))))))))).((((((.....))))))........]]]]]....
+
+>PKB165: poa semilatent virus (PSLVbeta_UPD-PK1)
+AUUGCCACUGUGGAAAUCAGUGA
+;.(((.[[[[[)))....]]]]].
+
+>PKB166: poa semilatent virus (PSLVbeta_UPD-PK2)
+CGGUUUUAUCUACCAUAAGAUAAA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB167: poa semilatent virus (PSLVbeta_UPD-PK3)
+AAGUGUUUUCAUGUCCACUUAAAUCGAACAUGAAC
+;.((((..[[[[[[[[))))......].]]]]]]].
+
+>PKB168: lychnis ringspot virus (LRSVbeta)
+AUUGGUGAUUAUUUCCGCUUACUCCUGUGCGGAUGCAACAAUGUUUUGACAUUGAUCACUGAGUUUCAGACUGACUAACAGUCUGGGAUCCCCCAAGGGAGACCA
+;.((((((((....(((((...[[[[[..))))).....((((((....)))))))))))))).((((((((((.....))))))))))........]]]]]....
+
+>PKB169: Coxsackie B virus (CoxB3)
+ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAAAAAA
+;.((((((((((((.[[[[[[.........)))))))))))).....((.(((((.]]]]]]))))).))....
+
+>PKB170: plasmid ColIb-P9 (ColIb-P9_repZ)
+AAGGAAAACCCCCACUAUCUUUCUUACGAACUUGGCGGAACGACGAAAGAUAGUGGGGGCCUC~AUCGCUCCGCCAU
+;.(((....(((((((((((((((.........[[[[[[[.[[[.)))))))))))))))))).~.]]].]]]]]]].
+
+>PKB171: human coronavirus 229E (HCV_229E)
+UUUAAACGAGUCCGGGGCUCUAGUGCCGCUCGACUAGAGCCCUGUAA~CAGUUAUGGACCACGAGCAGUCCAUGUA
+;............((((((((((((...[[[[[))))))))))))...~....(((((((..]]]]].)))))))..
+
+>PKB172: bamboo mosaic virus (BaMV)
+CUUUUGGUUUCUACAGUUUUUUCCAAAAAAAAAAAAAAA
+;.((((((.........[[[[[[))))))...]]]]]]..
+
+>PKB173: Satellite cereal yellow dwarf virus-RPV RNA (satRPV)
+ACAGAGCGCGUACUGUCUGACGACGUAUCCGCGCGGACUAGAAGGCUGGUGCCUCGUCCAACAAAUAGAUACA
+;((((.[[[[[..))))........(((((]]]]]((((....((((....)))).))))........))))).
+
+>PKB174: Rous sarcoma virus (RSV)
+AAAUUUAUAGGGAGGGCCACUGUUCUCACUGUUGCGCUACAUCUGGCUAUUCCGCUCAAAUGGAAGCCAGACCACACGCCUGUGUGGAUUGACCAGUGGCCCCUCCCUGAAGGUAAACUUGUAGCGCU
+;........((((((((((((((...........[[[[[[[[((((((..(((((......)))))))))))((((((....))))))......))))))))).)))))...........]]]]]]]].
+
+>PKB175:  (biotin-PK)
+CACCGACCAUAGGCUCGGGUUGCCAGAGGUUCCACACUUUCAUCGAAAAGCCUAUGC
+;.(((((.[[[[[[[)))))..............................]]]]]]].
+
+>PKB176:  (biotin-PK-AN69.1)
+GGACCGUCAGAGGACACGGUUAAAAAGUCCUCU
+;..(((((..[[[[[[)))))......]]]]]].
+
+>PKB177: Rattus rattus (black rat) (Rr_ODCanti)
+UGCUCCUGAUGUCCCUCACCCACCCCUGAAGAUCCCAGGUGGGCGAGGGAACAGUCAGCGGGAUCACAGU
+;............(((((.((((((......[[[[[[.)))))).)))))..........]]]]]].....
+
+>PKB178: Neurospora intermedia (Ni_VS)
+AAGGGCGUCGUCGCCCCGAG~UCGUAGCAGUUGACUACUGUUAUGU
+;..((((...[[[))))....~.(((((((((.]]].))))))))).
+
+>PKB179: plasmid pMU407.1 (IncL/M) (pMU407_repBA)
+AACCCCCUGAUCCUAUUUCAGAACUUUGGCCGGCUCGGAAUAGAAUCAGGGGGUG~CCCGGCCAAUAUG
+;.((((((((((.(((((((.((...[[[[[[[[.))))))))).)))))))))).~.]]]]]]]]....
+
+>PKB180: plasmid pMU720 (IncB) (pMU720_repBA)
+ACCCCCACUAUUUUUCCUCGAACUUGGCGGAACGCAGAAAAAUAAUGGGGGCC~GCUCCGCCAUA
+;.((((((.((((((((..((....[[[[[[[.))..)))))))).))))))..~..]]]]]]]..
+
+>PKB181: hepatitis C virus (HCV_IRES)
+CCUCCCGGGAGA~ACUGCCUGAUAGGGUGCUUGCGAGUGCCCCGGGAGGUCUCGUAG
+;(((((((((((.~.))(((......)))((.[[[[[[.))))))))))).]]]]]].
+
+>PKB182: soil-borne rye mosaic virus (SBRMV1-PKa)
+GGGGUUCAAAUCCCCCCCCGAACCGGAGGGUUAUCCGGCCCA
+;...............(((....[[[[[)))...]]]]]....
+
+>PKB183: soil-borne rye mosaic virus (SBRMV1-UPD-PKb)
+ACGUCGUGCAGUACGGUAAACUGCACA
+;.(((.[[[[[[[)))....]]]]]]].
+
+>PKB184: soil-borne rye mosaic virus (SBRMV1_UPD-PKc)
+UUCUGUUUUUCGAACAGAUGUAAAUCGAAGA
+;.(((((.[[[[[[)))))......]]]]]].
+
+>PKB185: soil-borne rye mosaic virus (SBRMV1_UPD-PKd)
+ACGUGGCCAUCACGAUAGAUGGUU
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB186: soil-borne rye mosaic virus (SBRMV1_UPD-PKe)
+AAGCCUAUUUGUACGGGUUGAGUACAAAC
+;.(((((.[[[[[..)))))....]]]]].
+
+>PKB187: soil-borne rye mosaic virus (SBRMV1_UPD-PKf)
+GCCGCUGGGAUUGCGGAUUAUAAAUCG
+;.((((...[[[[))))......]]]].
+
+>PKB188: soil-borne rye mosaic virus (SBRMV1_UPD-PKg)
+UCGUUGCCGUCACGAUAGACGGA
+;.(((..[[[[[)))...]]]]].
+
+>PKB189: soil-borne rye mosaic virus (SBRMV1_UPD-PKh)
+AGUCUAACAUGUCGGGCUGAGACAUGUC
+;.((((.[[[[[[[))))...]]]]]]].
+
+>PKB190: Plautia stali intestine virus (PSIV_IRES)
+CUCGCUCAAACAUUAAGUGGUGUUGUGCGAAAAGAAUCUCACUUCAA
+;.((((...(((((.[[[[[)))))..)))).........]]]]]...
+
+>PKB191: alfalfa mosaic virus (AMV3)
+AGGUAUGAAGUCCUAUUCGCUCCUGAUAGGAUCGACUUCAUAUUGCUUAUAUAUGUGCUAACGCACAUAUAUAAAUGCUCAUGCAAAACUGCAUGAAUGCCCCUAAGGGAUGC
+;.((((((((((((((((...[[[[))))))....))))))))))..((((((((((((....))))))))))))....(((((((....))))))).........]]]]....
+
+>PKB192: bacteriophage Q-beta (Qbeta_PKldX)
+AAUAAAGCAGU~UGAGAGGGGGAUCUGCUUUGCCCUCUCUCCUCCCA
+;..((((((((.~.[[[[[[[[[..))))))))]]]]]]]]]......
+
+>PKB193: Escherichia coli (Ec_rpmI)
+ACAGAUGAAGGCGACUAUCAGGUAAAACUCCGCAGCCUGAUUCGCUUUCUCGA~AUGCGAAGUGGAAGUUAUUAAAAUGCCAA
+;.(.((.((((((((..(((((((....[[.[[[[)))))))))))))))))).~.]]]].]](((..(((.....))).))).
+
+>PKB194: soil-borne wheat mosaic virus (SBWMV1_UPD-PKb)
+UACGCUGUACAGUGCGUUAAACUGUACA
+;..(((.[[[[[[[)))....]]]]]]].
+
+>PKB195: soil-borne wheat mosaic virus (SBWMV1_UPD-PKc)
+CUCUGUUGAUCAAACAGAAAUAAAUUGAUUA
+;.(((((.[[[[[[)))))......]]]]]].
+
+>PKB196: soil-borne wheat mosaic virus (SBWMV1_UPD-PKd)
+ACGCGGUCAUUGCGAUAAAUGACU
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB197: soil-borne wheat mosaic virus (SBWMV1_UPD-PKe)
+GAACCUAUUUGCUCGGGUUGAGUGCAAAC
+;..((((.[[[[[..)))).....]]]]].
+
+>PKB198: soil-borne wheat mosaic virus (SBWMV1_UPD-PKf)
+ACCGCCUGAUUAGCGGUCUACAAGUUAAUCGA
+;.((((..[[[[[)))).........]]]]]..
+
+>PKB199: soil-borne wheat mosaic virus (SBWMV1_UPD-PKg)
+UCGUGGUCAGUACGAUAACUGAU
+;.(((..[[[[[)))...]]]]].
+
+>PKB200: soil-borne wheat mosaic virus (SBWMV1_UPD-PKh)
+AGUCUAAUUUGUCGGGCUGAGACAAAUC
+;.((((.[[[[[[[))))...]]]]]]].
+
+>PKB201: soil-borne wheat mosaic virus (SBWMV2_UPD-PKb)
+GGCGUUCUACAGUACGUUUAAACUGUAGG
+;..(((.[[[[[[[))).....]]]]]]].
+
+>PKB202: soil-borne wheat mosaic virus (SBWMV2_UPD-PKi)
+UGGUGCUUGUUAUUUCACCUAAAUCGAAAUAACG
+;.((((...[[[[[[[)))).......]]]]]]].
+
+>PKB203: soil-borne wheat mosaic virus (SBWMV2_UPD-PKk)
+ACGUGGUCUUCACGAUAGAAGAUG
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB204: soil-borne wheat mosaic virus (SBWMV2_UPD-PKl)
+CAGAGUUAUCAUACUCUAUAAACUAUGAC
+;.((((...[[[[[))))......]]]]].
+
+>PKB205: Palmaria palmata (Pp_18S-PKE23-9/12)
+UUAGAGUGUUCAAAGCCAGGCGUUUGCCGUGAAUACAUUAGCAUGGAA
+;.((..((.[[[[..))(((((....))).))..))........]]]].
+
+>PKB206: Homo sapiens (Hs_PrP)
+GCCUCAUGGUGGUGGCUGGGGGCAGCCUCAUGGUGGUGGCUGGGG
+;...((((((.............[[[[[))))))....]]]]]...
+
+>PKB207: Bos Taurus (cow) (Bt_PrP)
+GCCCCAUGGAGGUGGCUGGGGCCAGCCUCAUGGAGGUGGCUGGGG
+;...((((((............[[[[[[))))))....]]]]]]..
+
+>PKB208: Bovine viral diarrhea virus (BVDV_IRES)
+GGGUAGCAACAGUGGUGA~ACAGCCUGAUAGGGUGCUGCAGAGGCCCACUGUAUUGCUACUAAAAAUCUCUGCU
+;.((((((((((((((((.~.))((((....))))...[[[[[[[.)))))))..))))))).....]]]]]]].
+
+>PKB209: Classical swine fever virus (hog cholera virus) (CSFV_IRES)
+GACUAGCCGUAGUGGCGA~ACGACCUGAUAGGGUGCUGCAGAGGCCCACUAUUAGGCUAGUAUAAAAAUCUCUGCUG
+;.((((((((((((((((.~.))((((....))))...[[[[[[[.)))))))..))))))).......]]]]]]]..
+
+>PKB210: Bordetella pertussis (Bp_PK2)
+CCGCUGCACUGAUCUGUCCUUGGGUCAGGCGGGGGAAGGCAACUUCCCAGGGGGCAACCCCGAACCGCAGCAGCGACAUUCACAAGGAAU
+;.((((((..(((...[[[[[[[..))).((((((((((....)))))).((((....))))...)))).)))))).......]]]]]]].
+
+>PKB211: Plautia stali intestine virus (PSIV_IRES-PKII)
+UGACUAUGUGAUCUUAUUAAAAUUAGGUUAAAUUUCGAGGUUAAAAAUAGUUUUAAUAUUGCUAUAGUCU~ACCCUCGUGC
+;.(((((((......(((((((((((..........[[[[[.......)))))))))))....))))))).~..]]]]]...
+
+>PKB212: Plautia stali intestine virus (PSIV_IRES-PKIII)
+AGGUCUUGUAUAUUUAUACUUACCACACAAGAUGGACCGGAGCAGCCCUCCAAUAUCUAGUGUA
+;.((((..((((....)))).....[[[[.[[[[[))))((((.....))))..]]]]].]]]].
+
+>PKB213: Himetobi P virus (HiPV_IRES-PKI)
+CAGCCUUGUAGUUUUAGUGGACUUUAGGCUAAAGAAUUUCACUAG
+;.(((((...((((.[[[[[))))..))))).........]]]]].
+
+>PKB214: Himetobi P virus (HiPV_IRES-PKII)
+CGAAAAUGUGUGAUCUGAUUAGAAGUAAGAAAAUUCCUAGUUAUAAUAUUUUUAAUACUGCUACAUUUUUA~ACCUAGGUGC
+;.(((((((((.......((((((((((........[[[[[......)))))))))).....))))))))).~..]]]]]...
+
+>PKB215: Himetobi P virus (HiPV_IRES-PKIII)
+GACCCUUAGUUAUUUAGCUUUACCGCCCAGGAUGGGGUGCAGCGUUCCUGCAAUAUCCAGGGCA
+;.((((..((((....)))).....[[[[.[[[[[))))((((.....))))..]]]]].]]]].
+
+>PKB216: Drosophila C virus (DCV_IRES-PKI)
+CUUCUUAUAUGAUUAGGUUGUCAUUUAGAAUAAGAAAAUAACCUG
+;.((((...(((((.[[[[[)))))..)))).........]]]]].
+
+>PKB217: lactate dehydrogenase-elevating virus, strain C (LDV-C)
+UUUAAACUGCUAGCCACCUCUGGUCUCGACCGCUGUACUAGAGGUGGGCUGACGGUGUYUGGCGAUGCGGUCA
+;.............(((((((((((...[[[[[[...)))))))))))...................]]]]]].
+
+>PKB218: Porcine reproductive and respiratory syndrome virus, North American isolate (16244B) (PRRSV-16244B)
+UUUAAACUGCUAGCCGCCAGCGGCUUGACCCGCUGUGGUCGCGGCGGCUUGGUUGUUACUGAGACAGCGGUA
+;............((((((.((((((....[[[[[[[))))))))))))...............]]]]]]]..
+
+>PKB219: Drosophila C virus (DCV_IRES-PKII)
+AGUUAAGAUGUGAUCUUGCUUCCUUAUACAAUUUUGAGAGGUUAAUAAGAAGGAAGUAGUGCUAUCUUAAUA~ACCCUCUCUGC
+;.(((((((((......(((((((((..........[[[[[[........)))))))))....))))))))).~..]]]]]]...
+
+>PKB220: Drosophila C virus (DCV_IRES-PKIII)
+UUAGGUUAACUAUUUAGUUUUACUGUUCAGGAUGCCUAUUGGCAGCCCCAUAAUAUCCAGGACA
+;.((((..((((....)))).....[[[[.[[[[[)))).(((.....)))...]]]]].]]]].
+
+>PKB221: Cricket paralysis virus (CrPV_IRES-PKI)
+CGGUUUUUCAGAUUAGGUAGUCGAAAAACCUAAGAAAUUUACCUG
+;.((((((...(((.[[[[[)))..)))))).........]]]]].
+
+>PKB222: Cricket paralysis virus (CrPV_IRES-PKII)
+GCAAAAAUGUGAUCUUGCUUGUAAAUACAAUUUUGAGAGGUUAAUAAAUUACAAGUAGUGCUAUUUUUGU~CCCUCUCUGC
+;.((((((((......(((((((((..........[[[[[[........)))))))))....)))))))).~.]]]]]]...
+
+>PKB223: Cricket paralysis virus (CrPV_IRES-PKIII)
+UUAGGUUAGCUAUUUAGCUUUACGUUCCAGGAUGCCUAGUGGCAGCCCCACAAUAUCCAGGAAG
+;.((((..((((....)))).....[[[[.[[[[[))))((((.....))))..]]]]].]]]].
+
+>PKB224: Triatoma virus (TrV_IRES-PKI)
+UUUCCUAUACCUCGAGUCGGGUUUGGAAUCUAAGGUUGACUCG
+;.((((...((((.[[[[[))))..)))).........]]]]].
+
+>PKB225: Triatoma virus (TrV_IRES-PKII)
+CUUGACUAUGUGAUCUUGCUUUCGUAAUAAAAUUCUGUACAUAAAAGUCGAAAGUAUUGCUAUAGUUAAG~UGUACAGAAUU
+;.(((((((((......((((((((.........[[[[[[[........))))))))....))))))))).~.]]]]]]]...
+
+>PKB226: Triatoma virus (TrV_IRES-PKIII)
+UGCGCUUGCCUAUUUAGGCAUACUUCUCAGGAUGGCGCGUUGCAGUCCAACAAGAUCCAGGGAC
+;.((((..((((....)))).....[[[[.[[[[.))))((((.....))))...]]]].]]]].
+
+>PKB227: Black queen cell virus (BQCV_IRES-PKI)
+AUGUUUAGAAGAUUAGGUAGUCUCUAAACAGAACAAUUUACCUG
+;.(((((...((((.[[[[[))))..)))))........]]]]].
+
+>PKB228: Black queen cell virus (BQCV_IRES-PKII)
+ACCAACAAUGUGAUCUUGCUUGCGGAGGCAAAAUUUGCACAGUAUAAAAUCUGCAAGUAGUGCUAUUGUUGGA~AACUGUGCU
+;.(((((((((......((((((((((..........[[[[[[[......))))))))))....))))))))).~.]]]]]]].
+
+>PKB229: Black queen cell virus (BQCV_IRES-PKIII)
+AUCACCGUACCUAUUUAGGUUUACGCUCCAAGAUCGGUGGAUAGCAGCCCUAUCAAUAUCUAGGAGA
+;..((((..((((....)))).....[[[[.[[[[.))))(((((.....)))))...]]]].]]]].
+
+>PKB230: Rhopalosiphum padi virus (RhPV_IRES-PKI)
+CAGGAGAGCAUACGCUAGGUCGCGUUGACUAUCCUUAUAUAUGACCUG
+;.((((.((((.((((.[[[[[)))))).)).)))).......]]]]].
+
+>PKB231: Rhopalosiphum padi virus (RhPV_IRES-PKII)
+UAGUGUUGUGUGAUCUUGCGCGAUAAAUGCUGACGUGAAAACGUUGCGUAUUGCUACAACACUU~ACGUCAC
+;.(((((((((......((((((((......[[[[[.......))))))))....))))))))).~.]]]]].
+
+>PKB232: Rhopalosiphum padi virus (RhPV_IRES-PKIII)
+UUGGUUAGCUAUUUAGCUUUACUAAUCAAGACGCCGUCGUGCAGCCCACAAAAGUCUAGAUA
+;.(((..((((....))))......[[[.[[[[.)))..(((.....)))....]]]].]]].
+
+>PKB233: Porcine reproductive and respiratory syndrome virus, European Lelystad strain (LV) (PRRSV-LV)
+UUUAAACUGUUAGCCGCCAGCGGCUUGACCCGCUGUGGCCGCGGCGGCCUAGUUGUGACUGAAACGGCGGU
+;............((((((.((((((....[[[[[[[))))))))))))...............]]]]]]].
+
+>PKB234: Variovorax paradoxus (Vp_PK2)
+GCCUUGCAACAGUUGGCCGAUGGGCUGGGCAAGGGGGUCUGGAGCAAUCCUGACCUCCCGGCUGCAAGGAUAACUACAUGGGCU
+;.((((((..(((...[[[[[[[..))).(((((((((((((((....))))))))))))))).)))))).......]]]]]]].
+
+>PKB235: Giardiavirus (GLV_IRES)
+GGAGACCCAUGGAGAGUCUCCAGAGGUUCCUAAGGCCUCGAUCGCGCCUGCCGGGAGGCAGAAUGUCCCGGUUCUCC
+;((((((....[[[[[)))))).(((((.......)))))..........(((((((.........)))))))]]]]]
+
+>PKB236: Homo sapiens (IFNG_PK)
+CAUUGUUCUGAUCAUCUGAAGAUCAGCUAUUAGAAGAGAAAGAUCAGUUAAGUCCUUUGGACCUGAUCAGCUUGAUACAAGAACUACUGAUUUCAACUUCUUUGGCUUAAUUCUCUCGGA
+;.......((((((([[[[[[[[..[[[[[..[[[[[....[[[[[[[[..[[[..[[[[....))))))).......]]]].]]]]]]]]]]]...]]]]].]]]]]....]]].]]]]]
+
+>PKB237: West Nile virus (WNV_PK3end)
+ACCUGGGAUAGACUAGGGGAUCUUCUGCUCUGCACAACCAGCCACACGGCACAGUGCGCCGACAUAGGUGGCUGGUGGUGCUAGAACACAGGAUCU
+;.(((((..[[[[)))))......]]]].(((((((.(((((((((.((((.......))))......))))))))).)))).)))...........
+
+>PKB238: Dengue virus type 2 (DEN2_PK1)
+AUGGGGGCCCAAGGUGAGAUGAAGCUGUAGUCUCACUGGAAGGACUAGAGGUUAGAGGAGACCCCCCCAAAACAAAAAACAGCA
+;.((((((((...((((((((...[[[[[.))))))))....))......((((......)))))))))).........]]]]].
+
+>PKB239: human immunodeficiency virus type 1 (Mal isolate) (HIV1_lrPK)
+UGCUUAAGCCUCAAUAAAGCUUGCCUUGAGUGCCUCAAGCAG~AUAUAGACUGAAACAUUUAGUAUGGGCAAGCAGGGAGC
+;.((((..(((((((....[[[[[[[))))).))...))))..~.(((..((((((...)))))))))]]]]]]].......
+
+>PKB240: beet chlorosis virus (BChV)
+GGGAAAUGGACUGAGCGGCGCCGACCGCCAAACAACCGGCA
+;..............((((.[[[[.))))........]]]].
+
+>PKB241: Montana Myotis leukoencephalitis virus (MMLV_PKb)
+AGAGAGUUAUUCGCUCCUCUCGAGAUUGAGCGGC
+;.(((((....[[[[[[)))))......]]]]]].
+
+>PKB242: Rio Bravo virus (RBV_PKb)
+UGAGGUUUUUCCCCUCCCUCAUGAUGAGGGGAAG
+;.((((...[[[[[[[[)))).....]]]]]]]].
+
+>PKB243: Homo sapiens (hTER)
+GGCGUAGGCGCCGUGCUUUUGCUCCCCGCGCGCUGUUUUUCUCGCUGACUUUCAGCGGGCGGAAAAGCCUCGGCCUGCCGCCUUCCACCGUUCAUUCUAGAGCAAACAAAAAAUGUCAGCU
+;.((((((((.....(((((.......(((((((((........[[[[[[[[[)))))))))..)))))....))))).))).............................]]].]]]]]].
+
+>PKB244: hepatitis A virus (HAV)
+UUAAACAAAUUUUCUUAAAAUUUCUGAGGUUUGUUUAUUUCUUUUAUCAGUAAAU
+;.((((((((((.........[[[[[[[)))))))))).........]]]].]]].
+
+>PKB245: Human Parechovirus 1 (HPeV1)
+CCCAGCCUUGGGGUGGCUGGUCAAUAAAAACCCCC
+;.((((((..[[[[[)))))).........]]]]].
+
+>PKB246: Hepatitis C Virus (HCV)
+GACCGTGCACCATGAGCACGAATCCTAAACCTCA
+;((.((((.....[[[[))))..))......]]]]
+
+>PKB247: Nemesia ring necrosis virus (NeRNV_PKa)
+CCCCUGUCCCGGGUAGGGAACC
+;.(((..[[[[)))..]]]]...
+
+>PKB248: Nemesia ring necrosis virus (NeRNV_PKb)
+UGUUCCUUGGAUUGCUACGUUCACCAGAUUUGUGUAAUCUGGCCGUUAGGAACUUAAAAUUGCGCG
+;.((((((.....[[[((((....(((((((.....))))))).))))))))))........]]]..
+
+>PKB249: Nemesia ring necrosis virus (NeRNV_UPD-PK1)
+UAGUGUUUCGGCUUCCACUUAAAUCGAAAGCCA
+;.((((....[[[[[[))))......].]]]]].
+
+>PKB250: Nemesia ring necrosis virus (NeRNV_UPD-PK2)
+GGGUGGCGCACACCACAGUGCGUA
+;.(((.[[[[[[)))...]]]]]].
+
+>PKB251: Nemesia ring necrosis virus (NeRNV_UPD-PK3)
+CAGCCUCUCACAGCUUCCUCGUGAGG
+;.(((..[[[[[.))).....]]]]].
+
+>PKB252:  (ribox02)
+GGGAUCGUCAGUGCAUUGAGAUGUUUCUCAGACUGAUUAUCGUGAGACAGUGAUCUCGUGGUCAGUCCUAGUUUGGGGGCUGGUCCUCACGGUGGUAUCCCCAAGGGGUA
+;((((((.(((((...((((((....))))))))))).[[[[[[[[[.....)))))).....(((((((......)))))))...]]]]]]]]].((((((...))))))
+
+>PKB253: White Bream Virus (WBV)
+UUUAAACUGGUGGGGCAGUGUCUAGGAUUGACGUUAGACACUGCUUUUUGCCCGUUUCAAACAGGUGAAUACAAACCGUCAU
+;...........((((((((((((((...[[[[[)))))))))))))).............................]]]]].
+
+>PKB254: SARS coronavirus (SARS-CoV)
+UUUAAACGGGUUUGCGGUGUAAGUGCAGCCCGUCUUACACCGUGCGGCACAGGCACUAGUACUGAUGUCGUCUACAGGGCUU
+;............(((((((((((...[[[[[[[)))))))))))((((((((.........))).)))))...]].]]]]].
+
+>PKB255: mouse hepatitis virus (MHV)
+CUCUCUAUCAGAAUGGAUGUCUUGCUGUCAUAACAGAUAGAGAAGGUUGUGGCAGA
+;.((((((((...............[[[[[[[[[[.))))))))..]]]]]]]]]].
+
+>PKB256: bovine coronavirus (BCV)
+CUCUCUAUCAGAAUGGAUGUCUUGCUGCUAUAAUAGAUAGAGAAGGUUAUAGCAGA
+;.((((((((...............[[[[[[[[[[.))))))))..]]]]]]]]]].
+
+>PKB257: Mus musculus (mouse) (Mm_Edr)
+GGGAAACUCCCCGGCCCCGCUGUAGGGGGACCUUCAGCGACAGGGCCAGAACGAAUAAGGUCCCCA
+;............((((((((((...[[[[[[[[[)))))...))))).........]]]]]]]]].
+
+>PKB258: Homo sapiens (Hs_Ma3)
+GGGAAACGGGAACUGGGCUUGGGACAAGAGCCAUCCCAAGUCCAAGGCCAAGUAGGCUCG
+;.............(((((((((((...[[[[[.)))))))))))..........]]]]].
+
+>PKB259: potato yellow vein virus (PYVV1)
+CGGUAGAAAAGAUGGUUUAAACCACGCCUUCUACCAAGUUAGUAAAUAAAUAGGCGG
+;.((((((.....((((....))))[[[[[))))))................]]]]].
+
+>PKB260: potato yellow vein virus (PYVV2)
+AGUAGAAAAGUUGGUGCUUAGACCACGCCCUCUACCGUAAUAAUAGAUAAAUAGGCG
+;.(((((.....((((......))))[[[[.)))))..................]]]]
+
+>PKB261: potato yellow vein virus (PYVV3)
+CGGUAGAAAAGAUGGUUUGAAAACCACGCCUUCUACCAAUAUAGUAAAUAAAUAGGCGG
+;.((((((.....(((((....)))))[[[[[))))))................]]]]].
+
+>PKB262: cucumber yellows virus (CuYV1)
+CGUUUGGUCGAAUGCUACUAGAGCAGCCUGACCAAACUAGUAUUAGUAAAUAAAGG
+;.((((((((...((((.....)))).[[[))))))))................]]]
+
+>PKB263: cucurbit yellow stunting disorder virus (CYSDV1)
+CGACACUCUAAAGAGUUCCGUGAGGAACCACCUUGAGUGUCUAGUUAUAAAUAAACUAGGUC
+;.(((((((......(((((....))))).[[[[.)))))))................]]]].
+
+>PKB264: cucurbit yellow stunting disorder virus (CYSDV2)
+CGACACUCUAAAGUGUUCCAAGAGGAACCACCUUGAGUGUCUAGUUAUAAAUAAACUAGGUC
+;.(((((((......(((((....))))).[[[[.)))))))................]]]].
+
+>PKB265: sweet potato chlorotic stunt virus (SPCSV1)
+CGGUUUUCCUAAAUCGUCGUGAGACGGACCUUGGAAAACCUAGUAUUUAAAUAACUAGGUC
+;.((((((((.....((((....))))[[[[[.))))))))................]]]]]
+
+>PKB266: lettuce infectious yellows virus (LIYV1)
+UGUCUUCCUAAAAUCCUUGGAAGACUGUAUAUAUAGAAUAAAGGUCG
+;.(((((((......[[[[)))))))...............]]]]...
+
+>PKB267: little cherry virus 1 (LChV-1)
+AAUGCAACUUUUAAAUAGUUUAUCUGUUAAGAUAAACCACCUAGGUUGCAUAUAUAAAAAAUAAAAGGUGCC
+;.(((((((((.......((((((((....))))))))[[[[[)))))))))..............]]]]]..
+
+>PKB268: beet yellows virus (BYV)
+CUCCUAGCGAAGUCCCGCUAGGAAGAAAAAAUAAGGGCCG
+;.(((((((...[[[[.)))))))...........]]]]..
+
+>PKB269: citrus tristeza virus (CTV)
+AGUUCUCCUUAGAGUGUGUGUUGUUUACCCAACGCACUGUCCCUAUGGGGGGCCAACAUAGGUCCA
+;.(((((((.......((((((((......))))))))....[[[[[)))))))....]]]]]....
+
+>PKB270: Pineapple mealybug wilt associated virus - 2 (PMWaV-2)
+CAAAGUCCUAUAAACCUCAAUAAUCCCUCGUUAGGAGGGACACGCGAGGACUUUGGCGUGCC
+;.((((((((..............((((((.....))))))[[[[[.)))))))).]]]]]..
+
+>PKB271: Grapevine leafroll-associated virus - 2 (GLRaV-3)
+ACGCCAAAAUCCAAUUAAAGUUUGGGACCUAGGCGGGCCUCUUACGAGGCUAACUUAUCGACAAUAAGUUAGGUC
+;.((((.....((((.......))))[[[[[[))))((((((....))))))..................]]]]]]
+
+>PKB272: strawberry chlorotic fleck associated virus (SCFaV)
+ACUGUGAUUAUAAAAGUGGAGUACUAAAGUACCCACUACCUUUAAUCACAGACAAUAAAGGUCCAU
+;.((((((((.....(((((.((((....)))))))))[[[[[[)))))))).....]]]]]]....
+
+>PKB273: influenza A virus, strain A/PR/8/34 (IAV_PK_NS)
+UUCCAGGACAUACUGCUGAGGAUGUCAAAAAUGCAGUUGGAGUCCUCA
+;.(((((...........[[[[[[.............)))))]]]]]].
+
+>PKB274: influenza B virus, strain B/Victoria/02/1987 (IBV_PK_NS)
+ACUGAUGAUCUUACAGUGGAGGAUGAAGAAGAUGGCCAUCGGAUCCUCA
+;.((((((...........[[[[[[............))))))]]]]]].
+
+>PKB275: Bacillus subtilis (Bs_glmS_P3.1)
+CCGGCUGAGUGUGCAGAUCACAGCCGUAAGAAUUUCUUCAAACCAAGGGGGUGACUCCUUGAACAAAGAGAAAUCACAUGAUCUU
+;.((((((.......[[[[[[)))))).....(((((((.....(((((((....)))))))......)))))))....]]]]]].
+
+>PKB276: Bacillus subtilis (Bs_glmS_P1.1)
+CGCCCGAACUAAGCGCCCGGAAAAAGGCUUAGUUGACGAGGAUGGAGGUUAUCGAAUUUCGCGGAUCCUCCCG
+;.(((((((((((((............)))))))).........[[[[[....(((...))))))))]]]]]..
+
+>PKB277: tobacco etch virus (TEV_PK1)
+CGAAUCUCAAGCAAUCAAGCAUUCUACUUCUAUUGCA
+;.((((((...[[[[[..)).)))).......]]]]].
+
+>PKB278: tobacco etch virus (TEV_PK2)
+AUUUAAAUCAUUUCUUUUAAAGCAAAAGC
+;.((((((...[[[..))))))....]]].
+
+>PKB279: tobacco etch virus (TEV_PK3)
+CAAUUUUCUGAAAAUUUUCAC
+;.(((((..[[[))))).]]].
+
+>PKB280: Visna-Maedi virus (VMV)
+GGGAAACAACAGGAGGGGGCCACGUGUGGUGCCGUCCGCGCCCCCUAUGUUGUAACAGAAGCACCACC
+;.............(((((((.....[[[[[[[.......)))))))..............]]]]]]].
+
+>PKB281: sugarcane yellow leaf virus (ScYLV)
+GGGAAACGAGCCAAGUGGCGCCGACCACUUAAAAACACCGGAA
+;.............(((((..[[[.))))).........]]]..
+
+>PKB282: foot-and-mouth disease virus, serotype A (FMDV-A_PKI)
+CCGUCGUUUCCGACGUAAAAGGAAGCAA
+;.((((..[[[[)))).....]]]]....
+
+>PKB283: foot-and-mouth disease virus, serotype A (FMDV-A_PKII)
+CCGCCUGUCCCGGCGUUAAAGGGAAGUAA
+;.((((..[[[[)))).....]]]].....
+
+>PKB284: foot-and-mouth disease virus, serotype A (FMDV-A_PKIII)
+ACCGCCUACCCCGGCGUUAACGGGGAACAA
+;..((((..[[[[)))).....]]]].....
+
+>PKB285: foot-and-mouth disease virus, serotype O (FMDV-O1K_PKI)
+ACCGUCGUUCCCGACGUAAAAGGGAGG
+;..((((..[[[[)))).....]]]]..
+
+>PKB286: foot-and-mouth disease virus, serotype O (FMDV-O1K_PKII)
+ACCGUCCGGCCCGACGUAAAAGGGUGGUAA
+;..((((...[[[)))).....]]]......
+
+>PKB287: foot-and-mouth disease virus, serotype O (FMDV-O1K_PKIII)
+CCGUCUUUCCCGACGUUAAAGGGAUG
+;.((((..[[[[)))).....]]]]..
+
+>PKB288: foot-and-mouth disease virus, serotype O (FMDV-O1K_PKIV)
+CCUUCGCUCGGAAGUAAAACGACAA
+;.((((..[[[)))).....]]]...
+
+>PKB289: foot-and-mouth disease virus, serotype C (FMDV-C_PKI)
+ACCGUCGUUCCCGACGUAAAAGGGAUGU
+;..((((..[[[[)))).....]]]]...
+
+>PKB290: foot-and-mouth disease virus, serotype C (FMDV-C_PKII)
+ACCGUCUCUCCCGACGUUAAAGGGAUGUAA
+;..((((..[[[[)))).....]]]].....
+
+>PKB291: foot-and-mouth disease virus, serotype C (FMDV-C_PKIII)
+CCGCCUAUCCCGGCGUUAAUGGGAGG
+;.((((..[[[[)))).....]]]]..
+
+>PKB292: foot-and-mouth disease virus, serotype C (FMDV-C_PKIV)
+CCUUCACCUGGAAGUAAAACAGCAA
+;.((((..[[[)))).....]]]...
+
+>PKB293: encephalomyocarditis virus (EMCV-R_PKB)
+ACGUGAAGGCUACGAUAGUGCCAG
+;.((((..[[[)))).....]]]..
+
+>PKB294: encephalomyocarditis virus (EMCV-R_PKC)
+AGGGCGGGUACUGCCGUAAGUGCCA
+;..(((.[[[[[[)))...]]]]]].
+
+>PKB295: Mengovirus (Mengo_PKB)
+ACGUGAAGGCUACGAUAGUGCCAG
+;.((((..[[[)))).....]]]..
+
+>PKB296: Mengovirus (Mengo_PKC)
+AGGGCGGGUCCUGCCGAAAGUGCCAA
+;..(((.[[[.[[)))...]].]]]..
+
+>PKB297: hepatitis A virus (HAV_PK1)
+AAGUCCAUGGUGAGGGGACUUGAUACCUCACCG
+;.(((((..[[[[[[[))))).....]]]]]]].
+
+>PKB298: hepatitis A virus (HAV_PK2)
+CGCCGUUUGCCUAGGCUAUAGGCUAAAUU
+;.(((....[[[[[)))..]]]]]......
+
+>PKB299: Theiler's murine encephalomyelitis virus (TMEV)
+ACGCGGGUACUGCGAUAGUGCCACC
+;.(((.[[[[[[)))..]]]]]]...
+
+>PKB300:  (antiHIV1-RT_1.1)
+UCAAGAAUUCCGUUUUCAGUCGGGAAAAACUGAACAA
+;.......(((((..[[[[[[)))))...]]]]]]...
+
+>PKB301:  (antiHIV1-RT_1.3a)
+GAAUAUCUUCCGAAGCCGAACGGGAAAACCGGCAUCU
+;.......(((((..[[[[..)))))....]]]]....
+
+>PKB302:  (antiHIV1-NC_psi-50-1)
+GCCAGUGGUUUGCAAUGCUGGUCCGGUGCGU
+;(((((((...[[[[.)))))))....]]]].
+
+>PKB303: Bombyx mori (R2_retroPK)
+AGCCCCGAUGGACGGACCGCGAGGACCGUCAAGCCUAGCAGGUACCUUCGGGUGGGGCCUUGCGAUACCUGCGGGC
+;.(((((....(((((.((....)).)))))...[[[.[[[[[[(((....))))))))........]]]]]]]]].
+
+>PKB304: B. subtilis (SBU)
+AGAGGUUCUAGCUACACCCUCUAUAAAAAACUAA
+;(((((...[[[......)))))........]]].
+

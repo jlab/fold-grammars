@@ -118,7 +118,8 @@ class Opts {
 	void help(char **argv)
 			{
 		std::cout << argv[0] << " ("
-				#ifdef WINDOW_MODE
+	#ifdef WINDOW_MODE
+				<< std::endl
 				<< "-w <int-value> Specify the window size." << std::endl
 				<< "" << std::endl
 				<< "-i <int-value> Specify the window increment." << std::endl
