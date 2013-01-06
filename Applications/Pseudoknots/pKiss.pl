@@ -34,6 +34,7 @@ our $PARAM_LOWPROBFILTER = 'lowProbFilter'; our $GAPC_PARAM_LOWPROBFILTER = 'F';
 our $PARAM_HELP = 'help';
 our $PARAM_BINARYPATH = 'binPath';
 our $PARAM_BINARYPREFIX = 'binPrefix';
+our $PARAM_PROBDECIMALS = 'probDecimals';
 
 our $OUTPUT_MINLEFTWIDTH = 7;
 our $OUTPUT_FIELDSPACER = "  ";
@@ -57,6 +58,7 @@ my $defaults = {
 	$PARAM_HELP => undef,
 	$PARAM_BINARYPATH => undef,
 	$PARAM_BINARYPREFIX => 'pKiss_',
+	$PARAM_PROBDECIMALS => 7,
 };
 
 my $settings = clone $defaults;
@@ -80,6 +82,7 @@ my $settings = clone $defaults;
 	$PARAM_HELP => \$settings->{$PARAM_HELP},
 	$PARAM_BINARYPATH."=s" => \$settings->{$PARAM_BINARYPATH},
 	$PARAM_BINARYPREFIX."=s" => \$settings->{$PARAM_BINARYPREFIX},
+	$PARAM_PROBDECIMALS."=i" => \$settings->{$PARAM_PROBDECIMALS},
 );
 
 usage($defaults) if ((defined $settings->{$PARAM_HELP}) || (@ARGV != 1));
@@ -108,7 +111,7 @@ sub doComputation {
 	}
 	my $seq = $refHash_sequence->{sequence};
 	$seq =~ s/t/u/gi;
-	my $command = buildCommand($settings, $defaults);
+	my $command = buildCommand($settings, $defaults, $refHash_sequence);
 	my $result = qx($command "$seq");
 	
 	print "\n" if ($sequenceNumber != 0);
@@ -130,35 +133,91 @@ sub doComputation {
 	return undef;
 }
 
+sub parseSubopt {
+	my ($result, $settings, $refHash_sequence) = @_;
+	
+	my %predictions = ();
+	my $maxEnergyLen = $OUTPUT_MINLEFTWIDTH;
+	my $maxStartPosLen = 0;
+	my $windowStartPos = undef;
+	my $windowEndPos = undef;
+	foreach my $line (split(m/\r?\n/, $result)) {
+		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
+			($windowStartPos, $windowEndPos) = ($1, $2);
+		} elsif ($line =~ m/^Answer:\s*$/) {
+			($windowStartPos, $windowEndPos) = (0, length($refHash_sequence->{sequence}));
+		} elsif ($line =~ m/^\s*$/) {
+		} else {
+			my ($m1, $energy, $m2, $structure) = split(m/\s+/, $line);
+			$energy = sprintf("%.2f", $energy/100);
+			$predictions{$windowStartPos."-".$windowEndPos}->{$energy}->{$structure}++;
+			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
+			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));
+		}
+	}
+
+	my $leftLength = $maxEnergyLen;
+	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
+
+	print ">".$refHash_sequence->{header}."\n";
+	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	foreach my $windowPos (@windowPositions) {
+		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$windowPos}})) {
+			foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$energy}})) {
+				print sprintf("% $leftLength.2f", $energy).$OUTPUT_FIELDSPACER.$structure."\n"
+			}
+		}
+		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
+	}
+}
+
 sub parseProbs {
 	my ($result, $settings, $refHash_sequence) = @_;
 
 	my %predictions = ();
 	my $maxEnergyLen = $OUTPUT_MINLEFTWIDTH;
-	my $sumProbs = 0;
+	my $maxStartPosLen = 0;
+	my $windowStartPos = undef;
+	my $windowEndPos = undef;
+	my %sumProbs = ();
 	foreach my $line (split(m/\r?\n/, $result)) {
-		if ($line =~ m/^Answer:\s*$/) {
+		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
+			($windowStartPos, $windowEndPos) = ($1, $2);
+		} elsif ($line =~ m/^Answer:\s*$/) {
+			($windowStartPos, $windowEndPos) = (0, length($refHash_sequence->{sequence}));
 		} elsif ($line =~ m/^\s*$/) {
 		} else {
 			my ($class, $energy, $probability, $structure) = ($line =~ m/\( \( (.+?) , \( (.+?) , (.+?) \) \) , (.+?) \)/);
 			$energy = sprintf("%.2f", $energy/100);
-			$sumProbs += $probability;
+			$sumProbs{$windowStartPos."-".$windowEndPos} += $probability;
 			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
-			
-			$predictions{$probability}->{$energy}->{$class}->{$structure}++;
+			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));
+			$predictions{$windowStartPos."-".$windowEndPos}->{$probability}->{$energy}->{$class}->{$structure}++;
 		}
 	}
 
+	my $leftLength = $maxEnergyLen;
+	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
+
 	print ">".$refHash_sequence->{header}."\n";
-	print "".(" " x $maxEnergyLen).$OUTPUT_FIELDSPACER.$refHash_sequence->{sequence}.$OUTPUT_FIELDSPACER."prob.    ".$OUTPUT_FIELDSPACER."level ".$settings->{$PARAM_SHAPELEVEL}."\n";
-	foreach my $probability (sort {$b <=> $a} keys(%predictions)) {
-		foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$probability}})) {
-			foreach my $class (sort {$a cmp $b} keys(%{$predictions{$probability}->{$energy}})) {
-				foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$probability}->{$energy}->{$class}})) {
-					print sprintf("% $maxEnergyLen.2f", $energy).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.sprintf("%1.7f", $probability/$sumProbs).$OUTPUT_FIELDSPACER.$class."\n";
+	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	my $numDecProb = $settings->{$PARAM_PROBDECIMALS};
+
+	foreach my $windowPos (@windowPositions) {
+		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		foreach my $probability (sort {$b <=> $a} keys(%{$predictions{$windowPos}})) {
+			foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$windowPos}->{$probability}})) {
+				foreach my $class (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$probability}->{$energy}})) {
+					foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$probability}->{$energy}->{$class}})) {
+						print sprintf("% $leftLength.2f", $energy).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $probability/$sumProbs{$windowPos}).$OUTPUT_FIELDSPACER.$class."\n";
+					}
 				}
 			}
 		}
+		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
 	}
 }
 
@@ -167,26 +226,40 @@ sub parseShape {
 
 	my %predictions = ();
 	my $maxEnergyLen = $OUTPUT_MINLEFTWIDTH;
+	my $maxStartPosLen = 0;
+	my $windowStartPos = undef;
+	my $windowEndPos = undef;
 	foreach my $line (split(m/\r?\n/, $result)) {
-		if ($line =~ m/^Answer:\s*$/) {
+		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
+			($windowStartPos, $windowEndPos) = ($1, $2);
+		} elsif ($line =~ m/^Answer:\s*$/) {
+			($windowStartPos, $windowEndPos) = (0, length($refHash_sequence->{sequence}));
 		} elsif ($line =~ m/^\s*$/) {
 		} else {
 			my ($class, $energy, $structure) = ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)/);
 			$energy = sprintf("%.2f", $energy/100);
 			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
-			
-			$predictions{$energy}->{$class}->{$structure}++;
+			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));			
+			$predictions{$windowStartPos."-".$windowEndPos}->{$energy}->{$class}->{$structure}++;
 		}
 	}
 
+	my $leftLength = $maxEnergyLen;
+	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
+
 	print ">".$refHash_sequence->{header}."\n";
-	print "".(" " x $maxEnergyLen).$OUTPUT_FIELDSPACER.$refHash_sequence->{sequence}.$OUTPUT_FIELDSPACER."level ".$settings->{$PARAM_SHAPELEVEL}."\n";
-	foreach my $energy (sort {$a <=> $b} keys(%predictions)) {
-		foreach my $class (sort {$a cmp $b} keys(%{$predictions{$energy}})) {
-			foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$energy}->{$class}})) {
-				print sprintf("% $maxEnergyLen.2f", $energy).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.$class."\n";
+	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	foreach my $windowPos (@windowPositions) {
+		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$windowPos}})) {
+			foreach my $class (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$energy}})) {
+				foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$energy}->{$class}})) {
+					print sprintf("% $leftLength.2f", $energy).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.$class."\n";
+				}
 			}
 		}
+		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
 	}
 }
 
@@ -196,43 +269,56 @@ sub parseLocal {
 	my %predictions = ();
 	my $maxEnergyLen = $OUTPUT_MINLEFTWIDTH;
 	my $maxStartPosLen = 0;
+	my $windowStartPos = undef;
+	my $windowEndPos = undef;
 	foreach my $line (split(m/\r?\n/, $result)) {
-		if ($line =~ m/^Answer:\s*$/) {
+		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
+			($windowStartPos, $windowEndPos) = ($1, $2);
+		} elsif ($line =~ m/^Answer:\s*$/) {
+			($windowStartPos, $windowEndPos) = (0, length($refHash_sequence->{sequence}));
 		} elsif ($line =~ m/^\s*$/) {
 		} else {
 			my ($energy, $startPos, $structure, $endPos) = ($line =~ m/\( (.+?) , (\d+) (.+?) (\d+) \)/);
 			$energy = sprintf("%.2f", $energy/100);
-			$predictions{$startPos}->{$endPos}->{$energy}->{$structure}++;
+			$predictions{$windowStartPos."-".$windowEndPos}->{$startPos}->{$endPos}->{$energy}->{$structure}++;
 			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
 			$maxStartPosLen = length($startPos) if ($maxStartPosLen < length($startPos));
+			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));
 		}
 	}
 	
 	my $leftLength = $maxEnergyLen;
 	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
 
-	my @blocks = ();
-	foreach my $startPos (sort {$a <=> $b} keys(%predictions)) {
-		foreach my $endPos (sort {$a <=> $b} keys(%{$predictions{$startPos}})) {
-			my $block = "";
-			my $mfe = 0;
-			$block .= sprintf("% ${leftLength}i", $startPos).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos-1, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos-1)."\n";
-			foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$startPos}->{$endPos}})) {
-				foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$startPos}->{$endPos}->{$energy}})) {
-					$block .= sprintf("% $leftLength.2f", $energy).$OUTPUT_FIELDSPACER.$structure."\n";
+	my %blocks = ();
+	foreach my $windowPos (keys(%predictions)) {
+		foreach my $startPos (sort {$a <=> $b} keys(%{$predictions{$windowPos}})) {
+			foreach my $endPos (sort {$a <=> $b} keys(%{$predictions{$windowPos}->{$startPos}})) {
+				my $block = "";
+				my $mfe = 0;
+				$block .= sprintf("% ${leftLength}i", $startPos).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos-1, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos-1)."\n";
+				foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$windowPos}->{$startPos}->{$endPos}})) {
+					foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$startPos}->{$endPos}->{$energy}})) {
+						$block .= sprintf("% $leftLength.2f", $energy).$OUTPUT_FIELDSPACER.$structure."\n";
+					}
+					$mfe = $energy if ($energy < $mfe);
 				}
-				$mfe = $energy if ($energy < $mfe);
+				push @{$blocks{$windowPos}}, {block => $block, mfe => $mfe, startPos => $startPos, endPos => $endPos};
 			}
-			push @blocks, {block => $block, mfe => $mfe, startPos => $startPos, endPos => $endPos};
 		}
 	}
-	
+
 	print ">".$refHash_sequence->{header}."\n";
-	print "1 ".$refHash_sequence->{sequence}." ".length($refHash_sequence->{sequence})."\n\n";
-	@blocks = sort {($a->{mfe} <=> $b->{mfe}) || ($a->{startPos} <=> $b->{startPos}) || ($a->{endPos} <=> $b->{endPos})} @blocks;
-	foreach my $block (@blocks) {
-		print $block->{block};
-		print "\n" if ($block != $blocks[$#blocks]);
+	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	foreach my $windowPos (@windowPositions) {
+		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		print "=== window: ".($startPos+1)." to ".$endPos.": ===\n";
+		my @blocks = sort {($a->{mfe} <=> $b->{mfe}) || ($a->{startPos} <=> $b->{startPos}) || ($a->{endPos} <=> $b->{endPos})} @{$blocks{$windowPos}};
+		foreach my $block (@blocks) {
+			print $block->{block};
+			print "\n" if ($block != $blocks[$#blocks]);
+		}
+		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
 	}
 }
 
@@ -241,61 +327,50 @@ sub parseEnforce {
 	
 	my %predictions = ();
 	my $maxEnergyLen = $OUTPUT_MINLEFTWIDTH;
+	my $maxStartPosLen = 0;
+	my $windowStartPos = undef;
+	my $windowEndPos = undef;
 	foreach my $line (split(m/\r?\n/, $result)) {
-		if ($line =~ m/^Answer:\s*$/) {
+		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
+			($windowStartPos, $windowEndPos) = ($1, $2);
+		} elsif ($line =~ m/^Answer:\s*$/) {
+			($windowStartPos, $windowEndPos) = (0, length($refHash_sequence->{sequence}));
 		} elsif ($line =~ m/^\s*$/) {
 		} else {
 			my ($class, $energy, $structure) = ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)/);
 			$energy = sprintf("%.2f", $energy/100);
 			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
-			
-			$predictions{$class}->{$energy}->{$structure}++;
+			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));			
+			$predictions{$windowStartPos."-".$windowEndPos}->{$class}->{$energy}->{$structure}++;
 		}
 	}
 	
+	my $leftLength = $maxEnergyLen;
+	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
+
 	my $notAvail = "no structure available";
 	print ">".$refHash_sequence->{header}."\n";
-	print "".(" " x $maxEnergyLen).$OUTPUT_FIELDSPACER.$refHash_sequence->{sequence}."\n";
-	foreach my $class ("nested structure","H-type pseudoknot","K-type pseudoknot","H- and K-type pseudoknot") {
-		if (not exists $predictions{$class}) {
-			print "".(" " x $maxEnergyLen).$OUTPUT_FIELDSPACER.$notAvail.(" " x (length($refHash_sequence->{sequence})-length($notAvail))).$OUTPUT_FIELDSPACER."best '".$class."'\n";
-		} else {
-			foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$class}})) {
-				foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$class}->{$energy}})) {
-					print sprintf("% $maxEnergyLen.2f", $energy).$OUTPUT_FIELDSPACER.$structure.(" " x (length($notAvail) - length($structure))).$OUTPUT_FIELDSPACER."best '".$class."'\n"
+	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	foreach my $windowPos (@windowPositions) {
+		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		foreach my $class ("nested structure","H-type pseudoknot","K-type pseudoknot","H- and K-type pseudoknot") {
+			if (not exists $predictions{$windowPos}->{$class}) {
+				print "".(" " x $maxEnergyLen).$OUTPUT_FIELDSPACER.$notAvail.(" " x (($endPos-$startPos)-length($notAvail))).$OUTPUT_FIELDSPACER."best '".$class."'\n";
+			} else {
+				foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$windowPos}->{$class}})) {
+					foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$class}->{$energy}})) {
+						print sprintf("% $leftLength.2f", $energy).$OUTPUT_FIELDSPACER.$structure.(" " x (length($notAvail) - length($structure))).$OUTPUT_FIELDSPACER."best '".$class."'\n"
+					}
 				}
 			}
 		}
-	}
-}
-
-sub parseSubopt {
-	my ($result, $settings, $refHash_sequence) = @_;
-	
-	my %predictions = ();
-	my $maxEnergyLen = $OUTPUT_MINLEFTWIDTH;
-	foreach my $line (split(m/\r?\n/, $result)) {
-		if ($line =~ m/^Answer:\s*$/) {
-		} elsif ($line =~ m/^\s*$/) {
-		} else {
-			my ($m1, $energy, $m2, $structure) = split(m/\s+/, $line);
-			$energy = sprintf("%.2f", $energy/100);
-			$predictions{$energy}->{$structure}++;
-			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
-		}
-	}
-	
-	print ">".$refHash_sequence->{header}."\n";
-	print "".(" " x $maxEnergyLen).$OUTPUT_FIELDSPACER.$refHash_sequence->{sequence}."\n";
-	foreach my $energy (sort {$a <=> $b} keys(%predictions)) {
-		foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$energy}})) {
-			print sprintf("% $maxEnergyLen.2f", $energy).$OUTPUT_FIELDSPACER.$structure."\n"
-		}
+		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
 	}
 }
 
 sub buildCommand {
-	my ($settings, $defaults) = @_;
+	my ($settings, $defaults, $refHash_sequence) = @_;
 	
 	my $cmd = "";
 	$cmd .= $settings->{$PARAM_BINARYPATH};
@@ -303,7 +378,9 @@ sub buildCommand {
 	$cmd .= $settings->{$PARAM_BINARYPREFIX}.$settings->{$PARAM_MODE};
 	if (defined $settings->{$PARAM_WINDOWSIZE}) {
 		$cmd .= "_window";
-		$cmd .= " -$GAPC_PARAM_WINDOWSIZE ".$settings->{$PARAM_WINDOWSIZE};
+		my $windowSize = $settings->{$PARAM_WINDOWSIZE};
+		$windowSize = length($refHash_sequence->{sequence}) if ($settings->{$PARAM_WINDOWSIZE} > length($refHash_sequence->{sequence}));
+		$cmd .= " -$GAPC_PARAM_WINDOWSIZE ".$windowSize;
 		$cmd .= " -$GAPC_PARAM_WINDOWINCREMENT ".$settings->{$PARAM_WINDOWINCREMENT};
 	}
 	$cmd .= " -$GAPC_PARAM_TEMPERATUR ".$settings->{$PARAM_TEMPERATUR} if ($settings->{$PARAM_TEMPERATUR} != $defaults->{$PARAM_TEMPERATUR});
@@ -354,6 +431,7 @@ sub checkParameters {
 	die $diePrefix."--$PARAM_ABSOLUTEDEVIATION and --$PARAM_RELATIVEDEVIATION cannot be set at the same time!\n" if ((defined $settings->{$PARAM_ABSOLUTEDEVIATION}) && ($settings->{$PARAM_RELATIVEDEVIATION} != $defaults->{$PARAM_RELATIVEDEVIATION}));
 	
 	my ($programPath, $programName) = @{PerlUtils::separateDirAndFile($0)};
+	$programPath = "./" if (not defined $programPath);
 	$settings->{$PARAM_BINARYPATH} = $programPath if (not defined $settings->{$PARAM_BINARYPATH});
 	foreach my $mode ($MODE_MFE, $MODE_SUBOPT, $MODE_ENFORCE, $MODE_LOCAL, $MODE_SHAPE, $MODE_PROBS) {
 		my $binName = "";
@@ -367,6 +445,8 @@ sub checkParameters {
 		die $diePrefix." could not find Bellman's GAP binary '".$binName."' for mode ".$settings->{$PARAM_MODE}."!\n" if (not -e $binName);
 		die $diePrefix." could not find window mode for Bellman's GAP binary '".$binName."_window' for mode ".$settings->{$PARAM_MODE}."!\n" if (not -e $binName."_window");		
 	}
+	
+	die $diePrefix."--$PARAM_PROBDECIMALS must be a positive integer number!\n" if ($settings->{$PARAM_PROBDECIMALS} < 0);
 }
 
 
@@ -464,6 +544,10 @@ SYSTEM DEPENDENT OPTIONS:
   --$PARAM_BINARYPATH <dir> : $0 expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --$PARAM_BINARYPATH to this new location!
   
   --$PARAM_BINARYPREFIX <name> : $0 expects a special naming schema for the according Bellman's GAP compiled binaries. On default, each binary is named "pKiss_", followed by the mode, followed by "_window" for the window mode version. Thus, for non-window mode "$MODE_SUBOPT" the name would be "pKiss_$MODE_SUBOPT". With --$PARAM_BINARYPREFIX you can change the prefix into some arbitary one.
+  
+  --$PARAM_PROBDECIMALS <int> : Sets the number of digits used for printing shape probabilities.
+                         <int> must be a positive integer number.
+                         Default is 7.
 
 REFERENCES
 [1] Stefan Janssen, Christian Schudoma, Gerhard Steger, Robert Giegerich.
@@ -505,3 +589,8 @@ EOF
 	exit(0);
 }
 
+sub getStartPos {
+	my ($windowPos) = @_;
+	my ($startPos, $endPos) = split(m/-/, $windowPos);
+	return $startPos;
+}
