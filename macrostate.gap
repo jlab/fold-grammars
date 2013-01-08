@@ -133,9 +133,9 @@ instance check = gra_macrostate ( alg_shape5 * alg_pfunc_macrostate);
 	instance p_func = gra_macrostate (alg_pfunc_macrostate);
 
 //start: instances for unit tests
-instance testmfeshape3pp   = gra_macrostate(alg_mfe_macrostate * alg_shape3 * alg_dotBracket);
-instance testdbshape5mfe   = gra_macrostate(alg_dotBracket * alg_shape5 * alg_mfe_macrostate);
-instance testshape4mfepfdb   = gra_macrostate(alg_shape4 * (alg_mfe_macrostate % alg_pfunc_macrostate) * alg_dotBracket);
+instance testmfeshape3pp   = gra_macrostate(alg_mfe_macrostate * alg_shapeX * alg_dotBracket);
+instance testdbshape5mfe   = gra_macrostate(alg_dotBracket * alg_shapeX * alg_mfe_macrostate);
+instance testshape4mfepfdb   = gra_macrostate(alg_shapeX * (alg_mfe_macrostate % alg_pfunc_macrostate) * alg_dotBracket);
 instance testsampleshape2mfedb   = gra_macrostate( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * (alg_shape2 * alg_mfe_macrostate * alg_dotBracket) ) suchthat sample_filter_pf ); //compile with --sample !
-instance testdbshape1 = gra_macrostate(alg_dotBracket * alg_shape1);
+instance testdbshape1 = gra_macrostate(alg_dotBracket * alg_shapeX);
 //stop: instances for unit tests

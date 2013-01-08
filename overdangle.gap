@@ -96,8 +96,8 @@ instance mfepp = gra_overdangle (alg_mfe_overdangle * alg_dotBracket);
 instance ppmfe = gra_overdangle (alg_dotBracket * alg_shape5 * alg_mfe_overdangle);
 
 //start: instances for unit tests
-instance testmfeshape3pp   = gra_overdangle(alg_mfe_overdangle * alg_shape3 * alg_dotBracket);
-instance testdbshape5mfe   = gra_overdangle(alg_dotBracket * alg_shape5 * alg_mfe_overdangle);
-instance testshape4mfepfdb   = gra_overdangle(alg_shape4 * (alg_mfe_overdangle % alg_pfunc_overdangle) * alg_dotBracket);
-instance testsampleshape2mfedb   = gra_overdangle( ( (alg_pfunc_overdangle | alg_pfunc_id ) * (alg_shape2 * alg_mfe_overdangle * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
+instance testmfeshape3pp   = gra_overdangle(alg_mfe_overdangle * alg_shapeX * alg_dotBracket);
+instance testdbshape5mfe   = gra_overdangle(alg_dotBracket * alg_shapeX * alg_mfe_overdangle);
+instance testshape4mfepfdb   = gra_overdangle(alg_shapeX * (alg_mfe_overdangle % alg_pfunc_overdangle) * alg_dotBracket);
+instance testsampleshape2mfedb   = gra_overdangle( ( (alg_pfunc_overdangle | alg_pfunc_id ) * (alg_shapeX * alg_mfe_overdangle * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
 //stop: instances for unit tests

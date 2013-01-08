@@ -80,10 +80,10 @@ instance mfepp = gra_nodangle(alg_mfe * alg_dotBracket);
 instance ppmfe = gra_nodangle(alg_dotBracket * alg_mfe);
 
 //start: instances for unit tests
-instance testmfeshape3pp = gra_nodangle(alg_mfe * alg_shape3 * alg_dotBracket);
-instance testdbshape5mfe = gra_nodangle(alg_dotBracket * alg_shape5 * alg_mfe);
-instance testshape4mfepfdb = gra_nodangle(alg_shape4 * (alg_mfe % alg_pfunc) * alg_dotBracket);
-instance testsampleshape2mfedb = gra_nodangle( ( (alg_pfunc | alg_pfunc_id ) * (alg_shape2 * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
+instance testmfeshape3pp = gra_nodangle(alg_mfe * alg_shapeX * alg_dotBracket);
+instance testdbshape5mfe = gra_nodangle(alg_dotBracket * alg_shapeX * alg_mfe);
+instance testshape4mfepfdb = gra_nodangle(alg_shapeX * (alg_mfe % alg_pfunc) * alg_dotBracket);
+instance testsampleshape2mfedb = gra_nodangle( ( (alg_pfunc | alg_pfunc_id ) * (alg_shapeX * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
 //stop: instances for unit tests
 
 instance erangeshapeanalysis5 = gra_nodangle((alg_shape5 * (alg_mfe * alg_dotBracket)) suchthat range_shape_mfe_db);
