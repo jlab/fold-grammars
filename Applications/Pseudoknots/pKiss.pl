@@ -1,13 +1,22 @@
 #!/usr/bin/env perl
 
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	return join('/', @parts).'/';
+}
+
 use lib "../";
+use lib getPath($0)."../";
 
 use strict;
-use Data::Dumper;
 use warnings;
+use Data::Dumper;
 use Getopt::Long;
 use Clone qw(clone);
 use PerlUtils;
+
 
 our $MODE_MFE = 'mfe';
 our $MODE_SUBOPT = 'subopt';

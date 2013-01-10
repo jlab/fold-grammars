@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns4:runnableItem xmlns:ns2="bibiserv:de.unibi.techfak.bibiserv.cms.microhtml" xmlns:ns3="bibiserv:de.unibi.techfak.bibiserv.cms.minihtml" xmlns:ns4="bibiserv:de.unibi.techfak.bibiserv.cms" xmlns:ns5="http://java.sun.com/dtd/jnlp-6.0.dtd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="pkiss" xsi:schemaLocation="bibiserv:de.unibi.techfak.bibiserv.cms http://bibiserv.techfak.uni-bielefeld.de/xsd/bibiserv2/BiBiServAbstraction.xsd">
+<ns4:runnableItem xmlns:ns2="bibiserv:de.unibi.techfak.bibiserv.cms.minihtml" xmlns:ns3="bibiserv:de.unibi.techfak.bibiserv.cms.microhtml" xmlns:ns4="bibiserv:de.unibi.techfak.bibiserv.cms" xmlns:ns5="http://java.sun.com/dtd/jnlp-6.0.dtd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="pkiss" xsi:schemaLocation="bibiserv:de.unibi.techfak.bibiserv.cms http://bibiserv.techfak.uni-bielefeld.de/xsd/bibiserv2/BiBiServAbstraction.xsd">
     <ns4:name xml:lang="en">pKiss</ns4:name>
     <ns4:shortDescription xml:lang="en">pKiss is a tool for secondary structure prediction including kissing hairpin motifs.</ns4:shortDescription>
     <ns4:description xml:lang="en">
-        <ns2:p>
-missing description</ns2:p>
+        
+    <ns3:p>
+missing description</ns3:p>
     </ns4:description>
     <ns4:toolTipText xml:lang="en">pKiss</ns4:toolTipText>
     <ns4:keywords xml:lang="en"></ns4:keywords>
@@ -30,8 +31,9 @@ Germany</ns4:adress>
             <ns4:name xml:lang="en">RNA sequence(s)</ns4:name>
             <ns4:shortDescription xml:lang="en">RNA primary sequence(s)</ns4:shortDescription>
             <ns4:description xml:lang="en">
-                <ns2:p>
-A (multiple) FASTA file, containing RNA primary sequences.</ns2:p>
+                
+    <ns3:p>
+A (multiple) FASTA file, containing RNA primary sequences.</ns3:p>
             </ns4:description>
             <ns4:type>Fasta_DNA</ns4:type>
             <ns4:handling>stdin</ns4:handling>
@@ -41,38 +43,41 @@ A (multiple) FASTA file, containing RNA primary sequences.</ns2:p>
             <ns4:name xml:lang="en">pKiss output</ns4:name>
             <ns4:shortDescription xml:lang="en">output of pKiss</ns4:shortDescription>
             <ns4:description xml:lang="en">
-                <ns2:p>
-missing description</ns2:p>
+                
+    <ns3:p>
+missing description</ns3:p>
             </ns4:description>
             <ns4:type>ToolDependentRepresentation</ns4:type>
             <ns4:handling>stdout</ns4:handling>
         </ns4:output>
+        <ns4:param id="pkiss_parameter_window_size">
+            <ns4:name xml:lang="en">window size</ns4:name>
+            <ns4:shortDescription xml:lang="en">Activates window mode and computes substrings of size &lt;int&gt; for the input. After computation for the first &lt;int&gt; bases is done, the window is pushed &lt;y&gt; bases to the right and the next computation is startet. &lt;y&gt; is set by --windowIncrement.&#xD;
+					   &lt;int&gt; must be a non-zero positive integer, smaller than the input length.</ns4:shortDescription>
+            <ns4:description xml:lang="en">
+                
+    <ns3:p>
+missing Description</ns3:p>
+            </ns4:description>
+            <ns4:type>int</ns4:type>
+            <ns4:option>--windowSize=</ns4:option>
+            <ns4:min included="false">1.0</ns4:min>
+            <ns4:guiElement>INPUTTEXT</ns4:guiElement>
+        </ns4:param>
         <ns4:param id="pkiss_parameter_window_increment">
             <ns4:name xml:lang="en">window increment</ns4:name>
             <ns4:shortDescription xml:lang="en">If --windowSize is given, this parameter sets the offset for the next window to &lt;int&gt; bases.&#xD;
                             &lt;int&gt; must be a non-zero positive integer, smaller or equal to --windowSize.&#xD;
 						    Default is 1.</ns4:shortDescription>
             <ns4:description xml:lang="en">
-                <ns2:p>
-missing Description</ns2:p>
+                
+    <ns3:p>
+missing Description</ns3:p>
             </ns4:description>
             <ns4:type>int</ns4:type>
             <ns4:option>--windowIncrement=</ns4:option>
             <ns4:defaultValue>1</ns4:defaultValue>
             <ns4:min included="true">1.0</ns4:min>
-            <ns4:guiElement>INPUTTEXT</ns4:guiElement>
-        </ns4:param>
-        <ns4:param id="pkiss_parameter_window_size">
-            <ns4:name xml:lang="en">window size</ns4:name>
-            <ns4:shortDescription xml:lang="en">Activates window mode and computes substrings of size &lt;int&gt; for the input. After computation for the first &lt;int&gt; bases is done, the window is pushed &lt;y&gt; bases to the right and the next computation is startet. &lt;y&gt; is set by --windowIncrement.&#xD;
-					   &lt;int&gt; must be a non-zero positive integer, smaller than the input length.</ns4:shortDescription>
-            <ns4:description xml:lang="en">
-                <ns2:p>
-missing Description</ns2:p>
-            </ns4:description>
-            <ns4:type>int</ns4:type>
-            <ns4:option>--windowSize=</ns4:option>
-            <ns4:min included="false">1.0</ns4:min>
             <ns4:guiElement>INPUTTEXT</ns4:guiElement>
         </ns4:param>
         <ns4:function id="pkiss_function_mfe">
@@ -87,8 +92,9 @@ Computes the single energetically most stable secondary structure for the given 
                 <ns4:name xml:lang="en">window mode</ns4:name>
                 <ns4:shortDescription xml:lang="en">window mode</ns4:shortDescription>
                 <ns4:description xml:lang="en">
-                    <ns2:p>
-missing description</ns2:p>
+                    
+    <ns3:p>
+missing description</ns3:p>
                 </ns4:description>
                 <ns4:paramref ref="pkiss_parameter_window_size"/>
                 <ns4:paramref ref="pkiss_parameter_window_increment"/>
@@ -101,18 +107,19 @@ missing description</ns2:p>
             </ns4:paramAndInputOutputOrder>
         </ns4:function>
     </ns4:executable>
-    <ns4:view type="submission" id="pkiss_submission">
+    <ns4:view type="submission" id="pkiss_view_submission">
         <ns4:title>Submission</ns4:title>
     </ns4:view>
     <ns4:manual id="pkiss_manual_manual">
         <ns4:introductoryText xml:lang="en">
-            <ns2:p>
-missing manual intro</ns2:p>
+            
+    <ns3:p>
+missing manual intro</ns3:p>
         </ns4:introductoryText>
         <ns4:customContent xml:lang="en">
-            <ns2:p>
-missing content</ns2:p>
+            
+    <ns3:p>
+missing content</ns3:p>
         </ns4:customContent>
     </ns4:manual>
-    
 </ns4:runnableItem>
