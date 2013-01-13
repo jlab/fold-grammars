@@ -4,17 +4,17 @@ sub getPath {
 	my ($url) = @_;
 	my @parts = split(m|/|, $url);
 	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
 	return join('/', @parts).'/';
 }
 
-use lib "../";
-use lib getPath($0)."../";
+use lib getPath($0)."../site_perl/";
 
 use strict;
 use warnings;
 use Data::Dumper;
 use Getopt::Long;
-use PerlUtils;
+use foldGrammars::PerlUtils;
 
 
 our $MODE_MFE = 'mfe';

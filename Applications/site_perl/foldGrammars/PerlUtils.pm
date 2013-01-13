@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-use PerlSettings;
+use foldGrammars::PerlSettings;
 use strict;
 use warnings;
 
