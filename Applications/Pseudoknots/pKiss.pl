@@ -14,7 +14,6 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Getopt::Long;
-use Clone qw(clone);
 use PerlUtils;
 
 
@@ -70,7 +69,11 @@ my $defaults = {
 	$PARAM_PROBDECIMALS => 7,
 };
 
-my $settings = clone $defaults;
+#clone $defaults;
+	my $settings = {};
+	foreach my $key (keys %{$defaults}) {
+		$settings->{$key} = $defaults->{$key};
+	}
 
 &GetOptions( 	
 	$PARAM_MODE."=s" => \$settings->{$PARAM_MODE},
