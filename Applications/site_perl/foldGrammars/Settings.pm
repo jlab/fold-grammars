@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-package PerlSettings;
+package Settings;
 
 our $rootDir = '/home/sjanssen/Desktop/fold-grammars/'; #must point to the root directory of the fold-grammars repository!
 

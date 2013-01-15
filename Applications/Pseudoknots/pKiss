@@ -14,7 +14,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Getopt::Long;
-use foldGrammars::PerlUtils;
+use foldGrammars::Utils;
 use POSIX 'isatty';
 
 our $MODE_MFE = 'mfe';
@@ -107,13 +107,13 @@ checkParameters($settings, $defaults);
 #we have four ways of providing the input: 1) its not piped and a file of that name exists 2) its not piped but no filename exists, thus must be a plain sequence 3+4) we receive things from a pipe, which might be a plain sequence or a (multiple) fasta file
 if ( !(isatty(*STDIN)) ) {
 	#~ print "data from STDIN:\n";
-	PerlUtils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings, $defaults);
+	Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings, $defaults);
 } else {
 	#~ print "data from argv:\n";
 	usage($defaults) if ((defined $settings->{$PARAM_HELP}) || (@ARGV != 1));
 	my ($input) = @ARGV;
 	if (-e $input) {
-		PerlUtils::applyFunctionToFastaFile($input, \&doComputation, $settings, $defaults);
+		Utils::applyFunctionToFastaFile($input, \&doComputation, $settings, $defaults);
 	} else {
 		my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
 		doComputation(\%sequence, $settings, $defaults);
@@ -447,7 +447,7 @@ sub checkParameters {
 	
 	die $diePrefix."--$PARAM_ABSOLUTEDEVIATION and --$PARAM_RELATIVEDEVIATION cannot be set at the same time!\n" if ((defined $settings->{$PARAM_ABSOLUTEDEVIATION}) && ($settings->{$PARAM_RELATIVEDEVIATION} != $defaults->{$PARAM_RELATIVEDEVIATION}));
 	
-	my ($programPath, $programName) = @{PerlUtils::separateDirAndFile($0)};
+	my ($programPath, $programName) = @{Utils::separateDirAndFile($0)};
 	$programPath = "./" if (not defined $programPath);
 	$settings->{$PARAM_BINARYPATH} = $programPath if (not defined $settings->{$PARAM_BINARYPATH});
 	foreach my $mode ($MODE_MFE, $MODE_SUBOPT, $MODE_ENFORCE, $MODE_LOCAL, $MODE_SHAPE, $MODE_PROBS) {
