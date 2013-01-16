@@ -314,3 +314,13 @@ algebra alg_pknot_pfunc implements sig_pknot_foldrna(alphabet = char, comp = dou
 }
 
 
+// one might have the idea to create a sampling instance for pseudoknots. But this seems to be impossible for kissing hairpins, at least for strategies A to C, because they relay on previously computed csrPK components. But with sampling they most probably haven't been computed. Thus, only strategy D and P are trackable with sampling. D is so slow that a forward shape probability computation with A is faster!
+//~ algebra alg_pknot_pfunc_id extends alg_pknot_pfunc {
+  //~ choice [double] h([double] i) {
+    //~ return i;
+  //~ }
+
+  //~ choice [answer_pknot_pfunc] hKnot([answer_pknot_pfunc] i) {
+    //~ return i;
+  //~ }
+//~ }

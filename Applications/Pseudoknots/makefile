@@ -21,20 +21,19 @@ else
 	windowmodeflag=
 	current_windowmodesuffix=
 endif
-perllib=$(shell $(PERL) -V:installsitelib | cut -d "'" -f 2)
 
 install:
-	install -d $(perllib)/foldGrammars
-	for file in ../site_perl/foldGrammars/*; do \
-		install -m 644 $$file $(perllib)/foldGrammars; \
-	done
-	
 	install -d $(PREFIX)/bin
+	install -d $(PREFIX)/lib
+	install -d $(PREFIX)/lib/foldGrammars
+	for file in ../site_perl/foldGrammars/*; do \
+		install -m 644 $$file $(PREFIX)/lib/foldGrammars; \
+	done
 	for file in $(targets); do \
 		install -m 755 $(PROGRAMPREFIX)$${file} $(PREFIX)/bin; \
 		install -m 755 $(PROGRAMPREFIX)$${file}$(WINDOWSUFFIX) $(PREFIX)/bin; \
 	done
-	install -m 755 pKiss.pl $(PREFIX)/bin
+	install -m 755 pKiss $(PREFIX)/bin
 	
 	
 all: all_normal all_window clean

@@ -8,7 +8,7 @@ sub getPath {
 	return join('/', @parts).'/';
 }
 
-use lib getPath($0)."../site_perl/";
+use lib getPath($0)."../lib/";
 
 use strict;
 use warnings;
