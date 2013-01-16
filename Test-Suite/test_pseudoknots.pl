@@ -1,9 +1,9 @@
 #!/usr/bin/env perl
 
-use lib "../Applications/";
+use lib "../Applications/lib/";
 
-use PerlSettings;
-use PerlUtils;
+use foldGrammars::Settings;
+use foldGrammars::Utils;
 use strict;
 use warnings;
 use Data::Dumper;
@@ -20,11 +20,11 @@ qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 
 #add your testest below this line!
 
-#~ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp pknotsRG",   "-s P -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pknotsRG.out");
-#~ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy A", "-s A -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissA.out");
-#~ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy B", "-s B -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissB.out");
-#~ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissC.out");
-#~ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
+checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp pknotsRG",   "-s P -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pknotsRG.out");
+checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy A", "-s A -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissA.out");
+checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy B", "-s B -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissB.out");
+checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissC.out");
+checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
 checkParameters("pseudoknots parameter check", $TMPDIR."/".$PROGRAMPREFIX."mfe", "pseudoknots.parametercheck.out");
 checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
 
@@ -136,7 +136,7 @@ sub checkPseudoknotMFEPP {
 	
 	print "\trun on sequences: ";
 	open (OUT, "> ".$TMPDIR."/".$truth) || die "error on writing test output file '$TMPDIR/$truth': $!\n";
-		PerlUtils::applyFunctionToFastaFile($infile, \&runProg, $TMPDIR."/".$PROGRAMPREFIX."mfe", $runParameters);
+		Utils::applyFunctionToFastaFile($infile, \&runProg, $TMPDIR."/".$PROGRAMPREFIX."mfe", $runParameters);
 	close (OUT);
 	print " done.\n";
 
@@ -185,7 +185,12 @@ sub compileMFE {
 	unless (-e $TMPDIR."/".$PROGRAMPREFIX.$program) {
 		print "\tcompiling binary ...";
 		qx(cp ../Applications/Pseudoknots/makefile $TMPDIR/);
-		qx(cd $TMPDIR && make $program RNAOPTIONSPERLSCRIPT=../../Applications/addRNAoptions.pl);
+		my $makeWindowMode = "";
+		if ($program =~ m/(.+?)_window$/) {
+			$program = $1;
+			$makeWindowMode = 'window="yes"';
+		}
+		qx(cd $TMPDIR && make $program $makeWindowMode RNAOPTIONSPERLSCRIPT=../../Applications/addRNAoptions.pl);
 		print " done.\n";
 	}
 }

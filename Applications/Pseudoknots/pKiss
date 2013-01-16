@@ -104,13 +104,21 @@ my $sequenceNumber = 0;
 
 checkParameters($settings, $defaults);
 
-#we have four ways of providing the input: 1) its not piped and a file of that name exists 2) its not piped but no filename exists, thus must be a plain sequence 3+4) we receive things from a pipe, which might be a plain sequence or a (multiple) fasta file
-if ( !(isatty(*STDIN)) ) {
-	#~ print "data from STDIN:\n";
-	Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings, $defaults);
+if (@ARGV == 0) {
+	if (isatty(*STDIN)) {
+		print "waiting for your plain RNA sequence or fasta filename.\n";
+		my $input = <STDIN>; chomp $input;
+		if (-e $input) {
+			Utils::applyFunctionToFastaFile($input, \&doComputation, $settings, $defaults);
+		} else {
+			my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
+			doComputation(\%sequence, $settings, $defaults);
+		}
+	} else {
+		Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings, $defaults);
+	}
 } else {
-	#~ print "data from argv:\n";
-	usage($defaults) if ((defined $settings->{$PARAM_HELP}) || (@ARGV != 1));
+	usage($defaults) if ((defined $settings->{$PARAM_HELP}) || (@ARGV > 1));
 	my ($input) = @ARGV;
 	if (-e $input) {
 		Utils::applyFunctionToFastaFile($input, \&doComputation, $settings, $defaults);
