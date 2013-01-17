@@ -43,6 +43,17 @@
 	inline unsigned int getWindowIncrement() {
 		return gapc::Opts::getOpts()->window_increment;
 	}
+#ifdef ALIGNMENT
+	inline static float getAlifold_cfactor() {
+		return gapc::Opts::getOpts()->alifold_cfactor;
+	}
+	inline static float getAlifold_nfactor() {
+		return gapc::Opts::getOpts()->alifold_nfactor;
+	}
+	inline static float getAlifold_minscore_basepair() {
+		return gapc::Opts::getOpts()->alifold_minscore_basepair;
+	}
+#endif
 #else
 	//if compiled with no special options to ask for energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy.
 	inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
@@ -80,6 +91,17 @@
 	inline unsigned int getWindowIncrement() {
 		return 1;
 	}
+#ifdef ALLIGNMENT
+	inline static float getAlifold_cfactor() {
+		return 1.0;
+	}
+	inline static float getAlifold_nfactor() {
+		return 1.0;
+	}
+	inline static float getAlifold_minscore_basepair() {
+		return -200;
+	}
+#endif
 #endif
 	
 #endif //RNAOPTIONS_DEFAULTS_HH

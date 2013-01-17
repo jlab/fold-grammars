@@ -1,32 +1,26 @@
-pkiss (2.0.7-0ubuntu1) lucid; urgency=low
+pkiss (2.0.8-0ubuntu1~quantal1) quantal; urgency=low
 
   * formatted the usage message AND corrected the STDIN handling.
 
- -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 17 Jan 2013 17:32:41 +0100
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 17 Jan 2013 18:08:43 +0100
 
-pkiss (2.0.6-0ubuntu1) quantal; urgency=low
-
-  * formatted the usage message AND corrected the STDIN handling.
-
- -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 17 Jan 2013 17:19:37 +0100
-
-pkiss (2.0.6-0ubuntu1) precise; urgency=low
+pkiss (2.0.8-0ubuntu1~precise1) precise; urgency=low
 
   * formatted the usage message AND corrected the STDIN handling.
 
- -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 17 Jan 2013 17:19:23 +0100
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 17 Jan 2013 18:08:29 +0100
 
-pkiss (2.0.6-0ubuntu1) oneiric; urgency=low
-
-  * formatted the usage message AND corrected the STDIN handling.
-
- -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 17 Jan 2013 17:19:10 +0100
-
-pkiss (2.0.6-0ubuntu1) lucid; urgency=low
+pkiss (2.0.8-0ubuntu1~oneiric1) oneiric; urgency=low
 
   * formatted the usage message AND corrected the STDIN handling.
 
- -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 17 Jan 2013 17:18:23 +0100
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 17 Jan 2013 18:07:10 +0100
+
+pkiss (2.0.8-0ubuntu1~lucid1) lucid; urgency=low
+
+  * formatted the usage message AND corrected the STDIN handling.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 17 Jan 2013 18:06:24 +0100
 
 pkiss (2.0.5-0ubuntu1) precise; urgency=low
 
