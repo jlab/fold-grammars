@@ -26,7 +26,7 @@ install:
 	install -d $(PREFIX)/bin
 	install -d $(PREFIX)/lib
 	install -d $(PREFIX)/lib/foldGrammars
-	for file in ../site_perl/foldGrammars/*; do \
+	for file in ../lib/foldGrammars/*; do \
 		install -m 644 $$file $(PREFIX)/lib/foldGrammars; \
 	done
 	for file in $(targets); do \
