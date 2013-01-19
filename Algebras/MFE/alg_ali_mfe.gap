@@ -55,7 +55,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar)
     mfecovar res = x;
     
 	res.mfe = res.mfe + (sr_energy(lb, rb) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i, cfactor, nfactor);
+	res.covar = res.covar + covscore(lb, lb.i, rb.i);
 
     return res;
   }
@@ -63,7 +63,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar)
     mfecovar res;
     
 	res.mfe = (hl_energy(r) / float(rows(r)));
-	res.covar = covscore(lb, lb.i, rb.i, cfactor, nfactor);
+	res.covar = covscore(lb, lb.i, rb.i);
 
     return res;
   }
@@ -71,7 +71,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar)
     mfecovar res = x;
     
 	res.mfe = res.mfe + (bl_energy(lr, rb) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i, cfactor, nfactor);
+	res.covar = res.covar + covscore(lb, lb.i, rb.i);
 
     return res;
   }
@@ -79,7 +79,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar)
     mfecovar res = x;
     
 	res.mfe = res.mfe + (br_energy(lb, rr) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i, cfactor, nfactor);
+	res.covar = res.covar + covscore(lb, lb.i, rb.i);
 
     return res;
   }
@@ -87,8 +87,8 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar)
     mfecovar res = x;
     
 	res.mfe = res.mfe + (il_energy(lr, rr) / float(rows(lr)));
-	if (lr.j-lr.i + rr.j-rr.i > 30) { res.mfe = 99999; } // ugly hack to realize a filter that rejects internal loops whose combined unpaired loop regions exeed 30 bases. Grammar filter causes errors with --kbacktrace. Georg and I don't know why.
-    res.covar = res.covar + covscore(lb, lb.i, rb.i, cfactor, nfactor);
+	//~ if (lr.j-lr.i + rr.j-rr.i > 30) { res.mfe = 99999; } // ugly hack to realize a filter that rejects internal loops whose combined unpaired loop regions exeed 30 bases. Grammar filter causes errors with --kbacktrace. Georg and I don't know why.
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
 
     return res;
   }
@@ -96,7 +96,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar)
     mfecovar res = x;
     
 	res.mfe = res.mfe + ml_energy() + ul_energy() + ((termau_energy(lb, rb) + dli_energy(lb, rb)) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i, cfactor, nfactor);
+	res.covar = res.covar + covscore(lb, lb.i, rb.i);
 
     return res;
   }
@@ -104,7 +104,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar)
     mfecovar res = x;
     
 	res.mfe = res.mfe + ml_energy() + ul_energy() + ((termau_energy(lb, rb) + dri_energy(lb, rb)) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i, cfactor, nfactor);
+	res.covar = res.covar + covscore(lb, lb.i, rb.i);
 
     return res;
   }
@@ -112,7 +112,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar)
     mfecovar res = x;
     
 	res.mfe = res.mfe + ml_energy() + ul_energy() + ((termau_energy(lb, rb) + ml_mismatch_energy(lb, rb)) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i, cfactor, nfactor);
+	res.covar = res.covar + covscore(lb, lb.i, rb.i);
 
     return res;
   }
@@ -120,7 +120,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar)
     mfecovar res = x;
     
 	res.mfe = res.mfe + ml_energy() + ul_energy() + (termau_energy(lb, rb) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i, cfactor, nfactor);
+	res.covar = res.covar + covscore(lb, lb.i, rb.i);
 
     return res;
   }
@@ -163,4 +163,10 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar)
   mfecovar cadd_Pr_Pr_Pr(mfecovar le,mfecovar re) {mfecovar x; return x;}
   mfecovar cadd_Pr_Pr(mfecovar le,mfecovar re) {mfecovar x; return x;}
   mfecovar cadd_Pr(mfecovar le,mfecovar re) {mfecovar x; return x;}
+}
+
+algebra alg_ali_mfe_subopt extends alg_ali_mfe {
+  kscoring choice [mfecovar] h([mfecovar] i) {
+    return mfeSuboptAli(i);
+  }
 }

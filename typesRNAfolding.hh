@@ -80,6 +80,167 @@ inline uint32_t hashable_value(const answer_pknot_mfe& candidate) {
 
 
 
+struct mfecovar{
+	bool empty_;
+	float mfe;
+	float covar;
+
+	mfecovar() : empty_(false) {
+	}
+
+	mfecovar(int i) : empty_(false) {
+	}
+
+	mfecovar& operator+=(const mfecovar &a) {
+		mfe += a.mfe;
+		covar += a.covar;
+		return *this;
+	}
+};
+
+inline uint32_t hashable_value(const mfecovar& candidate) {
+  return candidate.covar+candidate.mfe; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
+}
+
+//inline int getEnergy(const mfecovar &x) {
+//	return x.mfe;
+//}
+inline std::ostream &operator<<(std::ostream &s, const mfecovar &pfa) {
+	//s << "(firststem: " << pfa.firststem << ", subword: " << pfa.subword << ", pf: "  << pfa.pf << ")";
+			if (pfa.empty_)
+			  s << 'E';
+			else
+			  s << "( " << pfa.mfe + pfa.covar << " = " << pfa.mfe << " + " << pfa.covar << " )";
+	return s;
+}
+
+inline bool operator==(const mfecovar &a, const mfecovar &b) {
+ //~ std::cerr << "XXX\n";
+	return fabs(a.mfe+a.covar-b.mfe-b.covar) <= 0.001;
+	//~ return fabs(a.mfe-b.mfe) <= 0.001;
+}
+inline bool operator!=(const mfecovar &a, const mfecovar &b) {
+	return !(a == b);
+}
+inline bool operator>(const mfecovar &a, const mfecovar &b) {
+	return (a.mfe+a.covar) > (b.mfe+b.covar);
+	//~ return (a.mfe) > (b.mfe);
+}
+inline bool operator<(const mfecovar &a, const mfecovar &b) {
+	return (a.mfe+a.covar) < (b.mfe+b.covar);
+	//~ return (a.mfe) < (b.mfe);
+}
+inline bool operator>=(const mfecovar &a, const mfecovar &b) {
+	return (a.mfe+a.covar) >= (b.mfe+b.covar);
+	//~ return (a.mfe) >= (b.mfe);
+}
+inline bool operator<=(const mfecovar &a, const mfecovar &b) {
+	return (a.mfe+a.covar) <= (b.mfe+b.covar);
+	//~ return (a.mfe) <= (b.mfe);
+}
+inline mfecovar operator+(const mfecovar &a, const mfecovar &b) {
+	mfecovar res;
+	res.mfe = a.mfe + b.mfe;
+	res.covar = a.covar + b.covar;
+	return res;
+}
+
+inline void empty(mfecovar &e) {e.empty_ = true; }
+inline bool is_empty(const mfecovar &e) { return e.empty_; }
+
+
+
+
+
+typedef Basic_Subsequence<M_Char, unsigned> myTUSubsequence;
+struct mfecovar_macrostate {
+  float mfe;
+  float covar;
+  myTUSubsequence firstStem;
+  myTUSubsequence lastStem;
+  bool empty_;
+  mfecovar_macrostate() : empty_(false) {}
+
+};
+
+inline std::ostream &operator<<(std::ostream &s, const mfecovar_macrostate &tuple) {
+  if (tuple.empty_)
+    s << 'E';
+  else
+    s << "( " << tuple.mfe + tuple.covar << " = " << tuple.mfe << " + " << tuple.covar << " )";
+  return s;
+}
+
+inline bool operator==(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return fabs(a.mfe+a.covar-b.mfe-b.covar) <= 0.001;
+}
+inline bool operator!=(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return !(a == b);
+}
+inline bool operator>(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return (a.mfe+a.covar) > (b.mfe+b.covar);
+}
+inline bool operator<(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return (a.mfe+a.covar) < (b.mfe+b.covar);
+}
+inline bool operator>=(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return (a.mfe+a.covar) >= (b.mfe+b.covar);
+}
+inline bool operator<=(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	return (a.mfe+a.covar) <= (b.mfe+b.covar);
+}
+inline mfecovar_macrostate operator+(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
+	mfecovar_macrostate res;
+	res.mfe = a.mfe + b.mfe;
+	res.covar = a.covar + b.covar;
+	res.firstStem = a.firstStem;
+	res.lastStem = b.lastStem;
+	return res;
+}
+
+inline void empty(mfecovar_macrostate &e) {e.empty_ = true; }
+inline bool is_empty(const mfecovar_macrostate &e) { return e.empty_; }
+
+inline uint32_t hashable_value(const mfecovar_macrostate& candidate) {
+  return candidate.covar+candidate.mfe; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
+}
+
+
+/*
+   With the MacroState grammar there are some ambiguous situations where it is not quite clear how a single unpaired base might dangle. Since we analyse the whole searchspace, we have to account for all candidates. The most complex situation arises for "mladlr", where two unpaired bases X and Y inside of a multiloop might separatly dangle to the closing stem (from inside) or to the first (or last) enclosed stem. Problem is, that we don't know the pairing partner of those enclosed stems, we only know one base of the pair (first 5' base for leftmost stem = F, last 3' base for rightmost stem = T). But the other can be determined by basepairing rules, hindered by additional wobble pairs. Thus we have the four possibilities:
+    q1) F forms a Watson Crick Pair (WC), T forms a WC
+    q2) F froms WS, T forms a wobble pair (WOB)
+    q3) F forms WOB, T forms WC
+    q4) F forms WOB, T forms WOB
+   This split of the partition function for the search space must be revoked on a later operation.
+   At some other situations a similar trick is applied, but for less possibilities; thus the qx don't always mean the same!
+*/
+struct pftuple{
+  double q1;
+  double q2;
+  double q3;
+  double q4;
+
+  pftuple() : q1(0.0), q2(0.0), q3(0.0), q4(0.0) {
+  }
+
+  pftuple(double a, double b, double c, double d) : q1(a), q2(b), q3(c), q4(d) {
+  }
+
+  pftuple& operator+=(const pftuple &a) {
+    q1 += a.q1;
+    q2 += a.q2;
+    q3 += a.q3;
+    q4 += a.q4;
+    return *this;
+  }
+};
+
+inline std::ostream &operator<<(std::ostream &s, const pftuple &pf) {
+  s << "(" << pf.q1 << ", " << pf.q2 << ", " << pf.q3 << ", " << pf.q4 << ")";
+  return s;
+}
+
 struct answer_pknot_pfunc {
 	double pfunc;
 	int betaLeftOuter;
@@ -165,11 +326,108 @@ inline double operator+=(double a, const answer_pknot_pfunc &b) {
 	return a;
 }
 
+struct answer_ali_pfunc{
+	bool empty_;
+	double pfunc;
+	double covar;
+
+	answer_ali_pfunc() : empty_(false) {
+	}
+
+	answer_ali_pfunc(int i) : empty_(false) {
+	}
+
+	answer_ali_pfunc& operator+=(const answer_ali_pfunc &a) {
+		pfunc += a.pfunc;
+		covar += a.covar;
+		return *this;
+	}
+};
+
+inline std::ostream &operator<<(std::ostream &s, const answer_ali_pfunc &pfa) {
+	if (pfa.empty_)
+	  s << 'E';
+	else
+	  s << "( " << pfa.pfunc + pfa.covar << " = " << pfa.pfunc << " + " << pfa.covar << " )";
+	return s;
+}
+
+//inline bool operator==(const answer_ali_pfunc &a, const answer_ali_pfunc &b) {
+// //~ std::cerr << "XXX\n";
+//	return fabs(a.mfe+a.covar-b.mfe-b.covar) <= 0.001;
+//	//~ return fabs(a.mfe-b.mfe) <= 0.001;
+//}
+//inline bool operator!=(const mfecovar &a, const mfecovar &b) {
+//	return !(a == b);
+//}
+//inline bool operator>(const mfecovar &a, const mfecovar &b) {
+//	return (a.mfe+a.covar) > (b.mfe+b.covar);
+//	//~ return (a.mfe) > (b.mfe);
+//}
+//inline bool operator<(const mfecovar &a, const mfecovar &b) {
+//	return (a.mfe+a.covar) < (b.mfe+b.covar);
+//	//~ return (a.mfe) < (b.mfe);
+//}
+//inline bool operator>=(const mfecovar &a, const mfecovar &b) {
+//	return (a.mfe+a.covar) >= (b.mfe+b.covar);
+//	//~ return (a.mfe) >= (b.mfe);
+//}
+//inline bool operator<=(const mfecovar &a, const mfecovar &b) {
+//	return (a.mfe+a.covar) <= (b.mfe+b.covar);
+//	//~ return (a.mfe) <= (b.mfe);
+//}
+//inline mfecovar operator+(const mfecovar &a, const mfecovar &b) {
+//	mfecovar res;
+//	res.mfe = a.mfe + b.mfe;
+//	res.covar = a.covar + b.covar;
+//	return res;
+//}
+
+inline void empty(answer_ali_pfunc &e) {e.empty_ = true; }
+inline bool is_empty(const answer_ali_pfunc &e) { return e.empty_; }
+
+struct answer_ali_pfunc_macrostate {
+  bool empty_;
+  Basic_Subsequence<M_Char, unsigned> firststem; //position of the leftmost stem in according sequence
+  pftuple pfunc; //partition function answer tuple
+  pftuple covar;
+
+  answer_ali_pfunc_macrostate() : empty_(false) {
+  }
+
+  answer_ali_pfunc_macrostate(int i) : empty_(false) {
+  }
+
+  answer_ali_pfunc_macrostate& operator+=(const answer_ali_pfunc_macrostate &a) {
+    firststem = a.firststem;
+    pfunc += a.pfunc;
+    covar += a.covar;
+    return *this;
+  }
+};
+
+inline std::ostream &operator<<(std::ostream &s, const answer_ali_pfunc_macrostate &pfa) {
+  if (pfa.empty_) {
+    s << 'E';
+  } else {
+    s << "( pfunc: " << pfa.pfunc.q1 << " , covar: " << pfa.covar.q1 << ")";
+  }
+  return s;
+}
+
+inline void empty(answer_ali_pfunc_macrostate &e) {
+  e.empty_ = true;
+}
+
+inline bool is_empty(const answer_ali_pfunc_macrostate &e) {
+  return e.empty_;
+}
+
 
 struct answer_macrostate_mfe {
 	int energy;
-	TUSubsequence firstStem;
-	TUSubsequence lastStem;
+	myTUSubsequence firstStem;
+	myTUSubsequence lastStem;
 	bool empty_;
 	answer_macrostate_mfe() : empty_(false) {
 	}
@@ -238,41 +496,6 @@ inline bool is_empty(const answer_macrostate_mfe &e) {
 	return e.empty_;
 }
 
-
-/*
-   With the MacroState grammar there are some ambiguous situations where it is not quite clear how a single unpaired base might dangle. Since we analyse the whole searchspace, we have to account for all candidates. The most complex situation arises for "mladlr", where two unpaired bases X and Y inside of a multiloop might separatly dangle to the closing stem (from inside) or to the first (or last) enclosed stem. Problem is, that we don't know the pairing partner of those enclosed stems, we only know one base of the pair (first 5' base for leftmost stem = F, last 3' base for rightmost stem = T). But the other can be determined by basepairing rules, hindered by additional wobble pairs. Thus we have the four possibilities:
-    q1) F forms a Watson Crick Pair (WC), T forms a WC
-    q2) F froms WS, T forms a wobble pair (WOB)
-    q3) F forms WOB, T forms WC
-    q4) F forms WOB, T forms WOB
-   This split of the partition function for the search space must be revoked on a later operation.
-   At some other situations a similar trick is applied, but for less possibilities; thus the qx don't always mean the same!
-*/
-struct pftuple{
-  double q1;
-  double q2;
-  double q3;
-  double q4;
-
-  pftuple() : q1(0.0), q2(0.0), q3(0.0), q4(0.0) {
-  }
-
-  pftuple(double a, double b, double c, double d) : q1(a), q2(b), q3(c), q4(d) {
-  }
-
-  pftuple& operator+=(const pftuple &a) {
-    q1 += a.q1;
-    q2 += a.q2;
-    q3 += a.q3;
-    q4 += a.q4;
-    return *this;
-  }
-};
-
-inline std::ostream &operator<<(std::ostream &s, const pftuple &pf) {
-  s << "(" << pf.q1 << ", " << pf.q2 << ", " << pf.q3 << ", " << pf.q4 << ")";
-  return s;
-}
 
 #include "rtlib/string.hh"
 struct answer_macrostate_pfunc {
@@ -354,7 +577,7 @@ inline double sum_elems(const pftuple &pf) {
 }
 
 /*
-   Copes with the ambiguous situation "ambd" where a single unpaired base either dangles to an adjacent stem to the left XOR to the right. Unfortunately, we don't know the opening basepair partner of the left stem. We can infere it via basepair rules, hindered by the wobble pairs GU and UG. This we have two situations:
+   Copes with the ambiguous situation "ambd" where a single unpaired base either dangles to an adjacent stem to the left XOR to the right. Unfortunately, we don't know the opening basepair partner of the left stem. We can infere it via basepair rules, hindered by the wobble pairs GU and UG. Thus, we have two situations:
     a) the basal basepair for the left stem is a Watson-Crick pair (AU, UA, CG, GC) or
     b) it is a wobble pair (AU,UA,UG,GU)
    "check_tuple" assures that all parts of the partition function are combined in the correct way (a or b).
@@ -362,6 +585,16 @@ inline double sum_elems(const pftuple &pf) {
 inline double check_tuple(double qleft, const Subsequence &firststemLeft, const Subsequence &firststemRight, const Subsequence &ambiguousBase, const pftuple &qright) {
   return qleft * (qright.q1 + qright.q2) * mk_pf(min(dr_energy(firststemLeft,firststemLeft), dl_dangle_dg(base_t(ambiguousBase[ambiguousBase.i]), base_t(firststemRight[firststemRight.i]),  wc_comp(base_t(firststemRight[firststemRight.i]))))) +
          qleft * (qright.q3 + qright.q4) * mk_pf(min(dr_energy(firststemLeft,firststemLeft), dl_dangle_dg(base_t(ambiguousBase[ambiguousBase.i]), base_t(firststemRight[firststemRight.i]), wob_comp(base_t(firststemRight[firststemRight.i])))));
+}
+inline double check_tuple(double qleft, const Basic_Subsequence<M_Char, unsigned> &firststemLeft, const Basic_Subsequence<M_Char, unsigned> &firststemRight, const Basic_Subsequence<M_Char, unsigned> &ambiguousBase, const pftuple &qright) {
+  double res = 0.0;
+
+  for (unsigned int i = 0; i < firststemLeft.seq->rows(); i++) {
+	  res += qleft * (qright.q1 + qright.q2) * mk_pf(min(dr_energy(firststemLeft.seq->row(i), firststemLeft.i, firststemLeft.j-1, firststemLeft.seq->n), dl_dangle_dg(base_t(ambiguousBase.seq->row(i)[ambiguousBase.i]), base_t(firststemRight.seq->row(i)[firststemRight.i]),  wc_comp(base_t(firststemRight.seq->row(i)[firststemRight.i]))))) +
+	         qleft * (qright.q3 + qright.q4) * mk_pf(min(dr_energy(firststemLeft.seq->row(i), firststemLeft.i, firststemLeft.j-1, firststemLeft.seq->n), dl_dangle_dg(base_t(ambiguousBase.seq->row(i)[ambiguousBase.i]), base_t(firststemRight.seq->row(i)[firststemRight.i]), wob_comp(base_t(firststemRight.seq->row(i)[firststemRight.i])))));
+  }
+  res /= (double) firststemLeft.seq->rows();
+  return res;
 }
 
 /*
@@ -392,6 +625,37 @@ inline pftuple mk_tuple(const Subsequence &stem, double x) {
   return res;
 }
 
+inline pftuple mk_tuple(const Basic_Subsequence<M_Char, unsigned> &stem, double x) {
+	pftuple res;
+
+	for (unsigned int i = 0; i < stem.seq->rows(); i++) {
+		if ((base_t(stem.seq->row(i)[stem.i]) == G_BASE && base_t(stem.seq->row(i)[stem.j-1]) == U_BASE)
+         || (base_t(stem.seq->row(i)[stem.i]) == U_BASE && base_t(stem.seq->row(i)[stem.j-1]) == G_BASE)) {
+			res.q4 += x;
+		} else {
+			res.q1 += x;
+		}
+	}
+	res.q1 /= (double) stem.seq->rows();
+	res.q2 /= (double) stem.seq->rows();
+	res.q3 /= (double) stem.seq->rows();
+	res.q4 /= (double) stem.seq->rows();
+
+	return res;
+}
+
+inline int getEnergyAtRow(const Basic_Subsequence<M_Char, unsigned> &alignment, unsigned int k, unsigned int energyFkt) {
+	assert(energyFkt >= 1);
+	assert(energyFkt <= 3);
+	if (energyFkt == 1) {
+		return dli_energy(alignment.seq->row(k), alignment.i, alignment.j-1);
+	} else if (energyFkt == 2) {
+		return dri_energy(alignment.seq->row(k), alignment.i, alignment.j-1);
+	} else if (energyFkt == 3) {
+		return ml_mismatch_energy(alignment.seq->row(k), alignment.i, alignment.j-1);
+	}
+	return 0;
+}
 
 /*
    necessary for stochastical backtracing, aka sampling. Because the probabilities are sometimes split over four components, we have to add them all up, when sampling.
@@ -418,6 +682,18 @@ struct PfanswerToDoubleAll {
     return pf.pf.q1 + pf.pf.q2 + pf.pf.q3 + pf.pf.q4;
   }
 };
+
+//for alignments DoubleToDouble
+struct DoubleToDoubleAli {
+  double operator()(answer_ali_pfunc d) const {
+    return d.pfunc + d.covar;
+  }
+};
+template<typename T, typename pos_int>
+inline List_Ref<std::pair<answer_ali_pfunc, T>, pos_int> sample_filter(List_Ref<std::pair<answer_ali_pfunc, T>, pos_int> &x) {
+  return sample_filter(x, DoubleToDoubleAli());
+}
+
 
 // used in macrostate.gap, e.g. for: "instance pfsampleshape5all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape5 ) suchthat sample_filter_pf_all ) ; //compile with --sample !"
 template<typename S, typename T, typename pos_int>

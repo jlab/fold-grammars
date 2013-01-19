@@ -11,7 +11,11 @@ GAPC=gapc
 MAKE=make
 PERL=perl
 
-targets=mfe subopt enforce local shape probs
+targets=mfe subopt shape probs
+grammars=macrostate
+#~ nodangle overdangle microstate macrostate
+consensus=consensus
+#~ consensus mis
 window=
 outname=out
 ifdef window
@@ -26,7 +30,7 @@ install:
 	install -d $(PREFIX)/bin
 	install -d $(PREFIX)/lib
 	install -d $(PREFIX)/lib/foldGrammars
-	for file in ../site_perl/foldGrammars/*; do \
+	for file in ../lib/foldGrammars/*; do \
 		install -m 644 $$file $(PREFIX)/lib/foldGrammars; \
 	done
 	for file in $(targets); do \
@@ -45,38 +49,62 @@ all_window:
 	@ $(foreach var,$(targets), if [ ! -e "$(PROGRAMPREFIX)$(var)$(WINDOWSUFFIX)" ]; then $(MAKE) $(var) window="yes"; fi;)
 	
 mfe:
-	$(GAPC) -I ../../ -p "alg_ali_mfe * (alg_ali_dotBracket * alg_ali_consensus)" ../../ali_nodangle.gap --kbacktrace --no-coopt $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="mfe"
+	for consensus in `echo "$(consensus)"`; do \
+		for grammar in `echo "$(grammars)"`; do \
+			sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+			sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
+			suffix=`echo "$${sOv}$${sMa}"`; \
+			$(GAPC) -I ../../ -p "alg_ali_mfe$${suffix} * (alg_ali_dotBracket * alg_ali_$${consensus})" ../../ali_$${grammar}.gap --kbacktrace --no-coopt $(windowmodeflag) -o $@_$${grammar}_$${consensus}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="mfe_$${grammar}_$${consensus}"; \
+		done; \
+	done
 
 subopt:
-	$(GAPC) -I ../../ -p "alg_pknot_mfe_subopt * alg_pknot_dotBracket" ../../pKiss.gap --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="subopt"
-
-enforce:
-	$(GAPC) -I ../../ -p "(alg_pknot_pktype * alg_pknot_mfe) * alg_pknot_dotBracket" ../../pKiss.gap --kbacktrace --tab-all --no-coopt-class $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="enforce"
-
-local:
-	cp $(GRAMMARFILE) $(GRAMMARFILE).original
-	sed -i "s%axiom = struct%axiom = local%" $(GRAMMARFILE);
-	$(GAPC) -I ../../ -p "alg_pknot_mfe_subopt * alg_pknot_dotBracket" ../../pKiss.gap --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	mv $(GRAMMARFILE).original $(GRAMMARFILE)
-	$(MAKE) compile outname="local"
+	for consensus in `echo "$(consensus)"`; do \
+		for grammar in `echo "$(grammars)"`; do \
+			sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+			sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
+			suffix=`echo "$${sOv}$${sMa}"`; \
+			$(GAPC) -I ../../ -p "alg_ali_mfe_subopt$${suffix} * (alg_ali_dotBracket * alg_ali_$${consensus})" ../../ali_$${grammar}.gap --kbacktrace $(windowmodeflag) -o $@_$${grammar}_$${consensus}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="subopt_$${grammar}_$${consensus}"; \
+		done; \
+	done
 
 shape:
-	$(GAPC) -I ../../ -p "((alg_pknot_shapeX * alg_pknot_mfe) * alg_pknot_dotBracket) suchthat suboptShapeClasses" ../../pKiss.gap --kbacktrace --tab-all --no-coopt-class $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="shape"
+	for consensus in `echo "$(consensus)"`; do \
+		for grammar in `echo "$(grammars)"`; do \
+			sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+			sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
+			suffix=`echo "$${sOv}$${sMa}"`; \
+			$(GAPC) -I ../../ -p "((alg_ali_shapeX * alg_ali_mfe$${suffix}) * (alg_ali_dotBracket * alg_ali_$${consensus})) suchthat suboptShapeClasses" ../../ali_$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}_$${consensus}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="shape_$${grammar}_$${consensus}"; \
+		done; \
+	done
 
 probs:
-	$(GAPC) -I ../../ -p "((alg_pknot_shapeX * (alg_pknot_mfe % alg_pknot_pfunc)) suchthat filterLowProbShapes) * alg_pknot_dotBracket" ../../pKiss.gap --no-coopt-class --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="probs" FASTLIBRNA="LDLIBS=-lrnafast" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA) -ffast-math"
+	for consensus in `echo "$(consensus)"`; do \
+		for grammar in `echo "$(grammars)"`; do \
+			sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+			sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
+			suffix=`echo "$${sOv}$${sMa}"`; \
+			echo $(GAPC) -I ../../ -p "((alg_ali_shapeX * (alg_ali_mfe$${suffix} % alg_ali_pfunc$${suffix})) suchthat filterLowProbShapes) * (alg_ali_dotBracket * alg_ali_mis)" ../../ali_$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}_$${consensus}$(current_windowmodesuffix).cc; \
+			#~ $(MAKE) compile outname="probs_$${grammar}_$${consensus}"; \
+		done; \
+	done
 
+#~ $(GAPC) -I ../../ -p "((alg_ali_shapeX * (alg_ali_mfe % alg_ali_pfunc)) suchthat filterLowProbShapes) * (alg_ali_dotBracket * alg_ali_consensus)" ../../ali_nodangle.gap --no-coopt-class --kbacktrace $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	#~ $(GAPC) -I ../../ -p "((alg_ali_shapeX * (alg_ali_mfe % alg_ali_pfunc)) suchthat filterLowProbShapes) * (alg_ali_dotBracket * alg_ali_mis)" ../../ali_nodangle.gap --no-coopt-class --kbacktrace $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	#~ $(MAKE) compile outname="probs" FASTLIBRNA="LDLIBS=-lrnafast" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA) -ffast-math"
 
+sampleX:
+	#~ $(GAPC) -I ../../ -p "(((alg_ali_pfunc | alg_ali_pfunc_id) * (alg_ali_shapeX * alg_ali_mfe * alg_ali_dotBracket * alg_ali_consensus)) suchthat sample_filter)" ../../ali_nodangle.gap --sample $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	$(GAPC) -I ../../ -p "(((alg_ali_pfunc | alg_ali_pfunc_id) * (alg_ali_shapeX * alg_ali_mfe * alg_ali_dotBracket * alg_ali_mis)) suchthat sample_filter)" ../../ali_nodangle.gap --sample $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	$(MAKE) compile outname="sampleX"
 
 
 compile:
 	$(PERL) $(RNAOPTIONSPERLSCRIPT) $(outname)$(current_windowmodesuffix).mf
-	$(MAKE) -f $(outname)$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I ../../ -I ./ -DALIGNMENT" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
+	$(MAKE) -f $(outname)$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I ../../ -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
 	mv $(outname)$(current_windowmodesuffix) $(PROGRAMPREFIX)$(outname)$(current_windowmodesuffix)
 
 

@@ -1,4 +1,4 @@
-algebra alg_shapeX implements sig_foldrna(alphabet = M_Char, answer = shape_t) {
+algebra alg_ali_shapeX implements sig_foldrna(alphabet = M_Char, answer = shape_t) {
   shape_t sadd(Subsequence b, shape_t x) {
     shape_t emptyShape;
     

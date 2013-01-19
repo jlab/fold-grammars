@@ -3,9 +3,9 @@
 
 #include "rnaoptions_defaults.hh"
 
-static const float cfactor = 1.0; //Set the weight of the covariance term in the energy function (default=`1.0')
-static const float nfactor = 1.0; //Set the penalty for non-compatible sequences in the covariance term of the energy function (default=`1.0')
-static const int MINPSCORE = -200;
+//static const float cfactor = 1.0; //Set the weight of the covariance term in the energy function (default=`1.0')
+//static const float nfactor = 1.0; //Set the penalty for non-compatible sequences in the covariance term of the energy function (default=`1.0')
+//static const int MINPSCORE = -200;
 
 #include <rtlib/table.hh>
 #include <rtlib/rna.hh>
@@ -72,7 +72,7 @@ struct TA {
 
 
 inline
-float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b, float cfactor, float nfactor)
+float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
 {
   typedef Table::Quadratic<float, Table::CYK> table_t;
   static table_t table;
@@ -98,14 +98,14 @@ float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b, flo
         }
 		double score = 0.0;
 		if (pfreq[0]*2+pfreq[7] > int(rows(seq))) { 
-		  array(i,j) = -2.0 * MINPSCORE; 
+		  array(i,j) = -2.0 * getAlifold_minscore_basepair();
 		} else {
 		  for (k=1,score=0; k<=6; k++) { /* ignore pairtype 7 (gap-gap) */
             for (l=k; l<=6; l++) {
               score += pfreq[k]*pfreq[l]*olddm[k][l];
 		    }
 	      }
-          float covariance = cfactor * ((100.0*score)/float(rows(seq)) - nfactor*100.0*(float(pfreq[0]) + float(pfreq[7])*0.25));
+          float covariance = getAlifold_cfactor() * ((100.0*score)/float(rows(seq)) - getAlifold_nfactor()*100.0*(float(pfreq[0]) + float(pfreq[7])*0.25));
 		  array(i,j) = covariance * -1.0/float(rows(seq));
 	    }
 		//~ fprintf(stderr, "cov(%i,%i) = %f\n", i+1,j+1,array(i,j)*-1*float(rows(seq)));
@@ -210,122 +210,9 @@ inline bool basepair(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j)
     return false;
   }
   Basic_Subsequence<alphabet, pos_type> sub(seq, i, j);
-  return float(covscore(sub, int(i), int(j)-1, cfactor, nfactor)*-1*rows(sub)) >= float(MINPSCORE);
+  return float(covscore(sub, int(i), int(j)-1)*-1*rows(sub)) >= float(getAlifold_minscore_basepair());
 }
 
-
-struct mfecovar{
-	bool empty_;
-	float mfe;
-	float covar;
-	
-	mfecovar() : empty_(false) {
-	}
-	
-	mfecovar(int i) : empty_(false) {
-	}
-	
-	mfecovar& operator+=(const mfecovar &a) {
-		mfe += a.mfe;
-		covar += a.covar;
-		return *this;
-	}
-};
-inline std::ostream &operator<<(std::ostream &s, const mfecovar &pfa) {
-	//s << "(firststem: " << pfa.firststem << ", subword: " << pfa.subword << ", pf: "  << pfa.pf << ")";
-			if (pfa.empty_)
-			  s << 'E';
-			else            
-			  s << "( " << pfa.mfe + pfa.covar << " = " << pfa.mfe << " + " << pfa.covar << " )";
-	return s;
-}
-
-inline bool operator==(const mfecovar &a, const mfecovar &b) {
- //~ std::cerr << "XXX\n";
-	return fabs(a.mfe+a.covar-b.mfe-b.covar) <= 0.001;
-	//~ return fabs(a.mfe-b.mfe) <= 0.001;
-}
-inline bool operator!=(const mfecovar &a, const mfecovar &b) {
-	return !(a == b);
-}
-inline bool operator>(const mfecovar &a, const mfecovar &b) {
-	return (a.mfe+a.covar) > (b.mfe+b.covar);
-	//~ return (a.mfe) > (b.mfe);
-}
-inline bool operator<(const mfecovar &a, const mfecovar &b) {
-	return (a.mfe+a.covar) < (b.mfe+b.covar);
-	//~ return (a.mfe) < (b.mfe);
-}
-inline bool operator>=(const mfecovar &a, const mfecovar &b) {
-	return (a.mfe+a.covar) >= (b.mfe+b.covar);
-	//~ return (a.mfe) >= (b.mfe);
-}
-inline bool operator<=(const mfecovar &a, const mfecovar &b) {
-	return (a.mfe+a.covar) <= (b.mfe+b.covar);
-	//~ return (a.mfe) <= (b.mfe);
-}
-inline mfecovar operator+(const mfecovar &a, const mfecovar &b) {
-	mfecovar res;
-	res.mfe = a.mfe + b.mfe;
-	res.covar = a.covar + b.covar;
-	return res;
-}
-
-inline void empty(mfecovar &e) {e.empty_ = true; }
-inline bool is_empty(const mfecovar &e) { return e.empty_; }
-
-
-
-
-
-typedef Basic_Subsequence<M_Char, unsigned> TUSubsequence;
-struct mfecovar_macrostate {
-  float mfe;
-  float covar;
-  TUSubsequence firstStem;
-  TUSubsequence lastStem;
-  bool empty_;
-  mfecovar_macrostate() : empty_(false) {}
-
-};
-
-inline std::ostream &operator<<(std::ostream &s, const mfecovar_macrostate &tuple) {
-  if (tuple.empty_)
-    s << 'E';
-  else            
-    s << "( " << tuple.mfe + tuple.covar << " = " << tuple.mfe << " + " << tuple.covar << " )";
-  return s;
-}
-
-inline bool operator==(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
-	return fabs(a.mfe+a.covar-b.mfe-b.covar) <= 0.001;
-}
-inline bool operator!=(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
-	return !(a == b);
-}
-inline bool operator>(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
-	return (a.mfe+a.covar) > (b.mfe+b.covar);
-}
-inline bool operator<(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
-	return (a.mfe+a.covar) < (b.mfe+b.covar);
-}
-inline bool operator>=(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
-	return (a.mfe+a.covar) >= (b.mfe+b.covar);
-}
-inline bool operator<=(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
-	return (a.mfe+a.covar) <= (b.mfe+b.covar);
-}
-inline mfecovar_macrostate operator+(const mfecovar_macrostate &a, const mfecovar_macrostate &b) {
-	mfecovar_macrostate res;
-	res.mfe = a.mfe + b.mfe;
-	res.covar = a.covar + b.covar;
-	res.firstStem = a.firstStem;
-	res.lastStem = b.lastStem;
-	return res;
-}
-
-inline void empty(mfecovar_macrostate &e) {e.empty_ = true; }
-inline bool is_empty(const mfecovar_macrostate &e) { return e.empty_; }
 
 
 #endif

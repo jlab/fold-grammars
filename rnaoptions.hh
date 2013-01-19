@@ -82,11 +82,9 @@ class Opts {
     char strategy;
     float lowProbabilityFilter;
     unsigned int shapelevel;
-#ifdef ALIGNMENT
     float alifold_cfactor;
     float alifold_nfactor;
     int alifold_minscore_basepair;
-#endif
     bool allowLonelyBasepairs;
 
     Opts()
@@ -110,11 +108,9 @@ class Opts {
     				strategy('A'),
     				lowProbabilityFilter(0.000001),
     				shapelevel(5),
-	#ifdef ALIGNMENT
     				alifold_cfactor(1.0),
     				alifold_nfactor(1.0),
     				alifold_minscore_basepair(-200),
-	#endif
     				allowLonelyBasepairs(false)
     {
     }
@@ -199,14 +195,12 @@ class Opts {
 				<< "   that this filter can have a slight influence on the overall results. To" << std::endl
 				<< "   disable this filter, use option -F 0." << std::endl
 				<< "" << std::endl
-#ifdef ALIGNMENT
 				<< "-C <float-value> Set the weight of the covariance term in the energy function [1.0]" << std::endl
 				<< "" << std::endl
 				<< "-n <float-value> Set the penalty for non-compatible sequences in the covariance term of the energy function [1.0]" << std::endl
 				<< "" << std::endl
 				<< "-m <int-value> fraction of aligned bases in two columns that must be able to actually pair [-200]" << std::endl
 				<< "" << std::endl
-#endif
 				<< "-q <int-value> Set shape abstraction level [5]" << std::endl
 				<< "" << std::endl
 				<< "-u <int-value> 1 = allow lonely base pairs, 0 = don't allow them [0]" << std::endl
@@ -229,9 +223,7 @@ class Opts {
 						"t:T:P:"
 						"c:e:x:y:z:"
 						"s:l:F:q:u:"
-#ifdef ALIGNMENT
 						"n:C:m:" //for alifold parameters nfactor, cfactor and minpscore_basepair
-#endif
 						"hd:r:k:")) != -1) {
 			switch (o) {
 			case 'f':
@@ -323,7 +315,6 @@ class Opts {
 			case 'r':
 				repeats = std::atoi(optarg);
 				break;
-#ifdef ALIGNMENT
 			case 'n':
 				alifold_nfactor = std::atof(optarg);
 				break;
@@ -333,7 +324,6 @@ class Opts {
 			case 'm':
 				alifold_minscore_basepair = std::atoi(optarg);
 				break;
-#endif
 			case '?':
 				case ':':
 				{

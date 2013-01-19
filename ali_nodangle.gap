@@ -1,5 +1,8 @@
 import rna
 import alifold
+import mfesubopt
+import probabilities
+import typesRNAfolding
 
 input rna
 
@@ -8,11 +11,14 @@ type Rope = extern
 type shape_t = shape
 type M_Char = extern
 type mfecovar = extern
+type answer_ali_pfunc = extern
 
 include "Signatures/sig_foldrna.gap"
 include "Algebras/DotBracket/alg_ali_dotBracket.gap"
 include "Algebras/alg_ali_consensus.gap"
 include "Algebras/alg_ali_mis.gap"
+include "Algebras/Shapes/alg_ali_shapes.gap"
+include "Algebras/Pfunc/alg_ali_pfunc.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
