@@ -59,6 +59,11 @@ algebra alg_ali_pfunc_overdangle extends alg_ali_pfunc {
     return res;
   }
 }
+algebra alg_ali_pfunc_id_overdangle extends alg_ali_pfunc_overdangle {
+  choice [answer_ali_pfunc] h([answer_ali_pfunc] l) {
+    return l;
+  }
+}
 
 
 include "Grammars/gra_overdangle.gap"

@@ -110,7 +110,7 @@ inline std::ostream &operator<<(std::ostream &s, const mfecovar &pfa) {
 			if (pfa.empty_)
 			  s << 'E';
 			else
-			  s << "( " << pfa.mfe + pfa.covar << " = " << pfa.mfe << " + " << pfa.covar << " )";
+			  s << "( " << pfa.mfe + pfa.covar << " = energy: " << pfa.mfe << " + covar.: " << pfa.covar << " )";
 	return s;
 }
 
@@ -167,7 +167,7 @@ inline std::ostream &operator<<(std::ostream &s, const mfecovar_macrostate &tupl
   if (tuple.empty_)
     s << 'E';
   else
-    s << "( " << tuple.mfe + tuple.covar << " = " << tuple.mfe << " + " << tuple.covar << " )";
+	s << "( " << tuple.mfe + tuple.covar << " = energy: " << tuple.mfe << " + covar.: " << tuple.covar << " )";
   return s;
 }
 
@@ -239,6 +239,13 @@ struct pftuple{
 inline std::ostream &operator<<(std::ostream &s, const pftuple &pf) {
   s << "(" << pf.q1 << ", " << pf.q2 << ", " << pf.q3 << ", " << pf.q4 << ")";
   return s;
+}
+
+/*
+   returns the sum of all partition function components
+*/
+inline double sum_elems(const pftuple &pf) {
+  return pf.q1+pf.q2+pf.q3+pf.q4;
 }
 
 struct answer_pknot_pfunc {
@@ -344,11 +351,11 @@ struct answer_ali_pfunc{
 	}
 };
 
-inline std::ostream &operator<<(std::ostream &s, const answer_ali_pfunc &pfa) {
-	if (pfa.empty_)
+inline std::ostream &operator<<(std::ostream &s, const answer_ali_pfunc &tuple) {
+	if (tuple.empty_)
 	  s << 'E';
 	else
-	  s << "( " << pfa.pfunc + pfa.covar << " = " << pfa.pfunc << " + " << pfa.covar << " )";
+	  s << "( " << tuple.pfunc + tuple.covar << " = energy: " << tuple.pfunc << " + covar.: " << tuple.covar << " )";
 	return s;
 }
 
@@ -406,11 +413,11 @@ struct answer_ali_pfunc_macrostate {
   }
 };
 
-inline std::ostream &operator<<(std::ostream &s, const answer_ali_pfunc_macrostate &pfa) {
-  if (pfa.empty_) {
+inline std::ostream &operator<<(std::ostream &s, const answer_ali_pfunc_macrostate &tuple) {
+  if (tuple.empty_) {
     s << 'E';
   } else {
-    s << "( pfunc: " << pfa.pfunc.q1 << " , covar: " << pfa.covar.q1 << ")";
+	s << "( " << sum_elems(tuple.pfunc) + sum_elems(tuple.covar) << " = energy: " << sum_elems(tuple.pfunc) << " + covar.: " << sum_elems(tuple.covar) << " )";
   }
   return s;
 }
@@ -570,13 +577,6 @@ inline base_t wob_comp(base_t b) {
 }
 
 /*
-   returns the sum of all partition function components
-*/
-inline double sum_elems(const pftuple &pf) {
-  return pf.q1+pf.q2+pf.q3+pf.q4;
-}
-
-/*
    Copes with the ambiguous situation "ambd" where a single unpaired base either dangles to an adjacent stem to the left XOR to the right. Unfortunately, we don't know the opening basepair partner of the left stem. We can infere it via basepair rules, hindered by the wobble pairs GU and UG. Thus, we have two situations:
     a) the basal basepair for the left stem is a Watson-Crick pair (AU, UA, CG, GC) or
     b) it is a wobble pair (AU,UA,UG,GU)
@@ -692,6 +692,15 @@ struct DoubleToDoubleAli {
 template<typename T, typename pos_int>
 inline List_Ref<std::pair<answer_ali_pfunc, T>, pos_int> sample_filter(List_Ref<std::pair<answer_ali_pfunc, T>, pos_int> &x) {
   return sample_filter(x, DoubleToDoubleAli());
+}
+struct DoubleToDoubleAli_macrostate {
+  double operator()(answer_ali_pfunc_macrostate d) const {
+    return sum_elems(d.pfunc) + sum_elems(d.covar);
+  }
+};
+template<typename T, typename pos_int>
+inline List_Ref<std::pair<answer_ali_pfunc_macrostate, T>, pos_int> sample_filter(List_Ref<std::pair<answer_ali_pfunc_macrostate, T>, pos_int> &x) {
+  return sample_filter(x, DoubleToDoubleAli_macrostate());
 }
 
 

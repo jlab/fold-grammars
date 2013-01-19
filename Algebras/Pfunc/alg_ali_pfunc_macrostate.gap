@@ -717,7 +717,7 @@ algebra alg_ali_pfunc_macrostate implements sig_foldrna(alphabet = M_Char, answe
 }
 
 
-algebra alg_ali_pfunc_macrostate_id extends alg_ali_pfunc_macrostate {
+algebra alg_ali_pfunc_id_macrostate extends alg_ali_pfunc_macrostate {
   choice [answer_ali_pfunc_macrostate] h([answer_ali_pfunc_macrostate] l) {
     return l;
   }
