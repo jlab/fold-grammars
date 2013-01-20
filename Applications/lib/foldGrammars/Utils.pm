@@ -6,6 +6,8 @@ use warnings;
 
 package Utils;
 
+use Data::Dumper;
+
 sub compileGAP {
 	my (
 		$gapMainFile, #file of that gapc program that should be compiled
@@ -112,6 +114,104 @@ sub separateDirAndFile { #input is a path to a specific file, output is a refere
 	} else {
 		return [undef, $file];
 	}
+}
+
+sub applyFunctionToClustalFile {
+	# Using the format description from http://meme.nbcr.net/meme/doc/clustalw-format.html
+	# The format is very simple:
+    # 1. The first line in the file must start with the words "CLUSTAL W" or "CLUSTALW". Other information in the first line is ignored.
+    # 2. One or more empty lines.
+    # 3. One or more blocks of sequence data. Each block consists of:
+    #     - One line for each sequence in the alignment. Each line consists of:
+    #         1. the sequence name
+    #         2. white space
+    #         3. up to 60 sequence symbols.
+    #         4. optional - white space followed by a cumulative count of residues for the sequences
+    #     - A line showing the degree of conservation for the columns of the alignment in this block.
+    #     - One or more empty lines. 
+
+	my ($filename, $refsub_function, @additionalFunctionParameters) = @_;
+	
+	my $FH;
+	
+	if ($filename eq \*STDIN) {
+		$FH = $filename;
+	} elsif ($filename =~ m/\.gz$/) {
+		open($FH, $Settings::BINARIES{'gunzip'}." -c $filename |") || die "can't open gzip compressed file '$filename' $!\n";
+	} else {
+		open ($FH, $filename) || die "can't open clustalW file '".$filename."': $!";
+	}
+	
+	my @results;
+	my %sequences = ();
+	my $conservation = "";
+	my %originalSequenceOrdering = ();
+	my $sequenceNr = 0;
+	my $contentStartPos = undef;
+	my $contentLength = undef;
+	my $headerString = <$FH>;
+	die "file '".$filename."' is not in clustal W format, since it does not start with the word 'CLUSTAL'!\n" if ($headerString !~ m/^Clustal/i);
+	
+	while (my $line = <$FH>) {
+		if ($line =~ m/^\s*$/) {
+		} else {
+			$line =~ s/\r|\n//g; #chomp windows | unix newlines
+			my ($sequenceName, $sequence, $counts) = split(m/\s+/, $line);
+			if (defined $sequenceName) {
+				if ($sequenceName ne "") {
+					$sequences{$sequenceName} .= $sequence;
+					$originalSequenceOrdering{$sequenceName} = $sequenceNr++ if (not exists $originalSequenceOrdering{$sequenceName});
+					if (not defined $contentStartPos) {
+						$contentStartPos = length($sequenceName);
+						for (my $i = $contentStartPos; $i < length($line); $i++) {
+							if (substr($line, $i, 1) eq " ") {
+								$contentStartPos++;
+							} else {
+								last;
+							}
+						}
+						$contentLength = length($sequence);
+					}
+				} else {
+					$conservation .= substr($line, $contentStartPos, $contentLength);
+					$contentStartPos = undef;
+				}
+			}
+		}
+	}
+
+	if ($filename ne \*STDIN) {
+		close ($FH);
+	}
+	
+	push (@results, {result => (&$refsub_function({header => $headerString, sequences => \%sequences, conservation => $conservation, originalSequenceOrdering => \%originalSequenceOrdering}, @additionalFunctionParameters))});
+
+	return \@results;
+}
+
+sub writeClustal {
+	my ($refHash_alignment, $blocksize) = @_;
+	die "writeClustal: block size cannot be smaller than 1!\n" if (defined $blocksize && $blocksize < 1);
+
+	my $out = $refHash_alignment->{header}."\n\n";
+	my $longestSeqName = 0;
+	my $blockStart = 0;
+	my $alignmentLength = undef;
+	foreach my $name (keys(%{$refHash_alignment->{sequences}})) {
+		$longestSeqName = length($name) if ($longestSeqName < length($name));
+		$alignmentLength = length($refHash_alignment->{sequences}->{$name}) if (not defined $alignmentLength);
+	}
+
+	$blocksize = $alignmentLength if (not defined $blocksize);
+	while ($blockStart < $alignmentLength) {
+		foreach my $name (sort {$refHash_alignment->{originalSequenceOrdering}->{$a} <=> $refHash_alignment->{originalSequenceOrdering}->{$b}} keys(%{$refHash_alignment->{originalSequenceOrdering}})) {
+			$out .= $name.(" " x ($longestSeqName - length($name)))."  ".substr($refHash_alignment->{sequences}->{$name}, $blockStart, $blocksize)."\n";
+		}
+		$out .= (" " x $longestSeqName)."  ".substr($refHash_alignment->{conservation}, $blockStart, $blocksize)."\n\n";
+		$blockStart += $blocksize;
+	}
+	
+	return $out;
 }
 
 sub applyFunctionToFastaFile {
