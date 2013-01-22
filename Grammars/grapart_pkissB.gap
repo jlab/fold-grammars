@@ -10,7 +10,7 @@
             continue;
           }
           for (int k = i+2+1; k <= l-2*2; k=k+1) {
-            int alphareallen = min(alphamaxlen, k-i-1);
+            int alphareallen = min(l-k-2, min(alphamaxlen, k-i-1)); // min(range k to l must have enough space to hold minimal (2) beta stem + alpha stem, min(maximal alpha stem, alpha stem cannot consume k or its preceeding unpaired base))
             if (alphareallen < 2) {
               continue;
             }
@@ -18,11 +18,7 @@
             if (betamaxlen < 2) {
               continue;
             }
-            int betatemplen = min(betamaxlen, j-l-2);
-            if (betatemplen < 2) {
-              continue;
-            }
-            int betareallen = min(betatemplen, l-k-alphareallen);
+            int betareallen = min(min(betamaxlen, j-l-2), l-k-alphareallen); //min(min(maximal beta stem, range l to j must have enough space for the two unpaired bases), alpha stem length is set thus beta can consume left space between k to l at most)
             if (betareallen < 2) {
               continue;
             }

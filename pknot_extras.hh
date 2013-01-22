@@ -20,7 +20,15 @@ static const int pkmlinit = 600; //additional penalty for a pseudoknot inside fr
 		answer_pknot_mfe res;
 		empty(res);
 		if (!is_empty(subopts)) {
-			res = minimum(subopts)->front();
+			List_Ref<answer_pknot_mfe> candidates = const_cast<List_Ref<answer_pknot_mfe>&>(subopts);
+			typename List_Ref<answer_pknot_mfe>::iterator it = candidates.ref().begin();
+			res = (*it);
+			++it;
+			for (; it != candidates.ref().end(); ++it) {
+				if ((*it).energy < res.energy) {
+					res = (*it);
+				}
+			}
 		}
 		return res;
 	}

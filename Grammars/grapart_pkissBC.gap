@@ -8,20 +8,17 @@
         if (betamaxlen >= 2) {
           int alphamaxlen = length(stacklen(t_0_seq, i, lindex));
           if (alphamaxlen >= 2) {
-            int alphareallen = min(alphamaxlen, k-i-1);
+            int alphareallen = min(lindex-k-2, min(alphamaxlen, k-i-1)); // min(range k to l must have enough space to hold minimal (2) beta stem + alpha stem, min(maximal alpha stem, alpha stem cannot consume k or its preceeding unpaired base))
             if (alphareallen >= 2) {
-              int betatemplen = min(betamaxlen, j-lindex-2);
-              if (betatemplen >= 2) {
-                int betareallen = min(betatemplen, lindex-k-alphareallen);
-                if (betareallen >= 2) {
-                  int stackenergies = 
-                        energy(stacklen(t_0_seq, i,                lindex               ))  // maximal alpha helix
-                      + energy(stacklen(t_0_seq, k,                j               ))       // maximal beta helix
-                      - energy(stacklen(t_0_seq, i+alphareallen-1, lindex-alphareallen+1))  // reduced part of alpha helix
-                      - energy(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1));      // reduced part of beta helix
+              int betareallen = min(min(betamaxlen, j-lindex-2), lindex-k-alphareallen); //min(min(maximal beta stem, range l to j must have enough space for the two unpaired bases), alpha stem length is set thus beta can consume left space between k to l at most)
+              if (betareallen >= 2) {
+                int stackenergies = 
+                      energy(stacklen(t_0_seq, i,                lindex               ))  // maximal alpha helix
+                    + energy(stacklen(t_0_seq, k,                j               ))       // maximal beta helix
+                    - energy(stacklen(t_0_seq, i+alphareallen-1, lindex-alphareallen+1))  // reduced part of alpha helix
+                    - energy(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1));      // reduced part of beta helix
           
-                  INNER(CODE);
-                }
+                INNER(CODE);
               }
             }
           }
