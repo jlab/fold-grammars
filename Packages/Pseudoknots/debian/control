@@ -8,7 +8,7 @@ Homepage: http://bibiserv.cebitec.uni-bielefeld.de/pkiss
 
 Package: pkiss
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libgsl0-dev, libgmp3-dev, libgsl0-dev (>= 1.13), libgsl0ldbl (>= 1.13)
+Depends: ${shlibs:Depends}, ${misc:Depends}, bellmansgapc (>= 2013.01.12), libgsl0-dev, libgmp3-dev, libgsl0-dev (>= 1.13), libgsl0ldbl (>= 1.13)
 Description: pkiss: RNA secondary structure prediction, including kissing hairpins
  pkiss is a tool for secondary structure prediction including kissing hairpin motifs.
  The new idea is to construct a kissing hairpin motif from an overlay of two simple pseudoknots.

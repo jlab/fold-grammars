@@ -13,28 +13,28 @@ struct answer_pknot_mfe {
 	bool operator>(const answer_pknot_mfe& other) const { 
 		return energy > other.energy; 
 	}
-	
+
 	bool operator<(const answer_pknot_mfe& other) const { 
 		return energy < other.energy; 
 	}
-	
+
 	bool operator==(const answer_pknot_mfe& other) const { 
 		return energy == other.energy; 
 	}
-	
-	template <typename T> 
+
+	template <typename T>
 	bool operator>(const T &other) const {
-		return energy > other; 
+		return energy > other;
 	}
-	
-	template <typename T> 
+
+	template <typename T>
 	bool operator<(const T &other) const {
-		return energy < other; 
+		return energy < other;
 	}
-	
-	template <typename T> 
+
+	template <typename T>
 	bool operator==(const T &other) const {
-		return energy == other; 
+		return energy == other;
 	}
 
 	answer_pknot_mfe(int i) : energy(i), empty_(false) {
@@ -431,10 +431,11 @@ inline bool is_empty(const answer_ali_pfunc_macrostate &e) {
 }
 
 
+typedef Basic_Subsequence<char, unsigned> singleTUSubsequence;
 struct answer_macrostate_mfe {
 	int energy;
-	myTUSubsequence firstStem;
-	myTUSubsequence lastStem;
+	singleTUSubsequence firstStem;
+	singleTUSubsequence lastStem;
 	bool empty_;
 	answer_macrostate_mfe() : empty_(false) {
 	}
@@ -491,7 +492,7 @@ struct answer_macrostate_mfe {
 };
 
 inline std::ostream &operator<<(std::ostream &o, const answer_macrostate_mfe &tuple) {
-	o << '(' << tuple.energy << ", " << tuple.firstStem << ", " << tuple.lastStem << ')';
+	o << tuple.energy;
 	return o;
 }
 

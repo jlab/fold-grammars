@@ -149,6 +149,7 @@ sub applyFunctionToClustalFile {
 	my $sequenceNr = 0;
 	my $contentStartPos = undef;
 	my $contentLength = undef;
+	my $alignmentLength = 0;
 	my $headerString = <$FH>;
 	die "file '".$filename."' is not in clustal W format, since it does not start with the word 'CLUSTAL'!\n" if ($headerString !~ m/^Clustal/i);
 	
@@ -161,6 +162,7 @@ sub applyFunctionToClustalFile {
 				if ($sequenceName ne "") {
 					$sequences{$sequenceName} .= $sequence;
 					$originalSequenceOrdering{$sequenceName} = $sequenceNr++ if (not exists $originalSequenceOrdering{$sequenceName});
+					$alignmentLength += length($sequence) if ($originalSequenceOrdering{$sequenceName} == 0);
 					if (not defined $contentStartPos) {
 						$contentStartPos = length($sequenceName);
 						for (my $i = $contentStartPos; $i < length($line); $i++) {
@@ -183,8 +185,9 @@ sub applyFunctionToClustalFile {
 	if ($filename ne \*STDIN) {
 		close ($FH);
 	}
-	
-	push (@results, {result => (&$refsub_function({header => $headerString, sequences => \%sequences, conservation => $conservation, originalSequenceOrdering => \%originalSequenceOrdering}, @additionalFunctionParameters))});
+
+	$conservation .= " " x ($alignmentLength - length($conservation));
+	push (@results, {result => (&$refsub_function({length => $alignmentLength, header => $headerString, sequences => \%sequences, conservation => $conservation, originalSequenceOrdering => \%originalSequenceOrdering}, @additionalFunctionParameters))});
 
 	return \@results;
 }
@@ -309,6 +312,106 @@ sub compileGenerator {
 		print STDERR "done.\n";
 	}
 	return Utils::absFilename($bin_tdmGenerator);
+}
+
+
+sub printParamUsage {
+	my ($parameter, $refHash_params) = @_;
+	
+	die "printParamUsage: parameter hash not defined!\n" if (not defined $refHash_params);
+	
+	my $indent = 2;
+	my $title = (" " x $indent)."--".$parameter->{key};
+	$title .= " <".usage_type2name($parameter).">" if (defined usage_type2name($parameter));
+	$title .= " : ";
+	
+	my $text = "missing description.";
+	$text = usage_convertInfoText($parameter->{info}, $refHash_params, $parameter->{default}) if ((defined $parameter->{info}) && ($parameter->{info} ne ''));
+	return printIdent($title, $text);	
+}
+
+sub usage_convertInfoText {
+	my ($text, $refHash_params, $default) = @_;
+	
+	die "usage_convertInfoText: parameter hash not defined!\n" if (not defined $refHash_params);
+
+	while ($text =~ m/\@\((.+?)\)/) {
+		my $key = $1;
+		if (defined $refHash_params->{$key}->{key}) {
+			my $value = $refHash_params->{$key}->{key};
+			$text =~ s/\@\($key\)/$value/;
+		} elsif ($key eq 'DEFAULT') {
+			$text =~ s/\@\($key\)/$default/;
+		}
+	}
+	
+	return $text;
+}
+
+sub printIdent {
+	my ($title, $text) = @_;
+
+	my $OUT = $title;
+	my @infoLines = @{usage_textlines($text, 80 - length($title))};
+	$OUT .= (shift @infoLines)."\n";
+	foreach my $line (@infoLines) {
+		$OUT .= (" " x length($title)).$line."\n";
+	}
+
+	return $OUT;
+}
+
+sub usage_textlines {
+	my ($text, $length) = @_;
+	
+	$text =~ s/\n/ @\(N\) /g;
+	my @words = split(m/\s+/, $text);
+
+	my @lines = ();
+	my $currentLine = $words[0];
+	for (my $i = 1; $i < @words; $i++) {
+		if ($words[$i] eq '@(N)') {
+			push @lines, $currentLine;
+			while (($i < @words) && ($words[$i+1] eq '@(N)')) {
+				push @lines, "";
+				$i++;
+			}
+			$currentLine = $words[$i+1] if ($i < @words);
+			$i++;
+		} else {
+			if (length($currentLine." ".$words[$i]) < $length) {
+				$currentLine .= " ".$words[$i];
+			} else {
+				push @lines, $currentLine;
+				$currentLine = $words[$i];
+			}
+		}
+	}
+	push @lines, $currentLine;
+	
+	return \@lines;
+}
+
+sub usage_type2name {
+	my ($parameter) = @_;
+	
+	if (defined $parameter->{infoType}) {
+		return $parameter->{infoType};
+	} else {
+		if (defined $parameter->{type}) {
+			if ($parameter->{type} eq 's') {
+				return 'string';
+			} elsif ($parameter->{type} eq 'i') {
+				return 'int';
+			} elsif ($parameter->{type} eq 'f') {
+				return 'float';
+			} else {
+				return $parameter->{type};
+			}
+		} else {
+			return undef;
+		}
+	}
 }
 
 1;

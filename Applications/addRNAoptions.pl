@@ -19,7 +19,7 @@ open (IN, $infile) || die "can't read file '$infile': $!";
 			$content .= $line;
 			$content .= "\t".'sed -i \'s|gapc::Opts opts;||\' '.$1.'_main.cc'."\n";
 			$content .= "\t".'sed -i \'s|\\([^_]\\)opts\\.|\\1gapc::Opts::getOpts()->|g\' '.$1.'_main.cc'."\n";
-			$content .= "\t".'sed -i s\'|obj.init(opts);|obj.init(\\*gapc::Opts::getOpts());|g\' '.$1.'_main.cc'."\n";
+			$content .= "\t".'sed -i \'s|obj.init(opts);|obj.init(\\*gapc::Opts::getOpts());|g\' '.$1.'_main.cc'."\n";
 			$content .= "\t".'sed -i \'s|#include "rtlib/generic_opts.hh"|#include "rnaoptions.hh"|\' '.$1.'_main.cc'."\n";
 			$content .= "\t".'sed -i \'s%#include <rtlib/generic_opts.hh>%#include "rnaoptions.hh"%\' '.$1.'.hh '.$1.'.cc'."\n";
 		} elsif ($line =~ m/^(\s*\$\(CXX\) -MMD -MP \$\(CPPFLAGS\) \$\(CXXFLAGS\))(.*)$/) {

@@ -69,19 +69,19 @@ algebra alg_pknot_shapeX implements sig_pknot_foldrna(alphabet = char, comp = pk
   pkshape_t pknot(Subsequence a, pkshape_t frt, Subsequence b, pkshape_t mid, Subsequence at, pkshape_t bck, Subsequence bt; int stackenergies) {
     pkshape_t res;
 
-	append(res, '{');
+	append(res, '[');
 	if ((shapelevel() == 1) && (front(frt) != '_')) {
 		append(res, '_');
 	}
 	append(res, frt);
-	append(res, '<');
+	append(res, '{');
 	append(res, mid);
-	append(res, '}');
+	append(res, ']');
 	append(res, bck);
 	if ((shapelevel() == 1) && (back(bck) != '_')) {
 		append(res, '_');
 	}
-	append(res, '>');
+	append(res, '}');
 	return res;
   }
 
@@ -89,14 +89,14 @@ algebra alg_pknot_shapeX implements sig_pknot_foldrna(alphabet = char, comp = pk
     pkshape_t res;
 	pkshape_t emptyShape;
 	  
-	append(res, '{');
+	append(res, '[');
 	if ((shapelevel() == 1) && (front(frt) != '_')) {
 		append(res, '_');
 	}
 	append(res, frt);
-	append(res, '<');
+	append(res, '{');
 	append(res, middle1);
-	append(res, '}');
+	append(res, ']');
 	if (shapelevel() == 1) {
 		if (middle2 == emptyShape) {
 			append(res, '_');
@@ -112,14 +112,14 @@ algebra alg_pknot_shapeX implements sig_pknot_foldrna(alphabet = char, comp = pk
 	} else {
 		append(res, middle2);
 	}
-	append(res, '(');
+	append(res, '<');
 	append(res, middle3);
-	append(res, '>');
+	append(res, '}');
 	append(res, bck);
 	if ((shapelevel() == 1) && (back(bck) != '_')) {
 		append(res, '_');
 	}
-	append(res, ')');
+	append(res, '>');
 	  
 	return res;
   }
@@ -154,18 +154,18 @@ algebra alg_pknot_shapeX implements sig_pknot_foldrna(alphabet = char, comp = pk
 
   pkshape_t hl(Subsequence lb, Subsequence r, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
-	append(res, ']');
+    append(res, '(');
+	append(res, ')');
     return res;
   }
 
   pkshape_t bl(Subsequence lb, Subsequence lr, pkshape_t x, Subsequence rb) {
 	if (shapelevel() <= 3) {
 		pkshape_t res;
-		append(res, '[');
+		append(res, '(');
 		if (shapelevel() <= 2) { append(res, '_'); }
 		append(res, x);
-		append(res, ']');
+		append(res, ')');
 		return res;
 	} else {
 		return x;
@@ -175,10 +175,10 @@ algebra alg_pknot_shapeX implements sig_pknot_foldrna(alphabet = char, comp = pk
   pkshape_t br(Subsequence lb, pkshape_t x, Subsequence rr, Subsequence rb) {
 	if (shapelevel() <= 3) {
 		pkshape_t res;
-		append(res, '[');
+		append(res, '(');
 		append(res, x);
 		if (shapelevel() <= 2) { append(res, '_'); }
-		append(res, ']');
+		append(res, ')');
 		return res;
 	} else {
 		return x;
@@ -188,11 +188,11 @@ algebra alg_pknot_shapeX implements sig_pknot_foldrna(alphabet = char, comp = pk
   pkshape_t il(Subsequence lb, Subsequence lr, pkshape_t x, Subsequence rr, Subsequence rb) {
 	if (shapelevel() <= 4) {
 		pkshape_t res;
-		append(res, '[');
+		append(res, '(');
 		if (shapelevel() <= 2) { append(res, '_'); }
 		append(res, x);
 		if (shapelevel() <= 2) { append(res, '_'); }
-		append(res, ']');
+		append(res, ')');
 		return res;
 	} else {
 		return x;
@@ -200,35 +200,35 @@ algebra alg_pknot_shapeX implements sig_pknot_foldrna(alphabet = char, comp = pk
   }
 
   pkshape_t ml(Subsequence lb, pkshape_t x, Subsequence rb) {
-    return pkshape_t('[') + x + pkshape_t(']');
+    return pkshape_t('(') + x + pkshape_t(')');
   }
 
   pkshape_t mldl(Subsequence lb, Subsequence ld, pkshape_t x, Subsequence rb) {
 	pkshape_t res;
 	  
-    append(res, '[');
+    append(res, '(');
 	if ((shapelevel() == 1) && (front(x) != '_')) {
 		append(res, '_');
 	}
     append(res, x);
-    append(res, ']');
+    append(res, ')');
     return res;
   }
 
   pkshape_t mldr(Subsequence lb, pkshape_t x, Subsequence rd, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
+    append(res, '(');
     append(res, x);
 	if ((shapelevel() == 1) && (back(x) != '_')) {
 		append(res, '_');
 	}
-    append(res, ']');
+    append(res, ')');
     return res;
   }
 
   pkshape_t mldlr(Subsequence lb, Subsequence ld, pkshape_t x, Subsequence rd, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
+    append(res, '(');
 	if ((shapelevel() == 1) && (front(x) != '_')) {
 		append(res, '_');
 	}
@@ -236,7 +236,7 @@ algebra alg_pknot_shapeX implements sig_pknot_foldrna(alphabet = char, comp = pk
 	if ((shapelevel() == 1) && (back(x) != '_')) {
 		append(res, '_');
 	}
-    append(res, ']');
+    append(res, ')');
     return res;
   }
 
@@ -290,15 +290,15 @@ algebra alg_pknot_shapeX implements sig_pknot_foldrna(alphabet = char, comp = pk
   }
 
   pkshape_t middl(Subsequence ld, pkshape_t x;  int betaRightInner) {
-	if (shapelevel() == 1) {
-	    return pkshape_t('_') + x;
+	if ((shapelevel() == 1) && (front(x) != '_')) {
+		return pkshape_t('_') + x;
 	} else {
 		return x;
 	}
   }
 
   pkshape_t middr(pkshape_t x, Subsequence rd;  int alphaLeftInner) {
-	if (shapelevel() == 1) {
+	if ((shapelevel() == 1) && (back(x) != '_')) {
 	    return x + pkshape_t('_');
 	} else {
 		return x;
@@ -307,7 +307,16 @@ algebra alg_pknot_shapeX implements sig_pknot_foldrna(alphabet = char, comp = pk
 
   pkshape_t middlr(Subsequence ld, pkshape_t x, Subsequence rd; int betaRightInner, int alphaLeftInner) {
 	if (shapelevel() == 1) {
-	    return pkshape_t('_') + x + pkshape_t('_');
+		pkshape_t res;
+		if (front(x) != '_') {
+			res = pkshape_t('_');
+		}
+		res = res + x;
+		pkshape_t emptyShape;
+		if ((x != emptyShape) && (back(x) != '_')) {
+			res = res + pkshape_t('_');
+		}
+	    return res;
 	} else {
 		return x;
 	}
@@ -389,13 +398,13 @@ algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, comp = pk
   pkshape_t pknot(Subsequence a, pkshape_t frt, Subsequence b, pkshape_t mid, Subsequence at, pkshape_t bck, Subsequence bt; int stackenergies) {
     pkshape_t res;
 	  
-    append(res, '{');
+    append(res, '[');
     append(res, frt);
-    append(res, '<');
+    append(res, '{');
     append(res, mid);
-    append(res, '}');
+    append(res, ']');
     append(res, bck);
-    append(res, '>');
+    append(res, '}');
 	  
     return res;
   }
@@ -403,17 +412,17 @@ algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, comp = pk
   pkshape_t pkiss(Subsequence a, pkshape_t frt, Subsequence b, pkshape_t middle1, Subsequence aPrime, pkshape_t middle2, Subsequence c, pkshape_t middle3, Subsequence bPrime, pkshape_t bck, Subsequence cPrime; int stackenergies) {
     pkshape_t res;
 	  
-    append(res, '{');
+    append(res, '[');
     append(res, frt);
-    append(res, '<');
+    append(res, '{');
     append(res, middle1);
-    append(res, '}');
+    append(res, ']');
     append(res, middle2);
-    append(res, '(');
+    append(res, '<');
     append(res, middle3);
-    append(res, '>');
+    append(res, '}');
     append(res, bck);
-    append(res, ')');
+    append(res, '>');
 	  
     return res;
   }
@@ -436,8 +445,8 @@ algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, comp = pk
 
   pkshape_t hl(Subsequence lb, Subsequence r, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
-	append(res, ']');
+    append(res, '(');
+	append(res, ')');
     return res;
   }
 
@@ -455,33 +464,33 @@ algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, comp = pk
 
   pkshape_t ml(Subsequence lb, pkshape_t x, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
+    append(res, '(');
     append(res, x);
-    append(res, ']');
+    append(res, ')');
     return res;
   }
 
   pkshape_t mldl(Subsequence lb, Subsequence ld, pkshape_t x, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
+    append(res, '(');
     append(res, x);
-    append(res, ']');
+    append(res, ')');
     return res;
   }
 
   pkshape_t mldr(Subsequence lb, pkshape_t x, Subsequence rd, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
+    append(res, '(');
     append(res, x);
-    append(res, ']');
+    append(res, ')');
     return res;
   }
 
   pkshape_t mldlr(Subsequence lb, Subsequence ld, pkshape_t x, Subsequence rd, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
+    append(res, '(');
     append(res, x);
-    append(res, ']');
+    append(res, ')');
     return res;
   }
 
@@ -560,9 +569,9 @@ algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, comp = pk
 algebra alg_pknot_shape4 extends alg_pknot_shape5 {
   pkshape_t il(Subsequence lb, Subsequence lr, pkshape_t x, Subsequence rr, Subsequence rb) {
     pkshape_t res;
-	append(res, '[');
+	append(res, '(');
 	append(res, x);
-	append(res, ']');
+	append(res, ')');
 	return res;
   }
 }
@@ -570,23 +579,23 @@ algebra alg_pknot_shape4 extends alg_pknot_shape5 {
 algebra alg_pknot_shape3 extends alg_pknot_shape5 {
   pkshape_t bl(Subsequence lb, Subsequence lr, pkshape_t x, Subsequence rb) {
     pkshape_t res;
-	append(res, '[');
+	append(res, '(');
 	append(res, x);
-	append(res, ']');
+	append(res, ')');
 	return res;
   }
   pkshape_t br(Subsequence lb, pkshape_t x, Subsequence rr, Subsequence rb) {
     pkshape_t res;
-	append(res, '[');
+	append(res, '(');
 	append(res, x);
-	append(res, ']');
+	append(res, ')');
 	return res;
   }
   pkshape_t il(Subsequence lb, Subsequence lr, pkshape_t x, Subsequence rr, Subsequence rb) {
     pkshape_t res;
-	append(res, '[');
+	append(res, '(');
 	append(res, x);
-	append(res, ']');
+	append(res, ')');
 	return res;
   }
 }
@@ -594,27 +603,27 @@ algebra alg_pknot_shape3 extends alg_pknot_shape5 {
 algebra alg_pknot_shape2 extends alg_pknot_shape5 {
   pkshape_t bl(Subsequence lb, Subsequence lr, pkshape_t x, Subsequence rb) {
     pkshape_t res;
-	append(res, '[');
+	append(res, '(');
 	append(res, '_');
 	append(res, x);
-	append(res, ']');
+	append(res, ')');
 	return res;
   }
   pkshape_t br(Subsequence lb, pkshape_t x, Subsequence rr, Subsequence rb) {
     pkshape_t res;
-	append(res, '[');
+	append(res, '(');
 	append(res, x);
 	append(res, '_');
-	append(res, ']');
+	append(res, ')');
 	return res;
   }
   pkshape_t il(Subsequence lb, Subsequence lr, pkshape_t x, Subsequence rr, Subsequence rb) {
     pkshape_t res;
-	append(res, '[');
+	append(res, '(');
 	append(res, '_');
 	append(res, x);
 	append(res, '_');
-	append(res, ']');
+	append(res, ')');
 	return res;
   }
 }
@@ -663,19 +672,19 @@ algebra alg_pknot_shape1 extends alg_pknot_shape5 {
   pkshape_t pknot(Subsequence a, pkshape_t frt, Subsequence b, pkshape_t mid, Subsequence at, pkshape_t bck, Subsequence bt ; int stackenergies) {
     pkshape_t res;
     
-	append(res, '{');
+	append(res, '[');
 	if (front(frt) != '_') {
 		append(res, '_');
 	}
 	append(res, frt);
-	append(res, '<');
+	append(res, '{');
 	append(res, mid);
-	append(res, '}');
+	append(res, ']');
 	append(res, bck);
 	if (back(bck) != '_') {
 		append(res, '_');
 	}
-	append(res, '>');
+	append(res, '}');
     
     return res;
   }
@@ -683,14 +692,14 @@ algebra alg_pknot_shape1 extends alg_pknot_shape5 {
     pkshape_t res;
     pkshape_t emptyShape;
 	  
-    append(res, '{');
+    append(res, '[');
 	if (front(frt) != '_') {
 		append(res, '_');
 	}
     append(res, frt);
-    append(res, '<');
+    append(res, '{');
     append(res, middle1);
-    append(res, '}');
+    append(res, ']');
 	if (middle2 == emptyShape) {
 		append(res, '_');
 	} else {
@@ -702,14 +711,14 @@ algebra alg_pknot_shape1 extends alg_pknot_shape5 {
 			append(res, '_');
 		}
 	}
-    append(res, '(');
+    append(res, '<');
     append(res, middle3);
-    append(res, '>');
+    append(res, '}');
     append(res, bck);
 	if (back(bck) != '_') {
 		append(res, '_');
 	}
-    append(res, ')');
+    append(res, '>');
 	  
     return res;
   }
@@ -735,60 +744,60 @@ algebra alg_pknot_shape1 extends alg_pknot_shape5 {
   }
   pkshape_t bl(Subsequence lb, Subsequence lr, pkshape_t x, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
+    append(res, '(');
     append(res, '_');
     append(res, x);
-    append(res, ']');
+    append(res, ')');
     return res;
   }
   pkshape_t br(Subsequence lb, pkshape_t x, Subsequence rr, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
+    append(res, '(');
     append(res, x);
     append(res, '_');
-    append(res, ']');
+    append(res, ')');
     return res;
   }
   pkshape_t il(Subsequence lb, Subsequence lr, pkshape_t x, Subsequence rr, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
+    append(res, '(');
     append(res, '_');
     append(res, x);
     append(res, '_');
-    append(res, ']');
+    append(res, ')');
     return res;
   }
   pkshape_t mldl(Subsequence lb, Subsequence ld, pkshape_t x, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
+    append(res, '(');
     if (front(x) == '_') {
-      append(res, '[');
+      append(res, '(');
     } else {
-      append(res, '[');
+      append(res, '(');
       append(res, '_');
     }
     append(res, x);
-    append(res, ']');
+    append(res, ')');
     return res;
   }
   pkshape_t mldr(Subsequence lb, pkshape_t x, Subsequence rd, Subsequence rb) {
     pkshape_t res;
-    append(res, '[');
+    append(res, '(');
     if (back(x) == '_') {
       append(res, x);
     } else {
       append(res, x);
       append(res, '_');
     }
-    append(res, ']');
+    append(res, ')');
     return res;
   }
   pkshape_t mldlr(Subsequence lb, Subsequence ld, pkshape_t x, Subsequence rd, Subsequence rb) {
     pkshape_t res;
     if (front(x) == '_') {
-      append(res, '[');
+      append(res, '(');
     } else {
-      append(res, '[');
+      append(res, '(');
       append(res, '_');
     }
     if (back(x) == '_') {
@@ -797,7 +806,7 @@ algebra alg_pknot_shape1 extends alg_pknot_shape5 {
       append(res, x);
       append(res, '_');
     }
-    append(res, ']');
+    append(res, ')');
     return res;
   }
 
@@ -838,25 +847,32 @@ algebra alg_pknot_shape1 extends alg_pknot_shape5 {
   }
 
   pkshape_t middl(Subsequence ld, pkshape_t x;  int betaRightInner) {
-    pkshape_t res;
-    append(res, '_');
-    append(res, x);
-    return res;
+	if (front(x) != '_') {
+		return pkshape_t('_') + x;
+	} else {
+		return x;
+	}
   }
 
   pkshape_t middr(pkshape_t x, Subsequence rd;  int alphaLeftInner) {
-    pkshape_t res;
-    append(res, x);
-    append(res, '_');
-    return res;
+	if (back(x) != '_') {
+	    return x + pkshape_t('_');
+	} else {
+		return x;
+	}
   }
 
   pkshape_t middlr(Subsequence ld, pkshape_t x, Subsequence rd; int betaRightInner, int alphaLeftInner) {
-    pkshape_t res;
-    append(res, '_');
-    append(res, x);
-    append(res, '_');
-    return res;
+	pkshape_t emptyShape;
+	pkshape_t res;
+	if (front(x) != '_') {
+		append(res, pkshape_t('_'));
+	}
+	append(res, x);
+	if ((x != emptyShape) && (back(x) != '_')) {
+		append(res, pkshape_t('_'));
+	}
+	return res;
   }
 
   pkshape_t bkd(Subsequence rd, pkshape_t x; int alphaLeftOuter) {

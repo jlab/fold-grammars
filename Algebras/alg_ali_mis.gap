@@ -249,7 +249,7 @@ algebra alg_ali_mis implements sig_foldrna(alphabet = M_Char, answer = Rope) {
 
   choice [Rope] h([Rope] i) {
     //~ return list(minimum(i));
-    return i;
-	  //~ return unique(i);
+    //~ return i;
+	return unique(i);
   }
 }

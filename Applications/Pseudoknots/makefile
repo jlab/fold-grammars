@@ -11,7 +11,7 @@ GAPC=gapc
 MAKE=make
 PERL=perl
 
-targets=mfe subopt enforce local shape probs
+targets=mfe subopt enforce local shapes probs
 window=
 outname=out
 ifdef window
@@ -63,9 +63,9 @@ local:
 	mv $(GRAMMARFILE).original $(GRAMMARFILE)
 	$(MAKE) compile outname="local"
 
-shape:
+shapes:
 	$(GAPC) -I ../../ -p "((alg_pknot_shapeX * alg_pknot_mfe) * alg_pknot_dotBracket) suchthat suboptShapeClasses" ../../pKiss.gap --kbacktrace --tab-all --no-coopt-class $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="shape"
+	$(MAKE) compile outname="shapes"
 
 probs:
 	$(GAPC) -I ../../ -p "((alg_pknot_shapeX * (alg_pknot_mfe % alg_pknot_pfunc)) suchthat filterLowProbShapes) * alg_pknot_dotBracket" ../../pKiss.gap --no-coopt-class --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
