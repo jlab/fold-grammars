@@ -25,6 +25,11 @@ algebra alg_mfe_overdangle extends alg_mfe {
     return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
   }
 }
+algebra alg_mfe_overdangle_subopt extends alg_mfe_overdangle {
+  kscoring choice [int] h([int] i) {
+    return mfeSubopt(i);
+  }
+}
 
 include "Algebras/Pfunc/alg_pfunc.gap"
 algebra alg_pfunc_overdangle extends alg_pfunc {
