@@ -74,6 +74,8 @@ struct TA {
 inline
 float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
 {
+	//std::cerr << "covscore: " << seq.seq << ", size: " << seq_size(seq) << "\n";
+
   typedef Table::Quadratic<float, Table::CYK> table_t;
   static table_t table;
   static bool compute = true;
