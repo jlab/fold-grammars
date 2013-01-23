@@ -140,9 +140,13 @@ sub parseSubopt {
 			($windowStartPos, $windowEndPos) = (0, length($refHash_sequence->{sequence}));
 		} elsif ($line =~ m/^\s*$/) {
 		} else {
-			my ($m1, $energy, $m2, $structure) = split(m/\s+/, $line);
+			my ($energy, $structure) = ($line =~ m/\( (.+?) , (.+?) \)/);
 			$energy = sprintf("%.2f", $energy/100);
-			$predictions{$windowStartPos."-".$windowEndPos}->{$energy}->{$structure}++;
+			if (not exists $predictions{$windowStartPos."-".$windowEndPos}->{$structure}) {
+				$predictions{$windowStartPos."-".$windowEndPos}->{$structure} = $energy;
+			} else {
+				$predictions{$windowStartPos."-".$windowEndPos}->{$structure} = $energy if ($energy < $predictions{$windowStartPos."-".$windowEndPos}->{$structure});
+			}
 			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
 			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));
 		}
@@ -156,10 +160,9 @@ sub parseSubopt {
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
 		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
-		foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$windowPos}})) {
-			foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$energy}})) {
-				print sprintf("% $leftLength.2f", $energy).$OUTPUT_FIELDSPACER.$structure."\n"
-			}
+		foreach my $structure (sort {$predictions{$windowPos}->{$a} <=> $predictions{$windowPos}->{$b}} keys(%{$predictions{$windowPos}})) {
+			my $energy = $predictions{$windowPos}->{$structure};
+			print sprintf("% $leftLength.2f", $energy).$OUTPUT_FIELDSPACER.$structure."\n"
 		}
 		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
 	}
@@ -272,7 +275,11 @@ sub parseLocal {
 		} else {
 			my ($energy, $startPos, $structure, $endPos) = ($line =~ m/\( (.+?) , (\d+) (.+?) (\d+) \)/);
 			$energy = sprintf("%.2f", $energy/100);
-			$predictions{$windowStartPos."-".$windowEndPos}->{$startPos}->{$endPos}->{$energy}->{$structure}++;
+			if (not exists $predictions{$windowStartPos."-".$windowEndPos}->{$startPos}->{$endPos}->{$structure}) {
+				$predictions{$windowStartPos."-".$windowEndPos}->{$startPos}->{$endPos}->{$structure} = $energy;
+			} else {
+				$predictions{$windowStartPos."-".$windowEndPos}->{$startPos}->{$endPos}->{$structure} = $energy if ($energy < $predictions{$windowStartPos."-".$windowEndPos}->{$startPos}->{$endPos}->{$structure});
+			}
 			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
 			$maxStartPosLen = length($startPos) if ($maxStartPosLen < length($startPos));
 			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));
@@ -289,10 +296,9 @@ sub parseLocal {
 				my $block = "";
 				my $mfe = 0;
 				$block .= sprintf("% ${leftLength}i", $startPos).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos-1, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos-1)."\n";
-				foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$windowPos}->{$startPos}->{$endPos}})) {
-					foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$startPos}->{$endPos}->{$energy}})) {
-						$block .= sprintf("% $leftLength.2f", $energy).$OUTPUT_FIELDSPACER.$structure."\n";
-					}
+				foreach my $structure (sort {$predictions{$windowPos}->{$startPos}->{$endPos}->{$a} <=> $predictions{$windowPos}->{$startPos}->{$endPos}->{$b}} keys(%{$predictions{$windowPos}->{$startPos}->{$endPos}})) {
+					my $energy = $predictions{$windowPos}->{$startPos}->{$endPos}->{$structure};
+					$block .= sprintf("% $leftLength.2f", $energy).$OUTPUT_FIELDSPACER.$structure."\n";
 					$mfe = $energy if ($energy < $mfe);
 				}
 				push @{$blocks{$windowPos}}, {block => $block, mfe => $mfe, startPos => $startPos, endPos => $endPos};

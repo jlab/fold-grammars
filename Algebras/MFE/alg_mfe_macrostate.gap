@@ -20,6 +20,7 @@ Known problems with algebra mfe for grammar MacroState:
      = -2.0 kcal/mol with structure ((.....)).(((.....))).
    But if we had kept alternative 2 we would have -3.0 kcal/mol + -0.7 kcal/mol + 1.6 kcal/mol = -2.1 kcal/mol with structure ((.....)).(((......))) for the better solution 2.
    You see we violate Bellman's Principle of Optimallity at those algebra functions. Since dangling contributions have not too high values this effect is not often seen for real RNA inputs.
+	(sequence examples for real (turner 2004) overtaking effects due to dangling: [(-140,-110,-190,"AAG...UU <A"),(-140,-110,-160,"AAG...UU <C"),(-140,-110,-190,"AAG...UU <G"),(-140,-110,-170,"AAG...UU <U"),(-250,-220,-300,"AGG...CU <A"),(-250,-220,-270,"AGG...CU <C"),(-250,-220,-300,"AGG...CU <G"),(-250,-220,-280,"AGG...CU <U")])
 
 2) Dangling alternatives for one stem: This affects algebra functions edlr and mldlr, i.e. all functions where bases on both sides of a stem dangle to it.
    This effect can only be seen for Turner 2004 energy parameters.
