@@ -50,9 +50,10 @@ sub printStatistics {
 
 
 sub checkFormerPseudoknotProblems {
-	'./pKiss_shapes -q 1  ggggggUUUaaCCCCCCAAAaaaaaaUAAAAAaaGGGGGaaUUUUUA'; #hier wurden shapestrings teilweise mit __ gebaut, weil das Dangling innerhalb von Knoteninnereien auch _ einfügte wenn die freie Faltung die offene Struktur war.
-	'./pKiss_mfe ggggggUUUaaCCCCCCAAAaaaaaaUAAAAAaaGGGGGaaUUUUUA'; #liefert ( -1390 , (((((((...))))))).............................. ), subopt jedoch eine Struktur mit ( -1400 , [[[[[[.{{{.]]]]]]..<<<<<..}}}............>>>>>. ) ( -1400 , [[[[[[.{{{.]]]]]]..<<<<<..}}}............>>>>>. )
+	#~ './pKiss_shapes -q 1  ggggggUUUaaCCCCCCAAAaaaaaaUAAAAAaaGGGGGaaUUUUUA'; #hier wurden shapestrings teilweise mit __ gebaut, weil das Dangling innerhalb von Knoteninnereien auch _ einfügte wenn die freie Faltung die offene Struktur war.
+	#~ './pKiss_mfe ggggggUUUaaCCCCCCAAAaaaaaaUAAAAAaaGGGGGaaUUUUUA'; #liefert ( -1390 , (((((((...))))))).............................. ), subopt jedoch eine Struktur mit ( -1400 , [[[[[[.{{{.]]]]]]..<<<<<..}}}............>>>>>. ) ( -1400 , [[[[[[.{{{.]]]]]]..<<<<<..}}}............>>>>>. )
 }
+
 sub checkBasicFunctions {
 	my ($testname, $truth) = @_;
 	
