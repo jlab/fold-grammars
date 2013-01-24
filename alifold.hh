@@ -74,8 +74,6 @@ struct TA {
 inline
 float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
 {
-	//std::cerr << "covscore: " << seq.seq << ", size: " << seq_size(seq) << "\n";
-
   typedef Table::Quadratic<float, Table::CYK> table_t;
   static table_t table;
   static bool compute = true;
@@ -89,7 +87,9 @@ float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
                      {0,2,2,1,2,0,2} /* AU */,
                      {0,2,2,2,1,2,0} /* UA */};
 
-	table.init(*seq.seq, "covariance");
+	//table.init(*seq.seq, "covariance");
+	table.window_init(*seq.seq, seq_size(seq), 1);
+
 	unsigned int i,j,s,k,l;
 	for (i = 0; i < seq_size(seq); i++) {
 	  for (j = i+1+3; j < seq_size(seq); j++) {
@@ -110,7 +110,6 @@ float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
           float covariance = getAlifold_cfactor() * ((100.0*score)/float(rows(seq)) - getAlifold_nfactor()*100.0*(float(pfreq[0]) + float(pfreq[7])*0.25));
 		  array(i,j) = covariance * -1.0/float(rows(seq));
 	    }
-		//~ fprintf(stderr, "cov(%i,%i) = %f\n", i+1,j+1,array(i,j)*-1*float(rows(seq)));
 	  }
 	}
 	compute = false;
