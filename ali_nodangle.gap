@@ -11,7 +11,6 @@ type Rope = extern
 type shape_t = shape
 type M_Char = extern
 type mfecovar = extern
-type answer_ali_pfunc = extern
 
 include "Signatures/sig_foldrna.gap"
 include "Algebras/DotBracket/alg_ali_dotBracket.gap"

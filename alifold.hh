@@ -87,8 +87,11 @@ float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
                      {0,2,2,1,2,0,2} /* AU */,
                      {0,2,2,2,1,2,0} /* UA */};
 
-	//table.init(*seq.seq, "covariance");
-	table.window_init(*seq.seq, seq_size(seq), 1);
+#ifdef WINDOW_MODE
+    table.window_init(*seq.seq, seq_size(seq), 1);
+#else
+	table.init(*seq.seq, "covariance");
+#endif
 
 	unsigned int i,j,s,k,l;
 	for (i = 0; i < seq_size(seq); i++) {
@@ -114,6 +117,7 @@ float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
 	}
 	compute = false;
   }
+
   return array(a, b);
 }
 

@@ -78,13 +78,8 @@ inline double getPfuncValue(std::pair<SHAPE, std::pair<MFE, answer_macrostate_pf
 }
 
 template <typename SHAPE, typename MFE>
-inline double getPfuncValue(std::pair<SHAPE, std::pair<MFE, answer_ali_pfunc> > x) {
-	return x.second.second.pfunc;
-}
-
-template <typename SHAPE, typename MFE>
 inline double getPfuncValue(std::pair<SHAPE, std::pair<MFE, answer_ali_pfunc_macrostate> > x) {
-	return sum_elems(x.second.second.pfunc) + sum_elems(x.second.second.covar);
+	return sum_elems(x.second.second.pf);
 }
 
 #endif //PROBABILITIES_HH

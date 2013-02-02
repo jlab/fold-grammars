@@ -1,0 +1,514 @@
+#!/usr/bin/env perl
+
+our $VERSION = '2.0.0';
+our $DATE = '20.01.2013';
+
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+
+use lib getPath($0)."../lib/";
+
+use strict;
+use warnings;
+use Data::Dumper;
+use Getopt::Long;
+use foldGrammars::Utils;
+use POSIX 'isatty';
+
+our $MODE_MFE = 'mfe';
+our $MODE_SUBOPT = 'subopt';
+our $MODE_SHAPES = 'shapes';
+our $MODE_PROBS = 'probs';
+our $MODE_SAMPLE = 'sample';
+
+our $CONSENSUS_CONSENSUS = 'consensus';
+our $CONSENSUS_MIS = 'mis';
+
+our $GRAMMAR_NODANGLE = 'nodangle';
+our $GRAMMAR_OVERDANGLE = 'overdangle';
+our $GRAMMAR_MICROSTATE = 'microstate';
+our $GRAMMAR_MACROSTATE = 'macrostate';
+
+our $TASK_REP = 'rep';
+our $TASK_SCI = 'sci';
+
+my %PARAM;
+$PARAM{mode} = {key => 'mode', type => 's', default => $MODE_SUBOPT, info => "Select the computation mode. Available modes are \"$MODE_MFE\", \"$MODE_SUBOPT\", \"$MODE_SHAPES\", \"$MODE_PROBS\", \"$MODE_SAMPLE\". Omit the ticks on input.\nDefault is \"@(DEFAULT)\"."};
+$PARAM{windowsize} = {key => 'windowSize', type => 'i', gapc => 'w', default => undef, info => "Activates window mode and computes substrings of size <int> for the input. After computation for the first <int> bases is done, the window is pushed <y> bases to the right and the next computation is startet. <y> is set by --@(windowincrement).\n<int> must be a non-zero positive integer, smaller than the input length."};
+$PARAM{windowincrement} = {key => 'windowIncrement', gapc => 'i', type => 'i', default => 1, info => "If --@(windowsize) is given, this parameter sets the offset for the next window to <int> bases.\n<int> must be a non-zero positive integer, smaller or equal to --@(windowsize).\nDefault is @(DEFAULT)."};
+$PARAM{temperature} = {key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
+$PARAM{param} = {key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [3] and [4])."};
+$PARAM{allowlp} = {key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
+$PARAM{absolutedeviation} = {key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation).\nFor modes: \"$MODE_SUBOPT\", \"$MODE_SHAPES\"."};
+$PARAM{relativedeviation} = {key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation).\nFor modes: \"$MODE_SUBOPT\", \"$MODE_SHAPES\"."};
+$PARAM{shapelevel} = {key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see [6] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one).\nFor modes: \"$MODE_SHAPES\", \"$MODE_PROBS\", \"$MODE_SAMPLE\"."};
+$PARAM{lowprobfilter} = {key => 'lowProbFilter', gapc => 'F', type => 'f', default => 0.000001, info => "This option sets a barrier for filtering out results with very low probabilities during calculation. The default value here is @(DEFAULT), which gives a significant speedup compared to a disabled filter. (See [7] for details.) Note that this filter can have a slight influence on the overall results. To disable this filter, use option --@(lowprobfilter) 0. \n<float> must be a positive floating point number smaller than 1.\nFor mode: \"$MODE_PROBS\"."};
+$PARAM{help} = {key => 'help', default => undef, info => "show this brief help on version and usage"};
+$PARAM{binarypath} = {key => 'binPath', type => 's', default => undef, info => "$0 expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
+$PARAM{binaryprefix} = {key => 'binPrefix', type => 's', default => 'RNAalishapes_', info => "$0 expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"$MODE_SUBOPT\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)".$MODE_SUBOPT."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
+$PARAM{probdecimals} = {key => 'probDecimals', type => 'i', default => 7, info => "Sets the number of digits used for printing shape probabilities.\n<int> must be a positive integer number.\nDefault is @(DEFAULT)."};
+$PARAM{numsamples} = {key => 'numSamples', type => 'i', gapc => 'r', default => 1000, info => "Sets the number of samples that are drawn to estimate shape probabilities.\nIn our experience, 1000 iterations are sufficient to achieve reasonable results for shapes with high probability. Thus, default is @(DEFAULT).\nFor mode: \"$MODE_SAMPLE\"."};
+$PARAM{pairingfraction} = {key => 'pairingFraction', gapc => 'm', type => 'i', default => -200, info => "For a single RNA sequence it is easy to decide if positions i and j build a valid base pair. For _alignments_ of RNA sequences this is more complicated, because some sequences might contain gaps. For exact definitions, see papers [1] and [2] from the Vienna group. Roughly speaking, the less --@(pairingfraction), the more sequences must have a valid pair at positions i and j.\n Default value is @(DEFAULT), meaning that at most half of the sequences must pair to let alignment positions i and j be a pair."};
+$PARAM{cfactor} = {key => 'cfactor', gapc => 'C', type => 'f', default => '1.0', info => "Set the weight of the covariance term in the energy function.\nDefault is @(DEFAULT)."};
+$PARAM{nfactor} = {key => 'nfactor', gapc => 'n', type => 'f', default => '1.0', info => "Set the penalty for non-compatible sequences in the covariance term of the energy function.\nDefault is @(DEFAULT)."};
+$PARAM{consensus} = {key => 'consensus', default => 'consensus', type => 's', info => "The input alignment will be representet in a single line. You can choose between \"$CONSENSUS_CONSENSUS\", for a simple consensus sequence (determined by most frequent character), or \"$CONSENSUS_MIS\" the 'most informative sequence'. For each column of the alignment output the set of nucleotides with frequence greater than average in IUPAC notation.\nDefault is \"@(DEFAULT)\"."};
+$PARAM{grammar} = {key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could performes surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"$GRAMMAR_OVERDANGLE\". See [5] for further details."};
+
+our $OUTPUT_MINLEFTWIDTH = 7;
+our $OUTPUT_FIELDSPACER = "  ";
+
+my $settings = {};
+foreach my $param (keys %PARAM) {
+	$settings->{$param} = $PARAM{$param}->{default};
+}
+my %help = ();
+foreach my $param (keys %PARAM) {
+	my $optionSec = $param;
+	$optionSec .= "=".$PARAM{$param}->{type} if (exists $PARAM{$param}->{type});
+	$help{$optionSec} = \$settings->{$param};
+}
+&GetOptions( 	
+	%help
+);
+
+
+checkParameters($settings);
+
+if (@ARGV == 0) {
+	if (defined $settings->{'help'}) {
+		usage();
+	} else {
+		if (isatty(*STDIN)) {
+			print "waiting for a clustal W file name.\n";
+			my $input = <STDIN>; chomp $input;
+			if (-e $input) {
+				Utils::applyFunctionToClustalFile($input, \&doComputation, $settings);
+			}
+		} else {
+			Utils::applyFunctionToClustalFile(\*STDIN, \&doComputation, $settings);
+		}
+	}
+} else {
+	usage() if ((defined $settings->{'help'}) || (@ARGV > 1));
+	my ($input) = @ARGV;
+	if (-e $input) {
+		Utils::applyFunctionToClustalFile($input, \&doComputation, $settings);
+	}
+}
+
+
+sub doComputation {
+	my ($refHash_alignment, $settings) = @_;
+	
+	my $gapInput = "";
+	foreach my $name (sort {$refHash_alignment->{originalSequenceOrdering}->{$a} <=> $refHash_alignment->{originalSequenceOrdering}->{$b}} keys(%{$refHash_alignment->{originalSequenceOrdering}})) {
+		my $seq = $refHash_alignment->{sequences}->{$name};
+		$seq =~ s/t/u/gi;
+		$seq =~ s/\.|\-/\_/g;
+		$gapInput .= uc($seq).'#';
+	}
+	
+	$refHash_alignment->{representation} = getAlignmentRepresentation($gapInput, $refHash_alignment, $settings);
+	#~ print Utils::writeClustal($refHash_alignment); die;
+#~ print Dumper $gapInput; die;	
+	my $command = buildCommand($settings, $refHash_alignment);
+	my $result = qx($command "$gapInput");
+#~ print Dumper $command." $gapInput"; die;
+	if (($settings->{'mode'} eq $MODE_SUBOPT) || ($settings->{'mode'} eq $MODE_MFE)) {
+		parseSubopt($result, $settings, $refHash_alignment);
+	#~ } elsif ($settings->{'mode'} eq $MODE_ENFORCE) {
+		#~ parseEnforce($result, $settings, $refHash_sequence);
+	#~ } elsif ($settings->{'mode'} eq $MODE_LOCAL) {
+		#~ parseLocal($result, $settings, $refHash_sequence);
+	} elsif ($settings->{'mode'} eq $MODE_SHAPES) {
+		parseShapes($result, $settings, $refHash_alignment);
+	} elsif ($settings->{'mode'} eq $MODE_PROBS) {
+		parseProbs($result, $settings, $refHash_alignment);
+	} elsif ($settings->{'mode'} eq $MODE_SAMPLE) {
+		#~ print $result;
+		parseSample($result, $settings, $refHash_alignment);
+	} else {
+		print $result;
+	}
+	
+	return undef;
+}
+
+sub getAlignmentRepresentation {
+	my ($gapInput, $refHash_alignment, $settings) = @_;
+	
+	my $command = buildCommand($settings, $refHash_alignment, $TASK_REP);
+	my $result = qx($command "$gapInput");
+	
+	foreach my $line (split(m/\r?\n/, $result)) {
+		if ($line =~ m/^Answer:\s*$/) {
+		} elsif ($line =~ m/^\s*$/) {
+		} else {
+			return $line;
+		}
+	}
+}
+
+
+sub parseSubopt {
+	my ($result, $settings, $refHash_alignment) = @_;
+	
+	my %predictions = ();
+	my $maxScoreLen = 0;
+	my $maxEnergyLen = 0;
+	my $maxCovarLen = 0;
+	my $maxStartPosLen = 0;
+	my $windowStartPos = undef;
+	my $windowEndPos = undef;
+	foreach my $line (split(m/\r?\n/, $result)) {
+		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
+			($windowStartPos, $windowEndPos) = ($1, $2);
+		} elsif ($line =~ m/^Answer:\s*$/) {
+			($windowStartPos, $windowEndPos) = (0, $refHash_alignment->{length});
+		} elsif ($line =~ m/^\s*$/) {
+		} else {
+			#( ( -889 = energy: -851.5 + covar.: -37.5 ) , ( ......................................((((((.......(((((...................................)))))))))))................................................................... ) )
+			my ($score, $energy, $covar, $structure) = ($line =~ m/\( \( (.+?) = energy: (.+?) \+ covar\.: (.+?) \) , (.+?) \)/);
+			$score = sprintf("%.2f", $score/100);
+			$energy = sprintf("%.2f", $energy/100);
+			$covar = sprintf("%.2f", $covar/100);
+			$predictions{$windowStartPos."-".$windowEndPos}->{$score.'#'.$energy.'#'.$covar}->{$structure}++;
+			$maxScoreLen = length($score) if ($maxScoreLen < length($score));
+			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
+			$maxCovarLen = length($covar) if ($maxCovarLen < length($covar));
+			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));
+		}
+	}
+
+	my $leftLength = 8+$maxScoreLen+$maxEnergyLen+$maxCovarLen; # (score = energy + covar)
+	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
+
+	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	foreach my $windowPos (@windowPositions) {
+		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		foreach my $scoreAll (sort {substr($a, 0, index($a, '#')) <=> substr($b, 0, index($b, '#'))} keys(%{$predictions{$windowPos}})) {
+			my ($score, $energy, $covar) = split(m/#/, $scoreAll);
+			foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$scoreAll}})) {
+				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure."\n"
+			}
+		}
+		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
+	}
+}
+
+sub parseShapes {
+	my ($result, $settings, $refHash_alignment) = @_;
+
+	my %predictions = ();
+	my $maxScoreLen = 0;
+	my $maxEnergyLen = 0;
+	my $maxCovarLen = 0;
+	my $maxStartPosLen = 0;
+	my $windowStartPos = undef;
+	my $windowEndPos = undef;
+	foreach my $line (split(m/\r?\n/, $result)) {
+		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
+			($windowStartPos, $windowEndPos) = ($1, $2);
+		} elsif ($line =~ m/^Answer:\s*$/) {
+			($windowStartPos, $windowEndPos) = (0, $refHash_alignment->{length});
+		} elsif ($line =~ m/^\s*$/) {
+		} else {
+			my ($class, $score, $energy, $covar, $structure) = ($line =~ m/\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar\.: (.+?) \) \) , (.+?) \)/);
+			$score = sprintf("%.2f", $score/100);
+			$energy = sprintf("%.2f", $energy/100);
+			$covar = sprintf("%.2f", $covar/100);
+			$predictions{$windowStartPos."-".$windowEndPos}->{$score.'#'.$energy.'#'.$covar}->{$class} = $structure;
+			$maxScoreLen = length($score) if ($maxScoreLen < length($score));
+			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
+			$maxCovarLen = length($covar) if ($maxCovarLen < length($covar));
+			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));
+		}
+	}
+
+	my $leftLength = 8+$maxScoreLen+$maxEnergyLen+$maxCovarLen; # (score = energy + covar)
+	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
+
+	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	foreach my $windowPos (@windowPositions) {
+		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		foreach my $scoreAll (sort {splitScore($a)->[0] <=> splitScore($b)->[0]} keys(%{$predictions{$windowPos}})) {
+			my ($score, $energy, $covar) = @{splitScore($scoreAll)};
+			foreach my $class (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$scoreAll}})) {
+				my $structure = $predictions{$windowPos}->{$scoreAll}->{$class};
+				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.$class."\n";
+			}
+		}
+		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
+	}
+}
+
+sub parseProbs {
+	my ($result, $settings, $refHash_alignment) = @_;
+
+	my %predictions = ();
+	my $maxScoreLen = 0;
+	my $maxEnergyLen = 0;
+	my $maxCovarLen = 0;
+	my $maxStartPosLen = 0;
+	my $windowStartPos = undef;
+	my $windowEndPos = undef;
+	my %sumProbs = ();
+	foreach my $line (split(m/\r?\n/, $result)) {
+		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
+			($windowStartPos, $windowEndPos) = ($1, $2);
+		} elsif ($line =~ m/^Answer:\s*$/) {
+			($windowStartPos, $windowEndPos) = (0, $refHash_alignment->{length});
+		} elsif ($line =~ m/^\s*$/) {
+		} else {
+			my ($class, $score, $energy, $covar, $probability, $structure) = ($line =~ m/\( \( (.+?) , \( \( (.+?) = energy: (.+?) \+ covar\.: (.+?) \) , (.+?) \) \) , (.+?) \)/);
+			$score = sprintf("%.2f", $score/100);
+			$energy = sprintf("%.2f", $energy/100);
+			$covar = sprintf("%.2f", $covar/100);
+			$sumProbs{$windowStartPos."-".$windowEndPos} += $probability;
+			$maxScoreLen = length($score) if ($maxScoreLen < length($score));
+			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
+			$maxCovarLen = length($covar) if ($maxCovarLen < length($covar));
+			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));
+			$predictions{$windowStartPos."-".$windowEndPos}->{$probability}->{$score.'#'.$energy.'#'.$covar}->{$class} = $structure;
+		}
+	}
+
+	my $leftLength = 8+$maxScoreLen+$maxEnergyLen+$maxCovarLen; # (score = energy + covar)
+	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
+
+	#~ print ">".$refHash_sequence->{header}."\n";
+	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	my $numDecProb = $settings->{'probdecimals'};
+
+	foreach my $windowPos (@windowPositions) {
+		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		foreach my $probability (sort {$b <=> $a} keys(%{$predictions{$windowPos}})) {
+			foreach my $scoreAll (sort {splitScore($a)->[0] <=> splitScore($b)->[0]} keys(%{$predictions{$windowPos}->{$probability}})) {
+				my ($score, $energy, $covar) = @{splitScore($scoreAll)};
+				foreach my $class (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$probability}->{$scoreAll}})) {
+					my $structure = $predictions{$windowPos}->{$probability}->{$scoreAll}->{$class};
+					print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $probability/$sumProbs{$windowPos}).$OUTPUT_FIELDSPACER.$class."\n";
+				}
+			}
+		}
+		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
+	}
+}
+
+sub parseSample {
+	my ($result, $settings, $refHash_alignment) = @_;
+
+	my %predictions = ();
+	my $maxScoreLen = 0;
+	my $maxEnergyLen = 0;
+	my $maxCovarLen = 0;
+	my $maxStartPosLen = 0;
+	my $windowStartPos = undef;
+	my $windowEndPos = undef;
+	my %numSamples = ();
+	foreach my $line (split(m/\r?\n/, $result)) {
+		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
+			($windowStartPos, $windowEndPos) = ($1, $2);
+		} elsif ($line =~ m/^Answer:\s*$/) {
+			($windowStartPos, $windowEndPos) = (0, $refHash_alignment->{length});
+		} elsif ($line =~ m/^\s*$/) {
+		} else {
+			my ($pfuncID, $class, $score, $energy, $covar, $structure) = ($line =~ m/\( (.+?) , \( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar\.: (.+?) \) \) , (.+?) \) \)/);
+			$score = sprintf("%.2f", $score/100);
+			$energy = sprintf("%.2f", $energy/100);
+			$covar = sprintf("%.2f", $covar/100);
+			$numSamples{$windowStartPos."-".$windowEndPos}++;
+			$maxScoreLen = length($score) if ($maxScoreLen < length($score));
+			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
+			$maxCovarLen = length($covar) if ($maxCovarLen < length($covar));
+			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));
+			
+			$predictions{$windowStartPos."-".$windowEndPos}->{$class}->{numSamples}++;
+			if ((not exists $predictions{$windowStartPos."-".$windowEndPos}->{$class}->{shrep}) || ($score < $predictions{$windowStartPos."-".$windowEndPos}->{$class}->{shrep}->{score})) {
+				$predictions{$windowStartPos."-".$windowEndPos}->{$class}->{shrep} = {score => $score, energy => $energy, covar => $covar, structure => $structure};
+			}
+		}
+	}
+
+	my $leftLength = 8+$maxScoreLen+$maxEnergyLen+$maxCovarLen; # (score = energy + covar)
+	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
+
+	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	my $numDecProb = $settings->{'probdecimals'};
+
+	foreach my $windowPos (@windowPositions) {
+		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		foreach my $class (sort {$predictions{$windowPos}->{$b}->{numSamples} <=> $predictions{$windowPos}->{$a}->{numSamples}} keys(%{$predictions{$windowPos}})) {
+			my ($score, $energy, $covar, $structure) = ($predictions{$windowPos}->{$class}->{shrep}->{score}, $predictions{$windowPos}->{$class}->{shrep}->{energy}, $predictions{$windowPos}->{$class}->{shrep}->{covar}, $predictions{$windowPos}->{$class}->{shrep}->{structure});
+			print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $predictions{$windowPos}->{$class}->{numSamples}/$numSamples{$windowPos}).$OUTPUT_FIELDSPACER.$class."\n";
+		}
+		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
+	}
+}
+
+sub buildCommand {
+	my ($settings, $refHash_alignment, $task) = @_;
+	
+	my $cmd = "";
+	$cmd .= $settings->{'binarypath'};
+	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
+	$cmd .= $settings->{'binaryprefix'};
+	if (not defined $task) {
+		$cmd .= $settings->{'mode'};
+		$cmd .= '_'.$settings->{'grammar'};
+	} else {
+		if ($task eq $TASK_REP) {
+			$cmd .= $TASK_REP;
+			$cmd .= '_'.$settings->{'consensus'};
+		} elsif ($task eq $TASK_SCI) {
+			$cmd .= $TASK_SCI;
+			$cmd .= '_'.$settings->{'grammar'};
+		}
+	}
+	if ((not defined $task) || ($task eq $TASK_SCI)) {
+		if ((not defined $task) && (defined $settings->{'windowsize'})) {
+			$cmd .= "_window";
+			my $windowSize = $settings->{'windowsize'};
+			$windowSize = $refHash_alignment->{length} if ($settings->{'windowsize'} > $refHash_alignment->{length});
+			$cmd .= " -".$PARAM{windowsize}->{gapc}." ".$windowSize;
+			$cmd .= " -".$PARAM{windowincrement}->{gapc}." ".$settings->{'windowincrement'};
+		}
+		$cmd .= " -".$PARAM{temperature}->{gapc}." ".$settings->{'temperature'} if ($settings->{'temperature'} != $PARAM{temperature}->{default});
+		$cmd .= " -".$PARAM{param}->{gapc}." ".$settings->{'param'} if (defined $settings->{'param'});
+		$cmd .= " -".$PARAM{allowlp}->{gapc}." ".$settings->{'allowlp'} if ($settings->{'allowlp'} != $PARAM{allowlp}->{default});
+	}
+	if (not defined $task) {
+		$cmd .= " -".$PARAM{relativedeviation}->{gapc}." ".$settings->{'relativedeviation'} if ($settings->{'relativedeviation'} != $PARAM{relativedeviation}->{default});
+		$cmd .= " -".$PARAM{absolutedeviation}->{gapc}." ".$settings->{'absolutedeviation'} if (defined $settings->{'absolutedeviation'});
+		$cmd .= " -".$PARAM{shapelevel}->{gapc}." ".$settings->{'shapelevel'} if ($settings->{'shapelevel'} != $PARAM{shapelevel}->{default});
+		$cmd .= " -".$PARAM{lowprobfilter}->{gapc}." ".$settings->{'lowprobfilter'} if ($settings->{'lowprobfilter'} != $PARAM{lowprobfilter}->{default});
+		$cmd .= " -".$PARAM{numsamples}->{gapc}." ".$settings->{'numsamples'} if ($settings->{'mode'} eq $MODE_SAMPLE);
+		$cmd .= " -".$PARAM{pairingfraction}->{gapc}." ".$settings->{'pairingfraction'} if ($settings->{'pairingfraction'} != $PARAM{pairingfraction}->{default});
+		$cmd .= " -".$PARAM{cfactor}->{gapc}." ".$settings->{'cfactor'} if ($settings->{'cfactor'} != $PARAM{cfactor}->{default});
+		$cmd .= " -".$PARAM{nfactor}->{gapc}." ".$settings->{'nfactor'} if ($settings->{'nfactor'} != $PARAM{nfactor}->{default});
+	}
+	return $cmd;
+}
+
+sub checkParameters {
+	my ($settings) = @_;
+	
+	my $diePrefix = "wrong command line parameter:\n  ";
+	
+	if (
+		($settings->{'mode'} ne $MODE_MFE) && 
+		($settings->{'mode'} ne $MODE_SUBOPT) && 
+		($settings->{'mode'} ne $MODE_SHAPES) &&
+		($settings->{'mode'} ne $MODE_PROBS) &&
+		($settings->{'mode'} ne $MODE_SAMPLE)) {
+			die $diePrefix."mode '".$settings->{'mode'}."' is not available. Please choose one out of \"".join('", "', ($MODE_MFE, $MODE_SUBOPT, $MODE_SHAPES, $MODE_PROBS, $MODE_SAMPLE))."\".\n";
+	}
+	die $diePrefix."--".$PARAM{'windowsize'}->{key}." must be a positive integer!\n" if ((defined $settings->{'windowsize'}) && ($settings->{'windowsize'} < 1));
+	die $diePrefix."--".$PARAM{'windowsize'}->{key}." is smaller than --".$PARAM{'windowincrement'}->{key}." !\n" if ((defined $settings->{'windowsize'}) && ($settings->{'windowsize'} < $settings->{'windowincrement'}));
+	die $diePrefix."the parameter file you specified could not be found.\n" if ((defined $settings->{'param'}) && (not -e $settings->{'param'}));
+	$settings->{'grammar'} = lc($settings->{'grammar'});
+	die $diePrefix."there is no grammar \"".$settings->{'grammar'}."\". Please select one of \"$GRAMMAR_NODANGLE\", \"$GRAMMAR_OVERDANGLE\", \"$GRAMMAR_MICROSTATE\" or \"$GRAMMAR_MACROSTATE\".\n" if ($settings->{'grammar'} !~ m/^nodangle|overdangle|microstate|macrostate$/i);
+	$settings->{'consensus'} = lc($settings->{'consensus'});
+	die $diePrefix."there is no consensus representation \"".$settings->{'consensus'}."\". Please select either \"$CONSENSUS_CONSENSUS\" or \"$CONSENSUS_MIS\".\n" if ($settings->{'consensus'} !~ m/^consensus|mis$/i);
+	die $diePrefix."--".$PARAM{'numsamples'}->{key}." must be a positive integer, otherwise shape frequencies cannot be estimated.\n" if ($settings->{'numsamples'} < 1);
+	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
+	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
+	die $diePrefix."--".$PARAM{'lowprobfilter'}->{key}." must be a positive floating point number below 1.\n" if (($settings->{'lowprobfilter'} >= 1) || ($settings->{'lowprobfilter'} < 0));
+
+	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if ((defined $settings->{'absolutedeviation'}) && (($settings->{'mode'} ne $MODE_SUBOPT) && ($settings->{'mode'} ne $MODE_SHAPES)));
+	die $diePrefix."--".$PARAM{'relativedeviation'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if (($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}) && (($settings->{'mode'} ne $MODE_SUBOPT) && ($settings->{'mode'} ne $MODE_SHAPES)));
+	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if (($settings->{'shapelevel'} != $PARAM{'shapelevel'}->{default}) && (($settings->{'mode'} ne $MODE_SHAPES) && ($settings->{'mode'} ne $MODE_PROBS) && ($settings->{'mode'} ne $MODE_SAMPLE)));
+	die $diePrefix."--".$PARAM{'lowprobfilter'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if (($settings->{'lowprobfilter'} != $PARAM{'lowprobfilter'}->{default}) && ($settings->{'mode'} ne $MODE_PROBS));
+	
+	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." and --".$PARAM{'relativedeviation'}->{key}." cannot be set at the same time!\n" if ((defined $settings->{'absolutedeviation'}) && ($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}));
+	
+	my ($programPath, $programName) = @{Utils::separateDirAndFile($0)};
+	$programPath = "./" if (not defined $programPath);
+	$settings->{'binarypath'} = $programPath if (not defined $settings->{'binarypath'});
+	my $binStart = "";
+	if (defined $settings->{'binarypath'}) {
+		$binStart .= $settings->{'binarypath'};
+		$binStart .= "/" if (substr($binStart, -1, 1) ne "/");
+	} else {
+		$binStart .= "./";
+	}
+	my $binName = $binStart.$settings->{'binaryprefix'}.$settings->{'mode'}.'_'.$settings->{'grammar'};
+	die $diePrefix." could not find Bellman's GAP binary '".$binName."' for mode \"".$settings->{'mode'}."\" and grammar \"".$settings->{'grammar'}."\"!\n" if (not -e $binName);
+	die $diePrefix." could not find window mode for Bellman's GAP binary '".$binName."_window' for mode \"".$settings->{'mode'}."\" and grammar \"".$settings->{'grammar'}."\"!\n" if ((not -e $binName."_window") && (defined $settings->{'windowsize'}));
+	
+	$binName = $binStart.$settings->{'binaryprefix'}.'rep_'.$settings->{'consensus'};
+	die $diePrefix." could not find Bellman's GAP binary '".$binName."' for representing the alignment via \"".$settings->{'consensus'}."\"!\n" if (not -e $binName);
+	
+	$binName = $binStart.$settings->{'binaryprefix'}.'sci_'.$settings->{'grammar'};
+	die $diePrefix." could not find Bellman's GAP binary '".$binName."' to compute \"structural conservation index\" for grammar \"".$settings->{'grammar'}."\"!\n" if (not -e $binName);
+	#~ die $diePrefix." could not find window mode for Bellman's GAP binary '".$binName."_window' to compute \"structural conservation index\" for grammar \"".$settings->{'grammar'}."\"!\n" if ((not -e $binName."_window") && (defined $settings->{'windowsize'}));
+	
+	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a positive integer number!\n" if ($settings->{'probdecimals'} < 0);
+}
+
+sub usage {
+	my ($settings) = @_;
+
+my $HELP = <<EOF;
+# RNAalishapes: RNA secondary structure predictions for alignments
+#               version $VERSION ($DATE)
+#               Stefan Janssen (bibi-help\@techfak.uni-bielefeld.de)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+USAGE: 
+perl $0 [-mode] [-options] <fasta file name or RNA sequence>
+
+ RNAalishapes comes with the following different modes of predictions:
+EOF
+;
+	$HELP .= Utils::printIdent("  ".$MODE_MFE."     : ", Utils::usage_convertInfoText("Computes the single energetically most stable secondary structure for the given RNA alignment. Co-optimal results will be suppressed, i.e. should different prediction have the same best energy value, just an arbitrary one out of them will be reported.\nThis resembles the function of the program \"RNAalifold\" of the Vienna group (see [1] and [2]). If you only use \"$MODE_MFE\" mode, consider switching to RNAalifold, because their implementation is much faster, due to sophisticated low level C optimisations.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$MODE_SUBOPT."  : ", Utils::usage_convertInfoText("Often, the biological relevant structure is hidden among suboptimal predictions. In \"$MODE_SUBOPT\" mode, you can also inspect all suboptimal solutions up to a given threshold (see parameters --@(absolutedeviation) and --@(relativedeviation)). \nDuplicates might appear when using grammar \"$GRAMMAR_MICROSTATE\", due to its semantic ambiguity according Vienna-Dot-Bracket strings. See [5] for details.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$MODE_SHAPES."  : ", Utils::usage_convertInfoText("Output of \"$MODE_SUBOPT\" mode is crowded by many very similar answers, which make it hard to focus to the \"important\" changes. The abstract shape concept [6] groups similar answers together and reports only the best answer within such a group. Due to abstraction, suboptimal analyses can be done more thorough, by ignoring boring differences.\n(see parameter --@(shapelevel))", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$MODE_PROBS."   : ", Utils::usage_convertInfoText("Structure probabilities are strictly correlated to their energy values. Grouped together into shape classes, their probabilities add up. Often a shape class with many members of worse energy becomes more probable than the shape containing the mfe structure but not much more members. See [7] for details on shape probabilities.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$MODE_SAMPLE."  : ", Utils::usage_convertInfoText("Probabilistic sampling based on partition function. This mode combines stochastic sampling with a-posteriori shape abstraction. A sample from the structure space holds M structures together with their shapes, on which classification is performed. The probability of a shape can then be approximated by its frequency in the sample.", \%PARAM))."\n";
+	$HELP .= "GENERAL OPTIONS:\n";
+	for my $par ('help','mode','windowsize','windowincrement','temperature','param','cfactor','nfactor','pairingfraction','consensus','allowlp','grammar') {
+		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
+	}
+	$HELP .= "OPTIONS ONLY VALID FOR SOME MODES:\n";
+	for my $par ('absolutedeviation','relativedeviation','shapelevel','lowprobfilter','numsamples') {
+		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
+	}
+	$HELP .= "SYSTEM DEPENDENT OPTIONS:\n";
+	for my $par ('binarypath','binaryprefix','probdecimals') {
+		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
+	}
+	$HELP .= "REFERENCES:\n";
+	$HELP .= Utils::printIdent("[1] ", "Ivo L Hofacker, Martin Fekete, Peter F Stadler\n\"Secondary Structure Prediction for Aligned RNA Sequences.\"\nJournal of Molecular Biology 2002. doi:10.1016/S0022-2836(02)00308-X\nhttp://www.tbi.univie.ac.at/papers/Abstracts/01-11-067.pdf")."\n";
+	$HELP .= Utils::printIdent("[2] ", "Stephan H Bernhart, Ivo L Hofacker, Sebastian Will, Andreas R Gruber, Peter F Stadler\n\"RNAalifold: improved consensus structure prediction for RNA alignments.\"\nBMC Bioinformatics 2008. doi:10.1186/1471-2105-9-474")."\n";
+	$HELP .= Utils::printIdent("[3] ", "David H Mathews, Matthew D Disney, Jessica L Childs, Susan J Schroeder, Michael Zuker, Douglas H Turner.\n\"Incorporating chemical modification constraints into a dynamic programming algorithm for prediction of RNA secondary structure.\"\nProceedings of the National Academy of Sciences of the United States of America 2004. doi: 10.1073/pnas.0401799101")."\n";
+	$HELP .= Utils::printIdent("[4] ", "Douglas H Turner, David H Mathews.\n\"NNDB: The nearest neighbor parameter database for predicting stability of nucleic acid secondary structure.\"\"Nucleic Acids Research 2009. doi:10.1093/nar/gkp892")."\n";
+	$HELP .= Utils::printIdent("[5] ", "Stefan Janssen, Christian Schudoma, Gerhard Steger, Robert Giegerich.\n\"Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction.\"\n BMC Bioinformatics 2011. doi:10.1186/1471-2105-12-429")."\n";
+	$HELP .= Utils::printIdent("[6] ", "Stefan Janssen, Robert Giegerich.\n\"Faster computation of exact RNA shape probabilities.\"\nBioinformatics 2010. doi:10.1093/bioinformatics/btq014")."\n";
+	$HELP .= Utils::printIdent("[7] ", "Bjoern Voss, Robert Giegerich, Marc Rehmsmeier.\n\"Complete probabilistic analysis of RNA shapes.\"\nBMC Biology 2006. doi:10.1186/1741-7007-4-5")."\n";
+	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
+	$HELP .= Utils::printIdent("[8] ", "Bjoern Voss.\n\"Structural analysis of aligned RNAs.\"\nNucleic Acids Research 2006. doi:10.1093/nar/gkl692")."\n";
+
+	print $HELP;
+	exit(0);
+}
+
+sub getStartPos {
+	my ($windowPos) = @_;
+	my ($startPos, $endPos) = split(m/-/, $windowPos);
+	return $startPos;
+}
+sub splitScore {
+	my ($score) = @_;
+	my @parts = split(m/#/, $score);
+	return \@parts;
+}

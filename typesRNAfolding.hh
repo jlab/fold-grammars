@@ -333,71 +333,10 @@ inline double operator+=(double a, const answer_pknot_pfunc &b) {
 	return a;
 }
 
-struct answer_ali_pfunc{
-	bool empty_;
-	double pfunc;
-	double covar;
-
-	answer_ali_pfunc() : empty_(false) {
-	}
-
-	answer_ali_pfunc(int i) : empty_(false) {
-	}
-
-	answer_ali_pfunc& operator+=(const answer_ali_pfunc &a) {
-		pfunc += a.pfunc;
-		covar += a.covar;
-		return *this;
-	}
-};
-
-inline std::ostream &operator<<(std::ostream &s, const answer_ali_pfunc &tuple) {
-	if (tuple.empty_)
-	  s << 'E';
-	else
-	  s << "( " << tuple.pfunc + tuple.covar << " = energy: " << tuple.pfunc << " + covar.: " << tuple.covar << " )";
-	return s;
-}
-
-//inline bool operator==(const answer_ali_pfunc &a, const answer_ali_pfunc &b) {
-// //~ std::cerr << "XXX\n";
-//	return fabs(a.mfe+a.covar-b.mfe-b.covar) <= 0.001;
-//	//~ return fabs(a.mfe-b.mfe) <= 0.001;
-//}
-//inline bool operator!=(const mfecovar &a, const mfecovar &b) {
-//	return !(a == b);
-//}
-//inline bool operator>(const mfecovar &a, const mfecovar &b) {
-//	return (a.mfe+a.covar) > (b.mfe+b.covar);
-//	//~ return (a.mfe) > (b.mfe);
-//}
-//inline bool operator<(const mfecovar &a, const mfecovar &b) {
-//	return (a.mfe+a.covar) < (b.mfe+b.covar);
-//	//~ return (a.mfe) < (b.mfe);
-//}
-//inline bool operator>=(const mfecovar &a, const mfecovar &b) {
-//	return (a.mfe+a.covar) >= (b.mfe+b.covar);
-//	//~ return (a.mfe) >= (b.mfe);
-//}
-//inline bool operator<=(const mfecovar &a, const mfecovar &b) {
-//	return (a.mfe+a.covar) <= (b.mfe+b.covar);
-//	//~ return (a.mfe) <= (b.mfe);
-//}
-//inline mfecovar operator+(const mfecovar &a, const mfecovar &b) {
-//	mfecovar res;
-//	res.mfe = a.mfe + b.mfe;
-//	res.covar = a.covar + b.covar;
-//	return res;
-//}
-
-inline void empty(answer_ali_pfunc &e) {e.empty_ = true; }
-inline bool is_empty(const answer_ali_pfunc &e) { return e.empty_; }
-
 struct answer_ali_pfunc_macrostate {
   bool empty_;
   Basic_Subsequence<M_Char, unsigned> firststem; //position of the leftmost stem in according sequence
-  pftuple pfunc; //partition function answer tuple
-  pftuple covar;
+  pftuple pf; //partition function answer tuple
 
   answer_ali_pfunc_macrostate() : empty_(false) {
   }
@@ -407,8 +346,7 @@ struct answer_ali_pfunc_macrostate {
 
   answer_ali_pfunc_macrostate& operator+=(const answer_ali_pfunc_macrostate &a) {
     firststem = a.firststem;
-    pfunc += a.pfunc;
-    covar += a.covar;
+    pf += a.pf;
     return *this;
   }
 };
@@ -417,7 +355,7 @@ inline std::ostream &operator<<(std::ostream &s, const answer_ali_pfunc_macrosta
   if (tuple.empty_) {
     s << 'E';
   } else {
-	s << "( " << sum_elems(tuple.pfunc) + sum_elems(tuple.covar) << " = energy: " << sum_elems(tuple.pfunc) << " + covar.: " << sum_elems(tuple.covar) << " )";
+	s << sum_elems(tuple.pf);
   }
   return s;
 }
@@ -684,19 +622,15 @@ struct PfanswerToDoubleAll {
   }
 };
 
-//for alignments DoubleToDouble
-struct DoubleToDoubleAli {
-  double operator()(answer_ali_pfunc d) const {
-    return d.pfunc + d.covar;
-  }
-};
-template<typename T, typename pos_int>
-inline List_Ref<std::pair<answer_ali_pfunc, T>, pos_int> sample_filter(List_Ref<std::pair<answer_ali_pfunc, T>, pos_int> &x) {
-  return sample_filter(x, DoubleToDoubleAli());
+// used in macrostate.gap, e.g. for: "instance pfsampleshape5all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape5 ) suchthat sample_filter_pf_all ) ; //compile with --sample !"
+template<typename S, typename T, typename pos_int>
+inline List_Ref<std::pair<S, T>, pos_int> sample_filter_pf_all(List_Ref<std::pair<S, T>, pos_int> &x) {
+  return sample_filter(x, PfanswerToDoubleAll());
 }
+
 struct DoubleToDoubleAli_macrostate {
   double operator()(answer_ali_pfunc_macrostate d) const {
-    return sum_elems(d.pfunc) + sum_elems(d.covar);
+    return sum_elems(d.pf);
   }
 };
 template<typename T, typename pos_int>
@@ -704,12 +638,6 @@ inline List_Ref<std::pair<answer_ali_pfunc_macrostate, T>, pos_int> sample_filte
   return sample_filter(x, DoubleToDoubleAli_macrostate());
 }
 
-
-// used in macrostate.gap, e.g. for: "instance pfsampleshape5all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape5 ) suchthat sample_filter_pf_all ) ; //compile with --sample !"
-template<typename S, typename T, typename pos_int>
-inline List_Ref<std::pair<S, T>, pos_int> sample_filter_pf_all(List_Ref<std::pair<S, T>, pos_int> &x) {
-  return sample_filter(x, PfanswerToDoubleAll());
-}
 
 #endif
 

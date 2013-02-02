@@ -11,7 +11,6 @@ type Rope = extern
 type shape_t = shape
 type M_Char = extern
 type mfecovar = extern
-type answer_ali_pfunc = extern
 
 include "Signatures/sig_foldrna.gap"
 include "Algebras/DotBracket/alg_ali_dotBracket.gap"
@@ -46,21 +45,15 @@ algebra alg_ali_mfe_subopt_overdangle extends alg_ali_mfe_overdangle {
 
 include "Algebras/Pfunc/alg_ali_pfunc.gap"
 algebra alg_ali_pfunc_overdangle extends alg_ali_pfunc {
-  answer_ali_pfunc drem(Subsequence lb, answer_ali_pfunc x, Subsequence rb) {
-	answer_ali_pfunc res;
-	res.pfunc = x.pfunc * mk_pf((termau_energy(lb, rb) + ext_mismatch_energy(lb, rb)) / float(rows(lb)));
-    res.covar = x.covar;
-	return res;
+  double drem(Subsequence lb, double x, Subsequence rb) {
+	return x * mk_pf((termau_energy(lb, rb) + ext_mismatch_energy(lb, rb)) / float(rows(lb)));
   }
-  answer_ali_pfunc ml(Subsequence lb, answer_ali_pfunc x, Subsequence rb) {
-	answer_ali_pfunc res = x;
-	res.pfunc = x.pfunc * scale(2) * mk_pf(ml_energy() + ul_energy() + ((termau_energy(lb, rb) + ml_mismatch_energy(lb, rb)) / float(rows(lb))));
-    res.covar = x.covar * scale(2) * mk_pf(covscore(lb, lb.i, rb.i));
-    return res;
+  double ml(Subsequence lb, double x, Subsequence rb) {
+	return x * scale(2) * mk_pf(ml_energy() + ul_energy() + ((termau_energy(lb, rb) + ml_mismatch_energy(lb, rb)) / float(rows(lb))) + covscore(lb, lb.i, rb.i));
   }
 }
 algebra alg_ali_pfunc_id_overdangle extends alg_ali_pfunc_overdangle {
-  choice [answer_ali_pfunc] h([answer_ali_pfunc] l) {
+  choice [double] h([double] l) {
     return l;
   }
 }
