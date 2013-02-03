@@ -15,6 +15,7 @@ our $RNAPARAM1999 = '/stefan/share/gapc/librna/rna_turner1999.par';
 our $RNAPARAM2004 = '/stefan/share/gapc/librna/rna_turner2004.par';
 our $TMPDIR = "temp";
 our $PROGRAMPREFIX = "pKiss_";
+our $RNAALISHAPES = "RNAalishapes";
 
 qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 
@@ -27,6 +28,8 @@ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C
 checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
 checkParameters("pseudoknots parameter check", $TMPDIR."/".$PROGRAMPREFIX."mfe", "pseudoknots.parametercheck.out");
 checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
+compileRNAalishapes($TMPDIR, '../Applications/RNAalishapes/');
+checkRNAalishapes($TMPDIR, "rnaalishapes.run.out"); # run compileRNAalishapes() previously!!
 
 #add your tests above this line!
 printStatistics();
@@ -52,6 +55,105 @@ sub printStatistics {
 sub checkFormerPseudoknotProblems {
 	#~ './pKiss_shapes -q 1  ggggggUUUaaCCCCCCAAAaaaaaaUAAAAAaaGGGGGaaUUUUUA'; #hier wurden shapestrings teilweise mit __ gebaut, weil das Dangling innerhalb von Knoteninnereien auch _ einfügte wenn die freie Faltung die offene Struktur war.
 	#~ './pKiss_mfe ggggggUUUaaCCCCCCAAAaaaaaaUAAAAAaaGGGGGaaUUUUUA'; #liefert ( -1390 , (((((((...))))))).............................. ), subopt jedoch eine Struktur mit ( -1400 , [[[[[[.{{{.]]]]]]..<<<<<..}}}............>>>>>. ) ( -1400 , [[[[[[.{{{.]]]]]]..<<<<<..}}}............>>>>>. )
+}
+
+sub compileRNAalishapes {
+	my ($TMPDIR, $sourcedir) = @_;
+	
+	mkdir($TMPDIR) if (!-d $TMPDIR);
+	qx(cp $sourcedir/makefile $TMPDIR);
+	qx(cp $sourcedir/RNAalishapes $TMPDIR);
+	print qx(make -C $TMPDIR all SOURCEDIR="../../" RNAOPTIONSPERLSCRIPT="../../Applications/addRNAoptions.pl");
+	
+	my @targets = split(m/\s+/, qx(cat $TMPDIR/makefile | grep "^targets=" | cut -d "=" -f 2));
+	my @grammars = split(m/\s+/, qx(cat $TMPDIR/makefile | grep "^grammars=" | cut -d "=" -f 2));
+	my @consensus = split(m/\s+/, qx(cat $TMPDIR/makefile | grep "^consensus=" | cut -d "=" -f 2));
+	my $programPrefix = qx(cat $TMPDIR/makefile | grep "^PROGRAMPREFIX=" | cut -d "=" -f 2); chomp $programPrefix;
+	
+	my $binaryMissing = 'false';
+	foreach my $target (@targets) {
+		foreach my $grammar (@grammars) {
+			foreach my $window ("", "_window") {
+				my $binary = $TMPDIR.'/'.$programPrefix.$target.'_'.$grammar.$window;
+				$binaryMissing = 'true' if (! -e $binary);
+			}
+		}
+	}
+	foreach my $grammar (@grammars) {
+		my $binary = $TMPDIR.'/'.$programPrefix.'sci_'.$grammar;
+		$binaryMissing = 'true' if (! -e $binary);
+	}
+	foreach my $consensus (@consensus) {
+		my $binary = $TMPDIR.'/'.$programPrefix.'rep_'.$consensus;
+		$binaryMissing = 'true' if (! -e $binary);
+	}
+	
+	if ($binaryMissing eq 'true') {
+		push @failedTests, "compileRNAalishapes";
+	}
+	
+	$testIndex++;
+}
+
+sub checkRNAalishapes {
+	my ($TMPDIR, $truth) = @_;
+	
+	my @runs = ();
+	push @runs, "--mode mfe";
+	push @runs, "--mode mfe --grammar overdangle";
+	push @runs, "--mode mfe --grammar microstate --allowLP 1";
+	push @runs, "--mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100";
+	push @runs, "--mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0";
+	push @runs, "--mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999";
+	push @runs, "--mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--windowSize 40 --windowIncrement 5 --mode mfe";
+	push @runs, "--windowSize 40 --windowIncrement 4 --mode mfe --grammar overdangle";
+	push @runs, "--windowSize 60 --windowIncrement 3 --mode mfe --grammar microstate --allowLP 1";
+	push @runs, "--windowSize 40 --windowIncrement 2 --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100";
+	push @runs, "--windowSize 30 --windowIncrement 8 --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0";
+	push @runs, "--windowSize 40 --windowIncrement 7 --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999";
+	push @runs, "--windowSize 40 --windowIncrement 6 --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--windowSize 40 --windowIncrement 15 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--windowSize 40 --windowIncrement 1 --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--windowSize 40 --windowIncrement 12 --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--windowSize 40 --windowIncrement 5 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--windowSize 40 --windowIncrement 5 --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--sci 1 --mode mfe --grammar overdangle";
+	push @runs, "--sci 1 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+	push @runs, "--sci 1 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--sci 1 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--sci 1 --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
+
+	my $testname = "RNAalishapes tests";
+	print "\trunning $testname: ";
+	foreach my $run (@runs) {
+		print ".";
+		foreach my $inputs ("t-box.aln","tRNA_example_ungap.aln","trp_attenuator.aln") {
+			qx(echo "perl -I ../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs" >> $TMPDIR/$truth);
+			qx(perl -I ../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs >> $TMPDIR/$truth);
+			qx(echo "" >> $TMPDIR/$truth);
+		}
+	}
+	
+	print " done.\n";
+	evaluateTest($testname, $truth);
 }
 
 sub checkBasicFunctions {

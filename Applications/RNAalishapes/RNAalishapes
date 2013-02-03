@@ -58,9 +58,11 @@ $PARAM{cfactor} = {key => 'cfactor', gapc => 'C', type => 'f', default => '1.0',
 $PARAM{nfactor} = {key => 'nfactor', gapc => 'n', type => 'f', default => '1.0', info => "Set the penalty for non-compatible sequences in the covariance term of the energy function.\nDefault is @(DEFAULT)."};
 $PARAM{consensus} = {key => 'consensus', default => 'consensus', type => 's', info => "The input alignment will be representet in a single line. You can choose between \"$CONSENSUS_CONSENSUS\", for a simple consensus sequence (determined by most frequent character), or \"$CONSENSUS_MIS\" the 'most informative sequence'. For each column of the alignment output the set of nucleotides with frequence greater than average in IUPAC notation.\nDefault is \"@(DEFAULT)\"."};
 $PARAM{grammar} = {key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could performes surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"$GRAMMAR_OVERDANGLE\". See [5] for further details."};
+$PARAM{sci} = {key => 'sci', default => 0, type => 'i', info => "The structure conservation index (SCI) is a measure for the likelyhood that individual sequences will fold similar to the aligned sequences. It is computed as the aligned MFE divided by the average MFE of the unaligned sequences.\nA SCI close to zero indicates that this structure is not a good consensus structure, whereas a set of perfectly conserved structures has SCI of 1. A SCI > 1 indicates a perfectly conserved secondary structure, which is, in addition, supported by compensatory and/or consistent mutations, which contribute a covariance score to the alignment MFE. For further details see [8].\nFor the sake of speed, SCI computation is switched off by default."};
 
 our $OUTPUT_MINLEFTWIDTH = 7;
 our $OUTPUT_FIELDSPACER = "  ";
+our $SCIDECIMALS = 3;
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
@@ -114,23 +116,15 @@ sub doComputation {
 	}
 	
 	$refHash_alignment->{representation} = getAlignmentRepresentation($gapInput, $refHash_alignment, $settings);
-	#~ print Utils::writeClustal($refHash_alignment); die;
-#~ print Dumper $gapInput; die;	
 	my $command = buildCommand($settings, $refHash_alignment);
 	my $result = qx($command "$gapInput");
-#~ print Dumper $command." $gapInput"; die;
 	if (($settings->{'mode'} eq $MODE_SUBOPT) || ($settings->{'mode'} eq $MODE_MFE)) {
 		parseSubopt($result, $settings, $refHash_alignment);
-	#~ } elsif ($settings->{'mode'} eq $MODE_ENFORCE) {
-		#~ parseEnforce($result, $settings, $refHash_sequence);
-	#~ } elsif ($settings->{'mode'} eq $MODE_LOCAL) {
-		#~ parseLocal($result, $settings, $refHash_sequence);
 	} elsif ($settings->{'mode'} eq $MODE_SHAPES) {
 		parseShapes($result, $settings, $refHash_alignment);
 	} elsif ($settings->{'mode'} eq $MODE_PROBS) {
 		parseProbs($result, $settings, $refHash_alignment);
 	} elsif ($settings->{'mode'} eq $MODE_SAMPLE) {
-		#~ print $result;
 		parseSample($result, $settings, $refHash_alignment);
 	} else {
 		print $result;
@@ -154,6 +148,41 @@ sub getAlignmentRepresentation {
 	}
 }
 
+sub getAvgSingleMFEs {
+	my ($refHash_alignment, $settings, $startPos, $endPos) = @_;
+	
+	my $cmd = buildCommand($settings, $refHash_alignment, $TASK_SCI);
+	my $mfeSum = 0;
+	foreach my $id (keys(%{$refHash_alignment->{sequences}})) {
+		my $seq = substr($refHash_alignment->{sequences}->{$id}, $startPos, $endPos - $startPos + 1);
+		$seq =~ s/\.|\-|\_//g;
+		$seq =~ s/T/U/gi;
+		foreach my $line (split(m/\n/, qx($cmd "$seq"))) {
+			if ($line =~ m/Answer/) {
+			} elsif ($line =~ m/^\s*$/) {
+			} else {
+				chomp $line;
+				$mfeSum += $line;
+				last;
+			}
+		}
+	}
+	
+	return (($mfeSum / 100) / scalar(keys(%{$refHash_alignment->{sequences}})));
+}
+
+sub printSCI {
+	my ($settings, $avgSglMfe, $alignmentScore) = @_;
+	
+	if ($settings->{'sci'}) {
+		my $sci = $alignmentScore / $avgSglMfe;
+		my $spacer = " ";
+		$spacer = "" if ($sci <= 0);
+		return $OUTPUT_FIELDSPACER.sprintf("(sci: ".$spacer."%.".$SCIDECIMALS."f)", $sci);
+	} else {
+		return "";
+	}
+}
 
 sub parseSubopt {
 	my ($result, $settings, $refHash_alignment) = @_;
@@ -189,13 +218,17 @@ sub parseSubopt {
 	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
 
 	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	my $avgSglMfe = undef;
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		$avgSglMfe = getAvgSingleMFEs($refHash_alignment, $settings, $startPos, $endPos) if ($settings->{'sci'});
 		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $scoreAll (sort {substr($a, 0, index($a, '#')) <=> substr($b, 0, index($b, '#'))} keys(%{$predictions{$windowPos}})) {
 			my ($score, $energy, $covar) = split(m/#/, $scoreAll);
 			foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$scoreAll}})) {
-				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure."\n"
+				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure;
+				print printSCI($settings, $avgSglMfe, $score);
+				print "\n"
 			}
 		}
 		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
@@ -235,14 +268,18 @@ sub parseShapes {
 	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
 
 	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	my $avgSglMfe = undef;
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		$avgSglMfe = getAvgSingleMFEs($refHash_alignment, $settings, $startPos, $endPos) if ($settings->{'sci'});
 		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $scoreAll (sort {splitScore($a)->[0] <=> splitScore($b)->[0]} keys(%{$predictions{$windowPos}})) {
 			my ($score, $energy, $covar) = @{splitScore($scoreAll)};
 			foreach my $class (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$scoreAll}})) {
 				my $structure = $predictions{$windowPos}->{$scoreAll}->{$class};
-				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.$class."\n";
+				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure;
+				print printSCI($settings, $avgSglMfe, $score);
+				print $OUTPUT_FIELDSPACER.$class."\n";
 			}
 		}
 		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
@@ -285,17 +322,21 @@ sub parseProbs {
 
 	#~ print ">".$refHash_sequence->{header}."\n";
 	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	my $avgSglMfe = undef;
 	my $numDecProb = $settings->{'probdecimals'};
 
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		$avgSglMfe = getAvgSingleMFEs($refHash_alignment, $settings, $startPos, $endPos) if ($settings->{'sci'});
 		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $probability (sort {$b <=> $a} keys(%{$predictions{$windowPos}})) {
 			foreach my $scoreAll (sort {splitScore($a)->[0] <=> splitScore($b)->[0]} keys(%{$predictions{$windowPos}->{$probability}})) {
 				my ($score, $energy, $covar) = @{splitScore($scoreAll)};
 				foreach my $class (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$probability}->{$scoreAll}})) {
 					my $structure = $predictions{$windowPos}->{$probability}->{$scoreAll}->{$class};
-					print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $probability/$sumProbs{$windowPos}).$OUTPUT_FIELDSPACER.$class."\n";
+					print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure;
+					print printSCI($settings, $avgSglMfe, $score);
+					print $OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $probability/$sumProbs{$windowPos}).$OUTPUT_FIELDSPACER.$class."\n";
 				}
 			}
 		}
@@ -342,14 +383,18 @@ sub parseSample {
 	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
 
 	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
+	my $avgSglMfe = undef;
 	my $numDecProb = $settings->{'probdecimals'};
 
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
+		$avgSglMfe = getAvgSingleMFEs($refHash_alignment, $settings, $startPos, $endPos) if ($settings->{'sci'});
 		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $class (sort {$predictions{$windowPos}->{$b}->{numSamples} <=> $predictions{$windowPos}->{$a}->{numSamples}} keys(%{$predictions{$windowPos}})) {
 			my ($score, $energy, $covar, $structure) = ($predictions{$windowPos}->{$class}->{shrep}->{score}, $predictions{$windowPos}->{$class}->{shrep}->{energy}, $predictions{$windowPos}->{$class}->{shrep}->{covar}, $predictions{$windowPos}->{$class}->{shrep}->{structure});
-			print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $predictions{$windowPos}->{$class}->{numSamples}/$numSamples{$windowPos}).$OUTPUT_FIELDSPACER.$class."\n";
+			print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure;
+			print printSCI($settings, $avgSglMfe, $score);
+			print $OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $predictions{$windowPos}->{$class}->{numSamples}/$numSamples{$windowPos}).$OUTPUT_FIELDSPACER.$class."\n";
 		}
 		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
 	}
@@ -421,6 +466,7 @@ sub checkParameters {
 	die $diePrefix."there is no consensus representation \"".$settings->{'consensus'}."\". Please select either \"$CONSENSUS_CONSENSUS\" or \"$CONSENSUS_MIS\".\n" if ($settings->{'consensus'} !~ m/^consensus|mis$/i);
 	die $diePrefix."--".$PARAM{'numsamples'}->{key}." must be a positive integer, otherwise shape frequencies cannot be estimated.\n" if ($settings->{'numsamples'} < 1);
 	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
+	die $diePrefix."--".$PARAM{'sci'}->{key}." can either be 0 or 1. Only for 1, SCI computation will be performed.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
 	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
 	die $diePrefix."--".$PARAM{'lowprobfilter'}->{key}." must be a positive floating point number below 1.\n" if (($settings->{'lowprobfilter'} >= 1) || ($settings->{'lowprobfilter'} < 0));
 
@@ -476,7 +522,7 @@ EOF
 	$HELP .= Utils::printIdent("  ".$MODE_PROBS."   : ", Utils::usage_convertInfoText("Structure probabilities are strictly correlated to their energy values. Grouped together into shape classes, their probabilities add up. Often a shape class with many members of worse energy becomes more probable than the shape containing the mfe structure but not much more members. See [7] for details on shape probabilities.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$MODE_SAMPLE."  : ", Utils::usage_convertInfoText("Probabilistic sampling based on partition function. This mode combines stochastic sampling with a-posteriori shape abstraction. A sample from the structure space holds M structures together with their shapes, on which classification is performed. The probability of a shape can then be approximated by its frequency in the sample.", \%PARAM))."\n";
 	$HELP .= "GENERAL OPTIONS:\n";
-	for my $par ('help','mode','windowsize','windowincrement','temperature','param','cfactor','nfactor','pairingfraction','consensus','allowlp','grammar') {
+	for my $par ('help','mode','windowsize','windowincrement','temperature','param','cfactor','nfactor','pairingfraction','consensus','allowlp','grammar','sci') {
 		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
 	}
 	$HELP .= "OPTIONS ONLY VALID FOR SOME MODES:\n";
@@ -495,8 +541,9 @@ EOF
 	$HELP .= Utils::printIdent("[5] ", "Stefan Janssen, Christian Schudoma, Gerhard Steger, Robert Giegerich.\n\"Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction.\"\n BMC Bioinformatics 2011. doi:10.1186/1471-2105-12-429")."\n";
 	$HELP .= Utils::printIdent("[6] ", "Stefan Janssen, Robert Giegerich.\n\"Faster computation of exact RNA shape probabilities.\"\nBioinformatics 2010. doi:10.1093/bioinformatics/btq014")."\n";
 	$HELP .= Utils::printIdent("[7] ", "Bjoern Voss, Robert Giegerich, Marc Rehmsmeier.\n\"Complete probabilistic analysis of RNA shapes.\"\nBMC Biology 2006. doi:10.1186/1741-7007-4-5")."\n";
+	$HELP .= Utils::printIdent("[8] ", "Stefan Washietl, Ivo L Hofacker, Peter F Stadler.\n\"Fast and reliable prediction of noncoding RNAs.\"\nProceedings of the National Academy of Sciences of the United States of America 2004. doi:10.1073/pnas.0409169102")."\n";
 	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
-	$HELP .= Utils::printIdent("[8] ", "Bjoern Voss.\n\"Structural analysis of aligned RNAs.\"\nNucleic Acids Research 2006. doi:10.1093/nar/gkl692")."\n";
+	$HELP .= Utils::printIdent("[9] ", "Bjoern Voss.\n\"Structural analysis of aligned RNAs.\"\nNucleic Acids Research 2006. doi:10.1093/nar/gkl692")."\n";
 
 	print $HELP;
 	exit(0);
