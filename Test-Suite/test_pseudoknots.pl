@@ -21,14 +21,14 @@ qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 
 #add your testest below this line!
 
-checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp pknotsRG",   "-s P -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pknotsRG.out");
-checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy A", "-s A -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissA.out");
-checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy B", "-s B -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissB.out");
-checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissC.out");
-checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
-checkParameters("pseudoknots parameter check", $TMPDIR."/".$PROGRAMPREFIX."mfe", "pseudoknots.parametercheck.out");
-checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
-compileRNAalishapes($TMPDIR, '../Applications/RNAalishapes/');
+#~ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp pknotsRG",   "-s P -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pknotsRG.out");
+#~ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy A", "-s A -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissA.out");
+#~ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy B", "-s B -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissB.out");
+#~ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissC.out");
+#~ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
+#~ checkParameters("pseudoknots parameter check", $TMPDIR."/".$PROGRAMPREFIX."mfe", "pseudoknots.parametercheck.out");
+#~ checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
+#~ compileRNAalishapes($TMPDIR, '../Applications/RNAalishapes/');
 checkRNAalishapes($TMPDIR, "rnaalishapes.run.out"); # run compileRNAalishapes() previously!!
 
 #add your tests above this line!
@@ -142,6 +142,8 @@ sub checkRNAalishapes {
 	push @runs, "--sci 1 --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
 
 	my $testname = "RNAalishapes tests";
+	qx(rm -f $TMPDIR/$truth);
+	
 	print "\trunning $testname: ";
 	foreach my $run (@runs) {
 		print ".";
@@ -172,8 +174,8 @@ sub checkBasicFunctions {
 	push @runs, "mfe_window -w 70 -i 2 -u 1";
 	push @runs, "probs -F 0.01 -q 3";
 	push @runs, "probs_window -w 20 -i 10 -q 1";
-	push @runs, "shape -q 2 -e 3.8";
-	push @runs, "shape_window -w 30 -i 10";
+	push @runs, "shapes -q 2 -e 3.8";
+	push @runs, "shapes_window -w 30 -i 10";
 	push @runs, "subopt -c 5";
 	push @runs, "subopt_window -w 20 -i 2";
 	
