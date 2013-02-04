@@ -29,10 +29,14 @@ endif
 all: all_normal all_window helper clean
 
 all_normal:
-	@ $(foreach var,$(targets), if [ ! -e "$(PROGRAMPREFIX)$(var)" ]; then $(MAKE) $(var); fi;)
+	for target in `echo "$(targets)"`; do \
+		$(MAKE) $${target}; \
+	done
 	
 all_window:
-	@ $(foreach var,$(targets), if [ ! -e "$(PROGRAMPREFIX)$(var)$(WINDOWSUFFIX)" ]; then $(MAKE) $(var) window="yes"; fi;)
+	for target in `echo "$(targets)"`; do \
+		$(MAKE) $${target} window="yes"; \
+	done
 
 install:
 	install -d $(PREFIX)/bin
@@ -52,8 +56,10 @@ mfe:
 		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
-		$(GAPC) -I ../../ -p "alg_ali_mfe$${suffix} * alg_ali_dotBracket" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-		$(MAKE) compile outname="mfe_$${grammar}"; \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
+			$(GAPC) -I ../../ -p "alg_ali_mfe$${suffix} * alg_ali_dotBracket" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="$@_$${grammar}"; \
+		fi; \
 	done
 
 subopt:
@@ -61,8 +67,10 @@ subopt:
 		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
-		$(GAPC) -I ../../ -p "alg_ali_mfe_subopt$${suffix} * alg_ali_dotBracket" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-		$(MAKE) compile outname="subopt_$${grammar}"; \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
+			$(GAPC) -I ../../ -p "alg_ali_mfe_subopt$${suffix} * alg_ali_dotBracket" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="subopt_$${grammar}"; \
+		fi; \
 	done
 
 shapes:
@@ -70,8 +78,10 @@ shapes:
 		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
-		$(GAPC) -I ../../ -p "((alg_ali_shapeX * alg_ali_mfe$${suffix}) * alg_ali_dotBracket) suchthat suboptShapeClasses" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-		$(MAKE) compile outname="shapes_$${grammar}"; \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
+			$(GAPC) -I ../../ -p "((alg_ali_shapeX * alg_ali_mfe$${suffix}) * alg_ali_dotBracket) suchthat suboptShapeClasses" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="shapes_$${grammar}"; \
+		fi; \
 	done
 
 probs:
@@ -79,8 +89,10 @@ probs:
 		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
-		$(GAPC) -I ../../ -p "((alg_ali_shapeX * (alg_ali_mfe$${suffix} % alg_ali_pfunc$${suffix})) suchthat filterLowProbShapes) * alg_ali_dotBracket" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-		$(MAKE) compile outname="probs_$${grammar}"; \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
+			$(GAPC) -I ../../ -p "((alg_ali_shapeX * (alg_ali_mfe$${suffix} % alg_ali_pfunc$${suffix})) suchthat filterLowProbShapes) * alg_ali_dotBracket" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="probs_$${grammar}"; \
+		fi; \
 	done
 
 sample:
@@ -88,21 +100,27 @@ sample:
 		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
-		$(GAPC) -I ../../ -p "(((alg_ali_pfunc$${suffix} | alg_ali_pfunc_id$${suffix}) * (alg_ali_shapeX * alg_ali_mfe$${suffix} * alg_ali_dotBracket)) suchthat sample_filter)" $(SOURCEDIR)ali_$${grammar}.gap --sample $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-		$(MAKE) compile outname="sample_$${grammar}"; \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
+			$(GAPC) -I ../../ -p "(((alg_ali_pfunc$${suffix} | alg_ali_pfunc_id$${suffix}) * (alg_ali_shapeX * alg_ali_mfe$${suffix} * alg_ali_dotBracket)) suchthat sample_filter)" $(SOURCEDIR)ali_$${grammar}.gap --sample $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="sample_$${grammar}"; \
+		fi; \
 	done
 
 helper:
 	for consensus in `echo "$(consensus)"`; do \
-		$(GAPC) -I ../../ -p "alg_ali_$${consensus}" $(SOURCEDIR)ali_nodangle.gap $(windowmodeflag) -o rep_$${consensus}$(current_windowmodesuffix).cc; \
-		$(MAKE) compile outname="rep_$${consensus}"; \
+		if [ ! -f "$(PROGRAMPREFIX)rep_$${consensus}" ]; then \
+			$(GAPC) -I ../../ -p "alg_ali_$${consensus}" $(SOURCEDIR)ali_nodangle.gap $(windowmodeflag) -o rep_$${consensus}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="rep_$${consensus}"; \
+		fi; \
 	done
 	for grammar in `echo "$(grammars)"`; do \
 		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
-		$(GAPC) -I ../../ -p "alg_mfe$${suffix}" $(SOURCEDIR)$${grammar}.gap $(windowmodeflag) -o sci_$${grammar}$(current_windowmodesuffix).cc; \
-		$(MAKE) compile outname="sci_$${grammar}"; \
+		if [ ! -f "$(PROGRAMPREFIX)sci_$${grammar}" ]; then \
+			$(GAPC) -I ../../ -p "alg_mfe$${suffix}" $(SOURCEDIR)$${grammar}.gap $(windowmodeflag) -o sci_$${grammar}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="sci_$${grammar}"; \
+		fi; \
 	done
 	
 compile:

@@ -16,6 +16,8 @@ our $RNAPARAM2004 = '/stefan/share/gapc/librna/rna_turner2004.par';
 our $TMPDIR = "temp";
 our $PROGRAMPREFIX = "pKiss_";
 our $RNAALISHAPES = "RNAalishapes";
+our $PERL = "perl"; 
+$PERL = "/vol/perl-5.10/bin/64/perl" if (qx(uname -a) =~ m/waldorf/); #use perl 5.10 on solaris cebitec to have the same rounding behaviour as on stefans laptop.
 
 qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 
@@ -148,8 +150,8 @@ sub checkRNAalishapes {
 	foreach my $run (@runs) {
 		print ".";
 		foreach my $inputs ("t-box.aln","tRNA_example_ungap.aln","trp_attenuator.aln") {
-			qx(echo "#CMD: perl -I ../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs" >> $TMPDIR/$truth);
-			qx(perl -I ../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs >> $TMPDIR/$truth);
+			qx(echo "#CMD: $PERL -I ../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs" >> $TMPDIR/$truth);
+			qx($PERL -I ../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs >> $TMPDIR/$truth);
 			qx(echo "" >> $TMPDIR/$truth);
 		}
 	}
