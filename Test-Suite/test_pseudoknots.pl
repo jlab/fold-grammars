@@ -148,7 +148,7 @@ sub checkRNAalishapes {
 	foreach my $run (@runs) {
 		print ".";
 		foreach my $inputs ("t-box.aln","tRNA_example_ungap.aln","trp_attenuator.aln") {
-			qx(echo "perl -I ../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs" >> $TMPDIR/$truth);
+			qx(echo "#CMD: perl -I ../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs" >> $TMPDIR/$truth);
 			qx(perl -I ../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs >> $TMPDIR/$truth);
 			qx(echo "" >> $TMPDIR/$truth);
 		}
@@ -186,7 +186,7 @@ sub checkBasicFunctions {
 	print "\trunning basic tests: ";
 	foreach my $run (@runs) {
 		print ".";
-		qx(echo "$TMPDIR/${PROGRAMPREFIX}$run $sequence" >> $TMPDIR/$truth);
+		qx(echo "#CMD: $TMPDIR/${PROGRAMPREFIX}$run $sequence" >> $TMPDIR/$truth);
 		qx($TMPDIR/${PROGRAMPREFIX}$run $sequence >> $TMPDIR/$truth);
 		qx(echo "" >> $TMPDIR/$truth);
 	}
@@ -228,7 +228,7 @@ sub checkParameters {
 	}
 	foreach my $run (@runs) {
 		print ".";
-		qx(echo "$TMPDIR/${PROGRAMPREFIX}$run $sequence" >> $TMPDIR/$truth);
+		qx(echo "#CMD: $TMPDIR/${PROGRAMPREFIX}$run $sequence" >> $TMPDIR/$truth);
 		qx($TMPDIR/${PROGRAMPREFIX}$run $sequence >> $TMPDIR/$truth);
 		qx(echo "" >> $TMPDIR/$truth);
 	}
@@ -268,7 +268,7 @@ sub evaluateTest {
 	
 	my $status = 'failed';
 	if (-e "Truth/".$truth) {
-		my $diffResult = qx(diff Truth/$truth $TMPDIR/$truth); chomp $diffResult;
+		my $diffResult = qx(diff -I "^#CMD:" Truth/$truth $TMPDIR/$truth); chomp $diffResult;
 		if ($diffResult eq "") {
 			$status = 'passed';
 		} else {

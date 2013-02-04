@@ -1,93 +1,93 @@
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-0.86 = -1.05 + 0.19)  .........................................((......))......................................................................................................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-30.37 = -20.19 + -10.18)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe < trp_attenuator.aln
                      1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-9.66 = -9.85 + 0.19)  .......(((.((((.....)))).)))........................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-0.86 = -1.05 + 0.19)  .........................................((......))......................................................................................................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-30.37 = -20.19 + -10.18)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle < trp_attenuator.aln
                      1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-9.66 = -9.85 + 0.19)  .......(((.((((.....)))).)))........................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 1 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 1 < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-0.86 = -1.05 + 0.19)  .........................................((......))......................................................................................................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 1 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 1 < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-29.44 = -19.26 + -10.18)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 1 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 1 < trp_attenuator.aln
                      1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-9.66 = -9.85 + 0.19)  .......(((.((((.....)))).)))........................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-0.53 = -0.53 + 0.00)  ..........................................(((...)))......................................................................................................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < tRNA_example_ungap.aln
                         1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-21.48 = -19.50 + -1.98)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < trp_attenuator.aln
                       1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-6.75 = -6.56 + -0.19)  .......((..((((.....))))..))........................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < t-box.aln
                        1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-11.72 = -9.27 + -2.46)  ......................................((((((.......(((((......((((.....))))................)))))))))))...................................................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-38.66 = -17.40 + -21.26)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-14.50 = -13.15 + -1.35)  ...((((((((((((.....)))))))))......)))..............
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < t-box.aln
                       1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-3.11 = -2.30 + -0.81)  ......................................(((((......))((((.....................................))))...)))...................................................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-37.85 = -22.39 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < trp_attenuator.aln
                       1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-9.40 = -9.21 + -0.19)  .......(((.((((.....)))).)))........................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-0.91 = -1.05 + 0.14)  ...........................................(((....)))....................................................................................................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-30.05 = -14.58 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-7.36 = -7.17 + -0.19)  .......(((.((((.....)))).)))........................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                       1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (-0.76 = -0.90 +  0.14)  ...........................................(((....)))....................................................................................................................
 (-0.49 =  0.40 + -0.89)  ......................................(((.((.......((((.....................................)))))).)))...................................................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                          1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-30.88 = -15.41 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).
 (-29.62 = -14.45 + -15.18)  (((((((..((((...........))))..((((.......))))......(((((.......)))))))))))).
@@ -224,14 +224,14 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --relativeDeviation
 (-18.57 =  -6.13 + -12.44)  ((.((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))..
 (-18.56 =  -6.97 + -11.60)  .((.(((.......................((((.......))))......(((((.......)))))))).))..
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 (-7.34 = -7.16 + -0.19)  .......(((.((((.....)))).)))........................
 (-4.99 = -4.66 + -0.33)  ....((.(((.((((.....)))).))).......))...............
 (-4.76 = -4.27 + -0.49)  ...(((.(((.((((.....)))).))).......)))..............
 (-4.54 = -4.26 + -0.28)  ........((.((((.....)))).)).........................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                       1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (-0.76 = -0.90 +  0.14)  ...........................................(((....)))....................................................................................................................
 (-0.49 =  0.40 + -0.89)  ......................................(((.((.......((((.....................................)))))).)))...................................................................
@@ -291,7 +291,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --absoluteDeviation
 ( 2.25 =  3.00 + -0.75)  ......................................(((((......))((((.........((.....))...................))))...)))...................................................................
 ( 2.26 =  2.42 + -0.16)  ....................................................(((.....................................)))..........................................................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                          1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-30.88 = -15.41 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).
 (-29.99 = -14.42 + -15.57)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).
@@ -306,7 +306,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --absoluteDeviation
 (-28.07 = -13.34 + -14.73)  ((((((...(((.............))).(((((.......))))).....(((((.......))))).)))))).
 (-27.91 = -13.45 + -14.46)  .((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))..
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 (-7.34 = -7.16 + -0.19)  .......(((.((((.....)))).)))........................
 (-6.36 = -6.54 +  0.19)  .......(((.(((.......))).)))........................
@@ -314,7 +314,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode subopt --absoluteDeviation
 (-4.76 = -4.27 + -0.49)  ...(((.(((.((((.....)))).))).......)))..............
 (-4.54 = -4.26 + -0.28)  ........((.((((.....)))).)).........................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                       1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (-0.81 = -0.90 +  0.09)  ...........................................(((....)))....................................................................................................................  []
 (-0.17 =  0.40 + -0.57)  ......................................(((.((.......((((.....................................)))))).)))...................................................................  [[[]]]
@@ -323,33 +323,33 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation
 ( 1.32 =  1.45 + -0.12)  ......................................(((..(((....)))...........((.....))..........................)))...................................................................  [[][]]
 ( 1.95 =  1.79 +  0.16)  ...........................................(((....)))...........((.....))................................................................................................  [][]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                         1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-16.61 = -13.64 + -2.97)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 (-15.55 = -13.63 + -1.92)  (((((((......................(((((.......))))).....(((((.......)))))))))))).  [[][]]
 (-13.94 = -10.88 + -3.06)  (((((((..(((..((...))....))).(((((.......))))).....(((((.......)))))))))))).  [[[]][][]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 (-7.44 = -7.16 + -0.28)  .......(((.((((.....)))).)))........................  [[]]
 (-4.80 = -4.66 + -0.14)  ....((.(((.((((.....)))).))).......))...............  [[[]]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                       1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (-0.81 = -0.90 +  0.09)  ...........................................(((....)))....................................................................................................................  _[]_
 (-0.17 =  0.40 + -0.57)  ......................................(((.((.......((((.....................................)))))).)))...................................................................  _[_[_[]]_]_
 ( 0.00 =  0.00 +  0.00)  .........................................................................................................................................................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                         1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-16.61 = -13.64 + -2.97)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  [_[]_[]_[]]_
 (-15.74 = -12.92 + -2.82)  ((((((...(((.............))).(((((.......))))).....(((((.......))))).)))))).  [_[]_[]_[]_]_
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 (-7.44 = -7.16 + -0.28)  .......(((.((((.....)))).)))........................  _[_[]_]_
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                       1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (-0.91 = -1.05 +  0.14)  ...........................................(((....)))....................................................................................................................  []
 (-0.49 =  0.40 + -0.89)  ......................................(((.((.......((((.....................................)))))).)))...................................................................  [_[_[]]_]
@@ -358,41 +358,41 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation
 ( 0.69 =  1.29 + -0.61)  ......................................(((..(((....)))...........((.....))..........................)))...................................................................  [[][]]
 ( 0.73 =  1.40 + -0.67)  ......................................(((.(((((.............................................))).)).)))...................................................................  [_[[]_]_]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                          1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-30.05 = -14.58 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 (-7.36 = -7.17 + -0.19)  .......(((.((((.....)))).)))........................  [_[]_]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                      1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (-0.76 = -0.90 + 0.14)  ...........................................(((....)))....................................................................................................................  []
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                          1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-30.88 = -15.41 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 (-28.22 = -14.26 + -13.96)  (((((((......................(((((.......))))).....(((((.......)))))))))))).  [[][]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 (-7.34 = -7.16 + -0.19)  .......(((.((((.....)))).)))........................  [[]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                    1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (0.00 = 0.00 + 0.00)  .........................................................................................................................................................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-26.43 = -10.97 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 (-25.31 = -11.34 + -13.96)  (((((((......................(((((.......))))).....(((((.......)))))))))))).  [[][]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-6.34 = -6.15 + -0.19)  .......(((.((((.....)))).)))........................  []
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
                       1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-3.03 = -2.14 + -0.89)  ......................................(((.((.......((((.....................................)))))).)))...................................................................  0.4043990  [[[]]]
 (-2.93 = -1.86 + -1.07)  ......................................(((.((.......(((((..................................).)))))).)))...................................................................  0.3740034  [[[[]]]]
@@ -458,7 +458,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.00
 ( 7.12 =  8.43 + -1.30)  ...........(...)..(.(((.......))))....(((.((.......(((((..................................).)))))).)))...................................................................  0.0000000  [][[]][[[[]]]]
 ( 7.93 =  8.83 + -0.91)  ...........(.(((......................(((.((.......(((((........((.....)).................).)))))).))))))).............................................(....)............  0.0000000  [[[[[[[]]]]]]][]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-37.41 = -21.95 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  0.8421613  [[][][]]
 (-35.52 = -19.71 + -15.81)  (((((((..((((.((...))...)))).(((((.......))))).....(((((.......)))))))))))).  0.0708830  [[[]][][]]
@@ -471,7 +471,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.00
 (-32.25 = -18.28 + -13.96)  (((((((......................(((((.......))))).....(((((.......)))))))))))).  0.0001465  [[][]]
 (-31.55 = -16.77 + -14.78)  (((((.(..((((...........)))).(((((.......))))).....(((((.......)))))).))))).  0.0001087  [[[][][]]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-10.90 = -10.71 + -0.19)  .......(((.((((.....)))).)))........................  0.6595683  [[]]
 ( -9.83 = -10.04 +  0.21)  .(((((.(((.((((.....)))).)))...........)))))........  0.3033540  [[[]]]
@@ -482,7 +482,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.00
 ( -5.36 =  -5.27 + -0.09)  (....).(((.((((.....)))).)))........................  0.0001431  [][[]]
 ( -3.99 =  -3.40 + -0.59)  .(.(((.(((.((((.....)))).))).......))).)....(......)  0.0000516  [[[[]]]][]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
                       1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-3.03 = -2.14 + -0.89)  ......................................(((.((.......((((.....................................)))))).)))...................................................................  0.4785316  _[_[_[]]_]_
 (-2.16 = -1.48 + -0.67)  ......................................(((.(((((.............................................))).)).)))...................................................................  0.1438054  _[_[[]_]_]_
@@ -517,7 +517,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.01
 ( 2.77 =  3.34 + -0.57)  .............(((......................(((.((.......((((.........((.....))...................)))).))))))))................................................................  0.0000530  _[_[_[_[_[]_]_]]]_
 ( 2.90 =  3.40 + -0.49)  .............(((......................(((.((.....................................................))))))))................................................................  0.0000382  _[_[_[]]]_
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-37.41 = -21.95 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  0.9498872  [_[]_[]_[]]_
 (-35.52 = -19.71 + -15.81)  (((((((..((((.((...))...)))).(((((.......))))).....(((((.......)))))))))))).  0.0409701  [_[_[]_]_[]_[]]_
@@ -526,7 +526,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.01
 (-32.50 = -17.53 + -14.97)  ((((((...((((.((...))...)))).(((((.......))))).....(((((.......))))).)))))).  0.0002660  [_[_[]_]_[]_[]_]_
 (-31.99 = -17.19 + -14.80)  .((((((..((((.((...))...)))).(((((.......))))).....(((((.......)))))))))))..  0.0001121  _[_[_[]_]_[]_[]]_
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-10.90 = -10.71 + -0.19)  .......(((.((((.....)))).)))........................  0.6882973  _[_[]_]_
 ( -9.83 = -10.04 +  0.21)  .(((((.(((.((((.....)))).)))...........)))))........  0.2950296  _[_[_[]_]_]_
@@ -534,7 +534,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode probs --lowProbFilter 0.01
 ( -7.41 =  -6.80 + -0.61)  .(((((.(((.((((.....)))).))).......))).))...........  0.0054442  _[[_[_[]_]_]_]_
 ( -7.36 =  -6.84 + -0.52)  .((.((.(((.((((.....)))).)))................)).))...  0.0041596  _[_[_[_[]_]_]_]_
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
                       1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-4.12 = -3.23 + -0.89)  ......................................(((.((.......((((.....................................)))))).)))...................................................................  0.8100000  []
 (-2.41 = -1.60 + -0.81)  ......................................(((((......))((((.....................................))))...)))...................................................................  0.0900000  [[][]]
@@ -542,15 +542,15 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 100 --
 (-0.46 =  0.41 + -0.87)  ....................(((.......))).....(((.(((...)))((((.....................................))))...)))...................................................................  0.0200000  [][[][]]
 ( 2.07 =  1.85 +  0.22)  ....................((.........))........((......)).((.......................................))..........................................................................  0.0100000  [][][]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-42.85 = -27.38 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  1.0000000  [[][][]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-11.94 = -11.75 + -0.19)  .......(((.((((.....)))).)))........................  1.0000000  []
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
                       1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-4.12 = -3.23 + -0.89)  ......................................(((.((.......((((.....................................)))))).)))...................................................................  0.6360000  [[]]
 (-3.36 = -2.53 + -0.83)  ......................................(((.((.......((((.........((.....))...................)))))).)))...................................................................  0.1290000  [[[]]]
@@ -568,18 +568,18 @@ perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 1000 -
 ( 3.53 =  4.08 + -0.54)  ................................((....(((.((((....))((.......................................)).)).))).))................................................................  0.0010000  [[[[][]]]]
 ( 0.00 =  0.00 +  0.00)  .........................................................................................................................................................................  0.0010000  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-42.85 = -27.38 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  0.9580000  [[][][]]
 (-40.96 = -25.15 + -15.81)  (((((((..((((.((...))...)))).(((((.......))))).....(((((.......)))))))))))).  0.0420000  [[[]][][]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-11.94 = -11.75 + -0.19)  .......(((.((((.....)))).)))........................  0.7920000  [[]]
 (-10.46 = -10.67 +  0.21)  .(((((.(((.((((.....)))).)))...........)))))........  0.2030000  [[[]]]
 ( -7.73 =  -7.75 +  0.02)  .((.((.(((.((((.....)))).)))...........)).))........  0.0050000  [[[[]]]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode mfe < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode mfe < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
 ( 0.00 =  0.00 + 0.00)  ........................................
 
@@ -661,7 +661,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                    131  _g___cuggg_____gcccgaggagaca__acgcgc___  169
 ( 0.00 =  0.00 + 0.00)  .......................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode mfe < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode mfe < tRNA_example_ungap.aln
                        1  gcgugcguagcucagcu_ggu__agagcaccaggcuuuca  40
 ( -1.91 = -0.84 + -1.07)  .........(((.............)))............
 
@@ -689,7 +689,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                       41  cccagaaagucacggguucgaaucccaucgaacgcg  76
 ( -8.22 = -5.65 + -2.57)  ...........(((((.......)))))........
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode mfe < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode mfe < trp_attenuator.aln
                       1  uggugguggcccgcucaaccggcggccca______cugau  40
 (-9.66 = -9.85 +  0.19)  .......(((.((((.....)))).)))............
 
@@ -702,7 +702,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      16  caaccggcggccca______cugauugcgccuuuuug  52
 ( 0.00 =  0.00 +  0.00)  .....................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 4 --mode mfe --grammar overdangle < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 4 --mode mfe --grammar overdangle < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
 ( 0.00 =  0.00 + 0.00)  ........................................
 
@@ -805,7 +805,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                    133  ___cuggg_____gcccgaggagaca__acgcgc___  169
 ( 0.00 =  0.00 + 0.00)  .....................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 4 --mode mfe --grammar overdangle < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 4 --mode mfe --grammar overdangle < tRNA_example_ungap.aln
                         1  gcgugcguagcucagcu_ggu__agagcaccaggcuuuca  40
 ( -1.91 =  -0.84 + -1.07)  .........(((.............)))............
 
@@ -836,7 +836,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                        37  uucacccagaaagucacggguucgaaucccaucgaacgcg  76
 ( -8.22 =  -5.65 + -2.57)  ...............(((((.......)))))........
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 4 --mode mfe --grammar overdangle < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 4 --mode mfe --grammar overdangle < trp_attenuator.aln
                       1  uggugguggcccgcucaaccggcggccca______cugau  40
 (-9.66 = -9.85 +  0.19)  .......(((.((((.....)))).)))............
 
@@ -849,7 +849,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      13  gcucaaccggcggccca______cugauugcgccuuuuug  52
 (-1.79 = -1.60 + -0.19)  (((.....))).............................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 60 --windowIncrement 3 --mode mfe --grammar microstate --allowLP 1 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 60 --windowIncrement 3 --mode mfe --grammar microstate --allowLP 1 < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu_  60
 (-0.86 = -1.05 + 0.19)  .........................................((......)).........
 
@@ -964,7 +964,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 60 --windowIncrement
                    112  ___g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 ( 0.00 =  0.00 + 0.00)  ..........................................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 60 --windowIncrement 3 --mode mfe --grammar microstate --allowLP 1 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 60 --windowIncrement 3 --mode mfe --grammar microstate --allowLP 1 < tRNA_example_ungap.aln
                         1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucg  60
 ( -9.15 =  -5.84 + -3.31)  .........(((.............))).(((((.......)))))..............
 
@@ -986,11 +986,11 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 60 --windowIncrement
                        19  ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-15.60 = -10.79 + -4.81)  ...........(((((.......))))).....(((((.......)))))........
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 60 --windowIncrement 3 --mode mfe --grammar microstate --allowLP 1 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 60 --windowIncrement 3 --mode mfe --grammar microstate --allowLP 1 < trp_attenuator.aln
                      1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-9.66 = -9.85 + 0.19)  .......(((.((((.....)))).)))........................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 2 --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 2 --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
 ( 0.00 =  0.00 + 0.00)  ........................................
 
@@ -1189,7 +1189,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                    131  _g___cuggg_____gcccgaggagaca__acgcgc___  169
 ( 0.00 =  0.00 + 0.00)  .......................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 2 --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 2 --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < tRNA_example_ungap.aln
                         1  gcgugcguagcucagcu_ggu__agagcaccaggcuuuca  40
 ( -1.54 =  -0.84 + -0.70)  .........(((.............)))............
 
@@ -1247,7 +1247,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                        37  uucacccagaaagucacggguucgaaucccaucgaacgcg  76
 ( -5.83 =  -5.65 + -0.18)  ...............(((((.......)))))........
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 2 --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 2 --mode mfe --grammar macrostate --allowLP 1 --pairingFraction -100 < trp_attenuator.aln
                       1  uggugguggcccgcucaaccggcggccca______cugau  40
 (-6.75 = -6.56 + -0.19)  .......((..((((.....))))..))............
 
@@ -1269,7 +1269,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      13  gcucaaccggcggccca______cugauugcgccuuuuug  52
 (-1.99 = -1.80 + -0.19)  (((.....))).............................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 30 --windowIncrement 8 --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 30 --windowIncrement 8 --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_  30
 ( 0.00 =  0.00 + 0.00)  ..............................
 
@@ -1327,7 +1327,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 30 --windowIncrement
                    145  _gcccgaggagaca__acgcgc___  169
 ( 0.00 =  0.00 + 0.00)  .........................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 30 --windowIncrement 8 --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 30 --windowIncrement 8 --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < tRNA_example_ungap.aln
                       1  gcgugcguagcucagcu_ggu__agagcac  30
 (-4.02 = -1.70 + -2.32)  .........((((...........))))..
 
@@ -1349,7 +1349,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 30 --windowIncrement
                      49  gucacggguucgaaucccaucgaacgcg  76
 (-9.99 = -4.85 + -5.14)  ...(((((.......)))))........
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 30 --windowIncrement 8 --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 30 --windowIncrement 8 --mode mfe --grammar nodangle --allowLP 0 --nfactor 0.1 --cfactor 2.0 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca_  30
 (-14.19 = -13.55 + -0.64)  ......(((((((((.....))))))))).
 
@@ -1362,7 +1362,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 30 --windowIncrement
                        25  gccca______cugauugcgccuuuuug  52
 (  0.00 =   0.00 +  0.00)  ............................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 7 --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 7 --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
 ( 0.00 =  0.00 + 0.00)  ........................................
 
@@ -1423,7 +1423,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                    134  __cuggg_____gcccgaggagaca__acgcgc___  169
 ( 0.00 =  0.00 + 0.00)  ....................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 7 --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 7 --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < tRNA_example_ungap.aln
                         1  gcgugcguagcucagcu_ggu__agagcaccaggcuuuca  40
 ( -4.62 =  -3.12 + -1.50)  .........((((...........))))............
 
@@ -1445,7 +1445,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                        43  cagaaagucacggguucgaaucccaucgaacgcg  76
 ( -9.51 =  -5.65 + -3.85)  .........(((((.......)))))........
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 7 --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 7 --mode mfe --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par < trp_attenuator.aln
                       1  uggugguggcccgcucaaccggcggccca______cugau  40
 (-9.40 = -9.21 + -0.19)  .......(((.((((.....)))).)))............
 
@@ -1455,7 +1455,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      15  ucaaccggcggccca______cugauugcgccuuuuug  52
 ( 0.00 =  0.00 +  0.00)  ......................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 6 --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 6 --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
 ( 0.00 =  0.00 + 0.00)  ........................................
 
@@ -1525,7 +1525,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                    133  ___cuggg_____gcccgaggagaca__acgcgc___  169
 ( 0.00 =  0.00 + 0.00)  .....................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 6 --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 6 --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                        1  gcgugcguagcucagcu_ggu__agagcaccaggcuuuca  40
 ( -3.06 = -1.56 + -1.50)  .........((((...........))))............
 
@@ -1547,7 +1547,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                       37  uucacccagaaagucacggguucgaaucccaucgaacgcg  76
 ( -7.88 = -4.03 + -3.85)  ...............(((((.......)))))........
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 6 --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 6 --mode mfe --grammar microstate --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggugguggcccgcucaaccggcggccca______cugau  40
 (-7.36 = -7.17 + -0.19)  .......(((.((((.....)))).)))............
 
@@ -1557,7 +1557,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      13  gcucaaccggcggccca______cugauugcgccuuuuug  52
 (-1.30 = -0.92 + -0.38)  (((.....))).............................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 15 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 15 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                      1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGC  40
 ( 0.00 =  0.00 + 0.00)  ........................................
 
@@ -1588,7 +1588,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                    136  CUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 ( 0.00 =  0.00 + 0.00)  ..................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 15 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 15 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                        1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSR  40
 ( -3.06 = -1.56 + -1.50)  .........((((...........))))............
 
@@ -1608,7 +1608,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
 ( -7.88 = -4.03 + -3.85)  ......(((((.......)))))........
 ( -5.24 = -2.34 + -2.90)  .......((((.......)))).........
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 15 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 15 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWW  40
 (-7.34 = -7.16 + -0.19)  .......(((.((((.....)))).)))............
 (-4.99 = -4.66 + -0.33)  ....((.(((.((((.....)))).))).......))...
@@ -1618,7 +1618,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      16  HAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 ( 0.00 =  0.00 +  0.00)  .....................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 1 --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 1 --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                      1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGC  40
 ( 0.00 =  0.00 + 0.00)  ........................................
 
@@ -2231,7 +2231,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                    130  wyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 ( 0.00 =  0.00 + 0.00)  ........................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 1 --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 1 --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                        1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSR  40
 ( -3.06 = -1.56 + -1.50)  .........((((...........))))............
 ( -2.18 = -0.57 + -1.60)  .........(((.............)))............
@@ -2474,7 +2474,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
 ( -5.55 = -1.97 + -3.58)  ...............((((.........))))........
 ( -5.24 = -2.34 + -2.90)  ................((((.......)))).........
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 1 --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 1 --mode subopt --absoluteDeviation 3 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWW  40
 (-7.34 = -7.16 + -0.19)  .......(((.((((.....)))).)))............
 (-6.36 = -6.54 +  0.19)  .......(((.(((.......))).)))............
@@ -2554,7 +2554,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
 (-0.64 = -0.64 +  0.00)  ((.......)).............................
 ( 0.00 =  0.00 +  0.00)  ........................................
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 12 --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 12 --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                      1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGC  40
 ( 0.00 =  0.00 + 0.00)  ........................................  _
 
@@ -2597,7 +2597,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                    133  gurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 ( 0.00 =  0.00 + 0.00)  .....................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 12 --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 12 --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                       1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSR  40
 (-1.62 = -0.57 + -1.05)  .........(((.............)))............  []
 ( 0.00 =  0.00 +  0.00)  ........................................  _
@@ -2613,7 +2613,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      37  UUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-4.29 = -4.03 + -0.27)  ...............(((((.......)))))........  []
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 12 --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 12 --mode shapes --absoluteDeviation 3 --shapeLevel 3 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWW  40
 (-7.44 = -7.16 + -0.28)  .......(((.((((.....)))).)))............  [[]]
 (-4.80 = -4.66 + -0.14)  ....((.(((.((((.....)))).))).......))...  [[[]]]
@@ -2622,7 +2622,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
 (-1.30 = -0.92 + -0.38)  (((.....))).............................  []
 ( 0.00 =  0.00 +  0.00)  ........................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                      1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGC  40
 ( 0.00 =  0.00 + 0.00)  ........................................  _
 
@@ -2710,7 +2710,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                    131  yggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 ( 0.00 =  0.00 + 0.00)  .......................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                       1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSR  40
 (-1.62 = -0.57 + -1.05)  .........(((.............)))............  _[]_
 
@@ -2738,7 +2738,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      41  MSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-4.29 = -4.03 + -0.27)  ...........(((((.......)))))........  _[]_
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 1 --shapeLevel 1 --grammar macrostate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWW  40
 (-7.44 = -7.16 + -0.28)  .......(((.((((.....)))).)))............  _[_[]_]_
 
@@ -2751,7 +2751,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      16  HAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 ( 0.00 =  0.00 +  0.00)  .....................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                      1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGC  40
 ( 0.00 =  0.00 + 0.00)  ........................................  _
 
@@ -2839,7 +2839,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                    131  yggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 ( 0.00 =  0.00 + 0.00)  .......................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                        1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSR  40
 ( -3.06 = -1.56 + -1.50)  .........((((...........))))............  []
 
@@ -2869,7 +2869,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                       41  MSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 ( -7.88 = -4.03 + -3.85)  ...........(((((.......)))))........  []
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWW  40
 (-7.36 = -7.17 + -0.19)  .......(((.((((.....)))).)))............  [_[]_]
 
@@ -2882,7 +2882,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      16  HAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 ( 0.00 =  0.00 +  0.00)  .....................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                      1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGC  40
 ( 0.00 =  0.00 + 0.00)  ........................................  _
 
@@ -2964,7 +2964,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                    131  yggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 ( 0.00 =  0.00 + 0.00)  .......................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                        1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSR  40
 ( -3.06 = -1.56 + -1.50)  .........((((...........))))............  []
 
@@ -2993,7 +2993,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                       41  MSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 ( -7.88 = -4.03 + -3.85)  ...........(((((.......)))))........  []
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWW  40
 (-7.34 = -7.16 + -0.19)  .......(((.((((.....)))).)))............  [[]]
 
@@ -3006,7 +3006,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      16  HAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 ( 0.00 =  0.00 +  0.00)  .....................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                    1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
 (0.00 = 0.00 + 0.00)  ........................................  _
 
@@ -3088,7 +3088,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                  131  _g___cuggg_____gcccgaggagaca__acgcgc___  169
 (0.00 = 0.00 + 0.00)  .......................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                        1  gcgugcguagcucagcu_ggu__agagcaccaggcuuuca  40
 ( -1.54 = -0.04 + -1.50)  .........((((...........))))............  []
 
@@ -3116,7 +3116,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                       41  cccagaaagucacggguucgaaucccaucgaacgcg  76
 ( -7.14 = -3.28 + -3.85)  ...........(((((.......)))))........  []
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggugguggcccgcucaaccggcggccca______cugau  40
 (-6.34 = -6.15 + -0.19)  .......(((.((((.....)))).)))............  []
 
@@ -3129,7 +3129,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                      16  caaccggcggccca______cugauugcgccuuuuug  52
 ( 0.00 =  0.00 +  0.00)  .....................................  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
                       1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
 ( 0.00 =  0.00 +  0.00)  ........................................  0.9770819  _
 ( 2.68 =  2.70 + -0.02)  ....................(((.......))).......  0.0199700  []
@@ -3365,7 +3365,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
 ( 9.33 =  9.26 +  0.07)  .........(......)....(....)............  0.0000009  [][]
 ( 9.74 =  9.72 +  0.02)  ...............(..(..(....)...)).......  0.0000001  [[[]]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
                        1  gcgugcguagcucagcu_ggu__agagcaccaggcuuuca  40
 ( -4.24 = -2.73 + -1.50)  .........((((...........))))............  0.8773793  []
 ( -2.35 = -0.50 + -1.84)  .........((((.((...))...))))............  0.1153709  [[]]
@@ -3468,7 +3468,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
 ( -2.36 =  1.32 + -3.67)  ....(.....)(((((.(...).)))))........  0.0000056  [][[]]
 (  0.81 =  4.46 + -3.65)  .(......(..(((((.(...).))))).)...)..  0.0000000  [[[[]]]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca______cugau  40
 (-10.90 = -10.71 + -0.19)  .......(((.((((.....)))).)))............  0.8189385  [[]]
 ( -9.58 =  -9.09 + -0.49)  ...(((.(((.((((.....)))).))).......)))..  0.1674620  [[[]]]
@@ -3505,7 +3505,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
 (  9.27 =  10.37 + -1.10)  (.(..((.(((.((.......))...)).)))..).)  0.0000006  [[[[[[]]]]]]
 (  9.38 =  10.15 + -0.77)  ((...(.(((..........))).)))..(......)  0.0000005  [[[]]][]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
                       1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
 ( 0.00 =  0.00 +  0.00)  ........................................  0.9859336  _
 ( 2.68 =  2.70 + -0.02)  ....................(((.......))).......  0.0140664  _[]_
@@ -3630,7 +3630,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                     131  _g___cuggg_____gcccgaggagaca__acgcgc___  169
 ( 0.00 =  0.00 +  0.00)  .......................................  1.0000000  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
                        1  gcgugcguagcucagcu_ggu__agagcaccaggcuuuca  40
 ( -4.24 = -2.73 + -1.50)  .........((((...........))))............  0.9531675  _[]_
 ( -2.35 = -0.50 + -1.84)  .........((((.((...))...))))............  0.0465929  _[_[]_]_
@@ -3678,7 +3678,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                       41  cccagaaagucacggguucgaaucccaucgaacgcg  76
 (-10.06 = -6.21 + -3.85)  ...........(((((.......)))))........  1.0000000  _[]_
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca______cugau  40
 (-10.90 = -10.71 + -0.19)  .......(((.((((.....)))).)))............  0.8423482  _[_[]_]_
 ( -9.58 =  -9.09 + -0.49)  ...(((.(((.((((.....)))).))).......)))..  0.1490003  _[_[_[]_]_]_
@@ -3713,7 +3713,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
 (  7.34 =   7.58 + -0.23)  .((.((((((..........))).)))......))..  0.0000080  _[_[[]_]_]_
 (  6.87 =   7.79 + -0.91)  ((...((..((.((.......))...))..))))...  0.0000078  [_[_[_[]_]_]]_
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
                       1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
 ( 0.00 =  0.00 +  0.00)  ........................................  0.8000000  _
 ( 1.25 =  1.27 + -0.02)  ....................(((.......))).......  0.2000000  []
@@ -3813,7 +3813,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                     131  _g___cuggg_____gcccgaggagaca__acgcgc___  169
 ( 0.00 =  0.00 +  0.00)  .......................................  1.0000000  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
                         1  gcgugcguagcucagcu_ggu__agagcaccaggcuuuca  40
 ( -5.67 =  -4.17 + -1.50)  .........((((...........))))............  1.0000000  []
 
@@ -3846,7 +3846,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                        41  cccagaaagucacggguucgaaucccaucgaacgcg  76
 (-10.85 =  -7.00 + -3.85)  ...........(((((.......)))))........  1.0000000  []
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca______cugau  40
 (-11.94 = -11.75 + -0.19)  .......(((.((((.....)))).)))............  1.0000000  []
 
@@ -3861,7 +3861,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
 (  0.46 =   0.60 + -0.14)  .......(((..........)))..............  0.5700000  []
 (  0.00 =   0.00 +  0.00)  .....................................  0.4300000  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
                       1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
 ( 0.00 =  0.00 +  0.00)  ........................................  0.8810000  _
 ( 1.25 =  1.27 + -0.02)  ....................(((.......))).......  0.1190000  []
@@ -3971,7 +3971,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                     131  _g___cuggg_____gcccgaggagaca__acgcgc___  169
 ( 0.00 =  0.00 +  0.00)  .......................................  1.0000000  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
                         1  gcgugcguagcucagcu_ggu__agagcaccaggcuuuca  40
 ( -5.67 =  -4.17 + -1.50)  .........((((...........))))............  0.9520000  []
 ( -3.78 =  -1.93 + -1.84)  .........((((.((...))...))))............  0.0480000  [[]]
@@ -4012,7 +4012,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
                        41  cccagaaagucacggguucgaaucccaucgaacgcg  76
 (-10.85 =  -7.00 + -3.85)  ...........(((((.......)))))........  1.0000000  []
 
-perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement 5 --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca______cugau  40
 (-11.94 = -11.75 + -0.19)  .......(((.((((.....)))).)))............  0.8980000  [[]]
 (-10.20 =  -9.71 + -0.49)  ...(((.(((.((((.....)))).))).......)))..  0.1020000  [[[]]]
@@ -4032,24 +4032,24 @@ perl -I ../Applications/lib/ temp/RNAalishapes --windowSize 40 --windowIncrement
 (  1.46 =   2.17 + -0.70)  ....(((.((...................)).)))..  0.0800000  [[]]
 (  3.14 =   3.94 + -0.80)  .....((..((.((.......))...))..)).....  0.0030000  [[[]]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode mfe --grammar overdangle < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode mfe --grammar overdangle < t-box.aln
                      1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-0.86 = -1.05 + 0.19)  .........................................((......))......................................................................................................................  (sci:  0.016)
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode mfe --grammar overdangle < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode mfe --grammar overdangle < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-30.37 = -20.19 + -10.18)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.265)
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode mfe --grammar overdangle < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode mfe --grammar overdangle < trp_attenuator.aln
                      1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-9.66 = -9.85 + 0.19)  .......(((.((((.....)))).)))........................  (sci:  0.554)
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                       1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (-0.76 = -0.90 +  0.14)  ...........................................(((....)))....................................................................................................................  (sci:  0.017)
 (-0.49 =  0.40 + -0.89)  ......................................(((.((.......((((.....................................)))))).)))...................................................................  (sci:  0.011)
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                          1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-30.88 = -15.41 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.697)
 (-29.62 = -14.45 + -15.18)  (((((((..((((...........))))..((((.......))))......(((((.......)))))))))))).  (sci:  1.628)
@@ -4186,14 +4186,14 @@ perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode subopt --relativeD
 (-18.57 =  -6.13 + -12.44)  ((.((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))..  (sci:  1.021)
 (-18.56 =  -6.97 + -11.60)  .((.(((.......................((((.......))))......(((((.......)))))))).))..  (sci:  1.020)
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode subopt --relativeDeviation 40 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 (-7.34 = -7.16 + -0.19)  .......(((.((((.....)))).)))........................  (sci:  0.544)
 (-4.99 = -4.66 + -0.33)  ....((.(((.((((.....)))).))).......))...............  (sci:  0.370)
 (-4.76 = -4.27 + -0.49)  ...(((.(((.((((.....)))).))).......)))..............  (sci:  0.353)
 (-4.54 = -4.26 + -0.28)  ........((.((((.....)))).)).........................  (sci:  0.336)
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
                       1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-3.03 = -2.14 + -0.89)  ......................................(((.((.......((((.....................................)))))).)))...................................................................  (sci:  0.051)  0.4785316  _[_[_[]]_]_
 (-2.16 = -1.48 + -0.67)  ......................................(((.(((((.............................................))).)).)))...................................................................  (sci:  0.036)  0.1438054  _[_[[]_]_]_
@@ -4228,7 +4228,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode probs --lowProbFil
 ( 2.77 =  3.34 + -0.57)  .............(((......................(((.((.......((((.........((.....))...................)))).))))))))................................................................  (sci: -0.046)  0.0000530  _[_[_[_[_[]_]_]]]_
 ( 2.90 =  3.40 + -0.49)  .............(((......................(((.((.....................................................))))))))................................................................  (sci: -0.049)  0.0000382  _[_[_[]]]_
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-37.41 = -21.95 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.484)  0.9498872  [_[]_[]_[]]_
 (-35.52 = -19.71 + -15.81)  (((((((..((((.((...))...)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.409)  0.0409701  [_[_[]_]_[]_[]]_
@@ -4237,7 +4237,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode probs --lowProbFil
 (-32.50 = -17.53 + -14.97)  ((((((...((((.((...))...)))).(((((.......))))).....(((((.......))))).)))))).  (sci:  1.290)  0.0002660  [_[_[]_]_[]_[]_]_
 (-31.99 = -17.19 + -14.80)  .((((((..((((.((...))...)))).(((((.......))))).....(((((.......)))))))))))..  (sci:  1.269)  0.0001121  _[_[_[]_]_[]_[]]_
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-10.90 = -10.71 + -0.19)  .......(((.((((.....)))).)))........................  (sci:  0.557)  0.6882973  _[_[]_]_
 ( -9.83 = -10.04 +  0.21)  .(((((.(((.((((.....)))).)))...........)))))........  (sci:  0.502)  0.2950296  _[_[_[]_]_]_
@@ -4245,7 +4245,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode probs --lowProbFil
 ( -7.41 =  -6.80 + -0.61)  .(((((.(((.((((.....)))).))).......))).))...........  (sci:  0.379)  0.0054442  _[[_[_[]_]_]_]_
 ( -7.36 =  -6.84 + -0.52)  .((.((.(((.((((.....)))).)))................)).))...  (sci:  0.376)  0.0041596  _[_[_[_[]_]_]_]_
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < t-box.aln
                       1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcgu____________ggcg_ucguccccgcgccugga_____g_____c___gcu____g___cuggg_____gcccgaggagaca__acgcgc___  169
 (-4.12 = -3.23 + -0.89)  ......................................(((.((.......((((.....................................)))))).)))...................................................................  (sci:  0.064)  0.8100000  []
 (-2.41 = -1.60 + -0.81)  ......................................(((((......))((((.....................................))))...)))...................................................................  (sci:  0.037)  0.0900000  [[][]]
@@ -4253,15 +4253,15 @@ perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode sample --numSample
 (-0.46 =  0.41 + -0.87)  ....................(((.......))).....(((.(((...)))((((.....................................))))...)))...................................................................  (sci:  0.007)  0.0200000  [][[][]]
 ( 2.07 =  1.85 +  0.22)  ....................((.........))........((......)).((.......................................))..........................................................................  (sci: -0.032)  0.0100000  [][][]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < tRNA_example_ungap.aln
                          1  gcgugcguagcucagcu_ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-42.85 = -27.38 + -15.46)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.473)  1.0000000  [[][][]]
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner2004.par --temperature 27.6 < trp_attenuator.aln
                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
 (-11.94 = -11.75 + -0.19)  .......(((.((((.....)))).)))........................  (sci:  0.580)  1.0000000  []
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < t-box.aln
                      1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGC  40
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: -0.000)  _
 
@@ -4349,7 +4349,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --windowSize 40 --windowI
                    131  yggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 ( 0.00 =  0.00 + 0.00)  .......................................  (sci: -0.000)  _
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < tRNA_example_ungap.aln
                        1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSR  40
 ( -3.06 = -1.56 + -1.50)  .........((((...........))))............  (sci:  0.782)  []
 
@@ -4379,7 +4379,7 @@ perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --windowSize 40 --windowI
                       41  MSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 ( -7.88 = -4.03 + -3.85)  ...........(((((.......)))))........  (sci:  1.430)  []
 
-perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
+#CMD: perl -I ../Applications/lib/ temp/RNAalishapes --sci 1 --windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param /stefan/share/gapc/librna/rna_turner1999.par --temperature 47.6 < trp_attenuator.aln
                       1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWW  40
 (-7.36 = -7.17 + -0.19)  .......(((.((((.....)))).)))............  (sci:  0.563)  [_[]_]
 

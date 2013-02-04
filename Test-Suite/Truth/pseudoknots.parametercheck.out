@@ -1,52 +1,52 @@
-temp/pKiss_mfe  acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe  acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3850 , .[[[[[.{{{{..]]]]].(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 
-temp/pKiss_mfe -u 0 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe -u 0 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3850 , .[[[[[.{{{{..]]]]].(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 
-temp/pKiss_mfe -u 1 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe -u 1 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3870 , .[[[[[.{{{{..]]]]].(((.(.((...)).).)))...<<<<<..}}}}..>>>>>. )
 
-temp/pKiss_mfe -y +20 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe -y +20 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3450 , .(((((.((((..(((((.(((...((...))...)))...)))))..))))..))))). )
 
-temp/pKiss_mfe -x -10 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe -x -10 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -6460 , ....[[.{{{{..[[.{{.]].........}}...[[[...{{]]]..}}]]...}}}}. )
 
-temp/pKiss_mfe -z 5 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe -z 5 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3850 , .[[[[[.{{{{..]]]]].(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 
-temp/pKiss_mfe -z 6 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe -z 6 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3450 , .(((((.((((..(((((.(((...((...))...)))...)))))..))))..))))). )
 
-temp/pKiss_mfe -s p acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe -s p acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3450 , .(((((.((((..(((((.(((...((...))...)))...)))))..))))..))))). )
 
-temp/pKiss_mfe -l 57 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe -l 57 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3520 , ..[[[[.{{{{..]]]]..(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 
-temp/pKiss_mfe -l 56 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe -l 56 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3450 , .(((((.((((..(((((.(((...((...))...)))...)))))..))))..))))). )
 
-temp/pKiss_mfe -P /stefan/share/gapc/librna/rna_turner1999.par acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe -P /stefan/share/gapc/librna/rna_turner1999.par acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3620 , .[[[[[.{{{{..]]]]].(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 
-temp/pKiss_mfe -P /stefan/share/gapc/librna/rna_turner2004.par acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_mfe -P /stefan/share/gapc/librna/rna_turner2004.par acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3850 , .[[[[[.{{{{..]]]]].(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 
-temp/pKiss_subopt -c 5.8 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_subopt -c 5.8 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3680 , .[[[[[.{{{{..]]]]].(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 ( -3680 , .[[[[[.{{{{..]]]]].(((...((...))...)))...<<<<<..}}}}..>>>>>. )
@@ -97,7 +97,7 @@ Answer:
 ( -3850 , .[[[[[.{{{{..]]]]].(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 ( -3850 , .[[[[[.{{{{..]]]]].(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 
-temp/pKiss_subopt -e 3.5 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_subopt -e 3.5 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer: 
 ( -3500 , ..[[[[.{{{{..]]]]..(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 ( -3500 , ..[[[[.{{{{..]]]]..(((...((...))...)))...<<<<<..}}}}..>>>>>. )
@@ -928,7 +928,7 @@ Answer:
 ( -3750 , .[[[[[.{{{{..]]]]].(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 ( -3750 , .[[[[[.{{{{..]]]]].(((...((...))...)))...<<<<<..}}}}..>>>>>. )
 
-temp/pKiss_probs_window -q 5 -w 30 -i 10 -F 0 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_probs_window -q 5 -w 30 -i 10 -F 0 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer (0, 30) :
 ( ( _ , ( 0 , 0.000127044 ) ) , .............................. )
 ( ( () , ( -1040 , 5176.45 ) ) , .(((((.......)))))............ )
@@ -966,7 +966,7 @@ Answer (30, 60) :
 ( ( [(){]} , ( -820 , 22918.8 ) ) , [[...((....)){{{..]]....}}}... )
 ( ( [{()]} , ( -220 , 0.166007 ) ) , [[.........{{(((...)))..]]..}} )
 
-temp/pKiss_probs_window -q 1 -w 35 -i 20 -F 0.1 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
+#CMD: temp/pKiss_probs_window -q 1 -w 35 -i 20 -F 0.1 acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg
 Answer (0, 35) :
 ( ( _[_{_]_}_ , ( -1320 , 4.4654e+07 ) ) , .[[[[[...{{..]]]]].......}}........ )
 Answer (20, 55) :
