@@ -21,7 +21,7 @@ static const int pkmlinit = 600; //additional penalty for a pseudoknot inside fr
 		empty(res);
 		if (!is_empty(subopts)) {
 			List_Ref<answer_pknot_mfe> candidates = const_cast<List_Ref<answer_pknot_mfe>&>(subopts);
-			typename List_Ref<answer_pknot_mfe>::iterator it = candidates.ref().begin();
+			List_Ref<answer_pknot_mfe>::iterator it = candidates.ref().begin();
 			res = (*it);
 			++it;
 			for (; it != candidates.ref().end(); ++it) {
