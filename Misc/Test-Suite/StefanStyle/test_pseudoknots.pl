@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-use lib "../Applications/lib/";
+use lib "../../Applications/lib/";
 
 use foldGrammars::Settings;
 use foldGrammars::Utils;
@@ -30,7 +30,7 @@ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C
 checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
 checkParameters("pseudoknots parameter check", $TMPDIR."/".$PROGRAMPREFIX."mfe", "pseudoknots.parametercheck.out");
 checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
-compileRNAalishapes($TMPDIR, '../Applications/RNAalishapes/');
+compileRNAalishapes($TMPDIR, '../../Applications/RNAalishapes/');
 checkRNAalishapes($TMPDIR, "rnaalishapes.run.out"); # run compileRNAalishapes() previously!!
 
 #add your tests above this line!
@@ -65,7 +65,7 @@ sub compileRNAalishapes {
 	mkdir($TMPDIR) if (!-d $TMPDIR);
 	qx(cp $sourcedir/makefile $TMPDIR);
 	qx(cp $sourcedir/RNAalishapes $TMPDIR);
-	print qx(make -C $TMPDIR all SOURCEDIR="../../" RNAOPTIONSPERLSCRIPT="../../Applications/addRNAoptions.pl");
+	print qx(make -C $TMPDIR all RNAOPTIONSPERLSCRIPT=../../../Applications/addRNAoptions.pl BASEDIR=../../../../);
 	
 	my @targets = split(m/\s+/, qx(cat $TMPDIR/makefile | grep "^targets=" | cut -d "=" -f 2));
 	my @grammars = split(m/\s+/, qx(cat $TMPDIR/makefile | grep "^grammars=" | cut -d "=" -f 2));
@@ -150,8 +150,8 @@ sub checkRNAalishapes {
 	foreach my $run (@runs) {
 		print ".";
 		foreach my $inputs ("t-box.aln","tRNA_example_ungap.aln","trp_attenuator.aln") {
-			qx(echo "#CMD: $PERL -I ../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs" >> $TMPDIR/$truth);
-			qx($PERL -I ../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs >> $TMPDIR/$truth);
+			qx(echo "#CMD: $PERL -I ../../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs" >> $TMPDIR/$truth);
+			qx($PERL -I ../../Applications/lib/ $TMPDIR/${RNAALISHAPES} $run < $inputs >> $TMPDIR/$truth);
 			qx(echo "" >> $TMPDIR/$truth);
 		}
 	}
@@ -295,13 +295,14 @@ sub compileMFE {
 	
 	unless (-e $TMPDIR."/".$PROGRAMPREFIX.$program) {
 		print "\tcompiling binary ...";
-		qx(cp ../Applications/Pseudoknots/makefile $TMPDIR/);
+		qx(cp ../../Applications/Pseudoknots/makefile $TMPDIR/);
 		my $makeWindowMode = "";
 		if ($program =~ m/(.+?)_window$/) {
 			$program = $1;
 			$makeWindowMode = 'window="yes"';
 		}
-		qx(cd $TMPDIR && make $program $makeWindowMode RNAOPTIONSPERLSCRIPT=../../Applications/addRNAoptions.pl);
+
+		qx(cd $TMPDIR && make $program $makeWindowMode RNAOPTIONSPERLSCRIPT=../../../Applications/addRNAoptions.pl BASEDIR=../../../../);
 		print " done.\n";
 	}
 }

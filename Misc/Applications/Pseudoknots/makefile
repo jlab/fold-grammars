@@ -1,7 +1,6 @@
 PREFIX=$(HOME)/local/pkiss
 #~ CXXFLAGS_EXTRA="-O3 -DNDEBUG"
 CXXFLAGS_EXTRA=-O3 -DNDEBUG
-GRAMMARFILE=../../Grammars/gra_pknot_microstate.gap
 PROGRAMPREFIX=pKiss_
 WINDOWSUFFIX=_window
 FASTLIBRNA=
@@ -11,6 +10,7 @@ GAPC=gapc
 MAKE=make
 PERL=perl
 BASEDIR=../../../
+GRAMMARFILE=$(BASEDIR)Grammars/gra_pknot_microstate.gap
 
 targets=mfe subopt enforce local shapes probs
 window=
