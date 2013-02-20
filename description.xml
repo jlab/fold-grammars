@@ -61,6 +61,10 @@
 				<file id="grapart_pkinnards.gap" ref="Grammars/grapart_pkinnards.gap"/>
 				<file id="grapart_pknotsrg.gap" ref="Grammars/grapart_pknotsrg.gap"/>
 				<file id="grapart_pkissA.gap" ref="Grammars/grapart_pkissA.gap"/>
+				<file id="grapart_pkissB.gap" ref="Grammars/grapart_pkissB.gap"/>
+				<file id="grapart_pkissBC.gap" ref="Grammars/grapart_pkissBC.gap"/>
+				<file id="grapart_pkissC.gap" ref="Grammars/grapart_pkissC.gap"/>
+				<file id="grapart_pkissD.gap" ref="Grammars/grapart_pkissD.gap"/>
 				<file id="gra_tdm.gap" ref="Grammars/gra_tdm.gap"/>
 			</dir>
 			<element id="Algebras" descr="3. Algebras">
@@ -86,6 +90,8 @@
 						<file id="alg_pfunc.gap" ref="Algebras/Pfunc/alg_pfunc.gap"/>
 						<file id="alg_pfunc_macrostate.gap" ref="Algebras/Pfunc/alg_pfunc_macrostate.gap"/>
 						<file id="alg_pknot_pfunc.gap" ref="Algebras/Pfunc/alg_pknot_pfunc.gap"/>
+						<file id="alg_ali_pfunc.gap" ref="Algebras/Pfunc/alg_ali_pfunc.gap"/>
+						<file id="alg_ali_pfunc_macrostate.gap" ref="Algebras/Pfunc/alg_ali_pfunc_macrostate.gap"/>
 					</dir>
 					<dir descr="Shapes">
 						<file id="alg_shapes.gap" ref="Algebras/Shapes/alg_shapes.gap"/>
