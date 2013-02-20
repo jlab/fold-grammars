@@ -3,7 +3,7 @@
 	<element id="intoduction" descr="GAP Components">
 		<html>
 			<h2>Description of the Bellman's GAP Repository: Fold-Grammars</h2> 
-			<p>Bellman's GAP is a domain specific language and compiler for dynamic programming over sequence data. It's name is derived from &quot;Bellman's Principle of Optimality, Grammars, Algebras, and Products&quot;. A Bellman's GAP repository is an archive of re-usable modules. Repositories are provided for code sharing. If you have modules to share, write to Stefan Janssen <a href="mailto:stefan.janssen@uni-bielefeld.de">stefan.janssen@uni-bielefeld.de</a></p>
+			<p>Bellman's GAP is a domain specific language and compiler for dynamic programming over sequence data. It's name is derived from &quot;Bellman's Principle of Optimality, Grammars, Algebras, and Products&quot;. A Bellman's GAP repository is an archive of re-usable modules. Repositories are provided for code sharing. If you have modules to share, write to Stefan Janssen <a href="mailto:sjanssen@techfak.uni-bielefeld.de">sjanssen@techfak.uni-bielefeld.de</a></p>
 			<p>A typical program in Bellman's GAP contains four elements:
 			<ol>
 				<li>a signature, defining functions available in grammars which must be implemented in algebras,</li>
@@ -32,7 +32,7 @@
 				<li>sequence structure evaluation (similar to <a href="http://www.tbi.univie.ac.at/~ronny/RNA/RNAeval.html">RNAeval</a>) [filenames with &quot;eval_&quot;] ,</li>
 				<li>abstract shape analysis (similar the <a href="http://bibiserv.cebitec.uni-bielefeld.de/rnashapes/">RNAshapes</a>) and HIshapes, and</li>
 				<li>pseudoknot prediction (similar to <a href="http://bibiserv.cebitec.uni-bielefeld.de/pknotsrg/">pknotsRG</a> and <a href="http://bibiserv.cebitec.uni-bielefeld.de/pkiss/">pKiss</a>) [filenames with &quot;pknot_&quot;].</li>
-			</ul> To capture different handling of dangling bases implemented in various programs, we provide the four different grammars (for details see <a href="http://www.biomedcentral.com/1471-2105/12/429/">Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction</a>) Compared to the supplementary file of that paper, we refined the grammars a little for more comfortable support of lonely base-pairs. This does not change their folding space. We also introduced filters for maximal loop length for bulges to be closer to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna RNA package</a>, the only difference is, that the size of both unpaired regions of internal loops may not exceed 30 bases in Vienna RNA; we allow up to 30 bases on each side.) 
+			</ul> To capture different handling of dangling bases implemented in various programs, we provide the four different grammars (for details see <a href="http://www.biomedcentral.com/1471-2105/12/429/">Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction</a>). Compared to the supplementary file of that paper, we refined the grammars a little for more comfortable support of lonely base-pairs. This does not change their folding space. We also introduced filters for maximal loop length for bulges to be closer to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna RNA package</a>, the only difference is, that the size of both unpaired regions of internal loops may not exceed 30 bases in Vienna RNA; we allow up to 30 bases on each side.) 
 			<ul class="grammars">
 				<li>&quot;nodangle&quot; (no energy contributions of dangling bases at all),</li>
 				<li>&quot;overdangle&quot; (available or not, bases next to a stem always dangle from both sides to this stem),</li>
@@ -57,7 +57,7 @@
 				<file id="gra_macrostate.gap" ref="Grammars/gra_macrostate.gap"/>
 				<file id="gra_macrostate_center.gap" ref="Grammars/gra_macrostate_centers.gap"/>
 				<file id="gra_eval_nodangle.gap" ref="Grammars/gra_eval_nodangle.gap"/>
-				<file id="gra_locomotif_microstate.gap" ref="Grammars/gra_locomotif_microstate.gap"/>
+				<file id="gra_pknot_microstate.gap" ref="Grammars/gra_pknot_microstate.gap"/>
 				<file id="grapart_pkinnards.gap" ref="Grammars/grapart_pkinnards.gap"/>
 				<file id="grapart_pknotsrg.gap" ref="Grammars/grapart_pknotsrg.gap"/>
 				<file id="grapart_pkissA.gap" ref="Grammars/grapart_pkissA.gap"/>
