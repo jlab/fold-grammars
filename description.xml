@@ -99,12 +99,14 @@
 						<file id="alg_ali_shapes.gap" ref="Algebras/Shapes/alg_ali_shapes.gap"/>
 						<file id="alg_ali_hishapes.gap" ref="Algebras/Shapes/alg_ali_hishapes.gap"/>
 						<file id="alg_shapes_rope.gap" ref="Algebras/Shapes/alg_shapes_rope.gap"/>
+						<file id="alg_pknot_shapes.gap" ref="Algebras/Shapes/alg_pknot_shapes.gap"/>
 					</dir>
 					<file id="alg_basepairMax.gap" ref="Algebras/alg_basepairMax.gap"/>
 					<file id="alg_count_id.gap" ref="Algebras/alg_count_id.gap"/>
 					<file id="alg_ali_consensus.gap" ref="Algebras/alg_ali_consensus.gap"/>
 					<file id="alg_ali_mis.gap" ref="Algebras/alg_ali_mis.gap"/>
 					<file id="alg_tdm.gap" ref="Algebras/alg_tdm.gap"/>
+					<file id="alg_pknot_pktype.gap" ref="Algebras/alg_pknot_pktype.gap"/>
 				</structure>
 			</element>
 		</structure>
@@ -190,6 +192,13 @@
 		</html>
 	</element>
 
+	<element id="download" descr="download">
+		<html>
+			You can download here the complete repository as one zip-file<br/>
+			<center><h2><a href="fold-grammars.zip">fold-grammars.zip</a></h2></center>
+		</html>
+	</element>
+
 	<element id="references" descr="References">
 		<html>
 			<ul class="references">
@@ -233,6 +242,12 @@
 					<span class="title"><a href="http://onlinelibrary.wiley.com/doi/10.1002/%28SICI%291097-0282%28199902%2949:2%3C145::AID-BIP4%3E3.0.CO;2-G/abstract">Complete suboptimal folding of RNA and the stability of secondary structures</a></span><br/>
 					in <span class="journal">Biopolymers, Volume 49, Issue 2, pages 145-165, February 1999</span>
 				</li>
+				<li class="references">
+					<span class="authors">Corinna Theis, Jens Reeder, Robert Giegerich</span><br/>
+					<span class="title"><a href="http://dx.doi.org/10.1093/nar/gkn578">KnotInFrame: Prediction of -1 Ribosomal Frameshift Events</a></span><br/>
+					in <span class="journal">Nucleic Acids Research, Oct;36(18):6013-20, 2008</span>
+				</li>
+				
 			</ul>
 		</html>
 	</element>
