@@ -17,7 +17,7 @@ TEMP=./temp
 GRAMMAR=../
 LHS_DIR=..
 RTLIB=$BASE/include/rtlib/
-CPPFLAGS_EXTRA="-I../../ -O -DNDEBUG"
+CPPFLAGS_EXTRA="-I../../../../ -O -DNDEBUG"
 LDLIBS_EXTRA=""
 RUN_CPP_FLAGS=""
 

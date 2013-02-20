@@ -1,7 +1,6 @@
 PREFIX=$(HOME)/local/pkiss
 #~ CXXFLAGS_EXTRA="-O3 -DNDEBUG"
 CXXFLAGS_EXTRA=-O3 -DNDEBUG
-SOURCEDIR=../../
 PROGRAMPREFIX=RNAalishapes_
 WINDOWSUFFIX=_window
 FASTLIBRNA=
@@ -10,6 +9,7 @@ RNAOPTIONSPERLSCRIPT=../addRNAoptions.pl
 GAPC=gapc
 MAKE=make
 PERL=perl
+BASEDIR=../../../
 
 targets=mfe subopt shapes probs sample
 grammars=nodangle overdangle microstate macrostate
@@ -57,7 +57,7 @@ mfe:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I ../../ -p "alg_ali_mfe$${suffix} * alg_ali_dotBracket" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "alg_ali_mfe$${suffix} * alg_ali_dotBracket" $(BASEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="$@_$${grammar}"; \
 		fi; \
 	done
@@ -68,7 +68,7 @@ subopt:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I ../../ -p "alg_ali_mfe_subopt$${suffix} * alg_ali_dotBracket" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "alg_ali_mfe_subopt$${suffix} * alg_ali_dotBracket" $(BASEDIR)ali_$${grammar}.gap --kbacktrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="subopt_$${grammar}"; \
 		fi; \
 	done
@@ -79,7 +79,7 @@ shapes:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I ../../ -p "((alg_ali_shapeX * alg_ali_mfe$${suffix}) * alg_ali_dotBracket) suchthat suboptShapeClasses" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "((alg_ali_shapeX * alg_ali_mfe$${suffix}) * alg_ali_dotBracket) suchthat suboptShapeClasses" $(BASEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="shapes_$${grammar}"; \
 		fi; \
 	done
@@ -90,7 +90,7 @@ probs:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I ../../ -p "((alg_ali_shapeX * (alg_ali_mfe$${suffix} % alg_ali_pfunc$${suffix})) suchthat filterLowProbShapes) * alg_ali_dotBracket" $(SOURCEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "((alg_ali_shapeX * (alg_ali_mfe$${suffix} % alg_ali_pfunc$${suffix})) suchthat filterLowProbShapes) * alg_ali_dotBracket" $(BASEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="probs_$${grammar}"; \
 		fi; \
 	done
@@ -101,7 +101,7 @@ sample:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I ../../ -p "(((alg_ali_pfunc$${suffix} | alg_ali_pfunc_id$${suffix}) * (alg_ali_shapeX * alg_ali_mfe$${suffix} * alg_ali_dotBracket)) suchthat sample_filter)" $(SOURCEDIR)ali_$${grammar}.gap --sample $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "(((alg_ali_pfunc$${suffix} | alg_ali_pfunc_id$${suffix}) * (alg_ali_shapeX * alg_ali_mfe$${suffix} * alg_ali_dotBracket)) suchthat sample_filter)" $(BASEDIR)ali_$${grammar}.gap --sample $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="sample_$${grammar}"; \
 		fi; \
 	done
@@ -109,7 +109,7 @@ sample:
 helper:
 	for consensus in `echo "$(consensus)"`; do \
 		if [ ! -f "$(PROGRAMPREFIX)rep_$${consensus}" ]; then \
-			$(GAPC) -I ../../ -p "alg_ali_$${consensus}" $(SOURCEDIR)ali_nodangle.gap $(windowmodeflag) -o rep_$${consensus}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "alg_ali_$${consensus}" $(BASEDIR)ali_nodangle.gap $(windowmodeflag) -o rep_$${consensus}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="rep_$${consensus}"; \
 		fi; \
 	done
@@ -118,14 +118,14 @@ helper:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)sci_$${grammar}" ]; then \
-			$(GAPC) -I ../../ -p "alg_mfe$${suffix}" $(SOURCEDIR)$${grammar}.gap $(windowmodeflag) -o sci_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "alg_mfe$${suffix}" $(BASEDIR)$${grammar}.gap $(windowmodeflag) -o sci_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="sci_$${grammar}"; \
 		fi; \
 	done
 	
 compile:
 	$(PERL) $(RNAOPTIONSPERLSCRIPT) $(outname)$(current_windowmodesuffix).mf
-	$(MAKE) -f $(outname)$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I $(SOURCEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
+	$(MAKE) -f $(outname)$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
 	mv $(outname)$(current_windowmodesuffix) $(PROGRAMPREFIX)$(outname)$(current_windowmodesuffix)
 
 

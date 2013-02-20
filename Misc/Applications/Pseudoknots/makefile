@@ -10,6 +10,7 @@ RNAOPTIONSPERLSCRIPT=../addRNAoptions.pl
 GAPC=gapc
 MAKE=make
 PERL=perl
+BASEDIR=../../../
 
 targets=mfe subopt enforce local shapes probs
 window=
@@ -21,6 +22,8 @@ else
 	windowmodeflag=
 	current_windowmodesuffix=
 endif
+
+all: all_normal all_window clean
 
 install:
 	install -d $(PREFIX)/bin
@@ -34,9 +37,6 @@ install:
 		install -m 755 $(PROGRAMPREFIX)$${file}$(WINDOWSUFFIX) $(PREFIX)/bin; \
 	done
 	install -m 755 pKiss $(PREFIX)/bin
-	
-	
-all: all_normal all_window clean
 
 all_normal:
 	@ $(foreach var,$(targets), if [ ! -e "$(PROGRAMPREFIX)$(var)" ]; then $(MAKE) $(var); fi;)
@@ -45,30 +45,30 @@ all_window:
 	@ $(foreach var,$(targets), if [ ! -e "$(PROGRAMPREFIX)$(var)$(WINDOWSUFFIX)" ]; then $(MAKE) $(var) window="yes"; fi;)
 	
 mfe:
-	$(GAPC) -I ../../ -p "alg_pknot_mfe * alg_pknot_dotBracket" ../../pKiss.gap --kbacktrace --tab-all --no-coopt $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	$(GAPC) -I $(BASEDIR) -p "alg_pknot_mfe * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --kbacktrace --tab-all --no-coopt $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
 	$(MAKE) compile outname="mfe"
 
 subopt:
-	$(GAPC) -I ../../ -p "alg_pknot_mfe_subopt * alg_pknot_dotBracket" ../../pKiss.gap --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	$(GAPC) -I $(BASEDIR) -p "alg_pknot_mfe_subopt * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
 	$(MAKE) compile outname="subopt"
 
 enforce:
-	$(GAPC) -I ../../ -p "(alg_pknot_pktype * alg_pknot_mfe) * alg_pknot_dotBracket" ../../pKiss.gap --kbacktrace --tab-all --no-coopt-class $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	$(GAPC) -I $(BASEDIR) -p "(alg_pknot_pktype * alg_pknot_mfe) * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --kbacktrace --tab-all --no-coopt-class $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
 	$(MAKE) compile outname="enforce"
 
 local:
 	cp $(GRAMMARFILE) $(GRAMMARFILE).original
 	sed -i "s%axiom = struct%axiom = local%" $(GRAMMARFILE);
-	$(GAPC) -I ../../ -p "alg_pknot_mfe_subopt * alg_pknot_dotBracket" ../../pKiss.gap --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	$(GAPC) -I $(BASEDIR) -p "alg_pknot_mfe_subopt * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
 	mv $(GRAMMARFILE).original $(GRAMMARFILE)
 	$(MAKE) compile outname="local"
 
 shapes:
-	$(GAPC) -I ../../ -p "((alg_pknot_shapeX * alg_pknot_mfe) * alg_pknot_dotBracket) suchthat suboptShapeClasses" ../../pKiss.gap --kbacktrace --tab-all --no-coopt-class $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	$(GAPC) -I $(BASEDIR) -p "((alg_pknot_shapeX * alg_pknot_mfe) * alg_pknot_dotBracket) suchthat suboptShapeClasses" $(BASEDIR)pKiss.gap --kbacktrace --tab-all --no-coopt-class $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
 	$(MAKE) compile outname="shapes"
 
 probs:
-	$(GAPC) -I ../../ -p "((alg_pknot_shapeX * (alg_pknot_mfe % alg_pknot_pfunc)) suchthat filterLowProbShapes) * alg_pknot_dotBracket" ../../pKiss.gap --no-coopt-class --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	$(GAPC) -I $(BASEDIR) -p "((alg_pknot_shapeX * (alg_pknot_mfe % alg_pknot_pfunc)) suchthat filterLowProbShapes) * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --no-coopt-class --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
 	$(MAKE) compile outname="probs" FASTLIBRNA="LDLIBS=-lrnafast" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA) -ffast-math"
 
 
@@ -76,7 +76,7 @@ probs:
 
 compile:
 	$(PERL) $(RNAOPTIONSPERLSCRIPT) $(outname)$(current_windowmodesuffix).mf
-	$(MAKE) -f $(outname)$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I ../../ -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
+	$(MAKE) -f $(outname)$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
 	mv $(outname)$(current_windowmodesuffix) $(PROGRAMPREFIX)$(outname)$(current_windowmodesuffix)
 
 
