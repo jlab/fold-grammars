@@ -127,19 +127,19 @@
 			We need a lot of functionality, which is not part of Bellman's GAP. These functions come via the *.hh files, and must be imported to the GAP-L main files. Unfortunately, imports are only possible at the beginning of a program, thus we cannot import a *.hh file from within an specific algebra file, even if its functions are only used in this algebra. The extension files are located in the sub-directory &quot;Extensions&quot; and have to be imported in you own GAP-L program e.g. like <code>import "Extensions/singlefold.hh"</code>.
 		</html>
 		<structure>
+			<file id="rules.hh" ref="Extensions/rules.hh" />
 			<file id="singlefold.hh" ref="Extensions/singlefold.hh" />
 			<file id="alifold.hh" ref="Extensions/alifold.hh" />
 			<file id="rnaoptions.hh" ref="Extensions/rnaoptions.hh" />
 			<file id="rnaoptions_defaults.hh" ref="Extensions/rnaoptions_defaults.hh" />
-			
+			<file id="typesRNAfolding.hh" ref="Extensions/typesRNAfolding.hh" />
 			<file id="mfesubopt.hh" ref="Extensions/mfesubopt.hh" />
+			<file id="probabilities.hh" ref="Extensions/probabilities.hh" />
+			
 			<file id="pknot_enforce.hh" ref="Extensions/pknot_enforce.hh" />
 			<file id="pknot_extras.hh" ref="Extensions/pknot_extras.hh" />
 			<file id="pknot_shape.hh" ref="Extensions/pknot_shape.hh" />
 			<file id="pknot_stems.hh" ref="Extensions/pknot_stems.hh" />
-			<file id="probabilities.hh" ref="Extensions/probabilities.hh" />
-			<file id="rules.hh" ref="Extensions/rules.hh" />
-			<file id="typesRNAfolding.hh" ref="Extensions/typesRNAfolding.hh" />
 		<!--
 			<file id="stacklen.hh" ref="stacklen.hh"/>
 			<file id="singlefold.hh" ref="singlefold.hh"/>
