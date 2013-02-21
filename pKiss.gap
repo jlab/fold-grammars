@@ -1,12 +1,12 @@
 import rna
-import typesRNAfolding
-import pknot_stems //precomputation of energetically best non-interrupted stems for all subwords i to j
-import pknot_extras //special functions for different strategies of pKiss and its index hacking, e.g. 3D-Tables, finding compatible H-type pseudoknots, ... + some energy constants for pseudoknots + minimal stem length
-import pknot_enforce
-import pknot_shape //for a smart hashable "string" with chars []{}<>()._
-import singlefold //necessary to redefine the meaning of the filter "basepair". In singlefold this filter directly calles the build-in "basepairing" filter, in alignmentfold it gets hard codes parameters and returns true or false with dependance to the number of gaps in the rows
-import mfesubopt
-import probabilities
+import "Extensions/typesRNAfolding.hh"
+import "Extensions/pknot_stems.hh" //precomputation of energetically best non-interrupted stems for all subwords i to j
+import "Extensions/pknot_extras.hh" //special functions for different strategies of pKiss and its index hacking, e.g. 3D-Tables, finding compatible H-type pseudoknots, ... + some energy constants for pseudoknots + minimal stem length
+import "Extensions/pknot_enforce.hh"
+import "Extensions/pknot_shape.hh" //for a smart hashable "string" with chars []{}<>()._
+import "Extensions/singlefold.hh" //necessary to redefine the meaning of the filter "basepair". In singlefold this filter directly calles the build-in "basepairing" filter, in alignmentfold it gets hard codes parameters and returns true or false with dependance to the number of gaps in the rows
+import "Extensions/mfesubopt.hh"
+import "Extensions/probabilities.hh"
 
 input rna
 

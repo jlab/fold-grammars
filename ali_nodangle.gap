@@ -1,8 +1,8 @@
 import rna
-import alifold
-import mfesubopt
-import probabilities
-import typesRNAfolding
+import "Extensions/alifold.hh"
+import "Extensions/mfesubopt.hh"
+import "Extensions/probabilities.hh"
+import "Extensions/typesRNAfolding.hh"
 
 input rna
 

@@ -1,6 +1,6 @@
 import rna
-import probabilities
-import singlefold
+import "Extensions/probabilities.hh"
+import "Extensions/singlefold.hh"
 
 input <rna, raw>
 
