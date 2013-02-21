@@ -1,4 +1,4 @@
-<p>&quot;singlefold.hh&quot; is a little hack to save code duplication. The only difference between a grammar for single sequence input and <a href="?id=alifold.hh">alignment input</a> is the base-pairing filter. We use the special <span class="code">basepair</span> function, which does different things for both input types. For the single sequence input it just calls the GAP built-in basepairing filter.</p>
+<p>&quot;singlefold.hh&quot; is a little hack to save code duplication. The only difference between a grammar for single sequence input and <a href="?id=alifold.hh">alignment input</a> is the base-pairing filter. We use the special <span class="code">	pair</span> function, which does different things for both input types. For the single sequence input it just calls the GAP built-in <code>basepairing</code> filter.</p>
 <p>
 Should you also want to use this trick, ensure to insert the line <code>import "Extensions/singlefold.hh"</code> or <code>import "Extensions/alifold.hh"</code> in your BGAP program for single sequence inputs or alignment inputs, respectively.
 </p>

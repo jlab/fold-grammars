@@ -149,7 +149,7 @@
 		<structure>
 			<element id="Applications" descr="Applications">
 				<html>
-					Whilst the algorithms are written in GAP-L, programs we develope often have to provide some more functionality then just printing a result. Interaction with the user, combining different GAP-L runs / programs, formatting the output, run tests, prepare grid engine array-jobs is all done via simple Perl scripts. The &quot;Applications&quot; directory contains those program specific Perl scripts, plus a module &quot;lib/foldGrammars/Utils.pm&quot; for common routines and a second module &quot;lib/foldGrammars/Settings.pm&quot; where you can make some settings at a centralized point. Please have a look at this file before you execute one of the Perl scripts!
+					Whilst the algorithms are written in GAP-L, programs we develop often have to provide some more functionality then just printing a result. Interaction with the user, combining different GAP-L runs / programs, formatting the output, run tests, prepare grid engine array-jobs is all done via simple Perl scripts. The &quot;Applications&quot; directory contains those program specific Perl scripts, plus a module &quot;lib/foldGrammars/Utils.pm&quot; for common routines and a second module &quot;lib/foldGrammars/Settings.pm&quot; where you can make some settings at a centralized point. Please have a look at this file before you execute one of the Perl scripts!
 				</html>
 				<element id="pKiss" descr="pKiss">
 					<html>
@@ -160,7 +160,7 @@
 				</element>
 				<element id="RNAalishapes" descr="RNAalishapes">
 					<html>
-						<p>RNAalishapes combines various secondary structure analysis methods, such as suboptimal folding and shape abstraction, with a comparative approach known as RNA alignment folding. RNAalishapes makes use of an extended thermodynamic model and covariance scoring, which allows to reward covariation of paired bases. Besides providing in-depth analysis methods for aligned RNAs, the tool also shows a fairly well prediction accuracy. Therefore, RNAalishapes provides the community with a powerful tool for structural analysis of classes of RNAs and is also a reasonable method for consensus structure prediction based on sequence alignments.</p>
+						<p>RNAalishapes combines various secondary structure analysis methods, such as suboptimal folding and shape abstraction, with a comparative approach known as RNA alignment folding. RNAalishapes makes use of an extended thermodynamic model and covariance scoring, which allows to reward covariance of paired bases. Besides providing in-depth analysis methods for aligned RNAs, the tool also shows a fairly well prediction accuracy. Therefore, RNAalishapes provides the community with a powerful tool for structural analysis of classes of RNAs and is also a reasonable method for consensus structure prediction based on sequence alignments.</p>
 					</html>
 				</element>
 				<element id="Rapidshapes" descr="RapidShapes">
@@ -184,7 +184,7 @@
 				<html>
 					<p>To test the components of this directory, the test-suite currently contains two kinds of tests. The first one is &quot;stolen&quot; from Georg Sauthoffs sources of Bellman's GAP (&quot;GeorgStyle&quot;), the second is based on Perl (&quot;StefanStyle&quot;).</p>
 					<ol>
-						<li>&quot;GeorgStyle&quot; is to run some regression tests for the software in this repository. The &quot;truth&quot; is delivered in form of files in the subdirectory &quot;Truth/&quot;, which are outputs of controlled previous runs, which hopefully were correct. The file &quot;config&quot; lists all available tests. To run them, go into the Tests directory and type <code>ksh run.sh ../Truth</code>. You also find some Perl scripts, which I used to check consistency to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna-Package</a>. All RNA components are compiled with the extended options of <a href="?id=rnaoptions.hh">Extensions/rnaoptions.hh></a>, such that you can modify the different parameters.</li>
+						<li>&quot;GeorgStyle&quot; is to run some regression tests for the software in this repository. The &quot;truth&quot; is delivered in form of files in the subdirectory &quot;Truth/&quot;, which are outputs of controlled previous runs, which hopefully were correct. The file &quot;config&quot; lists all available tests. To run them, go into the Tests directory and type <code>ksh run.sh ../Truth</code>. You also find some Perl scripts, which I used to check consistency to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna-Package</a>. All RNA components are compiled with the extended options of <a href="?id=rnaoptions.hh">Extensions/rnaoptions.hh</a>, such that you can modify the different parameters.</li>
 						<li>&quot;StefanStyle&quot; tests the developed applications by calling them through a Perl script and compares the results with files defined as truth, stored in a corresponding sub-directory. The test script is called &quot;test_pseudoknots.pl&quot; for historical reasons, but it also contains test runs for RNAalishapes.</li>
 					</ol>
 				</html>
