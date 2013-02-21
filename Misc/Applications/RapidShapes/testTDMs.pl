@@ -1,11 +1,20 @@
 #!/usr/bin/env perl
-use lib "../";
+
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+
+use lib getPath($0)."../lib/";
 
 use strict;
 use warnings;
 use Data::Dumper;
-use PerlSettings;
-use PerlUtils;
+use foldGrammars::Settings;
+use foldGrammars::Utils;
 use Getopt::Long;
 
 sub usage() {

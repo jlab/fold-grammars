@@ -34,7 +34,7 @@ sub compileGAP {
 	mkdir($tmpDir) || die "cannot create working directory '$tmpDir': $!";
 
 	print STDERR "==== compileGAP: 2 of 5) copy necessary GAP files into temporary directory ..." if ($VERBOSE); 
-	foreach my $file ((@{findDependentFiles($gapDir, $gapFile)}, $gapDir.'/typesRNAfolding.hh', $gapDir.'/rnaoptions_defaults.hh')) {
+	foreach my $file ((@{findDependentFiles($gapDir, $gapFile)}, $gapDir.'/Extensions/typesRNAfolding.hh', $gapDir.'/Extensions/rnaoptions_defaults.hh', $gapDir.'Extensions/singlefold.hh', $gapDir.'Extensions/mfesubopt.hh', $gapDir.'Extensions/probabilities.hh', $gapDir.'/Extensions/rnaoptions.hh', $gapDir.'/Extensions/rules.hh')) {
 		my $unrootedGapfile = substr($file, length($gapDir));
 		my ($subDir) = @{separateDirAndFile($unrootedGapfile)};
 		qx($Settings::BINARIES{mkdir} -p $tmpDir$subDir) if (defined $subDir);
@@ -90,7 +90,7 @@ sub findDependentFiles { # a gap program can have inclusion of other gap files +
 	foreach my $line (split(m/\r?\n/, qx($Settings::BINARIES{cat} $rootDir$sourcefile))) {
 		if ($line =~ m/include\s+"(.+)"/) {
 			push @dependentFiles, @{findDependentFiles($rootDir, $1)};
-		} elsif ($line =~ m/import\s+(\S+)/) {
+		} elsif (($line =~ m/import\s+(\S+)/) || ($line =~ m/import\s+"(\S+)"/)) {
 			my $headerFile = $rootDir.$1.".hh";
 			push @dependentFiles, $headerFile if (-e $headerFile);
 		}

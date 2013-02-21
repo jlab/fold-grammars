@@ -1,11 +1,20 @@
 #!/usr/bin/env perl
-use lib "../";
+
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+
+use lib getPath($0)."../lib/";
 
 use strict;
 use warnings;
 use Data::Dumper;
-use PerlSettings;
-use PerlUtils;
+use foldGrammars::Settings;
+use foldGrammars::Utils;
 use Getopt::Long;
 
 my $CONST_GM_SAMPLE = "sample";
@@ -133,7 +142,8 @@ my $helpIsHelp = 0;
 	"cluster=s" => \$settings->{clusterFasta},
 );
 usage() if (($helpIsHelp == 1) || ((@ARGV != 1) && (not defined $settings->{clusterFasta})));
-die "grammar '$settings->{grammar}' is not available. Available grammars are: '".join("','", keys(%PerlSettings::TDMfiles))."'.\n" if (not exists $PerlSettings::TDMfiles{$settings->{grammar}});
+
+die "grammar '$settings->{grammar}' is not available. Available grammars are: '".join("','", keys(%Settings::TDMfiles))."'.\n" if (not exists $Settings::TDMfiles{$settings->{grammar}});
 die "shape level ".$settings->{shapeLevel}." is not available. Please select between 1 to 5!\n" if ($settings->{shapeLevel} !~ m/1|2|3|4|5/);
 die "energy parameter files '".$settings->{energyParamfile}."' is not available.\n" if ((defined $settings->{energyParamfile}) && (not -e $settings->{energyParamfile}));
 die "unknown guessMode '".$settings->{guessMode}."', available modes are '".join("','", ($CONST_GM_SAMPLE, $CONST_GM_KBEST, $CONST_GM_LIST))."'.\n" if (($settings->{guessMode} ne $CONST_GM_SAMPLE) && ($settings->{guessMode} ne $CONST_GM_KBEST) && ($settings->{guessMode} ne $CONST_GM_LIST));
@@ -156,7 +166,7 @@ my ($inputSequence) = @ARGV;
 my $workingDirectory = qx(pwd); chomp $workingDirectory;
 
 if (defined $settings->{clusterFasta}) {
-	my ($fastaDir, $fastaFile) = @{PerlUtils::separateDirAndFile($settings->{clusterFasta})};
+	my ($fastaDir, $fastaFile) = @{Utils::separateDirAndFile($settings->{clusterFasta})};
 	
 	my $errDir = $workingDirectory.'/'.$fastaFile.'.cluster/ERR';
 	my $outDir = $workingDirectory.'/'.$fastaFile.'.cluster/OUT';
@@ -166,23 +176,23 @@ if (defined $settings->{clusterFasta}) {
 	qx(mkdir -p $errDir) if (not -d $errDir);
 	qx(mkdir -p $outDir) if (not -d $outDir);
 	open (FASTA, "> ".$reformattedFastafile) || die "cannot write to '$reformattedFastafile': $1";
-		my @count = @{PerlUtils::applyFunctionToFastaFile($settings->{clusterFasta}, \&reformatFasta, \*FASTA)};
+		my @count = @{Utils::applyFunctionToFastaFile($settings->{clusterFasta}, \&reformatFasta, \*FASTA)};
 	close (FASTA);
 	
 	open (ARRAY, "> ".$arrayJob) || die "cannot write to '$arrayJob': $1";		
-		print ARRAY '#!'.$PerlSettings::BINARIES{sh}."\n";
+		print ARRAY '#!'.$Settings::BINARIES{sh}."\n";
 		print ARRAY ''."\n";
-		print ARRAY '#$ -S '.$PerlSettings::BINARIES{sh}."\n";
+		print ARRAY '#$ -S '.$Settings::BINARIES{sh}."\n";
 		print ARRAY '#$ -t 1-'.@count."\n";
 		print ARRAY '#$ -N RapidShapes_'.$fastaFile."\n";
 		print ARRAY '#$ -e '.$errDir."\n";
 		print ARRAY '#$ -o '.$outDir."\n";
 		print ARRAY ''."\n";
 		print ARRAY 'sequenceFile='.$reformattedFastafile."\n";
-		print ARRAY 'headerpos=`'.$PerlSettings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+1" | '.$PerlSettings::BINARIES{bc}.'`; '."\n";
-		print ARRAY 'sequencepos=`'.$PerlSettings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+2" | '.$PerlSettings::BINARIES{bc}.'`; '."\n";
-		print ARRAY 'header=`'.$PerlSettings::BINARIES{head}.' -n $headerpos $sequenceFile | '.$PerlSettings::BINARIES{tail}.' -1`; '."\n";
-		print ARRAY 'sequence=`'.$PerlSettings::BINARIES{head}.' -n $sequencepos $sequenceFile | '.$PerlSettings::BINARIES{tail}.' -1`;'."\n";
+		print ARRAY 'headerpos=`'.$Settings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+1" | '.$Settings::BINARIES{bc}.'`; '."\n";
+		print ARRAY 'sequencepos=`'.$Settings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+2" | '.$Settings::BINARIES{bc}.'`; '."\n";
+		print ARRAY 'header=`'.$Settings::BINARIES{head}.' -n $headerpos $sequenceFile | '.$Settings::BINARIES{tail}.' -1`; '."\n";
+		print ARRAY 'sequence=`'.$Settings::BINARIES{head}.' -n $sequencepos $sequenceFile | '.$Settings::BINARIES{tail}.' -1`;'."\n";
 		print ARRAY 'uname -a'."\n";
 		my $command = "";
 		$command .= " --grammar=".$settings->{grammar} if (defined $settings->{grammar});
@@ -196,7 +206,7 @@ if (defined $settings->{clusterFasta}) {
 		$command .= " --list=".$settings->{list} if ((defined $settings->{list}) && ($settings->{guessMode} eq $CONST_GM_LIST));
 		$command .= ' --name="$header"';
 		$command .= '  "$sequence"';
-		print ARRAY $PerlSettings::BINARIES{perl}." ".PerlUtils::absFilename($0)." ".$command."\n";
+		print ARRAY $Settings::BINARIES{perl}." ".Utils::absFilename($0)." ".$command."\n";
 	close (ARRAY);
 	
 	if ($settings->{guessMode} eq $CONST_GM_KBEST) {
@@ -205,10 +215,10 @@ if (defined $settings->{clusterFasta}) {
 		my $bin_sample = compileSample($settings, $workingDirectory);
 	}
 	my $bin_pfall = compilePFall($settings, $workingDirectory);
-	my $bin_tdmGenerator = PerlUtils::compileGenerator($settings, $workingDirectory);
+	my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
 	
 	my $arch = '-l arch="sol-amd64"';
-	$arch = '-l linh=1' if (qx($PerlSettings::BINARIES{uname} -o) !~ m/Sun/i);
+	$arch = '-l linh=1' if (qx($Settings::BINARIES{uname} -o) !~ m/Sun/i);
 	print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G $arch $arrayJob\n";
 } else {
 	#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
@@ -230,7 +240,7 @@ if (defined $settings->{clusterFasta}) {
 		
 	#3) compile TDM generator if not available
 		print STDERR "step 3: compute exact probabilities for guessed shapes:\n";
-		my $bin_tdmGenerator = PerlUtils::compileGenerator($settings, $workingDirectory);
+		my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
 		my $pfShapeSum = 0;
 		foreach my $shape (@shapes) {
 			my $ljshape = $shape->{shapestring};
@@ -243,7 +253,7 @@ if (defined $settings->{clusterFasta}) {
 			} elsif ($settings->{grammar} eq 'overdangle') {
 				$alg_pfunc = "alg_pfunc_overdangle";
 			}
-			my $pfShape = PerlUtils::compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&PerlUtils::generateGrammar, $bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $inputSequence], "pf".$settings->{shapeLevel}."__".$ljshape);
+			my $pfShape = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&Utils::generateGrammar, $bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $inputSequence], "pf".$settings->{shapeLevel}."__".$ljshape);
 			$pfShapeSum += $pfShape;
 			$shape->{probability} = $pfShape/$pfAll;
 			print STDERR sprintf("%8.4f", $shape->{probability}*100)." %.\n";
@@ -269,7 +279,7 @@ if (defined $settings->{clusterFasta}) {
 
 sub compileSample {
 	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_sample = $PerlSettings::TDMfiles{$refHash_settings->{grammar}}.'.pfsampleshape'.$refHash_settings->{shapeLevel}.'all';
+	my $bin_sample = $Settings::TDMfiles{$refHash_settings->{grammar}}.'.pfsampleshape'.$refHash_settings->{shapeLevel}.'all';
 	if (not -e $bin_sample) {
 		print STDERR "compiling programm to estimate shape class frequencies for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapeLevel}." ... ";
 		my $alg_pfunc = "alg_pfunc";
@@ -280,14 +290,14 @@ sub compileSample {
 		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
 			$alg_pfunc = "alg_pfunc_overdangle";
 		}
-		$bin_sample = PerlUtils::compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, '-p "((('.$alg_pfunc.' | '.$alg_pfunc.'_id) * alg_shape'.$refHash_settings->{shapeLevel}.') suchthat '.$filter.')"', "-t --sample", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, "pfsampleshape".$refHash_settings->{shapeLevel}."all");
+		$bin_sample = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "((('.$alg_pfunc.' | '.$alg_pfunc.'_id) * alg_shape'.$refHash_settings->{shapeLevel}.') suchthat '.$filter.')"', "-t --sample", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, "pfsampleshape".$refHash_settings->{shapeLevel}."all");
 		print STDERR "done.\n";
 	}
-	return PerlUtils::absFilename($bin_sample);
+	return Utils::absFilename($bin_sample);
 }
 sub compileKbest {
 	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_ssa = $PerlSettings::TDMfiles{$refHash_settings->{grammar}}.'.shape'.$refHash_settings->{shapeLevel}.'mfe';
+	my $bin_ssa = $Settings::TDMfiles{$refHash_settings->{grammar}}.'.shape'.$refHash_settings->{shapeLevel}.'mfe';
 	if (not -e $bin_ssa) {
 		print STDERR "compiling programm to perform simple shape analysis for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapeLevel}." ... ";
 		my $alg_mfe = "alg_mfe";
@@ -296,14 +306,14 @@ sub compileKbest {
 		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
 			$alg_mfe = "alg_mfe_overdangle";
 		}
-		$bin_ssa = PerlUtils::compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, '-p "(alg_shape'.$refHash_settings->{shapeLevel}.' * '.$alg_mfe.')"', "-t --kbest", '', $workingDirectory, undef, undef, "shape".$refHash_settings->{shapeLevel}."mfe");
+		$bin_ssa = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "(alg_shape'.$refHash_settings->{shapeLevel}.' * '.$alg_mfe.')"', "-t --kbest", '', $workingDirectory, undef, undef, "shape".$refHash_settings->{shapeLevel}."mfe");
 		print STDERR "done.\n";
 	}
-	return PerlUtils::absFilename($bin_ssa);
+	return Utils::absFilename($bin_ssa);
 }
 sub compilePFall {
 	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_pfall = $PerlSettings::TDMfiles{$refHash_settings->{grammar}}.'.pf';
+	my $bin_pfall = $Settings::TDMfiles{$refHash_settings->{grammar}}.'.pf';
 	if (not -e $bin_pfall) {
 		print STDERR "compiling programm to compute the partition function for complete folding space of grammar '".$refHash_settings->{grammar}."' ...";
 		my $alg_pfunc = "alg_pfunc";
@@ -312,10 +322,10 @@ sub compilePFall {
 		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
 			$alg_pfunc = "alg_pfunc_overdangle";
 		}
-		$bin_pfall = PerlUtils::compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$refHash_settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, "pf");
+		$bin_pfall = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, "pf");
 		print STDERR " done.\n";
 	}
-	return PerlUtils::absFilename($bin_pfall);
+	return Utils::absFilename($bin_pfall);
 }
 
 

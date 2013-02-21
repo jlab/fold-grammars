@@ -135,23 +135,10 @@
 			<file id="typesRNAfolding.hh" ref="Extensions/typesRNAfolding.hh" />
 			<file id="mfesubopt.hh" ref="Extensions/mfesubopt.hh" />
 			<file id="probabilities.hh" ref="Extensions/probabilities.hh" />
-			
-			<file id="pknot_enforce.hh" ref="Extensions/pknot_enforce.hh" />
-			<file id="pknot_extras.hh" ref="Extensions/pknot_extras.hh" />
-			<file id="pknot_shape.hh" ref="Extensions/pknot_shape.hh" />
 			<file id="pknot_stems.hh" ref="Extensions/pknot_stems.hh" />
-		<!--
-			<file id="stacklen.hh" ref="stacklen.hh"/>
-			<file id="singlefold.hh" ref="singlefold.hh"/>
-			<file id="pKiss_tables.hh" ref="pKiss_tables.hh"/>
-			<file id="pKiss_extras.hh" ref="pKiss_extras.hh"/>
-			<file id="pkenergy.hh" ref="pkenergy.hh"/>
-			<file id="pfunc_filter_foldrna.hh" ref="pfunc_filter_foldrna.hh"/>
-			<file id="pfunc_filter_macrostate.hh" ref="pfunc_filter_macrostate.hh"/>
-			<file id="pfunc_answer_macrostate.hh" ref="pfunc_answer_macrostate.hh"/>
-			<file id="mferange.hh" ref="mferange.hh"/>
-			<file id="alifold.hh" ref="alifold.hh"/>
-			<file id="rules.hh" ref="rules.hh"/> -->
+			<file id="pknot_enforce.hh" ref="Extensions/pknot_enforce.hh" />
+			<file id="pknot_shape.hh" ref="Extensions/pknot_shape.hh" />
+			<file id="pknot_extras.hh" ref="Extensions/pknot_extras.hh" />
 		</structure>
 	</element>
 
@@ -170,12 +157,12 @@
 					</html>
 				</element>
 			</element>
-			<element id="RNApackage" descr="RNApackage">
+			<element id="Packages" descr="Packages">
 				<html>
 					Is a very preliminary and incomplete attempt to automatically build numerous instances and tie them together with an command line interface with the aim to distribute our software. You should not use any of those files ;-)
 				</html>
 			</element>
-			<element id="Tests" descr="Tests">
+			<element id="Tests" descr="Test-Suite">
 				<html>
 					<p>This directory contains a test framework, stolen from Georg Sauthoff, to run some regression tests for the software in this repository. The &quot;truth&quot; is delivered in form of files in the subdirectory &quot;Truth/&quot;, which are outputs of controlled previous runs, which hopefully were correct.</p>
 					<p>The file &quot;config&quot; lists all available tests. To run them, go into the Tests directory and type <code>ksh run.sh ../Truth</code>. You also find some Perl scripts, which I used to check consistency to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna-Package</a>.</p>
