@@ -149,24 +149,45 @@
 		<structure>
 			<element id="Applications" descr="Applications">
 				<html>
-					Whilst the algorithms are written in GAP-L, programs we develope often have to provide some more functionality then just printing a result. Interaction with the user, combining different GAP-L runs / programs, formatting the output, run tests, prepare grid engine array-jobs is all done via simple Perl scripts. The &quot;Applications&quot; directory contains those program specific Perl scripts, plus a module &quot;PerlUtils.pm&quot; for common routines and a second module &quot;PerlSettings.pm&quot; where you can make some settings at a centralized point. Please have a look at this file before you execute one of the Perl scripts!
+					Whilst the algorithms are written in GAP-L, programs we develope often have to provide some more functionality then just printing a result. Interaction with the user, combining different GAP-L runs / programs, formatting the output, run tests, prepare grid engine array-jobs is all done via simple Perl scripts. The &quot;Applications&quot; directory contains those program specific Perl scripts, plus a module &quot;lib/foldGrammars/Utils.pm&quot; for common routines and a second module &quot;lib/foldGrammars/Settings.pm&quot; where you can make some settings at a centralized point. Please have a look at this file before you execute one of the Perl scripts!
 				</html>
+				<element id="pKiss" descr="pKiss">
+					<html>
+						<p><i><b>pKiss</b></i> is a tool for folding RNA secondary structures, including two limited classes of pseudoknots.</p>
+						<p>As <i><b>pKiss</b></i> is the successor of <i>pknotsRG</i>, the first pseudoknot class is the <i>canonical simple recursive pseudoknot</i> from <i>pknotsRG</i>. The new class are <i>canonical simple recursive kissing hairpins</i>.</p>
+						<p>To retain the fast runtime while adding the more complicated kissing hairpin class, we heuristically construct a kissing hairpin from an overlay of two canonical simple recursive pseudoknots. By applying this trick, we loose a bit thoroughness. Due to our evaluations, performance is still very good. <br/> Should you feel uncomfortable with this situation, <i><b>pKiss</b></i> offers three more strategies to compute kissing hairpins. These strategies are either slower or consume more memory. <br/> We strongly suggest using Strategy A.</p>
+					</html>
+				</element>
+				<element id="RNAalishapes" descr="RNAalishapes">
+					<html>
+						<p>RNAalishapes combines various secondary structure analysis methods, such as suboptimal folding and shape abstraction, with a comparative approach known as RNA alignment folding. RNAalishapes makes use of an extended thermodynamic model and covariance scoring, which allows to reward covariation of paired bases. Besides providing in-depth analysis methods for aligned RNAs, the tool also shows a fairly well prediction accuracy. Therefore, RNAalishapes provides the community with a powerful tool for structural analysis of classes of RNAs and is also a reasonable method for consensus structure prediction based on sequence alignments.</p>
+					</html>
+				</element>
 				<element id="Rapidshapes" descr="RapidShapes">
 					<html>
 						<p>Computation of shape probabilities requires exponential runtime. RapidShapes aims at a heuristic improvement of runtime, while still computing exact probability values. It computes the shapes above a specified probability threshold T by generating a list of promising shapes and constructing specialized folding programs for each shape to compute its probability.</p>
 					</html>
 				</element>
+				<element id="addRNAoptions.pl" descr="addRNAoptions.pl">
+					<html>
+						<p>A small helper script that replaces the few built-in command line arguments for a compiled BGAP program with some more RNA specific ones. Use this between the steps of generating the C++ code with <code>gapc</code> and the <code>make</code> call.</p>
+						<p>With no special options set, <code>gapc</code> creates a &quot;out.mf&quot; file. Execute &quot;perl addRNAoptions.pl out.mf&quot; to automatically modify &quot;out.mf&quot;, such that the extended command line arguments are available.</p>
+					</html>
+				</element>
 			</element>
 			<element id="Packages" descr="Packages">
 				<html>
-					Is a very preliminary and incomplete attempt to automatically build numerous instances and tie them together with an command line interface with the aim to distribute our software. You should not use any of those files ;-)
+					We want to ship our applications in a way most comfortable for the end-user as possible. You can download this package and compile all applications manually, but if you are only interested in using e.g. pKiss, than we provide a web application (BiBiServ) and an Debian package. A MacPorts package should follow soon. The directory &quot;Packages&quot; contains the necessary files to create and maintain these packages.
 				</html>
 			</element>
 			<element id="Tests" descr="Test-Suite">
 				<html>
-					<p>This directory contains a test framework, stolen from Georg Sauthoff, to run some regression tests for the software in this repository. The &quot;truth&quot; is delivered in form of files in the subdirectory &quot;Truth/&quot;, which are outputs of controlled previous runs, which hopefully were correct.</p>
-					<p>The file &quot;config&quot; lists all available tests. To run them, go into the Tests directory and type <code>ksh run.sh ../Truth</code>. You also find some Perl scripts, which I used to check consistency to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna-Package</a>.</p>
-					<p>All our grammars do not support lonely base-pairs, because we don't think that they should be considered for stable structures. Furthermore there are no associated energy parameters for them. Should you still want to see structures with lonely base-pairs in your search space, you could easily modify the rule <code>strong = sr(BASE, weak, BASE) with basepair # h</code> to just <code>strong = weak # h</code>. To do this automatically, run the script &quot;makeLPgrammars.pl&quot; with parameter <code>generate</code> and have a look at all the new &quot;*.autoLP&quot; files in the root directory and the &quot;Grammars&quot; directory.</p>
+					<p>To test the components of this directory, the test-suite currently contains two kinds of tests. The first one is &quot;stolen&quot; from Georg Sauthoffs sources of Bellman's GAP (&quot;GeorgStyle&quot;), the second is based on Perl (&quot;StefanStyle&quot;).</p>
+					<p>
+					<ol>
+						<li>&quot;GeorgStyle&quot; is to run some regression tests for the software in this repository. The &quot;truth&quot; is delivered in form of files in the subdirectory &quot;Truth/&quot;, which are outputs of controlled previous runs, which hopefully were correct. The file &quot;config&quot; lists all available tests. To run them, go into the Tests directory and type <code>ksh run.sh ../Truth</code>. You also find some Perl scripts, which I used to check consistency to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna-Package</a>. All RNA components are compiled with the extended options of <a href="?id=rnaoptions.hh">Extensions/rnaoptions.hh></a>, such that you can modify the different parameters.</li>
+						<li>&quot;StefanStyle&quot; tests the developed applications by calling them through a Perl script and compares the results with files defined as truth, stored in a corresponding sub-directory. The test script is called &quot;test_pseudoknots.pl&quot; for historical reasons, but it also contains test runs for RNAalishapes.</li>
+					</ol>
 				</html>
 			</element>
 		</structure>
