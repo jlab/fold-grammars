@@ -18,6 +18,7 @@ sub compileGAP {
 		$rewriteSub, #a ref to a list. if not undef: a function call which should be exectuted after copies files into tmpdir, but before translation via gapc. Necessary for TDM generation. First element is the function reference, following elements are parameters for the function. Before call, the tmpdir name is added as first argument for the function to be called.
 		$executionSub, #same as rewriteSub, but this function is called after compilation. Instead of the name of the new binary the result of this run is returned and the binary is never copied to the target directory.
 		$binSuffix, #a suffix that is appended to the binary name
+		$addRNAoptions, #if true, than call addRNAoptions.pl to replace the normal rtlib/generic_opts.hh with rna option specific one
 	) = @_;
 
 	my $pwd = qx($Settings::BINARIES{pwd}); chomp $pwd;
@@ -34,7 +35,7 @@ sub compileGAP {
 	mkdir($tmpDir) || die "cannot create working directory '$tmpDir': $!";
 
 	print STDERR "==== compileGAP: 2 of 5) copy necessary GAP files into temporary directory ..." if ($VERBOSE); 
-	foreach my $file ((@{findDependentFiles($gapDir, $gapFile)}, $gapDir.'/Extensions/typesRNAfolding.hh', $gapDir.'/Extensions/rnaoptions_defaults.hh', $gapDir.'Extensions/singlefold.hh', $gapDir.'Extensions/mfesubopt.hh', $gapDir.'Extensions/probabilities.hh', $gapDir.'/Extensions/rnaoptions.hh', $gapDir.'/Extensions/rules.hh')) {
+	foreach my $file ((@{findDependentFiles($gapDir, $gapFile)}, $gapDir.'/Extensions/typesRNAfolding.hh', $gapDir.'/Extensions/rnaoptions_defaults.hh', $gapDir.'Extensions/singlefold.hh', $gapDir.'Extensions/mfesubopt.hh', $gapDir.'Extensions/probabilities.hh', $gapDir.'/Extensions/rnaoptions.hh', $gapDir.'/Extensions/rules.hh', $gapDir.'/Misc/Applications/addRNAoptions.pl')) {
 		my $unrootedGapfile = substr($file, length($gapDir));
 		my ($subDir) = @{separateDirAndFile($unrootedGapfile)};
 		qx($Settings::BINARIES{mkdir} -p $tmpDir$subDir) if (defined $subDir);
@@ -58,6 +59,14 @@ sub compileGAP {
 	
 	print STDERR " done.\n" if ($VERBOSE == 1);
 	print STDERR "\n$gapcResult\n" if ($VERBOSE>1);
+	
+	if ($addRNAoptions) {
+		print STDERR "==== compileGAP: 3b of 5) adding RNA options to C++ code:" if ($VERBOSE);
+		my $makefile = qx($Settings::BINARIES{find} . -name "*.mf"); chomp $makefile;
+		die "compileGAP: there are more than one gapc makefile in the temporary directory '$tmpDir'\n" if ($makefile =~ m/\n/);
+		my $addResult = qx($Settings::BINARIES{perl} Misc/Applications/addRNAoptions.pl $makefile);
+		print STDERR " done.\n" if ($VERBOSE == 1);
+	}
 	
 	print STDERR "==== compileGAP: 4 of 5) compiling C++ code to binary: " if ($VERBOSE);
 	my $makeResult = qx($Settings::BINARIES{make} -f out.mf $makeFlags);
@@ -305,10 +314,11 @@ sub generateGrammar {
 
 sub compileGenerator {
 	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_tdmGenerator = $Settings::TDMgenerator.'.tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapeLevel};
+	my $bin_tdmGenerator = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$refHash_settings->{grammar}.'_generator_'.$refHash_settings->{shapelevel};
 	if (not -e $bin_tdmGenerator) {
-		print STDERR "compiling TDM generator for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapeLevel}." ... ";
-		$bin_tdmGenerator = Utils::compileGAP($Settings::rootDir.$Settings::TDMgenerator, '-i tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapeLevel}, "-t", '', $workingDirectory, undef, undef, "tdm_".$refHash_settings->{grammar}."_".$refHash_settings->{shapeLevel});
+		print STDERR "compiling TDM generator for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapelevel}." ... ";
+		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMgenerator, '-i tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapelevel}, "-t", '', $workingDirectory, undef, undef, undef, 0);
+		qx($Settings::BINARIES{mv} $tmpBin $bin_tdmGenerator);
 		print STDERR "done.\n";
 	}
 	return Utils::absFilename($bin_tdmGenerator);

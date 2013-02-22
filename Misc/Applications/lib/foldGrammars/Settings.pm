@@ -29,6 +29,7 @@ our %BINARIES = (
 	'perl', 'perl',
 	'readlink', 'readlink',
 	'uname', 'uname',
+	'find', 'find',
 );
 
 our %TDMfiles = (

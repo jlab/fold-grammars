@@ -77,7 +77,7 @@ my $helpIsHelp = 0;
 	"cluster" => \$settings->{clusterFasta},
 );
 usage() if (($helpIsHelp == 1) || (@ARGV != 1));
-die "grammar '$settings->{grammar}' is not available. Available grammars are: '".join("','", keys(%PerlSettings::TDMfiles))."'.\n" if (not exists $PerlSettings::TDMfiles{$settings->{grammar}});
+die "grammar '$settings->{grammar}' is not available. Available grammars are: '".join("','", keys(%Settings::TDMfiles))."'.\n" if (not exists $Settings::TDMfiles{$settings->{grammar}});
 die "shape level ".$settings->{shapeLevel}." is not available. Please select between 1 to 5!\n" if ($settings->{shapeLevel} !~ m/1|2|3|4|5/);
 die "energy parameter files '".$settings->{energyParamfile}."' is not available.\n" if ((defined $settings->{energyParamfile}) && (not -e $settings->{energyParamfile}));
 if (defined $settings->{temperature}) {
@@ -106,41 +106,41 @@ if ($settings->{clusterFasta} != 0) {
 	qx(mkdir -p $errDir) if (not -d $errDir);
 	qx(mkdir -p $outDir) if (not -d $outDir);
 	open (JOB, "> ".$jobFile) || die "cannot write to '$jobFile': $1";
-		foreach my $grammar (keys(%PerlSettings::TDMfiles)) {
+		foreach my $grammar (keys(%Settings::TDMfiles)) {
 			for (my $i = 1; $i <= 5; $i++) {
 				print JOB "--grammar=".$grammar." --shapeLevel=".$i;
 				$settings->{grammar} = $grammar;
 				$settings->{shapeLevel} = $i;
-				my $bin_tdmGenerator = PerlUtils::compileGenerator($settings, $workingDirectory);
+				my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
 				my $bin_truth = compileTruth($settings, $workingDirectory);
 			}
 		}
 	close (JOB);
 	
 	open (ARRAY, "> ".$arrayJob) || die "cannot write to '$arrayJob': $1";		
-		print ARRAY '#!'.$PerlSettings::BINARIES{sh}."\n";
+		print ARRAY '#!'.$Settings::BINARIES{sh}."\n";
 		print ARRAY ''."\n";
-		print ARRAY '#$ -S '.$PerlSettings::BINARIES{sh}."\n";
-		print ARRAY '#$ -t 1-'.(keys(%PerlSettings::TDMfiles)*5)."\n";
+		print ARRAY '#$ -S '.$Settings::BINARIES{sh}."\n";
+		print ARRAY '#$ -t 1-'.(keys(%Settings::TDMfiles)*5)."\n";
 		print ARRAY '#$ -N test_RapidShapes'."\n";
 		print ARRAY '#$ -e '.$errDir."\n";
 		print ARRAY '#$ -o '.$outDir."\n";
 		print ARRAY ''."\n";
-		print ARRAY 'job=`'.$PerlSettings::BINARIES{head}.' -n $SGE_TASK_ID | '.$PerlSettings::BINARIES{tail}.' -1`'."\n";
+		print ARRAY 'job=`'.$Settings::BINARIES{head}.' -n $SGE_TASK_ID | '.$Settings::BINARIES{tail}.' -1`'."\n";
 		print ARRAY 'uname -a'."\n";
 		my $command = "";
 		$command .= " --temperature=".$settings->{temperature} if ((defined $settings->{temperature}) && ($settings->{temperature} ne ""));
 		$command .= " --paramfile=".$settings->{energyParamfile} if ((defined $settings->{energyParamfile}) && ($settings->{energyParamfile} ne ""));
 		$command .= '  "'.$inputSequence.'"';
-		print ARRAY $PerlSettings::BINARIES{perl}." ".PerlUtils::absFilename($0).' $job '.$command."\n";
+		print ARRAY $Settings::BINARIES{perl}." ".Utils::absFilename($0).' $job '.$command."\n";
 	close (ARRAY);
 		
 	my $arch = '-l arch="sol-amd64"';
-	$arch = '-l linh=1' if (qx($PerlSettings::BINARIES{uname} -o) =~ m/Sun/i);
+	$arch = '-l linh=1' if (qx($Settings::BINARIES{uname} -o) =~ m/Sun/i);
 	print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G $arch $arrayJob\n";
 } else {
 	print "TESTING grammar: ".$settings->{grammar}.", level: ".$settings->{shapeLevel}.", sequence $inputSequence ====\n"; 
-	my $bin_tdmGenerator = PerlUtils::compileGenerator($settings, $workingDirectory);
+	my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
 	my $bin_truth = compileTruth($settings, $workingDirectory);
 	my @failedShapes = ();
 	print "diff truth TDM\tshape\ttruth\tTDM\tgrammar\tshape level\n";
@@ -148,7 +148,7 @@ if ($settings->{clusterFasta} != 0) {
 		if ($line =~ m/\( (\S+) , (\d+) \)/) {
 			my ($shape, $trueNumber) = ($1,$2);
 			print STDERR $shape."\tcompiling ... ";
-			my $tdmNumber = PerlUtils::compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$settings->{grammar}}, '-p "alg_count"', "-t", '', $workingDirectory, [\&PerlUtils::generateGrammar, $bin_tdmGenerator, $shape, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $inputSequence], "");
+			my $tdmNumber = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "alg_count"', "-t", '', $workingDirectory, [\&Utils::generateGrammar, $bin_tdmGenerator, $shape, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $inputSequence], "");
 			print STDERR "done.\n";
 			print "".($trueNumber-$tdmNumber)."\t".$shape."\t".$trueNumber."\t".$tdmNumber."\t".$settings->{grammar}."\t".$settings->{shapeLevel}."\n";
 			push @failedShapes, {shape => $shape, trueNumber => $trueNumber, tdmNumber => $tdmNumber} if ($trueNumber != $tdmNumber);
@@ -172,13 +172,13 @@ sub runTDM {
 sub compileTruth {
 	my ($refHash_settings, $workingDirectory) = @_;
 	
-	my $bin_truth = $PerlSettings::TDMfiles{$settings->{grammar}}.'.shape'.$settings->{shapeLevel}.'count';
+	my $bin_truth = $Settings::TDMfiles{$settings->{grammar}}.'.shape'.$settings->{shapeLevel}.'count';
 	if (not -e $bin_truth) {
 		print STDERR "compiling programm that counts structures in shapes for '".$settings->{grammar}."', shape level ".$settings->{shapeLevel}." ... ";
-		$bin_truth = PerlUtils::absFilename(PerlUtils::compileGAP($PerlSettings::rootDir.$PerlSettings::TDMfiles{$settings->{grammar}}, '-p "(alg_shape'.$settings->{shapeLevel}.' * alg_count)"', "-t", '', $workingDirectory, undef, undef, 'shape'.$settings->{shapeLevel}.'count'));
+		$bin_truth = Utils::absFilename(Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "(alg_shape'.$settings->{shapeLevel}.' * alg_count)"', "-t", '', $workingDirectory, undef, undef, 'shape'.$settings->{shapeLevel}.'count'));
 		print STDERR "done.\n";
 	} else {
-		$bin_truth = PerlUtils::absFilename($bin_truth);
+		$bin_truth = Utils::absFilename($bin_truth);
 	}
 	return $bin_truth;
 }

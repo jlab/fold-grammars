@@ -1,0 +1,543 @@
+#!/usr/bin/env perl
+
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+
+use lib getPath($0)."../lib/";
+
+use strict;
+use warnings;
+use Data::Dumper;
+use foldGrammars::Settings;
+use foldGrammars::Utils;
+use Getopt::Long;
+use POSIX 'isatty';
+
+our $PROGRAM_NAME = "RapidShapes";
+
+our $GUESSMODE_SAMPLE = "sample";
+our $GUESSMODE_KBEST = "kbest";
+our $GUESSMODE_LIST = "list";
+our $GUESSMODE_ENERGY = "energy";
+
+our $GRAMMAR_NODANGLE = 'nodangle';
+our $GRAMMAR_OVERDANGLE = 'overdangle';
+our $GRAMMAR_MICROSTATE = 'microstate';
+our $GRAMMAR_MACROSTATE = 'macrostate';
+
+our $TASK_PFALL = 'pfall';
+our $TASK_TDMRUN = 'tdmrun';
+
+my %PARAM;
+$PARAM{grammar} = {key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could perform surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"$GRAMMAR_OVERDANGLE\". See [3] for further details."};
+$PARAM{shapelevel} = {key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels, where 5 is the most abstract and 1 the most concrete one.\nLevel 1 abstracts from all lengths (unpaired regions and stacks) and is the most concrete level. In Level 2 unpaired regions between components (e.g. between two hairpins) are not recognized. Level 3 does not differentiate between different types of helix interruptions like intern loops or bulges. Level 4 does only recognize internal loops as helix interrutions and finally in level 5 all interruptions are ignored, thus only ordering and nesting of hairpins and multiloops are shown. (see [5] for more formal shape level definitions)\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
+$PARAM{temperature} = {key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
+$PARAM{param} = {key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [1] and [2])."};
+$PARAM{alpha} = {key => 'alpha', gapc => undef, type => 'f', default => 0.9, info =>, "$PROGRAM_NAME computes individual shape class probabilities until either alpha percent of the folding space is explored or nor more guessed shape classes are uncomputed. We suggest an alpha of 90% or less."};
+$PARAM{name} = {key => 'name', gapc => undef, type => 's', default => "unknown sequence", info =>, "set a name for the input sequence, i.e. the header for a fasta like output."};
+$PARAM{cluster} = {key => 'cluster', gapc => undef, type => 's', default => undef, info =>, "You might want to compute probabilities for a multipe fasta file. If you have a Oracle Grid Engin at your fingertips, you can prepare an array job for fasta file by providing it here to the parameter --@(cluster)."};
+$PARAM{allowlp} = {key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
+$PARAM{help} = {key => 'help', default => undef, info => "show this brief help on version and usage"};
+$PARAM{probdecimals} = {key => 'probDecimals', type => 'i', default => 7, info => "Sets the number of digits used for printing shape probabilities.\n<int> must be a positive integer number.\nDefault is @(DEFAULT)."};
+$PARAM{guessmode} = {key => 'guessMode', gapc => undef, type => 's', default => 'sample', info => "Set the guess mode as one of the strings \"$GUESSMODE_SAMPLE\" (which is default), \"$GUESSMODE_KBEST\" \"$GUESSMODE_ENERGY\" or \"$GUESSMODE_LIST\"."};
+$PARAM{numsamples} = {key => 'numSamples', type => 'i', gapc => 'r', default => 1000, info => "Only for '--@(guessmode)=$GUESSMODE_SAMPLE'. Sets the number of samples that are drawn to estimate shape probabilities.\nIn our experience, 1000 iterations are sufficient to achieve reasonable results for shapes with high probability. Thus, default is @(DEFAULT)."};
+$PARAM{kbest} = {key => 'kbest', gapc => 'k', type => 'i', default => '5', info => "Only for '--@(guessmode)=$GUESSMODE_KBEST'. $PROGRAM_NAME will first perform a simple shape analysis for the best 'kbest' shapes. Choice of an appropriate value for --@(kbest) is not easy, since it depends on sequence length and base composition.\nDefault is @(DEFAULT), which is definitively wrong!"};
+$PARAM{list} = {key => 'list', gapc => undef, type => 's', default => undef, info => "Only for '--@(guessmode)=$GUESSMODE_LIST'. You might want to manually provide a list of shape classes that should be checked via TDMs. Individual shapes are separated by whitespaces, commas or semicolons."};
+$PARAM{absolutedeviation} = {key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "Only for '--@(guessmode)=$GUESSMODE_ENERGY'. This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation)."};
+$PARAM{relativedeviation} = {key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "Only for '--@(guessmode)=$GUESSMODE_ENERGY'. This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation)."};
+$PARAM{binarypath} = {key => 'binPath', type => 's', default => undef, info => "$PROGRAM_NAME expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
+$PARAM{binaryprefix} = {key => 'binPrefix', type => 's', default => 'RapidShapes_', info => "$PROGRAM_NAME expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)"."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
+
+our $OUTPUT_MINLEFTWIDTH = 7;
+our $OUTPUT_FIELDSPACER = "  ";
+
+my $settings = {};
+foreach my $param (keys %PARAM) {
+	$settings->{$param} = $PARAM{$param}->{default};
+}
+my %help = ();
+foreach my $param (keys %PARAM) {
+	my $optionSec = $param;
+	$optionSec .= "=".$PARAM{$param}->{type} if (exists $PARAM{$param}->{type});
+	$help{$optionSec} = \$settings->{$param};
+}
+&GetOptions( 	
+	%help
+);
+
+checkParameters($settings);
+
+if (@ARGV == 0) {
+	if (defined $settings->{'help'}) {
+		usage();
+	} else {
+		if (isatty(*STDIN)) {
+			print "waiting for your plain RNA sequence or fasta filename.\n";
+			my $input = <STDIN>; chomp $input;
+			if (-e $input) {
+				Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+			} else {
+				my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
+				doComputation(\%sequence, $settings);
+			}
+		} else {
+			Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings);
+		}
+	}
+} else {
+	usage() if ((defined $settings->{'help'}) || (@ARGV > 1));
+	my ($input) = @ARGV;
+	if (-e $input) {
+		Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+	} else {
+		my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
+		doComputation(\%sequence, $settings);
+	}
+}
+
+sub checkParameters {
+	my ($settings) = @_;
+	
+	my $diePrefix = "wrong command line parameter:\n  ";
+	
+	if (
+		($settings->{'guessmode'} ne $GUESSMODE_SAMPLE) && 
+		($settings->{'guessmode'} ne $GUESSMODE_KBEST) &&
+		($settings->{'guessmode'} ne $GUESSMODE_ENERGY) && 
+		($settings->{'guessmode'} ne $GUESSMODE_LIST)) {
+			die $diePrefix."guess mode '".$settings->{'guessmode'}."' is not available. Please choose one out of \"".join('", "', ($GUESSMODE_SAMPLE, $GUESSMODE_KBEST, $GUESSMODE_ENERGY, $GUESSMODE_LIST))."\".\n";
+	}
+	
+	die $diePrefix."the parameter file you specified could not be found.\n" if ((defined $settings->{'param'}) && (not -e $settings->{'param'}));
+	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
+	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
+	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if ((defined $settings->{'absolutedeviation'}) && ($settings->{'guessmode'} ne $GUESSMODE_ENERGY));
+	die $diePrefix."--".$PARAM{'relativedeviation'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if (($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}) && (($settings->{'guessmode'} ne $GUESSMODE_ENERGY)));
+	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
+	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." and --".$PARAM{'relativedeviation'}->{key}." cannot be set at the same time!\n" if ((defined $settings->{'absolutedeviation'}) && ($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}));
+	$settings->{'grammar'} = lc($settings->{'grammar'});
+	die $diePrefix."there is no grammar \"".$settings->{'grammar'}."\". Please select one of \"$GRAMMAR_NODANGLE\", \"$GRAMMAR_OVERDANGLE\", \"$GRAMMAR_MICROSTATE\" or \"$GRAMMAR_MACROSTATE\".\n" if ($settings->{'grammar'} !~ m/^nodangle|overdangle|microstate|macrostate$/i);
+	die $diePrefix."--".$PARAM{'numsamples'}->{key}." must be a positive integer, otherwise shape frequencies cannot be estimated.\n" if ($settings->{'numsamples'} < 1);
+	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a positive integer number!\n" if ($settings->{'probdecimals'} < 0);
+	
+	my ($programPath, $programName) = @{Utils::separateDirAndFile($0)};
+	$programPath = "./" if (not defined $programPath);
+	$settings->{'binarypath'} = $programPath if (not defined $settings->{'binarypath'});
+	#~ my $binName = "";
+	#~ if (defined $settings->{'binarypath'}) {
+		#~ $binName .= $settings->{'binarypath'};
+		#~ $binName .= "/" if (substr($binName, -1, 1) ne "/");
+	#~ } else {
+		#~ $binName .= "./";
+	#~ }
+	#~ $binName .= $settings->{'binaryprefix'}.$settings->{'mode'};
+	#~ die $diePrefix." could not find Bellman's GAP binary '".$binName."' for mode ".$settings->{'mode'}."!\n" if (not -e $binName);
+	
+	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a positive integer number!\n" if ($settings->{'probdecimals'} < 0);
+	
+	if ($settings->{'guessmode'} eq $GUESSMODE_LIST) {
+		my @shapes = ();
+		foreach my $s (split(m/\s+|,|;/, $settings->{list})) {
+			die $diePrefix."your list of shapes contains at least one invalid shape class string: \"".$s."\"!\n" if ($s !~ m/^(\[|\]|\_)+$/);
+			#maybe one wants to check here for invalid shape strings, composed by the correct alphabet ?!
+			push @shapes, {shapestring => $s};
+		}
+		die $diePrefix."please specify at least one shape class via parameter --".$PARAM{'list'}->{key}.".\n" if (@shapes <= 0);
+		$settings->{list} = \@shapes;
+	}
+}
+
+sub doComputation {
+	my ($refHash_sequence, $settings) = @_;
+	
+	if ($refHash_sequence->{sequence} !~ m/^\s*((A|C|G|U|T)+)\s*$/i) {
+		print STDERR "sequence '".$refHash_sequence->{header}."' has been skipped, due to non RNA letter. Only A,C,G,U,T,a,c,g,u,t are allowed.";
+	}
+	my $seq = $refHash_sequence->{sequence};
+	$seq =~ s/t/u/gi;
+
+	my $workingDirectory = qx(pwd); chomp $workingDirectory;
+	#~ if (defined $settings->{clusterFasta}) {
+		#~ my ($fastaDir, $fastaFile) = @{Utils::separateDirAndFile($settings->{clusterFasta})};
+		
+		#~ my $errDir = $workingDirectory.'/'.$fastaFile.'.cluster/ERR';
+		#~ my $outDir = $workingDirectory.'/'.$fastaFile.'.cluster/OUT';
+		#~ my $reformattedFastafile = $workingDirectory.'/'.$fastaFile.'.cluster/'.$fastaFile;
+		#~ my $arrayJob =  $workingDirectory.'/'.$fastaFile.'.cluster/array.sh';
+		
+		#~ qx(mkdir -p $errDir) if (not -d $errDir);
+		#~ qx(mkdir -p $outDir) if (not -d $outDir);
+		#~ open (FASTA, "> ".$reformattedFastafile) || die "cannot write to '$reformattedFastafile': $1";
+			#~ my @count = @{Utils::applyFunctionToFastaFile($settings->{clusterFasta}, \&reformatFasta, \*FASTA)};
+		#~ close (FASTA);
+		
+		#~ open (ARRAY, "> ".$arrayJob) || die "cannot write to '$arrayJob': $1";		
+			#~ print ARRAY '#!'.$Settings::BINARIES{sh}."\n";
+			#~ print ARRAY ''."\n";
+			#~ print ARRAY '#$ -S '.$Settings::BINARIES{sh}."\n";
+			#~ print ARRAY '#$ -t 1-'.@count."\n";
+			#~ print ARRAY '#$ -N RapidShapes_'.$fastaFile."\n";
+			#~ print ARRAY '#$ -e '.$errDir."\n";
+			#~ print ARRAY '#$ -o '.$outDir."\n";
+			#~ print ARRAY ''."\n";
+			#~ print ARRAY 'sequenceFile='.$reformattedFastafile."\n";
+			#~ print ARRAY 'headerpos=`'.$Settings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+1" | '.$Settings::BINARIES{bc}.'`; '."\n";
+			#~ print ARRAY 'sequencepos=`'.$Settings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+2" | '.$Settings::BINARIES{bc}.'`; '."\n";
+			#~ print ARRAY 'header=`'.$Settings::BINARIES{head}.' -n $headerpos $sequenceFile | '.$Settings::BINARIES{tail}.' -1`; '."\n";
+			#~ print ARRAY 'sequence=`'.$Settings::BINARIES{head}.' -n $sequencepos $sequenceFile | '.$Settings::BINARIES{tail}.' -1`;'."\n";
+			#~ print ARRAY 'uname -a'."\n";
+			#~ my $command = "";
+			#~ $command .= " --grammar=".$settings->{grammar} if (defined $settings->{grammar});
+			#~ $command .= " --shapeLevel=".$settings->{shapeLevel} if (defined $settings->{shapeLevel});
+			#~ $command .= " --alpha=".$settings->{alpha} if (defined $settings->{alpha});
+			#~ $command .= " --temperature=".$settings->{temperature} if ((defined $settings->{temperature}) && ($settings->{temperature} ne ""));
+			#~ $command .= " --paramfile=".$settings->{energyParamfile} if ((defined $settings->{energyParamfile}) && ($settings->{energyParamfile} ne ""));
+			#~ $command .= " --guessMode=".$settings->{guessMode} if (defined $settings->{guessMode});
+			#~ $command .= " --sampleSetSize=".$settings->{sampleSetSize} if ((defined $settings->{sampleSetSize}) && ($settings->{guessMode} eq $CONST_GM_SAMPLE));
+			#~ $command .= " --kbest=".$settings->{kbest} if ((defined $settings->{kbest}) && ($settings->{guessMode} eq $CONST_GM_KBEST));
+			#~ $command .= " --list=".$settings->{list} if ((defined $settings->{list}) && ($settings->{guessMode} eq $CONST_GM_LIST));
+			#~ $command .= ' --name="$header"';
+			#~ $command .= '  "$sequence"';
+			#~ print ARRAY $Settings::BINARIES{perl}." ".Utils::absFilename($0)." ".$command."\n";
+		#~ close (ARRAY);
+		
+		#~ if ($settings->{guessMode} eq $CONST_GM_KBEST) {
+			#~ my $bin_ssa = compileKbest($settings, $workingDirectory);
+		#~ } else {
+			#~ my $bin_sample = compileSample($settings, $workingDirectory);
+		#~ }
+		#~ my $bin_pfall = compilePFall($settings, $workingDirectory);
+		#~ my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
+		
+		#~ my $arch = '-l arch="sol-amd64"';
+		#~ $arch = '-l linh=1' if (qx($Settings::BINARIES{uname} -o) !~ m/Sun/i);
+		#~ print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G $arch $arrayJob\n";
+	#~ } else {
+		#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
+			my @shapes = ();
+			if ($settings->{guessmode} eq $GUESSMODE_KBEST) {
+				@shapes = @{guessShapesKbest($seq, $settings, $workingDirectory)};
+			} elsif ($settings->{guessmode} eq $GUESSMODE_ENERGY) {
+				@shapes = @{guessShapesEnergy($seq, $settings, $workingDirectory)};
+			} elsif ($settings->{guessmode} eq $GUESSMODE_LIST) {
+				@shapes = @{$settings->{list}};
+				print STDERR "step 1: using a provided list of ".@shapes." shapes.\n";		
+			} else {
+				@shapes = @{guessShapesSampling($seq, $settings, $workingDirectory)};
+			}
+
+		#2) determining partition function value for complete search space	
+			my $pfAll = getPFall($seq, $settings, $workingDirectory);
+			
+		#3) compile TDM generator if not available
+			print STDERR "step 3: compute exact probabilities for guessed shapes:\n";
+			my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
+			my $pfShapeSum = 0;
+			foreach my $shape (@shapes) {
+				my $ljshape = $shape->{shapestring};
+				$ljshape =~ s/\[/L/g;
+				$ljshape =~ s/\]/J/g;
+				print STDERR "\t".$shape->{shapestring}."\tcompiling ... ";
+				my $alg_pfunc = "alg_pfunc";
+				if ($settings->{grammar} eq 'macrostate') {
+					$alg_pfunc = "alg_pfunc_macrostate";
+				} elsif ($settings->{grammar} eq 'overdangle') {
+					$alg_pfunc = "alg_pfunc_overdangle";
+				}
+				my $pfShape = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&Utils::generateGrammar, $bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $seq], "pf".$settings->{shapelevel}."__".$ljshape, 'addRNAoptions');
+				$pfShapeSum += $pfShape;
+				$shape->{probability} = $pfShape/$pfAll;
+				print STDERR sprintf("%8.4f", $shape->{probability}*100)." %.\n";
+				if ($pfShapeSum / $pfAll >= $settings->{alpha}) {
+					print STDERR "discovered more than the required ".sprintf("%.2f", $settings->{alpha}*100)." % of the folding space. Skip remaining shapes.\n";
+					foreach my $skippedShape (@shapes) {
+						$skippedShape->{probability} = 0 if (not exists $skippedShape->{probability});
+					}
+					last;
+				}
+			}
+			print STDERR "\n";
+			
+		#Output Results the same way RNAshapes does
+			print ">".$refHash_sequence->{header}."\n";
+			print $refHash_sequence->{sequence}."\n";
+			foreach my $shape (sort {$b->{probability} <=> $a->{probability}} @shapes) {
+				print sprintf("%.$settings->{probdecimals}f", $shape->{probability})."  ".$shape->{shapestring}."\n" if ($shape->{probability} != 0);
+			}
+			#plus overall stop probability
+			print "\n".sprintf("%.$settings->{probdecimals}f", $pfShapeSum / $pfAll)."  sum\n";
+			print "\n";
+	#~ }	
+}
+
+sub buildCommand {
+	my ($settings, $task) = @_;
+	
+	my $cmd = "";
+	$cmd .= $settings->{'binarypath'};
+	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
+	$cmd .= $settings->{'binaryprefix'};
+	$cmd .= $settings->{'grammar'};
+	if (defined $task) {
+		if ($task eq $TASK_PFALL) {
+			$cmd .= '_'.$task;
+		} elsif ($task eq $TASK_TDMRUN) {
+			$cmd = 'out';
+		}
+	} else {
+		$cmd .= '_'.$settings->{'guessmode'} ;
+	}
+	$cmd .= " -".$PARAM{temperature}->{gapc}." ".$settings->{'temperature'} if ($settings->{'temperature'} != $PARAM{temperature}->{default});
+	$cmd .= " -".$PARAM{param}->{gapc}." ".$settings->{'param'} if (defined $settings->{'param'});
+	$cmd .= " -".$PARAM{allowlp}->{gapc}." ".$settings->{'allowlp'} if ($settings->{'allowlp'} != $PARAM{allowlp}->{default});
+	if (not defined $task) {
+		$cmd .= " -".$PARAM{shapelevel}->{gapc}." ".$settings->{'shapelevel'} if ($settings->{'shapelevel'} != $PARAM{shapelevel}->{default});
+		if ($settings->{'guessmode'} eq $GUESSMODE_SAMPLE) {
+			$cmd .= " -".$PARAM{numsamples}->{gapc}." ".$settings->{'numsamples'};
+		} elsif ($settings->{'guessmode'} eq $GUESSMODE_KBEST) {
+			$cmd .= " -".$PARAM{kbest}->{gapc}." ".$settings->{'kbest'};
+		} elsif ($settings->{'guessmode'} eq $GUESSMODE_ENERGY) {
+			$cmd .= " -".$PARAM{relativedeviation}->{gapc}." ".$settings->{'relativedeviation'} if ($settings->{'relativedeviation'} != $PARAM{relativedeviation}->{default});
+			$cmd .= " -".$PARAM{absolutedeviation}->{gapc}." ".$settings->{'absolutedeviation'} if (defined $settings->{'absolutedeviation'});
+		}
+	}
+
+	return $cmd;
+}
+
+sub compileSample {
+	my ($refHash_settings, $workingDirectory) = @_;
+	my $bin_sample = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$refHash_settings->{grammar}.'_'.$GUESSMODE_SAMPLE;
+	if (not -e $bin_sample) {
+		print STDERR "compiling programm to estimate shape class frequencies for '".$refHash_settings->{grammar}."' ... ";
+		my $alg_pfunc = "alg_pfunc";
+		if ($refHash_settings->{grammar} eq 'macrostate') {
+			$alg_pfunc = "alg_pfunc_macrostate";
+		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
+			$alg_pfunc = "alg_pfunc_overdangle";
+		}
+		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "((('.$alg_pfunc.' | '.$alg_pfunc.'_id) * alg_shapeX) suchthat sample_filter)"', "-t --sample", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, undef, 'addRNAoptions');
+		qx($Settings::BINARIES{mv} $tmpBin $bin_sample);
+		print STDERR "done.\n";
+	}
+	return Utils::absFilename($bin_sample);
+}
+
+sub compileKbest {
+	my ($refHash_settings, $workingDirectory) = @_;
+	my $bin_ssa = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$refHash_settings->{grammar}.'_'.$GUESSMODE_KBEST;
+	if (not -e $bin_ssa) {
+		print STDERR "compiling programm to perform simple shape analysis for '".$refHash_settings->{grammar}."' ... ";
+		my $alg_mfe = "alg_mfe";
+		if ($refHash_settings->{grammar} eq 'macrostate') {
+			$alg_mfe = "alg_mfe_macrostate";
+		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
+			$alg_mfe = "alg_mfe_overdangle";
+		}
+		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "(alg_shapeX * '.$alg_mfe.')"', "-t --kbest", '', $workingDirectory, undef, undef, undef, 'addRNAoptions');
+		qx($Settings::BINARIES{mv} $tmpBin $bin_ssa);
+		print STDERR "done.\n";
+	}
+	return Utils::absFilename($bin_ssa);
+}
+
+sub compileEnergy {
+	my ($refHash_settings, $workingDirectory) = @_;
+	my $bin_energy = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$refHash_settings->{grammar}.'_'.$GUESSMODE_ENERGY;
+	if (not -e $bin_energy) {
+		print STDERR "compiling programm to perform suboptimal shape analysis for '".$refHash_settings->{grammar}."' ... ";
+		my $alg_mfe = "alg_mfe";
+		if ($refHash_settings->{grammar} eq 'macrostate') {
+			$alg_mfe = "alg_mfe_macrostate";
+		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
+			$alg_mfe = "alg_mfe_overdangle";
+		}
+		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "((alg_shapeX * '.$alg_mfe.') * alg_dotBracket) suchthat suboptShapeClasses"', "-t --kbacktrace --no-coopt-class", '', $workingDirectory, undef, undef, undef, 'addRNAoptions');
+		qx($Settings::BINARIES{mv} $tmpBin $bin_energy);
+		print STDERR "done.\n";
+	}
+	return Utils::absFilename($bin_energy);
+}
+
+sub compilePFall {
+	my ($refHash_settings, $workingDirectory) = @_;
+	my $bin_pfall = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$refHash_settings->{grammar}.'_'.$TASK_PFALL;
+	if (not -e $bin_pfall) {
+		print STDERR "compiling programm to compute the partition function for complete folding space of grammar '".$refHash_settings->{grammar}."' ...";
+		my $alg_pfunc = "alg_pfunc";
+		if ($refHash_settings->{grammar} eq 'macrostate') {
+			$alg_pfunc = "alg_pfunc_macrostate";
+		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
+			$alg_pfunc = "alg_pfunc_overdangle";
+		}
+		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, undef, 'addRNAoptions');
+		qx($Settings::BINARIES{mv} $tmpBin $bin_pfall);
+		print STDERR " done.\n";
+	}
+	return Utils::absFilename($bin_pfall);
+}
+
+
+sub getPFall {
+	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
+	
+	print STDERR "step 2: computing partition function value for complete folding space ... ";
+	my $bin_pfall = compilePFall($refHash_settings, $workingDirectory);
+	my $command = buildCommand($refHash_settings, $TASK_PFALL);
+	my $pfAll = parsePFanswer(qx($command "$inputSequence"));
+	print STDERR $pfAll.".\n";
+	
+	return $pfAll;
+}
+
+sub guessShapesSampling {
+	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
+	
+	print STDERR "step 1: guess shapes, via sampling, to be further analyzed via TDMs ... ";
+	my $bin_sample = compileSample($refHash_settings, $workingDirectory);
+	my %sampledShapes = ();
+	my $command = buildCommand($refHash_settings);
+	foreach my $line (split(m/\r?\n/, qx($command "$inputSequence"))) {
+		if ($line =~ m/\(\s+.+?\s+,\s+(\S+)\s+\)/) {
+			$sampledShapes{$1}++;
+		}
+	}
+	my @shapes = ();
+	foreach my $shape (sort {$sampledShapes{$b} <=> $sampledShapes{$a}} keys(%sampledShapes)) {
+		push @shapes, {shapestring => $shape, frequency => $sampledShapes{$shape}/$refHash_settings->{numsamples}};
+	}
+	print STDERR "found ".scalar(@shapes)." promising shapes.\n";
+	
+	return \@shapes;
+}
+
+sub guessShapesKbest {
+	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
+	
+	print STDERR "step 1: guess shapes, via simple shape analysis, to be further analyzed via TDMs ... ";
+	my $bin_ssa = compileKbest($refHash_settings, $workingDirectory);
+	my %kbestShapes = ();
+	my $command = buildCommand($refHash_settings);
+	foreach my $line (split(m/\r?\n/, qx($command "$inputSequence"))) {
+		if ($line =~ m/\(\s+(\S+)\s+,\s+(.+?)\s+\)/) { #( [_[_[[]_]_]] , 70 )
+			$kbestShapes{$1} = $2;
+		}
+	}
+	my @shapes = ();
+	foreach my $shape (sort {$kbestShapes{$a} <=> $kbestShapes{$b}} keys(%kbestShapes)) {
+		push @shapes, {shapestring => $shape, mfe => $kbestShapes{$shape}/100};
+	}
+	print STDERR "found ".scalar(@shapes)." promising shapes.\n";
+	
+	return \@shapes;
+}
+	
+sub guessShapesEnergy {
+	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
+	
+	print STDERR "step 1: guess shapes, via suboptimal shape analysis, to be further analyzed via TDMs ... ";
+	my $bin_energy = compileEnergy($refHash_settings, $workingDirectory);
+	my %energyShapes = ();
+	my $command = buildCommand($refHash_settings);
+	foreach my $line (split(m/\r?\n/, qx($command "$inputSequence"))) {
+		if ($line =~ m/\(\s+\(\s+(\S+)\s+,\s+(.+?)\s+\)\s+,\s+.+?\s+\)/) { #( ( [][][] , 570 ) , ..(((....))).((....))..(((....))) )
+			$energyShapes{$1} = $2;
+		}
+	}
+	my @shapes = ();
+	foreach my $shape (sort {$energyShapes{$a} <=> $energyShapes{$b}} keys(%energyShapes)) {
+		push @shapes, {shapestring => $shape, mfe => $energyShapes{$shape}/100};
+	}
+	print STDERR "found ".scalar(@shapes)." promising shapes.\n";
+
+	return \@shapes;
+}
+	
+sub parsePFanswer {
+	my @inputrows = @_;
+	
+	foreach my $line (split(m/\r?\n/, join("\n", @inputrows))) {
+		if (($line !~ m/^\s*$/) && ($line !~ m/Answer/)) {
+			if ($line =~ m/\[\]/) {
+				return 0; #it might happen that the input sequence does not fit a shape class at all. Thus, GAP answer is the empty list [] which should be interpreted as 0.
+			} else {
+				return $line;
+			}
+		}
+	}
+	
+	return undef;
+}
+	
+
+sub runTDM {
+	my ($tmpDir, $refHash_settings, $inputSequence) = @_;
+	print STDERR "done.\texecuting ... "; 
+	my $command = buildCommand($refHash_settings, $TASK_TDMRUN);
+	my $pfShape = parsePFanswer(qx($tmpDir/$command "$inputSequence"));
+	return $pfShape;
+}
+
+
+
+#~ sub reformatFasta {
+	#~ my ($refHash_sequence, $refFileHandle) = @_;
+	#~ print $refFileHandle ">".$refHash_sequence->{header}."\n".$refHash_sequence->{sequence}."\n\n";
+	#~ return undef;
+#~ }
+
+
+
+
+
+
+
+sub usage {
+	my ($settings) = @_;
+
+my $HELP = <<EOF;
+# $PROGRAM_NAME: rapidly compute RNA abstract shape probabilties.
+#        version 2.0.0 (21.02.2013)
+#        Stefan Janssen (bibi-help\@techfak.uni-bielefeld.de)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+USAGE:
+perl $PROGRAM_NAME [-options] <fasta file name or RNA sequence>
+
+EOF
+;
+
+	$HELP .= Utils::printIdent(" ", "First step of $PROGRAM_NAME is to somehow guess promising shape classes, whoes probability is exactly computed via thermodynamic matchers later on.\n$PROGRAM_NAME provides four different ways of \"guessing\" these shape classes:")."\n";
+	$HELP .= Utils::printIdent("  ".$GUESSMODE_SAMPLE." : ", Utils::usage_convertInfoText("estimate shape frequencies via sampling a specific number of secondary structure from the folding-space, via stochastical backtracing. See options --@(numsamples).\n(default in $PROGRAM_NAME)", \%PARAM))."\n";	
+	$HELP .= Utils::printIdent("  ".$GUESSMODE_KBEST."  : ", Utils::usage_convertInfoText("a simple shape class analysis is performed and the kbest energetically ordered shape classes are selected. See option --@(kbest).", \%PARAM))."\n";	
+	$HELP .= Utils::printIdent("  ".$GUESSMODE_ENERGY." : ", Utils::usage_convertInfoText("similar to \"$GUESSMODE_KBEST\". Instead of the kbest energetically shape classes, those shape classes are used whoes energy deviates up to a certain threshlold from minimal free energy for the input sequence. See options --@(absolutedeviation) and --@(relativedeviation).", \%PARAM))."\n";	
+	$HELP .= Utils::printIdent("  ".$GUESSMODE_LIST."   : ", Utils::usage_convertInfoText("If you have an alternative method of guessing shapes, you can also provide a list of these shape classes. Take care, that your input sequence can fold into these shapes at all! See option --@(list).", \%PARAM))."\n";	
+
+	$HELP .= "GUESS MODE SPECIFIC OPTIONS:\n";
+	for my $par ('guessmode', 'numsamples','kbest','absolutedeviation','relativedeviation','list') {
+		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
+	}
+	$HELP .= "GENERAL OPTIONS:\n";
+	for my $par ('alpha','shapelevel','grammar','allowlp','temperature','param') {
+		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
+	}
+	$HELP .= "MISC OPTIONS:\n";
+	for my $par ('help','name','cluster','probdecimals','binarypath','binaryprefix') {
+		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
+	}
+	$HELP .= "REFERENCES:\n";
+	$HELP .= Utils::printIdent("[1] ", "David H Mathews, Matthew D Disney, Jessica L Childs, Susan J Schroeder, Michael Zuker, Douglas H Turner.\n\"Incorporating chemical modification constraints into a dynamic programming algorithm for prediction of RNA secondary structure.\"\nProceedings of the National Academy of Sciences of the United States of America 2004. doi: 10.1073/pnas.0401799101")."\n";
+	$HELP .= Utils::printIdent("[2] ", "Douglas H Turner, David H Mathews.\n\"NNDB: The nearest neighbor parameter database for predicting stability of nucleic acid secondary structure.\"\"Nucleic Acids Research 2009. doi:10.1093/nar/gkp892")."\n";
+	$HELP .= Utils::printIdent("[3] ", "Stefan Janssen, Christian Schudoma, Gerhard Steger, Robert Giegerich.\n\"Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction.\"\n BMC Bioinformatics 2011. doi:10.1186/1471-2105-12-429")."\n";
+	$HELP .= Utils::printIdent("[4] ", "Bjoern Voss, Robert Giegerich, Marc Rehmsmeier.\n\"Complete probabilistic analysis of RNA shapes.\"\nBMC Biology 2006. doi:10.1186/1741-7007-4-5")."\n";
+	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
+	$HELP .= Utils::printIdent("[5] ", "Stefan Janssen, Robert Giegerich.\n\"Faster computation of exact RNA shape probabilities.\"\nBioinformatics 2010. doi:10.1093/bioinformatics/btq014")."\n";
+
+	print $HELP;
+	exit(0);
+}
