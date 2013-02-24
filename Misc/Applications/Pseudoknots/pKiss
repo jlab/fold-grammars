@@ -54,10 +54,11 @@ foreach my $param (keys %PARAM) {
 }
 my %help = ();
 foreach my $param (keys %PARAM) {
-	my $optionSec = $param;
+	my $optionSec = $PARAM{$param}->{key};
 	$optionSec .= "=".$PARAM{$param}->{type} if (exists $PARAM{$param}->{type});
 	$help{$optionSec} = \$settings->{$param};
 }
+
 &GetOptions( 	
 	%help
 );
