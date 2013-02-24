@@ -72,31 +72,35 @@ foreach my $param (keys %PARAM) {
 
 checkParameters($settings);
 
-if (@ARGV == 0) {
-	if (defined $settings->{'help'}) {
-		usage();
-	} else {
-		if (isatty(*STDIN)) {
-			print "waiting for your plain RNA sequence or fasta filename.\n";
-			my $input = <STDIN>; chomp $input;
-			if (-e $input) {
-				Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
-			} else {
-				my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
-				doComputation(\%sequence, $settings);
-			}
-		} else {
-			Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings);
-		}
-	}
+if (defined $settings->{'cluster'}) {
+	Utils::applyFunctionToFastaFile($settings->{'cluster'}, \&doComputation, $settings);
 } else {
-	usage() if ((defined $settings->{'help'}) || (@ARGV > 1));
-	my ($input) = @ARGV;
-	if (-e $input) {
-		Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+	if (@ARGV == 0) {
+		if (defined $settings->{'help'}) {
+			usage();
+		} else {
+			if (isatty(*STDIN)) {
+				print "waiting for your plain RNA sequence or fasta filename.\n";
+				my $input = <STDIN>; chomp $input;
+				if (-e $input) {
+					Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+				} else {
+					my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
+					doComputation(\%sequence, $settings);
+				}
+			} else {
+				Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings);
+			}
+		}
 	} else {
-		my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
-		doComputation(\%sequence, $settings);
+		usage() if ((defined $settings->{'help'}) || (@ARGV > 1));
+		my ($input) = @ARGV;
+		if (-e $input) {
+			Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+		} else {
+			my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
+			doComputation(\%sequence, $settings);
+		}
 	}
 }
 
@@ -124,7 +128,8 @@ sub checkParameters {
 	die $diePrefix."there is no grammar \"".$settings->{'grammar'}."\". Please select one of \"$GRAMMAR_NODANGLE\", \"$GRAMMAR_OVERDANGLE\", \"$GRAMMAR_MICROSTATE\" or \"$GRAMMAR_MACROSTATE\".\n" if ($settings->{'grammar'} !~ m/^nodangle|overdangle|microstate|macrostate$/i);
 	die $diePrefix."--".$PARAM{'numsamples'}->{key}." must be a positive integer, otherwise shape frequencies cannot be estimated.\n" if ($settings->{'numsamples'} < 1);
 	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a positive integer number!\n" if ($settings->{'probdecimals'} < 0);
-	
+	die $diePrefix."cannot read provided fasta file '".$settings->{cluster}."' for cluster job preparation.\n" if ((defined $settings->{cluster}) && (not -e $settings->{cluster}));
+
 	my ($programPath, $programName) = @{Utils::separateDirAndFile($0)};
 	$programPath = "./" if (not defined $programPath);
 	$settings->{'binarypath'} = $programPath if (not defined $settings->{'binarypath'});
@@ -162,62 +167,60 @@ sub doComputation {
 	$seq =~ s/t/u/gi;
 
 	my $workingDirectory = qx(pwd); chomp $workingDirectory;
-	#~ if (defined $settings->{clusterFasta}) {
-		#~ my ($fastaDir, $fastaFile) = @{Utils::separateDirAndFile($settings->{clusterFasta})};
+	if (defined $settings->{cluster}) {
+		my ($fastaDir, $fastaFile) = @{Utils::separateDirAndFile($settings->{cluster})};
 		
-		#~ my $errDir = $workingDirectory.'/'.$fastaFile.'.cluster/ERR';
-		#~ my $outDir = $workingDirectory.'/'.$fastaFile.'.cluster/OUT';
-		#~ my $reformattedFastafile = $workingDirectory.'/'.$fastaFile.'.cluster/'.$fastaFile;
-		#~ my $arrayJob =  $workingDirectory.'/'.$fastaFile.'.cluster/array.sh';
+		my $errDir = $workingDirectory.'/'.$fastaFile.'.cluster/ERR';
+		my $outDir = $workingDirectory.'/'.$fastaFile.'.cluster/OUT';
+		my $reformattedFastafile = $workingDirectory.'/'.$fastaFile.'.cluster/'.$fastaFile;
+		my $arrayJob =  $workingDirectory.'/'.$fastaFile.'.cluster/array.sh';
 		
-		#~ qx(mkdir -p $errDir) if (not -d $errDir);
-		#~ qx(mkdir -p $outDir) if (not -d $outDir);
-		#~ open (FASTA, "> ".$reformattedFastafile) || die "cannot write to '$reformattedFastafile': $1";
-			#~ my @count = @{Utils::applyFunctionToFastaFile($settings->{clusterFasta}, \&reformatFasta, \*FASTA)};
-		#~ close (FASTA);
+		qx(mkdir -p $errDir) if (not -d $errDir);
+		qx(mkdir -p $outDir) if (not -d $outDir);
+		open (FASTA, "> ".$reformattedFastafile) || die "cannot write to '$reformattedFastafile': $1";
+			my @count = @{Utils::applyFunctionToFastaFile($settings->{cluster}, \&reformatFasta, \*FASTA)};
+		close (FASTA);
 		
-		#~ open (ARRAY, "> ".$arrayJob) || die "cannot write to '$arrayJob': $1";		
-			#~ print ARRAY '#!'.$Settings::BINARIES{sh}."\n";
-			#~ print ARRAY ''."\n";
-			#~ print ARRAY '#$ -S '.$Settings::BINARIES{sh}."\n";
-			#~ print ARRAY '#$ -t 1-'.@count."\n";
-			#~ print ARRAY '#$ -N RapidShapes_'.$fastaFile."\n";
-			#~ print ARRAY '#$ -e '.$errDir."\n";
-			#~ print ARRAY '#$ -o '.$outDir."\n";
-			#~ print ARRAY ''."\n";
-			#~ print ARRAY 'sequenceFile='.$reformattedFastafile."\n";
-			#~ print ARRAY 'headerpos=`'.$Settings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+1" | '.$Settings::BINARIES{bc}.'`; '."\n";
-			#~ print ARRAY 'sequencepos=`'.$Settings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+2" | '.$Settings::BINARIES{bc}.'`; '."\n";
-			#~ print ARRAY 'header=`'.$Settings::BINARIES{head}.' -n $headerpos $sequenceFile | '.$Settings::BINARIES{tail}.' -1`; '."\n";
-			#~ print ARRAY 'sequence=`'.$Settings::BINARIES{head}.' -n $sequencepos $sequenceFile | '.$Settings::BINARIES{tail}.' -1`;'."\n";
-			#~ print ARRAY 'uname -a'."\n";
-			#~ my $command = "";
-			#~ $command .= " --grammar=".$settings->{grammar} if (defined $settings->{grammar});
-			#~ $command .= " --shapeLevel=".$settings->{shapeLevel} if (defined $settings->{shapeLevel});
-			#~ $command .= " --alpha=".$settings->{alpha} if (defined $settings->{alpha});
-			#~ $command .= " --temperature=".$settings->{temperature} if ((defined $settings->{temperature}) && ($settings->{temperature} ne ""));
-			#~ $command .= " --paramfile=".$settings->{energyParamfile} if ((defined $settings->{energyParamfile}) && ($settings->{energyParamfile} ne ""));
-			#~ $command .= " --guessMode=".$settings->{guessMode} if (defined $settings->{guessMode});
-			#~ $command .= " --sampleSetSize=".$settings->{sampleSetSize} if ((defined $settings->{sampleSetSize}) && ($settings->{guessMode} eq $CONST_GM_SAMPLE));
-			#~ $command .= " --kbest=".$settings->{kbest} if ((defined $settings->{kbest}) && ($settings->{guessMode} eq $CONST_GM_KBEST));
-			#~ $command .= " --list=".$settings->{list} if ((defined $settings->{list}) && ($settings->{guessMode} eq $CONST_GM_LIST));
-			#~ $command .= ' --name="$header"';
-			#~ $command .= '  "$sequence"';
-			#~ print ARRAY $Settings::BINARIES{perl}." ".Utils::absFilename($0)." ".$command."\n";
-		#~ close (ARRAY);
+		open (ARRAY, "> ".$arrayJob) || die "cannot write to '$arrayJob': $1";		
+			print ARRAY '#!'.$Settings::BINARIES{sh}."\n";
+			print ARRAY ''."\n";
+			print ARRAY '#$ -S '.$Settings::BINARIES{sh}."\n";
+			print ARRAY '#$ -t 1-'.@count."\n";
+			print ARRAY '#$ -N RapidShapes_'.$fastaFile."\n";
+			print ARRAY '#$ -e '.$errDir."\n";
+			print ARRAY '#$ -o '.$outDir."\n";
+			print ARRAY ''."\n";
+			print ARRAY 'sequenceFile='.$reformattedFastafile."\n";
+			print ARRAY 'headerpos=`'.$Settings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+1" | '.$Settings::BINARIES{bc}.'`; '."\n";
+			print ARRAY 'sequencepos=`'.$Settings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+2" | '.$Settings::BINARIES{bc}.'`; '."\n";
+			print ARRAY 'header=`'.$Settings::BINARIES{head}.' -n $headerpos $sequenceFile | '.$Settings::BINARIES{tail}.' -1`; '."\n";
+			print ARRAY 'sequence=`'.$Settings::BINARIES{head}.' -n $sequencepos $sequenceFile | '.$Settings::BINARIES{tail}.' -1`;'."\n";
+			print ARRAY 'uname -a'."\n";
+			my $command = "";
+			foreach my $param (keys %{$settings}) {
+				next if (($param eq 'name') || ($param eq 'cluster') || ($param eq 'binPath'));
+				$command .= " --".$PARAM{$param}->{key}.'="'.$settings->{$param}.'"' if (defined $settings->{$param});
+			}
+			$command .= ' --binPath="'.$workingDirectory.'/'.$fastaFile.'.cluster/"';
+			$command .= ' --name="$header"';
+			$command .= '  "$sequence"';
+			print ARRAY $Settings::BINARIES{perl}." ".Utils::absFilename($0)." ".$command."\n";
+		close (ARRAY);
 		
-		#~ if ($settings->{guessMode} eq $CONST_GM_KBEST) {
-			#~ my $bin_ssa = compileKbest($settings, $workingDirectory);
-		#~ } else {
-			#~ my $bin_sample = compileSample($settings, $workingDirectory);
-		#~ }
-		#~ my $bin_pfall = compilePFall($settings, $workingDirectory);
-		#~ my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
+		if ($settings->{guessmode} eq $GUESSMODE_KBEST) {
+			my $bin_ssa = compileKbest($settings, $workingDirectory);
+		} elsif ($settings->{guessmode} eq $GUESSMODE_ENERGY) {
+			my $bin_energy = compileEnergy($settings, $workingDirectory);
+		} else {
+			my $bin_sample = compileSample($settings, $workingDirectory);
+		}
+		my $bin_pfall = compilePFall($settings, $workingDirectory);
+		my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
 		
-		#~ my $arch = '-l arch="sol-amd64"';
-		#~ $arch = '-l linh=1' if (qx($Settings::BINARIES{uname} -o) !~ m/Sun/i);
-		#~ print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G $arch $arrayJob\n";
-	#~ } else {
+		my $arch = '-l arch="sol-amd64"';
+		$arch = '-l linh=1' if (qx($Settings::BINARIES{uname} -o) !~ m/Sun/i);
+		print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G $arch $arrayJob\n";
+	} else {
 		#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
 			my @shapes = ();
 			if ($settings->{guessmode} eq $GUESSMODE_KBEST) {
@@ -272,7 +275,7 @@ sub doComputation {
 			#plus overall stop probability
 			print "\n".sprintf("%.$settings->{probdecimals}f", $pfShapeSum / $pfAll)."  sum\n";
 			print "\n";
-	#~ }	
+	}	
 }
 
 sub buildCommand {
@@ -305,6 +308,8 @@ sub buildCommand {
 			$cmd .= " -".$PARAM{relativedeviation}->{gapc}." ".$settings->{'relativedeviation'} if ($settings->{'relativedeviation'} != $PARAM{relativedeviation}->{default});
 			$cmd .= " -".$PARAM{absolutedeviation}->{gapc}." ".$settings->{'absolutedeviation'} if (defined $settings->{'absolutedeviation'});
 		}
+		
+		
 	}
 
 	return $cmd;
@@ -485,11 +490,11 @@ sub runTDM {
 
 
 
-#~ sub reformatFasta {
-	#~ my ($refHash_sequence, $refFileHandle) = @_;
-	#~ print $refFileHandle ">".$refHash_sequence->{header}."\n".$refHash_sequence->{sequence}."\n\n";
-	#~ return undef;
-#~ }
+sub reformatFasta {
+	my ($refHash_sequence, $refFileHandle) = @_;
+	print $refFileHandle ">".$refHash_sequence->{header}."\n".$refHash_sequence->{sequence}."\n\n";
+	return undef;
+}
 
 
 
