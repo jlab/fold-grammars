@@ -39,10 +39,10 @@ install:
 	install -m 755 pKiss $(PREFIX)/bin
 
 all_normal:
-	@ $(foreach var,$(targets), if [ ! -e "$(PROGRAMPREFIX)$(var)" ]; then $(MAKE) $(var); fi;)
+	@ $(foreach var,$(targets), if [ ! -f "$(PROGRAMPREFIX)$(var)" ]; then $(MAKE) $(var); fi;)
 	
 all_window:
-	@ $(foreach var,$(targets), if [ ! -e "$(PROGRAMPREFIX)$(var)$(WINDOWSUFFIX)" ]; then $(MAKE) $(var) window="yes"; fi;)
+	@ $(foreach var,$(targets), if [ ! -f "$(PROGRAMPREFIX)$(var)$(WINDOWSUFFIX)" ]; then $(MAKE) $(var) window="yes"; fi;)
 	
 mfe:
 	$(GAPC) -I $(BASEDIR) -p "alg_pknot_mfe * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --kbacktrace --tab-all --no-coopt $(windowmodeflag) -o $@$(current_windowmodesuffix).cc

@@ -63,31 +63,36 @@ foreach my $param (keys %PARAM) {
 );
 
 checkParameters($settings);
-if (@ARGV == 0) {
-	if (defined $settings->{'help'}) {
-		usage();
-	} else {
-		if (isatty(*STDIN)) {
-			print "waiting for your plain RNA sequence or fasta filename.\n";
-			my $input = <STDIN>; chomp $input;
-			if (-e $input) {
-				Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
-			} else {
-				my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
-				doComputation(\%sequence, $settings);
-			}
-		} else {
-			Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings);
-		}
-	}
+
+if (defined $settings->{'cluster'}) {
+	Utils::applyFunctionToFastaFile($settings->{'cluster'}, \&doComputation, $settings);
 } else {
-	usage() if ((defined $settings->{'help'}) || (@ARGV > 1));
-	my ($input) = @ARGV;
-	if (-e $input) {
-		Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+	if (@ARGV == 0) {
+		if (defined $settings->{'help'}) {
+			usage();
+		} else {
+			if (isatty(*STDIN)) {
+				print "waiting for your plain RNA sequence or fasta filename.\n";
+				my $input = <STDIN>; chomp $input;
+				if (-e $input) {
+					Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+				} else {
+					my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
+					doComputation(\%sequence, $settings);
+				}
+			} else {
+				Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings);
+			}
+		}
 	} else {
-		my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
-		doComputation(\%sequence, $settings);
+		usage() if ((defined $settings->{'help'}) || (@ARGV > 1));
+		my ($input) = @ARGV;
+		if (-e $input) {
+			Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+		} else {
+			my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
+			doComputation(\%sequence, $settings);
+		}
 	}
 }
 
@@ -98,46 +103,46 @@ sub doComputation {
 	my $inputSequence = $refHash_sequence->{sequence};
 
 	if (defined $settings->{cluster}) {
-		#~ my $errDir = $workingDirectory.'/Test.cluster/ERR';
-		#~ my $outDir = $workingDirectory.'/Test.cluster/OUT';
-		#~ my $arrayJob =  $workingDirectory.'/Test.cluster/array.sh';
-		#~ my $jobFile = $workingDirectory.'/Test.cluster/jobs.txt';
+		my $errDir = $workingDirectory.'/Test.cluster/ERR';
+		my $outDir = $workingDirectory.'/Test.cluster/OUT';
+		my $arrayJob =  $workingDirectory.'/Test.cluster/array.sh';
+		my $jobFile = $workingDirectory.'/Test.cluster/jobs.txt';
 		
-		#~ qx(mkdir -p $errDir) if (not -d $errDir);
-		#~ qx(mkdir -p $outDir) if (not -d $outDir);
-		#~ open (JOB, "> ".$jobFile) || die "cannot write to '$jobFile': $1";
-			#~ foreach my $grammar (keys(%Settings::TDMfiles)) {
-				#~ for (my $i = 1; $i <= 5; $i++) {
-					#~ print JOB "--grammar=".$grammar." --shapeLevel=".$i;
-					#~ $settings->{grammar} = $grammar;
-					#~ $settings->{shapeLevel} = $i;
-					#~ my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
-					#~ my $bin_truth = compileTruth($settings, $workingDirectory);
-				#~ }
-			#~ }
-		#~ close (JOB);
+		qx(mkdir -p $errDir) if (not -d $errDir);
+		qx(mkdir -p $outDir) if (not -d $outDir);
+		open (JOB, "> ".$jobFile) || die "cannot write to '$jobFile': $1";
+			foreach my $grammar (keys(%Settings::TDMfiles)) {
+				for (my $i = 1; $i <= 5; $i++) {
+					print JOB "--grammar=".$grammar." --shapeLevel=".$i;
+					$settings->{grammar} = $grammar;
+					$settings->{shapelevel} = $i;
+					my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
+					my $bin_truth = compileTruth($settings, $workingDirectory);
+				}
+			}
+		close (JOB);
 		
-		#~ open (ARRAY, "> ".$arrayJob) || die "cannot write to '$arrayJob': $1";		
-			#~ print ARRAY '#!'.$Settings::BINARIES{sh}."\n";
-			#~ print ARRAY ''."\n";
-			#~ print ARRAY '#$ -S '.$Settings::BINARIES{sh}."\n";
-			#~ print ARRAY '#$ -t 1-'.(keys(%Settings::TDMfiles)*5)."\n";
-			#~ print ARRAY '#$ -N test_RapidShapes'."\n";
-			#~ print ARRAY '#$ -e '.$errDir."\n";
-			#~ print ARRAY '#$ -o '.$outDir."\n";
-			#~ print ARRAY ''."\n";
-			#~ print ARRAY 'job=`'.$Settings::BINARIES{head}.' -n $SGE_TASK_ID | '.$Settings::BINARIES{tail}.' -1`'."\n";
-			#~ print ARRAY 'uname -a'."\n";
-			#~ my $command = "";
-			#~ $command .= " --temperature=".$settings->{temperature} if ((defined $settings->{temperature}) && ($settings->{temperature} ne ""));
-			#~ $command .= " --paramfile=".$settings->{energyParamfile} if ((defined $settings->{energyParamfile}) && ($settings->{energyParamfile} ne ""));
-			#~ $command .= '  "'.$inputSequence.'"';
-			#~ print ARRAY $Settings::BINARIES{perl}." ".Utils::absFilename($0).' $job '.$command."\n";
-		#~ close (ARRAY);
+		open (ARRAY, "> ".$arrayJob) || die "cannot write to '$arrayJob': $1";		
+			print ARRAY '#!'.$Settings::BINARIES{sh}."\n";
+			print ARRAY ''."\n";
+			print ARRAY '#$ -S '.$Settings::BINARIES{sh}."\n";
+			print ARRAY '#$ -t 1-'.(keys(%Settings::TDMfiles)*5)."\n";
+			print ARRAY '#$ -N test_RapidShapes'."\n";
+			print ARRAY '#$ -e '.$errDir."\n";
+			print ARRAY '#$ -o '.$outDir."\n";
+			print ARRAY ''."\n";
+			print ARRAY 'job=`'.$Settings::BINARIES{head}.' -n $SGE_TASK_ID | '.$Settings::BINARIES{tail}.' -1`'."\n";
+			print ARRAY 'uname -a'."\n";
+			my $command = "";
+			$command .= " --temperature=".$settings->{temperature} if ((defined $settings->{temperature}) && ($settings->{temperature} ne ""));
+			$command .= " --paramfile=".$settings->{param} if ((defined $settings->{param}) && ($settings->{param} ne ""));
+			$command .= '  "'.$inputSequence.'"';
+			print ARRAY $Settings::BINARIES{perl}." ".Utils::absFilename($0).' $job '.$command."\n";
+		close (ARRAY);
 			
-		#~ my $arch = '-l arch="sol-amd64"';
-		#~ $arch = '-l linh=1' if (qx($Settings::BINARIES{uname} -o) =~ m/Sun/i);
-		#~ print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G $arch $arrayJob\n";
+		my $arch = '-l arch="sol-amd64"';
+		$arch = '-l linh=1' if (qx($Settings::BINARIES{uname} -o) =~ m/Sun/i);
+		print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G $arch $arrayJob\n";
 	} else {
 		print "TESTING grammar: ".$settings->{grammar}.", level: ".$settings->{shapelevel}.", sequence $inputSequence ====\n"; 
 		my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
