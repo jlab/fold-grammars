@@ -122,7 +122,6 @@ sub checkParameters {
 	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
 	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if ((defined $settings->{'absolutedeviation'}) && ($settings->{'guessmode'} ne $GUESSMODE_ENERGY));
 	die $diePrefix."--".$PARAM{'relativedeviation'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if (($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}) && (($settings->{'guessmode'} ne $GUESSMODE_ENERGY)));
-	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
 	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." and --".$PARAM{'relativedeviation'}->{key}." cannot be set at the same time!\n" if ((defined $settings->{'absolutedeviation'}) && ($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}));
 	$settings->{'grammar'} = lc($settings->{'grammar'});
 	die $diePrefix."there is no grammar \"".$settings->{'grammar'}."\". Please select one of \"$GRAMMAR_NODANGLE\", \"$GRAMMAR_OVERDANGLE\", \"$GRAMMAR_MICROSTATE\" or \"$GRAMMAR_MACROSTATE\".\n" if ($settings->{'grammar'} !~ m/^nodangle|overdangle|microstate|macrostate$/i);
@@ -133,15 +132,6 @@ sub checkParameters {
 	my ($programPath, $programName) = @{Utils::separateDirAndFile($0)};
 	$programPath = "./" if (not defined $programPath);
 	$settings->{'binarypath'} = $programPath if (not defined $settings->{'binarypath'});
-	#~ my $binName = "";
-	#~ if (defined $settings->{'binarypath'}) {
-		#~ $binName .= $settings->{'binarypath'};
-		#~ $binName .= "/" if (substr($binName, -1, 1) ne "/");
-	#~ } else {
-		#~ $binName .= "./";
-	#~ }
-	#~ $binName .= $settings->{'binaryprefix'}.$settings->{'mode'};
-	#~ die $diePrefix." could not find Bellman's GAP binary '".$binName."' for mode ".$settings->{'mode'}."!\n" if (not -e $binName);
 	
 	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a positive integer number!\n" if ($settings->{'probdecimals'} < 0);
 	
