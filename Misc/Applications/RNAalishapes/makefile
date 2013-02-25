@@ -1,4 +1,4 @@
-PREFIX=$(HOME)/local/pkiss
+PREFIX=$(HOME)/local/RNAalishapes
 #~ CXXFLAGS_EXTRA="-O3 -DNDEBUG"
 CXXFLAGS_EXTRA=-O3 -DNDEBUG
 PROGRAMPREFIX=RNAalishapes_
@@ -44,12 +44,20 @@ install:
 	install -d $(PREFIX)/lib/foldGrammars
 	for file in ../lib/foldGrammars/*; do \
 		install -m 644 $$file $(PREFIX)/lib/foldGrammars; \
-	done
-	for file in $(targets); do \
-		install -m 755 $(PROGRAMPREFIX)$${file} $(PREFIX)/bin; \
-		install -m 755 $(PROGRAMPREFIX)$${file}$(WINDOWSUFFIX) $(PREFIX)/bin; \
-	done
-	install -m 755 pKiss $(PREFIX)/bin
+	done;
+	for mode in $(targets); do \
+		for grammar in `echo "$(grammars)"`; do \
+			install -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar} $(PREFIX)/bin; \
+			install -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar}$(WINDOWSUFFIX) $(PREFIX)/bin; \
+		done; \
+	done;
+	for grammar in `echo "$(grammars)"`; do \
+		install -m 755 $(PROGRAMPREFIX)sci_$${grammar} $(PREFIX)/bin; \
+	done;
+	for consensus in `echo "$(consensus)"`; do \
+		install -m 755 $(PROGRAMPREFIX)rep_$${consensus} $(PREFIX)/bin; \
+	done;
+	install -m 755 RNAalishapes $(PREFIX)/bin
 
 mfe:
 	for grammar in `echo "$(grammars)"`; do \

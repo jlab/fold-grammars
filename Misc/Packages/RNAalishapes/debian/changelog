@@ -1,6 +1,13 @@
-rnaalishapes (2.0.0-0ubuntu1) precise; urgency=low
+rnaalishapes (2.0.0-0ubuntu1~precise1) precise1; urgency=low
 
   * Initial release
    - code transition from prototypic Haskell-ADP to Bellman's GAP
 
- -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 25 Feb 2013 16:53:00 +0200
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 25 Feb 2013 17:03:00 +0200
+
+rnaalishapes (2.0.0-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * Initial release
+   - code transition from prototypic Haskell-ADP to Bellman's GAP
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 25 Feb 2013 17:03:00 +0200
