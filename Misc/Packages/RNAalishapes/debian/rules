@@ -42,7 +42,7 @@ install: build
 
 	# Add here commands to install the package into debian/<packagename>
 	pwd
-	$(MAKE) -C rnaalishapes/Misc/Applications/RNAalishapes/ PREFIX=`pwd`/debian/`dh_listpackages`/usr
+	$(MAKE) -C rnaalishapes/Misc/Applications/RNAalishapes/ PREFIX=`pwd`/debian/`dh_listpackages`/usr install
 
 # Build architecture-independent files here.
 binary-indep: build install

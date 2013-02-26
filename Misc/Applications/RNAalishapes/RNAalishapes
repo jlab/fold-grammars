@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
-our $VERSION = '2.0.1';
-our $DATE = '25.02.2013';
+our $VERSION = '2.0.2';
+our $DATE = '26.02.2013';
 
 sub getPath {
 	my ($url) = @_;
