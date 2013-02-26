@@ -19,3 +19,6 @@ in /tmp/pkiss_ID:
 	ant deploy
 	
 ssh c -L 8080:129.70.160.177:8080
+
+user: testadmin
+pwd: simplepassword
