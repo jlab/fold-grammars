@@ -48,11 +48,13 @@ $PARAM{absolutedeviation} = {key => 'absoluteDeviation', gapc => 'e', type => 'f
 $PARAM{relativedeviation} = {key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation).\nFor modes: \"$MODE_SUBOPT\", \"$MODE_SHAPES\"."};
 $PARAM{shapelevel} = {key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see [6] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one).\nFor modes: \"$MODE_SHAPES\", \"$MODE_PROBS\", \"$MODE_SAMPLE\"."};
 $PARAM{lowprobfilter} = {key => 'lowProbFilter', gapc => 'F', type => 'f', default => 0.000001, info => "This option sets a barrier for filtering out results with very low probabilities during calculation. The default value here is @(DEFAULT), which gives a significant speedup compared to a disabled filter. (See [7] for details.) Note that this filter can have a slight influence on the overall results. To disable this filter, use option --@(lowprobfilter) 0. \n<float> must be a positive floating point number smaller than 1.\nFor mode: \"$MODE_PROBS\"."};
+$PARAM{lowprobfilteroutput} = {key => 'outputLowProbFilter', gapc => undef, type => 'f', default => 0.000001, info => "This option sets a filter for omitting low probability results during output. It is just for reporting convenience. Unlike probability cutoff filter, this option does not have any influence on runtime or probabilities beyond this value. To disable this filter, use option --@(lowprobfilteroutput) 0. \n<float> must be a positive floating point number smaller than 1.\nFor mode: \"$MODE_PROBS\" and \"$MODE_SAMPLE\"."};
 $PARAM{help} = {key => 'help', default => undef, info => "show this brief help on version and usage"};
 $PARAM{binarypath} = {key => 'binPath', type => 's', default => undef, info => "$0 expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
 $PARAM{binaryprefix} = {key => 'binPrefix', type => 's', default => 'RNAalishapes_', info => "$0 expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"$MODE_SUBOPT\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)".$MODE_SUBOPT."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
 $PARAM{probdecimals} = {key => 'probDecimals', type => 'i', default => 7, info => "Sets the number of digits used for printing shape probabilities.\n<int> must be a positive integer number.\nDefault is @(DEFAULT)."};
 $PARAM{numsamples} = {key => 'numSamples', type => 'i', gapc => 'r', default => 1000, info => "Sets the number of samples that are drawn to estimate shape probabilities.\nIn our experience, 1000 iterations are sufficient to achieve reasonable results for shapes with high probability. Thus, default is @(DEFAULT).\nFor mode: \"$MODE_SAMPLE\"."};
+$PARAM{showsamples} = {key => 'showSamples', type => 'i', gapc => undef, default => 0, info => "You can inspect the samples drawn by stochastic backtrace if you turn --@(showsamples) on by setting it to 1.\nDefault is @(DEFAULT) = off.\nFor mode: \"$MODE_SAMPLE\"."};
 $PARAM{pairingfraction} = {key => 'pairingFraction', gapc => 'm', type => 'i', default => -200, info => "For a single RNA sequence it is easy to decide if positions i and j build a valid base pair. For _alignments_ of RNA sequences this is more complicated, because some sequences might contain gaps. For exact definitions, see papers [1] and [2] from the Vienna group. Roughly speaking, the less --@(pairingfraction), the more sequences must have a valid pair at positions i and j.\n Default value is @(DEFAULT), meaning that at most half of the sequences must pair to let alignment positions i and j be a pair."};
 $PARAM{cfactor} = {key => 'cfactor', gapc => 'C', type => 'f', default => '1.0', info => "Set the weight of the covariance term in the energy function.\nDefault is @(DEFAULT)."};
 $PARAM{nfactor} = {key => 'nfactor', gapc => 'n', type => 'f', default => '1.0', info => "Set the penalty for non-compatible sequences in the covariance term of the energy function.\nDefault is @(DEFAULT)."};
@@ -330,6 +332,7 @@ sub parseProbs {
 		$avgSglMfe = getAvgSingleMFEs($refHash_alignment, $settings, $startPos, $endPos) if ($settings->{'sci'});
 		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $probability (sort {$b <=> $a} keys(%{$predictions{$windowPos}})) {
+			last if ($probability/$sumProbs{$windowPos} < $settings->{lowprobfilteroutput});
 			foreach my $scoreAll (sort {splitScore($a)->[0] <=> splitScore($b)->[0]} keys(%{$predictions{$windowPos}->{$probability}})) {
 				my ($score, $energy, $covar) = @{splitScore($scoreAll)};
 				foreach my $class (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$probability}->{$scoreAll}})) {
@@ -355,6 +358,7 @@ sub parseSample {
 	my $windowStartPos = undef;
 	my $windowEndPos = undef;
 	my %numSamples = ();
+	my @samples = ();
 	foreach my $line (split(m/\r?\n/, $result)) {
 		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
 			($windowStartPos, $windowEndPos) = ($1, $2);
@@ -367,6 +371,7 @@ sub parseSample {
 			$energy = sprintf("%.2f", $energy/100);
 			$covar = sprintf("%.2f", $covar/100);
 			$numSamples{$windowStartPos."-".$windowEndPos}++;
+			push @samples, {score => $score, energy => $energy, covar => $covar, structure => $structure, class => $class} if ($settings->{showsamples});
 			$maxScoreLen = length($score) if ($maxScoreLen < length($score));
 			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
 			$maxCovarLen = length($covar) if ($maxCovarLen < length($covar));
@@ -390,7 +395,17 @@ sub parseSample {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
 		$avgSglMfe = getAvgSingleMFEs($refHash_alignment, $settings, $startPos, $endPos) if ($settings->{'sci'});
 		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		if ($settings->{showsamples}) {
+			print $settings->{numsamples}." samples, drawn by stochastic backtrace to estimate shape frequencies:\n";
+			foreach my $refHash_sample (@samples) {
+				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $refHash_sample->{score}, $refHash_sample->{energy}, $refHash_sample->{covar}).$OUTPUT_FIELDSPACER.$refHash_sample->{structure};
+				print printSCI($settings, $avgSglMfe, $refHash_sample->{score});
+				print $OUTPUT_FIELDSPACER.$refHash_sample->{class}."\n";
+			}
+			print "\nSampling results:\n\n";
+		}
 		foreach my $class (sort {$predictions{$windowPos}->{$b}->{numSamples} <=> $predictions{$windowPos}->{$a}->{numSamples}} keys(%{$predictions{$windowPos}})) {
+			last if ($predictions{$windowPos}->{$class}->{numSamples}/$numSamples{$windowPos} < $settings->{lowprobfilteroutput});
 			my ($score, $energy, $covar, $structure) = ($predictions{$windowPos}->{$class}->{shrep}->{score}, $predictions{$windowPos}->{$class}->{shrep}->{energy}, $predictions{$windowPos}->{$class}->{shrep}->{covar}, $predictions{$windowPos}->{$class}->{shrep}->{structure});
 			print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure;
 			print printSCI($settings, $avgSglMfe, $score);
@@ -466,6 +481,7 @@ sub checkParameters {
 	die $diePrefix."there is no consensus representation \"".$settings->{'consensus'}."\". Please select either \"$CONSENSUS_CONSENSUS\" or \"$CONSENSUS_MIS\".\n" if ($settings->{'consensus'} !~ m/^consensus|mis$/i);
 	die $diePrefix."--".$PARAM{'numsamples'}->{key}." must be a positive integer, otherwise shape frequencies cannot be estimated.\n" if ($settings->{'numsamples'} < 1);
 	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
+	die $diePrefix."--".$PARAM{'showsamples'}->{key}." can either be 0 or 1, to hide or omit sampled structures by stochastic backtrace.\n" if ($settings->{'showsamples'} !~ m/^0|1$/);
 	die $diePrefix."--".$PARAM{'sci'}->{key}." can either be 0 or 1. Only for 1, SCI computation will be performed.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
 	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
 	die $diePrefix."--".$PARAM{'lowprobfilter'}->{key}." must be a positive floating point number below 1.\n" if (($settings->{'lowprobfilter'} >= 1) || ($settings->{'lowprobfilter'} < 0));
@@ -526,7 +542,7 @@ EOF
 		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
 	}
 	$HELP .= "OPTIONS ONLY VALID FOR SOME MODES:\n";
-	for my $par ('absolutedeviation','relativedeviation','shapelevel','lowprobfilter','numsamples') {
+	for my $par ('absolutedeviation','relativedeviation','shapelevel','lowprobfilter','lowprobfilteroutput','numsamples','showsamples') {
 		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
 	}
 	$HELP .= "SYSTEM DEPENDENT OPTIONS:\n";
