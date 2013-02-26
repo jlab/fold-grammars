@@ -484,12 +484,17 @@ sub checkParameters {
 	die $diePrefix."--".$PARAM{'showsamples'}->{key}." can either be 0 or 1, to hide or omit sampled structures by stochastic backtrace.\n" if ($settings->{'showsamples'} !~ m/^0|1$/);
 	die $diePrefix."--".$PARAM{'sci'}->{key}." can either be 0 or 1. Only for 1, SCI computation will be performed.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
 	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
-	die $diePrefix."--".$PARAM{'lowprobfilter'}->{key}." must be a positive floating point number below 1.\n" if (($settings->{'lowprobfilter'} >= 1) || ($settings->{'lowprobfilter'} < 0));
+	die $diePrefix."--".$PARAM{'lowprobfilter'}->{key}." must be a non-negative floating point number below 1.\n" if (($settings->{'lowprobfilter'} >= 1) || ($settings->{'lowprobfilter'} < 0));
+	die $diePrefix."--".$PARAM{'lowprobfilteroutput'}->{key}." must be a non-negative floating point number below 1.\n" if (($settings->{'lowprobfilteroutput'} >= 1) || ($settings->{'lowprobfilteroutput'} < 0));
 
-	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if ((defined $settings->{'absolutedeviation'}) && (($settings->{'mode'} ne $MODE_SUBOPT) && ($settings->{'mode'} ne $MODE_SHAPES)));
-	die $diePrefix."--".$PARAM{'relativedeviation'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if (($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}) && (($settings->{'mode'} ne $MODE_SUBOPT) && ($settings->{'mode'} ne $MODE_SHAPES)));
-	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if (($settings->{'shapelevel'} != $PARAM{'shapelevel'}->{default}) && (($settings->{'mode'} ne $MODE_SHAPES) && ($settings->{'mode'} ne $MODE_PROBS) && ($settings->{'mode'} ne $MODE_SAMPLE)));
-	die $diePrefix."--".$PARAM{'lowprobfilter'}->{key}." cannot be used in mode '".$PARAM{'mode'}->{key}."'!\n" if (($settings->{'lowprobfilter'} != $PARAM{'lowprobfilter'}->{default}) && ($settings->{'mode'} ne $MODE_PROBS));
+	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if ((defined $settings->{'absolutedeviation'}) && (($settings->{'mode'} ne $MODE_SUBOPT) && ($settings->{'mode'} ne $MODE_SHAPES)));
+	die $diePrefix."--".$PARAM{'relativedeviation'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}) && (($settings->{'mode'} ne $MODE_SUBOPT) && ($settings->{'mode'} ne $MODE_SHAPES)));
+	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'shapelevel'} != $PARAM{'shapelevel'}->{default}) && (($settings->{'mode'} ne $MODE_SHAPES) && ($settings->{'mode'} ne $MODE_PROBS) && ($settings->{'mode'} ne $MODE_SAMPLE)));
+	die $diePrefix."--".$PARAM{'lowprobfilter'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'lowprobfilter'} != $PARAM{'lowprobfilter'}->{default}) && ($settings->{'mode'} ne $MODE_PROBS));
+	die $diePrefix."--".$PARAM{'lowprobfilteroutput'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'lowprobfilteroutput'} != $PARAM{'lowprobfilteroutput'}->{default}) && ($settings->{'mode'} ne $MODE_PROBS) && ($settings->{'mode'} ne $MODE_SAMPLE));
+	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'probdecimals'} != $PARAM{'probdecimals'}->{default}) && ($settings->{'mode'} ne $MODE_PROBS) && ($settings->{'mode'} ne $MODE_SAMPLE));
+	die $diePrefix."--".$PARAM{'numsamples'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'numsamples'} != $PARAM{'numsamples'}->{default}) && ($settings->{'mode'} ne $MODE_SAMPLE));
+	die $diePrefix."--".$PARAM{'showsamples'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'showsamples'} != $PARAM{'showsamples'}->{default}) && ($settings->{'mode'} ne $MODE_SAMPLE));
 	
 	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." and --".$PARAM{'relativedeviation'}->{key}." cannot be set at the same time!\n" if ((defined $settings->{'absolutedeviation'}) && ($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}));
 	
@@ -514,7 +519,7 @@ sub checkParameters {
 	die $diePrefix." could not find Bellman's GAP binary '".$binName."' to compute \"structural conservation index\" for grammar \"".$settings->{'grammar'}."\"!\n" if (not -e $binName);
 	#~ die $diePrefix." could not find window mode for Bellman's GAP binary '".$binName."_window' to compute \"structural conservation index\" for grammar \"".$settings->{'grammar'}."\"!\n" if ((not -e $binName."_window") && (defined $settings->{'windowsize'}));
 	
-	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a positive integer number!\n" if ($settings->{'probdecimals'} < 0);
+	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a non-negative integer number!\n" if ($settings->{'probdecimals'} < 0);
 }
 
 sub usage {
