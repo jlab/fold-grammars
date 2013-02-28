@@ -442,6 +442,11 @@ inline bool is_empty(const answer_macrostate_mfe &e) {
 	return e.empty_;
 }
 
+inline uint32_t hashable_value(const answer_macrostate_mfe& candidate) {
+  return candidate.energy; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
+}
+
+
 
 #include "rtlib/string.hh"
 struct answer_macrostate_pfunc {
@@ -636,6 +641,11 @@ struct DoubleToDoubleAli_macrostate {
 template<typename T, typename pos_int>
 inline List_Ref<std::pair<answer_ali_pfunc_macrostate, T>, pos_int> sample_filter(List_Ref<std::pair<answer_ali_pfunc_macrostate, T>, pos_int> &x) {
   return sample_filter(x, DoubleToDoubleAli_macrostate());
+}
+
+template<typename T, typename pos_int>
+inline List_Ref<std::pair<answer_macrostate_pfunc, T>, pos_int> sample_filter(List_Ref<std::pair<answer_macrostate_pfunc, T>, pos_int> &x) {
+  return sample_filter(x, PfanswerToDoubleAll());
 }
 
 

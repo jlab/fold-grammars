@@ -1,7 +1,8 @@
 import rna
-import "Extensions/typesRNAfolding.hh"
 import "Extensions/singlefold.hh" //necessary to redefine the meaning of the filter "basepair". In singlefold this filter directly calles the build-in "basepairing" filter, in alignmentfold it gets hard codes parameters and returns true or false with dependance to the number of gaps in the rows
+import "Extensions/mfesubopt.hh"
 import "Extensions/probabilities.hh"
+import "Extensions/typesRNAfolding.hh"
 
 input rna
 
@@ -49,11 +50,11 @@ instance count = gra_macrostate (alg_count);
 
 //start: instances used in for RapidShapes
 instance pf = gra_macrostate ( alg_pfunc_macrostate ) ;
-instance pfsampleshape5all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape5 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
-instance pfsampleshape4all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape4 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
-instance pfsampleshape3all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape3 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
-instance pfsampleshape2all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape2 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
-instance pfsampleshape1all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape1 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
+instance pfsampleshape5all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_id_macrostate ) * alg_shape5 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
+instance pfsampleshape4all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_id_macrostate ) * alg_shape4 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
+instance pfsampleshape3all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_id_macrostate ) * alg_shape3 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
+instance pfsampleshape2all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_id_macrostate ) * alg_shape2 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
+instance pfsampleshape1all = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_id_macrostate ) * alg_shape1 ) suchthat sample_filter_pf_all ) ; //compile with --sample !
 instance shape5mfe = gra_macrostate ( alg_shape5 * alg_mfe_macrostate ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
 instance shape4mfe = gra_macrostate ( alg_shape4 * alg_mfe_macrostate ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
 instance shape3mfe = gra_macrostate ( alg_shape3 * alg_mfe_macrostate ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
@@ -96,9 +97,9 @@ instance mfepppf = gra_macrostate( alg_mfe_macrostate * (alg_dotBracket * alg_pf
 instance shape5pfxall = gra_macrostate ((alg_shape5 * alg_pfunc_macrostate) suchthat filterLowProbShapes);
 
 
-instance pfsampleshape = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * alg_shape5 ) suchthat sample_filter_pf ) ; //compile with --sample !
+instance pfsampleshape = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_id_macrostate ) * alg_shape5 ) suchthat sample_filter_pf ) ; //compile with --sample !
 
-instance pfsampleshrep = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * (alg_shape5 * alg_mfe_macrostate * alg_dotBracket) ) suchthat sample_filter_pf ) ; //compile with --sample !
+instance pfsampleshrep = gra_macrostate ( ( (alg_pfunc_macrostate | alg_pfunc_id_macrostate ) * (alg_shape5 * alg_mfe_macrostate * alg_dotBracket) ) suchthat sample_filter_pf ) ; //compile with --sample !
 
 
 instance shapemfepf = gra_macrostate ( alg_shape5 * ( alg_mfe_macrostate % alg_pfunc_macrostate ) * alg_dotBracket ) ;
@@ -136,6 +137,6 @@ instance check = gra_macrostate ( alg_shape5 * alg_pfunc_macrostate);
 instance testmfeshape3pp   = gra_macrostate(alg_mfe_macrostate * alg_shapeX * alg_dotBracket);
 instance testdbshape5mfe   = gra_macrostate(alg_dotBracket * alg_shapeX * alg_mfe_macrostate);
 instance testshape4mfepfdb   = gra_macrostate(alg_shapeX * (alg_mfe_macrostate % alg_pfunc_macrostate) * alg_dotBracket);
-instance testsampleshape2mfedb   = gra_macrostate( ( (alg_pfunc_macrostate | alg_pfunc_macrostate_id ) * (alg_shape2 * alg_mfe_macrostate * alg_dotBracket) ) suchthat sample_filter_pf ); //compile with --sample !
+instance testsampleshape2mfedb   = gra_macrostate( ( (alg_pfunc_macrostate | alg_pfunc_id_macrostate ) * (alg_shape2 * alg_mfe_macrostate * alg_dotBracket) ) suchthat sample_filter_pf ); //compile with --sample !
 instance testdbshape1 = gra_macrostate(alg_dotBracket * alg_shapeX);
 //stop: instances for unit tests

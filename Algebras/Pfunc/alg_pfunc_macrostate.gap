@@ -461,7 +461,7 @@ algebra alg_pfunc_macrostate_filter_me extends alg_pfunc_macrostate {
   }
 }
 
-algebra alg_pfunc_macrostate_id extends alg_pfunc_macrostate {
+algebra alg_pfunc_id_macrostate extends alg_pfunc_macrostate {
   choice [answer_macrostate_pfunc] h([answer_macrostate_pfunc] l)
   {
     return l;

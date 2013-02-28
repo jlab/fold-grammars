@@ -315,6 +315,12 @@ algebra alg_mfe_macrostate implements sig_foldrna(alphabet = char, answer = answ
 }
 
 
+algebra alg_mfe_subopt_macrostate extends alg_mfe_macrostate {
+  kscoring choice [answer_macrostate_mfe] h([answer_macrostate_mfe] i) {
+    return mfeSuboptMacrostate(i);
+  }
+}
+
 algebra alg_mfeV2_macrostate implements sig_foldrna(alphabet = char, answer = mfeanswer_v2) {
   mfeanswer_v2 sadd(Subsequence lb,mfeanswer_v2 e) {
     mfeanswer_v2 res = e + sbase_energy();

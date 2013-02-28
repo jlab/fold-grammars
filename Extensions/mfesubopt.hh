@@ -37,6 +37,10 @@ inline int getEnergy(const mfecovar_macrostate &x) {
 	return (int) x.mfe + x.covar;
 }
 
+inline int getEnergy(const answer_macrostate_mfe &x) {
+	return (int) x.energy;
+}
+
 template <typename Iterator>
 inline List_Ref<mfecovar> mfeSuboptAli(std::pair<Iterator, Iterator> i) {
 	mfecovar minValue = minimum(i); //find mfe value
@@ -46,6 +50,23 @@ inline List_Ref<mfecovar> mfeSuboptAli(std::pair<Iterator, Iterator> i) {
 		int range = getSuboptRange(getEnergy(minValue));
 		for (Iterator it = i.first; it != i.second; ++it) {
 			mfecovar val = *it;
+			if (getEnergy(val) <= range) {
+				push_back(answers, val);
+			}
+		}
+	}
+	return unique(answers);
+}
+
+template <typename Iterator>
+inline List_Ref<answer_macrostate_mfe> mfeSuboptMacrostate(std::pair<Iterator, Iterator> i) {
+	answer_macrostate_mfe minValue = minimum(i); //find mfe value
+	List_Ref<answer_macrostate_mfe> answers; //init list, that should hold all selected candidates
+
+	if (!is_empty(minValue)) {
+		int range = getSuboptRange(getEnergy(minValue));
+		for (Iterator it = i.first; it != i.second; ++it) {
+			answer_macrostate_mfe val = *it;
 			if (getEnergy(val) <= range) {
 				push_back(answers, val);
 			}

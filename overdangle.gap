@@ -25,11 +25,12 @@ algebra alg_mfe_overdangle extends alg_mfe {
     return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
   }
 }
-algebra alg_mfe_overdangle_subopt extends alg_mfe_overdangle {
+algebra alg_mfe_subopt_overdangle extends alg_mfe_overdangle {
   kscoring choice [int] h([int] i) {
     return mfeSubopt(i);
   }
 }
+
 
 include "Algebras/Pfunc/alg_pfunc.gap"
 algebra alg_pfunc_overdangle extends alg_pfunc {
@@ -40,7 +41,7 @@ algebra alg_pfunc_overdangle extends alg_pfunc {
     return scale(2)                     * x * mk_pf(ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb));
   }
 }
-algebra alg_pfunc_overdangle_id extends alg_pfunc_overdangle {
+algebra alg_pfunc_id_overdangle extends alg_pfunc_overdangle {
   choice [double] h([double] l) {
     return l;
   }
@@ -72,11 +73,11 @@ instance count = gra_overdangle (alg_count);
 
 //start: instances used in for RapidShapes
 instance pf = gra_overdangle ( alg_pfunc ) ;
-instance pfsampleshape5all = gra_overdangle ( ( (alg_pfunc_overdangle | alg_pfunc_overdangle_id ) * alg_shape5 ) suchthat sample_filter ) ; //compile with --sample !
-instance pfsampleshape4all = gra_overdangle ( ( (alg_pfunc_overdangle | alg_pfunc_overdangle_id ) * alg_shape4 ) suchthat sample_filter ) ; //compile with --sample !
-instance pfsampleshape3all = gra_overdangle ( ( (alg_pfunc_overdangle | alg_pfunc_overdangle_id ) * alg_shape3 ) suchthat sample_filter ) ; //compile with --sample !
-instance pfsampleshape2all = gra_overdangle ( ( (alg_pfunc_overdangle | alg_pfunc_overdangle_id ) * alg_shape2 ) suchthat sample_filter ) ; //compile with --sample !
-instance pfsampleshape1all = gra_overdangle ( ( (alg_pfunc_overdangle | alg_pfunc_overdangle_id ) * alg_shape1 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape5all = gra_overdangle ( ( (alg_pfunc_overdangle | alg_pfunc_id_overdangle ) * alg_shape5 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape4all = gra_overdangle ( ( (alg_pfunc_overdangle | alg_pfunc_id_overdangle ) * alg_shape4 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape3all = gra_overdangle ( ( (alg_pfunc_overdangle | alg_pfunc_id_overdangle ) * alg_shape3 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape2all = gra_overdangle ( ( (alg_pfunc_overdangle | alg_pfunc_id_overdangle ) * alg_shape2 ) suchthat sample_filter ) ; //compile with --sample !
+instance pfsampleshape1all = gra_overdangle ( ( (alg_pfunc_overdangle | alg_pfunc_id_overdangle ) * alg_shape1 ) suchthat sample_filter ) ; //compile with --sample !
 instance shape5mfe = gra_overdangle ( alg_shape5 * alg_mfe_overdangle ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
 instance shape4mfe = gra_overdangle ( alg_shape4 * alg_mfe_overdangle ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
 instance shape3mfe = gra_overdangle ( alg_shape3 * alg_mfe_overdangle ) ; //for guessing shapes according to energetically kbest, thus compile with --kbest
@@ -104,5 +105,5 @@ instance ppmfe = gra_overdangle (alg_dotBracket * alg_shape5 * alg_mfe_overdangl
 instance testmfeshape3pp   = gra_overdangle(alg_mfe_overdangle * alg_shapeX * alg_dotBracket);
 instance testdbshape5mfe   = gra_overdangle(alg_dotBracket * alg_shapeX * alg_mfe_overdangle);
 instance testshape4mfepfdb   = gra_overdangle(alg_shapeX * (alg_mfe_overdangle % alg_pfunc_overdangle) * alg_dotBracket);
-instance testsampleshape2mfedb   = gra_overdangle( ( (alg_pfunc_overdangle | alg_pfunc_id ) * (alg_shapeX * alg_mfe_overdangle * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
+instance testsampleshape2mfedb   = gra_overdangle( ( (alg_pfunc_overdangle | alg_pfunc_id_overdangle ) * (alg_shapeX * alg_mfe_overdangle * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
 //stop: instances for unit tests
