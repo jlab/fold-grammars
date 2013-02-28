@@ -42,7 +42,7 @@ $PARAM{allowlp} = {key => 'allowLP', gapc => 'u', type => 'i', default => 0, inf
 $PARAM{absolutedeviation} = {key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation).\nFor modes: \"$MODE_SUBOPT\", \"$MODE_SHAPES\"."};
 $PARAM{relativedeviation} = {key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation).\nFor modes: \"$MODE_SUBOPT\", \"$MODE_SHAPES\"."};
 $PARAM{shapelevel} = {key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see [6] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one).\nFor modes: \"$MODE_SHAPES\", \"$MODE_PROBS\", \"$MODE_SAMPLE\", \"$MODE_CAST\"."};
-$PARAM{lowprobfilter} = {key => 'lowProbFilter', gapc => 'F', type => 'f', default => 0.000001, info => "This option sets a barrier for filtering out results with very low probabilities during calculation. The default value here is @(DEFAULT), which gives a significant speedup compared to a disabled filter. (See [7] for details.) Note that this filter can have a slight influence on the overall results. To disable this filter, use option --@(lowprobfilter) 0. \n<float> must be a positive floating point number smaller than 1.\nFor mode: \"$MODE_PROBS\", \"$MODE_CAST\"."};
+$PARAM{lowprobfilter} = {key => 'lowProbFilter', gapc => 'F', type => 'f', default => 0.000001, info => "This option sets a barrier for filtering out results with very low probabilities during calculation. The default value here is @(DEFAULT), which gives a significant speedup compared to a disabled filter. (See [7] for details.) Note that this filter can have a slight influence on the overall results. To disable this filter, use option --@(lowprobfilter) 0. \n<float> must be a positive floating point number smaller than 1."};
 $PARAM{lowprobfilteroutput} = {key => 'outputLowProbFilter', gapc => undef, type => 'f', default => 0.000001, info => "This option sets a filter for omitting low probability results during output. It is just for reporting convenience. Unlike probability cutoff filter, this option does not have any influence on runtime or probabilities beyond this value. To disable this filter, use option --@(lowprobfilteroutput) 0. \n<float> must be a positive floating point number smaller than 1.\nFor mode: \"$MODE_PROBS\" and \"$MODE_SAMPLE\"."};
 $PARAM{help} = {key => 'help', default => undef, info => "show this brief help on version and usage"};
 $PARAM{binarypath} = {key => 'binPath', type => 's', default => undef, info => "$0 expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
@@ -230,10 +230,10 @@ sub parseSubopt {
 			($windowStartPos, $windowEndPos) = (0, length($refHash_sequence->{sequence}));
 		} elsif ($line =~ m/^\s*$/) {
 		} else {
-			#( -889 , ( ......................................((((((.......(((((...................................)))))))))))................................................................... ) )
-			my ($energy, $structure) = ($line =~ m/\( (.+?) , (.+?) \)/);
+			#( ( -50 , .....((.(((.....))).)).... ) , [] )
+			my ($energy, $structure, $shape) = ($line =~ m/\( (.+?) , \( (.+?) , (.+?) \) \)/);
 			$energy = sprintf("%.2f", $energy/100);
-			$predictions{$windowStartPos."-".$windowEndPos}->{$energy}->{$structure}++;
+			$predictions{$windowStartPos."-".$windowEndPos}->{$energy}->{$structure} = $shape;
 			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
 			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));
 		}
@@ -248,7 +248,7 @@ sub parseSubopt {
 		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $energy (sort {substr($a, 0, index($a, '#')) <=> substr($b, 0, index($b, '#'))} keys(%{$predictions{$windowPos}})) {
 			foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$energy}})) {
-				print sprintf("%$maxEnergyLen.2f", $energy).$OUTPUT_FIELDSPACER.$structure;
+				print sprintf("%$maxEnergyLen.2f", $energy).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.$predictions{$windowPos}->{$energy}->{$structure};
 				print "\n"
 			}
 		}
@@ -487,7 +487,6 @@ sub checkParameters {
 
 	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if ((defined $settings->{'absolutedeviation'}) && (($settings->{'mode'} ne $MODE_SUBOPT) && ($settings->{'mode'} ne $MODE_SHAPES) && ($settings->{'mode'} ne $MODE_CAST)));
 	die $diePrefix."--".$PARAM{'relativedeviation'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}) && (($settings->{'mode'} ne $MODE_SUBOPT) && ($settings->{'mode'} ne $MODE_SHAPES) && ($settings->{'mode'} ne $MODE_CAST)));
-	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'shapelevel'} != $PARAM{'shapelevel'}->{default}) && (($settings->{'mode'} ne $MODE_SHAPES) && ($settings->{'mode'} ne $MODE_PROBS) && ($settings->{'mode'} ne $MODE_SAMPLE) && ($settings->{'mode'} ne $MODE_CAST)));
 	die $diePrefix."--".$PARAM{'lowprobfilter'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'lowprobfilter'} != $PARAM{'lowprobfilter'}->{default}) && ($settings->{'mode'} ne $MODE_PROBS));
 	die $diePrefix."--".$PARAM{'lowprobfilteroutput'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'lowprobfilteroutput'} != $PARAM{'lowprobfilteroutput'}->{default}) && ($settings->{'mode'} ne $MODE_PROBS) && ($settings->{'mode'} ne $MODE_SAMPLE));
 	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." cannot be used in mode '".$settings->{'mode'}."'!\n" if (($settings->{'probdecimals'} != $PARAM{'probdecimals'}->{default}) && ($settings->{'mode'} ne $MODE_PROBS) && ($settings->{'mode'} ne $MODE_SAMPLE));
@@ -540,11 +539,11 @@ EOF
 	$HELP .= Utils::printIdent("  ".$MODE_CAST."    : ", Utils::usage_convertInfoText("RNAcast, see [8]", \%PARAM))."\n";
 	
 	$HELP .= "GENERAL OPTIONS:\n";
-	for my $par ('help','mode','windowsize','windowincrement','temperature','param','allowlp','grammar') {
+	for my $par ('help','mode','windowsize','windowincrement','temperature','param','allowlp','grammar','shapelevel') {
 		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
 	}
 	$HELP .= "OPTIONS ONLY VALID FOR SOME MODES:\n";
-	for my $par ('absolutedeviation','relativedeviation','shapelevel','lowprobfilter','lowprobfilteroutput','numsamples','showsamples') {
+	for my $par ('absolutedeviation','relativedeviation','lowprobfilter','lowprobfilteroutput','numsamples','showsamples') {
 		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
 	}
 	$HELP .= "SYSTEM DEPENDENT OPTIONS:\n";

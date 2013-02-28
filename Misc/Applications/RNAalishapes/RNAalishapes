@@ -46,7 +46,7 @@ $PARAM{param} = {key => 'param', gapc => 'P', type => 's', default => undef, inf
 $PARAM{allowlp} = {key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
 $PARAM{absolutedeviation} = {key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation).\nFor modes: \"$MODE_SUBOPT\", \"$MODE_SHAPES\"."};
 $PARAM{relativedeviation} = {key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation).\nFor modes: \"$MODE_SUBOPT\", \"$MODE_SHAPES\"."};
-$PARAM{shapelevel} = {key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see [6] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one).\nFor modes: \"$MODE_SHAPES\", \"$MODE_PROBS\", \"$MODE_SAMPLE\"."};
+$PARAM{shapelevel} = {key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see [6] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
 $PARAM{lowprobfilter} = {key => 'lowProbFilter', gapc => 'F', type => 'f', default => 0.000001, info => "This option sets a barrier for filtering out results with very low probabilities during calculation. The default value here is @(DEFAULT), which gives a significant speedup compared to a disabled filter. (See [7] for details.) Note that this filter can have a slight influence on the overall results. To disable this filter, use option --@(lowprobfilter) 0. \n<float> must be a positive floating point number smaller than 1.\nFor mode: \"$MODE_PROBS\"."};
 $PARAM{lowprobfilteroutput} = {key => 'outputLowProbFilter', gapc => undef, type => 'f', default => 0.000001, info => "This option sets a filter for omitting low probability results during output. It is just for reporting convenience. Unlike probability cutoff filter, this option does not have any influence on runtime or probabilities beyond this value. To disable this filter, use option --@(lowprobfilteroutput) 0. \n<float> must be a positive floating point number smaller than 1.\nFor mode: \"$MODE_PROBS\" and \"$MODE_SAMPLE\"."};
 $PARAM{help} = {key => 'help', default => undef, info => "show this brief help on version and usage"};
@@ -203,12 +203,12 @@ sub parseSubopt {
 			($windowStartPos, $windowEndPos) = (0, $refHash_alignment->{length});
 		} elsif ($line =~ m/^\s*$/) {
 		} else {
-			#( ( -889 = energy: -851.5 + covar.: -37.5 ) , ( ......................................((((((.......(((((...................................)))))))))))................................................................... ) )
-			my ($score, $energy, $covar, $structure) = ($line =~ m/\( \( (.+?) = energy: (.+?) \+ covar\.: (.+?) \) , (.+?) \)/);
+			#( ( -30 = energy: -30 + covar.: 0 ) , ( ...(((.((....))))) , [] ) )
+			my ($score, $energy, $covar, $structure, $shape) = ($line =~ m/\( \( (.+?) = energy: (.+?) \+ covar\.: (.+?) \) , \( (.+?) , (.+?) \) \)/);
 			$score = sprintf("%.2f", $score/100);
 			$energy = sprintf("%.2f", $energy/100);
 			$covar = sprintf("%.2f", $covar/100);
-			$predictions{$windowStartPos."-".$windowEndPos}->{$score.'#'.$energy.'#'.$covar}->{$structure}++;
+			$predictions{$windowStartPos."-".$windowEndPos}->{$score.'#'.$energy.'#'.$covar}->{$structure} = $shape;
 			$maxScoreLen = length($score) if ($maxScoreLen < length($score));
 			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
 			$maxCovarLen = length($covar) if ($maxCovarLen < length($covar));
@@ -228,7 +228,7 @@ sub parseSubopt {
 		foreach my $scoreAll (sort {substr($a, 0, index($a, '#')) <=> substr($b, 0, index($b, '#'))} keys(%{$predictions{$windowPos}})) {
 			my ($score, $energy, $covar) = split(m/#/, $scoreAll);
 			foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$scoreAll}})) {
-				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure;
+				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.$predictions{$windowPos}->{$scoreAll}->{$structure};
 				print printSCI($settings, $avgSglMfe, $score);
 				print "\n"
 			}
@@ -483,7 +483,7 @@ sub checkParameters {
 	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
 	die $diePrefix."--".$PARAM{'showsamples'}->{key}." can either be 0 or 1, to hide or omit sampled structures by stochastic backtrace.\n" if ($settings->{'showsamples'} !~ m/^0|1$/);
 	die $diePrefix."--".$PARAM{'sci'}->{key}." can either be 0 or 1. Only for 1, SCI computation will be performed.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
-	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
+	#~ die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
 	die $diePrefix."--".$PARAM{'lowprobfilter'}->{key}." must be a non-negative floating point number below 1.\n" if (($settings->{'lowprobfilter'} >= 1) || ($settings->{'lowprobfilter'} < 0));
 	die $diePrefix."--".$PARAM{'lowprobfilteroutput'}->{key}." must be a non-negative floating point number below 1.\n" if (($settings->{'lowprobfilteroutput'} >= 1) || ($settings->{'lowprobfilteroutput'} < 0));
 
@@ -543,11 +543,11 @@ EOF
 	$HELP .= Utils::printIdent("  ".$MODE_PROBS."   : ", Utils::usage_convertInfoText("Structure probabilities are strictly correlated to their energy values. Grouped together into shape classes, their probabilities add up. Often a shape class with many members of worse energy becomes more probable than the shape containing the mfe structure but not much more members. See [7] for details on shape probabilities.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$MODE_SAMPLE."  : ", Utils::usage_convertInfoText("Probabilistic sampling based on partition function. This mode combines stochastic sampling with a-posteriori shape abstraction. A sample from the structure space holds M structures together with their shapes, on which classification is performed. The probability of a shape can then be approximated by its frequency in the sample.", \%PARAM))."\n";
 	$HELP .= "GENERAL OPTIONS:\n";
-	for my $par ('help','mode','windowsize','windowincrement','temperature','param','cfactor','nfactor','pairingfraction','consensus','allowlp','grammar','sci') {
+	for my $par ('help','mode','windowsize','windowincrement','temperature','param','cfactor','nfactor','pairingfraction','consensus','allowlp','grammar','shapelevel','sci') {
 		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
 	}
 	$HELP .= "OPTIONS ONLY VALID FOR SOME MODES:\n";
-	for my $par ('absolutedeviation','relativedeviation','shapelevel','lowprobfilter','lowprobfilteroutput','numsamples','showsamples') {
+	for my $par ('absolutedeviation','relativedeviation','lowprobfilter','lowprobfilteroutput','numsamples','showsamples') {
 		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
 	}
 	$HELP .= "SYSTEM DEPENDENT OPTIONS:\n";

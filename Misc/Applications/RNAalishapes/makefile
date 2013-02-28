@@ -65,7 +65,7 @@ mfe:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_ali_mfe$${suffix} * alg_ali_dotBracket" $(BASEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "alg_ali_mfe$${suffix} * (alg_ali_dotBracket * alg_ali_shapeX)" $(BASEDIR)ali_$${grammar}.gap --kbacktrace --no-coopt $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="$@_$${grammar}"; \
 		fi; \
 	done
@@ -76,7 +76,7 @@ subopt:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_ali_mfe_subopt$${suffix} * alg_ali_dotBracket" $(BASEDIR)ali_$${grammar}.gap --kbacktrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "alg_ali_mfe_subopt$${suffix} * (alg_ali_dotBracket * alg_ali_shapeX)" $(BASEDIR)ali_$${grammar}.gap --kbacktrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="subopt_$${grammar}"; \
 		fi; \
 	done
