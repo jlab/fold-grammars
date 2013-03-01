@@ -40,4 +40,8 @@ our %TDMfiles = (
 );
 our $TDMgenerator = 'tdmGenerator.gap';
 
+our $OUTPUT_MINLEFTWIDTH = 7;
+our $OUTPUT_FIELDSPACER = "  ";
+our $SCIDECIMALS = 3;
+
 1;

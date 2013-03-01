@@ -18,6 +18,7 @@ use warnings;
 use Data::Dumper;
 use Getopt::Long;
 use foldGrammars::Utils;
+use foldGrammars::RNAcast;
 use POSIX 'isatty';
 
 our $MODE_MFE = 'mfe';
@@ -52,9 +53,6 @@ $PARAM{numsamples} = {key => 'numSamples', type => 'i', gapc => 'r', default => 
 $PARAM{showsamples} = {key => 'showSamples', type => 'i', gapc => undef, default => 0, info => "You can inspect the samples drawn by stochastic backtrace if you turn --@(showsamples) on by setting it to 1.\nDefault is @(DEFAULT) = off.\nFor mode: \"$MODE_SAMPLE\"."};
 $PARAM{grammar} = {key => 'grammar', default => $GRAMMAR_MACROSTATE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could perform surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"$GRAMMAR_OVERDANGLE\". See [5] for further details."};
 
-our $OUTPUT_MINLEFTWIDTH = 7;
-our $OUTPUT_FIELDSPACER = "  ";
-
 my $settings = {};
 foreach my $param (keys %PARAM) {
 	$settings->{$param} = $PARAM{$param}->{default};
@@ -80,13 +78,22 @@ if (@ARGV == 0) {
 			print "waiting for your plain RNA sequence or fasta filename.\n";
 			my $input = <STDIN>; chomp $input;
 			if (-e $input) {
-				Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+				if ($settings->{'mode'} eq $MODE_CAST) {
+					RNAcast::cast_doComputation($input, $settings, \&buildCommand, \%PARAM, $MODE_SHAPES);
+				} else {
+					Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+				}
 			} else {
 				my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
+				die "You cannot input a family of RNA sequences for \"$MODE_CAST\" on STDIN. Please pipe, redirect or give  multiple fasta file as argument.\n" if ($settings->{mode} eq $MODE_CAST);
 				doComputation(\%sequence, $settings);
 			}
 		} else {
-			Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings);
+			if ($settings->{'mode'} eq $MODE_CAST) {
+				RNAcast::cast_doComputation(\*STDIN, $settings, \&buildCommand, \%PARAM, $MODE_SHAPES);
+			} else {
+				Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings);
+			}
 		}
 	}
 } else {
@@ -94,99 +101,15 @@ if (@ARGV == 0) {
 	my ($input) = @ARGV;
 	if (-e $input) {
 		if ($settings->{'mode'} eq $MODE_CAST) {
-			cast_doComputation($input, $settings);
+			RNAcast::cast_doComputation($input, $settings, \&buildCommand, \%PARAM, $MODE_SHAPES);
 		} else {
 			Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
 		}
 	} else {
 		my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
+		die "You cannot input a family of RNA sequences for \"$MODE_CAST\" as a single command line argument. Please pipe, redirect or give  multiple fasta file as argument.\n" if ($settings->{mode} eq $MODE_CAST);
 		doComputation(\%sequence, $settings);
 	}
-}
-
-sub cast_doComputation {
-	my ($input, $settings) = @_;
-	
-	#determine common shapes
-		my %commonShapes = ();
-		my %mfes = ();
-		my $sequenceNumber = 0;
-		my @orederedSeqs = ();
-		Utils::applyFunctionToFastaFile($input, \&cast_generateSingleShapes, $settings, \%commonShapes, \$sequenceNumber, \%mfes, \@orederedSeqs);
-		my $maxMFE = 0;
-		my $maxEnergyLen = 0;
-		foreach my $shape (keys(%mfes)) {
-			$maxMFE += $mfes{$shape};
-			my $energy = sprintf("%.2f", $mfes{$shape}/100);
-			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
-		}
-
-	#score common shapes
-		my %commonShapes_infos = ();
-		foreach my $shape (keys(%commonShapes)) {
-			my $energySum = 0;
-			foreach my $seqs (keys(%{$commonShapes{$shape}})) {
-				$energySum += $commonShapes{$shape}->{$seqs}->{energy};
-			}
-			$commonShapes_infos{$shape} = {score => $energySum};
-		}
-	
-	#print results
-		my $shapeNr = 0;
-		foreach my $shape (sort {$commonShapes_infos{$a}->{score} <=> $commonShapes_infos{$b}->{score}} keys(%commonShapes_infos)) { 
-			print "".(++$shapeNr).") Shape: ".$shape."  Score: ".sprintf("%.2f", $commonShapes_infos{$shape}->{score}/100)."  Ratio of MFE: ".sprintf("%1.2f", $commonShapes_infos{$shape}->{score}/$maxMFE)."\n";
-			foreach my $refHash_sequence (@orederedSeqs) {
-				print ">".$refHash_sequence->{header}."\n";
-				print "".(" " x $maxEnergyLen).$OUTPUT_FIELDSPACER.$refHash_sequence->{sequence}."\n";
-				print sprintf("%".$maxEnergyLen.".2f", $commonShapes{$shape}->{$refHash_sequence->{header}}->{energy}/100).$OUTPUT_FIELDSPACER.$commonShapes{$shape}->{$refHash_sequence->{header}}->{structure}.$OUTPUT_FIELDSPACER.$shape.$OUTPUT_FIELDSPACER."R = ".$commonShapes{$shape}->{$refHash_sequence->{header}}->{rank}."\n";
-			}
-			print "\n";
-		}
-		
-		if ($shapeNr == 0) {
-			print "No consensus shapes found. Try to increase energy range with --".$PARAM{absolutedeviation}->{key}." or --".$PARAM{relativedeviation}->{key}.".\n";
-		}
-}
-
-sub cast_generateSingleShapes {
-	my ($refHash_sequence, $settings, $refHash_commonShapes, $ref_sequenceNr, $refHash_mfes, $refList_orderedSeqs) = @_;
-	${$ref_sequenceNr}++;
-	push @{$refList_orderedSeqs}, $refHash_sequence;
-	
-	if ($refHash_sequence->{sequence} !~ m/^\s*((A|C|G|U|T)+)\s*$/i) {
-		die "sequence '".$refHash_sequence->{header}."' contains non RNA letter. Only A,C,G,U,T,a,c,g,u,t are allowed!\n";
-	}
-	my $seq = $refHash_sequence->{sequence};
-	$seq =~ s/t/u/gi;
-	
-	my %cast_settings = %{$settings};
-	$cast_settings{'mode'} = $MODE_SHAPES;
-	my $command = buildCommand(\%cast_settings, undef);
-	my $result = qx($command "$seq");
-
-	#add new common shapes, if a) this is the first sequence b) this shape was already common
-		my @unsortedShapes = ();
-		foreach my $line (split(m/\r?\n/, $result)) {
-			push @unsortedShapes, {shape => $1, energy => $2, structure => $3} if ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)/);
-		}
-		
-		my $rank = 0;
-		my $mfe = 0;
-		foreach my $refHash_shape (sort {$a->{energy} <=> $b->{energy}} @unsortedShapes) {
-			$rank++;
-			$mfe = $refHash_shape->{energy} if ($rank == 1);
-			$refHash_commonShapes->{$refHash_shape->{shape}}->{$refHash_sequence->{header}} = {energy => $refHash_shape->{energy}, structure => $refHash_shape->{structure}, rank => $rank} if ((${$ref_sequenceNr} <= 1) || (exists $refHash_commonShapes->{$refHash_shape->{shape}}));
-		}
-		$refHash_mfes->{$refHash_sequence->{header}} = $mfe;
-	
-	#remove "common" shapes that have not appeared for this sequence
-		foreach my $commonshape (keys(%{$refHash_commonShapes})) {
-			if (keys(%{$refHash_commonShapes->{$commonshape}}) < ${$ref_sequenceNr}) {
-				delete $refHash_commonShapes->{$commonshape};
-			}
-		}
-	
-	return undef;
 }
 
 sub doComputation {
@@ -245,10 +168,10 @@ sub parseSubopt {
 	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
-		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		print sprintf("% ${leftLength}i", $startPos+1).$Settings::OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$Settings::OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $energy (sort {substr($a, 0, index($a, '#')) <=> substr($b, 0, index($b, '#'))} keys(%{$predictions{$windowPos}})) {
 			foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$energy}})) {
-				print sprintf("%$maxEnergyLen.2f", $energy).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.$predictions{$windowPos}->{$energy}->{$structure};
+				print sprintf("%$maxEnergyLen.2f", $energy).$Settings::OUTPUT_FIELDSPACER.$structure.$Settings::OUTPUT_FIELDSPACER.$predictions{$windowPos}->{$energy}->{$structure};
 				print "\n"
 			}
 		}
@@ -287,12 +210,12 @@ sub parseShapes {
 	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
-		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		print sprintf("% ${leftLength}i", $startPos+1).$Settings::OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$Settings::OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$windowPos}})) {
 			foreach my $class (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$energy}})) {
 				my $structure = $predictions{$windowPos}->{$energy}->{$class};
-				print sprintf("%$maxEnergyLen.2f", $energy).$OUTPUT_FIELDSPACER.$structure;
-				print $OUTPUT_FIELDSPACER.$class."\n";
+				print sprintf("%$maxEnergyLen.2f", $energy).$Settings::OUTPUT_FIELDSPACER.$structure;
+				print $Settings::OUTPUT_FIELDSPACER.$class."\n";
 			}
 		}
 		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
@@ -333,14 +256,14 @@ sub parseProbs {
 
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
-		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		print sprintf("% ${leftLength}i", $startPos+1).$Settings::OUTPUT_FIELDSPACER.substr($refHash_sequence->{sequence}, $startPos, $endPos-$startPos).$Settings::OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $probability (sort {$b <=> $a} keys(%{$predictions{$windowPos}})) {
 			last if ($probability/$sumProbs{$windowPos} < $settings->{lowprobfilteroutput});
 			foreach my $energy (sort {$a <=> $b} keys(%{$predictions{$windowPos}->{$probability}})) {
 				foreach my $class (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$probability}->{$energy}})) {
 					my $structure = $predictions{$windowPos}->{$probability}->{$energy}->{$class};
-					print sprintf("%$maxEnergyLen.2f", $energy).$OUTPUT_FIELDSPACER.$structure;
-					print $OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $probability/$sumProbs{$windowPos}).$OUTPUT_FIELDSPACER.$class."\n";
+					print sprintf("%$maxEnergyLen.2f", $energy).$Settings::OUTPUT_FIELDSPACER.$structure;
+					print $Settings::OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $probability/$sumProbs{$windowPos}).$Settings::OUTPUT_FIELDSPACER.$class."\n";
 				}
 			}
 		}
@@ -395,22 +318,22 @@ sub parseSample {
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
 		$avgSglMfe = getAvgSingleMFEs($refHash_alignment, $settings, $startPos, $endPos) if ($settings->{'sci'});
-		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		print sprintf("% ${leftLength}i", $startPos+1).$Settings::OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$Settings::OUTPUT_FIELDSPACER.($endPos)."\n";
 		if ($settings->{showsamples}) {
 			print $settings->{numsamples}." samples, drawn by stochastic backtrace to estimate shape frequencies:\n";
 			foreach my $refHash_sample (@samples) {
-				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $refHash_sample->{score}, $refHash_sample->{energy}, $refHash_sample->{covar}).$OUTPUT_FIELDSPACER.$refHash_sample->{structure};
+				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $refHash_sample->{score}, $refHash_sample->{energy}, $refHash_sample->{covar}).$Settings::OUTPUT_FIELDSPACER.$refHash_sample->{structure};
 				print printSCI($settings, $avgSglMfe, $refHash_sample->{score});
-				print $OUTPUT_FIELDSPACER.$refHash_sample->{class}."\n";
+				print $Settings::OUTPUT_FIELDSPACER.$refHash_sample->{class}."\n";
 			}
 			print "\nSampling results:\n\n";
 		}
 		foreach my $class (sort {$predictions{$windowPos}->{$b}->{numSamples} <=> $predictions{$windowPos}->{$a}->{numSamples}} keys(%{$predictions{$windowPos}})) {
 			last if ($predictions{$windowPos}->{$class}->{numSamples}/$numSamples{$windowPos} < $settings->{lowprobfilteroutput});
 			my ($score, $energy, $covar, $structure) = ($predictions{$windowPos}->{$class}->{shrep}->{score}, $predictions{$windowPos}->{$class}->{shrep}->{energy}, $predictions{$windowPos}->{$class}->{shrep}->{covar}, $predictions{$windowPos}->{$class}->{shrep}->{structure});
-			print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure;
+			print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$Settings::OUTPUT_FIELDSPACER.$structure;
 			print printSCI($settings, $avgSglMfe, $score);
-			print $OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $predictions{$windowPos}->{$class}->{numSamples}/$numSamples{$windowPos}).$OUTPUT_FIELDSPACER.$class."\n";
+			print $Settings::OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $predictions{$windowPos}->{$class}->{numSamples}/$numSamples{$windowPos}).$Settings::OUTPUT_FIELDSPACER.$class."\n";
 		}
 		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
 	}
@@ -536,7 +459,7 @@ EOF
 	$HELP .= Utils::printIdent("  ".$MODE_SHAPES."  : ", Utils::usage_convertInfoText("Output of \"$MODE_SUBOPT\" mode is crowded by many very similar answers, which make it hard to focus to the \"important\" changes. The abstract shape concept [6] groups similar answers together and reports only the best answer within such a group. Due to abstraction, suboptimal analyses can be done more thorough, by ignoring boring differences.\n(see parameter --@(shapelevel))", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$MODE_PROBS."   : ", Utils::usage_convertInfoText("Structure probabilities are strictly correlated to their energy values. Grouped together into shape classes, their probabilities add up. Often a shape class with many members of worse energy becomes more probable than the shape containing the mfe structure but not much more members. See [7] for details on shape probabilities.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$MODE_SAMPLE."  : ", Utils::usage_convertInfoText("Probabilistic sampling based on partition function. This mode combines stochastic sampling with a-posteriori shape abstraction. A sample from the structure space holds M structures together with their shapes, on which classification is performed. The probability of a shape can then be approximated by its frequency in the sample.", \%PARAM))."\n";
-	$HELP .= Utils::printIdent("  ".$MODE_CAST."    : ", Utils::usage_convertInfoText("RNAcast, see [8]", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$MODE_CAST."    : ", Utils::usage_convertInfoText("This mode is the RNAcast approache, see [8].\nFor a family of RNA sequences, this method independently enumerates the near-optimal abstract shape space, and predicts as the consensus an abstract shape common to all sequences. For each sequence, it delivers the thermodynamically best structure which has this common shape.\nInput is a multiple fasta file, which should contain at least two sequences.\nOutput is sorted by \"score\" of common shapes, i.e. summed free energy of all sequences. R is the rank (= list position) of the shape in individual sequence analysis.", \%PARAM))."\n";
 	
 	$HELP .= "GENERAL OPTIONS:\n";
 	for my $par ('help','mode','windowsize','windowincrement','temperature','param','allowlp','grammar','shapelevel') {

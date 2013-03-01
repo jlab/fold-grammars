@@ -62,10 +62,6 @@ $PARAM{consensus} = {key => 'consensus', default => 'consensus', type => 's', in
 $PARAM{grammar} = {key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could perform surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"$GRAMMAR_OVERDANGLE\". See [5] for further details."};
 $PARAM{sci} = {key => 'sci', default => 0, type => 'i', info => "The structure conservation index (SCI) is a measure for the likelyhood that individual sequences will fold similar to the aligned sequences. It is computed as the aligned MFE divided by the average MFE of the unaligned sequences.\nA SCI close to zero indicates that this structure is not a good consensus structure, whereas a set of perfectly conserved structures has SCI of 1. A SCI > 1 indicates a perfectly conserved secondary structure, which is, in addition, supported by compensatory and/or consistent mutations, which contribute a covariance score to the alignment MFE. For further details see [8].\nFor the sake of speed, SCI computation is switched off by default."};
 
-our $OUTPUT_MINLEFTWIDTH = 7;
-our $OUTPUT_FIELDSPACER = "  ";
-our $SCIDECIMALS = 3;
-
 my $settings = {};
 foreach my $param (keys %PARAM) {
 	$settings->{$param} = $PARAM{$param}->{default};
@@ -180,7 +176,7 @@ sub printSCI {
 		my $sci = $alignmentScore / $avgSglMfe;
 		my $spacer = " ";
 		$spacer = "" if ($sci <= 0);
-		return $OUTPUT_FIELDSPACER.sprintf("(sci: ".$spacer."%.".$SCIDECIMALS."f)", $sci);
+		return $Settings::OUTPUT_FIELDSPACER.sprintf("(sci: ".$spacer."%.".$Settings::SCIDECIMALS."f)", $sci);
 	} else {
 		return "";
 	}
@@ -224,11 +220,11 @@ sub parseSubopt {
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
 		$avgSglMfe = getAvgSingleMFEs($refHash_alignment, $settings, $startPos, $endPos) if ($settings->{'sci'});
-		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		print sprintf("% ${leftLength}i", $startPos+1).$Settings::OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$Settings::OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $scoreAll (sort {substr($a, 0, index($a, '#')) <=> substr($b, 0, index($b, '#'))} keys(%{$predictions{$windowPos}})) {
 			my ($score, $energy, $covar) = split(m/#/, $scoreAll);
 			foreach my $structure (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$scoreAll}})) {
-				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure.$OUTPUT_FIELDSPACER.$predictions{$windowPos}->{$scoreAll}->{$structure};
+				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$Settings::OUTPUT_FIELDSPACER.$structure.$Settings::OUTPUT_FIELDSPACER.$predictions{$windowPos}->{$scoreAll}->{$structure};
 				print printSCI($settings, $avgSglMfe, $score);
 				print "\n"
 			}
@@ -274,14 +270,14 @@ sub parseShapes {
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
 		$avgSglMfe = getAvgSingleMFEs($refHash_alignment, $settings, $startPos, $endPos) if ($settings->{'sci'});
-		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		print sprintf("% ${leftLength}i", $startPos+1).$Settings::OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$Settings::OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $scoreAll (sort {splitScore($a)->[0] <=> splitScore($b)->[0]} keys(%{$predictions{$windowPos}})) {
 			my ($score, $energy, $covar) = @{splitScore($scoreAll)};
 			foreach my $class (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$scoreAll}})) {
 				my $structure = $predictions{$windowPos}->{$scoreAll}->{$class};
-				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure;
+				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$Settings::OUTPUT_FIELDSPACER.$structure;
 				print printSCI($settings, $avgSglMfe, $score);
-				print $OUTPUT_FIELDSPACER.$class."\n";
+				print $Settings::OUTPUT_FIELDSPACER.$class."\n";
 			}
 		}
 		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
@@ -330,16 +326,16 @@ sub parseProbs {
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
 		$avgSglMfe = getAvgSingleMFEs($refHash_alignment, $settings, $startPos, $endPos) if ($settings->{'sci'});
-		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		print sprintf("% ${leftLength}i", $startPos+1).$Settings::OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$Settings::OUTPUT_FIELDSPACER.($endPos)."\n";
 		foreach my $probability (sort {$b <=> $a} keys(%{$predictions{$windowPos}})) {
 			last if ($probability/$sumProbs{$windowPos} < $settings->{lowprobfilteroutput});
 			foreach my $scoreAll (sort {splitScore($a)->[0] <=> splitScore($b)->[0]} keys(%{$predictions{$windowPos}->{$probability}})) {
 				my ($score, $energy, $covar) = @{splitScore($scoreAll)};
 				foreach my $class (sort {$a cmp $b} keys(%{$predictions{$windowPos}->{$probability}->{$scoreAll}})) {
 					my $structure = $predictions{$windowPos}->{$probability}->{$scoreAll}->{$class};
-					print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure;
+					print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$Settings::OUTPUT_FIELDSPACER.$structure;
 					print printSCI($settings, $avgSglMfe, $score);
-					print $OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $probability/$sumProbs{$windowPos}).$OUTPUT_FIELDSPACER.$class."\n";
+					print $Settings::OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $probability/$sumProbs{$windowPos}).$Settings::OUTPUT_FIELDSPACER.$class."\n";
 				}
 			}
 		}
@@ -394,22 +390,22 @@ sub parseSample {
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = split(m/-/, $windowPos);
 		$avgSglMfe = getAvgSingleMFEs($refHash_alignment, $settings, $startPos, $endPos) if ($settings->{'sci'});
-		print sprintf("% ${leftLength}i", $startPos+1).$OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$OUTPUT_FIELDSPACER.($endPos)."\n";
+		print sprintf("% ${leftLength}i", $startPos+1).$Settings::OUTPUT_FIELDSPACER.substr($refHash_alignment->{representation}, $startPos, $endPos-$startPos).$Settings::OUTPUT_FIELDSPACER.($endPos)."\n";
 		if ($settings->{showsamples}) {
 			print $settings->{numsamples}." samples, drawn by stochastic backtrace to estimate shape frequencies:\n";
 			foreach my $refHash_sample (@samples) {
-				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $refHash_sample->{score}, $refHash_sample->{energy}, $refHash_sample->{covar}).$OUTPUT_FIELDSPACER.$refHash_sample->{structure};
+				print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $refHash_sample->{score}, $refHash_sample->{energy}, $refHash_sample->{covar}).$Settings::OUTPUT_FIELDSPACER.$refHash_sample->{structure};
 				print printSCI($settings, $avgSglMfe, $refHash_sample->{score});
-				print $OUTPUT_FIELDSPACER.$refHash_sample->{class}."\n";
+				print $Settings::OUTPUT_FIELDSPACER.$refHash_sample->{class}."\n";
 			}
 			print "\nSampling results:\n\n";
 		}
 		foreach my $class (sort {$predictions{$windowPos}->{$b}->{numSamples} <=> $predictions{$windowPos}->{$a}->{numSamples}} keys(%{$predictions{$windowPos}})) {
 			last if ($predictions{$windowPos}->{$class}->{numSamples}/$numSamples{$windowPos} < $settings->{lowprobfilteroutput});
 			my ($score, $energy, $covar, $structure) = ($predictions{$windowPos}->{$class}->{shrep}->{score}, $predictions{$windowPos}->{$class}->{shrep}->{energy}, $predictions{$windowPos}->{$class}->{shrep}->{covar}, $predictions{$windowPos}->{$class}->{shrep}->{structure});
-			print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$OUTPUT_FIELDSPACER.$structure;
+			print sprintf("(%$maxScoreLen.2f = %$maxEnergyLen.2f + %$maxCovarLen.2f)", $score, $energy, $covar).$Settings::OUTPUT_FIELDSPACER.$structure;
 			print printSCI($settings, $avgSglMfe, $score);
-			print $OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $predictions{$windowPos}->{$class}->{numSamples}/$numSamples{$windowPos}).$OUTPUT_FIELDSPACER.$class."\n";
+			print $Settings::OUTPUT_FIELDSPACER.sprintf("%1.${numDecProb}f", $predictions{$windowPos}->{$class}->{numSamples}/$numSamples{$windowPos}).$Settings::OUTPUT_FIELDSPACER.$class."\n";
 		}
 		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
 	}

@@ -44,9 +44,6 @@ $PARAM{cluster} = {key => 'cluster', gapc => undef, type => 's', default => unde
 $PARAM{binarypath} = {key => 'binPath', type => 's', default => undef, info => "$PROGRAM_NAME expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
 $PARAM{binaryprefix} = {key => 'binPrefix', type => 's', default => 'RapidShapes_', info => "$PROGRAM_NAME expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)"."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
 
-our $OUTPUT_MINLEFTWIDTH = 7;
-our $OUTPUT_FIELDSPACER = "  ";
-
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
