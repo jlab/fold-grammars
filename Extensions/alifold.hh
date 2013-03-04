@@ -218,6 +218,10 @@ inline bool basepair(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j)
   return float(covscore(sub, int(i), int(j)-1)*-1*rows(sub)) >= float(getAlifold_minscore_basepair());
 }
 
+template<typename alphabet, typename pos_type, typename T>
+inline bool unpaired(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
+	return true;
+}
 
 
 #endif

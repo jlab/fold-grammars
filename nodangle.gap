@@ -19,7 +19,7 @@ algebra alg_enum auto enum;
 include "Algebras/MFE/alg_mfe.gap"
 include "Algebras/Pfunc/alg_pfunc.gap"
 
-include "Grammars/gra_nodangle.gap"
+include "Grammars/gra_nodangle2.gap"
 
 //start: instances used in the FoldingSpaces paper
 instance shape5pfx = gra_nodangle ((alg_shape5 * alg_pfunc) suchthat filterLowProbShapes);

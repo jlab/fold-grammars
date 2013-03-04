@@ -64,7 +64,7 @@ sub compileGAP {
 		print STDERR "==== compileGAP: 3b of 5) adding RNA options to C++ code:" if ($VERBOSE);
 		my $makefile = qx($Settings::BINARIES{find} . -name "*.mf"); chomp $makefile;
 		die "compileGAP: there are more than one gapc makefile in the temporary directory '$tmpDir'\n" if ($makefile =~ m/\n/);
-		my $addResult = qx($Settings::BINARIES{perl} Misc/Applications/addRNAoptions.pl $makefile);
+		my $addResult = qx($Settings::BINARIES{perl} Misc/Applications/addRNAoptions.pl $makefile 0);
 		print STDERR " done.\n" if ($VERBOSE == 1);
 	}
 	
