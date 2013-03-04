@@ -115,8 +115,8 @@ sub checkRNAalishapes {
 	push @runs, "--mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
 	push @runs, "--mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
 	push @runs, "--mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
-	push @runs, "--mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
-	push @runs, "--mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--mode probs --outputLowProbFilter 0 --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--mode probs --outputLowProbFilter 0 --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
 	push @runs, "--mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
 	push @runs, "--mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
 	push @runs, "--windowSize 40 --windowIncrement 5 --mode mfe";
@@ -133,8 +133,8 @@ sub checkRNAalishapes {
 	push @runs, "--windowSize 40 --windowIncrement 5 --mode shapes --absoluteDeviation 2 --shapeLevel 2 --grammar microstate --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
 	push @runs, "--windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 4 --grammar overdangle --consensus mis --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
 	push @runs, "--windowSize 40 --windowIncrement 5 --mode shapes --relativeDeviation 20 --shapeLevel 5 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM1999 --temperature 47.6";
-	push @runs, "--windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.0001 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
-	push @runs, "--windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.01 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.0001 --outputLowProbFilter 0 --shapeLevel 3 --grammar nodangle --allowLP 1 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
+	push @runs, "--windowSize 40 --windowIncrement 5 --mode probs --lowProbFilter 0.01 --outputLowProbFilter 0 --shapeLevel 1 --grammar nodangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
 	push @runs, "--windowSize 40 --windowIncrement 5 --mode sample --numSamples 100 --shapeLevel 5 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
 	push @runs, "--windowSize 40 --windowIncrement 5 --mode sample --numSamples 1000 --shapeLevel 4 --grammar overdangle --allowLP 0 --nfactor 0.5 --cfactor 1.5 --param $RNAPARAM2004 --temperature 27.6";
 	push @runs, "--sci 1 --mode mfe --grammar overdangle";
