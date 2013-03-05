@@ -12,13 +12,15 @@
             if (alphareallen >= 2) {
               int betareallen = min(min(betamaxlen, j-lindex-2), lindex-k-alphareallen); //min(min(maximal beta stem, range l to j must have enough space for the two unpaired bases), alpha stem length is set thus beta can consume left space between k to l at most)
               if (betareallen >= 2) {
-                int stackenergies = 
-                      energy(stacklen(t_0_seq, i,                lindex               ))  // maximal alpha helix
-                    + energy(stacklen(t_0_seq, k,                j               ))       // maximal beta helix
-                    - energy(stacklen(t_0_seq, i+alphareallen-1, lindex-alphareallen+1))  // reduced part of alpha helix
-                    - energy(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1));      // reduced part of beta helix
-          
-                INNER(CODE);
+			    if (regionpair(i,lindex,alphareallen) && regionpair(k, j, betareallen)) { //this filter is only for "evalfold" and ensures that those positions are correctly paired in the given structure (in Vienna Dot Bracket format). For normal "singlefold", thus filter must always return true.
+                  int stackenergies = 
+                        energy(stacklen(t_0_seq, i,                lindex               ))  // maximal alpha helix
+                      + energy(stacklen(t_0_seq, k,                j               ))       // maximal beta helix
+                      - energy(stacklen(t_0_seq, i+alphareallen-1, lindex-alphareallen+1))  // reduced part of alpha helix
+                      - energy(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1));      // reduced part of beta helix
+            
+                  INNER(CODE);
+				}
               }
             }
           }

@@ -1,17 +1,17 @@
 grammar gra_pknot_microstate uses sig_pknot_foldrna(axiom = struct) {
-  struct    = sadd(BASE, struct)   |
+  struct    = sadd(BASE with unpaired, struct)    |
               cadd({dangle | dangleknot}, struct) |		//the dangleknot alternative is for pseudoknots
-              nil(LOC)           # h;
+              nil(LOC)                            # h;
 
-  dangle    = edl (BASE, strong, LOC ) |
-              edr (LOC,  strong, BASE) | 
-              edlr(BASE, strong, BASE) |
-              drem(LOC,  strong, LOC ) # h;
+  dangle    = edl (BASE with unpaired, strong, LOC               ) |
+              edr (LOC,                strong, BASE with unpaired) | 
+              edlr(BASE with unpaired, strong, BASE with unpaired) |
+              drem(LOC,                strong, LOC               ) # h;
 
-  dangleknot = pk   (      knot        ) |		//for pseudoknots
-               kndl (BASE, knot        ) |		//for pseudoknots
-               kndr (      knot,   BASE) |		//for pseudoknots
-               kndlr(BASE, knot,   BASE) # h;	//for pseudoknots
+  dangleknot = pk   (                    knot                      ) |		//for pseudoknots
+               kndl (BASE with unpaired, knot                      ) |		//for pseudoknots
+               kndr (                    knot,   BASE with unpaired) |		//for pseudoknots
+               kndlr(BASE with unpaired, knot,   BASE with unpaired) # h;	//for pseudoknots
 
   strong    = {sr(BASE, weak, BASE) with basepair} with allowLonelyBasepairs(false) | 
 			  {		   weak                      } with allowLonelyBasepairs(true)  # h;
@@ -23,25 +23,25 @@ grammar gra_pknot_microstate uses sig_pknot_foldrna(axiom = struct) {
                iloop                    | 
                multiloop} with basepair # h;
 
-  stack     = sr   (BASE,                          weak,                              BASE) # h;
-  hairpin   = hl   (BASE,                          REGION with minsize(3),            BASE) # h;
-  leftB     = bl   (BASE, REGION,                  strong,                            BASE) # h;
-  rightB    = br   (BASE,                          strong,   REGION,                  BASE) # h;
-  iloop     = il   (BASE, REGION with maxsize(30), strong,   REGION with maxsize(30), BASE) # h;
+  stack     = sr   (BASE,                                        weak,                                                                        BASE) # h;
+  hairpin   = hl   (BASE,                                        REGION with minsize(3) with unpaired,                                        BASE) # h;
+  leftB     = bl   (BASE, REGION with maxsize(30) with unpaired, strong,                                                                      BASE) # h;
+  rightB    = br   (BASE,                                        strong,                               REGION with maxsize(30) with unpaired, BASE) # h;
+  iloop     = il   (BASE, REGION with maxsize(30) with unpaired, strong,                               REGION with maxsize(30) with unpaired, BASE) # h;
   
-  multiloop = ml   (BASE,                          ml_comps,                          BASE) |
-              mldl (BASE, BASE,                    ml_comps,                          BASE) |
-              mldr (BASE,                          ml_comps, BASE,                    BASE) |
-              mldlr(BASE, BASE,                    ml_comps, BASE,                    BASE) # h;
+  multiloop = ml   (BASE,                                        ml_comps,                                                                    BASE) |
+              mldl (BASE, BASE with unpaired,                    ml_comps,                                                                    BASE) |
+              mldr (BASE,                                        ml_comps,                             BASE with unpaired,                    BASE) |
+              mldlr(BASE, BASE with unpaired,                    ml_comps,                             BASE with unpaired,                    BASE) # h;
 
-  ml_comps  = sadd(BASE, ml_comps)             |
-              cadd(mldangle, ml_comps1)        |
-			  addss(pkml(dangleknot), REGION0) # h ; //this alternative is for pseudoknots
+  ml_comps  = sadd(BASE with unpaired, ml_comps)             |
+              cadd(mldangle, ml_comps1)                      |
+			  addss(pkml(dangleknot), REGION0 with unpaired) # h ; //this alternative is for pseudoknots
 			   
-  ml_comps1 = sadd(BASE, ml_comps1)     |
-              cadd(mldangle, ml_comps1) |
-              mldangle                  |
-              addss(mldangle, REGION)   # h;
+  ml_comps1 = sadd(BASE with unpaired, ml_comps1)   |
+              cadd(mldangle, ml_comps1)             |
+              mldangle                              |
+              addss(mldangle, REGION with unpaired) # h;
 			   
   mldangle  = incl(dangle)     |
               pkml(dangleknot) # h; //this alternative is for pseudoknots
@@ -84,7 +84,7 @@ grammar gra_pknot_microstate uses sig_pknot_foldrna(axiom = struct) {
             # hKnot;
 			
   // following three  non-terminals are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped. The according makefile just replaces the axiom.
-  local = skipBase(BASE, local) | cadd(localKnot, endLocal) # h;
-  endLocal = skipBase(BASE, endLocal) | nil(LOC) # h;
+  local = skipBase(BASE with unpaired, local) | cadd(localKnot, endLocal) # h;
+  endLocal = skipBase(BASE with unpaired, endLocal) | nil(LOC) # h;
   localKnot = localKnot(LOC, knot, LOC) # h;
 }

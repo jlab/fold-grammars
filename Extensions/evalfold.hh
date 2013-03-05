@@ -8,24 +8,43 @@
 class Pairs {
 	private:
 		std::map<unsigned int, unsigned int> basepairs;
+		std::map<char, char> types;
+
+		char getOpenType(char closing) {
+			std::map<char, char >::const_iterator nt;
+			for(nt = types.begin(); nt != types.end(); nt++) {
+				if (nt->second == closing) {
+					return nt->first;
+				}
+			}
+			return '-';
+		}
 
 	public:
 		Pairs() {
+			types.insert(std::pair<char, char>('(', ')'));
+			types.insert(std::pair<char, char>('[', ']'));
+			types.insert(std::pair<char, char>('{', '}'));
+			types.insert(std::pair<char, char>('<', '>'));
 		}
 		void setStructure(std::pair<const char*, unsigned int> structure) {
-			std::vector<unsigned int> stack;
+			std::map<char, std::vector<unsigned int> > stacks;
+			std::map<char, char >::const_iterator ntt;
+			for(ntt = types.begin(); ntt != types.end(); ntt++) {
+				stacks.insert(std::pair<char, std::vector<unsigned int> >(ntt->first, std::vector<unsigned int>()));
+			}
 			for (unsigned int i = 0; i < structure.second; i++) {
-				if (structure.first[i] == '(') {
-					stack.push_back(i);
+				if (types.count(structure.first[i]) > 0) { // position is an opening base
+					stacks.at(structure.first[i]).push_back(i);
 				}
-				if (structure.first[i] == ')') {
-					basepairs.insert(std::pair<unsigned int, unsigned int>(stack.back(), i));
-					stack.pop_back();
+				if (getOpenType(structure.first[i]) != '-') { // position is a closing base
+					basepairs.insert(std::pair<unsigned int, unsigned int>(stacks.at(getOpenType(structure.first[i])).back(), i));
+					stacks.at(getOpenType(structure.first[i])).pop_back();
 				}
 			}
 		}
 		bool isOpen(unsigned int i) {
-			return basepairs.find(i) != basepairs.end();
+			return basepairs.count(i) > 0;
 		}
 		bool isClose(unsigned int j) {
 			std::map<unsigned int, unsigned int>::const_iterator nt;
@@ -38,6 +57,12 @@ class Pairs {
 		}
 		unsigned int closingPartner(unsigned int i) {
 			return basepairs.at(i);
+		}
+		void debugPrint() {
+			std::map<unsigned int, unsigned int>::const_iterator nt;
+			for(nt = basepairs.begin(); nt != basepairs.end(); nt++) {
+				std::cout << "base-pair between " << nt->first << " and " << nt->second << std::endl;
+			}
 		}
 
 	 inline static Pairs* getGivenPairs() {
@@ -55,6 +80,17 @@ class Pairs {
 template<typename alphabet, typename pos_type, typename T>
 inline bool basepair(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
 	return (Pairs::getGivenPairs()->isOpen(i)) && (Pairs::getGivenPairs()->closingPartner(i) == j-1);
+}
+
+//basepair filter for an un-interrupted stem, as they appear in pseudoknots for alpha, beta and gamma helices.
+inline bool regionpair(int i, int j, int len) {
+	int k;
+	for (k = 0; k < len; k++) {
+		if (!((Pairs::getGivenPairs()->isOpen(i+k)) && (((int) Pairs::getGivenPairs()->closingPartner(i+k)) == j-k-1))) { //opening position must be partner of closing position. Indices run in opposite directions!
+			return false;
+		}
+	}
+	return true;
 }
 
 template<typename alphabet, typename pos_type, typename T>

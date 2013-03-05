@@ -23,6 +23,7 @@
             if (betareallen < 2) {
               continue;
             }
+			if (not(regionpair(i,l,alphareallen)) || not(regionpair(k, j, betareallen))) continue; //this filter is only for "evalfold" and ensures that those positions are correctly paired in the given structure (in Vienna Dot Bracket format). For normal "singlefold", thus filter must always return true.
             int stackenergies = 
                   energy(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
                 + energy(stacklen(t_0_seq, k,                j               ))  // maximal beta helix
