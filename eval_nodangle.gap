@@ -12,5 +12,4 @@ algebra alg_enum auto enum;
 
 include "Grammars/gra_nodangle.gap"
 
-instance mfe = gra_nodangle(alg_mfe);
-instance enum = gra_nodangle(alg_enum * alg_mfe * alg_dotBracket);
+instance eval = gra_microstate(alg_mfe * alg_dotBracket);
