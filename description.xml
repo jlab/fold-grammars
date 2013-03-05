@@ -46,7 +46,6 @@
 		<structure>
 			<dir descr="1. Signatures">
 				<file id="sig_foldrna.gap" ref="Signatures/sig_foldrna.gap"/>
-				<file id="sig_eval_foldrna.gap" ref="Signatures/sig_eval_foldrna.gap"/>
 				<file id="sig_pknot_foldrna.gap" ref="Signatures/sig_pknot_foldrna.gap"/>
 				<file id="sig_tdm.gap" ref="Signatures/sig_tdm.gap" />
 			</dir>
@@ -56,7 +55,6 @@
 				<file id="gra_microstate.gap" ref="Grammars/gra_microstate.gap"/>
 				<file id="gra_macrostate.gap" ref="Grammars/gra_macrostate.gap"/>
 				<file id="gra_macrostate_center.gap" ref="Grammars/gra_macrostate_centers.gap"/>
-				<file id="gra_eval_nodangle.gap" ref="Grammars/gra_eval_nodangle.gap"/>
 				<file id="gra_pknot_microstate.gap" ref="Grammars/gra_pknot_microstate.gap"/>
 				<file id="grapart_pkinnards.gap" ref="Grammars/grapart_pkinnards.gap"/>
 				<file id="grapart_pknotsrg.gap" ref="Grammars/grapart_pknotsrg.gap"/>
@@ -76,7 +74,6 @@
 						<file id="alg_dotBracket.gap" ref="Algebras/DotBracket/alg_dotBracket.gap"/>
 						<file id="alg_pknot_dotBracket.gap" ref="Algebras/DotBracket/alg_pknot_dotBracket.gap"/>
 						<file id="alg_ali_dotBracket.gap" ref="Algebras/DotBracket/alg_ali_dotBracket.gap"/>
-						<file id="alg_eval_dotBracket.gap" ref="Algebras/DotBracket/alg_eval_dotBracket.gap"/>
 					</dir>
 					<dir descr="MFE">
 						<file id="alg_mfe.gap" ref="Algebras/MFE/alg_mfe.gap"/>
@@ -84,7 +81,6 @@
 						<file id="alg_pknot_mfe.gap" ref="Algebras/MFE/alg_pknot_mfe.gap"/>
 						<file id="alg_ali_mfe.gap" ref="Algebras/MFE/alg_ali_mfe.gap"/>
 						<file id="alg_ali_mfe_macrostate.gap" ref="Algebras/MFE/alg_ali_mfe_macrostate.gap"/>
-						<file id="alg_eval_mfe.gap" ref="Algebras/MFE/alg_eval_mfe.gap"/>
 					</dir>
 					<dir descr="Pfunc">
 						<file id="alg_pfunc.gap" ref="Algebras/Pfunc/alg_pfunc.gap"/>
