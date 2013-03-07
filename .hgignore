@@ -1,3 +1,7 @@
 Misc/Test-Suite/GeorgStyle/temp/*
 string.o
 Misc/Test-Suite/StefanStyle/temp/*
+Misc/Applications/RNAalishapes/RNAalishapes_*
+Misc/Applications/RNAshapes/RNAshapes_*
+Misc/Applications/Pseudoknots/pKiss_*
+Misc/Applications/RapidShapes/RapidShapes_*
