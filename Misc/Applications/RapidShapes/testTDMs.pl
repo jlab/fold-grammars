@@ -1,5 +1,9 @@
 #!/usr/bin/env perl
 
+our $VERSION = '2.1.0';
+our $DATE = '01.03.2013';
+our $PROGRAMNAME = 'pKiss';
+
 sub getPath {
 	my ($url) = @_;
 	my @parts = split(m|/|, $url);

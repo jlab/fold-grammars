@@ -1,5 +1,9 @@
 #!/usr/bin/env perl
 
+our $VERSION = '2.0.0';
+our $DATE = '06.03.2013';
+our $PROGRAMNAME = 'RapidShapes';
+
 sub getPath {
 	my ($url) = @_;
 	my @parts = split(m|/|, $url);
@@ -17,8 +21,6 @@ use foldGrammars::Settings;
 use foldGrammars::Utils;
 use Getopt::Long;
 use POSIX 'isatty';
-
-our $PROGRAM_NAME = "RapidShapes";
 
 our $GUESSMODE_SAMPLE = "sample";
 our $GUESSMODE_KBEST = "kbest";
@@ -38,7 +40,7 @@ $PARAM{grammar} = {key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's'
 $PARAM{shapelevel} = {key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels, where 5 is the most abstract and 1 the most concrete one.\nLevel 1 abstracts from all lengths (unpaired regions and stacks) and is the most concrete level. In Level 2 unpaired regions between components (e.g. between two hairpins) are not recognized. Level 3 does not differentiate between different types of helix interruptions like intern loops or bulges. Level 4 does only recognize internal loops as helix interrutions and finally in level 5 all interruptions are ignored, thus only ordering and nesting of hairpins and multiloops are shown. (see [5] for more formal shape level definitions)\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
 $PARAM{temperature} = {key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
 $PARAM{param} = {key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [1] and [2])."};
-$PARAM{alpha} = {key => 'alpha', gapc => undef, type => 'f', default => 0.9, info =>, "$PROGRAM_NAME computes individual shape class probabilities until either alpha percent of the folding space is explored or nor more guessed shape classes are uncomputed. We suggest an alpha of 90% or less."};
+$PARAM{alpha} = {key => 'alpha', gapc => undef, type => 'f', default => 0.9, info =>, "$PROGRAMNAME computes individual shape class probabilities until either alpha percent of the folding space is explored or nor more guessed shape classes are uncomputed. We suggest an alpha of 90% or less."};
 $PARAM{name} = {key => 'name', gapc => undef, type => 's', default => "unknown sequence", info =>, "set a name for the input sequence, i.e. the header for a fasta like output."};
 $PARAM{cluster} = {key => 'cluster', gapc => undef, type => 's', default => undef, info =>, "You might want to compute probabilities for a multipe fasta file. If you have a Oracle Grid Engin at your fingertips, you can prepare an array job for fasta file by providing it here to the parameter --@(cluster)."};
 $PARAM{allowlp} = {key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
@@ -46,12 +48,12 @@ $PARAM{help} = {key => 'help', default => undef, info => "show this brief help o
 $PARAM{probdecimals} = {key => 'probDecimals', type => 'i', default => 7, info => "Sets the number of digits used for printing shape probabilities.\n<int> must be a positive integer number.\nDefault is @(DEFAULT)."};
 $PARAM{guessmode} = {key => 'guessMode', gapc => undef, type => 's', default => 'sample', info => "Set the guess mode as one of the strings \"$GUESSMODE_SAMPLE\" (which is default), \"$GUESSMODE_KBEST\" \"$GUESSMODE_ENERGY\" or \"$GUESSMODE_LIST\"."};
 $PARAM{numsamples} = {key => 'numSamples', type => 'i', gapc => 'r', default => 1000, info => "Only for '--@(guessmode)=$GUESSMODE_SAMPLE'. Sets the number of samples that are drawn to estimate shape probabilities.\nIn our experience, 1000 iterations are sufficient to achieve reasonable results for shapes with high probability. Thus, default is @(DEFAULT)."};
-$PARAM{kbest} = {key => 'kbest', gapc => 'k', type => 'i', default => '5', info => "Only for '--@(guessmode)=$GUESSMODE_KBEST'. $PROGRAM_NAME will first perform a simple shape analysis for the best 'kbest' shapes. Choice of an appropriate value for --@(kbest) is not easy, since it depends on sequence length and base composition.\nDefault is @(DEFAULT), which is definitively wrong!"};
+$PARAM{kbest} = {key => 'kbest', gapc => 'k', type => 'i', default => '5', info => "Only for '--@(guessmode)=$GUESSMODE_KBEST'. $PROGRAMNAME will first perform a simple shape analysis for the best 'kbest' shapes. Choice of an appropriate value for --@(kbest) is not easy, since it depends on sequence length and base composition.\nDefault is @(DEFAULT), which is definitively wrong!"};
 $PARAM{list} = {key => 'list', gapc => undef, type => 's', default => undef, info => "Only for '--@(guessmode)=$GUESSMODE_LIST'. You might want to manually provide a list of shape classes that should be checked via TDMs. Individual shapes are separated by whitespaces, commas or semicolons."};
 $PARAM{absolutedeviation} = {key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "Only for '--@(guessmode)=$GUESSMODE_ENERGY'. This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation)."};
 $PARAM{relativedeviation} = {key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "Only for '--@(guessmode)=$GUESSMODE_ENERGY'. This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation)."};
-$PARAM{binarypath} = {key => 'binPath', type => 's', default => undef, info => "$PROGRAM_NAME expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
-$PARAM{binaryprefix} = {key => 'binPrefix', type => 's', default => 'RapidShapes_', info => "$PROGRAM_NAME expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)"."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
+$PARAM{binarypath} = {key => 'binPath', type => 's', default => undef, info => "$PROGRAMNAME expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
+$PARAM{binaryprefix} = {key => 'binPrefix', type => 's', default => 'RapidShapes_', info => "$PROGRAMNAME expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)"."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
@@ -493,19 +495,19 @@ sub usage {
 	my ($settings) = @_;
 
 my $HELP = <<EOF;
-# $PROGRAM_NAME: rapidly compute RNA abstract shape probabilties.
-#        version 2.0.0 (21.02.2013)
+# $PROGRAMNAME: rapidly compute RNA abstract shape probabilties.
+#        version $VERSION ($DATE)
 #        Stefan Janssen (bibi-help\@techfak.uni-bielefeld.de)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 USAGE:
-perl $PROGRAM_NAME [-options] <fasta file name or RNA sequence>
+perl $PROGRAMNAME [-options] <fasta file name or RNA sequence>
 
 EOF
 ;
 
-	$HELP .= Utils::printIdent(" ", "First step of $PROGRAM_NAME is to somehow guess promising shape classes, whoes probability is exactly computed via thermodynamic matchers later on.\n$PROGRAM_NAME provides four different ways of \"guessing\" these shape classes:")."\n";
-	$HELP .= Utils::printIdent("  ".$GUESSMODE_SAMPLE." : ", Utils::usage_convertInfoText("estimate shape frequencies via sampling a specific number of secondary structure from the folding-space, via stochastical backtracing. See options --@(numsamples).\n(default in $PROGRAM_NAME)", \%PARAM))."\n";	
+	$HELP .= Utils::printIdent(" ", "First step of $PROGRAMNAME is to somehow guess promising shape classes, whoes probability is exactly computed via thermodynamic matchers later on.\n$PROGRAMNAME provides four different ways of \"guessing\" these shape classes:")."\n";
+	$HELP .= Utils::printIdent("  ".$GUESSMODE_SAMPLE." : ", Utils::usage_convertInfoText("estimate shape frequencies via sampling a specific number of secondary structure from the folding-space, via stochastical backtracing. See options --@(numsamples).\n(default in $PROGRAMNAME)", \%PARAM))."\n";	
 	$HELP .= Utils::printIdent("  ".$GUESSMODE_KBEST."  : ", Utils::usage_convertInfoText("a simple shape class analysis is performed and the kbest energetically ordered shape classes are selected. See option --@(kbest).", \%PARAM))."\n";	
 	$HELP .= Utils::printIdent("  ".$GUESSMODE_ENERGY." : ", Utils::usage_convertInfoText("similar to \"$GUESSMODE_KBEST\". Instead of the kbest energetically shape classes, those shape classes are used whoes energy deviates up to a certain threshlold from minimal free energy for the input sequence. See options --@(absolutedeviation) and --@(relativedeviation).", \%PARAM))."\n";	
 	$HELP .= Utils::printIdent("  ".$GUESSMODE_LIST."   : ", Utils::usage_convertInfoText("If you have an alternative method of guessing shapes, you can also provide a list of these shape classes. Take care, that your input sequence can fold into these shapes at all! See option --@(list).", \%PARAM))."\n";	

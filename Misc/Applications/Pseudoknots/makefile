@@ -12,9 +12,10 @@ PERL=perl
 BASEDIR=../../../
 GRAMMARFILE=$(BASEDIR)Grammars/gra_pknot_microstate.gap
 
-targets=mfe subopt enforce local shapes probs
+targets=mfe subopt enforce local shapes probs eval
 window=
 outname=out
+isEval=0
 ifdef window
 	windowmodeflag=--window-mode
 	current_windowmodesuffix=$(WINDOWSUFFIX)
@@ -42,7 +43,7 @@ all_normal:
 	@ $(foreach var,$(targets), if [ ! -f "$(PROGRAMPREFIX)$(var)" ]; then $(MAKE) $(var); fi;)
 	
 all_window:
-	@ $(foreach var,$(targets), if [ ! -f "$(PROGRAMPREFIX)$(var)$(WINDOWSUFFIX)" ]; then $(MAKE) $(var) window="yes"; fi;)
+	@ $(foreach var,$(targets), if [ ! -f "$(PROGRAMPREFIX)$(var)$(WINDOWSUFFIX)" ] && [ $(var) != "eval" ]; then $(MAKE) $(var) window="yes"; fi;)
 	
 mfe:
 	$(GAPC) -I $(BASEDIR) -p "alg_pknot_mfe * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --kbacktrace --tab-all --no-coopt $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
@@ -71,11 +72,15 @@ probs:
 	$(GAPC) -I $(BASEDIR) -p "((alg_pknot_shapeX * (alg_pknot_mfe % alg_pknot_pfunc)) suchthat filterLowProbShapes) * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --no-coopt-class --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
 	$(MAKE) compile outname="probs" FASTLIBRNA="LDLIBS=-lrnafast" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA) -ffast-math"
 
+eval:
+	$(GAPC) -I $(BASEDIR) -p "alg_pknot_dotBracket_id * alg_pknot_mfe" $(BASEDIR)eval_pKiss.gap --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	$(MAKE) compile outname="eval" isEval=1
+
 
 
 
 compile:
-	$(PERL) $(RNAOPTIONSPERLSCRIPT) $(outname)$(current_windowmodesuffix).mf 0
+	$(PERL) $(RNAOPTIONSPERLSCRIPT) $(outname)$(current_windowmodesuffix).mf $(isEval)
 	$(MAKE) -f $(outname)$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
 	mv $(outname)$(current_windowmodesuffix) $(PROGRAMPREFIX)$(outname)$(current_windowmodesuffix)
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 use foldGrammars::Settings;
+use foldGrammars::References;
 use strict;
 use warnings;
 
@@ -326,7 +327,7 @@ sub compileGenerator {
 
 
 sub printParamUsage {
-	my ($parameter, $refHash_params) = @_;
+	my ($parameter, $refHash_params, $refList_allmodes) = @_;
 	
 	die "printParamUsage: parameter hash not defined!\n" if (not defined $refHash_params);
 	
@@ -337,6 +338,9 @@ sub printParamUsage {
 	
 	my $text = "missing description.";
 	$text = usage_convertInfoText($parameter->{info}, $refHash_params, $parameter->{default}) if ((defined $parameter->{info}) && ($parameter->{info} ne ''));
+	if (@{$parameter->{modes}} < @{$refList_allmodes}) {
+		$text .= "\nOnly available in mode".(@{$parameter->{modes}} == 1 ? '' : 's').": \"".join('", "', @{$parameter->{modes}})."\".";
+	}
 	return printIdent($title, $text);	
 }
 
@@ -352,6 +356,9 @@ sub usage_convertInfoText {
 			$text =~ s/\@\($key\)/$value/;
 		} elsif ($key eq 'DEFAULT') {
 			$text =~ s/\@\($key\)/$default/;
+		} elsif (exists $References::REFERENCES{$key}) {
+			my $refNum = References::getNumber($key);
+			$text =~ s/\@\($key\)/$refNum/;
 		}
 	}
 	
@@ -423,5 +430,70 @@ sub usage_type2name {
 		}
 	}
 }
+
+#returns true if a list (given as a reference) contains the given element
+sub contains {
+	my ($refList, $element) = @_;
+	
+	foreach my $listElement (@{$refList}) {
+		return 1 if ($listElement eq $element);
+	}
+	return 0;
+}
+
+sub automatedParameterChecks {
+	my ($refHash_params, $refHash_settings, $refList_allmodes, $diePrefix) = @_;
+	
+	if (not Utils::contains($refList_allmodes, $refHash_settings->{'mode'})) {
+		die $diePrefix."mode '".$refHash_settings->{'mode'}."' is not available. Please choose one out of \"".join('", "', @{$refList_allmodes})."\".\n";
+	}
+	foreach my $option (keys(%{$refHash_params})) {
+		my $optionSet = 'false';
+		if (not defined $refHash_params->{$option}->{default}) {
+			$optionSet = 'true' if (defined $refHash_settings->{$option});
+		} else {
+			if (exists $refHash_params->{$option}->{type}) {
+				if ($refHash_params->{$option}->{type} eq 's') {
+					$optionSet = 'true' if ($refHash_settings->{$option} ne $refHash_params->{$option}->{default});
+				} else {
+					$optionSet = 'true' if ($refHash_settings->{$option} != $refHash_params->{$option}->{default});
+				}
+			}
+		}
+		if (($optionSet eq 'true') && (not Utils::contains($refHash_params->{$option}->{modes}, $refHash_settings->{mode}))) {
+			die $diePrefix."--".$refHash_params->{$option}->{key}." cannot be used in mode '".$refHash_settings->{'mode'}."'! It is only available in mode".(@{$refHash_params->{$option}->{modes}} == 1 ? '' : 's').": \"".join('", "', @{$refHash_params->{$option}->{modes}})."\".";
+		}
+	}
+}
+
+sub checkBinaryPresents {
+	my ($refHash_settings, $diePrefix, $refList_omitModes, $refList_additionalBinaries) = @_;
+	
+	my ($programPath, $programName) = @{Utils::separateDirAndFile($0)};
+
+	$programPath = "./" if (not defined $programPath);
+	$refHash_settings->{'binarypath'} = $programPath if (not defined $refHash_settings->{'binarypath'});
+	my $binName = "";
+	my $binStart = "";
+	if (defined $refHash_settings->{'binarypath'}) {
+		$binStart .= $refHash_settings->{'binarypath'};
+		$binStart .= "/" if (substr($binStart, -1, 1) ne "/");
+	} else {
+		$binStart .= "./";
+	}
+	$binName = $binStart.$refHash_settings->{'binaryprefix'}.$refHash_settings->{'mode'};
+	$binName .= '_'.$refHash_settings->{'grammar'} if (exists $refHash_settings->{'grammar'});
+	if (not Utils::contains($refList_omitModes, $refHash_settings->{mode})) {
+		die $diePrefix." could not find Bellman's GAP binary '".$binName."' for mode ".$refHash_settings->{'mode'}."!\n" if (not -e $binName);
+		die $diePrefix." could not find window mode for Bellman's GAP binary '".$binName."_window' for mode ".$refHash_settings->{'mode'}."!\n" if ((not -e $binName."_window") && (defined $refHash_settings->{'windowsize'}));
+	}
+	
+	foreach my $binary (@{$refList_additionalBinaries}) {
+		$binName = $binStart.$refHash_settings->{'binaryprefix'}.$binary;
+		die $diePrefix." could not find Bellman's GAP binary '".$binName."'!\n" if (not -e $binName);
+	}
+
+}
+
 
 1;

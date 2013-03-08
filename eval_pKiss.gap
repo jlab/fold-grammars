@@ -28,10 +28,4 @@ algebra alg_pknot_dotBracket_id extends alg_pknot_dotBracket {
 include "Algebras/MFE/alg_pknot_mfe.gap"
 include "Grammars/gra_pknot_microstate.gap"
 
-instance mfepp = gra_pknot_microstate(alg_pknot_dotBracket_id * alg_pknot_mfe); //compile with --kbacktrace --tab-all !
-//~ instance count = gra_pknot_microstate(alg_count);
-//~ instance shape5pf = gra_pknot_microstate(alg_pknot_shape5 * (alg_pknot_mfe % alg_pknot_pfunc)); //compile with --tab-all
-//~ instance shape5mfedb = gra_pknot_microstate(alg_pknot_shape5 * (alg_pknot_mfe * alg_pknot_dotBracket)); //compile with --tab-all
-
-//~ TODOS:
-//~ - profiling against Peter Steffens pknotsRG version in ADPc
+instance eval = gra_pknot_microstate(alg_pknot_dotBracket_id * alg_pknot_mfe); //compile with --kbacktrace --tab-all !

@@ -38,8 +38,19 @@ class Pairs {
 					stacks.at(structure.first[i]).push_back(i);
 				}
 				if (getOpenType(structure.first[i]) != '-') { // position is a closing base
+					if (stacks.at(getOpenType(structure.first[i])).size() < 1) {
+						std::cerr << "Your structure is no valid dot bracket string: too few opening brackets of type '" << getOpenType(structure.first[i]) << "'." << std::endl;
+						exit(1);
+					}
 					basepairs.insert(std::pair<unsigned int, unsigned int>(stacks.at(getOpenType(structure.first[i])).back(), i));
 					stacks.at(getOpenType(structure.first[i])).pop_back();
+				}
+			}
+			//check for valid structure. Invalid if one of the stacks contains an element --> to many opening partners
+			for(ntt = types.begin(); ntt != types.end(); ntt++) {
+				if (stacks.at(ntt->first).size() > 0) {
+					std::cerr << "Your structure is no valid dot bracket string: too many opening brackets of type '" << ntt->first << "'." << std::endl;
+					exit(1);
 				}
 			}
 		}

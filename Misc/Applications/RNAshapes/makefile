@@ -11,13 +11,14 @@ MAKE=make
 PERL=perl
 BASEDIR=../../../
 
-targets=mfe subopt shapes probs sample
+targets=mfe subopt shapes probs sample eval
 grammars=nodangle overdangle microstate macrostate
 #~ nodangle overdangle microstate macrostate
 consensus=consensus mis
 #~ consensus mis
 window=
 outname=out
+isEval=0
 ifdef window
 	windowmodeflag=--window-mode
 	current_windowmodesuffix=$(WINDOWSUFFIX)
@@ -35,6 +36,7 @@ all_normal:
 	
 all_window:
 	for target in `echo "$(targets)"`; do \
+		if [ "$$target" = "eval" ]; then continue; fi; \
 		$(MAKE) $${target} window="yes"; \
 	done
 
@@ -114,8 +116,20 @@ sample:
 		fi; \
 	done
 	
+eval:
+	for grammar in `echo "$(grammars)"`; do \
+		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
+		sMi=`if [ $$grammar = "microstate" ]; then echo "_id"; fi`; \
+		suffix=`echo "$${sOv}$${sMa}"`; \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
+			$(GAPC) -I $(BASEDIR) -p "alg_dotBracket$${sMi} * alg_mfe$${suffix} * alg_shapeX" $(BASEDIR)eval_$${grammar}.gap $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="eval_$${grammar}" isEval=1; \
+		fi; \
+	done
+
 compile:
-	$(PERL) $(RNAOPTIONSPERLSCRIPT) $(outname)$(current_windowmodesuffix).mf 0
+	$(PERL) $(RNAOPTIONSPERLSCRIPT) $(outname)$(current_windowmodesuffix).mf $(isEval)
 	$(MAKE) -f $(outname)$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
 	mv $(outname)$(current_windowmodesuffix) $(PROGRAMPREFIX)$(outname)$(current_windowmodesuffix)
 
