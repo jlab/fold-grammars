@@ -32,8 +32,8 @@ qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 #~ checkParameters("pseudoknots parameter check", $TMPDIR."/".$PROGRAMPREFIX."mfe", "pseudoknots.parametercheck.out");
 #~ checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
 #~ checkRNAalishapes($TMPDIR, "rnaalishapes.run.out"); # run compileRNAalishapes() previously!!
-#~ checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
-#~ checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/Pseudoknots/","pKiss");
+checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
+checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/Pseudoknots/","pKiss");
 checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
 
 #add your tests above this line!
@@ -74,6 +74,7 @@ sub compile {
 sub checkProgram {
 	my ($TMPDIR, $truth, $programDir, $programName) = @_;
 	
+	srand(2342);
 	compile($TMPDIR, $programDir, $programName);
 	
 	my $testname = "$programName tests";

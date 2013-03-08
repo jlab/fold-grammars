@@ -44,4 +44,14 @@ our $OUTPUT_MINLEFTWIDTH = 7;
 our $OUTPUT_FIELDSPACER = "  ";
 our $SCIDECIMALS = 3;
 
+our $MODE_MFE = 'mfe';
+our $MODE_SUBOPT = 'subopt';
+our $MODE_SHAPES = 'shapes';
+our $MODE_PROBS = 'probs';
+our $MODE_SAMPLE = 'sample';
+our $MODE_EVAL = 'eval';
+our $MODE_ENFORCE = 'enforce';
+our $MODE_LOCAL = 'local';
+our $MODE_CAST = 'cast';
+
 1;
