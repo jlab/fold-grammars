@@ -1,3 +1,63 @@
+rnashapes (3.0.3-0ubuntu1~quantal1) quantal; urgency=low
+
+  * problems with launchpad rejection
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 23:16:15 +0100
+
+rnashapes (3.0.3-0ubuntu1~precise1) precise; urgency=low
+
+  * problems with launchpad rejection
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 23:16:09 +0100
+
+rnashapes (3.0.3-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * problems with launchpad rejection
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 23:14:02 +0100
+
+rnashapes (3.0.2-0ubuntu1~quantal1) quantal; urgency=low
+
+  * next try
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 18:33:48 +0100
+
+rnashapes (3.0.2-0ubuntu1~quantal1) quantal; urgency=low
+
+  * next try
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 18:29:36 +0100
+
+rnashapes (3.0.2-0ubuntu1~precise1) precise; urgency=low
+
+  * next try
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 18:29:31 +0100
+
+rnashapes (3.0.1-0ubuntu1~quantal1) quantal; urgency=low
+
+  * corrected dput upload order
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 18:33:48 +0100
+
+rnashapes (3.0.1-0ubuntu1~quantal1) quantal; urgency=low
+
+  * corrected dput upload order
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 18:29:36 +0100
+
+rnashapes (3.0.1-0ubuntu1~precise1) precise; urgency=low
+
+  * corrected dput upload order
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 18:29:31 +0100
+
+rnashapes (3.0.1-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * corrected dput upload order
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 18:29:20 +0100
+
 rnashapes (3.0.0-0ubuntu1~quantal) quantal; urgency=low
 
   * Initial release

@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-our $VERSION = '3.0.0';
+our $VERSION = '3.0.3';
 our $DATE = '11.03.2013';
 our $PROGRAMNAME = 'RNAshapes';
 
