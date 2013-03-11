@@ -12,6 +12,7 @@ PERL=perl
 BASEDIR=../../../
 
 targets=mfe subopt shapes probs sample eval
+targets_window=mfe subopt shapes probs sample
 grammars=nodangle overdangle microstate macrostate
 #~ nodangle overdangle microstate macrostate
 consensus=consensus mis
@@ -35,31 +36,26 @@ all_normal:
 	done
 	
 all_window:
-	for target in `echo "$(targets)"`; do \
-		if [ "$$target" = "eval" ]; then continue; fi; \
+	for target in `echo "$(targets_window)"`; do \
 		$(MAKE) $${target} window="yes"; \
 	done
 
-install:
+install: install-lib install-program
+
+install-program:
 	install -d $(PREFIX)/bin
-	install -d $(PREFIX)/lib
-	install -d $(PREFIX)/lib/foldGrammars
-	for file in ../lib/foldGrammars/*; do \
-		install -m 644 $$file $(PREFIX)/lib/foldGrammars; \
-	done;
-	for mode in $(targets); do \
-		for grammar in `echo "$(grammars)"`; do \
+	for grammar in `echo "$(grammars)"`; do \
+		for mode in $(targets); do \
 			install -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar} $(PREFIX)/bin; \
+		done; \
+		for mode in $(targets_window); do \
 			install -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar}$(WINDOWSUFFIX) $(PREFIX)/bin; \
 		done; \
 	done;
-	for grammar in `echo "$(grammars)"`; do \
-		install -m 755 $(PROGRAMPREFIX)sci_$${grammar} $(PREFIX)/bin; \
-	done;
-	for consensus in `echo "$(consensus)"`; do \
-		install -m 755 $(PROGRAMPREFIX)rep_$${consensus} $(PREFIX)/bin; \
-	done;
 	install -m 755 RNAshapes $(PREFIX)/bin
+
+install-lib:
+	make -C $(BASEDIR)/Misc/Applications/lib/ install PREFIX=$(PREFIX)
 
 mfe:
 	for grammar in `echo "$(grammars)"`; do \
@@ -136,27 +132,11 @@ compile:
 
 clean:
 	for program in `echo "$(targets)"`; do rm -f $${program}.*; rm -f $${program}_*; done
-	for program in `echo "$(targets)"`; do rm -f $${program}$(WINDOWSUFFIX).*; rm -f $${program}$(WINDOWSUFFIX)_*; done
-	for consensus in `echo "$(consensus)"`; do \
-		rm -f rep_$${consensus}*; \
-		rm -f rep_$${consensus}$(WINDOWSUFFIX)*; \
-	done
-	for grammar in `echo "$(grammars)"`; do \
-		rm -f sci_$${grammar}*; \
-		rm -f sci_$${grammar}$(WINDOWSUFFIX)*; \
-	done
-	
+	for program in `echo "$(targets_window)"`; do rm -f $${program}$(WINDOWSUFFIX).*; rm -f $${program}$(WINDOWSUFFIX)_*; done	
 	rm -f string.*
 	
 cleandist: clean
 	for grammar in `echo "$(grammars)"`; do \
-		for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}; rm -f $(PROGRAMPREFIX)$${program}_$${grammar}$(WINDOWSUFFIX); done; \
-	done
-	for consensus in `echo "$(consensus)"`; do \
-		rm -f $(PROGRAMPREFIX)rep_$${consensus}; \
-		rm -f $(PROGRAMPREFIX)rep_$${consensus}$(WINDOWSUFFIX); \
-	done
-	for grammar in `echo "$(grammars)"`; do \
-		rm -f $(PROGRAMPREFIX)sci_$${grammar}; \
-		rm -f $(PROGRAMPREFIX)sci_$${grammar}$(WINDOWSUFFIX); \
+		for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}; done; \
+		for program in `echo "$(targets_window)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}$(WINDOWSUFFIX); done; \
 	done

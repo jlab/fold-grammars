@@ -13,6 +13,7 @@ BASEDIR=../../../
 GRAMMARFILE=$(BASEDIR)Grammars/gra_pknot_microstate.gap
 
 targets=mfe subopt enforce local shapes probs eval
+targets_window=mfe subopt enforce local shapes probs
 window=
 outname=out
 isEval=0
@@ -26,24 +27,26 @@ endif
 
 all: all_normal all_window clean
 
-install:
+install: install-lib install-program
+
+install-program:
 	install -d $(PREFIX)/bin
-	install -d $(PREFIX)/lib
-	install -d $(PREFIX)/lib/foldGrammars
-	for file in ../lib/foldGrammars/*; do \
-		install -m 644 $$file $(PREFIX)/lib/foldGrammars; \
-	done
 	for file in $(targets); do \
 		install -m 755 $(PROGRAMPREFIX)$${file} $(PREFIX)/bin; \
+	done
+	for file in $(targets_window); do \
 		install -m 755 $(PROGRAMPREFIX)$${file}$(WINDOWSUFFIX) $(PREFIX)/bin; \
 	done
 	install -m 755 pKiss $(PREFIX)/bin
+	
+install-lib:
+	make -C $(BASEDIR)/Misc/Applications/lib/ install PREFIX=$(PREFIX)
 
 all_normal:
 	@ $(foreach var,$(targets), if [ ! -f "$(PROGRAMPREFIX)$(var)" ]; then $(MAKE) $(var); fi;)
 	
 all_window:
-	@ $(foreach var,$(targets), if [ ! -f "$(PROGRAMPREFIX)$(var)$(WINDOWSUFFIX)" ] && [ $(var) != "eval" ]; then $(MAKE) $(var) window="yes"; fi;)
+	@ $(foreach var,$(targets_window), if [ ! -f "$(PROGRAMPREFIX)$(var)$(WINDOWSUFFIX)" ]; then $(MAKE) $(var) window="yes"; fi;)
 	
 mfe:
 	$(GAPC) -I $(BASEDIR) -p "alg_pknot_mfe * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --kbacktrace --tab-all --no-coopt $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
@@ -87,9 +90,10 @@ compile:
 
 clean:
 	for program in `echo "$(targets)"`; do rm -f $${program}.*; rm -f $${program}_*; done
-	for program in `echo "$(targets)"`; do rm -f $${program}$(WINDOWSUFFIX).*; rm -f $${program}$(WINDOWSUFFIX)_*; done
+	for program in `echo "$(targets_window)"`; do rm -f $${program}$(WINDOWSUFFIX).*; rm -f $${program}$(WINDOWSUFFIX)_*; done
 	rm -f string.*
 	
 cleandist: clean
-	for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}; rm -f $(PROGRAMPREFIX)$${program}$(WINDOWSUFFIX); done
+	for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}; done
+	for program in `echo "$(targets_window)"`; do rm -f $(PROGRAMPREFIX)$${program}$(WINDOWSUFFIX); done
 	

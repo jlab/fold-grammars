@@ -10,3 +10,6 @@ install:
 	for file in foldGrammars/*; do \
 		install -m 644 $$file $(PREFIX)/lib/foldGrammars; \
 	done;
+
+clean:
+	echo "Nothing to do"

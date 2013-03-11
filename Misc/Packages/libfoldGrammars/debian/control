@@ -1,0 +1,12 @@
+Source: libfoldGrammars
+Section: devel
+Priority: extra
+Maintainer: Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>
+Build-Depends: debhelper (>= 7), make (>= 3.81), perl (>= 5.10.1)
+Standards-Version: 3.9.1
+Homepage: http://bibiserv.cebitec.uni-bielefeld.de/fold-grammars/
+
+Package: libfoldGrammars
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, perl (>= 5.10.1)
+Description: libfoldGrammars contains common functions for Perl wrapper program around Bellman's GAP compiled software like pKiss, RNAalishapes or RNAshapes.

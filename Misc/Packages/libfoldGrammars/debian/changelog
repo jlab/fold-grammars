@@ -1,0 +1,6 @@
+libfoldGrammars (1.0.0-0ubuntu1) precise; urgency=low
+
+  * Initial release
+   - moved Perl library into a separate package to circumwent conflicts when installing several packages that use it.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 00:15:00 +0200
