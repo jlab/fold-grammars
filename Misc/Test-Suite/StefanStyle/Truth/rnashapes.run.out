@@ -2324,379 +2324,379 @@ Sampling results:
 -28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  1.0000000  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=nodangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
-1) Shape: [][]  Score: -65.10  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -65.10  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--26.10  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-26.10  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--17.20  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-17.20  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--21.80  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-21.80  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=overdangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
 No consensus shapes found. Try to increase energy range with --absoluteDeviation or --relativeDeviation.
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=microstate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9
-1) Shape: [][]  Score: -85.17  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -85.17  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--34.91  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-34.91  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--23.11  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-23.11  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--27.15  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-27.15  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=macrostate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
-1) Shape: [][]  Score: -70.80  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -70.80  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--19.90  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-19.90  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--22.70  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-22.70  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=nodangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
-1) Shape: [][]  Score: -63.79  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -63.79  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--25.79  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-25.79  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--17.10  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-17.10  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--20.90  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-20.90  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=overdangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
 No consensus shapes found. Try to increase energy range with --absoluteDeviation or --relativeDeviation.
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=microstate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
-1) Shape: [][]  Score: -71.10  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -71.10  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--28.50  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-28.50  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--19.90  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-19.90  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--22.70  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-22.70  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=macrostate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
-1) Shape: [][]  Score: -69.09  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -69.09  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--28.49  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-28.49  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--18.80  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-18.80  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--21.80  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-21.80  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=nodangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
-1) Shape: [][]  Score: -65.10  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -65.10  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--26.10  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-26.10  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--17.20  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-17.20  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--21.80  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-21.80  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=overdangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
-1) Shape: [][]  Score: -71.00  Ratio of MFE: 0.98
+1)  Shape: [][]  Score: -71.00  Ratio of MFE: 0.98
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--19.90  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-19.90  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--22.90  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-22.90  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=microstate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9
-1) Shape: [][]  Score: -86.00  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -86.00  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--34.35  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-34.35  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--24.07  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-24.07  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--27.58  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-27.58  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=macrostate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
-1) Shape: [][]  Score: -97.54  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -97.54  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--27.48  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-27.48  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--31.50  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-31.50  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=nodangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
-1) Shape: [][]  Score: -63.79  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -63.79  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--25.79  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-25.79  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--17.10  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-17.10  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--20.90  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-20.90  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=overdangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
-1) Shape: [][]  Score: -71.00  Ratio of MFE: 0.98
+1)  Shape: [][]  Score: -71.00  Ratio of MFE: 0.98
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--19.90  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-19.90  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--22.90  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-22.90  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=microstate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
-1) Shape: [][]  Score: -69.09  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -69.09  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--28.49  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-28.49  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--18.80  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-18.80  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--21.80  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-21.80  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast --allowLP=0 --grammar=macrostate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
-1) Shape: [][]  Score: -97.91  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -97.91  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--39.87  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-39.87  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--26.59  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-26.59  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--31.45  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-31.45  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=nodangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
-1) Shape: [][]  Score: -91.54  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -91.54  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--36.91  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-36.91  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--24.32  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-24.32  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--30.31  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-30.31  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=overdangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9
 No consensus shapes found. Try to increase energy range with --absoluteDeviation or --relativeDeviation.
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=microstate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9
-1) Shape: [][]  Score: -85.17  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -85.17  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--34.91  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-34.91  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--23.11  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-23.11  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--27.15  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-27.15  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=macrostate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
-1) Shape: [][]  Score: -97.54  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -97.54  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--27.48  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-27.48  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--31.50  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-31.50  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=nodangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
-1) Shape: [][]  Score: -90.54  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -90.54  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--35.96  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-35.96  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--24.15  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-24.15  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--30.43  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-30.43  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=overdangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
-1) Shape: [][]  Score: -97.28  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -97.28  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--27.48  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-27.48  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--31.24  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-31.24  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=microstate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
-1) Shape: [][]  Score: -98.10  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -98.10  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--39.12  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-39.12  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--27.48  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-27.48  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--31.50  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-31.50  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=macrostate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9
-1) Shape: [][]  Score: -85.02  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -85.02  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--34.76  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-34.76  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--23.11  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-23.11  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--27.15  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-27.15  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=nodangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9
-1) Shape: [][]  Score: -79.16  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -79.16  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--31.54  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-31.54  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--21.03  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-21.03  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--26.59  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-26.59  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=overdangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
 No consensus shapes found. Try to increase energy range with --absoluteDeviation or --relativeDeviation.
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=microstate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9
-1) Shape: [][]  Score: -86.00  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -86.00  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--34.35  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-34.35  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--24.07  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-24.07  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--27.58  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-27.58  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=macrostate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
-1) Shape: [][]  Score: -97.54  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -97.54  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--27.48  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-27.48  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--31.50  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-31.50  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=nodangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9
-1) Shape: [][]  Score: -79.14  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -79.14  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--31.92  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-31.92  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--21.10  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-21.10  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--26.12  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-26.12  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=overdangle castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9
-1) Shape: [][]  Score: -85.51  Ratio of MFE: 0.98
+1)  Shape: [][]  Score: -85.51  Ratio of MFE: 0.98
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--33.91  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-33.91  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--24.07  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-24.07  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--27.53  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-27.53  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=microstate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9
-1) Shape: [][]  Score: -85.17  Ratio of MFE: 0.97
+1)  Shape: [][]  Score: -85.17  Ratio of MFE: 0.97
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--34.91  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-34.91  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--23.11  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-23.11  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--27.15  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-27.15  ((((((((((((......))))))))..)))).((((........)))).  R: 2  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=cast  --grammar=macrostate castInput.mfa --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
-1) Shape: [][]  Score: -97.54  Ratio of MFE: 1.00
+1)  Shape: [][]  Score: -97.54  Ratio of MFE: 1.00
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]  R = 1
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  R: 1  [][]
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--27.48  ..(((((....))))).....(((((((((.....))))))))).  [][]  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-27.48  ..(((((....))))).....(((((((((.....))))))))).  R: 1  [][]
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--31.50  ((((((((((((......))))))))..)))).((((........)))).  [][]  R = 1
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-31.50  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=nodangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17

@@ -24,11 +24,6 @@ use POSIX 'isatty';
 
 our $PROGRAM_NAME = "RapidShapesTest";
 
-our $GUESSMODE_SAMPLE = "sample";
-our $GUESSMODE_KBEST = "kbest";
-our $GUESSMODE_LIST = "list";
-our $GUESSMODE_ENERGY = "energy";
-
 our $GRAMMAR_NODANGLE = 'nodangle';
 our $GRAMMAR_OVERDANGLE = 'overdangle';
 our $GRAMMAR_MICROSTATE = 'microstate';
@@ -37,16 +32,19 @@ our $GRAMMAR_MACROSTATE = 'macrostate';
 our $TASK_TRUTH = 'truth';
 our $TASK_TDMRUN = 'tdmrun';
 
+our @ALLMODES = ($Settings::MODE_SAMPLE, $Settings::MODE_KBEST, $Settings::MODE_LIST, $Settings::MODE_ENERGY);
+@References::ORDER = ('mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','voss:gie:reh:2006','jan:gie:2010');
+
 my %PARAM;
-$PARAM{shapelevel} = {key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels, where 5 is the most abstract and 1 the most concrete one.\nLevel 1 abstracts from all lengths (unpaired regions and stacks) and is the most concrete level. In Level 2 unpaired regions between components (e.g. between two hairpins) are not recognized. Level 3 does not differentiate between different types of helix interruptions like intern loops or bulges. Level 4 does only recognize internal loops as helix interrutions and finally in level 5 all interruptions are ignored, thus only ordering and nesting of hairpins and multiloops are shown. (see [5] for more formal shape level definitions)\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
-$PARAM{grammar} = {key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could perform surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"$GRAMMAR_OVERDANGLE\". See [3] for further details."};
-$PARAM{allowlp} = {key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
-$PARAM{temperature} = {key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
-$PARAM{param} = {key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [1] and [2])."};
-$PARAM{help} = {key => 'help', default => undef, info => "show this brief help on version and usage"};
-$PARAM{cluster} = {key => 'cluster', gapc => undef, type => 's', default => undef, info =>, "You might want to compute probabilities for a multipe fasta file. If you have a Oracle Grid Engin at your fingertips, you can prepare an array job for fasta file by providing it here to the parameter --@(cluster)."};
-$PARAM{binarypath} = {key => 'binPath', type => 's', default => undef, info => "$PROGRAM_NAME expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
-$PARAM{binaryprefix} = {key => 'binPrefix', type => 's', default => 'RapidShapes_', info => "$PROGRAM_NAME expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)"."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
+$PARAM{shapelevel} = {modes => \@ALLMODES, key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels, where 5 is the most abstract and 1 the most concrete one.\nLevel 1 abstracts from all lengths (unpaired regions and stacks) and is the most concrete level. In Level 2 unpaired regions between components (e.g. between two hairpins) are not recognized. Level 3 does not differentiate between different types of helix interruptions like intern loops or bulges. Level 4 does only recognize internal loops as helix interrutions and finally in level 5 all interruptions are ignored, thus only ordering and nesting of hairpins and multiloops are shown. (see [".References::getNumber('jan:gie:2010')."] for more formal shape level definitions)\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
+$PARAM{grammar} = {modes => \@ALLMODES, key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could perform surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"$GRAMMAR_OVERDANGLE\". See [".References::getNumber('jan:schud:ste:gie:2011')."] for further details."};
+$PARAM{allowlp} = {modes => \@ALLMODES, key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
+$PARAM{temperature} = {modes => \@ALLMODES, key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
+$PARAM{param} = {modes => \@ALLMODES, key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [".References::getNumber('mat:dis:chi:schroe:zuk:tur:2004')."] and [".References::getNumber('tur:mat:2009')."])."};
+$PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
+$PARAM{cluster} = {modes => \@ALLMODES, key => 'cluster', gapc => undef, type => 's', default => undef, info =>, "You might want to compute probabilities for a multipe fasta file. If you have a Oracle Grid Engin at your fingertips, you can prepare an array job for fasta file by providing it here to the parameter --@(cluster)."};
+$PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => "$PROGRAM_NAME expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
+$PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => 'RapidShapes_', info => "$PROGRAM_NAME expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)"."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
 
 
 my $settings = {};
@@ -172,7 +170,9 @@ sub checkParameters {
 	my ($settings) = @_;
 	
 	my $diePrefix = "wrong command line parameter:\n  ";
-		
+	
+	#~ Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
+
 	die $diePrefix."the parameter file you specified could not be found.\n" if ((defined $settings->{'param'}) && (not -e $settings->{'param'}));
 	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
 	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
@@ -251,19 +251,21 @@ EOF
 
 	$HELP .= "GENERAL OPTIONS:\n";
 	for my $par ('shapelevel','grammar','allowlp','temperature','param') {
-		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
+		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
 	}
 	$HELP .= "MISC OPTIONS:\n";
 	for my $par ('help','cluster','binarypath','binaryprefix') {
-		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM)."\n";
+		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
 	}
+	
 	$HELP .= "REFERENCES:\n";
-	$HELP .= Utils::printIdent("[1] ", "David H Mathews, Matthew D Disney, Jessica L Childs, Susan J Schroeder, Michael Zuker, Douglas H Turner.\n\"Incorporating chemical modification constraints into a dynamic programming algorithm for prediction of RNA secondary structure.\"\nProceedings of the National Academy of Sciences of the United States of America 2004. doi: 10.1073/pnas.0401799101")."\n";
-	$HELP .= Utils::printIdent("[2] ", "Douglas H Turner, David H Mathews.\n\"NNDB: The nearest neighbor parameter database for predicting stability of nucleic acid secondary structure.\"\"Nucleic Acids Research 2009. doi:10.1093/nar/gkp892")."\n";
-	$HELP .= Utils::printIdent("[3] ", "Stefan Janssen, Christian Schudoma, Gerhard Steger, Robert Giegerich.\n\"Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction.\"\n BMC Bioinformatics 2011. doi:10.1186/1471-2105-12-429")."\n";
-	$HELP .= Utils::printIdent("[4] ", "Bjoern Voss, Robert Giegerich, Marc Rehmsmeier.\n\"Complete probabilistic analysis of RNA shapes.\"\nBMC Biology 2006. doi:10.1186/1741-7007-4-5")."\n";
+	foreach my $refID ('mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','voss:gie:reh:2006') {
+		$HELP .= References::printReference($refID);
+	}
 	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
-	$HELP .= Utils::printIdent("[5] ", "Stefan Janssen, Robert Giegerich.\n\"Faster computation of exact RNA shape probabilities.\"\nBioinformatics 2010. doi:10.1093/bioinformatics/btq014")."\n";
+	foreach my $refID ('jan:gie:2010') {
+		$HELP .= References::printReference($refID);
+	}
 
 	print $HELP;
 	exit(0);

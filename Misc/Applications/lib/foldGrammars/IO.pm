@@ -276,7 +276,13 @@ sub output {
 						$probability = $result->{samples} / $settings->{numsamples} if ($settings->{mode} eq $Settings::MODE_SAMPLE);
 						print sprintf("%1.$settings->{'probdecimals'}f", $probability);
 					}
-				
+					
+				#rank, if in RNAcast mode
+					if ($settings->{mode} eq $Settings::MODE_CAST) {
+						print $SEPARATOR;
+						print "R: ".$result->{rank};
+					}
+					
 				#shape class if available
 					if (exists $result->{shape} && defined $result->{shape}) {
 						print $SEPARATOR;

@@ -53,5 +53,8 @@ our $MODE_EVAL = 'eval';
 our $MODE_ENFORCE = 'enforce';
 our $MODE_LOCAL = 'local';
 our $MODE_CAST = 'cast';
+our $MODE_KBEST = "kbest";
+our $MODE_LIST = "list";
+our $MODE_ENERGY = "energy";
 
 1;

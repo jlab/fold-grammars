@@ -2242,184 +2242,184 @@
 -48.90  .[[.[[[.{{.]]]..[[.{{]]..}}...}}..{{]]....}}.  0.0000000  [[{][{]}}{]}
 
 #CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast --allowLP=0 --strategy=A --minHairpinLength=6 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 castInput.mfa --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
-1) Shape: [{]}[{]}[{]}  Score: -175.10  Ratio of MFE: 0.96
+1)  Shape: [{]}[{]}[{]}  Score: -175.10  Ratio of MFE: 0.96
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--63.20  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  [{]}[{]}[{]}  R = 5
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-63.20  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  R: 5  [{]}[{]}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--51.00  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  [{]}[{]}[{]}  R = 2
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-51.00  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  R: 2  [{]}[{]}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--60.90  ..[[[[..{{]]]]..}}[[.{{.]]..}}[[[.{{.....]]]..}}..  [{]}[{]}[{]}  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-60.90  ..[[[[..{{]]]]..}}[[.{{.]]..}}[[[.{{.....]]]..}}..  R: 2  [{]}[{]}[{]}
 
-2) Shape: [{][{]}}[{]}  Score: -172.00  Ratio of MFE: 0.94
+2)  Shape: [{][{]}}[{]}  Score: -172.00  Ratio of MFE: 0.94
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--63.50  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  [{][{]}}[{]}  R = 4
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-63.50  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 4  [{][{]}}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--52.50  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-52.50  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  R: 1  [{][{]}}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--56.00  ..[[.{{]][[[..{{]]]...}}.....}}[[.{{{....]]..}}}..  [{][{]}}[{]}  R = 6
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-56.00  ..[[.{{]][[[..{{]]]...}}.....}}[[.{{{....]]..}}}..  R: 6  [{][{]}}[{]}
 
 
 #CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast  --strategy=B --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 castInput.mfa --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
-1) Shape: [{][{]}}[{]}  Score: -256.76  Ratio of MFE: 0.94
+1)  Shape: [{][{]}}[{]}  Score: -256.76  Ratio of MFE: 0.94
 >seq1
-         ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
- -94.42  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  [{][{]}}[{]}  R = 15
+      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+ -94.42  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 15  [{][{]}}[{]}
 >seq2
-         AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
- -78.93  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}  R = 1
+      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+ -78.93  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  R: 1  [{][{]}}[{]}
 >seq3
-         gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
- -83.41  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  [{][{]}}[{]}  R = 8
+      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+ -83.41  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 8  [{][{]}}[{]}
 
 
 #CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast --allowLP=0 --strategy=A --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 castInput.mfa --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
-1) Shape: [{][{]}}[{]}  Score: -199.60  Ratio of MFE: 0.96
+1)  Shape: [{][{]}}[{]}  Score: -199.60  Ratio of MFE: 0.96
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--75.16  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  [{][{]}}[{]}  R = 5
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-75.16  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 5  [{][{]}}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--60.95  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-60.95  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  R: 1  [{][{]}}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--63.49  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  [{][{]}}[{]}  R = 14
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-63.49  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 14  [{][{]}}[{]}
 
-2) Shape: [{]}[{]}[{]}  Score: -199.26  Ratio of MFE: 0.96
+2)  Shape: [{]}[{]}[{]}  Score: -199.26  Ratio of MFE: 0.96
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--73.51  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  [{]}[{]}[{]}  R = 8
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-73.51  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  R: 8  [{]}[{]}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--57.95  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  [{]}[{]}[{]}  R = 3
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-57.95  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  R: 3  [{]}[{]}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--67.80  ..[[[[.{{{]]]]..}}}[[..{{{..]]..}}}...[[..{{]]..}}  [{]}[{]}[{]}  R = 3
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-67.80  ..[[[[.{{{]]]]..}}}[[..{{{..]]..}}}...[[..{{]]..}}  R: 3  [{]}[{]}[{]}
 
 
 #CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast  --strategy=D --minHairpinLength=6 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 castInput.mfa --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
-1) Shape: [{]}[{]}[{]}  Score: -188.72  Ratio of MFE: 0.96
+1)  Shape: [{]}[{]}[{]}  Score: -188.72  Ratio of MFE: 0.96
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--69.04  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  [{]}[{]}[{]}  R = 6
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-69.04  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  R: 6  [{]}[{]}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--55.41  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  [{]}[{]}[{]}  R = 3
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-55.41  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  R: 3  [{]}[{]}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--64.27  ..[[[[.{{{]]]]..}}}[[..{{{..]]..}}}...[[..{{]]..}}  [{]}[{]}[{]}  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-64.27  ..[[[[.{{{]]]]..}}}[[..{{{..]]..}}}...[[..{{]]..}}  R: 2  [{]}[{]}[{]}
 
-2) Shape: [{][{]}}[{]}  Score: -187.42  Ratio of MFE: 0.96
+2)  Shape: [{][{]}}[{]}  Score: -187.42  Ratio of MFE: 0.96
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--69.91  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  [{][{]}}[{]}  R = 3
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-69.91  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 3  [{][{]}}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--57.55  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-57.55  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  R: 1  [{][{]}}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--59.96  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  [{][{]}}[{]}  R = 6
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-59.96  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 6  [{][{]}}[{]}
 
 
 #CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast --allowLP=0 --strategy=A --minHairpinLength=6 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 castInput.mfa --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
-1) Shape: [{][{]}}[{]}  Score: -202.76  Ratio of MFE: 0.95
+1)  Shape: [{][{]}}[{]}  Score: -202.76  Ratio of MFE: 0.95
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--76.42  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  [{][{]}}[{]}  R = 3
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-76.42  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 3  [{][{]}}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--60.93  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-60.93  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  R: 1  [{][{]}}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--65.41  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  [{][{]}}[{]}  R = 6
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-65.41  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 6  [{][{]}}[{]}
 
-2) Shape: [{]}[{]}[{]}  Score: -201.69  Ratio of MFE: 0.95
+2)  Shape: [{]}[{]}[{]}  Score: -201.69  Ratio of MFE: 0.95
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--73.76  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  [{]}[{]}[{]}  R = 6
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-73.76  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  R: 6  [{]}[{]}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--58.31  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  [{]}[{]}[{]}  R = 2
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-58.31  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  R: 2  [{]}[{]}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--69.62  ...[[[.{{.]]]..}}.[[.{{.]]..}}[[[.{{.....]]]..}}..  [{]}[{]}[{]}  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-69.62  ...[[[.{{.]]]..}}.[[.{{.]]..}}[[[.{{.....]]]..}}..  R: 2  [{]}[{]}[{]}
 
 
 #CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast  --strategy=D --minHairpinLength=2 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 castInput.mfa --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
-1) Shape: [{][{]}}[{]}  Score: -229.76  Ratio of MFE: 0.95
+1)  Shape: [{][{]}}[{]}  Score: -229.76  Ratio of MFE: 0.95
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--85.42  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  [{][{]}}[{]}  R = 10
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-85.42  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 10  [{][{]}}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--69.93  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-69.93  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  R: 1  [{][{]}}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--74.41  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  [{][{]}}[{]}  R = 10
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-74.41  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 10  [{][{]}}[{]}
 
-2) Shape: [{]}[{]}[{]}  Score: -228.69  Ratio of MFE: 0.94
+2)  Shape: [{]}[{]}[{]}  Score: -228.69  Ratio of MFE: 0.94
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--82.76  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  [{]}[{]}[{]}  R = 19
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-82.76  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  R: 19  [{]}[{]}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--67.31  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  [{]}[{]}[{]}  R = 2
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-67.31  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  R: 2  [{]}[{]}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--78.62  ...[[[.{{.]]]..}}.[[.{{.]]..}}[[[.{{.....]]]..}}..  [{]}[{]}[{]}  R = 2
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-78.62  ...[[[.{{.]]]..}}.[[.{{.]]..}}[[[.{{.....]]]..}}..  R: 2  [{]}[{]}[{]}
 
 
 #CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast --allowLP=0 --strategy=B --minHairpinLength=4 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 castInput.mfa --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
-1) Shape: [{][{]}}[{]}  Score: -226.60  Ratio of MFE: 0.95
+1)  Shape: [{][{]}}[{]}  Score: -226.60  Ratio of MFE: 0.95
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--84.16  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  [{][{]}}[{]}  R = 5
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-84.16  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 5  [{][{]}}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--69.95  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-69.95  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  R: 1  [{][{]}}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--72.49  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  [{][{]}}[{]}  R = 5
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-72.49  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 5  [{][{]}}[{]}
 
-2) Shape: [{]}[{]}[{]}  Score: -226.26  Ratio of MFE: 0.95
+2)  Shape: [{]}[{]}[{]}  Score: -226.26  Ratio of MFE: 0.95
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--82.51  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  [{]}[{]}[{]}  R = 6
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-82.51  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  R: 6  [{]}[{]}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--66.95  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  [{]}[{]}[{]}  R = 2
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-66.95  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  R: 2  [{]}[{]}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--76.80  ..[[[[.{{{]]]]..}}}[[..{{{..]]..}}}...[[..{{]]..}}  [{]}[{]}[{]}  R = 3
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-76.80  ..[[[[.{{{]]]]..}}}[[..{{{..]]..}}}...[[..{{]]..}}  R: 3  [{]}[{]}[{]}
 
 
 #CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast  --strategy=A --minHairpinLength=6 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37 castInput.mfa --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
-1) Shape: [{]}[{]}[{]}  Score: -202.80  Ratio of MFE: 0.96
+1)  Shape: [{]}[{]}[{]}  Score: -202.80  Ratio of MFE: 0.96
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--72.60  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  [{]}[{]}[{]}  R = 13
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-72.60  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  R: 13  [{]}[{]}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--61.30  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  [{]}[{]}[{]}  R = 2
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-61.30  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  R: 2  [{]}[{]}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--68.90  ..[[[[.{{{]]]]..}}}[[..{{{..]]..}}}...[[..{{]]..}}  [{]}[{]}[{]}  R = 3
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-68.90  ..[[[[.{{{]]]]..}}}[[..{{{..]]..}}}...[[..{{]]..}}  R: 3  [{]}[{]}[{]}
 
-2) Shape: [{][{]}}[{]}  Score: -199.80  Ratio of MFE: 0.94
+2)  Shape: [{][{]}}[{]}  Score: -199.80  Ratio of MFE: 0.94
 >seq1
-        ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA
--72.70  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  [{][{]}}[{]}  R = 10
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-72.70  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 10  [{][{]}}[{]}
 >seq2
-        AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU
--62.40  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}  R = 1
+     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+-62.40  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  R: 1  [{][{]}}[{]}
 >seq3
-        gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
--64.70  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  [{][{]}}[{]}  R = 6
+     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+-64.70  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 6  [{][{]}}[{]}
 
 
 #CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=eval --allowLP=0 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5

@@ -338,6 +338,7 @@ sub printParamUsage {
 	
 	my $text = "missing description.";
 	$text = usage_convertInfoText($parameter->{info}, $refHash_params, $parameter->{default}) if ((defined $parameter->{info}) && ($parameter->{info} ne ''));
+	
 	if (@{$parameter->{modes}} < @{$refList_allmodes}) {
 		$text .= "\nOnly available in mode".(@{$parameter->{modes}} == 1 ? '' : 's').": \"".join('", "', @{$parameter->{modes}})."\".";
 	}
