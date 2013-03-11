@@ -167,76 +167,10 @@ sub doComputation {
 	my $result = qx($command "$seq" $structure 2>&1);
 	
 	print "\n" if ($sequenceNumber != 0);
-	if ($settings->{'mode'} eq $Settings::MODE_LOCAL) {
-		parseLocal($result, $settings, $refHash_sequence);
-	} else {
-		IO::parse($result, $refHash_sequence, 'pKiss', $settings);
-	}
+	IO::parse($result, $refHash_sequence, 'pKiss', $settings);
 	
 	$sequenceNumber++;
 	return undef;
-}
-
-sub parseLocal {
-	my ($result, $settings, $refHash_sequence) = @_;
-	
-	my %predictions = ();
-	my $maxEnergyLen = $Settings::OUTPUT_MINLEFTWIDTH;
-	my $maxStartPosLen = 0;
-	my $windowStartPos = undef;
-	my $windowEndPos = undef;
-	foreach my $line (split(m/\r?\n/, $result)) {
-		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
-			($windowStartPos, $windowEndPos) = ($1, $2);
-		} elsif ($line =~ m/^Answer:\s*$/) {
-			($windowStartPos, $windowEndPos) = (0, length($refHash_sequence->{sequence}));
-		} elsif ($line =~ m/^\s*$/) {
-		} else {
-			my ($energy, $startPos, $structure, $endPos) = ($line =~ m/\( (.+?) , (\d+) (.+?) (\d+) \)/);
-			$energy = sprintf("%.2f", $energy/100);
-			if (not exists $predictions{$windowStartPos."-".$windowEndPos}->{$startPos}->{$endPos}->{$structure}) {
-				$predictions{$windowStartPos."-".$windowEndPos}->{$startPos}->{$endPos}->{$structure} = $energy;
-			} else {
-				$predictions{$windowStartPos."-".$windowEndPos}->{$startPos}->{$endPos}->{$structure} = $energy if ($energy < $predictions{$windowStartPos."-".$windowEndPos}->{$startPos}->{$endPos}->{$structure});
-			}
-			$maxEnergyLen = length($energy) if ($maxEnergyLen < length($energy));
-			$maxStartPosLen = length($startPos) if ($maxStartPosLen < length($startPos));
-			$maxStartPosLen = length($windowStartPos) if ($maxStartPosLen < length($windowStartPos));
-		}
-	}
-	
-	my $leftLength = $maxEnergyLen;
-	$leftLength = $maxStartPosLen if ($leftLength < $maxStartPosLen);
-
-	my %blocks = ();
-	foreach my $windowPos (keys(%predictions)) {
-		foreach my $startPos (sort {$a <=> $b} keys(%{$predictions{$windowPos}})) {
-			foreach my $endPos (sort {$a <=> $b} keys(%{$predictions{$windowPos}->{$startPos}})) {
-				my $block = "";
-				my $mfe = 0;
-				$block .= sprintf("% ${leftLength}i", $startPos).$IO::SEPARATOR.substr($refHash_sequence->{sequence}, $startPos-1, $endPos-$startPos).$IO::SEPARATOR.($endPos-1)."\n";
-				foreach my $structure (sort {$predictions{$windowPos}->{$startPos}->{$endPos}->{$a} <=> $predictions{$windowPos}->{$startPos}->{$endPos}->{$b}} keys(%{$predictions{$windowPos}->{$startPos}->{$endPos}})) {
-					my $energy = $predictions{$windowPos}->{$startPos}->{$endPos}->{$structure};
-					$block .= sprintf("% $leftLength.2f", $energy).$IO::SEPARATOR.$structure."\n";
-					$mfe = $energy if ($energy < $mfe);
-				}
-				push @{$blocks{$windowPos}}, {block => $block, mfe => $mfe, startPos => $startPos, endPos => $endPos};
-			}
-		}
-	}
-
-	print ">".$refHash_sequence->{header}."\n";
-	my @windowPositions = sort {getStartPos($a) <=> getStartPos($b)} keys(%predictions);
-	foreach my $windowPos (@windowPositions) {
-		my ($startPos, $endPos) = split(m/-/, $windowPos);
-		print "=== window: ".($startPos+1)." to ".$endPos.": ===\n";
-		my @blocks = sort {($a->{mfe} <=> $b->{mfe}) || ($a->{startPos} <=> $b->{startPos}) || ($a->{endPos} <=> $b->{endPos})} @{$blocks{$windowPos}};
-		foreach my $block (@blocks) {
-			print $block->{block};
-			print "\n" if ($block != $blocks[$#blocks]);
-		}
-		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
-	}
 }
 
 sub buildCommand {

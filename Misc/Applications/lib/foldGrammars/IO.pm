@@ -44,7 +44,7 @@ sub parse {
 	my %samples = ();
 	my $samplePos = 0;
 	foreach my $line (split(m/\r?\n/, $result)) {
-		my ($energy, $part_energy, $part_covar, $structure, $shape, $pfunc) = (undef, undef, undef, undef, undef, undef);
+		my ($energy, $part_energy, $part_covar, $structure, $shape, $pfunc, $blockPos) = (undef, undef, undef, undef, undef, undef, undef);
 		my ($windowPos, $score) = (undef, undef); #helper variables for combined information
 
 	#parsing window position information
@@ -111,8 +111,11 @@ sub parse {
 			} elsif (($settings->{mode} eq $Settings::MODE_ENFORCE) && ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
 				#( ( nested structure , -2659 ) , ..(((((....))))).....(((((((((.....))))))))). )
 				($shape, $energy, $structure) = ($1,$2/100,$3);
+			} elsif (($settings->{mode} eq $Settings::MODE_LOCAL) && ($line =~ m/\( (.+?) , (\d+) (.+?) (\d+) \)/)) {
+				#( -2000 , 1 [[[...((((((......)))))).{{{{.]]]..}}}} 40 )
+				($energy, $structure, $blockPos) = ($1/100, $3, ($2-1).$DATASEPARATOR.($4-1));
 			}
-			if (defined $energy || defined $structure) {
+			if (defined $energy || defined $structure || defined $blockPos) {
 				$fieldLengths{energy} = length(formatEnergy($energy)) if (length(formatEnergy($energy)) > $fieldLengths{energy});
 				$windowPos = $windowStartPos.$DATASEPARATOR.$windowEndPos;
 				$score = $energy;
@@ -127,12 +130,14 @@ sub parse {
 			if ($settings->{mode} eq $Settings::MODE_SAMPLE) {
 				push @{$samples{$windowPos}->{$shape}}, {structure => $structure, score => $score, position => $samplePos++, shape => $shape};
 			} elsif ($settings->{mode} eq $Settings::MODE_EVAL) {
-				push @{$predictions{$windowPos}->{$structure}}, {score => $score, shape => $shape};
+				push @{$predictions{$windowPos}->{dummyblock}->{$structure}}, {score => $score, shape => $shape};
+			} elsif ($settings->{mode} eq $Settings::MODE_LOCAL) {
+				$predictions{$windowPos}->{$blockPos}->{$structure}->{score} = $score if ((not exists $predictions{$windowPos}->{$blockPos}->{$structure}->{score}) || ($score < $predictions{$windowPos}->{$blockPos}->{$structure}->{score}));
 			} else {
-				if (not exists $predictions{$windowPos}->{$structure}) {
-					$predictions{$windowPos}->{$structure} = {score => $score, shape => $shape, pfunc => $pfunc};
+				if (not exists $predictions{$windowPos}->{dummyblock}->{$structure}) {
+					$predictions{$windowPos}->{dummyblock}->{$structure} = {score => $score, shape => $shape, pfunc => $pfunc};
 				} else {
-					$predictions{$windowPos}->{$structure} = {score => $score, shape => $shape, pfunc => $pfunc} if (splitFields($score)->[0] < splitFields($predictions{$windowPos}->{$structure}->{score})->[0]);
+					$predictions{$windowPos}->{dummyblock}->{$structure} = {score => $score, shape => $shape, pfunc => $pfunc} if (splitFields($score)->[0] < splitFields($predictions{$windowPos}->{dummyblock}->{$structure}->{score})->[0]);
 				}
 				$sumPfunc{$windowPos} += $pfunc if (defined $pfunc);
 			}
@@ -145,7 +150,7 @@ sub parse {
 			foreach my $shape (keys(%{$samples{$windowPos}})) {
 				my @scoreSortedSamples = sort {splitFields($a->{score})->[0] <=> splitFields($b->{score})->[0]} @{$samples{$windowPos}->{$shape}};
 				my $shrep = $scoreSortedSamples[0];
-				$predictions{$windowPos}->{$shrep->{structure}} = {score => $shrep->{score}, samples => scalar(@{$samples{$windowPos}->{$shape}}), shape => $shape};
+				$predictions{$windowPos}->{dummyblock}->{$shrep->{structure}} = {score => $shrep->{score}, samples => scalar(@{$samples{$windowPos}->{$shape}}), shape => $shape};
 			}
 		}
 	}
@@ -182,122 +187,146 @@ sub output {
 	my @windowPositions = sort {splitFields($a)->[0] <=> splitFields($b)->[0]} keys(%{$predictions});
 	foreach my $windowPos (@windowPositions) {
 		my ($startPos, $endPos) = @{splitFields($windowPos)};
-		my $avgSglMfe = getAvgSingleMFEs($input, $settings, $startPos, $endPos) if ($settings->{'sci'});
-		
-		#WINDOW INFO LINE
-			print sprintf("% ${lengthScoreField}i", $startPos+1);
-			print $SEPARATOR;
+		my @blockPositions = ('dummyblock');
+		if ($settings->{mode} eq $Settings::MODE_LOCAL) {
+			@blockPositions = sort {
+													(getBlockMFE($predictions->{$windowPos}->{$a}) <=> getBlockMFE($predictions->{$windowPos}->{$b})) ||
+													(splitFields($a)->[0] <=> splitFields($b)->[0]) ||
+													(splitFields($a)->[1] <=> splitFields($b)->[1])
+												} keys(%{$predictions->{$windowPos}});
+			print "=== window: ".($startPos+1)." to ".$endPos.": ===\n";
+		}
+		foreach my $blockPos (@blockPositions) {
+			($startPos, $endPos) = @{splitFields($blockPos)} if ($settings->{mode} eq $Settings::MODE_LOCAL);
+			my $avgSglMfe = getAvgSingleMFEs($input, $settings, $startPos, $endPos) if ($settings->{'sci'});
 			
-			my $inputRepresentant = undef;
-			$inputRepresentant = $input->{sequence} if (exists $input->{sequence});
-			$inputRepresentant = $input->{representation} if (exists $input->{representation});
-			print substr($inputRepresentant, $startPos, $endPos-$startPos);
-			print $SEPARATOR;
-			
-			print $endPos;
-			print "\n";
-			
-		#evtl. samples
-			if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($settings->{showsamples})) {
-				print $settings->{numsamples}." samples, drawn by stochastic backtrace to estimate shape frequencies:\n";
-				my @allSamples = ();
-				foreach my $shape (keys(%{$samples->{$windowPos}})) {
-					push @allSamples, @{$samples->{$windowPos}->{$shape}};
-				}
-				foreach my $refHash_sample (sort {$a->{position} <=> $b->{position}} @allSamples) {
-					print sprintf($scoreFormat, @{splitFields($refHash_sample->{score})});
-					print $SEPARATOR;
-					print $refHash_sample->{structure};
-					if ((exists $settings->{'sci'}) && ($settings->{'sci'})) {
-						print $SEPARATOR;
-						print printSCI(splitFields($refHash_sample->{score})->[0], $avgSglMfe);
+			#WINDOW INFO LINE
+				print sprintf("% ${lengthScoreField}i", $startPos+1);
+				print $SEPARATOR;
+				
+				my $inputRepresentant = undef;
+				$inputRepresentant = $input->{sequence} if (exists $input->{sequence});
+				$inputRepresentant = $input->{representation} if (exists $input->{representation});
+				print substr($inputRepresentant, $startPos, $endPos-$startPos);
+				print $SEPARATOR;
+				
+				print $endPos;
+				print "\n";
+				
+			#evtl. samples
+				if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($settings->{showsamples})) {
+					print $settings->{numsamples}." samples, drawn by stochastic backtrace to estimate shape frequencies:\n";
+					my @allSamples = ();
+					foreach my $shape (keys(%{$samples->{$windowPos}})) {
+						push @allSamples, @{$samples->{$windowPos}->{$shape}};
 					}
-					print $SEPARATOR;
-					print $refHash_sample->{shape};
+					foreach my $refHash_sample (sort {$a->{position} <=> $b->{position}} @allSamples) {
+						print sprintf($scoreFormat, @{splitFields($refHash_sample->{score})});
+						print $SEPARATOR;
+						print $refHash_sample->{structure};
+						if ((exists $settings->{'sci'}) && ($settings->{'sci'})) {
+							print $SEPARATOR;
+							print printSCI(splitFields($refHash_sample->{score})->[0], $avgSglMfe);
+						}
+						print $SEPARATOR;
+						print $refHash_sample->{shape};
+						print "\n";
+					}
+					print "\nSampling results:\n\n";
+				}
+			
+			my @sortedStructures = keys(%{$predictions->{$windowPos}->{$blockPos}});
+			@sortedStructures =  sort {splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]} @sortedStructures if (($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT) || ($settings->{mode} eq $Settings::MODE_SHAPES));
+			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$b}->{pfunc} <=> $predictions->{$windowPos}->{$blockPos}->{$a}->{pfunc}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_PROBS));
+			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$b}->{samples} <=> $predictions->{$windowPos}->{$blockPos}->{$a}->{samples}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_SAMPLE));
+			if ($settings->{mode} eq $Settings::MODE_ENFORCE) {
+				foreach my $class (keys(%ENFORCE_CLASSES)) {
+					my $haveClass = 'false';
+					foreach my $structure (keys(%{$predictions->{$windowPos}->{$blockPos}})) {
+						if ($predictions->{$windowPos}->{$blockPos}->{$structure}->{shape} eq $class) {
+							$haveClass = 'true';
+							last;
+						}
+					}
+					if ($haveClass eq 'false') {
+						$predictions->{$windowPos}->{$blockPos}->{$class} = {shape => $class, score => 0};
+					}
+				}
+				@sortedStructures =  sort {$ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$a}->{shape}} <=> $ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$b}->{shape}}} keys(%{$predictions->{$windowPos}->{$blockPos}});
+			}
+			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$a}->{score} <=> $predictions->{$windowPos}->{$blockPos}->{$b}->{score}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_LOCAL));
+			
+			foreach my $structure (@sortedStructures) {
+				last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{pfunc}/$sumPfunc->{$windowPos} < $settings->{lowprobfilteroutput}));
+				last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
+				
+				my @results = ($predictions->{$windowPos}->{$blockPos}->{$structure});
+				@results = sort {splitFields($a->{score})->[0] <=> splitFields($b->{score})->[0]} @{$predictions->{$windowPos}->{$blockPos}->{$structure}} if ($settings->{mode} eq $Settings::MODE_EVAL);
+				foreach my $result (@results) {
+					#RESULT LINE
+					my ($energy, $part_energy, $part_covar) = @{splitFields($result->{score})};
+						print "".(" " x $leftSpacerDueToWindowStartPos);
+					
+					#score = energy
+						$energy = formatEnergy($part_energy) + formatEnergy($part_covar) if (exists $input->{length}); #necessary to avoid rounding errors on output :-(
+						my $energyResult = sprintf($scoreFormat, $energy, $part_energy, $part_covar);
+						$energyResult = (" " x $lengthScoreField) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
+						print $energyResult;
+					
+					#dot bracket structure
+						print $SEPARATOR;
+						my $structureResult = $structure;
+						$structureResult = $ENFORCE_NOTAVAIL.(" " x (($endPos-$startPos) - length($ENFORCE_NOTAVAIL))) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
+						print $structureResult;
+					
+					#SCI if available
+						if ((exists $settings->{'sci'}) && ($settings->{'sci'})) {
+							print $SEPARATOR;
+							print printSCI($energy, $avgSglMfe);
+						}
+						
+					#shape probability if available and mode is right
+						if (($settings->{mode} eq $Settings::MODE_PROBS) || ($settings->{mode} eq $Settings::MODE_SAMPLE)) {
+							print $SEPARATOR;
+							my $probability = 0;
+							$probability = $result->{pfunc}/$sumPfunc->{$windowPos} if ($settings->{mode} eq $Settings::MODE_PROBS);
+							$probability = $result->{samples} / $settings->{numsamples} if ($settings->{mode} eq $Settings::MODE_SAMPLE);
+							print sprintf("%1.$settings->{'probdecimals'}f", $probability);
+						}
+						
+					#rank, if in RNAcast mode
+						if ($settings->{mode} eq $Settings::MODE_CAST) {
+							print $SEPARATOR;
+							print "R: ".$result->{rank};
+						}
+						
+					#shape class if available
+						if (exists $result->{shape} && defined $result->{shape}) {
+							print $SEPARATOR;
+							my $shapeResult = $result->{shape};
+							$shapeResult = "best '".$shapeResult."'" if ($settings->{mode} eq $Settings::MODE_ENFORCE);
+							print $shapeResult;
+						}
 					print "\n";
 				}
-				print "\nSampling results:\n\n";
 			}
-		
-		my @sortedStructures = keys(%{$predictions->{$windowPos}});
-		@sortedStructures =  sort {splitFields($predictions->{$windowPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$b}->{score})->[0]} @sortedStructures if (($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT) || ($settings->{mode} eq $Settings::MODE_SHAPES));
-		@sortedStructures =  sort {$predictions->{$windowPos}->{$b}->{pfunc} <=> $predictions->{$windowPos}->{$a}->{pfunc}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_PROBS));
-		@sortedStructures =  sort {$predictions->{$windowPos}->{$b}->{samples} <=> $predictions->{$windowPos}->{$a}->{samples}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_SAMPLE));
-		if ($settings->{mode} eq $Settings::MODE_ENFORCE) {
-			foreach my $class (keys(%ENFORCE_CLASSES)) {
-				my $haveClass = 'false';
-				foreach my $structure (keys(%{$predictions->{$windowPos}})) {
-					if ($predictions->{$windowPos}->{$structure}->{shape} eq $class) {
-						$haveClass = 'true';
-						last;
-					}
-				}
-				if ($haveClass eq 'false') {
-					$predictions->{$windowPos}->{$class} = {shape => $class, score => 0};
-				}
-			}
-			@sortedStructures =  sort {$ENFORCE_CLASSES{$predictions->{$windowPos}->{$a}->{shape}} <=> $ENFORCE_CLASSES{$predictions->{$windowPos}->{$b}->{shape}}} keys(%{$predictions->{$windowPos}});
-		}
-		
-		foreach my $structure (@sortedStructures) {
-			last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$structure}->{pfunc}/$sumPfunc->{$windowPos} < $settings->{lowprobfilteroutput}));
-			last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($predictions->{$windowPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
-			
-			my @results = ($predictions->{$windowPos}->{$structure});
-			@results = sort {splitFields($a->{score})->[0] <=> splitFields($b->{score})->[0]} @{$predictions->{$windowPos}->{$structure}} if ($settings->{mode} eq $Settings::MODE_EVAL);
-			foreach my $result (@results) {
-				#RESULT LINE
-				my ($energy, $part_energy, $part_covar) = @{splitFields($result->{score})};
-					print "".(" " x $leftSpacerDueToWindowStartPos);
-				
-				#score = energy
-					$energy = formatEnergy($part_energy) + formatEnergy($part_covar) if (exists $input->{length}); #necessary to avoid rounding errors on output :-(
-					my $energyResult = sprintf($scoreFormat, $energy, $part_energy, $part_covar);
-					$energyResult = (" " x $lengthScoreField) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
-					print $energyResult;
-				
-				#dot bracket structure
-					print $SEPARATOR;
-					my $structureResult = $structure;
-					$structureResult = $ENFORCE_NOTAVAIL.(" " x (($endPos-$startPos) - length($ENFORCE_NOTAVAIL))) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
-					print $structureResult;
-				
-				#SCI if available
-					if ((exists $settings->{'sci'}) && ($settings->{'sci'})) {
-						print $SEPARATOR;
-						print printSCI($energy, $avgSglMfe);
-					}
-					
-				#shape probability if available and mode is right
-					if (($settings->{mode} eq $Settings::MODE_PROBS) || ($settings->{mode} eq $Settings::MODE_SAMPLE)) {
-						print $SEPARATOR;
-						my $probability = 0;
-						$probability = $result->{pfunc}/$sumPfunc->{$windowPos} if ($settings->{mode} eq $Settings::MODE_PROBS);
-						$probability = $result->{samples} / $settings->{numsamples} if ($settings->{mode} eq $Settings::MODE_SAMPLE);
-						print sprintf("%1.$settings->{'probdecimals'}f", $probability);
-					}
-					
-				#rank, if in RNAcast mode
-					if ($settings->{mode} eq $Settings::MODE_CAST) {
-						print $SEPARATOR;
-						print "R: ".$result->{rank};
-					}
-					
-				#shape class if available
-					if (exists $result->{shape} && defined $result->{shape}) {
-						print $SEPARATOR;
-						my $shapeResult = $result->{shape};
-						$shapeResult = "best '".$shapeResult."'" if ($settings->{mode} eq $Settings::MODE_ENFORCE);
-						print $shapeResult;
-					}
-				print "\n";
-			}
+			print "\n" if ($blockPos ne $blockPositions[$#blockPositions]);
 		}
 		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
 	}
 	
 }
 
+sub getBlockMFE {
+	my ($refHash_block) = @_;
+	
+	my $mfe = undef;
+	foreach my $structure (keys(%{$refHash_block})) {
+		$mfe = $refHash_block->{$structure}->{score} if ((not defined $mfe) || ($mfe > $refHash_block->{$structure}->{score}));
+	}
+	
+	return $mfe;
+}
 sub printSCI {
 	my ($alignmentEnergy, $avgSglMfe) = @_;
 

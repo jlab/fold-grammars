@@ -33,8 +33,8 @@ qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 #~ checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
 #~ checkRNAalishapes($TMPDIR, "rnaalishapes.run.out"); # run compileRNAalishapes() previously!!
 checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
-checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/Pseudoknots/","pKiss");
 checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
+checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/Pseudoknots/","pKiss");
 
 #add your tests above this line!
 printStatistics();
