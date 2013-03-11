@@ -1,4 +1,36 @@
-libfoldGrammars (1.0.0-0ubuntu1) precise; urgency=low
+libfoldgrammars (1.0.1-0ubuntu1~quantal) quantal; urgency=low
+
+  * second commit, since I forgot different distribution names
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 17:29:00 +0200
+
+libfoldgrammars (1.0.1-0ubuntu1~oneiric) oneiric; urgency=low
+
+  * second commit, since I forgot different distribution names
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 17:29:00 +0200
+
+libfoldgrammars (1.0.1-0ubuntu1~precise) precise; urgency=low
+
+  * second commit, since I forgot different distribution names
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 17:29:00 +0200
+ 
+libfoldgrammars (1.0.0-0ubuntu1~quantal) quantal; urgency=low
+
+  * Initial release
+   - moved Perl library into a separate package to circumwent conflicts when installing several packages that use it.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 00:15:00 +0200
+
+libfoldgrammars (1.0.0-0ubuntu1~oneiric) oneiric; urgency=low
+
+  * Initial release
+   - moved Perl library into a separate package to circumwent conflicts when installing several packages that use it.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 00:15:00 +0200
+
+libfoldgrammars (1.0.0-0ubuntu1~precise) precise; urgency=low
 
   * Initial release
    - moved Perl library into a separate package to circumwent conflicts when installing several packages that use it.

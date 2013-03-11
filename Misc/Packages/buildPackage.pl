@@ -26,7 +26,7 @@ if (defined $comment && $comment !~ m/^\s*$/) {
 		qx(export DEBFULLNAME="$USER"; export DEBEMAIL="$EMAIL"; cd $pathContainingDebian && debchange --newversion $newversion-0ubuntu1~${series}1 $comment --package $package --distribution $series);
 		qx(cp -r $pathContainingDebian/debian $packageDir);
 		print qx(cd $TMPDIR/${package}_$newversion && debuild -S -k"$KEYFINGERPRINT");
-		print qx(dput ppa:bibi-help/bibitools $TMPDIR/${package}_$newversion-0ubuntu1~${series}1_source.changes);
+		#~ print qx(dput ppa:bibi-help/bibitools $TMPDIR/${package}_$newversion-0ubuntu1~${series}1_source.changes);
 	}
 	#~ qx(rm -rf $TMPDIR);
 } else {
