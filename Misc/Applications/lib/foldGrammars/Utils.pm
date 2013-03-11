@@ -482,7 +482,12 @@ sub checkBinaryPresents {
 	} else {
 		$binStart .= "./";
 	}
-	$binName = $binStart.$refHash_settings->{'binaryprefix'}.$refHash_settings->{'mode'};
+	$binName = $binStart.$refHash_settings->{'binaryprefix'};
+	if ($refHash_settings->{'mode'} eq $Settings::MODE_CONVERT) {
+		$binName .= $Settings::MODE_EVAL;
+	} else {
+		$binName .= $refHash_settings->{'mode'};
+	}
 	$binName .= '_'.$refHash_settings->{'grammar'} if (exists $refHash_settings->{'grammar'});
 	if (not Utils::contains($refList_omitModes, $refHash_settings->{mode})) {
 		die $diePrefix." could not find Bellman's GAP binary '".$binName."' for mode ".$refHash_settings->{'mode'}."!\n" if (not -e $binName);

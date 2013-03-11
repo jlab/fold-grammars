@@ -54,15 +54,28 @@ static const int pkmlinit = 600; //additional penalty for a pseudoknot inside fr
 		return a;
 	}
 
-//following two functions are dummies, i.e. just to enable compilation of an RNAeval version for pKiss. The results will be crap if we use strategies A to C, but D and P should work fine and that is everything we need. With this trick, it is possible to use the same grammar for singlefold and evalfold
-	inline answer_pknot_mfe get_pk_fn(List_Ref<std::pair<rope::Ref<rope::Ref_Count>, answer_pknot_mfe> >*) {
+//following four functions are dummies, i.e. just to enable compilation of an RNAeval version for pKiss. The results will be crap if we use strategies A to C, but D and P should work fine and that is everything we need. With this trick, it is possible to use the same grammar for singlefold and evalfold
+	template<typename DOTBRACKET>
+	inline answer_pknot_mfe get_pk_fn(List_Ref<std::pair<DOTBRACKET, answer_pknot_mfe> >*) {
 		answer_pknot_mfe dummy;
 		return dummy;
 	}
-	inline answer_pknot_mfe get_pk_fn(List_Ref<std::pair<rope::Ref<rope::Ref_Count>, answer_pknot_mfe> >) {
+	template<typename DOTBRACKET>
+	inline answer_pknot_mfe get_pk_fn(List_Ref<std::pair<DOTBRACKET, answer_pknot_mfe> >) {
 		answer_pknot_mfe dummy;
 		return dummy;
 	}
+	template<typename SHAPE, typename DOTBRACKET>
+	inline answer_pknot_mfe get_pk_fn(List_Ref<std::pair<std::pair<DOTBRACKET, answer_pknot_mfe>, SHAPE > >*) {
+		answer_pknot_mfe dummy;
+		return dummy;
+	}
+	template<typename SHAPE, typename DOTBRACKET>
+	inline answer_pknot_mfe get_pk_fn(List_Ref<std::pair<std::pair<DOTBRACKET, answer_pknot_mfe>, SHAPE > >) {
+		answer_pknot_mfe dummy;
+		return dummy;
+	}
+
 
 	#define get_pk_free_kl(i, m) get_pk_fn( nt_help_pknot_free_kl(i, m) )	//for strategy A
 	#define get_pk(i,j,k,l) get_pk_fn( nt_help_pknot(i,j,k,l) )	 //for strategy B and strategy C

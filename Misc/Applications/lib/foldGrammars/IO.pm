@@ -66,7 +66,7 @@ sub parse {
 			} elsif (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($line =~ m/\( (.+?) , \( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \) \)$/)) {
 				#( 4.15509e+11 , ( ( [[][][]] , ( -3037 = energy: -2019 + covar.: -1018 ) ) , (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))). ) )
 				($pfunc, $shape, $energy, $part_energy, $part_covar, $structure) = ($1,$2,$3/100,$4/100,$5/100, $6);
-			} elsif (($settings->{mode} eq $Settings::MODE_EVAL) && ($line =~ m/^\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \)$/)) {
+			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_CONVERT)) && ($line =~ m/^\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \)$/)) {
 				#( ( .((((((..(((.............))).(((((.......))))).....(((((.......))))))))))).. , ( -2776 = energy: -1825 + covar.: -951 ) ) , [[][][]] )
 				($structure, $energy, $part_energy, $part_covar, $shape) = ($1,$2/100,$3/100,$4/100,$5);
 			}
@@ -88,7 +88,7 @@ sub parse {
 			} elsif (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($line =~ m/\( (.+?) , \( \( (.+?) , (.+?) \) , (.+?) \) \)$/)) {
 				#( 0.123498 , ( ( _[[_[]_]_] , -320 ) , ......(((((((.(((.....))).))))).)) ) )
 				($pfunc, $shape, $energy, $structure) = ($1,$2,$3/100, $4);
-			} elsif (($settings->{mode} eq $Settings::MODE_EVAL) && ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
+			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_CONVERT)) && ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
 				#( ( ....(((.(((((.(((.....))).)))))))) , -440 ) , [] )
 				($structure, $energy, $shape) = ($1,$2/100,$3);
 			}
@@ -105,9 +105,9 @@ sub parse {
 			} elsif (($settings->{mode} eq $Settings::MODE_PROBS) && ($line =~ m/\( \( (.+?) , \( (.+?) , (.+?) \) \) , (.+?) \)$/)) {
 				#( ( (()()) , ( 380 , 1.33405e-07 ) ) , ..(((.((....)).((.....))...))).... )
 				($shape, $energy, $pfunc, $structure) = ($1,$2/100,$3, $4);
-			} elsif (($settings->{mode} eq $Settings::MODE_EVAL) && ($line =~ m/\( (.+?) , (.+?) \)$/)) {
-				#( ....(((.(((((.(((.....))).)))))))) , -410 )
-				($structure, $energy) = ($1,$2/100);
+			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_CONVERT)) && ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
+				#( ( (((...))) , 900 ) , () )
+				($structure, $energy, $shape) = ($1,$2/100,$3);
 			} elsif (($settings->{mode} eq $Settings::MODE_ENFORCE) && ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
 				#( ( nested structure , -2659 ) , ..(((((....))))).....(((((((((.....))))))))). )
 				($shape, $energy, $structure) = ($1,$2/100,$3);
@@ -133,6 +133,8 @@ sub parse {
 				push @{$predictions{$windowPos}->{dummyblock}->{$structure}}, {score => $score, shape => $shape};
 			} elsif ($settings->{mode} eq $Settings::MODE_LOCAL) {
 				$predictions{$windowPos}->{$blockPos}->{$structure}->{score} = $score if ((not exists $predictions{$windowPos}->{$blockPos}->{$structure}->{score}) || ($score < $predictions{$windowPos}->{$blockPos}->{$structure}->{score}));
+			} elsif ($settings->{mode} eq $Settings::MODE_CONVERT) {
+				$predictions{shape} = $shape;
 			} else {
 				if (not exists $predictions{$windowPos}->{dummyblock}->{$structure}) {
 					$predictions{$windowPos}->{dummyblock}->{$structure} = {score => $score, shape => $shape, pfunc => $pfunc};
@@ -155,11 +157,23 @@ sub parse {
 		}
 	}
 	
-	if ($settings->{mode} eq $Settings::MODE_EVAL) {
+	if (($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_CONVERT)) {
 		if ($result =~ m/^Answer:\s+\[\]\s*$/) {
-			print STDERR "The structure you gave is not in the folding space of your input ";
-			print STDERR (exists $input->{length} ? "alignment" : "sequence");
+			print STDERR "Your structure is not in the folding space of ";
+			if ($settings->{mode} eq $Settings::MODE_EVAL) {
+				print "your input ";
+				print STDERR (exists $input->{length} ? "alignment" : "sequence");
+			} else {
+				if ($program eq $PROG_PKISS) {
+					print STDERR "\"".$PROG_PKISS."\"";
+				} else {
+					print STDERR "grammar \"".$settings->{grammar}."\"";
+				}
+			}
 			print STDERR "!\n";
+			if (!$settings->{allowlp}) {
+				print STDERR "Maybe you want to allow for lonely base-pairs?!\n";
+			}
 			exit(1);
 		} elsif ($result =~ m/Your structure is no valid dot bracket string: /) {
 			print STDERR $result;
@@ -180,6 +194,16 @@ sub output {
 	$leftSpacerDueToWindowStartPos = 0 if ($leftSpacerDueToWindowStartPos < 0);
 	
 	my $ENFORCE_NOTAVAIL = "no structure available";
+	
+	if ($settings->{mode} eq $Settings::MODE_CONVERT) {
+		if (not exists $predictions->{shape}) {
+			print "Your structure '".$input->{structure}.'" is not a member of the folding space of '.$settings->{grammar}."'.\n";
+			exit 1;
+		} else {
+			print $predictions->{shape}."\n";
+		}
+		return;
+	}
 	
 	#ID LINE
 		print ">".$input->{header}."\n" if (exists $input->{sequence}); #input is a fasta sequence

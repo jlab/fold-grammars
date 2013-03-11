@@ -56,5 +56,6 @@ our $MODE_CAST = 'cast';
 our $MODE_KBEST = "kbest";
 our $MODE_LIST = "list";
 our $MODE_ENERGY = "energy";
+our $MODE_CONVERT = 'convert';
 
 1;

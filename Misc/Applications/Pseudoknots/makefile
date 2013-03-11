@@ -73,7 +73,7 @@ probs:
 	$(MAKE) compile outname="probs" FASTLIBRNA="LDLIBS=-lrnafast" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA) -ffast-math"
 
 eval:
-	$(GAPC) -I $(BASEDIR) -p "alg_pknot_dotBracket_id * alg_pknot_mfe" $(BASEDIR)eval_pKiss.gap --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
+	$(GAPC) -I $(BASEDIR) -p "alg_pknot_dotBracket_id * alg_pknot_mfe * alg_pknot_shapeX" $(BASEDIR)eval_pKiss.gap --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
 	$(MAKE) compile outname="eval" isEval=1
 
 

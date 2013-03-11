@@ -23,7 +23,7 @@ use foldGrammars::RNAcast;
 use foldGrammars::IO;
 use POSIX 'isatty';
 
-our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL);
+our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_CONVERT);
 @References::ORDER = ('lor:ber:sie:taf:fla:sta:hof:2011','gru:lor:ber:neu:hof:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','ree:gie:2005','ste:voss:reh:ree:gie:2006','gie:voss:reh:2004');
 
 our $GRAMMAR_NODANGLE = 'nodangle';
@@ -35,8 +35,8 @@ my %PARAM;
 $PARAM{mode} = {modes => \@ALLMODES, key => 'mode', type => 's', default => $Settings::MODE_SHAPES, info => "Select the computation mode. Available modes are \"".join('", "', @ALLMODES)."\". Omit the ticks on input.\nDefault is \"@(DEFAULT)\"."};
 $PARAM{windowsize} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'windowSize', type => 'i', gapc => 'w', default => undef, info => "Activates window mode and computes substrings of size <int> for the input. After computation for the first <int> bases is done, the window is pushed <y> bases to the right and the next computation is startet. <y> is set by --@(windowincrement).\n<int> must be a non-zero positive integer, smaller than the input length."};
 $PARAM{windowincrement} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'windowIncrement', gapc => 'i', type => 'i', default => 1, info => "If --@(windowsize) is given, this parameter sets the offset for the next window to <int> bases.\n<int> must be a non-zero positive integer, smaller or equal to --@(windowsize).\nDefault is @(DEFAULT)."};
-$PARAM{temperature} = {modes => \@ALLMODES, key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
-$PARAM{param} = {modes => \@ALLMODES, key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [".References::getNumber('mat:dis:chi:schroe:zuk:tur:2004')."] and [".References::getNumber('tur:mat:2009')."])."};
+$PARAM{temperature} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL], key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
+$PARAM{param} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL], key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [".References::getNumber('mat:dis:chi:schroe:zuk:tur:2004')."] and [".References::getNumber('tur:mat:2009')."])."};
 $PARAM{allowlp} = {modes => \@ALLMODES, key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
 $PARAM{absolutedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_CAST], key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation)."};
 $PARAM{relativedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_CAST], key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation)."};
@@ -84,6 +84,10 @@ if (@ARGV == 0) {
 			print "You are in \"$Settings::MODE_CAST\" mode. Please give me the name of a FASTA file, containing a family of RNA sequences:\n";
 			my $inputFile = <STDIN>; chomp $inputFile;
 			processInput($inputFile, $settings);
+		} elsif ($settings->{mode} eq $Settings::MODE_CONVERT) {
+			print "You are in \"".$settings->{mode}."\" mode. Please give me your Vienna-Dot-Bracket string, that shell be converted into a shape string:\n";
+			my $inputStructure = <STDIN>; chomp $inputStructure;
+			processInput($inputStructure, $settings);
 		} else {
 			#expecting a sequence or a filename
 			print "You are in \"".$settings->{mode}."\" mode. Please give me either your RNA sequence, or a (multiple) FASTA file, containing your sequences:\n";
@@ -102,12 +106,12 @@ if (@ARGV == 0) {
 		processInput(\*STDIN, $settings);
 	}
 } elsif (@ARGV == 1) {
-	#rna sequence or filename, given as command line parameter
+	#rna sequence, secondary structure or filename, given as command line parameter
 	if (-e $ARGV[0]) {
 		#since there is a file, having the name of the user input it is very likely that we really should read from a file
 		processInput($ARGV[0], $settings);
 	} else {
-		#otherwise, we assume it is a single, plain RNA sequence
+		#otherwise, we assume it is a single, plain RNA sequence or a 2D structure
 		processInput({sequence => $ARGV[0], header => "unnamed sequence"}, $settings);
 	}
 } elsif (@ARGV == 2 && $settings->{mode} eq $Settings::MODE_EVAL) {
@@ -153,6 +157,10 @@ sub doComputation {
 		#since we are in EVAL mode, I guess that half the sequence is RNA, the other half should be a structure
 		$refHash_sequence->{structure} = substr($refHash_sequence->{sequence}, length($refHash_sequence->{sequence})/2);
 		$refHash_sequence->{sequence} = substr($refHash_sequence->{sequence}, 0, length($refHash_sequence->{sequence})/2);
+	} elsif ($settings->{mode} eq $Settings::MODE_CONVERT) {
+		#we have to convert a Vienna string into a shape class string. We use the eval binaries with a generic RNA input.
+		$refHash_sequence->{structure} = $refHash_sequence->{sequence};
+		$refHash_sequence->{sequence} = "a" x length($refHash_sequence->{structure});
 	}
 
 	if ($refHash_sequence->{sequence} !~ m/^\s*((A|C|G|U|T)+)\s*$/i) {
@@ -163,13 +171,13 @@ sub doComputation {
 	
 	my $command = buildCommand($settings, $refHash_sequence);
 	my $structure = "";
-	if ($settings->{'mode'} eq $Settings::MODE_EVAL) {
-		die "You are in \"$Settings::MODE_EVAL\", but your input of RNA sequence and structure is of unequal length!\n" if (length($refHash_sequence->{sequence}) != length($refHash_sequence->{structure}));
+	if (($settings->{'mode'} eq $Settings::MODE_EVAL) || ($settings->{'mode'} eq $Settings::MODE_CONVERT)) {
+		die "You are in \"".$settings->{'mode'}."\", but your input of RNA sequence and structure is of unequal length!\n" if (length($refHash_sequence->{sequence}) != length($refHash_sequence->{structure}));
 		$structure = "'".$refHash_sequence->{structure}."'";
 	}
 	
 	my $result = qx($command "$seq" $structure 2>&1);
-	
+
 	IO::parse($result, $refHash_sequence, 'RNAshapes', $settings);
 	
 	return undef;
@@ -182,7 +190,11 @@ sub buildCommand {
 	$cmd .= $settings->{'binarypath'};
 	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
 	$cmd .= $settings->{'binaryprefix'};
-	$cmd .= $settings->{'mode'};
+	if ($settings->{'mode'} eq $Settings::MODE_CONVERT) {
+		$cmd .= $Settings::MODE_EVAL;
+	} else {
+		$cmd .= $settings->{'mode'};
+	}
 	$cmd .= '_'.$settings->{'grammar'};
 	if ((not defined $task) && (defined $settings->{'windowsize'})) {
 		$cmd .= "_window";
@@ -247,6 +259,7 @@ EOF
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_PROBS."   : ", Utils::usage_convertInfoText("Structure probabilities are strictly correlated to their energy values. Grouped together into shape classes, their probabilities add up. Often a shape class with many members of worse energy becomes more probable than the shape containing the mfe structure but not much more members. See [".References::getNumber('voss:gie:reh:2006')."] for details on shape probabilities.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_SAMPLE."  : ", Utils::usage_convertInfoText("Probabilistic sampling based on partition function. This mode combines stochastic sampling with a-posteriori shape abstraction. A sample from the structure space holds M structures together with their shapes, on which classification is performed. The probability of a shape can then be approximated by its frequency in the sample.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_CAST."    : ", Utils::usage_convertInfoText("This mode is the RNAcast approache, see [".References::getNumber('ree:gie:2005')."].\nFor a family of RNA sequences, this method independently enumerates the near-optimal abstract shape space, and predicts as the consensus an abstract shape common to all sequences. For each sequence, it delivers the thermodynamically best structure which has this common shape.\nInput is a multiple fasta file, which should contain at least two sequences.\nOutput is sorted by \"score\" of common shapes, i.e. summed free energy of all sequences. R is the rank (= list position) of the shape in individual sequence analysis.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_CONVERT." : ", Utils::usage_convertInfoText("Converts a Vienna-Dot-Bracket representation of a secondary structure into a shape string.", \%PARAM))."\n";
 	
 	my @paramGroups = ();
 	push @paramGroups, {name => 'GENERAL OPTIONS', elements => ['mode', 'absolutedeviation', 'relativedeviation', 'shapelevel', 'lowprobfilter', 'lowprobfilteroutput', 'numsamples', 'showsamples', 'windowsize', 'windowincrement']};
