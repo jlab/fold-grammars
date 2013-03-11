@@ -33,7 +33,7 @@ checkParameters("pseudoknots parameter check", $TMPDIR."/".$PROGRAMPREFIX."mfe",
 checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
 checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
 checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
-checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/Pseudoknots/","pKiss");
+checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
 
 #add your tests above this line!
 printStatistics();
@@ -235,7 +235,7 @@ sub compileMFE {
 	
 	unless (-e $TMPDIR."/".$PROGRAMPREFIX.$program) {
 		print "\tcompiling binary ...";
-		qx(cp ../../Applications/Pseudoknots/makefile $TMPDIR/);
+		qx(cp ../../Applications/pKiss/makefile $TMPDIR/);
 		my $makeWindowMode = "";
 		if ($program =~ m/(.+?)_window$/) {
 			$program = $1;
