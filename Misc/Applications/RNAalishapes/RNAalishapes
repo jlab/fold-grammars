@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
-our $VERSION = '2.0.2';
-our $DATE = '26.02.2013';
+our $VERSION = '2.1.1';
+our $DATE = '11.03.2013';
 our $PROGRAMNAME = 'RNAalishapes';
 
 sub getPath {

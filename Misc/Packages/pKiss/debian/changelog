@@ -1,3 +1,36 @@
+pkiss (2.1.1-0ubuntu1~quantal1) quantal; urgency=low
+
+  * new modes cast, eval and convert. cast is the RNAcast approach: find
+    a shape class that is common for a family of RNA sequences. eval is
+    like RNAeval: input is a sequence and a structure, output is the
+    energy of this very structure for the given sequence. convert takes
+    a dot Bracket string and returns a shape string. In addition: all
+    modes return shape strings.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 23:45:20 +0100
+
+pkiss (2.1.1-0ubuntu1~precise1) precise; urgency=low
+
+  * new modes cast, eval and convert. cast is the RNAcast approach: find
+    a shape class that is common for a family of RNA sequences. eval is
+    like RNAeval: input is a sequence and a structure, output is the
+    energy of this very structure for the given sequence. convert takes
+    a dot Bracket string and returns a shape string. In addition: all
+    modes return shape strings.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 23:45:14 +0100
+
+pkiss (2.1.1-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * new modes cast, eval and convert. cast is the RNAcast approach: find
+    a shape class that is common for a family of RNA sequences. eval is
+    like RNAeval: input is a sequence and a structure, output is the
+    energy of this very structure for the given sequence. convert takes
+    a dot Bracket string and returns a shape string. In addition: all
+    modes return shape strings.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 23:42:52 +0100
+
 pkiss (2.0.10-0ubuntu1~quantal1) quantal; urgency=low
 
   * implemented all suggested changes after AG-PI talk: - renames mode

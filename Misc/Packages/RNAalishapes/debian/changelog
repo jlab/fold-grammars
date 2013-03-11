@@ -1,3 +1,13 @@
+rnaalishapes (2.1.1-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * new modes eval and convert. eval is like RNAeval: input is a
+    sequence and a structure, output is the energy of this very
+    structure for the given sequence. convert takes a dot Bracket string
+    and returns a shape string. In addition: all modes return shape
+    strings.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 11 Mar 2013 23:56:17 +0100
+
 rnaalishapes (2.0.3-0ubuntu1~oneiric1) oneiric; urgency=low
 
   * now addressing right target for install in makefile
