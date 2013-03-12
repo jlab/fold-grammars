@@ -1,3 +1,21 @@
+rnashapes (3.0.4-0ubuntu1~quantal1) quantal; urgency=low
+
+  * new centralized version numbers
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 12 Mar 2013 09:14:43 +0100
+
+rnashapes (3.0.4-0ubuntu1~precise1) precise; urgency=low
+
+  * new centralized version numbers
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 12 Mar 2013 09:14:37 +0100
+
+rnashapes (3.0.4-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * new centralized version numbers
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 12 Mar 2013 09:12:29 +0100
+
 rnashapes (3.0.3-0ubuntu1~quantal1) quantal; urgency=low
 
   * problems with launchpad rejection
