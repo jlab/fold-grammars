@@ -502,4 +502,67 @@ sub checkBinaryPresents {
 }
 
 
+sub normalizePKannotation { #change usage of small and capital letter for crossing basepairs if they are the "wrong" way around, e.g. ((aa))AA instead if ((AA))aa
+	my ($structure) = @_;
+	
+	if ($structure =~ m/A/) {
+		my $firstCapital = $-[0];
+		$structure =~ m/a/;
+		my $firstSmall = $-[0];
+		if ($firstCapital > $firstSmall) {
+			die "crossing stems are annotated with the \"wrong\" order of capital and small letter usage, e.g. ((aa))AA instead if ((AA))aa. I can't change that, since the structure also contains temporary character '#'." if ($structure =~ m/#/);
+			foreach my $letter ('A'..'Z') {
+				if ($structure =~ m/$letter/) {
+					my $lcLetter = lc($letter);
+					$structure =~ s/$letter/#/g;
+					$structure =~ s/$lcLetter/$letter/g;
+					$structure =~ s/#/$lcLetter/g;
+				} else {
+					last;
+				}
+			}
+		}
+	}
+	
+	return $structure;
+}
+
+sub getPairList {
+	my ($structure, $removeUnpairedBases) = @_;
+	
+	#change usage of small and capital letter for crossing basepairs if they are the "wrong" way around, e.g. ((aa))AA instead if ((AA))aa
+		$structure = normalizePKannotation($structure);
+	
+	#find partners of basepairs
+		my @stacks = ();
+		my %pairs = ();
+		$structure =~ s/\.//g if ($removeUnpairedBases); #remove unpaired bases
+		for (my $i = 0; $i < length($structure); $i++) {
+			my $char = substr($structure, $i, 1);
+			my ($bracketStyle, $bracketType) = @{getBracketIndex($char)};
+			if ($bracketType eq 'open') {
+				push @{$stacks[$bracketStyle]}, $i;
+			} elsif ($bracketType eq 'close') {
+				$pairs{pop @{$stacks[$bracketStyle]}} = $i;
+			}
+		}
+
+	return \%pairs;
+}
+
+our @OPEN_CHAR  = ('(','{','[','<','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+our @CLOSE_CHAR = (')','}',']','>','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
+sub getBracketIndex { #returns the right "type" of opening or closing bracket, depends on OPEN_CHAR and CLOSE_CHAR arrays, which are defined in the header of this file
+	my ($char, $mustHaveType) = @_;
+	
+	for (my $i = 0; $i < scalar(@OPEN_CHAR); $i++) {
+		if ($char eq $OPEN_CHAR[$i]) {
+			return [$i, 'open'] if ((not defined $mustHaveType) || ($mustHaveType eq 'open'));
+		} elsif ($char eq $CLOSE_CHAR[$i]) {
+			return [$i, 'close'] if ((not defined $mustHaveType) || ($mustHaveType eq 'close'));
+		}
+	}
+	return [-1, 'unpaired'];
+}
+
 1;
