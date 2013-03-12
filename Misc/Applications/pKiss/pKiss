@@ -1,8 +1,6 @@
 #!/usr/bin/env perl
 
-our $VERSION = '2.1.1';
-our $DATE = '11.03.2013';
-our $PROGRAMNAME = 'pKiss';
+my $PROGID = 'pKiss';
 
 sub getPath {
 	my ($url) = @_;
@@ -44,8 +42,8 @@ $PARAM{shapelevel} = {modes => [$Settings::MODE_SHAPES, $Settings::MODE_PROBS, $
 $PARAM{lowprobfilter} = {modes => [$Settings::MODE_PROBS], key => 'lowProbFilter', gapc => 'F', type => 'f', default => 0.000001, info => "This option sets a barrier for filtering out results with very low probabilities during calculation. The default value here is @(DEFAULT), which gives a significant speedup compared to a disabled filter. (See ".References::getNumber('voss:gie:reh:2006')."] for details.) Note that this filter can have a slight influence on the overall results. To disable this filter, use option --@(lowprobfilter) 0. \n<float> must be a positive floating point number smaller than 1."};
 $PARAM{lowprobfilteroutput} = {modes => [$Settings::MODE_PROBS], key => 'outputLowProbFilter', gapc => undef, type => 'f', default => 0.000001, info => "This option sets a filter for omitting low probability results during output. It is just for reporting convenience. Unlike probability cutoff filter, this option does not have any influence on runtime or probabilities beyond this value. To disable this filter, use option --@(lowprobfilteroutput) 0. \n<float> must be a positive floating point number smaller than 1."};
 $PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
-$PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => "$0 expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
-$PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => $PROGRAMNAME.'_', info => "$0 expects a special naming schema for the according Bellman's GAP compiled binaries. On default, each binary is named \"@(DEFAULT)\", followed by the mode, followed by \"_window\" for the window mode version. Thus, for non-window mode \"$Settings::MODE_SUBOPT\" the name would be \"@(DEFAULT)$Settings::MODE_SUBOPT\". With --@(binaryprefix) you can change the prefix into some arbitary one."};
+$PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => $Settings::PROGINFOS{$PROGID}->{name}." expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
+$PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => $Settings::PROGINFOS{$PROGID}->{name}.'_', info => $Settings::PROGINFOS{$PROGID}->{name}." expects a special naming schema for the according Bellman's GAP compiled binaries. On default, each binary is named \"@(DEFAULT)\", followed by the mode, followed by \"_window\" for the window mode version. Thus, for non-window mode \"$Settings::MODE_SUBOPT\" the name would be \"@(DEFAULT)$Settings::MODE_SUBOPT\". With --@(binaryprefix) you can change the prefix into some arbitary one."};
 $PARAM{probdecimals} = {modes => [$Settings::MODE_PROBS], key => 'probDecimals', type => 'i', default => 7, info => "Sets the number of digits used for printing shape probabilities.\n<int> must be a positive integer number.\nDefault is @(DEFAULT)."};
 
 my $settings = {};
@@ -116,7 +114,7 @@ if (@ARGV == 0) {
 	#only for MODE_EVAL, rna sequence and secondary structure are given as two command line parameters
 	processInput({sequence => $ARGV[0], header => "unnamed sequence", structure => $ARGV[1]}, $settings);
 } else {
-	print STDERR "You gave me too many inputs. Please ask for help, via \"$PROGRAMNAME --".$PARAM{help}->{key}."\".\n";
+	print STDERR "You gave me too many inputs. Please ask for help, via \"".$Settings::PROGINFOS{$PROGID}->{name}." --".$PARAM{help}->{key}."\".\n";
 	exit(1);
 }
 
@@ -175,7 +173,7 @@ sub doComputation {
 	my $result = qx($command "$seq" $structure 2>&1);
 	
 	print "\n" if ($sequenceNumber != 0);
-	IO::parse($result, $refHash_sequence, 'pKiss', $settings);
+	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings);
 	
 	$sequenceNumber++;
 	return undef;
@@ -247,15 +245,15 @@ sub usage {
 	my ($settings) = @_;
 	
 my $HELP = <<EOF;
-# $PROGRAMNAME: RNA secondary structure predictions including pseudoknots
-#        version $VERSION ($DATE)
+# $Settings::PROGINFOS{$PROGID}->{name}: RNA secondary structure predictions including pseudoknots
+#        version $Settings::PROGINFOS{$PROGID}->{version} ($Settings::PROGINFOS{$PROGID}->{date})
 #        Stefan Janssen (bibi-help\@techfak.uni-bielefeld.de)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 USAGE: 
-perl $0 [-mode] [-options] <fasta file name or RNA sequence>
+perl $Settings::PROGINFOS{$PROGID}->{name} [-mode] [-options] <fasta file name or RNA sequence>
 
- $PROGRAMNAME comes with the following different modes of predictions:
+ $Settings::PROGINFOS{$PROGID}->{name} comes with the following different modes of predictions:
 EOF
 ;
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_MFE."     : ", Utils::usage_convertInfoText("Computes the single energetically most stable secondary structure for the given RNA sequence. This structure might contain a pseudoknot of type H (simple canonical recursive pseudoknot) or type K (simple canonical recursive kissing hairpin), but need not to. Co-optimal results will be suppressed, i.e. should different prediction have the same best energy value, just an arbitrary one out of them will be reported.", \%PARAM))."\n";
@@ -265,7 +263,7 @@ EOF
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_SHAPES."  : ", Utils::usage_convertInfoText("Output of \"$Settings::MODE_SUBOPT\" mode is crowded by many very similar answers, which make it hard to focus to the \"important\" changes. The abstract shape concept ".References::getNumber('jan:gie:2010')."] groups similar answers together and reports only the best answer within such a group. Due to abstraction, suboptimal analyses can be done more thorough, by ignoring boring differences.\n(see parameter --@(shapelevel))", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_PROBS."   : ", Utils::usage_convertInfoText("Structure probabilities are strictly correlated to their energy values. Grouped together into shape classes, their probabilities add up. Often a shape class with many members of worse energy becomes more probable than the shape containing the mfe structure but not much more members. See ".References::getNumber('voss:gie:reh:2006')."] for details on shape probabilities.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_CAST."    : ", Utils::usage_convertInfoText("This mode is the RNAcast approache, see ".References::getNumber('the:jan:gie:2010')."].\nFor a family of RNA sequences, this method independently enumerates the near-optimal abstract shape space, and predicts as the consensus an abstract shape common to all sequences. For each sequence, it delivers the thermodynamically best structure which has this common shape.\nInput is a multiple fasta file, which should contain at least two sequences.\nOutput is sorted by \"score\" of common shapes, i.e. summed free energy of all sequences. R is the rank (= list position) of the shape in individual sequence analysis.", \%PARAM))."\n";
-	$HELP .= Utils::printIdent("  ".$Settings::MODE_EVAL."    : ", Utils::usage_convertInfoText("Evaluates the free energy of an RNA molecule in fixed secondary structure, similar to RNAeval from the Vienna group. Multiple answers stem from semantic ambiguity of the underlying grammar.\nIt might happen, that your given structure is not a structure for the sequence. Maybe your settings are too restrictive, e.g. not allowing lonely base-pairs (--@(allowlp)), too long hairpin stems for pseudoknots (--@(minhairpinlength)) or the given pseudoknot is more complex than those of $PROGRAMNAME.\nIf you input a (multiple) FASTA file, $PROGRAMNAME assumes that exactly first half of the contents of each entry is RNA sequence, second half is the according structure. Whitespaces are ignored.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_EVAL."    : ", Utils::usage_convertInfoText("Evaluates the free energy of an RNA molecule in fixed secondary structure, similar to RNAeval from the Vienna group. Multiple answers stem from semantic ambiguity of the underlying grammar.\nIt might happen, that your given structure is not a structure for the sequence. Maybe your settings are too restrictive, e.g. not allowing lonely base-pairs (--@(allowlp)), too long hairpin stems for pseudoknots (--@(minhairpinlength)) or the given pseudoknot is more complex than those of ".$Settings::PROGINFOS{$PROGID}->{name}.".\nIf you input a (multiple) FASTA file, ".$Settings::PROGINFOS{$PROGID}->{name}." assumes that exactly first half of the contents of each entry is RNA sequence, second half is the according structure. Whitespaces are ignored.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_CONVERT." : ", Utils::usage_convertInfoText("Converts a Vienna-Dot-Bracket representation of a secondary structure into a shape string.", \%PARAM))."\n";
 
 	my @paramGroups = ();

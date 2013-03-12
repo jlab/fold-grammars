@@ -28,7 +28,7 @@ if (defined $comment && $comment !~ m/^\s*$/) {
 		print qx(cd $TMPDIR/${package}_$newversion && debuild -S -k"$KEYFINGERPRINT");
 		print qx(dput ppa:bibi-help/bibitools $TMPDIR/${package}_$newversion-0ubuntu1~${series}1_source.changes);
 	}
-	#~ qx(rm -rf $TMPDIR);
+	qx(rm -rf $TMPDIR);
 } else {
 	die "no comment is given!\n";
 }
