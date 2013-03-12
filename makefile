@@ -1,4 +1,5 @@
 PREFIX=.
+GAPC=gapc
 
 dummy:
 	echo "Do nothing"
@@ -6,9 +7,9 @@ dummy:
 all: build install
 	
 build:
-	make -C Misc/Applications/pKiss all
-	make -C Misc/Applications/RNAshapes all
-	make -C Misc/Applications/RNAalishapes all
+	make -C Misc/Applications/pKiss all GAPC=$(GAPC)
+	make -C Misc/Applications/RNAshapes all GAPC=$(GAPC)
+	make -C Misc/Applications/RNAalishapes all GAPC=$(GAPC)
 	
 install:
 	make -C Misc/Applications/lib install PREFIX=$(PREFIX)
