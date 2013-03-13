@@ -114,7 +114,12 @@ if (@ARGV == 0) {
 	}
 } elsif (@ARGV == 2 && $settings->{mode} eq $Settings::MODE_EVAL) {
 	#only for MODE_EVAL, rna sequence and secondary structure are given as two command line parameters
-	processInput({sequence => $ARGV[0], header => "unnamed sequence", structure => $ARGV[1]}, $settings);
+	my $inputStructure = $ARGV[1];
+	if (-e $inputStructure) { #especially for BiBiServ: structure must be delivered as a filename, thus read the file to get the structure.
+		$inputStructure = qx(cat $inputStructure); 
+		chomp $inputStructure;
+	}
+	processInput({sequence => $ARGV[0], header => "unnamed sequence", structure => $inputStructure}, $settings);
 } else {
 	print STDERR "You gave me too many inputs. Please ask for help, via \"".$Settings::PROGINFOS{$PROGID}->{name}." --".$PARAM{help}->{key}."\".\n";
 	exit(1);

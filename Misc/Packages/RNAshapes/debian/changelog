@@ -1,3 +1,21 @@
+rnashapes (3.0.6-0ubuntu1~quantal1) quantal; urgency=low
+
+  * fixed mini error in string concat for parameter descrption
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 13 Mar 2013 08:47:20 +0100
+
+rnashapes (3.0.6-0ubuntu1~precise1) precise; urgency=low
+
+  * fixed mini error in string concat for parameter descrption
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 13 Mar 2013 08:47:12 +0100
+
+rnashapes (3.0.6-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * fixed mini error in string concat for parameter descrption
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 13 Mar 2013 08:44:59 +0100
+
 rnashapes (3.0.5-0ubuntu1~quantal1) quantal; urgency=low
 
   * minor bugfixes
