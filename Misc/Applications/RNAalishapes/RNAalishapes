@@ -130,6 +130,10 @@ sub processInput {
 			IO::parse($result, {header => "dummy", sequence => "a", structure => $input}, $Settings::PROGINFOS{$PROGID}->{name}, $settings);
 		} else {
 			die "The file '$input' does not exist!\n" if (not -e $input);
+			if (-e $inputStructure) { #especially for BiBiServ: structure must be delivered as a filename, thus read the file to get the structure.
+				$inputStructure = qx(cat $inputStructure); 
+				chomp $inputStructure;
+			}
 			Utils::applyFunctionToClustalFile($input, \&doComputation, $refHash_settings, $inputStructure);
 		}
 	}
