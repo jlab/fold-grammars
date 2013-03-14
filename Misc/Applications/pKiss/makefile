@@ -30,7 +30,7 @@ all: all_normal all_window clean
 install: install-lib install-program
 
 install-program:
-	install -d $(PREFIX)/bin
+	if [ ! -d "$(PREFIX)/bin" ]; then install -d $(PREFIX)/bin; fi;
 	for file in $(targets); do \
 		install -m 755 $(PROGRAMPREFIX)$${file} $(PREFIX)/bin; \
 	done

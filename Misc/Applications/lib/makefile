@@ -5,7 +5,7 @@ PERL=perl
 BASEDIR=../../../
 
 install:
-	install -d $(PREFIX)/lib
+	if [ ! -d "$(PREFIX)/lib" ]; then install -d $(PREFIX)/lib; fi;
 	install -d $(PREFIX)/lib/foldGrammars
 	for file in foldGrammars/*; do \
 		install -m 644 $$file $(PREFIX)/lib/foldGrammars; \

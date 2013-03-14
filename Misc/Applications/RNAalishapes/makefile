@@ -43,7 +43,7 @@ all_window:
 install: install-lib install-program
 
 install-program:
-	install -d $(PREFIX)/bin
+	if [ ! -d "$(PREFIX)/bin" ]; then install -d $(PREFIX)/bin; fi;
 	for grammar in `echo "$(grammars)"`; do \
 		for mode in $(targets); do \
 			install -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar} $(PREFIX)/bin; \
