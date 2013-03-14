@@ -1,4 +1,4 @@
-PREFIX=.
+PREFIX=/vol/fold-grammars
 GAPC=gapc
 
 dummy:
@@ -17,3 +17,7 @@ install:
 	make -C Misc/Applications/RNAshapes install-program PREFIX=$(PREFIX)
 	make -C Misc/Applications/RNAalishapes install-program PREFIX=$(PREFIX)
 	
+cleandist:
+	make -C Misc/Applications/pKiss cleandist
+	make -C Misc/Applications/RNAshapes cleandist
+	make -C Misc/Applications/RNAalishapes cleandist
