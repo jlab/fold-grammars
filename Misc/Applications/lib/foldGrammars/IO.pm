@@ -22,6 +22,8 @@ our %ENFORCE_CLASSES = (
 	"H- and K-type pseudoknot", 3,
 );
 
+my $firstSequenceReady = 'false';
+
 use Data::Dumper;
 
 sub parse {
@@ -187,6 +189,12 @@ sub parse {
 sub output {
 	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples) = @_;
 
+	if ($firstSequenceReady eq 'false') {
+		$firstSequenceReady = 'true';
+	} else {
+		print "\n" if ($settings->{mode} ne $Settings::MODE_CAST);
+	}
+	
 	my $scoreFormat = getScoreFormatString($program, $fieldLengths);
 	my $lengthScoreField = length(sprintf($scoreFormat, 0, 0, 0));
 	
