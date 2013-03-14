@@ -2699,35 +2699,50 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -31.50  ((((((((((((......))))))))..)))).((((........)))).  R: 1  [][]
 
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=nodangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=nodangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-36.91  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=overdangle AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -27.48  ..(((((....))))).....(((((((((.....))))))))).  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=microstate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=microstate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-34.35  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-34.30  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-33.96  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-33.91  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-33.69  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-33.48  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-33.30  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-33.09  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-32.66  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-32.61  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-32.41  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-32.36  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-32.00  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-31.79  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-31.75  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-31.54  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=macrostate gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -18.80  .((.((.((((....)))).)))).....((((........)))).....  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=nodangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=nodangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-36.91  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=overdangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=overdangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=microstate gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
 >unnamed sequence
@@ -2749,10 +2764,10 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -16.60  .((.((.((((....)))).)))).....((((........)))).....  [][]
 -16.60  .((.((.((((....)))).)))).....((((........)))).....  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=macrostate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=macrostate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=nodangle gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9
 >unnamed sequence
@@ -2784,25 +2799,40 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -24.50  ..(((((....))))).....(((((((((.....))))))))).  [][]
 -24.32  ..(((((....))))).....(((((((((.....))))))))).  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=macrostate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=macrostate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-39.87  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=nodangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=nodangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-36.91  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=overdangle AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -27.48  ..(((((....))))).....(((((((((.....))))))))).  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=microstate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=microstate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-28.49  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-28.39  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.99  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.89  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.69  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.59  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.19  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.19  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.09  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.09  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-26.69  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-26.59  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-26.39  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-26.29  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-25.89  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-25.79  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=0 --grammar=macrostate AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
 >unnamed sequence
@@ -2819,25 +2849,40 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -20.70  .((.((.((((....)))).)))).....((((........)))).....  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=microstate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=microstate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-28.50  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-28.50  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-28.10  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.80  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.80  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.50  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.00  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-27.00  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-26.80  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-26.80  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-26.60  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-26.40  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-26.30  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
+-26.10  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=macrostate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=macrostate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=nodangle AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -17.20  ..(((((....))))).....(((((((((.....))))))))).  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=overdangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=overdangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-28.20  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=microstate gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37
 >unnamed sequence
@@ -2864,10 +2909,10 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -25.23  .((.((.((((....)))).)))).....((((........)))).....  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=nodangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=nodangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-25.79  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=overdangle AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9
 >unnamed sequence
@@ -2894,20 +2939,20 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -17.20  ..(((((....))))).....(((((((((.....))))))))).  [][]
 -17.20  ..(((((....))))).....(((((((((.....))))))))).  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=macrostate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=macrostate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-38.56  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=nodangle gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -22.18  .((.((.((((....)))).)))).....((((........)))).....  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=overdangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=overdangle ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9
 >unnamed sequence
-   1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
-0.00  .....................................................................  _
+     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+-33.91  .((((((((((((................))))))))))))........(((((((...)))))))...  [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=eval --allowLP=1 --grammar=microstate AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17
 >unnamed sequence
@@ -2933,4 +2978,100 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -26.59  ..(((((....))))).....(((((((((.....))))))))).  [][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=nodangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=overdangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=microstate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=macrostate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=nodangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=overdangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=microstate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=nodangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=overdangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=microstate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=macrostate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=nodangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=overdangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=microstate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=nodangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=overdangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=microstate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=nodangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=overdangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=microstate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=macrostate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=nodangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=overdangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=microstate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=macrostate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=nodangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=overdangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=microstate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+[][]
+
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+[][]
 

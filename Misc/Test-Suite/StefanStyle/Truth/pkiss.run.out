@@ -3094,3 +3094,27 @@
 -70.89  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
 -70.89  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
 
+#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=0 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
+[{]<}>
+
+#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=1 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
+[{]<}>
+
+#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=0 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
+[{]<}>
+
+#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=1 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
+[{]<}>
+
+#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=0 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
+[{]<}>
+
+#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=1 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
+[{]<}>
+
+#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=0 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
+[{]<}>
+
+#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=1 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
+[{]<}>
+
