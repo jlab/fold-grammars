@@ -135,6 +135,10 @@
 			<file id="pknot_enforce.hh" ref="Extensions/pknot_enforce.hh" />
 			<file id="pknot_shape.hh" ref="Extensions/pknot_shape.hh" />
 			<file id="pknot_extras.hh" ref="Extensions/pknot_extras.hh" />
+			
+			<file id="alignment.hh" ref="Extensions/alignment.hh" />
+			<file id="bpfilter.hh" ref="Extensions/bpfilter.hh" />
+			<file id="evalfold.hh" ref="Extensions/evalfold.hh" />
 		</structure>
 	</element>
 
@@ -152,6 +156,11 @@
 						<p><i><b>pKiss</b></i> is a tool for folding RNA secondary structures, including two limited classes of pseudoknots.</p>
 						<p>As <i><b>pKiss</b></i> is the successor of <i>pknotsRG</i>, the first pseudoknot class is the <i>canonical simple recursive pseudoknot</i> from <i>pknotsRG</i>. The new class are <i>canonical simple recursive kissing hairpins</i>.</p>
 						<p>To retain the fast runtime while adding the more complicated kissing hairpin class, we heuristically construct a kissing hairpin from an overlay of two canonical simple recursive pseudoknots. By applying this trick, we loose a bit thoroughness. Due to our evaluations, performance is still very good. <br/> Should you feel uncomfortable with this situation, <i><b>pKiss</b></i> offers three more strategies to compute kissing hairpins. These strategies are either slower or consume more memory. <br/> We strongly suggest using Strategy A.</p>
+					</html>
+				</element>
+				<element id="RNAshapes" descr="RNAshapes">
+					<html>
+						<p>!!!RNAalishapes combines various secondary structure analysis methods, such as suboptimal folding and shape abstraction, with a comparative approach known as RNA alignment folding. RNAalishapes makes use of an extended thermodynamic model and covariance scoring, which allows to reward covariance of paired bases. Besides providing in-depth analysis methods for aligned RNAs, the tool also shows a fairly well prediction accuracy. Therefore, RNAalishapes provides the community with a powerful tool for structural analysis of classes of RNAs and is also a reasonable method for consensus structure prediction based on sequence alignments.</p>
 					</html>
 				</element>
 				<element id="RNAalishapes" descr="RNAalishapes">

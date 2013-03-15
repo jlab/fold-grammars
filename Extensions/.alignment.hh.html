@@ -1,0 +1,14 @@
+&quot;alifold.hh&quot; fulfills two tasks:
+<ul>
+<li>the function <code>basepair</code> is the complement to the <a href="?id=singlefold.hh">single fold</a> version. With this trick, we avoid grammar duplications.</li>
+<li>it provides functions to
+<ul>
+	<li>pre-compute the covariance of each two alignment columns (<code>covscore</code>)</li>
+	<li>compute a representative character for an alignment column in terms of a &quot;consensus&quot; base, i.e. returns the most frequent base in this column. In case of co-optimals the alphabetically smaller base is reported. (<code>append_consensus</code>)</li>
+	<li>compute a representative character for an alignment column in terms of a &quot;most informative&quot; base, i.e. bases in columns with frequency greater than the background
+   frequency are projected into <a href="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html">IUPAC</a> notation. Columns where gaps are
+   over-represented are in lower case. (<code>append_mis</code>)</li>
+   <li>there is also the experimental filter function <code>maxcombsize</code> that should restrict the sum of both unpaired regions of an internal loop to a certain number of bases. This mimics size restrictions known from Vienna Package. Since we don't see a speed up, we stay with maximal 30 bases on each region individually.</li>
+</ul>
+</li>
+</ul>
