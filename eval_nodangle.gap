@@ -1,5 +1,6 @@
 import rna
 import "Extensions/evalfold.hh"
+import "Extensions/shapes.hh"
 
 input rna
 type shape_t = shape

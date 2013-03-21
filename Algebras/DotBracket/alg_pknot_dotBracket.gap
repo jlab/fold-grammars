@@ -1,5 +1,5 @@
-algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, comp = Rope, compKnot = Rope) {
-//begin: copy and paste from non-crossing algebra, but we have to use Rope instead of strings, since we need more than chars ().
+algebra alg_pknot_dotBracket implements sig_pknot_foldrna(alphabet = char, answer = Rope, compKnot = Rope) {
+//begin: copy and paste from non-crossing algebra, but we have to use Rope instead of strings, since we need more than chars (). Furthermore the string version is extremely unefficient.
   Rope sadd(Subsequence lb, Rope e) {
     Rope res;
     append(res, '.');

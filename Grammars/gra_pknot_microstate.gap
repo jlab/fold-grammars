@@ -46,14 +46,14 @@ grammar gra_pknot_microstate uses sig_pknot_foldrna(axiom = struct) {
   mldangle  = incl(dangle)     |
               pkml(dangleknot) # h; //this alternative is for pseudoknots
 
-  include "Grammars/grapart_pkinnards.gap" //include this file, if grammar contains pseudoknots of any kind
-  include "Grammars/grapart_pknotsrg.gap"  //include this file, if grammar contains H-type pseudoknots
+  include "Grammars/Parts/grapart_pkinnards.gap" //include this file, if grammar contains pseudoknots of any kind
+  include "Grammars/Parts/grapart_pknotsrg.gap"  //include this file, if grammar contains H-type pseudoknots
 
-  include "Grammars/grapart_pkissA.gap" //include this file, if grammar contains K-type pseudoknots
-  include "Grammars/grapart_pkissB.gap" //include this file, if grammar contains K-type pseudoknots
-  include "Grammars/grapart_pkissBC.gap"
-  include "Grammars/grapart_pkissC.gap" //C: contains help_pkiss_C
-  include "Grammars/grapart_pkissD.gap" //D: contains help_pkiss_D
+  include "Grammars/Parts/grapart_pkissA.gap" //include this file, if grammar contains K-type pseudoknots
+  include "Grammars/Parts/grapart_pkissB.gap" //include this file, if grammar contains K-type pseudoknots
+  include "Grammars/Parts/grapart_pkissBC.gap"
+  include "Grammars/Parts/grapart_pkissC.gap" //C: contains help_pkiss_C
+  include "Grammars/Parts/grapart_pkissD.gap" //D: contains help_pkiss_D
   
   knot = {strategyA} with selectStrategy('A')
        | {strategyB} with selectStrategy('B') 

@@ -64,7 +64,7 @@ struct PkAlph {
   }
 };
 
-typedef Fiber<size_t, unsigned char, PkAlph<size_t, unsigned char> > pkshape_t;
+typedef Fiber<size_t, unsigned char, PkAlph<size_t, unsigned char> > shape_t;
 
 template<typename SHAPE>
 inline char front(const SHAPE &a, char r = 0) {
@@ -95,6 +95,9 @@ inline SHAPE tail(const SHAPE &a) {
   return x;
 }
 
-typedef pkshape_t myShape;
+typedef shape_t myShape;
+
+static const shape_t openParen = '(';
+static const shape_t closeParen = ')';
 
 #endif

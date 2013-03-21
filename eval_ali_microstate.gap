@@ -2,6 +2,7 @@ import rna
 import "Extensions/evalfold.hh"
 import "Extensions/alignment.hh"
 import "Extensions/typesRNAfolding.hh"
+import "Extensions/shapes.hh"
 
 input rna
 

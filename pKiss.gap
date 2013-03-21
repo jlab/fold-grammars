@@ -11,7 +11,7 @@ import "Extensions/probabilities.hh"
 input rna
 
 type Rope = extern
-type pkshape_t = extern
+type shape_t = extern
 type answer_pknot_mfe = extern
 type answer_pknot_pfunc = extern
 type pktype = extern

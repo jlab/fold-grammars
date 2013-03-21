@@ -1,43 +1,27 @@
-signature sig_pknot_foldrna(alphabet, comp, compKnot) {
-  comp sadd(Subsequence, comp);
-  comp cadd(comp, comp);
-  comp nil(Subsequence);
-  comp drem(Subsequence, comp, Subsequence);
-  comp edl(Subsequence, comp, Subsequence);
-  comp edr(Subsequence, comp, Subsequence);
-  comp edlr(Subsequence, comp, Subsequence);
-  comp pk(compKnot);
-  compKnot pknot(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int);
-  compKnot pkiss(Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence, comp, Subsequence ; int);
-  comp kndl(Subsequence, compKnot);
-  comp kndr(compKnot, Subsequence);
-  comp kndlr(Subsequence, compKnot, Subsequence);
-  comp sr(Subsequence, comp, Subsequence);
-  comp hl(Subsequence,Subsequence,Subsequence);
-  comp bl(Subsequence, Subsequence, comp, Subsequence);
-  comp br(Subsequence, comp, Subsequence, Subsequence);
-  comp il(Subsequence, Subsequence, comp, Subsequence, Subsequence);
-  comp ml(Subsequence,comp,Subsequence);
-  comp mldl(Subsequence,Subsequence,comp,Subsequence);
-  comp mldr(Subsequence,comp,Subsequence,Subsequence);
-  comp mldlr(Subsequence,Subsequence,comp,Subsequence,Subsequence);
-  comp addss(comp, Subsequence);
-  comp incl(comp);
-  comp pkml(comp);
-  comp frd(comp, Subsequence; int);
-  comp emptymid(Subsequence ; int, int);
-  comp midbase(Subsequence ; int, int);
-  comp middlro(Subsequence ; int, int);
-  comp midregion(comp);
-  comp middl(Subsequence, comp; int);
-  comp middr(comp, Subsequence; int);
-  comp middlr(Subsequence, comp, Subsequence; int, int);
-  comp bkd(Subsequence, comp; int);
-  comp sadd_pk(Subsequence, comp);
-  choice [comp] h([comp]);
+signature sig_pknot_foldrna(alphabet, answer, compKnot) {
+	include "Signatures/Parts/sigpart_basic.gap"
+
+//pseudoknot extensions:
+  answer pk(compKnot);
+  compKnot pknot(Subsequence, answer, Subsequence, answer, Subsequence, answer, Subsequence ; int);
+  compKnot pkiss(Subsequence, answer, Subsequence, answer, Subsequence, answer, Subsequence, answer, Subsequence, answer, Subsequence ; int);
+  answer kndl(Subsequence, compKnot);
+  answer kndr(compKnot, Subsequence);
+  answer kndlr(Subsequence, compKnot, Subsequence);
+  answer pkml(answer);
+  answer frd(answer, Subsequence; int);
+  answer emptymid(Subsequence ; int, int);
+  answer midbase(Subsequence ; int, int);
+  answer middlro(Subsequence ; int, int);
+  answer midregion(answer);
+  answer middl(Subsequence, answer; int);
+  answer middr(answer, Subsequence; int);
+  answer middlr(Subsequence, answer, Subsequence; int, int);
+  answer bkd(Subsequence, answer; int);
+  answer sadd_pk(Subsequence, answer);
   choice [compKnot] hKnot([compKnot]);
   
-  // following two algebrafunctions are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped.
-  comp localKnot(Subsequence, compKnot, Subsequence);
-  comp skipBase(Subsequence, comp);
+// following two algebrafunctions are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped.
+  answer localKnot(Subsequence, compKnot, Subsequence);
+  answer skipBase(Subsequence, answer);
 }

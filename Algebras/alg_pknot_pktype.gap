@@ -1,4 +1,4 @@
-algebra alg_pknot_pktype implements sig_pknot_foldrna(alphabet = char, comp = pktype, compKnot = pktype) {
+algebra alg_pknot_pktype implements sig_pknot_foldrna(alphabet = char, answer = pktype, compKnot = pktype) {
 //begin: copy and paste from non-crossing algebra, but we have to use pktype instead of strings, since we need more than chars ().
   pktype sadd(Subsequence lb, pktype e) {
     return e;

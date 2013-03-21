@@ -3,6 +3,7 @@ import "Extensions/singlefold.hh" //necessary to redefine the meaning of the fil
 import "Extensions/mfesubopt.hh"
 import "Extensions/probabilities.hh"
 import "Extensions/typesRNAfolding.hh"
+import "Extensions/shapes.hh"
 
 input rna
 

@@ -8,7 +8,7 @@ import "Extensions/pknot_shape.hh" //for a smart hashable "string" with chars []
 input rna
 
 type Rope = extern
-type pkshape_t = extern
+type shape_t = extern
 type answer_pknot_mfe = extern
 type pktype = extern
 

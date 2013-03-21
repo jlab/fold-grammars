@@ -3,6 +3,7 @@ import "Extensions/alifold.hh"
 import "Extensions/mfesubopt.hh"
 import "Extensions/probabilities.hh"
 import "Extensions/typesRNAfolding.hh"
+import "Extensions/shapes.hh"
 
 input rna
 
