@@ -27,9 +27,13 @@ algebra alg_outside_pfunc implements sig_outside_foldrna(alphabet = char, answer
 		return scale(2) * x * mk_pf(ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb));
 	}
 	double outer_bp(Subsequence rb, double x, Subsequence lb) {
-		return x;
+		return scale(2) * x;
 	}
 	double window(Subsequence l, double x, Subsequence r) {
 		return x;
+	}
+	double makeplot(double x) { 
+		MAKEPLOT(t_0_seq);
+		return x; 
 	}
 }

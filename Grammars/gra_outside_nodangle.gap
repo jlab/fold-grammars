@@ -1,8 +1,8 @@
-grammar gra_outside_nodangle uses sig_outside_foldrna(axiom = start) {
+grammar gra_outside_nodangle uses sig_outside_foldrna(axiom = plot) {
 	//assume your normal RNA sequence input is SEQ. To get the base pair probabilities in SEQ compile a alg_pfunc instance, run it on doubled input "SEQnSEQ" and hack non-terminal matrices:
 	//basepair prob(i,j) = obj.nt_weak(i,j) * obj.nt_outer_dangle(j,n+i+1) / obj.nt_struct(0,n), where n = |SEQ|
-	
-  start = window(REGION0, outer_dangle with collfilter2, REGION0) 
+	plot = makeplot(start) # h;
+  start = window(REGION0 with minsize(11) with maxsize(11), outer_dangle with collfilter2, REGION0 with minsize(10) with minsize(10)) 
 	    # h;
 	
   separator = sep(struct, BASE with containsBase(N_BASE), struct) 

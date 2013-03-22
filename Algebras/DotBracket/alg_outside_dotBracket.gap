@@ -58,4 +58,5 @@ algebra alg_outside_dotBracket implements sig_outside_foldrna(alphabet = char, a
 		append(res, ' ', size(r));
 		return res;
 	}
+	string makeplot(string x) { return x; }
 }

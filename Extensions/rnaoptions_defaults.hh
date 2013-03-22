@@ -52,6 +52,9 @@
 	inline static float getAlifold_minscore_basepair() {
 		return gapc::Opts::getOpts()->alifold_minscore_basepair;
 	}
+	inline static const char* getDotplotFilename() {
+		return gapc::Opts::getOpts()->dotPlotFilename;
+	}
 #else
 	//if compiled with no special options to ask for energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy.
 	inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
@@ -97,6 +100,9 @@
 	}
 	inline static float getAlifold_minscore_basepair() {
 		return -200;
+	}
+	inline static const char* getDotplotFilename() {
+		return "./dotPlot.ps";
 	}
 #endif
 	

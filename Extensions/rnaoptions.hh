@@ -86,6 +86,7 @@ class Opts {
     float alifold_nfactor;
     int alifold_minscore_basepair;
     bool allowLonelyBasepairs;
+    const char* dotPlotFilename;
 
     Opts()
     :
@@ -195,6 +196,11 @@ class Opts {
 				<< "   that this filter can have a slight influence on the overall results. To" << std::endl
 				<< "   disable this filter, use option -F 0." << std::endl
 				<< "" << std::endl
+				<< "   For use in outside context: mimics Viennas --bppmThreshold=<value> parameter" << std::endl
+				<< "   Set the threshold for base pair probabilities included in the postscript output (default=`1e-5')" << std::endl
+				<< "" << std::endl
+				<< "-o <file> for outside context: write dot-plot in <file>. Default is ./dotPlot.ps." << std::endl
+				<< "" << std::endl
 				<< "-C <float-value> Set the weight of the covariance term in the energy function [1.0]" << std::endl
 				<< "" << std::endl
 				<< "-n <float-value> Set the penalty for non-compatible sequences in the covariance term of the energy function [1.0]" << std::endl
@@ -223,6 +229,7 @@ class Opts {
 						"t:T:P:"
 						"c:e:x:y:z:"
 						"s:l:F:q:u:"
+					    "o:"  //output filename for dot plot
 						"n:C:m:" //for alifold parameters nfactor, cfactor and minpscore_basepair
 						"hd:r:k:")) != -1) {
 			switch (o) {
@@ -269,6 +276,9 @@ class Opts {
 				break;
 			case 'P':
 				par_filename = optarg;
+				break;
+			case 'o':
+				dotPlotFilename = optarg;
 				break;
 			case 'c':
 				energydeviation_relative = std::atof(optarg);
@@ -372,6 +382,9 @@ class Opts {
 		}
 		if (shapelevel <= 0 || shapelevel >= 6) {
 			throw OptException("Shape are only defined for levels 5, 4, 3, 2 and 1.");
+		}
+		if (dotPlotFilename == NULL) {
+			dotPlotFilename = "./dotPlot.ps";
 		}
 		}
 

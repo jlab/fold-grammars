@@ -32,4 +32,5 @@ algebra alg_outside_mfe implements sig_outside_foldrna(alphabet = char, answer =
 	int window(Subsequence l, int x, Subsequence r) {
 		return x;
 	}
+	int makeplot(int x) { return x; }
 }

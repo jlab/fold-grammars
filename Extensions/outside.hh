@@ -63,7 +63,7 @@ inline char *time_stamp(void)
   cal_time = time(NULL);
   return ( ctime(&cal_time) );
 }
-inline static FILE * PS_dot_common(char *seq, char *wastlfile,
+inline static FILE * PS_dot_common(char *seq, const char *wastlfile,
                             char *comment, int winsize) {
   /* write PS header etc for all dot plot variants */
   FILE *wastl;
@@ -201,7 +201,7 @@ inline static FILE * PS_dot_common(char *seq, char *wastlfile,
   return(wastl);
 }
 
-inline int PS_dot_plot_list(char *seq, char *wastlfile, plist *pl, plist *mf, char *comment, double cut_off) {
+inline int PS_dot_plot_list(char *seq, const char *wastlfile, plist *pl, plist *mf, char *comment, double cut_off) {
   FILE *wastl;
   //int length;
   double tmp;
@@ -213,7 +213,7 @@ inline int PS_dot_plot_list(char *seq, char *wastlfile, plist *pl, plist *mf, ch
 
   fprintf(wastl,"%%data starts here\n");
   /* print boxes in upper right half*/
-  for (pl1=pl; pl1->i>0; pl1++) {
+  for (pl1=pl; pl1->i > 0; pl1++) {
     tmp = sqrt(pl1->p);
     if (pl1->p >= cut_off) {
     	fprintf(wastl,"%d %d %1.9f ubox\n", pl1->i, pl1->j, tmp);
@@ -234,5 +234,51 @@ inline int PS_dot_plot_list(char *seq, char *wastlfile, plist *pl, plist *mf, ch
   fclose(wastl);
   return 1; /* success */
 }
+
+inline const char* convertInput(Basic_Sequence<char> rna) {
+	unsigned int i = 0, n = (rna.size()-1)/2;
+	std::ostringstream output;
+	Basic_Sequence<char>::iterator it = rna.begin();
+	for (i = 0; i < n; i++) {
+		output << base_to_char(*it);
+		it++;
+	}
+	return output.str().c_str();
+}
+
+#define MAKEPLOT(rnaSeq) \
+  /* collect high prob base pairs */ \
+  unsigned int i,j,n=(rnaSeq.size()-1)/2; \
+  std::vector<plist> highProbPairs; \
+  for (i = 0; i <= n; i++) { \
+	  for (j = i+1; j <= n; j++) { \
+		  if (nt_weak(i,j) != std::numeric_limits<double>::infinity() && nt_outer_dangle(j,n+i+1) != std::numeric_limits<double>::infinity()) { \
+			  plist pair; \
+			  pair.i = i+1; \
+			  pair.j = j; \
+			  pair.p = nt_weak(i,j) * nt_outer_dangle(j,n+i+1) / nt_struct(0,n); \
+			  /* for debugging: I think that due to rounding problems, sometimes pair probs are > 1?!: if (pair.p > 1.0) std::cerr << "(" << pair.i << " , " << pair.j << "): prob: " << pair.p << ", inside: " << nt_weak(i,j) << ", outside: " << nt_outer_dangle(j,n+i+1) << ", pfAll: " << nt_struct(0,n) << "\n"; */ \
+			  if (pair.p >= lowProbabilityFilter()) highProbPairs.push_back(pair); \
+		  } \
+	  } \
+  } \
+  \
+  /* convert base pairs to Vienna data structure */ \
+  std::vector<plist>::iterator it; \
+  plist *pl; \
+  pl = (plist*) malloc((highProbPairs.size()+1) * sizeof(plist)); \
+  unsigned int k = 0; \
+  for (it = highProbPairs.begin(); it != highProbPairs.end(); it++) { \
+	  pl[k++] = *it; \
+  } \
+  pl[k].i = 0; /* add a specific "end" pair, to indicate Vienna function to end printing probs in PS */ \
+  \
+  /* create PS plot */ \
+  char *s = new char[n + 1]; \
+  std::strncpy(s, convertInput(rnaSeq), n+10); \
+  char comment[] = ""; \
+  if (PS_dot_plot_list(s, getDotplotFilename(), pl, pl, comment, lowProbabilityFilter())) { \
+	  std::cout << "wrote Post-Script dot-plot to '" << getDotplotFilename() << "'\n"; \
+  }
 
 #endif
