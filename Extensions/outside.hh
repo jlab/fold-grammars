@@ -179,12 +179,25 @@ inline const std::string getPSheader(Basic_Sequence<char> rna) {
 	unsigned int i,j,n=(rnaSeq.size()-1)/2; \
 	for (i = 0; i <= n; i++) { \
 		for (j = i+1; j <= n; j++) { \
-			if (nt_weak(i,j) != std::numeric_limits<double>::infinity() && nt_outer_dangle(j,n+i+1) != std::numeric_limits<double>::infinity()) { \
-				double prob = sqrt(nt_weak(i,j) * nt_outer_dangle(j,n+i+1) / nt_struct(0,n)); \
-				/* for debugging: I think that due to rounding problems, sometimes pair probs are > 1?!: if (pair.p > 1.0) std::cerr << "(" << pair.i << " , " << pair.j << "): prob: " << pair.p << ", inside: " << nt_weak(i,j) << ", outside: " << nt_outer_dangle(j,n+i+1) << ", pfAll: " << nt_struct(0,n) << "\n"; */ \
-				if (prob >= sqrt(lowProbabilityFilter())) { \
-					psfile << (i+1) << " " << j << " " << prob << " ubox\n"; \
+			/*std::cout << (i+1) << ", " << j << " = weak: " << nt_weak(i,j) << ", strong: "  << nt_strong(i,j) << ", outer_weak: " << nt_outer_weak(j,n+i+1) << ", outer_strong: " << nt_outer_strong(j,n+i+1) << "\n"; */\
+			double prob = 0.0;\
+			if (gapc::Opts::getOpts()->allowLonelyBasepairs) {\
+				if (nt_weak(i,j) != std::numeric_limits<double>::infinity() && nt_outer_dangle(j,n+i+1) != std::numeric_limits<double>::infinity()) { \
+					prob += nt_weak(i,j) * nt_outer_dangle(j,n+i+1); \
 				} \
+			} else {\
+				if (nt_weak(i,j) != std::numeric_limits<double>::infinity() && nt_outer_strong(j,n+i+1) != std::numeric_limits<double>::infinity()) { \
+					prob += nt_weak(i,j) * nt_outer_strong(j,n+i+1); \
+				} \
+				if (nt_strong(i,j) != std::numeric_limits<double>::infinity() && nt_outer_weak(j,n+i+1) != std::numeric_limits<double>::infinity()) {\
+					prob += nt_strong(i,j) * nt_outer_weak(j,n+i+1); \
+				} \
+			}\
+			/*std::cout << "prob(" << i << "," << j << ") = " << prob / nt_struct(0,n) << "\n"; */\
+			prob = sqrt(prob / nt_struct(0,n)); \
+			/* for debugging: I think that due to rounding problems, sometimes pair probs are > 1?!: */ if (prob*prob > 1.0) std::cerr << "(" << i+1 << " , " << j << "): prob: " << prob << ", inside: " << nt_weak(i,j) << ", outside: " << nt_outer_dangle(j,n+i+1) << ", pfAll: " << nt_struct(0,n) << "\n";  \
+			if (prob >= sqrt(lowProbabilityFilter())) { \
+				psfile << (i+1) << " " << j << " " << prob << " ubox\n"; \
 			} \
 		} \
 	} \
@@ -194,5 +207,46 @@ inline const std::string getPSheader(Basic_Sequence<char> rna) {
 	psfile.close(); \
 	std::cout << "wrote Post-Script dot-plot to '" << getDotplotFilename() << "'\n";
 
+//just for debugging purposes:
+#define PLOTCOUNT() \
+	unsigned int i,j,n=(t_0_seq.size()-1)/2; \
+	for (i = 0; i <= n; i++) { \
+		for (j = i+1; j <= n; j++) { \
+			std::cout << i << "\t" << j << "\t";\
+			if (gapc::Opts::getOpts()->allowLonelyBasepairs) {\
+				std::cout << nt_weak(i,j) * nt_outer_strong(j,n+i+1);\
+			} else {\
+				std::cout << nt_weak(i,j) * nt_outer_strong(j,n+i+1) + nt_strong(i,j) * nt_outer_weak(j,n+i+1);\
+			}\
+			std::cout << "\n";\
+		}\
+	}\
+
+#define DEBUGPLOT() \
+		std::cout << "weak(" << gapc::Opts::getOpts()->openBase << ", " << gapc::Opts::getOpts()->closeBase << "):\n";\
+		gapc::return_type results = out::nt_weak(gapc::Opts::getOpts()->openBase, gapc::Opts::getOpts()->closeBase);\
+		for (gapc::return_type::iterator it = results->begin(); it != results->end(); ++it) {\
+			std::cout << "\t" << (*it) << "\n";\
+		}\
+		std::cout << "\n";\
+		std::cout << "strong(" << gapc::Opts::getOpts()->openBase << ", " << gapc::Opts::getOpts()->closeBase << "):\n";\
+		results = out::nt_strong(gapc::Opts::getOpts()->openBase, gapc::Opts::getOpts()->closeBase);\
+		for (gapc::return_type::iterator it = results->begin(); it != results->end(); ++it) {\
+			std::cout << "\t" << (*it) << "\n";\
+		}\
+		std::cout << "\n";\
+		unsigned int n = (t_0_seq.size()-1)/2;\
+		std::cout << "outer_weak(" << gapc::Opts::getOpts()->closeBase << ", " << (n+gapc::Opts::getOpts()->openBase+1) << "):\n";\
+		results = out::nt_outer_weak(gapc::Opts::getOpts()->closeBase, (n+gapc::Opts::getOpts()->openBase+1));\
+		for (gapc::return_type::iterator it = results->begin(); it != results->end(); ++it) {\
+			std::cout << "\t" << (*it) << "\n";\
+		}\
+		std::cout << "\n";\
+		std::cout << "outer_strong(" << gapc::Opts::getOpts()->closeBase << ", " << (n+gapc::Opts::getOpts()->openBase+1) << "):\n";\
+		results = out::nt_outer_strong(gapc::Opts::getOpts()->closeBase, (n+gapc::Opts::getOpts()->openBase+1));\
+		for (gapc::return_type::iterator it = results->begin(); it != results->end(); ++it) {\
+			std::cout << "\t" << (*it) << "\n";\
+		}\
+		std::cout << "\n";\
 
 #endif
