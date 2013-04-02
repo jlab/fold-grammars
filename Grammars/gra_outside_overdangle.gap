@@ -1,4 +1,4 @@
-grammar gra_outside_nodangle uses sig_outside_foldrna(axiom = plot) {
+grammar gra_outside_overdangle uses sig_outside_foldrna(axiom = plot) {
   plot = makeplot(start) //makeplot is a dummy function, containing a makro in pfunc algebra which is responsible for drawing the PS dot plot
 	   # h;
 	

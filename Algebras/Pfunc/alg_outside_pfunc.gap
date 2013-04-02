@@ -7,6 +7,23 @@ algebra alg_outside_pfunc implements sig_outside_foldrna(alphabet = char, answer
 	double outer_drem(Subsequence locr, double x, Subsequence locl) {
 		return x * mk_pf(termau_energy(shiftIndex(locl), shiftLeftIndex(locr)));
 	}
+	double outer_edl(Subsequence rb, double x, Subsequence ldangle) {
+		Subsequence lb = ldangle;
+		lb.i = ldangle.i+1;
+		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + dl_energy(shiftIndex(lb), shiftLeftIndex(rb)));
+	}
+	double outer_edr(Subsequence rdangle, double x, Subsequence lb) {
+		Subsequence rb = rdangle;
+		rb.j = rdangle.j-1;
+		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + dr_energy(shiftIndex(lb), shiftLeftIndex(rb)));
+	}
+	double outer_edlr(Subsequence rdangle, double x, Subsequence ldangle) {
+		Subsequence lb = ldangle;
+		lb.i = ldangle.i+1;
+		Subsequence rb = rdangle;
+		rb.j = rdangle.j-1;
+		return scale(2) * x * mk_pf(termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + ext_mismatch_energy(shiftIndex(lb), shiftLeftIndex(rb)));
+	}
 	double outer_sr(Subsequence rb, double x, Subsequence lb) {
 		return scale(2) * x * mk_pf(sr_energy(shiftIndex(lb), rb));
 	}
@@ -25,6 +42,15 @@ algebra alg_outside_pfunc implements sig_outside_foldrna(alphabet = char, answer
 	}
 	double outer_ml(Subsequence rb, double x, Subsequence lb) {
 		return scale(2) * x * mk_pf(ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb));
+	}
+	double outer_mldl(Subsequence rb, double x, Subsequence ul, Subsequence lb) {
+		return scale(3) * x * mk_pf(ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb) + dli_energy(shiftIndex(lb), rb));
+	}
+	double outer_mldr(Subsequence rb, Subsequence ur, double x, Subsequence lb) {
+		return scale(3) * x * mk_pf(ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb) + dri_energy(shiftIndex(lb), rb));
+	}
+	double outer_mldlr(Subsequence rb, Subsequence ur, double x, Subsequence ul, Subsequence lb) {
+		return scale(4) * x * mk_pf(ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb) + ml_mismatch_energy(shiftIndex(lb), rb));
 	}
 	double outer_bp(Subsequence rb, double x, Subsequence lb) {
 		return scale(2) * x;

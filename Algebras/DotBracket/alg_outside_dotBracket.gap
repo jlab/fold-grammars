@@ -11,6 +11,25 @@ algebra alg_outside_dotBracket implements sig_outside_foldrna(alphabet = char, a
 	string outer_drem(Subsequence locr, string x, Subsequence locl) {
 		return x;
 	}
+	string outer_edl(Subsequence locr, string x, Subsequence lb) {
+		string res;
+		append(res, x);
+		append(res, '.');
+		return res;
+	}
+	string outer_edr(Subsequence rb, string x, Subsequence locl) {
+		string res;
+		append(res, '.');
+		append(res, x);
+		return res;
+	}
+	string outer_edlr(Subsequence rb, string x, Subsequence lb) {
+		string res;
+		append(res, '.');
+		append(res, x);
+		append(res, '.');
+		return res;
+	}
 	string outer_sr(Subsequence rb, string x, Subsequence lb) {
 		string res;
 		append(res, ')');
@@ -41,6 +60,31 @@ algebra alg_outside_dotBracket implements sig_outside_foldrna(alphabet = char, a
 		string res;
 		append(res, ')');
 		append(res, x);
+		append(res, '(');
+		return res;
+	}
+	string outer_mldl(Subsequence rb, string x, Subsequence ul, Subsequence lb) {
+		string res;
+		append(res, ')');
+		append(res, x);
+		append(res, '.');
+		append(res, '(');
+		return res;
+	}
+	string outer_mldr(Subsequence rb, Subsequence ur, string x, Subsequence lb) {
+		string res;
+		append(res, ')');
+		append(res, '.');
+		append(res, x);
+		append(res, '(');
+		return res;
+	}
+	string outer_mldlr(Subsequence rb, Subsequence ur, string x, Subsequence ul, Subsequence lb) {
+		string res;
+		append(res, ')');
+		append(res, '.');
+		append(res, x);
+		append(res, '.');
 		append(res, '(');
 		return res;
 	}
