@@ -11,7 +11,7 @@ MAKE=make
 PERL=perl
 BASEDIR=../../../
 
-targets=mfe subopt shapes probs sample eval
+targets=mfe subopt shapes probs sample eval outside
 targets_window=mfe subopt shapes probs sample
 grammars=nodangle overdangle microstate macrostate
 #~ nodangle overdangle microstate macrostate
@@ -121,6 +121,20 @@ eval:
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
 			$(GAPC) -I $(BASEDIR) -p "alg_dotBracket$${sMi} * alg_mfe$${suffix} * alg_shapeX" $(BASEDIR)eval_$${grammar}.gap $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="eval_$${grammar}" isEval=1; \
+		fi; \
+	done
+
+outside:
+	for grammar in `echo "$(grammars)"`; do \
+		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+		suffix=`echo "$${sOv}"`; \
+		if [ $${grammar} = "macrostate" ]; then \
+			echo "Sorry, we don't provide a outside version for macrostate yet"; \
+			continue; \
+		fi; \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
+			$(GAPC) -I $(BASEDIR) -p "alg_outside_pfunc$${suffix}" $(BASEDIR)outside_$${grammar}.gap $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="outside_$${grammar}"; \
 		fi; \
 	done
 

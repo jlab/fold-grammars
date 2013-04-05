@@ -21,7 +21,7 @@ use foldGrammars::IO;
 $IO::SUB_BUILDCOMMAND = \&buildCommand;
 use POSIX 'isatty';
 
-our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_CONVERT);
+our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_CONVERT, $Settings::MODE_OUTSIDE);
 @References::ORDER = ('hof:fek:sta:2002','ber:hof:wil:gru:sta:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','was:hof:sta:2004','voss:2006');
 
 our $CONSENSUS_CONSENSUS = 'consensus';
@@ -39,12 +39,12 @@ my %PARAM;
 $PARAM{mode} = {modes => \@ALLMODES, key => 'mode', type => 's', default => $Settings::MODE_SHAPES, info => "Select the computation mode. Available modes are \"".join('", "', @ALLMODES)."\". Omit the ticks on input.\nDefault is \"@(DEFAULT)\"."};
 $PARAM{windowsize} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'windowSize', type => 'i', gapc => 'w', default => undef, info => "Activates window mode and computes substrings of size <int> for the input. After computation for the first <int> bases is done, the window is pushed <y> bases to the right and the next computation is startet. <y> is set by --@(windowincrement).\n<int> must be a non-zero positive integer, smaller than the input length."};
 $PARAM{windowincrement} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'windowIncrement', gapc => 'i', type => 'i', default => 1, info => "If --@(windowsize) is given, this parameter sets the offset for the next window to <int> bases.\n<int> must be a non-zero positive integer, smaller or equal to --@(windowsize).\nDefault is @(DEFAULT)."};
-$PARAM{temperature} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
-$PARAM{param} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [".References::getNumber('mat:dis:chi:schroe:zuk:tur:2004')."] and [".References::getNumber('tur:mat:2009')."])."};
+$PARAM{temperature} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
+$PARAM{param} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [".References::getNumber('mat:dis:chi:schroe:zuk:tur:2004')."] and [".References::getNumber('tur:mat:2009')."])."};
 $PARAM{allowlp} = {modes => \@ALLMODES, key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
 $PARAM{absolutedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES], key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation)."};
 $PARAM{relativedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES], key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation)."};
-$PARAM{shapelevel} = {modes => \@ALLMODES, key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see [".References::getNumber('jan:gie:2010')."] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
+$PARAM{shapelevel} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_CONVERT], key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see [".References::getNumber('jan:gie:2010')."] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
 $PARAM{lowprobfilter} = {modes => [$Settings::MODE_PROBS], key => 'lowProbFilter', gapc => 'F', type => 'f', default => 0.000001, info => "This option sets a barrier for filtering out results with very low probabilities during calculation. The default value here is @(DEFAULT), which gives a significant speedup compared to a disabled filter. (See [".References::getNumber('voss:gie:reh:2006')."] for details.) Note that this filter can have a slight influence on the overall results. To disable this filter, use option --@(lowprobfilter) 0. \n<float> must be a positive floating point number smaller than 1."};
 $PARAM{lowprobfilteroutput} = {modes => [$Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'outputLowProbFilter', gapc => undef, type => 'f', default => 0.000001, info => "This option sets a filter for omitting low probability results during output. It is just for reporting convenience. Unlike probability cutoff filter, this option does not have any influence on runtime or probabilities beyond this value. To disable this filter, use option --@(lowprobfilteroutput) 0. \n<float> must be a positive floating point number smaller than 1."};
 $PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
@@ -53,12 +53,14 @@ $PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', de
 $PARAM{probdecimals} = {modes => [$Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'probDecimals', type => 'i', default => 7, info => "Sets the number of digits used for printing shape probabilities.\n<int> must be a positive integer number.\nDefault is @(DEFAULT)."};
 $PARAM{numsamples} = {modes => [$Settings::MODE_SAMPLE], key => 'numSamples', type => 'i', gapc => 'r', default => 1000, info => "Sets the number of samples that are drawn to estimate shape probabilities.\nIn our experience, 1000 iterations are sufficient to achieve reasonable results for shapes with high probability. Thus, default is @(DEFAULT)."};
 $PARAM{showsamples} = {modes => [$Settings::MODE_SAMPLE], key => 'showSamples', type => 'i', gapc => undef, default => 0, info => "You can inspect the samples drawn by stochastic backtrace if you turn --@(showsamples) on by setting it to 1.\nDefault is @(DEFAULT) = off."};
-$PARAM{pairingfraction} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'pairingFraction', gapc => 'm', type => 'i', default => -200, info => "For a single RNA sequence it is easy to decide if positions i and j build a valid base pair. For _alignments_ of RNA sequences this is more complicated, because some sequences might contain gaps. For exact definitions, see papers [".References::getNumber('hof:fek:sta:2002')."] and [".References::getNumber('ber:hof:wil:gru:sta:2008')."] from the Vienna group. Roughly speaking, the less --@(pairingfraction), the more sequences must have a valid pair at positions i and j.\n Default value is @(DEFAULT), meaning that at most half of the sequences must pair to let alignment positions i and j be a pair."};
-$PARAM{cfactor} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'cfactor', gapc => 'C', type => 'f', default => '1.0', info => "Set the weight of the covariance term in the energy function.\nDefault is @(DEFAULT)."};
-$PARAM{nfactor} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'nfactor', gapc => 'n', type => 'f', default => '1.0', info => "Set the penalty for non-compatible sequences in the covariance term of the energy function.\nDefault is @(DEFAULT)."};
+$PARAM{pairingfraction} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'pairingFraction', gapc => 'm', type => 'i', default => -200, info => "For a single RNA sequence it is easy to decide if positions i and j build a valid base pair. For _alignments_ of RNA sequences this is more complicated, because some sequences might contain gaps. For exact definitions, see papers [".References::getNumber('hof:fek:sta:2002')."] and [".References::getNumber('ber:hof:wil:gru:sta:2008')."] from the Vienna group. Roughly speaking, the less --@(pairingfraction), the more sequences must have a valid pair at positions i and j.\n Default value is @(DEFAULT), meaning that at most half of the sequences must pair to let alignment positions i and j be a pair."};
+$PARAM{cfactor} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'cfactor', gapc => 'C', type => 'f', default => '1.0', info => "Set the weight of the covariance term in the energy function.\nDefault is @(DEFAULT)."};
+$PARAM{nfactor} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'nfactor', gapc => 'n', type => 'f', default => '1.0', info => "Set the penalty for non-compatible sequences in the covariance term of the energy function.\nDefault is @(DEFAULT)."};
 $PARAM{consensus} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'consensus', default => 'consensus', type => 's', info => "The input alignment will be representet in a single line. You can choose between \"$CONSENSUS_CONSENSUS\", for a simple consensus sequence (determined by most frequent character), or \"$CONSENSUS_MIS\" the 'most informative sequence'. For each column of the alignment output the set of nucleotides with frequence greater than average in IUPAC notation.\nDefault is \"@(DEFAULT)\"."};
 $PARAM{grammar} = {modes => \@ALLMODES, key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could perform surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"$GRAMMAR_OVERDANGLE\". See [".References::getNumber('jan:schud:ste:gie:2011')."] for further details."};
 $PARAM{sci} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'sci', default => 0, type => 'i', info => "The structure conservation index (SCI) is a measure for the likelyhood that individual sequences will fold similar to the aligned sequences. It is computed as the aligned MFE divided by the average MFE of the unaligned sequences.\nA SCI close to zero indicates that this structure is not a good consensus structure, whereas a set of perfectly conserved structures has SCI of 1. A SCI > 1 indicates a perfectly conserved secondary structure, which is, in addition, supported by compensatory and/or consistent mutations, which contribute a covariance score to the alignment MFE. For further details see [".References::getNumber('was:hof:sta:2004')."].\nFor the sake of speed, SCI computation is switched off by default."};
+$PARAM{bppmthreshold} = {modes => [$Settings::MODE_OUTSIDE], gapc => 'F', key => 'bppmThreshold', default => 0.00001, type => 'f', info => "Set the threshold for base pair probabilities included in the postscript output.\nDefault is @(DEFAULT)."};
+$PARAM{dotplotfilename} = {modes => [$Settings::MODE_OUTSIDE], gapc => 'o', key => 'dotplot', default => 'dotPlot.ps', type => 's', info => "Sets the filename for the probability dot plot, produced in \"$Settings::MODE_OUTSIDE\" mode.\nDefault is \"@(DEFAULT)\"."};
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
@@ -78,6 +80,7 @@ foreach my $param (keys %PARAM) {
 checkParameters($settings);
 
 usage() if (defined $settings->{'help'}); #user asks for help --> print usage and die
+our $inputIndex = 0;
 if (@ARGV == 0) {
 	#input not given via command line parameter
 	if (isatty(*STDIN)) {
@@ -143,12 +146,15 @@ sub processInput {
 sub doComputation {
 	my ($refHash_alignment, $settings, $inputStructure) = @_;
 
+	$inputIndex++;
 	my $gapInput = "";
 	foreach my $name (sort {$refHash_alignment->{originalSequenceOrdering}->{$a} <=> $refHash_alignment->{originalSequenceOrdering}->{$b}} keys(%{$refHash_alignment->{originalSequenceOrdering}})) {
 		my $seq = $refHash_alignment->{sequences}->{$name};
 		$seq =~ s/t/u/gi;
 		$seq =~ s/\.|\-/\_/g;
-		$gapInput .= uc($seq).'#';
+		$seq = uc($seq);
+		$seq = $seq.'N'.$seq if ($settings->{mode} eq $Settings::MODE_OUTSIDE);
+		$gapInput .= $seq.'#';
 	}
 	
 	$refHash_alignment->{representation} = getAlignmentRepresentation($gapInput, $refHash_alignment, $settings);
@@ -160,7 +166,7 @@ sub doComputation {
 	}
 
 	my $result = qx($command "$gapInput" $structure 2>&1);
-	IO::parse($result, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, $settings);
+	IO::parse($result, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex);
 	
 	return undef;
 }
@@ -224,7 +230,12 @@ sub buildCommand {
 		$cmd .= " -".$PARAM{pairingfraction}->{gapc}." ".$settings->{'pairingfraction'} if ($settings->{'pairingfraction'} != $PARAM{pairingfraction}->{default});
 		$cmd .= " -".$PARAM{cfactor}->{gapc}." ".$settings->{'cfactor'} if ($settings->{'cfactor'} != $PARAM{cfactor}->{default});
 		$cmd .= " -".$PARAM{nfactor}->{gapc}." ".$settings->{'nfactor'} if ($settings->{'nfactor'} != $PARAM{nfactor}->{default});
+		$cmd .= " -".$PARAM{bppmthreshold}->{gapc}." ".$settings->{'bppmthreshold'} if (($settings->{'mode'} eq $Settings::MODE_OUTSIDE) && ($settings->{'bppmthreshold'} != $PARAM{bppmthreshold}->{default}));
+		if (($settings->{'mode'} eq $Settings::MODE_OUTSIDE) && ($settings->{'dotplotfilename'} ne $PARAM{bppmthreshold}->{default})) {
+			$cmd .= " -".$PARAM{dotplotfilename}->{gapc}." ".IO::getDotplotFilename($settings, $inputIndex);
+		}
 	}
+
 	return $cmd;
 }
 
@@ -234,6 +245,7 @@ sub checkParameters {
 	my $diePrefix = "wrong command line parameter:\n  ";
 	
 	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
+	die $diePrefix."Sorry, we don't provide a outside version for grammar \"macrostate\" yet.\n" if ($settings->{'grammar'} eq 'macrostate' && $settings->{'mode'} eq $Settings::MODE_OUTSIDE);
 	Utils::checkBinaryPresents($settings, $diePrefix, [], ['rep_'.$settings->{'consensus'}, 'sci_'.$settings->{'grammar'}]);
 
 	die $diePrefix."--".$PARAM{'windowsize'}->{key}." must be a positive integer!\n" if ((defined $settings->{'windowsize'}) && ($settings->{'windowsize'} < 1));
@@ -252,6 +264,8 @@ sub checkParameters {
 	die $diePrefix."--".$PARAM{'lowprobfilteroutput'}->{key}." must be a non-negative floating point number below 1.\n" if (($settings->{'lowprobfilteroutput'} >= 1) || ($settings->{'lowprobfilteroutput'} < 0));
 	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." and --".$PARAM{'relativedeviation'}->{key}." cannot be set at the same time!\n" if ((defined $settings->{'absolutedeviation'}) && ($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}));
 	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a non-negative integer number!\n" if ($settings->{'probdecimals'} < 0);
+	die $diePrefix."--".$PARAM{'bppmthreshold'}->{key}." must be a non-negative integer number!\n" if ($settings->{'bppmthreshold'} < 0);
+	die $diePrefix."--".$PARAM{'bppmthreshold'}->{key}." should be less then 1, because no pair (i,j) will occure in _every_ structure of the search space.\n" if ($settings->{'bppmthreshold'} >= 1);
 		
 }
 
@@ -277,11 +291,13 @@ EOF
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_SAMPLE."  : ", Utils::usage_convertInfoText("Probabilistic sampling based on partition function. This mode combines stochastic sampling with a-posteriori shape abstraction. A sample from the structure space holds M structures together with their shapes, on which classification is performed. The probability of a shape can then be approximated by its frequency in the sample.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_EVAL."    : ", Utils::usage_convertInfoText("Evaluates the free energy of an RNA molecule in fixed secondary structure, similar to RNAeval from the Vienna group. Multiple answers stem from semantic ambiguity of the underlying grammar.\nIt might happen, that your given structure is not a structure for the sequence. Maybe your settings are too restrictive, e.g. not allowing lonely base-pairs (--@(allowlp)).\nIf you input a (multiple) FASTA file, ".$Settings::PROGINFOS{$PROGID}->{name}." assumes that exactly first half of the contents of each entry is RNA sequence, second half is the according structure. Whitespaces are ignored.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_CONVERT." : ", Utils::usage_convertInfoText("Converts a Vienna-Dot-Bracket representation of a secondary structure into a shape string.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_OUTSIDE." : ", Utils::usage_convertInfoText("Applies the \"outside\"-algorithm to compute probabilities for all base pairs (i,j). Output is a PostScript file, visualizing these probabilities as a \"dot plot\".\nThe \"dot plot\" shows a matrix of squares with area proportional to the base pair probabilities in the upper right half. For each pair (i,j) with probability above --@(bppmthreshold) there is a line of the form\n    i  j  sqrt(p)  ubox\nin the PostScript file, so that they can be easily extracted.", \%PARAM))."\n";
 
 	my @paramGroups = ();
 	push @paramGroups, {name => 'GENERAL OPTIONS', elements => ['mode','absolutedeviation','relativedeviation','shapelevel','lowprobfilter','lowprobfilteroutput','numsamples','showsamples','windowsize','windowincrement']};
 	push @paramGroups, {name => 'ALIGNMENT OPTIONS', elements => ['sci','consensus','pairingfraction','cfactor','nfactor']};
 	push @paramGroups, {name => 'FOLDING OPTIONS', elements => ['grammar','temperature','param','allowlp']};
+	push @paramGroups, {name => 'OUTSIDE OPTIONS', elements => ['bppmthreshold','dotplotfilename']};
 	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','probdecimals','help']};
 	foreach my $refHash_group (@paramGroups) {
 		$HELP .= $refHash_group->{name}.":\n";

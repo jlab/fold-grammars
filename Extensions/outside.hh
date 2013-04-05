@@ -1,36 +1,58 @@
 #ifndef OUTSIDE_HH
 #define OUTSIDE_HH
 
-template<typename alphabet, typename pos_type, typename T>
-inline bool containsBase(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, base_t x)
-{
-  if (j<i)
-    return false;
+template<typename T>
+inline bool containsBase(const Basic_Sequence<> &seq, T i, T j, base_t x) {
+  if (j<i) return false;
 
   for (T k = i; k < j; k++) {
-    if (seq[k] == x)
-      return true;
+    if (seq[k] == x) return true;
   }
+
   return false;
 }
 
-template<typename alphabet, typename pos_type, typename T>
-inline bool collfilter2(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j)
+template<typename T>
+inline bool containsBase(const Basic_Sequence<M_Char, T> &seq, T i, T j, base_t x) {
+	if (j<i) return false;
+	for (unsigned int k = i; k < j; k++) {
+		bool rowEqualsX = true;
+		for (T l = 0; l < seq.rows(); l++) {
+			if (seq.row(l)[k] != x) {
+				rowEqualsX = false;
+				break;
+			}
+		}
+		return rowEqualsX;
+	}
+	return false;
+}
+
+template<typename T>
+inline bool collfilter2(const Basic_Sequence<> &seq, T i, T j)
 {
 	unsigned int n = (seq.size()-1)/2;
 	return j-i <= n+1; //once orig sequence + separator character
 }
 
-inline Subsequence shiftIndex(Subsequence s) {
-	Subsequence res;
+template<typename T>
+inline bool collfilter2(const Basic_Sequence<M_Char, unsigned int> &seq, T i, T j) {
+	unsigned int n = (seq.size()-1)/2;
+	return j-i <= n+1; //once orig sequence + separator character
+}
+
+template<typename SEQ>
+inline SEQ shiftIndex(SEQ s) {
+	SEQ res;
 	res.seq = s.seq;
 	int bias = ((seq_size(s)-1)/2) + 1;
 	res.i = s.i - bias;
 	res.j = s.j - bias;
 	return res;
 }
-inline Subsequence shiftLeftIndex(Subsequence s) {
-	Subsequence res = s;
+template<typename SEQ>
+inline SEQ shiftLeftIndex(SEQ s) {
+	SEQ res = s;
 	if (s.i == 0) {
 		res.i = (seq_size(s)-1)/2;
 		res.j = res.i;
@@ -44,7 +66,8 @@ inline Subsequence shiftLeftIndex(Subsequence s) {
 #include <iostream>
 #include <fstream>
 #include <string>
-inline const std::string getPSheader(Basic_Sequence<char> rna) {
+
+inline const std::string getPSheader(std::string input) {
 	std::ostringstream result;
 
 	result << "%!PS-Adobe-3.0 EPSF-3.0\n";
@@ -140,12 +163,7 @@ inline const std::string getPSheader(Basic_Sequence<char> rna) {
 	result << "("<< getDotplotFilename() << ") show\n\n";
 	result << "/sequence { (\\\n";
 
-	Basic_Sequence<char>::iterator it = rna.begin();
-	for (it = rna.begin(); it != rna.end(); it++) {
-		if (*it == N_BASE) break;
-		result << base_to_char(*it);
-	}
-	result << "\\\n";
+	result << input << "\\\n";
 
 	result << ") } def\n";
 	if (getWindowSize() > 0) {
@@ -171,19 +189,34 @@ inline const std::string getPSheader(Basic_Sequence<char> rna) {
 	return result.str();
 }
 
+inline const std::string getRepresentation(Basic_Subsequence<char, unsigned> input) {
+	std::ostringstream result;
+
+	unsigned int n=(input.seq->n-1)/2;
+	Basic_Subsequence<char, unsigned> helper = input;
+	helper.i = 0;
+	helper.j = n;
+	Basic_Subsequence<char, unsigned>::iterator it = helper.begin();
+	for (it = helper.begin(); it != helper.end(); it++) {
+		if (*it == N_BASE) break;
+		result << base_to_char(*it);
+	}
+	return result.str();
+}
+
 #define MAKEPLOT(rnaSeq) \
 	std::ofstream psfile; \
 	psfile.open(getDotplotFilename()); \
-	psfile << getPSheader(rnaSeq); \
+	psfile << getPSheader(getRepresentation(rnaSeq)); \
 	psfile << "%start of base pair probability data\n"; \
-	unsigned int i,j,n=(rnaSeq.size()-1)/2; \
+	unsigned int i,j,n=(rnaSeq.seq->size()-1)/2; \
 	for (i = 0; i <= n; i++) { \
 		for (j = i+1; j <= n; j++) { \
 			/*std::cout << (i+1) << ", " << j << " = weak: " << nt_weak(i,j) << ", strong: "  << nt_strong(i,j) << ", outer_weak: " << nt_outer_weak(j,n+i+1) << ", outer_strong: " << nt_outer_strong(j,n+i+1) << "\n"; */\
 			double prob = 0.0;\
 			if (gapc::Opts::getOpts()->allowLonelyBasepairs) {\
-				if (nt_weak(i,j) != std::numeric_limits<double>::infinity() && nt_outer_dangle(j,n+i+1) != std::numeric_limits<double>::infinity()) { \
-					prob += nt_weak(i,j) * nt_outer_dangle(j,n+i+1); \
+				if (nt_weak(i,j) != std::numeric_limits<double>::infinity() && nt_outer_strong(j,n+i+1) != std::numeric_limits<double>::infinity()) { \
+					prob += nt_weak(i,j) * nt_outer_strong(j,n+i+1); \
 				} \
 			} else {\
 				if (nt_weak(i,j) != std::numeric_limits<double>::infinity() && nt_outer_strong(j,n+i+1) != std::numeric_limits<double>::infinity()) { \
@@ -195,7 +228,7 @@ inline const std::string getPSheader(Basic_Sequence<char> rna) {
 			}\
 			/*std::cout << "prob(" << i << "," << j << ") = " << prob / nt_struct(0,n) << "\n"; */\
 			prob = sqrt(prob / nt_struct(0,n)); \
-			/* for debugging: I think that due to rounding problems, sometimes pair probs are > 1?!: */ if (prob*prob > 1.0) std::cerr << "(" << i+1 << " , " << j << "): prob: " << prob << ", inside: " << nt_weak(i,j) << ", outside: " << nt_outer_dangle(j,n+i+1) << ", pfAll: " << nt_struct(0,n) << "\n";  \
+			/* for debugging: I think that due to rounding problems, sometimes pair probs are > 1?!: */ if (prob*prob > 1.0) std::cerr << "(" << i+1 << " , " << j << "): prob: " << prob << ", inside: " << nt_weak(i,j) << ", outside: " << nt_outer_strong(j,n+i+1) << ", pfAll: " << nt_struct(0,n) << "\n";  \
 			if (prob >= sqrt(lowProbabilityFilter())) { \
 				psfile << (i+1) << " " << j << " " << prob << " ubox\n"; \
 			} \
@@ -223,27 +256,28 @@ inline const std::string getPSheader(Basic_Sequence<char> rna) {
 	}\
 
 #define DEBUGPLOT() \
-		std::cout << "weak(" << gapc::Opts::getOpts()->openBase << ", " << gapc::Opts::getOpts()->closeBase << "):\n";\
-		gapc::return_type results = out::nt_weak(gapc::Opts::getOpts()->openBase, gapc::Opts::getOpts()->closeBase);\
+	unsigned int i = 4, j = 17; \
+		std::cout << "weak(" << i << ", " << j << "):\n";\
+		gapc::return_type results = out::nt_weak(i, j);\
 		for (gapc::return_type::iterator it = results->begin(); it != results->end(); ++it) {\
 			std::cout << "\t" << (*it) << "\n";\
 		}\
 		std::cout << "\n";\
-		std::cout << "strong(" << gapc::Opts::getOpts()->openBase << ", " << gapc::Opts::getOpts()->closeBase << "):\n";\
-		results = out::nt_strong(gapc::Opts::getOpts()->openBase, gapc::Opts::getOpts()->closeBase);\
+		std::cout << "strong(" << i << ", " << j << "):\n";\
+		results = out::nt_strong(i, j);\
 		for (gapc::return_type::iterator it = results->begin(); it != results->end(); ++it) {\
 			std::cout << "\t" << (*it) << "\n";\
 		}\
 		std::cout << "\n";\
 		unsigned int n = (t_0_seq.size()-1)/2;\
-		std::cout << "outer_weak(" << gapc::Opts::getOpts()->closeBase << ", " << (n+gapc::Opts::getOpts()->openBase+1) << "):\n";\
-		results = out::nt_outer_weak(gapc::Opts::getOpts()->closeBase, (n+gapc::Opts::getOpts()->openBase+1));\
+		std::cout << "outer_weak(" << j << ", " << (n+i+1) << "):\n";\
+		results = out::nt_outer_weak(j, (n+i+1));\
 		for (gapc::return_type::iterator it = results->begin(); it != results->end(); ++it) {\
 			std::cout << "\t" << (*it) << "\n";\
 		}\
 		std::cout << "\n";\
-		std::cout << "outer_strong(" << gapc::Opts::getOpts()->closeBase << ", " << (n+gapc::Opts::getOpts()->openBase+1) << "):\n";\
-		results = out::nt_outer_strong(gapc::Opts::getOpts()->closeBase, (n+gapc::Opts::getOpts()->openBase+1));\
+		std::cout << "outer_strong(" << j << ", " << (n+i+1) << "):\n";\
+		results = out::nt_outer_strong(j, (n+i+1));\
 		for (gapc::return_type::iterator it = results->begin(); it != results->end(); ++it) {\
 			std::cout << "\t" << (*it) << "\n";\
 		}\

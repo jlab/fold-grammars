@@ -27,7 +27,7 @@ my $firstSequenceReady = 'false';
 use Data::Dumper;
 
 sub parse {
-	my ($result, $input, $program, $settings) = @_;
+	my ($result, $input, $program, $settings, $inputIndex) = @_;
 
 	my $windowStartPos = 0;
 	my $windowEndPos = undef;
@@ -71,6 +71,8 @@ sub parse {
 			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_CONVERT)) && ($line =~ m/^\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \)$/)) {
 				#( ( .((((((..(((.............))).(((((.......))))).....(((((.......))))))))))).. , ( -2776 = energy: -1825 + covar.: -951 ) ) , [[][][]] )
 				($structure, $energy, $part_energy, $part_covar, $shape) = ($1,$2/100,$3/100,$4/100,$5);
+			} elsif ($settings->{mode} eq $Settings::MODE_OUTSIDE) {
+				#do nothing with the output, since interesting data are within the PostScript file
 			}
 			if (defined $energy || defined $part_energy || defined $part_covar || defined $structure || defined $shape) {
 				$fieldLengths{energy} = length(formatEnergy($energy)) if (length(formatEnergy($energy)) > $fieldLengths{energy});
@@ -93,6 +95,8 @@ sub parse {
 			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_CONVERT)) && ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
 				#( ( ....(((.(((((.(((.....))).)))))))) , -440 ) , [] )
 				($structure, $energy, $shape) = ($1,$2/100,$3);
+			} elsif ($settings->{mode} eq $Settings::MODE_OUTSIDE) {
+				#do nothing with the output, since interesting data are within the PostScript file
 			}
 			if (defined $energy || defined $structure || defined $shape) {
 				$fieldLengths{energy} = length(formatEnergy($energy)) if (length(formatEnergy($energy)) > $fieldLengths{energy});
@@ -183,16 +187,16 @@ sub parse {
 		}
 	}
 	
-	output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples);
+	output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex);
 }
 
 sub output {
-	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples) = @_;
+	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex) = @_;
 
 	if ($firstSequenceReady eq 'false') {
 		$firstSequenceReady = 'true';
 	} else {
-		print "\n" if ($settings->{mode} ne $Settings::MODE_CAST);
+		print "\n" if ($settings->{mode} ne $Settings::MODE_CAST && $settings->{mode} ne $Settings::MODE_OUTSIDE);
 	}
 	
 	my $scoreFormat = getScoreFormatString($program, $fieldLengths);
@@ -214,7 +218,11 @@ sub output {
 	}
 	
 	#ID LINE
-		print ">".$input->{header}."\n" if (exists $input->{sequence}); #input is a fasta sequence
+		if ($settings->{mode} eq $Settings::MODE_OUTSIDE) {
+			print "Saved \"dot plot\" for sequence '".$input->{header}."' in file '".IO::getDotplotFilename($settings, $inputIndex)."'.\n";
+		} else {
+			print ">".$input->{header}."\n" if (exists $input->{sequence}); #input is a fasta sequence
+		}
 	
 	my @windowPositions = sort {splitFields($a)->[0] <=> splitFields($b)->[0]} keys(%{$predictions});
 	foreach my $windowPos (@windowPositions) {
@@ -411,4 +419,14 @@ sub getScoreFormatString {
 		return "%$fieldLengths->{energy}.2f";
 	}
 }
+
+sub getDotplotFilename {
+	my ($settings, $inputIndex) = @_;
+	
+	my $result = $settings->{dotplotfilename};
+	$result .= '_seq_'.$inputIndex if ($inputIndex > 1);
+
+	return $result;
+}
+
 1;

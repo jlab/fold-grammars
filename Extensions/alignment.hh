@@ -91,7 +91,8 @@ float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
 
 	unsigned int i,j,s,k,l;
 	for (i = 0; i < seq_size(seq); i++) {
-	  for (j = i+1+3; j < seq_size(seq); j++) {
+	  //for (j = i+1+3; j < seq_size(seq); j++) { // cannot save +3 for hairpin loop, because of outside version
+	  for (j = i+1; j < seq_size(seq); j++) {
 		int pfreq[8]={0,0,0,0,0,0,0,0};
 		for (s=0; s<rows(seq); s++) {
           int type = bp_index(column(seq_char(seq,i),s), column(seq_char(seq,j),s));
@@ -113,7 +114,6 @@ float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
 	}
 	compute = false;
   }
-
   return array(a, b);
 }
 
@@ -199,6 +199,25 @@ void append_mis(rope::Ref<X> &str, const Basic_Subsequence<M_Char, unsigned> &se
   for (i = seq.i; i < seq.j; i++) {
 	str.append(consensus[i]);
   }
+}
+
+inline const std::string getRepresentation(Basic_Subsequence<M_Char, unsigned> input) {
+	std::ostringstream result;
+
+	Rope consensus;
+	unsigned int n=(input.seq->n-1)/2;
+	Basic_Subsequence<M_Char, unsigned> helper = input;
+	helper.i = 0;
+	helper.j = n;
+	if (getConsensusType() == 0) {
+		append_consensus(consensus,helper);
+	}
+	if (getConsensusType() == 1) {
+		append_mis(consensus,helper);
+	}
+
+	result << consensus;
+	return result.str();
 }
 
 #endif

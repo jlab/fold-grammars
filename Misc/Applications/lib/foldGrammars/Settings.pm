@@ -6,8 +6,8 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'RNAshapes', {date => '13.03.2013', version => '3.0.6', name => 'RNAshapes'},
-	'RNAalishapes', {date => '13.03.2013', version => '2.1.4', name => 'RNAalishapes'},
+	'RNAshapes', {date => '05.04.2013', version => '3.0.7', name => 'RNAshapes'},
+	'RNAalishapes', {date => '05.04.2013', version => '2.1.5', name => 'RNAalishapes'},
 	'pKiss', {date => '13.03.2013', version => '2.1.4', name => 'pKiss'},
 );
 
@@ -63,5 +63,6 @@ our $MODE_KBEST = "kbest";
 our $MODE_LIST = "list";
 our $MODE_ENERGY = "energy";
 our $MODE_CONVERT = 'convert';
+our $MODE_OUTSIDE = 'outside';
 
 1;

@@ -58,8 +58,8 @@ algebra alg_outside_pfunc implements sig_outside_foldrna(alphabet = char, answer
 	double window(Subsequence l, double x, Subsequence r) {
 		return x;
 	}
-	double makeplot(double x) { 
-		MAKEPLOT(t_0_seq);
+	double makeplot(double x, Subsequence pos) { 
+		MAKEPLOT(pos);
 		return x; 
 	}
 }

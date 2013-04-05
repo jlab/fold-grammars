@@ -17,6 +17,6 @@ signature sig_outside_foldrna(alphabet,answer) {
 	answer outer_mldlr(Subsequence, Subsequence, answer, Subsequence, Subsequence);
 	answer outer_bp(Subsequence, answer, Subsequence);
 	answer window(Subsequence, answer, Subsequence);
-	answer makeplot(answer);
+	answer makeplot(answer, Subsequence);
 }
 

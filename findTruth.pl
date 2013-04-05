@@ -12,17 +12,19 @@ $j--;
 
 my @structures = ();
 my @energies = ();
-foreach my $line (split(m/\n/, qx(echo "$sequence" | RNAsubopt -d 1 --noLP -e 99999))) {
+foreach my $line (split(m/\n/, qx(echo "$sequence" | RNAsubopt -d 0 --noLP -e 9999))) {
 	if ($line =~ m/^(.+?)\s+(-?\d+\.\d+)\s*$/) {
 		my ($structure, $energy) = ($1,$2);
 		my %pairlist = %{StefansTools::getPairList($structure, 0)};
 		push @structures, \%pairlist;
 		push @energies, $energy;
-		#~ if (exists $pairlist{$i} && $pairlist{$i} == $j) {
-			#~ print Dumper $line;
-		#~ }
+		if (exists $pairlist{$i} && $pairlist{$i} == $j) {
+			print Dumper $line;
+		}
 	}
 }
+
+die;
 
 my $pfAll = 0;
 foreach my $energy (@energies) {

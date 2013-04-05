@@ -87,6 +87,7 @@ class Opts {
     int alifold_minscore_basepair;
     bool allowLonelyBasepairs;
     const char* dotPlotFilename;
+    int consensusType;
 
     Opts()
     :
@@ -112,7 +113,8 @@ class Opts {
     				alifold_cfactor(1.0),
     				alifold_nfactor(1.0),
     				alifold_minscore_basepair(-200),
-    				allowLonelyBasepairs(false)
+    				allowLonelyBasepairs(false),
+    				consensusType(0)
     {
     }
 	~Opts()
@@ -213,6 +215,9 @@ class Opts {
 				<< "" << std::endl
 				<< "-f <file> Read input from a file" << std::endl
 				<< "" << std::endl
+				<< "-a <int-value> select alignment consensus representation for dot plots, aka. outside computation." << std::endl
+				<< "   0 = consensus, 1 = most informative sequence" << std::endl
+				<< "" << std::endl
 				<< "-h Print this help." << std::endl
 				<< "" << std::endl
 				<< " (-[drk] [0-9]+)*\n";
@@ -229,7 +234,7 @@ class Opts {
 						"t:T:P:"
 						"c:e:x:y:z:"
 						"s:l:F:q:u:"
-					    "o:"  //output filename for dot plot
+					    "o:a:"  //output filename for dot plot, consensus type: 0=consensus, 1=mis
 						"n:C:m:" //for alifold parameters nfactor, cfactor and minpscore_basepair
 						"hd:r:k:")) != -1) {
 			switch (o) {
@@ -334,6 +339,9 @@ class Opts {
 			case 'm':
 				alifold_minscore_basepair = std::atoi(optarg);
 				break;
+			case 'a':
+				consensusType = std::atoi(optarg);
+				break;
 			case '?':
 				case ':':
 				{
@@ -382,6 +390,9 @@ class Opts {
 		}
 		if (shapelevel <= 0 || shapelevel >= 6) {
 			throw OptException("Shape are only defined for levels 5, 4, 3, 2 and 1.");
+		}
+		if (consensusType < 0 || consensusType > 1) {
+			throw OptException("Consensus type must either be 0 (=consensus) or 1 (=mis).");
 		}
 		if (dotPlotFilename == NULL) {
 			dotPlotFilename = "./dotPlot.ps";
