@@ -211,7 +211,7 @@ inline const std::string getRepresentation(Basic_Subsequence<char, unsigned> inp
 	psfile << "%start of base pair probability data\n"; \
 	unsigned int i,j,n=(rnaSeq.seq->size()-1)/2; \
 	for (i = 0; i <= n; i++) { \
-		for (j = i+1; j <= n; j++) { \
+		for (j = i+2; j <= n; j++) { \
 			/*std::cout << (i+1) << ", " << j << " = weak: " << nt_weak(i,j) << ", strong: "  << nt_strong(i,j) << ", outer_weak: " << nt_outer_weak(j,n+i+1) << ", outer_strong: " << nt_outer_strong(j,n+i+1) << "\n"; */\
 			double prob = 0.0;\
 			if (gapc::Opts::getOpts()->allowLonelyBasepairs) {\
@@ -228,7 +228,15 @@ inline const std::string getRepresentation(Basic_Subsequence<char, unsigned> inp
 			}\
 			/*std::cout << "prob(" << i << "," << j << ") = " << prob / nt_struct(0,n) << "\n"; */\
 			prob = sqrt(prob / nt_struct(0,n)); \
-			/* for debugging: I think that due to rounding problems, sometimes pair probs are > 1?!: */ if (prob*prob > 1.0) std::cerr << "(" << i+1 << " , " << j << "): prob: " << prob << ", inside: " << nt_weak(i,j) << ", outside: " << nt_outer_strong(j,n+i+1) << ", pfAll: " << nt_struct(0,n) << "\n";  \
+			/* for debugging: I think that due to rounding problems, sometimes pair probs are > 1?!: */ \
+			if (prob*prob > 1.0) { \
+				std::cerr << "prob(" << i+1 << "," << j << ")=" << prob << ": "; \
+				std::cerr << "weak(" << i << "," << j << ")=" << nt_weak(i,j) << ", "; \
+				std::cerr << "strong(" << i << "," << j << ")=" << nt_strong(i,j) << ", "; \
+				std::cerr << "outer_weak(" << j << "," << n+i+1 << ")=" << nt_outer_weak(j,n+i+1) << ", "; \
+				std::cerr << "outer_strong(" << j << "," << n+i+1 << ")=" << nt_outer_strong(j,n+i+1) << ", "; \
+				std::cerr << "pfAll(0," << n << ")=" << nt_struct(0,n) << "\n"; \
+			} \
 			if (prob >= sqrt(lowProbabilityFilter())) { \
 				psfile << (i+1) << " " << j << " " << prob << " ubox\n"; \
 			} \
@@ -248,15 +256,17 @@ inline const std::string getRepresentation(Basic_Subsequence<char, unsigned> inp
 			std::cout << i << "\t" << j << "\t";\
 			if (gapc::Opts::getOpts()->allowLonelyBasepairs) {\
 				std::cout << nt_weak(i,j) * nt_outer_strong(j,n+i+1);\
+				std::cout << "\t = nt_weak(" << i << "," << j << "): " << nt_weak(i,j) << " * nt_outer_strong(" << j << "," << n+i+1 << "): " <<  nt_outer_strong(j,n+i+1); \
 			} else {\
 				std::cout << nt_weak(i,j) * nt_outer_strong(j,n+i+1) + nt_strong(i,j) * nt_outer_weak(j,n+i+1);\
+				std::cout << "\t = nt_weak(" << i << "," << j << "): " << nt_weak(i,j) << " * nt_outer_strong(" << j << "," << n+i+1 << "): " <<  nt_outer_strong(j,n+i+1) << " + nt_strong(" << i << "," << j << "): " << nt_strong(i,j) << " * nt_outer_weak(" << j << "," << n+i+1 << "): " << nt_outer_weak(j,n+i+1); \
 			}\
 			std::cout << "\n";\
 		}\
 	}\
 
 #define DEBUGPLOT() \
-	unsigned int i = 4, j = 17; \
+	unsigned int i = getOpenPair(), j = getClosePair(); \
 		std::cout << "weak(" << i << ", " << j << "):\n";\
 		gapc::return_type results = out::nt_weak(i, j);\
 		for (gapc::return_type::iterator it = results->begin(); it != results->end(); ++it) {\

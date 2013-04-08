@@ -3,7 +3,7 @@ grammar gra_outside_nodangle uses sig_outside_foldrna(axiom = plot) {
 	   # h;
 	
   start = window(REGION0, outer_strong with collfilter2, REGION0) 
-  //~ start = window(REGION0 with minsize(16) with maxsize(16), outer_dangle with collfilter2, REGION0 with minsize(26) with maxsize(26)) 
+  //~ start = window(REGION0 with minsize(39) with maxsize(39), outer_strong with collfilter2, REGION0 with minsize(16) with maxsize(16)) 
         # h;
 
   include "Grammars/Parts/grapart_outside_basic.gap"

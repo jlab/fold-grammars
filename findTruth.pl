@@ -12,19 +12,24 @@ $j--;
 
 my @structures = ();
 my @energies = ();
+my $countStr = 0;
 foreach my $line (split(m/\n/, qx(echo "$sequence" | RNAsubopt -d 0 --noLP -e 9999))) {
 	if ($line =~ m/^(.+?)\s+(-?\d+\.\d+)\s*$/) {
+#~ foreach my $line (split(m/\n/, qx(cat all.vienna))) {
+	#~ if ($line =~ m/^([\(|\)|\.]+?)\s+(.+?)\s*$/) {
 		my ($structure, $energy) = ($1,$2);
 		my %pairlist = %{StefansTools::getPairList($structure, 0)};
 		push @structures, \%pairlist;
 		push @energies, $energy;
-		if (exists $pairlist{$i} && $pairlist{$i} == $j) {
-			print Dumper $line;
-		}
+		#~ if (exists $pairlist{$i} && $pairlist{$i} == $j) {
+			#~ print Dumper $line;
+		#~ }
 	}
+	$countStr++;
+	print STDERR "." if ($countStr % 10000 == 0);
 }
 
-die;
+#~ die;
 
 my $pfAll = 0;
 foreach my $energy (@energies) {
@@ -40,6 +45,6 @@ for (my $i = 0; $i < length($sequence); $i++) {
 			}
 		}
 		#~ print Dumper $i,$j,$pfPair,$pfAll;
-		print $i."\t".$j."\t".$pfPair/$pfAll."\n";
+		print "".($i+1)."\t".($j+1)."\t".sqrt($pfPair/$pfAll)."\n";
 	}
 }
