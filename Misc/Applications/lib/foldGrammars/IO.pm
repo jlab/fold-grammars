@@ -219,7 +219,14 @@ sub output {
 	
 	#ID LINE
 		if ($settings->{mode} eq $Settings::MODE_OUTSIDE) {
-			print "Saved \"dot plot\" for sequence '".$input->{header}."' in file '".IO::getDotplotFilename($settings, $inputIndex)."'.\n";
+			my $dotplotfilename = IO::getDotplotFilename($settings, $inputIndex);
+			print "Saved \"dot plot\" for sequence '".$input->{header}."' in file '".$dotplotfilename."'.\n";
+			if ($settings->{dotplotpng} == 1) {
+				my $dotplotPNGfilename = $dotplotfilename;
+				$dotplotPNGfilename =~ s/\.\w+/\.png/g;
+				qx($Settings::BINARIES{gs} -dBATCH -dNOPAUSE -sDEVICE=pnggray -sOutputFile=$dotplotPNGfilename -r200 $dotplotfilename);
+				print "Also converted the \"dot plot\" into PNG file '$dotplotPNGfilename'.\n";
+			}
 		} else {
 			print ">".$input->{header}."\n" if (exists $input->{sequence}); #input is a fasta sequence
 		}

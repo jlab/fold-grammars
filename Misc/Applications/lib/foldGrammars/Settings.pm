@@ -36,6 +36,7 @@ our %BINARIES = (
 	'readlink', 'readlink',
 	'uname', 'uname',
 	'find', 'find',
+	'gs', 'gs',
 );
 
 our %TDMfiles = (
