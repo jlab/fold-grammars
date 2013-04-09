@@ -90,6 +90,10 @@ $REFERENCES{'gie:voss:reh:2004'} = {
 	title => "Abstract Shapes of RNA.",
 	journal => "Nucleic Acids Research 2004.",
 	doi => "10.1093/nar/gkh779"};
+$REFERENCES{'mcc:1990'} = {
+	authors => "John S McCaskill.",
+	title => "The Equilibrium Partition Function and Base Pair Binding Probabilities for RNA Secondary Structure.",
+	journal => "Biopolymers, 1990."};
 
 
 our @ORDER = ();

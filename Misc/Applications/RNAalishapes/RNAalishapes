@@ -22,7 +22,7 @@ $IO::SUB_BUILDCOMMAND = \&buildCommand;
 use POSIX 'isatty';
 
 our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_CONVERT, $Settings::MODE_OUTSIDE);
-@References::ORDER = ('hof:fek:sta:2002','ber:hof:wil:gru:sta:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','was:hof:sta:2004','voss:2006');
+@References::ORDER = ('hof:fek:sta:2002','ber:hof:wil:gru:sta:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','was:hof:sta:2004','mcc:1990','voss:2006');
 
 our $CONSENSUS_CONSENSUS = 'consensus';
 our $CONSENSUS_MIS = 'mis';
@@ -291,7 +291,7 @@ EOF
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_SAMPLE."  : ", Utils::usage_convertInfoText("Probabilistic sampling based on partition function. This mode combines stochastic sampling with a-posteriori shape abstraction. A sample from the structure space holds M structures together with their shapes, on which classification is performed. The probability of a shape can then be approximated by its frequency in the sample.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_EVAL."    : ", Utils::usage_convertInfoText("Evaluates the free energy of an RNA molecule in fixed secondary structure, similar to RNAeval from the Vienna group. Multiple answers stem from semantic ambiguity of the underlying grammar.\nIt might happen, that your given structure is not a structure for the sequence. Maybe your settings are too restrictive, e.g. not allowing lonely base-pairs (--@(allowlp)).\nIf you input a (multiple) FASTA file, ".$Settings::PROGINFOS{$PROGID}->{name}." assumes that exactly first half of the contents of each entry is RNA sequence, second half is the according structure. Whitespaces are ignored.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_CONVERT." : ", Utils::usage_convertInfoText("Converts a Vienna-Dot-Bracket representation of a secondary structure into a shape string.", \%PARAM))."\n";
-	$HELP .= Utils::printIdent("  ".$Settings::MODE_OUTSIDE." : ", Utils::usage_convertInfoText("Applies the \"outside\"-algorithm to compute probabilities for all base pairs (i,j). Output is a PostScript file, visualizing these probabilities as a \"dot plot\".\nThe \"dot plot\" shows a matrix of squares with area proportional to the base pair probabilities in the upper right half. For each pair (i,j) with probability above --@(bppmthreshold) there is a line of the form\n    i  j  sqrt(p)  ubox\nin the PostScript file, so that they can be easily extracted.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_OUTSIDE." : ", Utils::usage_convertInfoText("Applies the \"outside\"-algorithm to compute probabilities for all base pairs (i,j), based on the partition function [".References::getNumber('mcc:1990')."]. Output is a PostScript file, visualizing these probabilities as a \"dot plot\".\nThe \"dot plot\" shows a matrix of squares with area proportional to the base pair probabilities in the upper right half. For each pair (i,j) with probability above --@(bppmthreshold) there is a line of the form\n    i  j  sqrt(p)  ubox\nin the PostScript file, so that they can be easily extracted.", \%PARAM))."\n";
 
 	my @paramGroups = ();
 	push @paramGroups, {name => 'GENERAL OPTIONS', elements => ['mode','absolutedeviation','relativedeviation','shapelevel','lowprobfilter','lowprobfilteroutput','numsamples','showsamples','windowsize','windowincrement']};
@@ -307,7 +307,7 @@ EOF
 	}
 
 	$HELP .= "REFERENCES:\n";
-	foreach my $refID ('hof:fek:sta:2002','ber:hof:wil:gru:sta:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','was:hof:sta:2004') {
+	foreach my $refID ('hof:fek:sta:2002','ber:hof:wil:gru:sta:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','was:hof:sta:2004','mcc:1990') {
 		$HELP .= References::printReference($refID);
 	}
 	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
