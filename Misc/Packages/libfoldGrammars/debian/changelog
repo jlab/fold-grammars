@@ -1,3 +1,21 @@
+libfoldgrammars (1.0.4-0ubuntu1~quantal1) quantal; urgency=low
+
+  * new feature: outside base pair probability computation
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 09 Apr 2013 14:10:36 +0200
+
+libfoldgrammars (1.0.4-0ubuntu1~precise1) precise; urgency=low
+
+  * new feature: outside base pair probability computation
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 09 Apr 2013 14:10:30 +0200
+
+libfoldgrammars (1.0.4-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * new feature: outside base pair probability computation
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 09 Apr 2013 14:10:16 +0200
+
 libfoldgrammars (1.0.3-0ubuntu1~quantal1) quantal; urgency=low
 
   * minor bugfixes
