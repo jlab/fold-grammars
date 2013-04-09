@@ -34,7 +34,7 @@ our $RNAalishapes = {
 	'sci' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], values => [0,1], valueSelection => $VALUE_SELECTION_RANDOM},
 	'consensus' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => ['consensus','mis'], valueSelection => $VALUE_SELECTION_RANDOM},
 	'param' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [$energyParameterDir.'rna_turner1999.par',$energyParameterDir.'rna_turner2004.par'], valueSelection => $VALUE_SELECTION_RANDOM},
-	'shapeLevel' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_CONVERT, $Settings::MODE_OUTSIDE], values => [1,2,3,4,5], valueSelection => $VALUE_SELECTION_RANDOM},
+	'shapeLevel' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_CONVERT], values => [1,2,3,4,5], valueSelection => $VALUE_SELECTION_RANDOM},
 	'showSamples' => {modes => [$Settings::MODE_SAMPLE], values => [0,1], valueSelection => $VALUE_SELECTION_RANDOM},
 	'windowIncrement' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], values => [10, 20, 30], valueSelection => $VALUE_SELECTION_RANDOM},
 	'temperature' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [17, 25.9, 37], valueSelection => $VALUE_SELECTION_RANDOM},
@@ -47,8 +47,8 @@ our $RNAalishapes = {
 	'pairingFraction' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [-200, -300, -150], valueSelection => $VALUE_SELECTION_RANDOM},
 	'cfactor' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [1.1, 1.0, 0.9], valueSelection => $VALUE_SELECTION_RANDOM},
 	'nfactor' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [1.1, 1.0, 0.9], valueSelection => $VALUE_SELECTION_RANDOM},
-	'bppmthreshold' => {modes => [$Settings::MODE_OUTSIDE], values => [0.1, 0.01, 0.001, 0.00001], valueSelection => $VALUE_SELECTION_RANDOM},
-	'dotplotfilename' => {modes => [$Settings::MODE_OUTSIDE], values => 'dotPlot.ps', valueSelection => $VALUE_SELECTION_RANDOM},
+	'bppmThreshold' => {modes => [$Settings::MODE_OUTSIDE], values => [0.1, 0.01, 0.001, 0.00001], valueSelection => $VALUE_SELECTION_RANDOM},
+	'dotplot' => {modes => [$Settings::MODE_OUTSIDE], values => ['dotPlot.ps'], valueSelection => $VALUE_SELECTION_RANDOM},
 };
 
 our $pKiss = {
@@ -91,15 +91,15 @@ our $RNAshapes = {
 	'allowLP' => {modes => \@RNAshapes_ALLMODES, values => [0,1], valueSelection => $VALUE_SELECTION_ALL},
 	'absoluteDeviation' => {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES], values => [undef, undef, undef, 1,2,5], valueSelection => $VALUE_SELECTION_RANDOM},
 	'relativeDeviation' => {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES], values => [undef, undef, undef, 1,3,7], valueSelection => $VALUE_SELECTION_RANDOM},
-	'shapeLevel' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_CONVERT, $Settings::MODE_OUTSIDE], values => [1,2,3,4,5], valueSelection => $VALUE_SELECTION_RANDOM},
+	'shapeLevel' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_CONVERT], values => [1,2,3,4,5], valueSelection => $VALUE_SELECTION_RANDOM},
 	'lowProbFilter' => {modes => [$Settings::MODE_PROBS], values => [0.000001, 0.0001, 0.01], valueSelection => $VALUE_SELECTION_RANDOM},
 	'outputLowProbFilter' => {modes => [$Settings::MODE_PROBS, $Settings::MODE_SAMPLE], values => [0, 0.0001, 0.1], valueSelection => $VALUE_SELECTION_RANDOM},
 	'probDecimals' => {modes => [$Settings::MODE_PROBS, $Settings::MODE_SAMPLE], values => [2, 7], valueSelection => $VALUE_SELECTION_RANDOM},
 	'numSamples' => {modes => [$Settings::MODE_SAMPLE], values => [10, 100], valueSelection => $VALUE_SELECTION_RANDOM},
 	'showSamples' => {modes => [$Settings::MODE_SAMPLE], values => [0,1], valueSelection => $VALUE_SELECTION_RANDOM},
 	'grammar' => {modes => \@RNAshapes_ALLMODES, values => ['nodangle','overdangle','microstate','macrostate'], valueSelection => $VALUE_SELECTION_ALL},
-	'bppmthreshold' => {modes => [$Settings::MODE_OUTSIDE], values => [0.1, 0.01, 0.001, 0.00001], valueSelection => $VALUE_SELECTION_RANDOM},
-	'dotplotfilename' => {modes => [$Settings::MODE_OUTSIDE], values => 'dotPlot.ps', valueSelection => $VALUE_SELECTION_RANDOM},
+	'bppmThreshold' => {modes => [$Settings::MODE_OUTSIDE], values => [0.1, 0.01, 0.001, 0.00001], valueSelection => $VALUE_SELECTION_RANDOM},
+	'dotplot' => {modes => [$Settings::MODE_OUTSIDE], values => ['dotPlot.ps'], valueSelection => $VALUE_SELECTION_RANDOM},
 };
 
 #~ foreach my $call (@{addRandomParameters($RNAalishapes, permutate($RNAalishapes, [{call => ""}]))}) {

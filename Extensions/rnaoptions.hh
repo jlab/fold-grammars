@@ -88,8 +88,6 @@ class Opts {
     bool allowLonelyBasepairs;
     const char* dotPlotFilename;
     int consensusType;
-    unsigned int openPair;
-    unsigned int closePair;
 
     Opts()
     :
@@ -116,9 +114,7 @@ class Opts {
     				alifold_nfactor(1.0),
     				alifold_minscore_basepair(-200),
     				allowLonelyBasepairs(false),
-    				consensusType(0),
-    				openPair(0),
-    				closePair(0)
+    				consensusType(0)
     {
     }
 	~Opts()
@@ -235,7 +231,6 @@ class Opts {
 		#ifdef WINDOW_MODE
 				"w:i:"
 		#endif
-						"I:J:"
 						"t:T:P:"
 						"c:e:x:y:z:"
 						"s:l:F:q:u:"
@@ -279,12 +274,6 @@ class Opts {
 				break;
 			case 'i':
 				window_increment = std::atoi(optarg);
-				break;
-			case 'I':
-				openPair = std::atoi(optarg);
-				break;
-			case 'J':
-				closePair = std::atoi(optarg);
 				break;
 			case 'T':
 				case 't':

@@ -58,12 +58,6 @@
 	inline static int getConsensusType() {
 		return gapc::Opts::getOpts()->consensusType;
 	}
-	inline static unsigned int getOpenPair() {
-		return gapc::Opts::getOpts()->openPair;
-	}
-	inline static unsigned int getClosePair() {
-		return gapc::Opts::getOpts()->closePair;
-	}
 #else
 	//if compiled with no special options to ask for energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy.
 	inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
@@ -114,12 +108,6 @@
 		return "./dotPlot.ps";
 	}
 	inline static int getConsensusType() {
-		return 0;
-	}
-	inline static unsigned int getOpenPair() {
-		return 0;
-	}
-	inline static unsigned int getClosePair() {
 		return 0;
 	}
 #endif

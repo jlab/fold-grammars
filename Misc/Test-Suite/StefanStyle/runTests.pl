@@ -92,7 +92,13 @@ sub checkProgram {
 	foreach my $run (@calls) {
 		print ".";
 		qx(echo "#CMD: $PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call}" >> $TMPDIR/$truth 2>&1);
-		qx($PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call} >> $TMPDIR/$truth 2>&1);
+		if ($run->{call} =~ m/mode=outside/) {
+			$run->{call} =~ s/--dotplot=dotPlot.ps/--dotplot=$TMPDIR\/gapc.ps/ ;
+			qx($PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call});
+			qx(cat $TMPDIR/gapc.ps | grep "ubox\$" | grep -v "^%" >> $TMPDIR/$truth);
+		} else {
+			qx($PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call} >> $TMPDIR/$truth 2>&1);
+		}
 		qx(echo "" >> $TMPDIR/$truth);
 	}
 	
