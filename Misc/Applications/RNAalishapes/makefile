@@ -46,6 +46,9 @@ install-program:
 	if [ ! -d "$(PREFIX)/bin" ]; then install -d $(PREFIX)/bin; fi;
 	for grammar in `echo "$(grammars)"`; do \
 		for mode in $(targets); do \
+			if [ $${grammar} = "macrostate" ] && [ $${mode} = "outside" ]; then \
+				continue; \
+			fi; \
 			install -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar} $(PREFIX)/bin; \
 		done; \
 		for mode in $(targets_window); do \
