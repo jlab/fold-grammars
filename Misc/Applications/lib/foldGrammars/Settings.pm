@@ -6,8 +6,8 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'RNAshapes', {date => '05.04.2013', version => '3.0.7', name => 'RNAshapes'},
-	'RNAalishapes', {date => '05.04.2013', version => '2.1.5', name => 'RNAalishapes'},
+	'RNAshapes', {date => '09.04.2013', version => '3.0.7', name => 'RNAshapes'},
+	'RNAalishapes', {date => '09.04.2013', version => '2.1.5', name => 'RNAalishapes'},
 	'pKiss', {date => '13.03.2013', version => '2.1.4', name => 'pKiss'},
 );
 
