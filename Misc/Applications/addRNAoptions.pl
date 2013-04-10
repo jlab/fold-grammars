@@ -4,6 +4,10 @@ use strict;
 use warnings;
 use Data::Dumper;
 
+my $sedBinary = 'sed';
+my $gsedSearch = qx(gsed --version 2>&1);
+$sedBinary = 'gsed' if (defined $gsedSearch && $gsedSearch =~ m/GNU sed/);
+
 my ($infile, $parseStructure) = @ARGV;
 die "usage: perl $0 <out.mf> <_0_|1 = read second argument as structure for RNAeval approach\n" if (@ARGV != 2);
 
@@ -17,13 +21,13 @@ open (IN, $infile) || die "can't read file '$infile': $!";
 			$content .= $line;
 			$line = <IN>; #: cat $(RTLIB)/generic_main.cc >> out_main.cc
 			$content .= $line;
-			$content .= "\t".'sed -i \'s|gapc::Opts opts;||\' '.$1.'_main.cc'."\n";
-			$content .= "\t".'sed -i \'s|\\([^_]\\)opts\\.|\\1gapc::Opts::getOpts()->|g\' '.$1.'_main.cc'."\n";
-			$content .= "\t".'sed -i \'s|obj.init(opts);|obj.init(\\*gapc::Opts::getOpts());|g\' '.$1.'_main.cc'."\n";
-			$content .= "\t".'sed -i \'s|#include "rtlib/generic_opts.hh"|#include "Extensions/rnaoptions.hh"|\' '.$1.'_main.cc'."\n";
-			$content .= "\t".'sed -i \'s%#include <rtlib/generic_opts.hh>%#include "Extensions/rnaoptions.hh"%\' '.$1.'.hh '.$1.'.cc'."\n";
+			$content .= "\t".$sedBinary.' -i \'s|gapc::Opts opts;||\' '.$1.'_main.cc'."\n";
+			$content .= "\t".$sedBinary.' -i \'s|\\([^_]\\)opts\\.|\\1gapc::Opts::getOpts()->|g\' '.$1.'_main.cc'."\n";
+			$content .= "\t".$sedBinary.' -i \'s|obj.init(opts);|obj.init(\\*gapc::Opts::getOpts());|g\' '.$1.'_main.cc'."\n";
+			$content .= "\t".$sedBinary.' -i \'s|#include "rtlib/generic_opts.hh"|#include "Extensions/rnaoptions.hh"|\' '.$1.'_main.cc'."\n";
+			$content .= "\t".$sedBinary.' -i \'s%#include <rtlib/generic_opts.hh>%#include "Extensions/rnaoptions.hh"%\' '.$1.'.hh '.$1.'.cc'."\n";
 			if ($parseStructure) { 
-				$content .= "\t".'sed -i \'s|gapc::Opts::getOpts()->parse(argc, argv);|gapc::Opts::getOpts()->parse(argc, argv);\n\tif (gapc::Opts::getOpts()->inputs.size() == 2) {\n\t\tPairs::getGivenPairs()->setStructure(gapc::Opts::getOpts()->inputs.back());\n\t\tgapc::Opts::getOpts()->inputs.pop_back();\n\t}\n|\' '.$1.'_main.cc'."\n";
+				$content .= "\t".'$sedBinary -i \'s|gapc::Opts::getOpts()->parse(argc, argv);|gapc::Opts::getOpts()->parse(argc, argv);\n\tif (gapc::Opts::getOpts()->inputs.size() == 2) {\n\t\tPairs::getGivenPairs()->setStructure(gapc::Opts::getOpts()->inputs.back());\n\t\tgapc::Opts::getOpts()->inputs.pop_back();\n\t}\n|\' '.$1.'_main.cc'."\n";
 			}
 		} elsif ($line =~ m/^(\s*\$\(CXX\) -MMD -MP \$\(CPPFLAGS\) \$\(CXXFLAGS\))(.*)$/) {
 			my ($begin, $end) = ($1,$2);
