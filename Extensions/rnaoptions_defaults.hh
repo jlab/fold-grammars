@@ -32,7 +32,7 @@
 	}
 	inline int getSuboptRange(int mfe) { //use command line parameter options to define the range of suboptimal answers, depending on MFE.
 		int range = mfe + int(gapc::Opts::getOpts()->energydeviation_absolute*100);
-		if (std::isnan(gapc::Opts::getOpts()->energydeviation_absolute)) {
+		if (gapc::Opts::getOpts()->energydeviation_absolute == std::numeric_limits<float>::quiet_NaN()) {
 			range = mfe * (100 - gapc::Opts::getOpts()->energydeviation_relative*(mfe < 0 ? 1 : -1))/100;
 		}
 		return range;
