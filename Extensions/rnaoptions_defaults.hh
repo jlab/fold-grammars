@@ -1,6 +1,8 @@
 #ifndef RNAOPTIONS_DEFAULTS_HH
 #define RNAOPTIONS_DEFAULTS_HH
 
+#include <boost/math/special_functions/fpclassify.hpp> // isnan
+
 #ifdef WITH_RNAOPTIONS
 	//use command line parameter options to define energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy
 	#include "rnaoptions.hh"
@@ -32,7 +34,7 @@
 	}
 	inline int getSuboptRange(int mfe) { //use command line parameter options to define the range of suboptimal answers, depending on MFE.
 		int range = mfe + int(gapc::Opts::getOpts()->energydeviation_absolute*100);
-		if (gapc::Opts::getOpts()->energydeviation_absolute == std::numeric_limits<float>::quiet_NaN()) {
+		if ((boost::math::isnan)(gapc::Opts::getOpts()->energydeviation_absolute)) {
 			range = mfe * (100 - gapc::Opts::getOpts()->energydeviation_relative*(mfe < 0 ? 1 : -1))/100;
 		}
 		return range;
