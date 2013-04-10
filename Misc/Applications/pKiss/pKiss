@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-my $PROGID = 'pKiss';
+my $PROGID = 'pkiss';
 
 sub getPath {
 	my ($url) = @_;

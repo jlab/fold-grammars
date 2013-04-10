@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-my $PROGID = 'RNAshapes';
+my $PROGID = 'rnashapes';
 
 sub getPath {
 	my ($url) = @_;

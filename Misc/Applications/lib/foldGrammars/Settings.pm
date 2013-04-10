@@ -6,10 +6,14 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'RNAshapes', {date => '09.04.2013', version => '3.0.7', name => 'RNAshapes'},
-	'RNAalishapes', {date => '09.04.2013', version => '2.2.0', name => 'RNAalishapes'},
-	'pKiss', {date => '13.03.2013', version => '2.1.4', name => 'pKiss'},
+	'rnashapes', 				{date => '09.04.2013', version => '3.0.7', name => 'RNAshapes', packageDir => 'RNAshapes/'},
+	'rnaalishapes', 		{date => '09.04.2013', version => '2.2.0', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
+	'pkiss', 						{date => '13.03.2013', version => '2.1.4', name => 'pKiss', packageDir => 'pKiss/'},
+	'libfoldgrammars', 	{date => '09.04.2013', version => '1.0.4', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
+	'rapidshapes', 			{date => '06.03.2013', version => '2.0.0', name => 'RapidShapes'},
+	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
 );
+
 
 our $rootDir = '/home/sjanssen/Desktop/fold-grammars/'; #must point to the root directory of the fold-grammars repository!
 

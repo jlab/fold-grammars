@@ -1,6 +1,4 @@
   double sadd(Subsequence lb, double x) {
-    double res;
-	
 	float sbase_sum = 0;
     for (int k = 0; k < int(rows(lb)); k=k+1) {
       if (column(seq_char(lb,lb.i),k) != GAP_BASE) {
