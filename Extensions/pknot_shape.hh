@@ -64,7 +64,20 @@ struct PkAlph {
   }
 };
 
-typedef Fiber<size_t, unsigned char, PkAlph<size_t, unsigned char> > shape_t;
+#ifdef __APPLE__
+  // work around weird Mac OS X type ambiguity problems
+  // cf. http://stackoverflow.com/questions/11603818/why-is-there-ambiguity-between-uint32-t-and-uint64-t-when-using-size-t-on-mac-os
+
+	#ifdef __x86_64__
+		typedef Fiber<uint64_t, unsigned char, PkAlph<uint64_t, unsigned char> > shape_t;
+	#else
+		typedef Fiber<uint32_t, unsigned char, PkAlph<uint32_t, unsigned char> > shape_t;
+	#endif
+#else
+	typedef Fiber<size_t, unsigned char> Shape;
+	typedef Fiber<size_t, unsigned char, PkAlph<size_t, unsigned char> > shape_t;
+#endif
+
 
 template<typename SHAPE>
 inline char front(const SHAPE &a, char r = 0) {
