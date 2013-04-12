@@ -30,7 +30,7 @@
                 - energy(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
             INNER(CODE);
             int n = size(t_0_seq);
-            if (!is_empty(answers)) {
+            if (!isEmpty(answers)) {
 			  answer_pknot_mfe mfe = get_pk(i,j,k,l);
               if (mfe.energy < get_energy(subopt_left, i, j, k, n))
                 set(subopt_left, i, j, k, l, mfe.energy, n);

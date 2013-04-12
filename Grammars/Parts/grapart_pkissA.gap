@@ -100,7 +100,7 @@
       if (j-i <= maxPseudoknotSize()) {
         for (int m = i+3*minLengthKissingHairpinStems()+7; m<=j-minLengthKissingHairpinStems()-1; m=m+1) {
           answer_pknot_mfe leftPK = get_pk_free_kl(i, m);
-          if (is_empty(leftPK)) {
+          if (isEmpty(leftPK)) {
             continue;
           }
           int h = leftPK.betaLeftOuter;
@@ -118,7 +118,7 @@
             continue;
           }
           answer_pknot_mfe rightPK = get_pk_free_k(h, j, m, k+2);
-          if (is_empty(rightPK)) {
+          if (isEmpty(rightPK)) {
             continue;
           }
           int l = rightPK.betaLeftOuter;
@@ -172,7 +172,7 @@
 	  if (j-i <= maxPseudoknotSize()) {
         for (int h = i+minLengthKissingHairpinStems()+1; h<=j-3*minLengthKissingHairpinStems()-7; h=h+1) {
           answer_pknot_mfe rightPK = get_pk_free_kl(h, j);
-          if (is_empty(rightPK)) {
+          if (isEmpty(rightPK)) {
             continue;
           }
           int l = rightPK.betaLeftOuter;
@@ -190,7 +190,7 @@
             continue;
           }
           answer_pknot_mfe leftPK = get_pk_free_l(i, m, h, l-2);
-          if (is_empty(leftPK)) {
+          if (isEmpty(leftPK)) {
             continue;
           }
           int k = leftPK.alphaRightOuter;

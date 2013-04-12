@@ -28,7 +28,7 @@ inline std::ostream &operator<<(std::ostream &o, const pktype &a) {
 }
 
 inline void empty(pktype &e) {e.empty_ = true; }
-inline bool is_empty(const pktype &e) { return e.empty_; }
+inline bool isEmpty(const pktype &e) { return e.empty_; }
 
 inline uint32_t hashable_value(const pktype& candidate) {
   return int(candidate.isH) + int(candidate.isK)*10;
@@ -62,7 +62,7 @@ template<typename S, typename T, typename pos_int, typename ref_int>
 inline intrusive_ptr<Backtrace<T, pos_int> > exe_bt_k_hack(List_Ref<std::pair<S, intrusive_ptr<Backtrace<T, pos_int> > >, ref_int> & list) {
   typedef List<std::pair<S, intrusive_ptr<Backtrace<T, pos_int> > >, ref_int> list_t;
   intrusive_ptr<Backtrace_List<T, pos_int> > ret(new Backtrace_List_Score<S, T, pos_int>());
-  if (is_empty(list)) {
+  if (isEmpty(list)) {
     return ret;
   }
   int seen[4] = { 0 };

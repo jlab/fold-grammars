@@ -9,7 +9,7 @@ inline List_Ref<int> mfeSubopt(std::pair<Iterator, Iterator> i) {
 	int minValue = minimum(i); //find mfe value
 	List_Ref<int> answers; //init list, that should hold all selected candidates
 
-	if (!is_empty(minValue)) {
+	if (!isEmpty(minValue)) {
 		int range = getSuboptRange(minValue);
 		for (Iterator it = i.first; it != i.second; ++it) {
 			int val = *it;
@@ -46,7 +46,7 @@ inline List_Ref<mfecovar> mfeSuboptAli(std::pair<Iterator, Iterator> i) {
 	mfecovar minValue = minimum(i); //find mfe value
 	List_Ref<mfecovar> answers; //init list, that should hold all selected candidates
 
-	if (!is_empty(minValue)) {
+	if (!isEmpty(minValue)) {
 		int range = getSuboptRange(getEnergy(minValue));
 		for (Iterator it = i.first; it != i.second; ++it) {
 			mfecovar val = *it;
@@ -63,7 +63,7 @@ inline List_Ref<answer_macrostate_mfe> mfeSuboptMacrostate(std::pair<Iterator, I
 	answer_macrostate_mfe minValue = minimum(i); //find mfe value
 	List_Ref<answer_macrostate_mfe> answers; //init list, that should hold all selected candidates
 
-	if (!is_empty(minValue)) {
+	if (!isEmpty(minValue)) {
 		int range = getSuboptRange(getEnergy(minValue));
 		for (Iterator it = i.first; it != i.second; ++it) {
 			answer_macrostate_mfe val = *it;
@@ -80,7 +80,7 @@ inline List_Ref<mfecovar_macrostate> mfeSuboptAliMacrostate(std::pair<Iterator, 
 	mfecovar_macrostate minValue = minimum(i); //find mfe value
 	List_Ref<mfecovar_macrostate> answers; //init list, that should hold all selected candidates
 
-	if (!is_empty(minValue)) {
+	if (!isEmpty(minValue)) {
 		int range = getSuboptRange(getEnergy(minValue));
 		for (Iterator it = i.first; it != i.second; ++it) {
 			mfecovar_macrostate val = *it;
@@ -99,7 +99,7 @@ inline List_Ref<answer_pknot_mfe> mfeSuboptKnot(std::pair<Iterator, Iterator> i)
 	answer_pknot_mfe minValue = minimum(i); //find mfe value
 	List_Ref<answer_pknot_mfe> answers; //init list, that should hold all selected candidates
 
-	if (!is_empty(minValue)) {
+	if (!isEmpty(minValue)) {
 		int range = getSuboptRange(minValue.energy);
 		for (Iterator it = i.first; it != i.second; ++it) {
 			answer_pknot_mfe val = *it;
@@ -114,7 +114,7 @@ inline List_Ref<answer_pknot_mfe> mfeSuboptKnot(std::pair<Iterator, Iterator> i)
 
 template<typename MFE, typename SHAPE, typename DOTBRACKET>
 inline List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > suboptShapeClasses(List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > candidateList) {
-	if (candidateList.ref().is_empty()) {
+	if (candidateList.ref().isEmpty()) {
 		return candidateList;
 	} else {
 		List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > answers = List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >();

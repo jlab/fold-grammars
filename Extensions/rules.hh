@@ -60,7 +60,7 @@ inline void empty(rules &e) {
   e.empty_ = true; 
 }
 
-inline bool is_empty(const rules &e) { 
+inline bool isEmpty(const rules &e) {
   return e.empty_; 
 }
 
@@ -125,7 +125,7 @@ rules merge(std::pair<List<rules, unsigned char>::Iterator, List<rules, unsigned
 	empty(res);
 	return res;
   }
-  assert(!is_empty(*xs.first));
+  assert(!isEmpty(*xs.first));
   for (; xs.first != xs.second; ++xs.first) {
 	Rope shape = (*(xs.first)).shape;
 	res = res + *xs.first;

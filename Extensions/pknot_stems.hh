@@ -315,7 +315,7 @@ std::pair<int, int>  h(std::pair<Iterator, Iterator> i)
   empty( answers);
   std::pair<Proxy::Iterator<Iterator, select1st<typename Iterator::value_type> >  ,Proxy::Iterator<Iterator, select1st<typename Iterator::value_type> > >  left = splice_left(i);
   int left_answers = h_l(left);
-  if (is_empty(left_answers))
+  if (isEmpty(left_answers))
   {
     std::pair<int, int>  temp;
     empty( temp);
@@ -433,7 +433,7 @@ void print_stats(std::ostream &o)
 template <typename Value>   void  print_result(std::ostream &out, Value& res)
 
 {
-if (is_empty(res))
+if (isEmpty(res))
   out << "[]\n";
 else
   out << res << '\n';

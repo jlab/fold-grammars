@@ -70,7 +70,7 @@ inline void empty(answer_pknot_mfe &e) {
 	e.empty_ = true; 
 }
 
-inline bool is_empty(const answer_pknot_mfe &e) { 
+inline bool isEmpty(const answer_pknot_mfe &e) {
 	return e.empty_; 
 }
 
@@ -146,7 +146,7 @@ inline mfecovar operator+(const mfecovar &a, const mfecovar &b) {
 }
 
 inline void empty(mfecovar &e) {e.empty_ = true; }
-inline bool is_empty(const mfecovar &e) { return e.empty_; }
+inline bool isEmpty(const mfecovar &e) { return e.empty_; }
 
 
 
@@ -199,7 +199,7 @@ inline mfecovar_macrostate operator+(const mfecovar_macrostate &a, const mfecova
 }
 
 inline void empty(mfecovar_macrostate &e) {e.empty_ = true; }
-inline bool is_empty(const mfecovar_macrostate &e) { return e.empty_; }
+inline bool isEmpty(const mfecovar_macrostate &e) { return e.empty_; }
 
 inline uint32_t hashable_value(const mfecovar_macrostate& candidate) {
   return candidate.covar+candidate.mfe; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
@@ -317,7 +317,7 @@ inline void empty(answer_pknot_pfunc &e) {
 	e.empty_ = true; 
 }
 
-inline bool is_empty(const answer_pknot_pfunc &e) { 
+inline bool isEmpty(const answer_pknot_pfunc &e) {
 	return e.empty_; 
 }
 
@@ -364,7 +364,7 @@ inline void empty(answer_ali_pfunc_macrostate &e) {
   e.empty_ = true;
 }
 
-inline bool is_empty(const answer_ali_pfunc_macrostate &e) {
+inline bool isEmpty(const answer_ali_pfunc_macrostate &e) {
   return e.empty_;
 }
 
@@ -438,7 +438,7 @@ inline void empty(answer_macrostate_mfe &e) {
 	e.empty_ = true;
 }
 
-inline bool is_empty(const answer_macrostate_mfe &e) {
+inline bool isEmpty(const answer_macrostate_mfe &e) {
 	return e.empty_;
 }
 
@@ -480,7 +480,7 @@ inline void empty(answer_macrostate_pfunc &e) {
   e.empty_ = true;
 }
 
-inline bool is_empty(const answer_macrostate_pfunc &e) {
+inline bool isEmpty(const answer_macrostate_pfunc &e) {
   return e.empty_;
 }
 
