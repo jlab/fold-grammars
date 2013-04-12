@@ -14,13 +14,17 @@ use warnings;
 use Data::Dumper;
 use foldGrammars::Settings;
 
+my $TARGET_LAUNCHPAD = 'launchpad';
+my $TARGET_PORTS = 'macports';
+
 my @SERIES = ("oneiric", "precise", "quantal"); #"lucid" too old gcc <= 4.4.x
 my $USER = 'Bielefeld BioInformatics Service';
 my $EMAIL = 'bibi-help@cebitec.uni-bielefeld.de';
 my $TMPDIR = 'tmpDir';
 my $KEYFINGERPRINT = '0x8FE66EF2';
 
-my ($package, $comment) = @ARGV;
+my ($package, $comment, $target) = @ARGV;
+die "usage: perl $0 <package name> <comment> <target=launchpad | macports>" if (@ARGV != 3);
 
 my $foundPackage = 'false';
 foreach my $availPackage (keys(%Settings::PROGINFOS)) {
@@ -36,9 +40,14 @@ if ($foundPackage eq 'false') {
 	}
 	exit(1);
 }
-die "no comment is given!\n" ((not defined $comment) || ($comment =~ m/^\s*$/));
+die "no comment is given!\n" if ((not defined $comment) || ($comment =~ m/^\s*$/));
 
-die;
+if ($target eq $TARGET_LAUNCHPAD) {
+	commitDebian($package, $comment);
+} else {
+	die "target '$target' is unknown. Available targets are '$TARGET_LAUNCHPAD' and '$TARGET_PORTS'\n";
+}
+
 sub commitDebian {
 	my ($package, $comment) = @_;
 	
