@@ -1,3 +1,39 @@
+rnaalishapes (2.2.1-0ubuntu1~quantal1) quantal; urgency=low
+
+  * Renaming of function is_empty into isEmpty in the underlying
+    bellmansgapc package to avoid naming conflicts with boost-lib
+    function names when compiling with an older gcc, like 4.2 in osx or
+    4.4 in lucid.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 14 Apr 2013 10:54:07 +0200
+
+rnaalishapes (2.2.1-0ubuntu1~precise1) precise; urgency=low
+
+  * Renaming of function is_empty into isEmpty in the underlying
+    bellmansgapc package to avoid naming conflicts with boost-lib
+    function names when compiling with an older gcc, like 4.2 in osx or
+    4.4 in lucid.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 14 Apr 2013 10:54:00 +0200
+
+rnaalishapes (2.2.1-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * Renaming of function is_empty into isEmpty in the underlying
+    bellmansgapc package to avoid naming conflicts with boost-lib
+    function names when compiling with an older gcc, like 4.2 in osx or
+    4.4 in lucid.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 14 Apr 2013 10:53:52 +0200
+
+rnaalishapes (2.2.1-0ubuntu1~lucid1) lucid; urgency=low
+
+  * Renaming of function is_empty into isEmpty in the underlying
+    bellmansgapc package to avoid naming conflicts with boost-lib
+    function names when compiling with an older gcc, like 4.2 in osx or
+    4.4 in lucid.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 14 Apr 2013 10:50:44 +0200
+
 rnaalishapes (2.2.0-0ubuntu1~quantal1) quantal; urgency=low
 
   * updated dependency to bellmansgapc

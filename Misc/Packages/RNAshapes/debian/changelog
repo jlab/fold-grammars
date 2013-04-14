@@ -1,3 +1,39 @@
+rnashapes (3.0.8-0ubuntu1~quantal1) quantal; urgency=low
+
+  * Renaming of function is_empty into isEmpty in the underlying
+    bellmansgapc package to avoid naming conflicts with boost-lib
+    function names when compiling with an older gcc, like 4.2 in osx or
+    4.4 in lucid.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 14 Apr 2013 10:49:35 +0200
+
+rnashapes (3.0.8-0ubuntu1~precise1) precise; urgency=low
+
+  * Renaming of function is_empty into isEmpty in the underlying
+    bellmansgapc package to avoid naming conflicts with boost-lib
+    function names when compiling with an older gcc, like 4.2 in osx or
+    4.4 in lucid.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 14 Apr 2013 10:49:27 +0200
+
+rnashapes (3.0.8-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * Renaming of function is_empty into isEmpty in the underlying
+    bellmansgapc package to avoid naming conflicts with boost-lib
+    function names when compiling with an older gcc, like 4.2 in osx or
+    4.4 in lucid.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 14 Apr 2013 10:49:20 +0200
+
+rnashapes (3.0.8-0ubuntu1~lucid1) lucid; urgency=low
+
+  * Renaming of function is_empty into isEmpty in the underlying
+    bellmansgapc package to avoid naming conflicts with boost-lib
+    function names when compiling with an older gcc, like 4.2 in osx or
+    4.4 in lucid.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 14 Apr 2013 10:46:19 +0200
+
 rnashapes (3.0.7-0ubuntu1~quantal1) quantal; urgency=low
 
   * new feature: outside base pair probability computation
