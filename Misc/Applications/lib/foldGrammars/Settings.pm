@@ -6,10 +6,10 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'rnashapes', 				{date => '09.04.2013', version => '3.0.7', name => 'RNAshapes', packageDir => 'RNAshapes/'},
-	'rnaalishapes', 		{date => '09.04.2013', version => '2.2.0', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
-	'pkiss', 						{date => '13.03.2013', version => '2.1.4', name => 'pKiss', packageDir => 'pKiss/'},
-	'libfoldgrammars', 	{date => '09.04.2013', version => '1.0.4', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
+	'rnashapes', 				{date => '14.04.2013', version => '3.0.8', name => 'RNAshapes', packageDir => 'RNAshapes/'},
+	'rnaalishapes', 		{date => '14.04.2013', version => '2.2.1', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
+	'pkiss', 						{date => '14.04.2013', version => '2.2.0', name => 'pKiss', packageDir => 'pKiss/'},
+	'libfoldgrammars', 	{date => '14.04.2013', version => '1.0.5', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
 	'rapidshapes', 			{date => '06.03.2013', version => '2.0.0', name => 'RapidShapes'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
 );
