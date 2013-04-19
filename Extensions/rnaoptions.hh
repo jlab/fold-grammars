@@ -114,6 +114,7 @@ class Opts {
     				alifold_nfactor(1.0),
     				alifold_minscore_basepair(-200),
     				allowLonelyBasepairs(false),
+    				dotPlotFilename("\0"),
     				consensusType(0)
     {
     }
@@ -394,7 +395,7 @@ class Opts {
 		if (consensusType < 0 || consensusType > 1) {
 			throw OptException("Consensus type must either be 0 (=consensus) or 1 (=mis).");
 		}
-		if (dotPlotFilename == NULL) {
+		if (strcmp(dotPlotFilename, "\0") == 0) {
 			dotPlotFilename = "./dotPlot.ps";
 		}
 		}

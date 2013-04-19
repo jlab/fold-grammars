@@ -74,3 +74,9 @@ sub commitDebian {
 		die "cannot find debian package description in '".$Settings::PROGINFOS{$package}->{packageDir}."'\n";
 	}
 }
+
+sub commitOSX {
+	my ($package, $comment) = @_;
+	
+	
+}
