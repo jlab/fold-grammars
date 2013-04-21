@@ -12,6 +12,7 @@ our %PROGINFOS = (
 	'libfoldgrammars', 	{date => '14.04.2013', version => '1.0.6', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
 	'rapidshapes', 			{date => '06.03.2013', version => '2.0.0', name => 'RapidShapes'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
+	'getoutsidetruth', 	{date => '19.04.2013', version => '1.0.0', name => 'getOutsideTruth'},
 );
 
 
@@ -41,6 +42,8 @@ our %BINARIES = (
 	'uname', 'uname',
 	'find', 'find',
 	'gs', 'gs',
+	'RNAsubopt', 'RNAsubopt',
+	'RNAfold', 'RNAfold',
 );
 
 our %TDMfiles = (
@@ -69,5 +72,5 @@ our $MODE_LIST = "list";
 our $MODE_ENERGY = "energy";
 our $MODE_CONVERT = 'convert';
 our $MODE_OUTSIDE = 'outside';
-
+our $MODE_ANALYSE_OUTSIDE = 'analyse_outside';
 1;
