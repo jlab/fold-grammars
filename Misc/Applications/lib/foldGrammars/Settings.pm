@@ -44,6 +44,7 @@ our %BINARIES = (
 	'gs', 'gs',
 	'RNAsubopt', 'RNAsubopt',
 	'RNAfold', 'RNAfold',
+	'date', 'date',
 );
 
 our %TDMfiles = (

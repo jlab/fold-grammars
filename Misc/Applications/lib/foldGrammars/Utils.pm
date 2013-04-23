@@ -565,4 +565,23 @@ sub getBracketIndex { #returns the right "type" of opening or closing bracket, d
 	return [-1, 'unpaired'];
 }
 
+
+sub createUniqueTempDir { #create temporary unique directory
+	my ($BASEDIR, $dirSuffixName) = @_;
+	
+	$dirSuffixName = '' if (not defined $dirSuffixName);
+	my $machineName = qx($Settings::BINARIES{'uname'} -n); chomp $machineName;
+	my $currentDate = qx($Settings::BINARIES{'date'} +%s); chomp $currentDate;
+	
+	my $tempDir = $BASEDIR.$dirSuffixName.'_'.$machineName.'_'.$$.'_'.$currentDate.'/';
+	my $status = qx($Settings::BINARIES{mkdir} $tempDir 2>&1);
+	if (not -e $tempDir) {
+		die "can't create temporary directory '$tempDir':\n$status";
+	} else {
+		chdir($tempDir);
+	}
+	
+	return $tempDir;
+}
+
 1;

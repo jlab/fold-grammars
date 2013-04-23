@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 my $PROGID = 'getoutsidetruth';
-my $TMPDIR = "temp";
+my $TMPDIR = "/home/sjanssen/Desktop/fold-grammars/Misc/Analyses/Outside/temp";
 
 sub getPath {
 	my ($url) = @_;
@@ -29,6 +29,8 @@ our $GRAMMAR_NODANGLE = 'nodangle';
 our $GRAMMAR_OVERDANGLE = 'overdangle';
 our $GRAMMAR_MICROSTATE = 'microstate';
 our $GRAMMAR_MACROSTATE = 'macrostate';
+
+our $tempWorkingDir = undef;
 
 my %PARAM;
 $PARAM{mode} = {modes => [$Settings::MODE_ANALYSE_OUTSIDE], key => 'mode', type => 's', default => $Settings::MODE_ANALYSE_OUTSIDE, info => "Select the computation mode. Available modes are \"".join('", "', @ALLMODES)."\". Omit the ticks on input.\nDefault is \"@(DEFAULT)\"."};
@@ -103,6 +105,10 @@ if (@ARGV == 0) {
 	exit(1);
 }
 
+if (-e $tempWorkingDir) {
+	qx(rm -rf $tempWorkingDir);
+}
+
 sub processInput {
 	my ($input, $refHash_settings) = @_;
 	
@@ -147,12 +153,9 @@ sub doComputation {
 	#get RNAfold base pair probabilities
 		my $command_rnafold = buildCommand_rnafold($settings, $refHash_sequence);
 		qx($command_rnafold);
-		my $bpprobs_rnafold = readDotplot($TMPDIR.'/dot.ps');
+		my $bpprobs_rnafold = readDotplot($tempWorkingDir.'/dot.ps');
 
 	#get gapc base pair probabilities
-		qx(mkdir $TMPDIR) if (not -d $TMPDIR);
-		qx(cp ../../Applications/RNAshapes/makefile $TMPDIR/);
-		system('make -C '.$TMPDIR.' all_normal clean RNAOPTIONSPERLSCRIPT="../../../Applications/addRNAoptions.pl" targets="outside" grammars="nodangle overdangle microstate" BASEDIR="../../../../"');
 		my $command_gapc = buildCommand($settings, $refHash_sequence);
 		system("$command_gapc '".$seq."N".$seq."'");
 		my $bpprobs_gapc = readDotplot($settings->{dotplotfilename});
@@ -168,7 +171,7 @@ sub doComputation {
 	
 	#~ print Dumper $bpprobs_gapc;
 	#~ print writePS($bpprobs_truth, $seq);
-	die;
+	#~ die;
 	
 	
 	
@@ -431,7 +434,7 @@ sub buildCommand_truth {
 sub buildCommand_rnafold {
 	my ($settings, $refHash_sequence, $task) = @_;
 
-	my $cmd = "cd $TMPDIR && ".'rm -f dot.ps && echo "'.$refHash_sequence->{sequence}.'" | ';
+	my $cmd = "cd $tempWorkingDir && ".'rm -f dot.ps && echo "'.$refHash_sequence->{sequence}.'" | ';
 	
 	$cmd .= $Settings::BINARIES{'RNAfold'};
 	
@@ -494,6 +497,21 @@ sub checkParameters {
 	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a non-negative integer number!\n" if ($settings->{'probdecimals'} < 0);
 	die $diePrefix."--".$PARAM{'bppmthreshold'}->{key}." must be a non-negative integer number!\n" if ($settings->{'bppmthreshold'} < 0);
 	die $diePrefix."--".$PARAM{'bppmthreshold'}->{key}." should be less then 1, because no pair (i,j) will occure in _every_ structure of the search space.\n" if ($settings->{'bppmthreshold'} >= 1);
+	
+	$tempWorkingDir = Utils::createUniqueTempDir('/tmp/', "outside_analysis");
+	$settings->{dotplotfilename} = $tempWorkingDir.'/dotPlot.ps';
+	if (not -e $TMPDIR) {
+		qx(mkdir $TMPDIR);
+		qx(cp ../../Applications/RNAshapes/makefile $TMPDIR/);
+		system('make -C '.$TMPDIR.' all_normal clean RNAOPTIONSPERLSCRIPT="../../../Applications/addRNAoptions.pl" targets="outside" grammars="nodangle overdangle microstate" BASEDIR="../../../../"');
+	}
+	
+	my %fakeSettings = %{$settings};
+	$fakeSettings{binaryprefix} = 'RNAshapes_';
+	$fakeSettings{mode} = $Settings::MODE_OUTSIDE;
+	
+	Utils::checkBinaryPresents(\%fakeSettings, $diePrefix, [$Settings::MODE_OUTSIDE]);
+
 }
 
 sub usage {
