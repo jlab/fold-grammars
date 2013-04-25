@@ -14,13 +14,13 @@ algebra alg_outside_enum auto enum;
 include "Algebras/MFE/alg_outside_mfe.gap"
 algebra alg_outside_mfe_overdangle extends alg_outside_mfe {
 	int drem(Subsequence lb, int x, Subsequence rb) {
-		return x + termau_energy(lb, rb) + ext_mismatch_energy(lb, rb);
+		return x + termau_energy(lb, rb) + ext_mismatch_energy_outside(lb, rb);
 	}
 	int ml(Subsequence lb, int x, Subsequence rb) {
 		return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
 	}
 	int outer_drem(Subsequence locr, int x, Subsequence locl) {
-		return x + termau_energy(shiftIndex(locl), shiftLeftIndex(locr)) + ext_mismatch_energy(shiftIndex(locl), shiftLeftIndex(locr));
+		return x + termau_energy(shiftIndex(locl), shiftLeftIndex(locr)) + ext_mismatch_energy_outside(shiftIndex(locl), shiftLeftIndex(locr));
 	}
 	int outer_ml(Subsequence rb, int x, Subsequence lb) {
 		return x + ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb) + ml_mismatch_energy(shiftIndex(lb), rb);
