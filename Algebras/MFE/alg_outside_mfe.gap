@@ -15,14 +15,14 @@ algebra alg_outside_mfe implements sig_outside_foldrna(alphabet = char, answer =
 	int outer_edr(Subsequence rdangle, int x, Subsequence lb) {
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return x + termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + dr_energy(shiftIndex(lb), shiftLeftIndex(rb));
+		return x + termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + dr_energy_outside(shiftIndex(lb), shiftLeftIndex(rb));
 	}
 	int outer_edlr(Subsequence rdangle, int x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return x + termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + ext_mismatch_energy(shiftIndex(lb), shiftLeftIndex(rb));
+		return x + termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + ext_mismatch_energy_outside(shiftIndex(lb), shiftLeftIndex(rb));
 	}
 	int outer_sr(Subsequence rb, int x, Subsequence lb) {
 		return x + sr_energy(shiftIndex(lb), rb);
