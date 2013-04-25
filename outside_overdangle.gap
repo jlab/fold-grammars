@@ -30,13 +30,13 @@ algebra alg_outside_mfe_overdangle extends alg_outside_mfe {
 include "Algebras/Pfunc/alg_outside_pfunc.gap"
 algebra alg_outside_pfunc_overdangle extends alg_outside_pfunc {
 	double drem(Subsequence lb, double x, Subsequence rb) {
-		return                                x * mk_pf(termau_energy(lb, rb) + ext_mismatch_energy(lb, rb));
+		return                                x * mk_pf(termau_energy(lb, rb) + ext_mismatch_energy_outside(lb, rb));
 	}
 	double ml(Subsequence lb, double x, Subsequence rb) {
 		return scale(2)                     * x * mk_pf(ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb));
 	}
 	double outer_drem(Subsequence locr, double x, Subsequence locl) {
-		return x * mk_pf(termau_energy(shiftIndex(locl), shiftLeftIndex(locr)) + ext_mismatch_energy(shiftIndex(locl), shiftLeftIndex(locr)));
+		return x * mk_pf(termau_energy(shiftIndex(locl), shiftLeftIndex(locr)) + ext_mismatch_energy_outside(shiftIndex(locl), shiftLeftIndex(locr)));
 	}
 	double outer_ml(Subsequence rb, double x, Subsequence lb) {
 		return scale(2) * x * mk_pf(ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb) + ml_mismatch_energy(shiftIndex(lb), rb));
