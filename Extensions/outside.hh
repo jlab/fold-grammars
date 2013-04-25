@@ -77,11 +77,7 @@ inline const std::string getPSheader(std::string input) {
     ltime=time(NULL); /* get current cal time */
     const char* timestamp = asctime(localtime(&ltime));
 	result << "%%CreationDate: " << timestamp;
-	if (getWindowSize() > 0) {
-		result << "%%BoundingBox: 58 530 520 650\n";
-	} else {
-		result << "%%BoundingBox: 58 201 518 662\n";
-	}
+	result << "%%BoundingBox: 58 201 518 662\n";
 	result << "%%DocumentFonts: Helvetica\n";
 	result << "%%Pages: 1\n";
 	result << "%%EndComments\n\n";
@@ -166,17 +162,9 @@ inline const std::string getPSheader(std::string input) {
 	result << input << "\\\n";
 
 	result << ") } def\n";
-	if (getWindowSize() > 0) {
-		result << "/winSize %d def\n",getWindowSize();
-	}
 	result << "/len { sequence length } bind def\n\n";
-	if (getWindowSize() > 0) {
-		result << "292 416 translate\n";
-		result << "72 6 mul len 1 add winSize add 2 sqrt mul div dup scale\n";
-	} else {
-		result << "72 216 translate\n";
-		result << "72 6 mul len 1 add div dup scale\n";
-	}
+	result << "72 216 translate\n";
+	result << "72 6 mul len 1 add div dup scale\n";
 	result << "/Helvetica findfont 0.95 scalefont setfont\n\n";
 	result << "drawseq\n";
 	result << "0.5 dup translate\n";
