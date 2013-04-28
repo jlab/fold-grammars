@@ -1,4 +1,4 @@
-algebra alg_ali_outside_pfunc implements sig_outside_foldrna(alphabet = M_Char, answer = double) {
+algebra dummy_ali_outside_pfunc implements sig_outside_foldrna(alphabet = M_Char, answer = double) {
 	include "Algebras/Pfunc/Parts/algpart_ali_pfunc_basic.gap"
   
 	double sep(double innerRight, Subsequence sepChar, double innerLeft) {
@@ -67,5 +67,28 @@ algebra alg_ali_outside_pfunc implements sig_outside_foldrna(alphabet = M_Char, 
 	double makeplot(double x, Subsequence pos) { 
 		MAKEPLOT(pos);
 		return x; 
+	}
+}
+
+algebra alg_ali_outside_pfunc extends dummy_ali_outside_pfunc {
+	double edl(Subsequence ldangle, double x, Subsequence rb) {
+		Subsequence lb = ldangle;
+		lb.i = ldangle.i+1;
+
+		return x * scale(1) * mk_pf((termau_energy(lb, rb) + dl_energy_outside(lb, rb)) / float(rows(ldangle)));
+	}
+	double edr(Subsequence lb, double x, Subsequence rdangle) {
+		Subsequence rb = rdangle;
+		rb.j = rdangle.j-1;
+
+		return x * scale(1) * mk_pf((termau_energy(lb, rb) + dr_energy_outside(lb, rb)) / float(rows(lb)));
+	}
+	double edlr(Subsequence ldangle, double x, Subsequence rdangle) {
+		Subsequence lb = ldangle;
+		lb.i = ldangle.i+1;
+		Subsequence rb = rdangle;
+		rb.j = rdangle.j-1;
+
+		return x * scale(2) * mk_pf((termau_energy(lb, rb) + ext_mismatch_energy_outside(lb,rb)) / float(rows(ldangle)));
 	}
 }

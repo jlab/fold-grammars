@@ -18,7 +18,7 @@ include "Algebras/MFE/alg_ali_outside_mfe.gap"
 algebra alg_ali_outside_mfe_overdangle extends alg_ali_outside_mfe {
 	mfecovar drem(Subsequence lb, mfecovar x, Subsequence rb) {
 		mfecovar res = x;
-		res.mfe = x.mfe + ((termau_energy(lb, rb) + ext_mismatch_energy(lb, rb)) / float(rows(lb)));
+		res.mfe = x.mfe + ((termau_energy(lb, rb) + ext_mismatch_energy_outside(lb, rb)) / float(rows(lb)));
 		res.covar = x.covar;
 		return res;
 	}
@@ -45,7 +45,7 @@ algebra alg_ali_outside_mfe_overdangle extends alg_ali_outside_mfe {
 include "Algebras/Pfunc/alg_ali_outside_pfunc.gap"
 algebra alg_ali_outside_pfunc_overdangle extends alg_ali_outside_pfunc {
 	double drem(Subsequence lb, double x, Subsequence rb) {
-		return x * mk_pf((termau_energy(lb, rb) + ext_mismatch_energy(lb, rb)) / float(rows(lb)));
+		return x * mk_pf((termau_energy(lb, rb) + ext_mismatch_energy_outside(lb, rb)) / float(rows(lb)));
 	}
 	double ml(Subsequence lb, double x, Subsequence rb) {
 		return x * scale(2) * mk_pf(ml_energy() + ul_energy() + ((termau_energy(lb, rb) + ml_mismatch_energy(lb, rb)) / float(rows(lb))) + covscore(lb, lb.i, rb.i));

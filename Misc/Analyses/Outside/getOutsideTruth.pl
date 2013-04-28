@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 my $PROGID = 'getoutsidetruth';
-my $TMPDIR = "/home/sjanssen/Desktop/fold-grammars/Misc/Analyses/Outside/temp";
+my $TMPDIR = "/vol/fold-grammars/src/Misc/Analyses/Outside/temp";
 
 sub getPath {
 	my ($url) = @_;
@@ -70,7 +70,6 @@ foreach my $param (keys %PARAM) {
 );
 
 checkParameters($settings);
-
 usage() if (defined $settings->{'help'}); #user asks for help --> print usage and die
 our $inputIndex = 0;
 if (@ARGV == 0) {
@@ -106,6 +105,7 @@ if (@ARGV == 0) {
 }
 
 if (-e $tempWorkingDir) {
+	chdir ("/");
 	qx(rm -rf $tempWorkingDir);
 }
 
@@ -150,6 +150,11 @@ sub doComputation {
 		my $command_truth = buildCommand_truth($settings, $refHash_sequence);
 		my ($bpprobs_truth, $numStructures) = @{parse_truth(scalar(qx($command_truth)))};
 	
+	#get true base pair probabilities by exhaustive gapc call
+		my $command_truth_gapc = buildCommand_truthGapc($settings, $refHash_sequence);
+		my ($bpprobs_truth_gapc, $numStructures_gapc) = @{parse_truth(scalar(qx($command_truth_gapc '$seq')), $seq)};
+#~ print writePS($bpprobs_truth_gapc, $seq);
+#~ die;
 	#get RNAfold base pair probabilities
 		my $command_rnafold = buildCommand_rnafold($settings, $refHash_sequence);
 		qx($command_rnafold);
@@ -165,8 +170,12 @@ sub doComputation {
 	print "len(seq): ".length($seq)."\n";
 	print "settings: ".printSettings($settings)."\n";
 	print "size foldingspace: ".$numStructures."\n";
-	print "distance(truth, RNAfold): ".getDistance($bpprobs_truth, $bpprobs_rnafold, $seq)."\n";
-	print "distance(truth,  gapc  ): ".getDistance($bpprobs_truth, $bpprobs_gapc, $seq)."\n";
+	print "size foldingspace gapc: ".$numStructures_gapc."\n";
+	print "distance(truth,      RNAfold   ): ".getDistance($bpprobs_truth, $bpprobs_rnafold, $seq)."\n";
+	print "distance(truth,      gapc      ): ".getDistance($bpprobs_truth, $bpprobs_gapc, $seq)."\n";
+	print "distance(truth,      truth_gapc): ".getDistance($bpprobs_truth, $bpprobs_truth_gapc, $seq)."\n";
+	print "distance(truth_gapc, RNAfold   ): ".getDistance($bpprobs_truth_gapc, $bpprobs_rnafold, $seq)."\n";
+	print "distance(truth_gapc, gapc      ): ".getDistance($bpprobs_truth_gapc, $bpprobs_gapc, $seq)."\n";
 	print "====================================================\n";
 	
 	#~ print Dumper $bpprobs_gapc;
@@ -369,15 +378,17 @@ end
 }
 
 sub parse_truth {
-	my ($programOutput) = @_;
+	my ($programOutput, $gapcSeq) = @_;
 
 	my @bpSums = ();
 	my $pfAllSum = 0;
 	my $sequence = "";
+	$sequence = $gapcSeq if (defined $gapcSeq);
 	my $numStructures = 0;
 	foreach my $line (split(m/\n/, $programOutput)) {
-		if ($line =~ m/^([\(|\)|\.]+)\s+(-?\d+\.\d+)\s*$/) {
+		if ($line =~ m/^([\(|\)|\.]+)\s+(-?\d+\.\d+)\s*$/ || $line =~ m/\( (.+?) , \( (.+?) , .+? \) \)/) {
 			my ($structure, $energy) = ($1, $2);
+			($structure, $energy) = ($2, $1/100) if (defined $gapcSeq);
 			my %pairs = %{Utils::getPairList($structure)};
 			my $pfValue = exp(-1 * $energy / (0.00198717*310.15));
 			$pfAllSum += $pfValue;
@@ -388,6 +399,7 @@ sub parse_truth {
 		} elsif ($line =~ m/^([A|C|G|U]+)\s+-?\d+\s+\d+\s*$/) {
 			$sequence = $1;
 			#header
+		} elsif ($line =~ m/Answer:/) {
 		} else {
 			die "unexpected RNAsubopt result line: '$line'\n";
 		}
@@ -481,6 +493,23 @@ sub buildCommand {
 	return $cmd;
 }
 
+sub buildCommand_truthGapc {
+	my ($settings, $refHash_sequence, $task) = @_;
+
+	my $cmd = "";
+	$cmd .= $settings->{'binarypath'};
+	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
+	$cmd .= 'RNAshapes_subopt';
+	$cmd .= '_'.$settings->{'grammar'};
+	$cmd .= " -".$PARAM{temperature}->{gapc}." ".$settings->{'temperature'} if ($settings->{'temperature'} != $PARAM{temperature}->{default});
+	$cmd .= " -".$PARAM{param}->{gapc}." ".$settings->{'param'} if (defined $settings->{'param'});
+	$cmd .= " -".$PARAM{allowlp}->{gapc}." ".$settings->{'allowlp'} if ($settings->{'allowlp'} != $PARAM{allowlp}->{default});
+	$cmd .= " -".$PARAM{bppmthreshold}->{gapc}." ".$settings->{'bppmthreshold'} if (($settings->{'mode'} eq $Settings::MODE_OUTSIDE) && ($settings->{'bppmthreshold'} != $PARAM{bppmthreshold}->{default}));
+	$cmd .= " -".$PARAM{dotplotfilename}->{gapc}." ".IO::getDotplotFilename($settings, $inputIndex);
+	$cmd .= " -e 9999999";
+	return $cmd;
+}
+
 sub checkParameters {
 	my ($settings) = @_;
 	
@@ -502,15 +531,16 @@ sub checkParameters {
 	$settings->{dotplotfilename} = $tempWorkingDir.'/dotPlot.ps';
 	if (not -e $TMPDIR) {
 		qx(mkdir $TMPDIR);
-		qx(cp ../../Applications/RNAshapes/makefile $TMPDIR/);
+		qx(cp /vol/fold-grammars/src/Misc/Applications/RNAshapes/makefile $TMPDIR/);
 		system('make -C '.$TMPDIR.' all_normal clean RNAOPTIONSPERLSCRIPT="../../../Applications/addRNAoptions.pl" targets="outside" grammars="nodangle overdangle microstate" BASEDIR="../../../../"');
+		system('make -C '.$TMPDIR.' all_normal clean RNAOPTIONSPERLSCRIPT="../../../Applications/addRNAoptions.pl" targets="subopt" grammars="nodangle overdangle microstate macrostate" BASEDIR="../../../../"');
 	}
 	
 	my %fakeSettings = %{$settings};
 	$fakeSettings{binaryprefix} = 'RNAshapes_';
 	$fakeSettings{mode} = $Settings::MODE_OUTSIDE;
 	
-	Utils::checkBinaryPresents(\%fakeSettings, $diePrefix, [$Settings::MODE_OUTSIDE]);
+	Utils::checkBinaryPresents(\%fakeSettings, $diePrefix, [$Settings::MODE_OUTSIDE, $Settings::MODE_SUBOPT]);
 
 }
 

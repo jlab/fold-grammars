@@ -1,4 +1,4 @@
-algebra alg_outside_mfe implements sig_outside_foldrna(alphabet = char, answer = int) {
+algebra dummy_outside_mfe implements sig_outside_foldrna(alphabet = char, answer = int) {
 	include "Algebras/MFE/Parts/algpart_mfe_basic.gap"
 	
   	int sep(int innerRight, Subsequence sepChar, int innerLeft) {
@@ -59,4 +59,24 @@ algebra alg_outside_mfe implements sig_outside_foldrna(alphabet = char, answer =
 		return x;
 	}
 	int makeplot(int x, Subsequence pos) { return x; }
+}
+
+algebra alg_outside_mfe extends dummy_outside_mfe {
+	int edl(Subsequence ldangle, int x, Subsequence rb) {
+		Subsequence lb = ldangle;
+		lb.i = ldangle.i+1;
+		return x + termau_energy(lb, rb) + dl_energy_outside(lb, rb);
+	}
+	int edr(Subsequence lb, int x, Subsequence rdangle) {
+		Subsequence rb = rdangle;
+		rb.j = rdangle.j-1;
+		return x + termau_energy(lb, rb) + dr_energy_outside(lb, rb);
+	}
+	int edlr(Subsequence ldangle, int x, Subsequence rdangle) {
+		Subsequence lb = ldangle;
+		lb.i = ldangle.i+1;
+		Subsequence rb = rdangle;
+		rb.j = rdangle.j-1;
+		return x + termau_energy(lb, rb) + ext_mismatch_energy_outside(lb,rb);
+	}
 }

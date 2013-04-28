@@ -14,7 +14,7 @@ algebra alg_outside_enum auto enum;
 include "Algebras/MFE/alg_outside_mfe.gap"
 algebra alg_outside_mfe_overdangle extends alg_outside_mfe {
 	int drem(Subsequence lb, int x, Subsequence rb) {
-		return x + termau_energy(lb, rb) + ext_mismatch_energy(lb, rb);
+		return x + termau_energy(lb, rb) + ext_mismatch_energy_outside(lb, rb);
 	}
 	int ml(Subsequence lb, int x, Subsequence rb) {
 		return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
@@ -30,7 +30,7 @@ algebra alg_outside_mfe_overdangle extends alg_outside_mfe {
 include "Algebras/Pfunc/alg_outside_pfunc.gap"
 algebra alg_outside_pfunc_overdangle extends alg_outside_pfunc {
 	double drem(Subsequence lb, double x, Subsequence rb) {
-		return                                x * mk_pf(termau_energy(lb, rb) + ext_mismatch_energy(lb, rb));
+		return                                x * mk_pf(termau_energy(lb, rb) + ext_mismatch_energy_outside(lb, rb));
 	}
 	double ml(Subsequence lb, double x, Subsequence rb) {
 		return scale(2)                     * x * mk_pf(ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb));
