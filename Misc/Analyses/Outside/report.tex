@@ -1,0 +1,66 @@
+\documentclass[paper=a4,fontsize=12pt]{scrartcl}
+
+\usepackage{xspace}
+% \usepackage{multirow}
+\usepackage{rotating}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{hyperref}
+% \usepackage{todonotes}
+\usepackage{tikz}
+\usepackage{verbatim}
+
+\newcommand{\progname}[1]{\mbox{\textsc{#1}}\xspace}
+\def\Infernal{\progname{Infernal}}
+\def\cmbuild{\progname{cmbuild}}
+\def\cmsearch{\progname{cmsearch}}
+\def\cmcalibrate{\progname{cmcalibrate}}
+\def\Rfam{\progname{Rfam}}
+\def\R{\progname{R}}
+\def\hmmer{\progname{HMMER}}
+\def\blast{\progname{BLAST}}
+\def\ushuffle{\progname{uShuffle}}
+\def\mfold{\progname{Mfold}}
+\def\rnasubopt{\progname{RNAsubopt}}
+\def\rnashapes{\progname{RNAshapes}}
+\def\sfold{\progname{Sfold}}
+\def\clustalx{\progname{clustalX}}
+\def\rnaalifold{\progname{RNAalifold}}
+
+\title{Computation of McCaskill base-pair probabilities:\\ an outside algorithm}
+\author{Stefan Janssen}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Given an unknown RNA primary sequence -- a word composed of the letters \texttt{A},\texttt{C},\texttt{G} and \texttt{U} -- secondary structure prediction is to find a ``best'' set of pairwise connections for a majority of the characters of the sequence. For computational reasons, sets containing two or more connections whose arcs would cross, if we draw them ontop of the sequence, are often excluded. A further easement is the assumption that not all $4*4$ connection-types are possible, but only the following $6$ connections can be established: $\texttt{A} \leftrightarrow \texttt{U}$, $\texttt{U} \leftrightarrow \texttt{A}$, $\texttt{C} \leftrightarrow \texttt{G}$, $\texttt{G} \leftrightarrow \texttt{C}$, $\texttt{G} \leftrightarrow \texttt{U}$, $\texttt{U} \leftrightarrow \texttt{G}$.
+
+What remains is a combinatorial problem with exponential many candidate sets. The easy part -- search space generation -- is to develop a machinery that systematically enumerates all those sets. It must not forget a single set or report one set twice. Once the sets have been generated a more difficult question is how to score them and also the question which score is best. The pioneering algorithm of Nussinov \cite{NUS:PIE:GRI:KLE:1978} simply counts the number of connections for each set and maximizes over all sets. Biologically more close are algorithms like \mfold \cite{ZUK:STI:1981}. It assign free energy values to neighbored connections and minimizes over those energies. Minimizing, because ``good'', i.e. stabilizing, energies come with a negative sign. Here, the intuition is how much energy do I have to put in the molecule until it looses its (secondary-)structure.
+
+Dynamic programming intermingles search space generation, scoring and evaluation for the exponential number of different sets by applying Bellman's Principle of Optimality \cite{BEL:1957}, such that the best score can be determined within $O(n^3)$ time and $O(n^2)$ space. %With a further harmless assumption, two nested connections $i-j$ and $k-l$ with $i < k < l < j$ cannot have more than $30$ unconnected characters between them, i.e. $k-i < 30 \and j-l < 30$, runtime comes down to $O(n^3)$. 
+
+Unfortunately, even the energetically best set is often not the biologically active one. Reasons for that are manifold. The following list is far from beeing complete. 
+\begin{itemize}
+	\item{imprecise or insufficient energy measurements \cite{MAT:TUR:2006}}
+	\item{limitations regarding ion concentration, temperature or entropic effects}
+	\item{too simplistic model assumptions, e.g. the restriction to non-crossing connections}
+	\item{influences of co-transcriptional folding \cite{MEY:MIK:2004}}
+	\item{mechanisms such as RNA thermometers and riboswitches \cite{MAN:BRE:2004,WAL:GAU:KLI:NAR:2009} where the prediction of an ``optimal'' set, even when correct, tells only half the story}
+	\item{post transcriptional base modifications}
+\end{itemize}
+Approaches to tackle this problem are versatile, because there is no single perfect method. Some of them are: 
+\begin{itemize}
+	\item{\rnasubopt from the Vienna Package \cite{LOR:BER:HOE:TAF:FLA:STA:HOF:2011} lists all sub-optimal sets up to a given energy threshold and hands the problem of selecting the ``right'' one back to the user.}
+	\item{\rnashapes \cite{GIE:VOSS:REH:2004} sifts \rnasubopt results to report only those with meaningfull differences, because majority of sub-optimal sets differ only slightly.}
+	\item{Synoptic approaches justify their decision of optimality not only on \emph{one} candidate, but on properties of the whole search space. Tools like \sfold \cite{CHA:LAW:DIN:2005} or the probabilistic mode of \rnashapes \cite{JAN:GIE:2010} seek for groups of similar candidates, which together dominate the search space although the energetically optimal candidate might not be member of this group.
+	
+	Finding a suitable representative candidate for the dominating group leads back to the original problem, but with a very specifically restricted search space.}
+	\item{Maximum expected accuracy (MEA) is a further synoptic approach. It operates in two steps. First, McCaskill base-pair probabilities are computed, i.e. of all candidates from the search space, we select those containing the connection between characters $i$ and $j$. Their Boltzman weighted summed energy contribution is related to the combined Boltzman weight of the whole search space and thus gives the probabilty of having a connection between $i$ and $j$. With little modifications to the aforementioned algorithms, this can be done in $O(n^3)$ time for all possible $i-j$ connections at once. The second phase aims to find a secondary structure composed of as many high probability connections as possible.}
+	\item{In the lucky situation of having related sequences at hand, we can make use of observing conservation or compensatory mutation throughout evolution. Going comparative is an usual trick to increase reliability of predictions, but comes with computationally more expensive problems to solve. Simultanously aligning and folding $m$ sequences of length $n$ requires $O(n^{3m})$ time with the Sankoff algorithm \cite{SAN:1985}. Nevertheless, sacrifising the garantee to find the optimum and split the process into two sucessive tasks often yields more accurate results than single sequence predictions. Very popular is to team up \clustalx for aligning the sequences with \rnaalifold to fold the given alignment.}
+\end{itemize}
+
+
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
