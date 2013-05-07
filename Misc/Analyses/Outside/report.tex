@@ -8,6 +8,7 @@
 % \usepackage{todonotes}
 \usepackage{tikz}
 \usepackage{verbatim}
+\usepackage{graphics}
 
 \newcommand{\progname}[1]{\mbox{\textsc{#1}}\xspace}
 \def\Infernal{\progname{Infernal}}
@@ -23,22 +24,24 @@
 \def\rnasubopt{\progname{RNAsubopt}}
 \def\rnashapes{\progname{RNAshapes}}
 \def\sfold{\progname{Sfold}}
-\def\clustalx{\progname{clustalX}}
+\def\clustalw{\progname{clustalW}}
 \def\rnaalifold{\progname{RNAalifold}}
+\def\dotknot{\progname{DotKnot}}
+\def\bgap{\progname{Bellman's GAP}}
 
 \title{Computation of McCaskill base-pair probabilities:\\ an outside algorithm}
 \author{Stefan Janssen}
 \begin{document}
 \maketitle
 
-\section{Introduction}
-Given an unknown RNA primary sequence -- a word composed of the letters \texttt{A},\texttt{C},\texttt{G} and \texttt{U} -- secondary structure prediction is to find a ``best'' set of pairwise connections for a majority of the characters of the sequence. For computational reasons, sets containing two or more connections whose arcs would cross, if we draw them ontop of the sequence, are often excluded. A further easement is the assumption that not all $4*4$ connection-types are possible, but only the following $6$ connections can be established: $\texttt{A} \leftrightarrow \texttt{U}$, $\texttt{U} \leftrightarrow \texttt{A}$, $\texttt{C} \leftrightarrow \texttt{G}$, $\texttt{G} \leftrightarrow \texttt{C}$, $\texttt{G} \leftrightarrow \texttt{U}$, $\texttt{U} \leftrightarrow \texttt{G}$.
+\section{Introduction}\label{sec:introduction}
+Given an unknown RNA primary sequence -- a word composed of the letters \texttt{A},\texttt{C},\texttt{G} and \texttt{U} -- secondary structure prediction is to find a ``best'' set of pairwise connections for a majority of the characters of the sequence. For computational reasons, sets containing two or more connections, whose arcs would cross, if we draw them on top of the sequence, are often excluded. A further easement is the assumption that not all $4*4$ connection-types are possible, but only the following $6$ connections can be established: $\texttt{A} \leftrightarrow \texttt{U}$, $\texttt{U} \leftrightarrow \texttt{A}$, $\texttt{C} \leftrightarrow \texttt{G}$, $\texttt{G} \leftrightarrow \texttt{C}$, $\texttt{G} \leftrightarrow \texttt{U}$, $\texttt{U} \leftrightarrow \texttt{G}$.
 
-What remains is a combinatorial problem with exponential many candidate sets. The easy part -- search space generation -- is to develop a machinery that systematically enumerates all those sets. It must not forget a single set or report one set twice. Once the sets have been generated a more difficult question is how to score them and also the question which score is best. The pioneering algorithm of Nussinov \cite{NUS:PIE:GRI:KLE:1978} simply counts the number of connections for each set and maximizes over all sets. Biologically more close are algorithms like \mfold \cite{ZUK:STI:1981}. It assign free energy values to neighbored connections and minimizes over those energies. Minimizing, because ``good'', i.e. stabilizing, energies come with a negative sign. Here, the intuition is how much energy do I have to put in the molecule until it looses its (secondary-)structure.
+What remains is a combinatorial problem with exponential many candidate sets. The easy part -- search space generation -- is to develop a machinery that systematically enumerates all those sets. It must not forget a single set or report one set twice. Once the sets have been generated a more difficult question is how to score them and also the question which score is best. The pioneering algorithm of Nussinov \cite{NUS:PIE:GRI:KLE:1978} simply counts the number of connections for each set and maximizes over all sets. Biologically more close are algorithms like \mfold \cite{ZUK:STI:1981}. It assign free energy values to neighbored connections and minimizes over those energies. Minimizing, because ``good'', i.e. stabilizing, energies come with a negative sign. Here, the intuition is how much energy do I have to put in the molecule until it looses its (secondary-)structure?
 
 Dynamic programming intermingles search space generation, scoring and evaluation for the exponential number of different sets by applying Bellman's Principle of Optimality \cite{BEL:1957}, such that the best score can be determined within $O(n^3)$ time and $O(n^2)$ space. %With a further harmless assumption, two nested connections $i-j$ and $k-l$ with $i < k < l < j$ cannot have more than $30$ unconnected characters between them, i.e. $k-i < 30 \and j-l < 30$, runtime comes down to $O(n^3)$. 
 
-Unfortunately, even the energetically best set is often not the biologically active one. Reasons for that are manifold. The following list is far from beeing complete. 
+Unfortunately, even the energetically best set is often not the biologically active one. Reasons for that are manifold. The following list is far from being complete. 
 \begin{itemize}
 	\item{imprecise or insufficient energy measurements \cite{MAT:TUR:2006}}
 	\item{limitations regarding ion concentration, temperature or entropic effects}
@@ -50,15 +53,30 @@ Unfortunately, even the energetically best set is often not the biologically act
 Approaches to tackle this problem are versatile, because there is no single perfect method. Some of them are: 
 \begin{itemize}
 	\item{\rnasubopt from the Vienna Package \cite{LOR:BER:HOE:TAF:FLA:STA:HOF:2011} lists all sub-optimal sets up to a given energy threshold and hands the problem of selecting the ``right'' one back to the user.}
-	\item{\rnashapes \cite{GIE:VOSS:REH:2004} sifts \rnasubopt results to report only those with meaningfull differences, because majority of sub-optimal sets differ only slightly.}
-	\item{Synoptic approaches justify their decision of optimality not only on \emph{one} candidate, but on properties of the whole search space. Tools like \sfold \cite{CHA:LAW:DIN:2005} or the probabilistic mode of \rnashapes \cite{JAN:GIE:2010} seek for groups of similar candidates, which together dominate the search space although the energetically optimal candidate might not be member of this group.
+	\item{\rnashapes \cite{GIE:VOSS:REH:2004} sifts \rnasubopt results to report only those with meaningful differences, because majority of sub-optimal sets differ only slightly.}
+	\item{Synoptic approaches justify their decision of optimality not only on \emph{one} candidate, but on properties of the whole search space. Tools like \sfold \cite{CHA:LAW:DIN:2005} or the probabilistic mode of \rnashapes \cite{JAN:GIE:2010} seek for groups of similar candidates, which together dominate the search space, although the energetically optimal candidate might not be member of this group.
 	
 	Finding a suitable representative candidate for the dominating group leads back to the original problem, but with a very specifically restricted search space.}
-	\item{Maximum expected accuracy (MEA) is a further synoptic approach. It operates in two steps. First, McCaskill base-pair probabilities are computed, i.e. of all candidates from the search space, we select those containing the connection between characters $i$ and $j$. Their Boltzman weighted summed energy contribution is related to the combined Boltzman weight of the whole search space and thus gives the probabilty of having a connection between $i$ and $j$. With little modifications to the aforementioned algorithms, this can be done in $O(n^3)$ time for all possible $i-j$ connections at once. The second phase aims to find a secondary structure composed of as many high probability connections as possible.}
-	\item{In the lucky situation of having related sequences at hand, we can make use of observing conservation or compensatory mutation throughout evolution. Going comparative is an usual trick to increase reliability of predictions, but comes with computationally more expensive problems to solve. Simultanously aligning and folding $m$ sequences of length $n$ requires $O(n^{3m})$ time with the Sankoff algorithm \cite{SAN:1985}. Nevertheless, sacrifising the garantee to find the optimum and split the process into two sucessive tasks often yields more accurate results than single sequence predictions. Very popular is to team up \clustalx for aligning the sequences with \rnaalifold to fold the given alignment.}
+	\item{Maximum expected accuracy (MEA) is a further synoptic approach. It operates in two steps. First, McCaskill base-pair probabilities are computed, i.e. of all candidates from the search space, we select those containing the connection between characters $i$ and $j$. Their Boltzmann weighted summed energy contribution is related to the combined Boltzmann weight of the whole search space, called \emph{partition function}, and thus gives the probability of having a connection between $i$ and $j$. With little modifications to the aforementioned algorithms, this can be done in $O(n^3)$ time for all possible $i-j$ connections at once. The second phase aims to find a secondary structure composed of as many high probability connections as possible.}
+	\item{In the lucky situation of having related sequences at hand, we can make use of observing conservation or compensatory mutation throughout evolution. Going comparative is an usual trick to increase reliability of predictions, but comes with computationally more expensive problems to solve. Simultaneously aligning and folding $m$ sequences of length $n$ requires $O(n^{3m})$ time with the Sankoff algorithm \cite{SAN:1985}. Nevertheless, sacrificing the guarantee to find the optimum and split the process into two successive tasks often yields more accurate results than single sequence predictions. Very popular is to team up \clustalw \cite{THO:HIG:GIB:1994} for aligning the sequences and \rnaalifold \cite{BER:HOF:WIL:GRU:STA:2008} to fold the given alignment.}
 \end{itemize}
 
-
+\section{Motivation}
+	As stated in Section \ref{sec:introduction}, McCaskill base-pair probabilities are crutial for synoptic secondary structure prediction. They are also at the basis of some heuristic pseudoknot aware prediction programs, e.g. \dotknot \cite{SPE:DAT:WIS:2011}, which avoid the limitation to non-crossing connections. Furthermore, they allow for accessability studies, i.e. is a sequence motif accessable for binding with other molecules? This is central for riboswitches, where accessability, e.g. for ribosomal binding sites or Shine-Dalgarno sequences, is actively controlled by conformational changes of the secondary structure.
+	
+	Algebraic Dynamic Programming (ADP) \cite{GIE:MEY:STE:2004} and its implementation \bgap \cite{SAU:MOEH:JAN:GIE:2013} allows for rapid prototyping for sequential problems, due to its high level separation of concerns. The four ingredients of dynamic programming 1) \emph{regular tree grammars} for search space generation, 2) \emph{evaluation algebras} for scoring candidates, 3) \emph{choice functions} to select best candidates or to compute synoptic properties and 4) \emph{table design} for efficiency considerations are developed independently. Thus, single components can easily be replaced or even combined to tackle new challenges. Although, highly optimized code will surely outperform \bgap programs, development is significantly faster, easier to debug due to the absence of indices and hence definitely more fun.
+	
+	The key for efficient computation of base-pair probabilities for all possible connections is to generate every candidate twice. Once buttom-up, a.k.a. inside-out: candidates start with an arbitrary single infix character as leaves and grow up to their roots, which consume the left- and rightmost character from the sequence. The top-down phase creates the same candidates in reverse direction, i.e. outside-in. Probability of the pair $i-j$ is then the combination of the intermediate results of inside-out for sub-sequence $i$ to $j$ and outside-in for sequences $0$ to $i$ and $j$ to $n$, where $n$ is the rightmost character. Last, this value must be normalised by the partition function. See Figure \ref{fig:dpmatrices}. Both dynamic programming matrices for inside-out and outside-in are computed in $O(n^3)$ time and provide neccessary intermediate results for all possible base-pairs at once.
+	
+	\begin{figure}
+		\label{fig:dpmatrices}
+		\begin{center}
+			\includegraphics{Figures/test.pdf}
+			\caption{Efficient computation of base-pair probabilities: Probability of base-pair $i=5, j=11$ is the product of the entries from the dynamic programming matrices of inside-out and outside-in computation, hit by the black arrow, and devided by the partition function, which is given as the upper right cell of the inside-out matrix. Matrices are computed in $O(n^3)$ time, multiplication for all $n^3$ cells requires constant time.}
+		\end{center}
+	\end{figure}
+	
+	Unfortunately, ADP only supports inside-out computations by it's design. The work at hand shows how to tweak \bgap to enable outside-in computations, especially to add this analysis mode to the rapid prototyping ensemble for RNA problems, but also as a first example of a general pattern for ADP outside-in calculations.
 
 \bibliographystyle{plain}
 \bibliography{references}
