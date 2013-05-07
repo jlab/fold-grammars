@@ -21,7 +21,7 @@ use foldGrammars::RNAcast;
 use foldGrammars::IO;
 use POSIX 'isatty';
 
-our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_CONVERT);
+our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT);
 @References::ORDER = ('jan:schud:ste:gie:2011','the:ree:gie:2008','jan:gie:2010','voss:gie:reh:2006','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','ree:gie:2005','the:jan:gie:2010');
 
 my %PARAM;
@@ -38,7 +38,7 @@ $PARAM{kpenalty} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Sett
 $PARAM{allowlp} = {modes => \@ALLMODES, key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
 $PARAM{absolutedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_CAST], key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation)."};
 $PARAM{relativedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_CAST], key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation)."};
-$PARAM{shapelevel} = {modes => [$Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_CONVERT], key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see ".References::getNumber('jan:schud:ste:gie:2011')."] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
+$PARAM{shapelevel} = {modes => [$Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT], key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see ".References::getNumber('jan:schud:ste:gie:2011')."] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
 $PARAM{lowprobfilter} = {modes => [$Settings::MODE_PROBS], key => 'lowProbFilter', gapc => 'F', type => 'f', default => 0.000001, info => "This option sets a barrier for filtering out results with very low probabilities during calculation. The default value here is @(DEFAULT), which gives a significant speedup compared to a disabled filter. (See ".References::getNumber('voss:gie:reh:2006')."] for details.) Note that this filter can have a slight influence on the overall results. To disable this filter, use option --@(lowprobfilter) 0. \n<float> must be a positive floating point number smaller than 1."};
 $PARAM{lowprobfilteroutput} = {modes => [$Settings::MODE_PROBS], key => 'outputLowProbFilter', gapc => undef, type => 'f', default => 0.000001, info => "This option sets a filter for omitting low probability results during output. It is just for reporting convenience. Unlike probability cutoff filter, this option does not have any influence on runtime or probabilities beyond this value. To disable this filter, use option --@(lowprobfilteroutput) 0. \n<float> must be a positive floating point number smaller than 1."};
 $PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
@@ -76,7 +76,7 @@ if (@ARGV == 0) {
 			print "Second, I need your structure that should be evaluated:\n";
 			my $inputStructure = <STDIN>; chomp $inputStructure;
 			processInput({sequence => $inputSequence, header => "unnamed sequence", structure => $inputStructure}, $settings);
-		} elsif ($settings->{mode} eq $Settings::MODE_CONVERT) {
+		} elsif ($settings->{mode} eq $Settings::MODE_ABSTRACT) {
 			print "You are in \"".$settings->{mode}."\" mode. Please give me your Vienna-Dot-Bracket string, that shell be converted into a shape string:\n";
 			my $inputStructure = <STDIN>; chomp $inputStructure;
 			processInput($inputStructure, $settings);
@@ -136,7 +136,7 @@ sub processInput {
 	} elsif (ref($input) =~ m/GLOB/) {
 		#input is STDIN
 		if ($refHash_settings->{'mode'} eq $Settings::MODE_CAST) {
-			RNAcast::cast_doComputation(\*STDIN, $refHash_settings, \&buildCommand, \%PARAM, $Settings::MODE_SHAPES);
+			RNAcast::cast_doComputation(\*STDIN, $refHash_settings, \&buildCommand, \%PARAM, $Settings::MODE_SHAPES, $Settings::PROGINFOS{$PROGID}->{name});
 		} else {
 			Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $refHash_settings);
 		}
@@ -144,7 +144,7 @@ sub processInput {
 		#input is a filename
 		die "The file '$input' does not exist!\n" if (not -e $input);
 		if ($refHash_settings->{'mode'} eq $Settings::MODE_CAST) {
-			RNAcast::cast_doComputation($input, $refHash_settings, \&buildCommand, \%PARAM, $Settings::MODE_SHAPES);
+			RNAcast::cast_doComputation($input, $refHash_settings, \&buildCommand, \%PARAM, $Settings::MODE_SHAPES, $Settings::PROGINFOS{$PROGID}->{name});
 		} else {
 			Utils::applyFunctionToFastaFile($input, \&doComputation, $refHash_settings);
 		}
@@ -158,7 +158,7 @@ sub doComputation {
 		#since we are in EVAL mode, I guess that half the sequence is RNA, the other half should be a structure
 		$refHash_sequence->{structure} = substr($refHash_sequence->{sequence}, length($refHash_sequence->{sequence})/2);
 		$refHash_sequence->{sequence} = substr($refHash_sequence->{sequence}, 0, length($refHash_sequence->{sequence})/2);
-	} elsif ($settings->{mode} eq $Settings::MODE_CONVERT) {
+	} elsif ($settings->{mode} eq $Settings::MODE_ABSTRACT) {
 		#we have to convert a Vienna string into a shape class string. We use the eval binaries with a generic RNA input.
 		$refHash_sequence->{structure} = $refHash_sequence->{sequence};
 		my $dummySequence = "a" x length($refHash_sequence->{structure});
@@ -177,7 +177,7 @@ sub doComputation {
 	$seq =~ s/t/u/gi;
 	my $command = buildCommand($settings, $refHash_sequence);
 	my $structure = "";
-	if (($settings->{'mode'} eq $Settings::MODE_EVAL) || ($settings->{'mode'} eq $Settings::MODE_CONVERT)) {
+	if (($settings->{'mode'} eq $Settings::MODE_EVAL) || ($settings->{'mode'} eq $Settings::MODE_ABSTRACT)) {
 		die "You are in \"$Settings::MODE_EVAL\", but your input of RNA sequence and structure is of unequal length!\n" if (length($refHash_sequence->{sequence}) != length($refHash_sequence->{structure}));
 		$structure = "'".$refHash_sequence->{structure}."'";
 	}
@@ -198,7 +198,7 @@ sub buildCommand {
 	$cmd .= $settings->{'binarypath'};
 	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
 	$cmd .= $settings->{'binaryprefix'};
-	if ($settings->{'mode'} eq $Settings::MODE_CONVERT) {
+	if ($settings->{'mode'} eq $Settings::MODE_ABSTRACT) {
 		$cmd .= $Settings::MODE_EVAL;
 	} else {
 		$cmd .= $settings->{'mode'};
@@ -247,7 +247,7 @@ sub checkParameters {
 	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." and --".$PARAM{'relativedeviation'}->{key}." cannot be set at the same time!\n" if ((defined $settings->{'absolutedeviation'}) && ($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}));
 	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a positive integer number!\n" if ($settings->{'probdecimals'} < 0);
 	
-	$settings->{'strategy'} = 'D' if (($settings->{'mode'} eq $Settings::MODE_EVAL) || ($settings->{'mode'} eq $Settings::MODE_CONVERT)); #must be set to D, to allow for all pseudoknots that can be computed by pKiss.
+	$settings->{'strategy'} = 'D' if (($settings->{'mode'} eq $Settings::MODE_EVAL) || ($settings->{'mode'} eq $Settings::MODE_ABSTRACT)); #must be set to D, to allow for all pseudoknots that can be computed by pKiss.
 	
 }
 
@@ -276,7 +276,7 @@ EOF
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_PROBS."   : ", Utils::usage_convertInfoText("Structure probabilities are strictly correlated to their energy values. Grouped together into shape classes, their probabilities add up. Often a shape class with many members of worse energy becomes more probable than the shape containing the mfe structure but not much more members. See ".References::getNumber('voss:gie:reh:2006')."] for details on shape probabilities.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_CAST."    : ", Utils::usage_convertInfoText("This mode is the RNAcast approache, see ".References::getNumber('the:jan:gie:2010')."].\nFor a family of RNA sequences, this method independently enumerates the near-optimal abstract shape space, and predicts as the consensus an abstract shape common to all sequences. For each sequence, it delivers the thermodynamically best structure which has this common shape.\nInput is a multiple fasta file, which should contain at least two sequences.\nOutput is sorted by \"score\" of common shapes, i.e. summed free energy of all sequences. R is the rank (= list position) of the shape in individual sequence analysis.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_EVAL."    : ", Utils::usage_convertInfoText("Evaluates the free energy of an RNA molecule in fixed secondary structure, similar to RNAeval from the Vienna group. Multiple answers stem from semantic ambiguity of the underlying grammar.\nIt might happen, that your given structure is not a structure for the sequence. Maybe your settings are too restrictive, e.g. not allowing lonely base-pairs (--@(allowlp)), too long hairpin stems for pseudoknots (--@(minhairpinlength)) or the given pseudoknot is more complex than those of ".$Settings::PROGINFOS{$PROGID}->{name}.".\nIf you input a (multiple) FASTA file, ".$Settings::PROGINFOS{$PROGID}->{name}." assumes that exactly first half of the contents of each entry is RNA sequence, second half is the according structure. Whitespaces are ignored.", \%PARAM))."\n";
-	$HELP .= Utils::printIdent("  ".$Settings::MODE_CONVERT." : ", Utils::usage_convertInfoText("Converts a Vienna-Dot-Bracket representation of a secondary structure into a shape string.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_ABSTRACT." : ", Utils::usage_convertInfoText("Converts a Vienna-Dot-Bracket representation of a secondary structure into a shape string.", \%PARAM))."\n";
 
 	my @paramGroups = ();
 	push @paramGroups, {name => "GENERAL OPTIONS", elements => ['mode', 'absolutedeviation', 'relativedeviation', 'shapelevel', 'lowprobfilter', 'lowprobfilteroutput', 'windowsize', 'windowincrement']};

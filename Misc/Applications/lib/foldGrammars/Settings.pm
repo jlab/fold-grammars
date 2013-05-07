@@ -8,7 +8,7 @@ package Settings;
 our %PROGINFOS = (
 	'rnashapes', 				{date => '07.05.2013', version => '3.1.0', name => 'RNAshapes', packageDir => 'RNAshapes/'},
 	'rnaalishapes', 		{date => '07.05.2013', version => '2.3.0', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
-	'pkiss', 						{date => '14.04.2013', version => '2.2.0', name => 'pKiss', packageDir => 'pKiss/'},
+	'pkiss', 						{date => '07.05.2013', version => '2.2.1', name => 'pKiss', packageDir => 'pKiss/'},
 	'libfoldgrammars', 	{date => '07.05.2013', version => '1.0.8', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
 	'rapidshapes', 			{date => '06.03.2013', version => '2.0.0', name => 'RapidShapes'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
