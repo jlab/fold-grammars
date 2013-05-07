@@ -1,3 +1,38 @@
+rnaalishapes (2.3.0-0ubuntu1~raring1) raring; urgency=low
+
+  * added individual structure probability computation at user request
+    via parameter structureProbs.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 07 May 2013 23:54:50 +0200
+
+rnaalishapes (2.3.0-0ubuntu1~quantal1) quantal; urgency=low
+
+  * added individual structure probability computation at user request
+    via parameter structureProbs.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 07 May 2013 23:54:43 +0200
+
+rnaalishapes (2.3.0-0ubuntu1~precise1) precise; urgency=low
+
+  * added individual structure probability computation at user request
+    via parameter structureProbs.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 07 May 2013 23:54:35 +0200
+
+rnaalishapes (2.3.0-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * added individual structure probability computation at user request
+    via parameter structureProbs.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 07 May 2013 23:54:28 +0200
+
+rnaalishapes (2.3.0-0ubuntu1~lucid1) lucid; urgency=low
+
+  * added individual structure probability computation at user request
+    via parameter structureProbs.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 07 May 2013 23:49:01 +0200
+
 rnaalishapes (2.2.2-0ubuntu1~quantal1) quantal; urgency=low
 
   * Dangling corrections in outside algorithm for RNAshapes and
