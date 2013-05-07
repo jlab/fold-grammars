@@ -2581,100 +2581,100 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -26.59  ..(((((....))))).....(((((((((.....))))))))).  [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=nodangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=nodangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=overdangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=overdangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=microstate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=microstate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=macrostate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=macrostate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=nodangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=nodangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=overdangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=overdangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=microstate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=microstate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=nodangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=nodangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=overdangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=overdangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=microstate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=microstate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=macrostate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=macrostate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=nodangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=nodangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=overdangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=overdangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=microstate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=microstate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=nodangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=nodangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=overdangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=overdangle '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=microstate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=microstate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=nodangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=nodangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=overdangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=overdangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=microstate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=microstate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=macrostate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=macrostate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=nodangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=nodangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=overdangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=overdangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=microstate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=microstate '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=0 --grammar=macrostate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=0 --grammar=macrostate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=nodangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=nodangle '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=overdangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=overdangle '.((.((.((((....)))).)))).....((((........)))).....' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=microstate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=microstate '..(((((....))))).....(((((((((.....))))))))).' --shapeLevel=5
 [][]
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=convert --allowLP=1 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=abstract --allowLP=1 --grammar=macrostate '.((((((((((((................))))))))))))........(((((((...)))))))...' --shapeLevel=5
 [][]
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=0 --grammar=nodangle --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --dotplot=dotPlot.ps --bppmThreshold=1e-05
@@ -2880,25 +2880,44 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 30 36 0.987654 ubox
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=overdangle --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --dotplot=dotPlot.ps --bppmThreshold=0.01
-1 50 0.983086 ubox
-2 49 0.990762 ubox
-3 48 0.992512 ubox
-4 47 0.992451 ubox
-5 26 0.307513 ubox
-5 46 0.948104 ubox
-6 25 0.931399 ubox
-7 24 0.993122 ubox
-8 23 0.993194 ubox
-9 22 0.9932 ubox
-10 21 0.993196 ubox
-11 20 0.993195 ubox
-12 19 0.992737 ubox
-30 45 0.985178 ubox
-31 44 0.989525 ubox
-32 43 0.989532 ubox
-33 42 0.989507 ubox
-34 40 0.411776 ubox
-35 39 0.411144 ubox
+1 25 0.102522 ubox
+1 32 0.112869 ubox
+1 33 0.104947 ubox
+1 50 0.959016 ubox
+2 24 0.106385 ubox
+2 31 0.113487 ubox
+2 32 0.104815 ubox
+2 49 0.978661 ubox
+3 23 0.106389 ubox
+3 30 0.113667 ubox
+3 31 0.104601 ubox
+3 48 0.981514 ubox
+4 29 0.144274 ubox
+4 47 0.981459 ubox
+5 26 0.327034 ubox
+5 46 0.937603 ubox
+6 21 0.114007 ubox
+6 25 0.929319 ubox
+7 24 0.989859 ubox
+8 19 0.114271 ubox
+8 23 0.989931 ubox
+9 18 0.114272 ubox
+9 22 0.989936 ubox
+10 17 0.114273 ubox
+10 21 0.989932 ubox
+11 16 0.114259 ubox
+11 20 0.989931 ubox
+12 19 0.989474 ubox
+30 45 0.978986 ubox
+31 44 0.98338 ubox
+32 43 0.983393 ubox
+33 42 0.983368 ubox
+34 40 0.409235 ubox
+34 49 0.130758 ubox
+35 39 0.408608 ubox
+35 48 0.154271 ubox
+36 47 0.154263 ubox
+37 46 0.153712 ubox
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=microstate --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --dotplot=dotPlot.ps --bppmThreshold=0.1
 1 32 0.527504 ubox
