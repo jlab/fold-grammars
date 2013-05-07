@@ -27,7 +27,7 @@ my $firstSequenceReady = 'false';
 use Data::Dumper;
 
 sub parse {
-	my ($result, $input, $program, $settings, $inputIndex) = @_;
+	my ($result, $input, $program, $settings, $inputIndex, $refHash_givenPFall) = @_;
 
 	my $windowStartPos = 0;
 	my $windowEndPos = undef;
@@ -43,10 +43,13 @@ sub parse {
 		
 	my %predictions = ();
 	my %sumPfunc = ();
+	my %pfAll = ();
+	%pfAll = %{$refHash_givenPFall} if (defined $refHash_givenPFall);	
 	my %samples = ();
 	my $samplePos = 0;
+	my $pfall = undef;
 	foreach my $line (split(m/\r?\n/, $result)) {
-		my ($energy, $part_energy, $part_covar, $structure, $shape, $pfunc, $blockPos) = (undef, undef, undef, undef, undef, undef, undef);
+		my ($energy, $part_energy, $part_covar, $structure, $shape, $pfunc, $blockPos, $structureProb) = (undef, undef, undef, undef, undef, undef, undef, undef, undef);
 		my ($windowPos, $score) = (undef, undef); #helper variables for combined information
 
 	#parsing window position information
@@ -58,21 +61,26 @@ sub parse {
 
 	#parsing result lines	
 		} elsif ($program eq $PROG_RNAALISHAPES) {
-			if ((($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT)) && ($line =~ m/^\( \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) , \( (.+?) , (.+?) \) \)$/)) {
-				($energy, $part_energy, $part_covar, $structure, $shape) = ($1/100,$2/100,$3/100,$4,$5);
-			} elsif (($settings->{mode} eq $Settings::MODE_SHAPES) && ($line =~ m/\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \)$/)) {
-				($shape, $energy, $part_energy, $part_covar, $structure) = ($1,$2/100,$3/100,$4/100,$5);
-			} elsif (($settings->{mode} eq $Settings::MODE_PROBS) && ($line =~ m/\( \( (.+?) , \( \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) , (.+?) \) \) , (.+?) \)$/)) {
-				#( ( [[][]] , ( ( -2756 = energy: -1845 + covar.: -911 ) , 3.95247e+09 ) ) , (((((((......................(((((.......))))).....(((((.......)))))))))))). )
-				($shape, $energy, $part_energy, $part_covar, $pfunc, $structure) = ($1,$2/100,$3/100,$4/100,$5, $6);
-			} elsif (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($line =~ m/\( (.+?) , \( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \) \)$/)) {
-				#( 4.15509e+11 , ( ( [[][][]] , ( -3037 = energy: -2019 + covar.: -1018 ) ) , (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))). ) )
-				($pfunc, $shape, $energy, $part_energy, $part_covar, $structure) = ($1,$2,$3/100,$4/100,$5/100, $6);
-			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_CONVERT)) && ($line =~ m/^\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \)$/)) {
+			if ((($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT)) && ($line =~ m/^\( \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) , \( \( (.+?) , (.+?) \) , (.+?) \) \)$/)) {
+				#( ( -2543 = energy: -1525 + covar.: -1018 ) , ( ( (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))). , [[][][]] ) , 1.12055e+08 ) )
+				($energy, $part_energy, $part_covar, $structure, $shape, $structureProb) = ($1/100,$2/100,$3/100,$4,$5,$6);
+			} elsif (($settings->{mode} eq $Settings::MODE_SHAPES) && ($line =~ m/\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , \( (.+?) , (.+?) \) \)$/)) {
+				#( ( [[][][]] , ( -2543 = energy: -1525 + covar.: -1018 ) ) , ( (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))). , 1.12055e+08 ) )
+				($shape, $energy, $part_energy, $part_covar, $structure, $structureProb) = ($1,$2/100,$3/100,$4/100,$5,$6);
+			} elsif (($settings->{mode} eq $Settings::MODE_PROBS) && ($line =~ m/\( \( (.+?) , \( \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) , (.+?) \) \) , \( (.+?) , (.+?) \) \)$/)) {
+				#( ( [[][]] , ( ( -2391 = energy: -1480 + covar.: -911 ) , 1.03998e+07 ) ) , ( (((((((......................(((((.......))))).....(((((.......)))))))))))). , 9.51382e+06 ) )
+				($shape, $energy, $part_energy, $part_covar, $pfunc, $structure, $structureProb) = ($1,$2/100,$3/100,$4/100,$5, $6, $7);
+			} elsif (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($line =~ m/\( (.+?) , \( \( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \) , (.+?) \) \)$/)) {
+				#( 1.46391e+08 , ( ( ( [[][][]] , ( -2543 = energy: -1525 + covar.: -1018 ) ) , (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))). ) , 1.12055e+08 ) )
+				($pfunc, $shape, $energy, $part_energy, $part_covar, $structure, $structureProb) = ($1,$2,$3/100,$4/100,$5/100, $6, $7);
+			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_ABSTRACT)) && ($line =~ m/^\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \)$/)) {
 				#( ( .((((((..(((.............))).(((((.......))))).....(((((.......))))))))))).. , ( -2776 = energy: -1825 + covar.: -951 ) ) , [[][][]] )
 				($structure, $energy, $part_energy, $part_covar, $shape) = ($1,$2/100,$3/100,$4/100,$5);
 			} elsif ($settings->{mode} eq $Settings::MODE_OUTSIDE) {
 				#do nothing with the output, since interesting data are within the PostScript file
+			} elsif ($settings->{mode} eq $Settings::MODE_PFALL && ($line =~ m/^(.+?)$/)) {
+				($pfunc) = ($1);
+				$windowPos = $windowStartPos.$DATASEPARATOR.$windowEndPos;
 			}
 			if (defined $energy || defined $part_energy || defined $part_covar || defined $structure || defined $shape) {
 				$fieldLengths{energy} = length(formatEnergy($energy)) if (length(formatEnergy($energy)) > $fieldLengths{energy});
@@ -82,21 +90,28 @@ sub parse {
 				$score = $energy.$DATASEPARATOR.$part_energy.$DATASEPARATOR.$part_covar.$DATASEPARATOR;
 			}
 		} elsif ($program eq $PROG_RNASHAPES) {
-			if ((($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT)) && ($line =~ m/^\( (.+?) , \( (.+?) , (.+?) \) \)$/)) {
-				($energy, $structure, $shape) = ($1/100,$2,$3);
-			} elsif (($settings->{mode} eq $Settings::MODE_SHAPES) && ($line =~ m/^\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
-				($shape, $energy, $structure) = ($1,$2/100,$3);
-			} elsif (($settings->{mode} eq $Settings::MODE_PROBS) && ($line =~ m/\( \( (.+?) , \( (.+?) , (.+?) \) \) , (.+?) \)$/)) {
-				#( ( [[][]] , ( 380 , 1.33405e-07 ) ) , ..(((.((....)).((.....))...))).... )
-				($shape, $energy, $pfunc, $structure) = ($1,$2/100,$3, $4);
-			} elsif (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($line =~ m/\( (.+?) , \( \( (.+?) , (.+?) \) , (.+?) \) \)$/)) {
-				#( 0.123498 , ( ( _[[_[]_]_] , -320 ) , ......(((((((.(((.....))).))))).)) ) )
-				($pfunc, $shape, $energy, $structure) = ($1,$2,$3/100, $4);
-			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_CONVERT)) && ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
+			if ((($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT)) && ($line =~ m/^\( (.+?) , \( \( (.+?) , (.+?) \) , (.+?) \) \)$/)) {
+				#( -30 , ( ( ...((((((...))).))) , [] ) , 0.00554499 ) )
+				($energy, $structure, $shape, $structureProb) = ($1/100,$2,$3,$4);
+			} elsif (($settings->{mode} eq $Settings::MODE_SHAPES) && ($line =~ m/^\( \( (.+?) , (.+?) \) , \( (.+?) , (.+?) \) \)$/)) {
+				#( ( [] , -130 ) , ( ........((((((........)))))) , 0.00190434 ) )
+				($shape, $energy, $structure, $structureProb) = ($1,$2/100,$3,$4);
+			} elsif (($settings->{mode} eq $Settings::MODE_PROBS) && ($line =~ m/\( \( (.+?) , \( (.+?) , (.+?) \) \) , \( (.+?) , (.+?) \) \)$/)) {
+				#( ( _ , ( 0 , 0.00340804 ) ) , ( ................... , 0.00340804 ) )
+				($shape, $energy, $pfunc, $structure, $structureProb) = ($1,$2/100,$3, $4, $5);
+			} elsif (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($line =~ m/\( (.+?) , \( \( \( (.+?) , (.+?) \) , (.+?) \) , (.+?) \) \)$/)) {
+				#( 0.0139967 , ( ( ( _ , 0 ) , ................... ) , 0.00340804 ) )
+				($pfunc, $shape, $energy, $structure, $structureProb) = ($1,$2,$3/100, $4, $5);
+			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_ABSTRACT)) && ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
 				#( ( ....(((.(((((.(((.....))).)))))))) , -440 ) , [] )
 				($structure, $energy, $shape) = ($1,$2/100,$3);
 			} elsif ($settings->{mode} eq $Settings::MODE_OUTSIDE) {
 				#do nothing with the output, since interesting data are within the PostScript file
+			} elsif ($settings->{mode} eq $Settings::MODE_PFALL && ($line =~ m/^(.+?)$/)) {
+				($pfunc) = ($1);
+				$windowPos = $windowStartPos.$DATASEPARATOR.$windowEndPos;
+			} else {
+				die "Parsing error: $line";
 			}
 			if (defined $energy || defined $structure || defined $shape) {
 				$fieldLengths{energy} = length(formatEnergy($energy)) if (length(formatEnergy($energy)) > $fieldLengths{energy});
@@ -111,7 +126,7 @@ sub parse {
 			} elsif (($settings->{mode} eq $Settings::MODE_PROBS) && ($line =~ m/\( \( (.+?) , \( (.+?) , (.+?) \) \) , (.+?) \)$/)) {
 				#( ( (()()) , ( 380 , 1.33405e-07 ) ) , ..(((.((....)).((.....))...))).... )
 				($shape, $energy, $pfunc, $structure) = ($1,$2/100,$3, $4);
-			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_CONVERT)) && ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
+			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_ABSTRACT)) && ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
 				#( ( (((...))) , 900 ) , () )
 				($structure, $energy, $shape) = ($1,$2/100,$3);
 			} elsif (($settings->{mode} eq $Settings::MODE_ENFORCE) && ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)$/)) {
@@ -134,18 +149,20 @@ sub parse {
 		
 		if (defined $windowPos || defined $score || defined $structure || defined $shape || defined $pfunc) {
 			if ($settings->{mode} eq $Settings::MODE_SAMPLE) {
-				push @{$samples{$windowPos}->{$shape}}, {structure => $structure, score => $score, position => $samplePos++, shape => $shape};
+				push @{$samples{$windowPos}->{$shape}}, {structure => $structure, score => $score, position => $samplePos++, shape => $shape, structureProb => $structureProb};
 			} elsif ($settings->{mode} eq $Settings::MODE_EVAL) {
 				push @{$predictions{$windowPos}->{dummyblock}->{$structure}}, {score => $score, shape => $shape};
 			} elsif ($settings->{mode} eq $Settings::MODE_LOCAL) {
 				$predictions{$windowPos}->{$blockPos}->{$structure}->{score} = $score if ((not exists $predictions{$windowPos}->{$blockPos}->{$structure}->{score}) || ($score < $predictions{$windowPos}->{$blockPos}->{$structure}->{score}));
-			} elsif ($settings->{mode} eq $Settings::MODE_CONVERT) {
+			} elsif ($settings->{mode} eq $Settings::MODE_ABSTRACT) {
 				$predictions{shape} = $shape;
+			} elsif ($settings->{mode} eq $Settings::MODE_PFALL) {
+				$pfAll{$windowPos} = $pfunc if (defined $pfunc);
 			} else {
 				if (not exists $predictions{$windowPos}->{dummyblock}->{$structure}) {
-					$predictions{$windowPos}->{dummyblock}->{$structure} = {score => $score, shape => $shape, pfunc => $pfunc};
+					$predictions{$windowPos}->{dummyblock}->{$structure} = {score => $score, shape => $shape, pfunc => $pfunc, structureProb => $structureProb};
 				} else {
-					$predictions{$windowPos}->{dummyblock}->{$structure} = {score => $score, shape => $shape, pfunc => $pfunc} if (splitFields($score)->[0] < splitFields($predictions{$windowPos}->{dummyblock}->{$structure}->{score})->[0]);
+					$predictions{$windowPos}->{dummyblock}->{$structure} = {score => $score, shape => $shape, pfunc => $pfunc, structureProb => $structureProb} if (splitFields($score)->[0] < splitFields($predictions{$windowPos}->{dummyblock}->{$structure}->{score})->[0]);
 				}
 				$sumPfunc{$windowPos} += $pfunc if (defined $pfunc);
 			}
@@ -158,12 +175,12 @@ sub parse {
 			foreach my $shape (keys(%{$samples{$windowPos}})) {
 				my @scoreSortedSamples = sort {splitFields($a->{score})->[0] <=> splitFields($b->{score})->[0]} @{$samples{$windowPos}->{$shape}};
 				my $shrep = $scoreSortedSamples[0];
-				$predictions{$windowPos}->{dummyblock}->{$shrep->{structure}} = {score => $shrep->{score}, samples => scalar(@{$samples{$windowPos}->{$shape}}), shape => $shape};
+				$predictions{$windowPos}->{dummyblock}->{$shrep->{structure}} = {score => $shrep->{score}, samples => scalar(@{$samples{$windowPos}->{$shape}}), shape => $shape, structureProb => $shrep->{structureProb}};
 			}
 		}
 	}
 	
-	if (($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_CONVERT)) {
+	if (($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_ABSTRACT)) {
 		if ($result =~ m/^Answer:\s+\[\]\s*$/) {
 			print STDERR "Your structure is not in the folding space of ";
 			if ($settings->{mode} eq $Settings::MODE_EVAL) {
@@ -187,11 +204,12 @@ sub parse {
 		}
 	}
 	
-	output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex);
+	return \%pfAll if ($settings->{mode} eq $Settings::MODE_PFALL);
+	output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll);
 }
 
 sub output {
-	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex) = @_;
+	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex, $refHash_pfall) = @_;
 
 	if ($firstSequenceReady eq 'false') {
 		$firstSequenceReady = 'true';
@@ -207,7 +225,7 @@ sub output {
 	
 	my $ENFORCE_NOTAVAIL = "no structure available";
 	
-	if ($settings->{mode} eq $Settings::MODE_CONVERT) {
+	if ($settings->{mode} eq $Settings::MODE_ABSTRACT) {
 		if (not exists $predictions->{shape}) {
 			print "Your structure '".$input->{structure}.'" is not a member of the folding space of '.$settings->{grammar}."'.\n";
 			exit 1;
@@ -248,6 +266,11 @@ sub output {
 			my $avgSglMfe = getAvgSingleMFEs($input, $settings, $startPos, $endPos) if ($settings->{'sci'});
 			
 			#WINDOW INFO LINE
+				if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
+					print " " x ($settings->{probdecimals}+2);
+					print $SEPARATOR;
+				}
+				
 				print sprintf("% ${lengthScoreField}i", $startPos+1);
 				print $SEPARATOR;
 				
@@ -270,6 +293,10 @@ sub output {
 					foreach my $refHash_sample (sort {$a->{position} <=> $b->{position}} @allSamples) {
 						print sprintf($scoreFormat, @{splitFields($refHash_sample->{score})});
 						print $SEPARATOR;
+						if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
+							print sprintf("%1.$settings->{'probdecimals'}f", $refHash_sample->{structureProb}/$refHash_pfall->{$windowPos});
+							print $SEPARATOR;
+						}
 						print $refHash_sample->{structure};
 						if ((exists $settings->{'sci'}) && ($settings->{'sci'})) {
 							print $SEPARATOR;
@@ -319,6 +346,14 @@ sub output {
 						my $energyResult = sprintf($scoreFormat, $energy, $part_energy, $part_covar);
 						$energyResult = (" " x $lengthScoreField) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
 						print $energyResult;
+						
+					#structure probability if switched on
+						if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
+							print $SEPARATOR;
+							my $probability = 0;
+							$probability = $result->{structureProb}/$refHash_pfall->{$windowPos};
+							print sprintf("%1.$settings->{'probdecimals'}f", $probability);
+						}
 					
 					#dot bracket structure
 						print $SEPARATOR;

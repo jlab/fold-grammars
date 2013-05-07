@@ -16,9 +16,9 @@ my $program = "/home/sjanssen/Desktop/fold-grammars/Misc/Applications/RNAalishap
 my $VALUE_SELECTION_ALL = 'all';
 my $VALUE_SELECTION_RANDOM = 'random';
 
-our @RNAalishapes_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_CONVERT, $Settings::MODE_OUTSIDE);
-our @RNAshapes_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_CONVERT, $Settings::MODE_OUTSIDE);
-our @pKiss_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_CONVERT);
+our @RNAalishapes_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_OUTSIDE);
+our @RNAshapes_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_OUTSIDE);
+our @pKiss_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT);
 
 our $RNAalishapes = {
 	' ' => {	values => [$inputFileDir.'t-box.aln',$inputFileDir.'tRNA_example_ungap.aln',$inputFileDir.'trp_attenuator.aln'], 
@@ -34,7 +34,7 @@ our $RNAalishapes = {
 	'sci' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], values => [0,1], valueSelection => $VALUE_SELECTION_RANDOM},
 	'consensus' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => ['consensus','mis'], valueSelection => $VALUE_SELECTION_RANDOM},
 	'param' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [$energyParameterDir.'rna_turner1999.par',$energyParameterDir.'rna_turner2004.par'], valueSelection => $VALUE_SELECTION_RANDOM},
-	'shapeLevel' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_CONVERT], values => [1,2,3,4,5], valueSelection => $VALUE_SELECTION_RANDOM},
+	'shapeLevel' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT], values => [1,2,3,4,5], valueSelection => $VALUE_SELECTION_RANDOM},
 	'showSamples' => {modes => [$Settings::MODE_SAMPLE], values => [0,1], valueSelection => $VALUE_SELECTION_RANDOM},
 	'windowIncrement' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], values => [10, 20, 30], valueSelection => $VALUE_SELECTION_RANDOM},
 	'temperature' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [17, 25.9, 37], valueSelection => $VALUE_SELECTION_RANDOM},
@@ -49,6 +49,7 @@ our $RNAalishapes = {
 	'nfactor' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [1.1, 1.0, 0.9], valueSelection => $VALUE_SELECTION_RANDOM},
 	'bppmThreshold' => {modes => [$Settings::MODE_OUTSIDE], values => [0.1, 0.01, 0.001, 0.00001], valueSelection => $VALUE_SELECTION_RANDOM},
 	'dotplot' => {modes => [$Settings::MODE_OUTSIDE], values => ['dotPlot.ps'], valueSelection => $VALUE_SELECTION_RANDOM},
+	'structureProbs' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], values => [0,1], valueSelection => $VALUE_SELECTION_RANDOM},
 };
 
 our $pKiss = {
@@ -60,7 +61,7 @@ our $pKiss = {
 	'mode' => {modes => \@pKiss_ALLMODES, values => \@pKiss_ALLMODES, valueSelection => $VALUE_SELECTION_ALL},
 	#~ 'mode' => {modes => \@pKiss_ALLMODES, values => [$Settings::MODE_CAST], valueSelection => $VALUE_SELECTION_ALL},
 	'strategy' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST], values => ['A','B','C','D','P'], valueSelection => $VALUE_SELECTION_RANDOM},
-	'minHairpinLength' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_CONVERT], values => [2, 4, 6], valueSelection => $VALUE_SELECTION_RANDOM},
+	'minHairpinLength' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_ABSTRACT], values => [2, 4, 6], valueSelection => $VALUE_SELECTION_RANDOM},
 	'maxKnotSize' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST], values => [undef, 40], valueSelection => $VALUE_SELECTION_RANDOM},
 	'Hpenalty' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL], values => [-9, -12, -15], valueSelection => $VALUE_SELECTION_RANDOM},
 	'Kpenalty' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL], values => [-12, -15, -20], valueSelection => $VALUE_SELECTION_RANDOM},
@@ -91,7 +92,7 @@ our $RNAshapes = {
 	'allowLP' => {modes => \@RNAshapes_ALLMODES, values => [0,1], valueSelection => $VALUE_SELECTION_ALL},
 	'absoluteDeviation' => {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES], values => [undef, undef, undef, 1,2,5], valueSelection => $VALUE_SELECTION_RANDOM},
 	'relativeDeviation' => {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES], values => [undef, undef, undef, 1,3,7], valueSelection => $VALUE_SELECTION_RANDOM},
-	'shapeLevel' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_CONVERT], values => [1,2,3,4,5], valueSelection => $VALUE_SELECTION_RANDOM},
+	'shapeLevel' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT], values => [1,2,3,4,5], valueSelection => $VALUE_SELECTION_RANDOM},
 	'lowProbFilter' => {modes => [$Settings::MODE_PROBS], values => [0.000001, 0.0001, 0.01], valueSelection => $VALUE_SELECTION_RANDOM},
 	'outputLowProbFilter' => {modes => [$Settings::MODE_PROBS, $Settings::MODE_SAMPLE], values => [0, 0.0001, 0.1], valueSelection => $VALUE_SELECTION_RANDOM},
 	'probDecimals' => {modes => [$Settings::MODE_PROBS, $Settings::MODE_SAMPLE], values => [2, 7], valueSelection => $VALUE_SELECTION_RANDOM},
@@ -100,6 +101,7 @@ our $RNAshapes = {
 	'grammar' => {modes => \@RNAshapes_ALLMODES, values => ['nodangle','overdangle','microstate','macrostate'], valueSelection => $VALUE_SELECTION_ALL},
 	'bppmThreshold' => {modes => [$Settings::MODE_OUTSIDE], values => [0.1, 0.01, 0.001, 0.00001], valueSelection => $VALUE_SELECTION_RANDOM},
 	'dotplot' => {modes => [$Settings::MODE_OUTSIDE], values => ['dotPlot.ps'], valueSelection => $VALUE_SELECTION_RANDOM},
+	'structureProbs' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST], values => [0,1], valueSelection => $VALUE_SELECTION_RANDOM},
 };
 
 #~ foreach my $call (@{addRandomParameters($RNAalishapes, permutate($RNAalishapes, [{call => ""}]))}) {
@@ -153,7 +155,7 @@ sub addRandomParameters {
 					@values = (5) if ($parameter eq 'shapeLevel');
 				}
 				
-				@values = (2) if ($parameter eq 'minHairpinLength' && $refHash_call->{mode} eq $Settings::MODE_CONVERT);
+				@values = (2) if ($parameter eq 'minHairpinLength' && $refHash_call->{mode} eq $Settings::MODE_ABSTRACT);
 				
 				$refHash_call->{call} =~ s/--allowLP=1// if ($refHash_call->{mode} eq $Settings::MODE_CAST);
 				
@@ -164,7 +166,7 @@ sub addRandomParameters {
 						if ($refHash_call->{mode} eq $Settings::MODE_CAST) {
 							$refHash_call->{call} .= " castInput.mfa";
 						} else {
-							if ($refHash_call->{mode} eq $Settings::MODE_CONVERT) {
+							if ($refHash_call->{mode} eq $Settings::MODE_ABSTRACT) {
 								$refHash_call->{call} .= " ".$refHash_parameter->{$parameter}->{secondValues}->[$randomIndex];
 							} else {
 								$refHash_call->{call} .= " ".$value;

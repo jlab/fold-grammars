@@ -11,12 +11,10 @@ MAKE=make
 PERL=perl
 BASEDIR=../../../
 
-targets=mfe subopt shapes probs sample eval outside
-targets_window=mfe subopt shapes probs sample
+targets=mfe subopt shapes probs sample eval outside pfall
+targets_window=mfe subopt shapes probs sample pfall
 grammars=nodangle overdangle microstate macrostate
 #~ nodangle overdangle microstate macrostate
-consensus=consensus mis
-#~ consensus mis
 window=
 outname=out
 isEval=0
@@ -66,7 +64,7 @@ mfe:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_mfe$${suffix} * (alg_dotBracket * alg_shapeX)" $(BASEDIR)$${grammar}.gap --kbacktrace --no-coopt $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "alg_mfe$${suffix} * (alg_dotBracket * alg_shapeX * alg_pfunc$${suffix})" $(BASEDIR)$${grammar}.gap --kbacktrace --no-coopt $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="$@_$${grammar}"; \
 		fi; \
 	done
@@ -77,7 +75,7 @@ subopt:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_mfe_subopt$${suffix} * (alg_dotBracket * alg_shapeX)" $(BASEDIR)$${grammar}.gap --kbacktrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "alg_mfe_subopt$${suffix} * (alg_dotBracket * alg_shapeX * alg_pfunc$${suffix})" $(BASEDIR)$${grammar}.gap --kbacktrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="subopt_$${grammar}"; \
 		fi; \
 	done
@@ -88,7 +86,7 @@ shapes:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "((alg_shapeX * alg_mfe$${suffix}) * alg_dotBracket) suchthat suboptShapeClasses" $(BASEDIR)$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "((alg_shapeX * alg_mfe$${suffix}) * (alg_dotBracket * alg_pfunc$${suffix})) suchthat suboptShapeClasses" $(BASEDIR)$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="shapes_$${grammar}"; \
 		fi; \
 	done
@@ -99,7 +97,7 @@ probs:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "((alg_shapeX * (alg_mfe$${suffix} % alg_pfunc$${suffix})) suchthat filterLowProbShapes) * alg_dotBracket" $(BASEDIR)$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "((alg_shapeX * (alg_mfe$${suffix} % alg_pfunc$${suffix})) suchthat filterLowProbShapes) * (alg_dotBracket * alg_pfunc$${suffix})" $(BASEDIR)$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="probs_$${grammar}"; \
 		fi; \
 	done
@@ -110,7 +108,7 @@ sample:
 		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "(((alg_pfunc$${suffix} | alg_pfunc_id$${suffix}) * (alg_shapeX * alg_mfe$${suffix} * alg_dotBracket)) suchthat sample_filter)" $(BASEDIR)$${grammar}.gap --sample $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(GAPC) -I $(BASEDIR) -p "(((alg_pfunc$${suffix} | alg_pfunc_id$${suffix}) * (alg_shapeX * alg_mfe$${suffix} * alg_dotBracket * alg_pfunc$${suffix})) suchthat sample_filter)" $(BASEDIR)$${grammar}.gap --sample $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="sample_$${grammar}"; \
 		fi; \
 	done
@@ -138,6 +136,17 @@ outside:
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
 			$(GAPC) -I $(BASEDIR) -p "alg_outside_pfunc$${suffix}" $(BASEDIR)outside_$${grammar}.gap $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="outside_$${grammar}"; \
+		fi; \
+	done
+	
+pfall:
+	for grammar in `echo "$(grammars)"`; do \
+		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
+		suffix=`echo "$${sOv}$${sMa}"`; \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
+			$(GAPC) -I $(BASEDIR) -p "alg_pfunc$${suffix}" $(BASEDIR)$${grammar}.gap $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="pfall_$${grammar}"; \
 		fi; \
 	done
 

@@ -483,7 +483,7 @@ sub checkBinaryPresents {
 		$binStart .= "./";
 	}
 	$binName = $binStart.$refHash_settings->{'binaryprefix'};
-	if ($refHash_settings->{'mode'} eq $Settings::MODE_CONVERT) {
+	if ($refHash_settings->{'mode'} eq $Settings::MODE_ABSTRACT) {
 		$binName .= $Settings::MODE_EVAL;
 	} else {
 		$binName .= $refHash_settings->{'mode'};

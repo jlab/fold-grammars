@@ -2,22 +2,23 @@
 
 use strict;
 use warnings;
-use Data::Dumper;
 use foldGrammars::Utils;
 use foldGrammars::Settings;
+use foldGrammars::IO;
 
 package RNAcast;
 
+use Data::Dumper;
 
 sub cast_doComputation {
-	my ($input, $settings, $refSub_buildCommand, $refHash_param, $MODE_SHAPES) = @_;
+	my ($input, $settings, $refSub_buildCommand, $refHash_param, $MODE_SHAPES, $program) = @_;
 	
 	#determine common shapes
 		my %commonShapes = ();
 		my %mfes = ();
 		my $sequenceNumber = 0;
-		my @orederedSeqs = ();
-		Utils::applyFunctionToFastaFile($input, \&cast_generateSingleShapes, $settings, \%commonShapes, \$sequenceNumber, \%mfes, \@orederedSeqs, $refSub_buildCommand, $MODE_SHAPES);
+		my @orderedSeqs = ();
+		Utils::applyFunctionToFastaFile($input, \&cast_generateSingleShapes, $settings, \%commonShapes, \$sequenceNumber, \%mfes, \@orderedSeqs, $refSub_buildCommand, $MODE_SHAPES, $program);
 		my $maxMFE = 0;
 		my $maxEnergyLen = 0;
 		foreach my $shape (keys(%mfes)) {
@@ -35,13 +36,23 @@ sub cast_doComputation {
 			}
 			$commonShapes_infos{$shape} = {score => $energySum};
 		}
-	
+		
 	#print results
 		my $shapeNr = 0;
 		foreach my $shape (sort {$commonShapes_infos{$a}->{score} <=> $commonShapes_infos{$b}->{score}} keys(%commonShapes_infos)) { 
 			print "".(++$shapeNr).")".$IO::SEPARATOR."Shape: ".$shape.$IO::SEPARATOR."Score: ".sprintf("%.2f", $commonShapes_infos{$shape}->{score}/100).$IO::SEPARATOR."Ratio of MFE: ".sprintf("%1.2f", $commonShapes_infos{$shape}->{score}/$maxMFE)."\n";
-			foreach my $refHash_sequence (@orederedSeqs) {
-				print IO::output({'0'.$IO::DATASEPARATOR.length($refHash_sequence->{sequence}) => {dummyblock => {$commonShapes{$shape}->{$refHash_sequence->{header}}->{structure} => {score => $commonShapes{$shape}->{$refHash_sequence->{header}}->{energy}/100, shape => $shape, rank => $commonShapes{$shape}->{$refHash_sequence->{header}}->{rank}}}}}, $refHash_sequence, $IO::PROG_RNASHAPES, $settings, {energy => $maxEnergyLen, windowStartPos => 1}, undef, undef); # $predictions{$windowPos}->{$structure}); # my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples) = @_;
+			foreach my $refHash_sequence (@orderedSeqs) {
+				print IO::output(
+					{'0'.$IO::DATASEPARATOR.length($refHash_sequence->{sequence}) => {dummyblock => {$commonShapes{$shape}->{$refHash_sequence->{header}}->{structure} => {score => $commonShapes{$shape}->{$refHash_sequence->{header}}->{energy}/100, structureProb => $commonShapes{$shape}->{$refHash_sequence->{header}}->{structureProb}, shape => $shape, rank => $commonShapes{$shape}->{$refHash_sequence->{header}}->{rank}}}}}, 
+					$refHash_sequence, 
+					$IO::PROG_RNASHAPES, 
+					$settings, 
+					{energy => $maxEnergyLen, windowStartPos => 1}, 
+					undef, 
+					undef, 
+					undef,
+					$commonShapes{$shape}->{$refHash_sequence->{header}}->{pfAll}
+				); # $predictions{$windowPos}->{$structure}); # my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples) = @_;
 			}
 			print "\n";
 		}
@@ -52,7 +63,7 @@ sub cast_doComputation {
 }
 
 sub cast_generateSingleShapes {
-	my ($refHash_sequence, $settings, $refHash_commonShapes, $ref_sequenceNr, $refHash_mfes, $refList_orderedSeqs, $refSub_buildCommand, $MODE_SHAPES) = @_;
+	my ($refHash_sequence, $settings, $refHash_commonShapes, $ref_sequenceNr, $refHash_mfes, $refList_orderedSeqs, $refSub_buildCommand, $MODE_SHAPES, $program) = @_;
 	${$ref_sequenceNr}++;
 	push @{$refList_orderedSeqs}, $refHash_sequence;
 	
@@ -67,10 +78,25 @@ sub cast_generateSingleShapes {
 	my $command = &{$refSub_buildCommand}(\%cast_settings, undef);
 	my $result = qx($command "$seq");
 
+	#determine pfAll values for sequences if structure probabilities are switched on
+		use Data::Dumper;
+		my $pfall_result = 1;
+		if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
+			my %pfAll_settings = %{$settings};
+			$pfAll_settings{'mode'} = $Settings::MODE_PFALL;
+			my $pfall_command = &{$refSub_buildCommand}(\%pfAll_settings, undef);
+			$pfall_result = qx($pfall_command "$seq");
+			$pfall_result = IO::parse($pfall_result, $refHash_sequence, $program, \%pfAll_settings, 0);
+		}
+
 	#add new common shapes, if a) this is the first sequence b) this shape was already common
 		my @unsortedShapes = ();
 		foreach my $line (split(m/\r?\n/, $result)) {
-			push @unsortedShapes, {shape => $1, energy => $2, structure => $3} if ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)/);
+			if ($program eq $IO::PROG_RNASHAPES) {
+				push @unsortedShapes, {shape => $1, energy => $2, structure => $3, structureProb => $4} if ($line =~ m/\( \( (.+?) , (.+?) \) , \( (.+?) , (.+?) \) \)/);
+			} else {
+				push @unsortedShapes, {shape => $1, energy => $2, structure => $3} if ($line =~ m/\( \( (.+?) , (.+?) \) , (.+?) \)/);
+			}
 		}
 		
 		my $rank = 0;
@@ -78,10 +104,10 @@ sub cast_generateSingleShapes {
 		foreach my $refHash_shape (sort {$a->{energy} <=> $b->{energy}} @unsortedShapes) {
 			$rank++;
 			$mfe = $refHash_shape->{energy} if ($rank == 1);
-			$refHash_commonShapes->{$refHash_shape->{shape}}->{$refHash_sequence->{header}} = {energy => $refHash_shape->{energy}, structure => $refHash_shape->{structure}, rank => $rank} if ((${$ref_sequenceNr} <= 1) || (exists $refHash_commonShapes->{$refHash_shape->{shape}}));
+			$refHash_commonShapes->{$refHash_shape->{shape}}->{$refHash_sequence->{header}} = {energy => $refHash_shape->{energy}, structure => $refHash_shape->{structure}, rank => $rank, structureProb => $refHash_shape->{structureProb}, pfAll => $pfall_result} if ((${$ref_sequenceNr} <= 1) || (exists $refHash_commonShapes->{$refHash_shape->{shape}}));
 		}
 		$refHash_mfes->{$refHash_sequence->{header}} = $mfe;
-	
+
 	#remove "common" shapes that have not appeared for this sequence
 		foreach my $commonshape (keys(%{$refHash_commonShapes})) {
 			if (keys(%{$refHash_commonShapes->{$commonshape}}) < ${$ref_sequenceNr}) {
