@@ -32,13 +32,13 @@ template<typename T>
 inline bool collfilter2(const Basic_Sequence<> &seq, T i, T j)
 {
 	unsigned int n = (seq.size()-1)/2;
-	return j-i <= n+1; //once orig sequence + separator character
+	return j-i == n+1; //once orig sequence + separator character
 }
 
 template<typename T>
 inline bool collfilter2(const Basic_Sequence<M_Char, unsigned int> &seq, T i, T j) {
 	unsigned int n = (seq.size()-1)/2;
-	return j-i <= n+1; //once orig sequence + separator character
+	return j-i == n+1; //once orig sequence + separator character
 }
 
 template<typename SEQ>
