@@ -186,6 +186,7 @@ sub doComputation {
 		Utils::checkBinaryPresents(\%pfallSettings, "wrong command line parameter:\n  ", [$Settings::MODE_CAST], []);
 		my $pfallCommand = buildCommand(\%pfallSettings, $refHash_sequence);
 		my $res = qx($pfallCommand "$seq" 2>&1);
+		Utils::qxDieMessage($pfallCommand, $?);
 		%pfAll = %{IO::parse($res, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, \%pfallSettings, $inputIndex)};
 	}
 	
@@ -197,6 +198,7 @@ sub doComputation {
 	}
 
 	my $result = qx($command "$seq" $structure 2>&1);
+	Utils::qxDieMessage($command, $?);
 	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);
 	
 	return undef;

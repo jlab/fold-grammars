@@ -137,6 +137,8 @@ sub processInput {
 			my $command = buildCommand($settings, undef);
 			my $seqDummy = 'a' x length($input);
 			my $result = qx($command "$seqDummy" "$input" 2>&1);
+			Utils::qxDieMessage($command, $?);
+
 			IO::parse($result, {header => "dummy", sequence => "a", structure => $input}, $Settings::PROGINFOS{$PROGID}->{name}, $settings);
 		} else {
 			die "The file '$input' does not exist!\n" if (not -e $input);
@@ -174,11 +176,13 @@ sub doComputation {
 		Utils::checkBinaryPresents(\%pfallSettings, "wrong command line parameter:\n  ", [$Settings::MODE_CAST], []);
 		my $pfallCommand = buildCommand(\%pfallSettings, $refHash_alignment);
 		my $res = qx($pfallCommand "$gapInput" 2>&1);
+		Utils::qxDieMessage($pfallCommand, $?);
 		%pfAll = %{IO::parse($res, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, \%pfallSettings, 0)};
 	}
 #~ print Dumper $gapInput;
 
 	my $result = qx($command "$gapInput" $structure 2>&1);
+	Utils::qxDieMessage($command, $?);
 	IO::parse($result, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);
 	
 	return undef;
@@ -189,7 +193,8 @@ sub getAlignmentRepresentation {
 	
 	my $command = buildCommand($settings, $refHash_alignment, $TASK_REP);
 	my $result = qx($command "$gapInput");
-	
+	Utils::qxDieMessage($command, $?);
+
 	foreach my $line (split(m/\r?\n/, $result)) {
 		if ($line =~ m/^Answer:\s*$/) {
 		} elsif ($line =~ m/^\s*$/) {

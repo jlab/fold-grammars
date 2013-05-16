@@ -584,4 +584,12 @@ sub createUniqueTempDir { #create temporary unique directory
 	return $tempDir;
 }
 
+sub qxDieMessage {
+	my ($command, $exitCode) = @_;
+	if ($exitCode != 0) {
+		print "Underlying Bellman's gapc binary call '$command' exited unexpectedly with exit code '$exitCode'.\n";
+		exit ($exitCode);
+	}
+}
+
 1;

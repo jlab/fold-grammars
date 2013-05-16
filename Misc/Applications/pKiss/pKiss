@@ -183,6 +183,7 @@ sub doComputation {
 	}
 	
 	my $result = qx($command "$seq" $structure 2>&1);
+	Utils::qxDieMessage($command, $?);
 
 	print "\n" if ($sequenceNumber != 0);
 	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings);
