@@ -58,7 +58,9 @@ sub parse {
 			$fieldLengths{windowStartPos} = length($windowStartPos) if (length($windowStartPos) > $fieldLengths{windowStartPos});
 		} elsif ($line =~ m/^Answer:\s*$/) {
 			#answer for complete input, must do nothing because window size is already correctly initialized
-
+		} elsif ($line =~ m/WARNING: stacking enthalpies not symmetric/) {
+			#ignore this warning of energy parameters
+			
 	#parsing result lines	
 		} elsif ($program eq $PROG_RNAALISHAPES) {
 			if ((($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT)) && ($line =~ m/^\( \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) , \( \( (.+?) , (.+?) \) , (.+?) \) \)$/)) {
