@@ -1,8 +1,6 @@
-grammar gra_outside_microstate uses sig_outside_foldrna(axiom = plot) {
-  plot = start | makeplot(REGION0) //makeplot is a dummy function, containing a makro in pfunc algebra which is responsible for drawing the PS dot plot
-       # h;
-
-  start = window(REGION0, outer_strong with collfilter2, REGION0) 
+grammar gra_outside_microstate uses sig_outside_foldrna(axiom = evert) {
+  evert = window(REGION0, outer_strong with collfilter2, REGION0) 
+	    | makeplot(REGION0) //makeplot is a dummy function, containing a makro in pfunc algebra which is responsible for drawing the PS dot plot
         # h;
 
 //assume your normal RNA sequence input is SEQ. To get the base pair probabilities in SEQ compile a alg_pfunc instance, run it on doubled input "SEQnSEQ" and hack non-terminal matrices:
