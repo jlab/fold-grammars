@@ -51,7 +51,7 @@ inline SEQ shiftIndex(SEQ s) {
 	return res;
 }
 template<typename SEQ>
-inline SEQ shiftLeftIndex(SEQ s) {
+inline SEQ flipIndex(SEQ s) {
 	SEQ res = s;
 	if (s.i == 0) {
 		res.i = (seq_size(s)-1)/2;

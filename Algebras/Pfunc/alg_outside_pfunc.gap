@@ -5,24 +5,24 @@ algebra dummy_outside_pfunc implements sig_outside_foldrna(alphabet = char, answ
 		return innerLeft * innerRight;
 	}
 	double outer_drem(Subsequence locr, double x, Subsequence locl) {
-		return x * mk_pf(termau_energy(shiftIndex(locl), shiftLeftIndex(locr)));
+		return x * mk_pf(termau_energy(shiftIndex(locl), flipIndex(locr)));
 	}
 	double outer_edl(Subsequence rb, double x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
-		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + dl_energy(shiftIndex(lb), shiftLeftIndex(rb)));
+		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), flipIndex(rb)) + dl_energy(shiftIndex(lb), flipIndex(rb)));
 	}
 	double outer_edr(Subsequence rdangle, double x, Subsequence lb) {
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + dr_energy_outside(shiftIndex(lb), shiftLeftIndex(rb)));
+		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), flipIndex(rb)) + dr_energy_outside(shiftIndex(lb), flipIndex(rb)));
 	}
 	double outer_edlr(Subsequence rdangle, double x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return scale(2) * x * mk_pf(termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + ext_mismatch_energy_outside(shiftIndex(lb), shiftLeftIndex(rb)));
+		return scale(2) * x * mk_pf(termau_energy(shiftIndex(lb), flipIndex(rb)) + ext_mismatch_energy_outside(shiftIndex(lb), flipIndex(rb)));
 	}
 	double outer_sr(Subsequence rb, double x, Subsequence lb) {
 		return scale(2) * x * mk_pf(sr_energy(shiftIndex(lb), rb));

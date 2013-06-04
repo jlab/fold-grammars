@@ -5,24 +5,24 @@ algebra dummy_outside_mfe implements sig_outside_foldrna(alphabet = char, answer
 		return innerLeft+innerRight;
 	}
 	int outer_drem(Subsequence locr, int x, Subsequence locl) {
-		return x + termau_energy(shiftIndex(locl), shiftLeftIndex(locr));
+		return x + termau_energy(shiftIndex(locl), flipIndex(locr));
 	}
 	int outer_edl(Subsequence rb, int x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
-		return x + termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + dl_energy(shiftIndex(lb), shiftLeftIndex(rb));
+		return x + termau_energy(shiftIndex(lb), flipIndex(rb)) + dl_energy(shiftIndex(lb), flipIndex(rb));
 	}
 	int outer_edr(Subsequence rdangle, int x, Subsequence lb) {
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return x + termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + dr_energy_outside(shiftIndex(lb), shiftLeftIndex(rb));
+		return x + termau_energy(shiftIndex(lb), flipIndex(rb)) + dr_energy_outside(shiftIndex(lb), flipIndex(rb));
 	}
 	int outer_edlr(Subsequence rdangle, int x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return x + termau_energy(shiftIndex(lb), shiftLeftIndex(rb)) + ext_mismatch_energy_outside(shiftIndex(lb), shiftLeftIndex(rb));
+		return x + termau_energy(shiftIndex(lb), flipIndex(rb)) + ext_mismatch_energy_outside(shiftIndex(lb), flipIndex(rb));
 	}
 	int outer_sr(Subsequence rb, int x, Subsequence lb) {
 		return x + sr_energy(shiftIndex(lb), rb);
