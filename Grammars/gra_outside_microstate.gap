@@ -1,5 +1,5 @@
 grammar gra_outside_microstate uses sig_outside_foldrna(axiom = plot) {
-  plot = makeplot(start, LOC) //makeplot is a dummy function, containing a makro in pfunc algebra which is responsible for drawing the PS dot plot
+  plot = start | makeplot(REGION0) //makeplot is a dummy function, containing a makro in pfunc algebra which is responsible for drawing the PS dot plot
        # h;
 
   start = window(REGION0, outer_strong with collfilter2, REGION0) 

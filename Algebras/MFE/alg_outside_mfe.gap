@@ -58,7 +58,7 @@ algebra dummy_outside_mfe implements sig_outside_foldrna(alphabet = char, answer
 	int window(Subsequence l, int x, Subsequence r) {
 		return x;
 	}
-	int makeplot(int x, Subsequence pos) { return x; }
+	int makeplot(Subsequence pos) { return 0; }
 }
 
 algebra alg_outside_mfe extends dummy_outside_mfe {

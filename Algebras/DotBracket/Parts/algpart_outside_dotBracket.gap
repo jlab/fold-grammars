@@ -99,4 +99,4 @@
 		append(res, ' ', size(r));
 		return res;
 	}
-	string makeplot(string x, Subsequence pos) { return x; }
+	string makeplot(Subsequence pos) { string res; return res; }

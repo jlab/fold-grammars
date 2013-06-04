@@ -64,9 +64,9 @@ algebra dummy_ali_outside_pfunc implements sig_outside_foldrna(alphabet = M_Char
 	double window(Subsequence l, double x, Subsequence r) {
 		return x;
 	}
-	double makeplot(double x, Subsequence pos) { 
+	double makeplot(Subsequence pos) { 
 		MAKEPLOT(pos);
-		return x; 
+		return 1.0; 
 	}
 }
 

@@ -95,7 +95,7 @@ algebra dummy_ali_outside_mfe implements sig_outside_foldrna(alphabet = M_Char, 
 	mfecovar window(Subsequence l, mfecovar x, Subsequence r) {
 		return x;
 	}
-	mfecovar makeplot(mfecovar x, Subsequence pos) { return x; }
+	mfecovar makeplot(Subsequence pos) { mfecovar res; return res; }
 }
 
 algebra alg_ali_outside_mfe extends dummy_ali_outside_mfe {
