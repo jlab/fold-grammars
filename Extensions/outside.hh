@@ -200,31 +200,16 @@ inline const std::string getRepresentation(Basic_Subsequence<char, unsigned> inp
 	unsigned int i,j,n=(rnaSeq.seq->size()-1)/2; \
 	for (i = 0; i <= n; i++) { \
 		for (j = i+2; j <= n; j++) { \
-			/*std::cout << (i+1) << ", " << j << " = weak: " << nt_weak(i,j) << ", strong: "  << nt_strong(i,j) << ", outer_weak: " << nt_outer_weak(j,n+i+1) << ", outer_strong: " << nt_outer_strong(j,n+i+1) << "\n"; */\
 			double prob = 0.0;\
-			if (gapc::Opts::getOpts()->allowLonelyBasepairs) {\
-				if (nt_weak(i,j) != std::numeric_limits<double>::infinity() && nt_outer_strong(j,n+i+1) != std::numeric_limits<double>::infinity()) { \
-					prob += nt_weak(i,j) * nt_outer_strong(j,n+i+1); \
-				} \
-			} else {\
-				if (nt_weak(i,j) != std::numeric_limits<double>::infinity() && nt_outer_strong(j,n+i+1) != std::numeric_limits<double>::infinity()) { \
-					prob += nt_weak(i,j) * nt_outer_strong(j,n+i+1); \
-				} \
+			if (nt_weak(i,j) != std::numeric_limits<double>::infinity() && nt_outer_strong(j,n+i+1) != std::numeric_limits<double>::infinity()) { \
+				prob += nt_weak(i,j) * nt_outer_strong(j,n+i+1); \
+			} \
+			if (!gapc::Opts::getOpts()->allowLonelyBasepairs) {\
 				if (nt_strong(i,j) != std::numeric_limits<double>::infinity() && nt_outer_weak(j,n+i+1) != std::numeric_limits<double>::infinity()) {\
 					prob += nt_strong(i,j) * nt_outer_weak(j,n+i+1); \
 				} \
 			}\
-			/*std::cout << "prob(" << i << "," << j << ") = " << prob / nt_struct(0,n) << "\n"; */\
 			prob = sqrt(prob / nt_struct(0,n)); \
-			/* for debugging: I think that due to rounding problems, sometimes pair probs are > 1?!: */ \
-			if (prob*prob > 1.0) { \
-				std::cerr << "prob(" << i+1 << "," << j << ")=" << prob << ": "; \
-				std::cerr << "weak(" << i << "," << j << ")=" << nt_weak(i,j) << ", "; \
-				std::cerr << "strong(" << i << "," << j << ")=" << nt_strong(i,j) << ", "; \
-				std::cerr << "outer_weak(" << j << "," << n+i+1 << ")=" << nt_outer_weak(j,n+i+1) << ", "; \
-				std::cerr << "outer_strong(" << j << "," << n+i+1 << ")=" << nt_outer_strong(j,n+i+1) << ", "; \
-				std::cerr << "pfAll(0," << n << ")=" << nt_struct(0,n) << "\n"; \
-			} \
 			if (prob >= sqrt(lowProbabilityFilter())) { \
 				psfile << (i+1) << " " << j << " " << prob << " ubox\n"; \
 			} \
