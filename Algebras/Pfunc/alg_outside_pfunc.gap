@@ -10,7 +10,7 @@ algebra dummy_outside_pfunc implements sig_outside_foldrna(alphabet = char, answ
 	double outer_edl(Subsequence rb, double x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
-		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), flipIndex(rb)) + dl_energy(shiftIndex(lb), flipIndex(rb)));
+		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), flipIndex(rb)) + dl_energy_outside(shiftIndex(lb), flipIndex(rb)));
 	}
 	double outer_edr(Subsequence rdangle, double x, Subsequence lb) {
 		Subsequence rb = rdangle;
