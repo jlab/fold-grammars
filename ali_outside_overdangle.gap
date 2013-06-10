@@ -30,7 +30,7 @@ algebra alg_ali_outside_mfe_overdangle extends alg_ali_outside_mfe {
 	}
 	mfecovar outer_drem(Subsequence locr, mfecovar x, Subsequence locl) {
 		mfecovar res = x;
-		res.mfe = x.mfe + ((termau_energy(shiftIndex(locl), flipIndex(locr)) + ext_mismatch_energy_outside(shiftIndex(locl), flipIndex(locr))) / float(rows(locl)));
+		res.mfe = x.mfe + ((termau_energy(shiftIndex(locl), locr) + ext_mismatch_energy_outside(shiftIndex(locl), locr)) / float(rows(locl)));
 		return res;
 	}
 	mfecovar outer_ml(Subsequence rb, mfecovar x, Subsequence lb) {
@@ -51,7 +51,7 @@ algebra alg_ali_outside_pfunc_overdangle extends alg_ali_outside_pfunc {
 		return x * scale(2) * mk_pf(ml_energy() + ul_energy() + ((termau_energy(lb, rb) + ml_mismatch_energy(lb, rb)) / float(rows(lb))) + covscore(lb, lb.i, rb.i));
 	}
 	double outer_drem(Subsequence locr, double x, Subsequence locl) {
-		return x * mk_pf((termau_energy(shiftIndex(locl), flipIndex(locr)) + ext_mismatch_energy_outside(shiftIndex(locl), flipIndex(locr))) / float(rows(locr)));
+		return x * mk_pf((termau_energy(shiftIndex(locl), locr) + ext_mismatch_energy_outside(shiftIndex(locl), locr)) / float(rows(locr)));
 	}
 	double outer_ml(Subsequence rb, double x, Subsequence lb) {
 		Subsequence shifted = shiftIndex(lb);

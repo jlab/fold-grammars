@@ -1,28 +1,28 @@
-algebra dummy_outside_pfunc implements sig_outside_foldrna(alphabet = char, answer = double) {
+algebra alg_outside_pfunc implements sig_outside_foldrna(alphabet = char, answer = double) {
 	include "Algebras/Pfunc/Parts/algpart_pfunc_basic.gap"
   
 	double sep(double innerRight, Subsequence sepChar, double innerLeft) {
 		return innerLeft * innerRight;
 	}
 	double outer_drem(Subsequence locr, double x, Subsequence locl) {
-		return x * mk_pf(termau_energy(shiftIndex(locl), flipIndex(locr)));
+		return x * mk_pf(termau_energy(shiftIndex(locl), locr));
 	}
 	double outer_edl(Subsequence rb, double x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
-		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), flipIndex(rb)) + dl_energy_outside(shiftIndex(lb), flipIndex(rb)));
+		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), rb) + dl_energy(shiftIndex(lb), rb));
 	}
 	double outer_edr(Subsequence rdangle, double x, Subsequence lb) {
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), flipIndex(rb)) + dr_energy_outside(shiftIndex(lb), flipIndex(rb)));
+		return scale(1) * x * mk_pf(termau_energy(shiftIndex(lb), rb) + dr_energy(shiftIndex(lb), rb));
 	}
 	double outer_edlr(Subsequence rdangle, double x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return scale(2) * x * mk_pf(termau_energy(shiftIndex(lb), flipIndex(rb)) + ext_mismatch_energy_outside(shiftIndex(lb), flipIndex(rb)));
+		return scale(2) * x * mk_pf(termau_energy(shiftIndex(lb), rb) + ext_mismatch_energy(shiftIndex(lb), rb));
 	}
 	double outer_sr(Subsequence rb, double x, Subsequence lb) {
 		return scale(2) * x * mk_pf(sr_energy(shiftIndex(lb), rb));
@@ -61,25 +61,5 @@ algebra dummy_outside_pfunc implements sig_outside_foldrna(alphabet = char, answ
 	double makeplot(Subsequence pos) { 
 		MAKEPLOT(pos);
 		return 1.0; 
-	}
-}
-
-algebra alg_outside_pfunc extends dummy_outside_pfunc {
-	double edl(Subsequence ldangle, double x, Subsequence rb) {
-		Subsequence lb = ldangle;
-		lb.i = ldangle.i+1;
-		return scale(1)                     * x * mk_pf(termau_energy(lb, rb)) * mk_pf(dl_energy_outside(lb, rb));
-	}
-	double edr(Subsequence lb, double x, Subsequence rdangle) {
-		Subsequence rb = rdangle;
-		rb.j = rdangle.j-1;
-		return scale(1)                     * x * mk_pf(termau_energy(lb, rb)) * mk_pf(dr_energy_outside(lb, rb));
-	}
-	double edlr(Subsequence ldangle, double x, Subsequence rdangle) {
-		Subsequence lb = ldangle;
-		lb.i = ldangle.i+1;
-		Subsequence rb = rdangle;
-		rb.j = rdangle.j-1;
-		return scale(2)                     * x * mk_pf(termau_energy(lb, rb)) * mk_pf(ext_mismatch_energy_outside(lb, rb));
 	}
 }

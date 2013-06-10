@@ -1,28 +1,28 @@
-algebra dummy_outside_mfe implements sig_outside_foldrna(alphabet = char, answer = int) {
+algebra alg_outside_mfe implements sig_outside_foldrna(alphabet = char, answer = int) {
 	include "Algebras/MFE/Parts/algpart_mfe_basic.gap"
 	
   	int sep(int innerRight, Subsequence sepChar, int innerLeft) {
 		return innerLeft+innerRight;
 	}
 	int outer_drem(Subsequence locr, int x, Subsequence locl) {
-		return x + termau_energy(shiftIndex(locl), flipIndex(locr));
+		return x + termau_energy(shiftIndex(locl), locr);
 	}
 	int outer_edl(Subsequence rb, int x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
-		return x + termau_energy(shiftIndex(lb), flipIndex(rb)) + dl_energy(shiftIndex(lb), flipIndex(rb));
+		return x + termau_energy(shiftIndex(lb), rb) + dl_energy(shiftIndex(lb), rb);
 	}
 	int outer_edr(Subsequence rdangle, int x, Subsequence lb) {
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return x + termau_energy(shiftIndex(lb), flipIndex(rb)) + dr_energy_outside(shiftIndex(lb), flipIndex(rb));
+		return x + termau_energy(shiftIndex(lb), rb) + dr_energy(shiftIndex(lb), rb);
 	}
 	int outer_edlr(Subsequence rdangle, int x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return x + termau_energy(shiftIndex(lb), flipIndex(rb)) + ext_mismatch_energy_outside(shiftIndex(lb), flipIndex(rb));
+		return x + termau_energy(shiftIndex(lb), rb) + ext_mismatch_energy(shiftIndex(lb), rb);
 	}
 	int outer_sr(Subsequence rb, int x, Subsequence lb) {
 		return x + sr_energy(shiftIndex(lb), rb);
@@ -59,24 +59,4 @@ algebra dummy_outside_mfe implements sig_outside_foldrna(alphabet = char, answer
 		return x;
 	}
 	int makeplot(Subsequence pos) { return 0; }
-}
-
-algebra alg_outside_mfe extends dummy_outside_mfe {
-	int edl(Subsequence ldangle, int x, Subsequence rb) {
-		Subsequence lb = ldangle;
-		lb.i = ldangle.i+1;
-		return x + termau_energy(lb, rb) + dl_energy_outside(lb, rb);
-	}
-	int edr(Subsequence lb, int x, Subsequence rdangle) {
-		Subsequence rb = rdangle;
-		rb.j = rdangle.j-1;
-		return x + termau_energy(lb, rb) + dr_energy_outside(lb, rb);
-	}
-	int edlr(Subsequence ldangle, int x, Subsequence rdangle) {
-		Subsequence lb = ldangle;
-		lb.i = ldangle.i+1;
-		Subsequence rb = rdangle;
-		rb.j = rdangle.j-1;
-		return x + termau_energy(lb, rb) + ext_mismatch_energy_outside(lb,rb);
-	}
 }

@@ -1,4 +1,4 @@
-algebra dummy_ali_outside_mfe implements sig_outside_foldrna(alphabet = M_Char, answer = mfecovar) {
+algebra alg_ali_outside_mfe implements sig_outside_foldrna(alphabet = M_Char, answer = mfecovar) {
 	include "Algebras/MFE/Parts/algpart_ali_mfe_basic.gap"
 	
   	mfecovar sep(mfecovar innerRight, Subsequence sepChar, mfecovar innerLeft) {
@@ -6,21 +6,21 @@ algebra dummy_ali_outside_mfe implements sig_outside_foldrna(alphabet = M_Char, 
 	}
 	mfecovar outer_drem(Subsequence locr, mfecovar x, Subsequence locl) {
 		mfecovar res = x;
-		res.mfe = res.mfe + (termau_energy(shiftIndex(locl), flipIndex(locr)) / float(rows(locl)));
+		res.mfe = res.mfe + (termau_energy(shiftIndex(locl), locr) / float(rows(locl)));
 		return res;
 	}
 	mfecovar outer_edl(Subsequence rb, mfecovar x, Subsequence ldangle) {
 		mfecovar res = x;
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
-		res.mfe = res.mfe + ((termau_energy(shiftIndex(lb), flipIndex(rb)) + dl_energy(shiftIndex(lb), flipIndex(rb))) / float(rows(ldangle)));
+		res.mfe = res.mfe + ((termau_energy(shiftIndex(lb), rb) + dl_energy(shiftIndex(lb), rb)) / float(rows(ldangle)));
 		return res;
 	}
 	mfecovar outer_edr(Subsequence rdangle, mfecovar x, Subsequence lb) {
 		mfecovar res = x;
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		res.mfe = res.mfe + ((termau_energy(shiftIndex(lb), flipIndex(rb)) + dr_energy(shiftIndex(lb), flipIndex(rb))) / float(rows(ldangle)));
+		res.mfe = res.mfe + ((termau_energy(shiftIndex(lb), rb) + dr_energy(shiftIndex(lb), rb)) / float(rows(ldangle)));
 		return res;
 	}
 	mfecovar outer_edlr(Subsequence rdangle, mfecovar x, Subsequence ldangle) {
@@ -29,7 +29,7 @@ algebra dummy_ali_outside_mfe implements sig_outside_foldrna(alphabet = M_Char, 
 		lb.i = ldangle.i+1;
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		res.mfe = res.mfe + ((termau_energy(shiftIndex(lb), flipIndex(rb)) + ext_mismatch_energy(shiftIndex(lb), flipIndex(rb))) / float(rows(ldangle)));
+		res.mfe = res.mfe + ((termau_energy(shiftIndex(lb), rb) + ext_mismatch_energy(shiftIndex(lb), rb)) / float(rows(ldangle)));
 		return res;
 	}
 	mfecovar outer_sr(Subsequence rb, mfecovar x, Subsequence lb) {
@@ -98,34 +98,3 @@ algebra dummy_ali_outside_mfe implements sig_outside_foldrna(alphabet = M_Char, 
 	mfecovar makeplot(Subsequence pos) { mfecovar res; return res; }
 }
 
-algebra alg_ali_outside_mfe extends dummy_ali_outside_mfe {
-	mfecovar edl(Subsequence ldangle, mfecovar x, Subsequence rb) {
-		mfecovar res = x;
-
-		Subsequence lb = ldangle;
-		lb.i = ldangle.i+1;
-		res.mfe = res.mfe + ((termau_energy(lb, rb) + dl_energy_outside(lb, rb)) / float(rows(ldangle)));
-
-		return res;
-	}
-	mfecovar edr(Subsequence lb, mfecovar x, Subsequence rdangle) {
-		mfecovar res = x;
-
-		Subsequence rb = rdangle;
-		rb.j = rdangle.j-1;
-		res.mfe = res.mfe + ((termau_energy(lb, rb) + dr_energy_outside(lb, rb)) / float(rows(lb)));
-
-		return res;
-	}
-	mfecovar edlr(Subsequence ldangle, mfecovar x, Subsequence rdangle) {
-		mfecovar res = x;
-
-		Subsequence lb = ldangle;
-		lb.i = ldangle.i+1;
-		Subsequence rb = rdangle;
-		rb.j = rdangle.j-1;
-		res.mfe = res.mfe + ((termau_energy(lb, rb) + ext_mismatch_energy_outside(lb,rb)) / float(rows(ldangle)));
-
-		return res;
-	}
-}
