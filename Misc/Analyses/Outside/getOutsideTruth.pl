@@ -386,7 +386,7 @@ sub parse_truth {
 	$sequence = $gapcSeq if (defined $gapcSeq);
 	my $numStructures = 0;
 	foreach my $line (split(m/\n/, $programOutput)) {
-		if ($line =~ m/^([\(|\)|\.]+)\s+(-?\d+\.\d+)\s*$/ || $line =~ m/\( (.+?) , \( (.+?) , .+? \) \)/) {
+		if ($line =~ m/^([\(|\)|\.]+)\s+(-?\d+\.\d+)\s*$/ || $line =~ m/\( (.+?) , \( \( (.+?) , .+? \) , .+? \) \)/) {
 			my ($structure, $energy) = ($1, $2);
 			($structure, $energy) = ($2, $1/100) if (defined $gapcSeq);
 			my %pairs = %{Utils::getPairList($structure)};
@@ -404,7 +404,7 @@ sub parse_truth {
 			die "unexpected RNAsubopt result line: '$line'\n";
 		}
 	}
-	
+
 	for (my $i = 0; $i < length($sequence); $i++) {
 		for (my $j = $i; $j < length($sequence); $j++) {
 			$bpSums[$i]->[$j] /= $pfAllSum if ((defined $bpSums[$i]->[$j]) && ($bpSums[$i]->[$j] >= $settings->{bppmthreshold}));
