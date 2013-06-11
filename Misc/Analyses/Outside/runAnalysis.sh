@@ -9,7 +9,7 @@ seqFile=/vol/fold-grammars/src/Misc/Analyses/Outside/randomSequences.fasta
 posSeq=`echo "$SGE_TASK_ID*2" | bc`
 sequence=`cat $seqFile | head -n $posSeq | /vol/gnu/bin/tail -n 1`
 
-/vol/pi/bin/memtime64 /vol/perl-5.8.8/bin/perl /vol/fold-grammars/src/Misc/Analyses/Outside/getOutsideTruth.pl --grammar=microstate --allow=1 "$sequence"
+/vol/pi/bin/memtime64 /vol/perl-5.8.8/bin/perl /vol/fold-grammars/src/Misc/Analyses/Outside/getOutsideTruth.pl --grammar="$grammar" --allow="$lp" "$sequence" --plotdir /vol/fold-grammars/src/Misc/Analyses/Outside/PLOTS
 
 #~ /usr/bin/time /usr/bin/perl /vol/cluster-data/sjanssen/Balaji/V2/checkExtremeties_elongate.pl /vol/cluster-data/sjanssen/Balaji/V2/DATA_Rfam11.0/usedseqs_rfamseq11.fa . $famID > /vol/cluster-data/sjanssen/Balaji/V2/DATA_Rfam11.0/Extremeties/ElongatedFamilies/$famID+-25_seed.fas
 

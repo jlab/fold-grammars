@@ -21,6 +21,7 @@ use foldGrammars::Utils;
 use foldGrammars::RNAcast;
 use foldGrammars::IO;
 use POSIX 'isatty';
+use Helper;
 
 our @ALLMODES = ($Settings::MODE_ANALYSE_OUTSIDE);
 @References::ORDER = ('lor:ber:sie:taf:fla:sta:hof:2011','gru:lor:ber:neu:hof:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','ree:gie:2005','ste:voss:reh:ree:gie:2006','mcc:1990','gie:voss:reh:2004');
@@ -41,7 +42,7 @@ $PARAM{param} = {modes => [$Settings::MODE_ANALYSE_OUTSIDE], key => 'param', gap
 $PARAM{allowlp} = {modes => [$Settings::MODE_ANALYSE_OUTSIDE], key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
 #~ $PARAM{absolutedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_CAST], key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation)."};
 #~ $PARAM{relativedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_CAST], key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation)."};
-#~ $PARAM{shapelevel} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_CONVERT], key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see [".References::getNumber('jan:gie:2010')."] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
+#~ $PARAM{shapelevel} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT], key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see [".References::getNumber('jan:gie:2010')."] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
 #~ $PARAM{lowprobfilter} = {modes => [$Settings::MODE_PROBS], key => 'lowProbFilter', gapc => 'F', type => 'f', default => 0.000001, info => "This option sets a barrier for filtering out results with very low probabilities during calculation. The default value here is @(DEFAULT), which gives a significant speedup compared to a disabled filter. (See [".References::getNumber('voss:gie:reh:2006')."] for details.) Note that this filter can have a slight influence on the overall results. To disable this filter, use option --@(lowprobfilter) 0. \n<float> must be a positive floating point number smaller than 1."};
 #~ $PARAM{lowprobfilteroutput} = {modes => [$Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'outputLowProbFilter', gapc => undef, type => 'f', default => 0.000001, info => "This option sets a filter for omitting low probability results during output. It is just for reporting convenience. Unlike probability cutoff filter, this option does not have any influence on runtime or probabilities beyond this value. To disable this filter, use option --@(lowprobfilteroutput) 0. \n<float> must be a positive floating point number smaller than 1."};
 $PARAM{help} = {modes => [$Settings::MODE_ANALYSE_OUTSIDE], key => 'help', default => undef, info => "show this brief help on version and usage"};
@@ -54,6 +55,7 @@ $PARAM{grammar} = {modes => [$Settings::MODE_ANALYSE_OUTSIDE], key => 'grammar',
 $PARAM{bppmthreshold} = {modes => [$Settings::MODE_ANALYSE_OUTSIDE], gapc => 'F', key => 'bppmThreshold', default => 0, type => 'f', info => "Set the threshold for base pair probabilities included in the postscript output.\nDefault is @(DEFAULT)."};
 $PARAM{dotplotfilename} = {modes => [$Settings::MODE_OUTSIDE], gapc => 'o', key => 'dotplot', default => $TMPDIR.'/dotPlot.ps', type => 's', info => "Sets the filename for the probability dot plot, produced in \"$Settings::MODE_OUTSIDE\" mode.\nDefault is \"@(DEFAULT)\"."};
 #~ $PARAM{dotplotpng} = {modes => [$Settings::MODE_OUTSIDE], key => 'png', default => 0, type => 'i', info => "Activate this option to also produce a png file of the \"dot plot\". This is deactivated by default and requires an installation of the program \"GhostScript\"."};
+$PARAM{plotdir} = {modes => [$Settings::MODE_ANALYSE_OUTSIDE], key => 'plotDir', default => "./PLOT", type => 's', gapc => undef, info => "Where to put dot-plot files, default is '@(DEFAULT)'"};
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
@@ -72,6 +74,7 @@ foreach my $param (keys %PARAM) {
 checkParameters($settings);
 usage() if (defined $settings->{'help'}); #user asks for help --> print usage and die
 our $inputIndex = 0;
+
 if (@ARGV == 0) {
 	#input not given via command line parameter
 	if (isatty(*STDIN)) {
@@ -139,6 +142,7 @@ sub printSettings {
 sub doComputation {
 	my ($refHash_sequence, $settings) = @_;
 
+	print STDERR "machine: ".qx(uname -a);
 	$inputIndex++;
 	if ($refHash_sequence->{sequence} !~ m/^\s*((A|C|G|U|T)+)\s*$/i) {
 		print STDERR "sequence '".$refHash_sequence->{header}."' has been skipped, due to non RNA letter. Only A,C,G,U,T,a,c,g,u,t are allowed.";
@@ -146,24 +150,57 @@ sub doComputation {
 	my $seq = $refHash_sequence->{sequence};
 	$seq =~ s/t/u/gi;
 
-	#get true base pair probabilities by exhaustive RNAsubopt call
-		my $command_truth = buildCommand_truth($settings, $refHash_sequence);
-		my ($bpprobs_truth, $numStructures) = @{parse_truth(scalar(qx($command_truth)))};
-	
-	#get true base pair probabilities by exhaustive gapc call
-		my $command_truth_gapc = buildCommand_truthGapc($settings, $refHash_sequence);
-		my ($bpprobs_truth_gapc, $numStructures_gapc) = @{parse_truth(scalar(qx($command_truth_gapc '$seq')), $seq)};
-#~ print writePS($bpprobs_truth_gapc, $seq);
-#~ die;
-	#get RNAfold base pair probabilities
-		my $command_rnafold = buildCommand_rnafold($settings, $refHash_sequence);
-		qx($command_rnafold);
-		my $bpprobs_rnafold = readDotplot($tempWorkingDir.'/dot.ps');
+	my $header = $refHash_sequence->{header};
+	$header =~ s/[^A-Z]/-/gi;
+	my $plotname_truthVienna = $settings->{plotdir}.'plot_'.$header.'-'.length($seq).'_truthVienna_' .$settings->{'grammar'}.'_'.$settings->{'allowlp'}.'.ps';
+	my $plotname_truthGapc   = $settings->{plotdir}.'plot_'.$header.'-'.length($seq).'_truthGapc_' .  $settings->{'grammar'}.'_'.$settings->{'allowlp'}.'.ps';
+	my $plotname_vienna      = $settings->{plotdir}.'plot_'.$header.'-'.length($seq).'_vienna_' .     $settings->{'grammar'}.'_'.$settings->{'allowlp'}.'.ps';
+	my $plotname_gapc        = $settings->{plotdir}.'plot_'.$header.'-'.length($seq).'_gapc_' .       $settings->{'grammar'}.'_'.$settings->{'allowlp'}.'.ps';
 
 	#get gapc base pair probabilities
-		my $command_gapc = buildCommand($settings, $refHash_sequence);
-		system("$command_gapc '".$seq."N".$seq."'");
-		my $bpprobs_gapc = readDotplot($settings->{dotplotfilename});
+		if (! -e $plotname_gapc) {
+			$settings->{dotplotfilename} = $plotname_gapc;
+			my $command_gapc = buildCommand($settings, $refHash_sequence);
+			print STDERR "COMMAND RNAshapes_outside: ".$command_gapc." '".$seq."N".$seq."'\n";
+			system("$command_gapc '".$seq."N".$seq."'");
+		}
+		my $bpprobs_gapc = Helper::readDotplot($plotname_gapc);
+
+	#get true base pair probabilities by exhaustive RNAsubopt call
+		my ($bpprobs_truth, $numStructures) = (undef, undef);
+		if (! -e $plotname_truthVienna) {
+			my $command_truth = buildCommand_truth($settings, $refHash_sequence);
+			print STDERR "COMMAND RNAsubopt: ".$command_truth."\n";
+			($bpprobs_truth, $numStructures) = @{parse_truth(scalar(qx($command_truth)))};
+			open (PLOT, "> ".$plotname_truthVienna) || die "cannot write '$plotname_truthVienna': $!";
+				print PLOT writePS($bpprobs_truth, $seq);
+			close (PLOT);
+		} else {
+			$bpprobs_truth = Helper::readDotplot($plotname_truthVienna);
+			$numStructures = -1;
+		}
+	
+	#get true base pair probabilities by exhaustive gapc call
+		my ($bpprobs_truth_gapc, $numStructures_gapc) = (undef, undef);
+		if (! -e $plotname_truthGapc) {
+			my $command_truth_gapc = buildCommand_truthGapc($settings, $refHash_sequence);
+			print STDERR "COMMAND RNAshapes --mode=subopt: ".$command_truth_gapc." '$seq'\n";
+			($bpprobs_truth_gapc, $numStructures_gapc) = @{parse_truth(scalar(qx($command_truth_gapc '$seq')), $seq)};
+			open (PLOT, "> ".$plotname_truthGapc) || die "cannot write '$plotname_truthGapc': $!";
+				print PLOT writePS($bpprobs_truth_gapc, $seq);
+			close (PLOT);
+		} else {
+			$bpprobs_truth_gapc = Helper::readDotplot($plotname_truthGapc);
+			$numStructures_gapc = -1;
+		}
+
+	#get RNAfold base pair probabilities
+		if (! -e $plotname_vienna) {
+			my $command_rnafold = buildCommand_rnafold($settings, $refHash_sequence, undef, $plotname_vienna);
+			print STDERR "COMMAND RNAfold -p: ".$command_rnafold."\n";
+			qx($command_rnafold);
+		}
+		my $bpprobs_rnafold = Helper::readDotplot($plotname_vienna);
 	
 	print "====================================================\n";
 	print "sequence: ".$seq."\n";
@@ -217,20 +254,6 @@ sub getDistance {
 	}
 }
 
-sub readDotplot {
-	my ($filename) = @_;
-	
-	my @bpprobs = ();
-	open (DP, $filename) || die "can't read dotplot '$filename': $!";
-		while (my $line = <DP>) {
-			if ($line =~ m/^(\d+)\s+(\d+)\s+(\d\.\d+)\s+ubox/) {
-				$bpprobs[$1-1]->[$2-1] = $3**2;
-			}
-		}
-	close (DP);
-	
-	return \@bpprobs;
-}
 
 sub writePS {
 	my ($refList_bpProbs, $sequence) = @_;
@@ -444,7 +467,7 @@ sub buildCommand_truth {
 }
 
 sub buildCommand_rnafold {
-	my ($settings, $refHash_sequence, $task) = @_;
+	my ($settings, $refHash_sequence, $task, $plotname) = @_;
 
 	my $cmd = "cd $tempWorkingDir && ".'rm -f dot.ps && echo "'.$refHash_sequence->{sequence}.'" | ';
 	
@@ -472,6 +495,7 @@ sub buildCommand_rnafold {
 	#~ }
 	
 	$cmd .= " -p";
+	$cmd .= " && cp dot.ps $plotname";
 	
 	return $cmd;
 }
@@ -514,6 +538,7 @@ sub checkParameters {
 	my ($settings) = @_;
 	
 	my $diePrefix = "wrong command line parameter:\n  ";
+	$settings->{'plotdir'} = Utils::absFilename($settings->{'plotdir'}).'/';
 	
 	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
 	die $diePrefix."Sorry, we don't provide a outside version for grammar \"macrostate\" yet.\n" if ($settings->{'grammar'} eq 'macrostate' && $settings->{'mode'} eq $Settings::MODE_ANALYSE_OUTSIDE);
@@ -566,14 +591,14 @@ EOF
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_SAMPLE."  : ", Utils::usage_convertInfoText("Probabilistic sampling based on partition function. This mode combines stochastic sampling with a-posteriori shape abstraction. A sample from the structure space holds M structures together with their shapes, on which classification is performed. The probability of a shape can then be approximated by its frequency in the sample.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_CAST."    : ", Utils::usage_convertInfoText("This mode is the RNAcast approache, see [".References::getNumber('ree:gie:2005')."].\nFor a family of RNA sequences, this method independently enumerates the near-optimal abstract shape space, and predicts as the consensus an abstract shape common to all sequences. For each sequence, it delivers the thermodynamically best structure which has this common shape.\nInput is a multiple fasta file, which should contain at least two sequences.\nOutput is sorted by \"score\" of common shapes, i.e. summed free energy of all sequences. R is the rank (= list position) of the shape in individual sequence analysis.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_EVAL."    : ", Utils::usage_convertInfoText("Evaluates the free energy of an RNA molecule in fixed secondary structure, similar to RNAeval from the Vienna group. Multiple answers stem from semantic ambiguity of the underlying grammar.\nIt might happen, that your given structure is not a structure for the sequence. Maybe your settings are too restrictive, e.g. not allowing lonely base-pairs (--@(allowlp)).\nIf you input a (multiple) FASTA file, ".$Settings::PROGINFOS{$PROGID}->{name}." assumes that exactly first half of the contents of each entry is RNA sequence, second half is the according structure. Whitespaces are ignored.", \%PARAM))."\n";
-	$HELP .= Utils::printIdent("  ".$Settings::MODE_CONVERT." : ", Utils::usage_convertInfoText("Converts a Vienna-Dot-Bracket representation of a secondary structure into a shape string.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_ABSTRACT." : ", Utils::usage_convertInfoText("Converts a Vienna-Dot-Bracket representation of a secondary structure into a shape string.", \%PARAM))."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_OUTSIDE." : ", Utils::usage_convertInfoText("Applies the \"outside\"-algorithm to compute probabilities for all base pairs (i,j), based on the partition function [".References::getNumber('mcc:1990')."]. Output is a PostScript file, visualizing these probabilities as a \"dot plot\".\nThe \"dot plot\" shows a matrix of squares with area proportional to the base pair probabilities in the upper right half. For each pair (i,j) with probability above --@(bppmthreshold) there is a line of the form\n    i  j  sqrt(p)  ubox\nin the PostScript file, so that they can be easily extracted.", \%PARAM))."\n";
 	
 	my @paramGroups = ();
 	push @paramGroups, {name => 'GENERAL OPTIONS', elements => ['mode', 'absolutedeviation', 'relativedeviation', 'shapelevel', 'lowprobfilter', 'lowprobfilteroutput', 'numsamples', 'showsamples', 'windowsize', 'windowincrement']};
 	push @paramGroups, {name => 'FOLDING OPTIONS', elements => ['grammar','temperature','param','allowlp']};
 	push @paramGroups, {name => 'OUTSIDE OPTIONS', elements => ['bppmthreshold','dotplotfilename','dotplotpng']};
-	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','probdecimals','help']};
+	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','probdecimals','plotdir','help']};
 	foreach my $refHash_group (@paramGroups) {
 		$HELP .= $refHash_group->{name}.":\n";
 		for my $par (@{$refHash_group->{elements}}) {
