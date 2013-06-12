@@ -1,0 +1,117 @@
+# STOCKHOLM 1.0
+#=GF ID    rne5
+#=GF AC    RF00040
+#=GF DE    RNase E 5' UTR element
+#=GF AU    Griffiths-Jones SR
+#=GF GA    23.0
+#=GF NC    19.3
+#=GF TC    23.7
+#=GF SE    Griffiths-Jones SR, Moxon SJ
+#=GF SS    Published; PMID:10817759
+#=GF TP    Cis-reg;
+#=GF BM    cmbuild  -F CM SEED; cmcalibrate --mpi -s 1 CM
+#=GF BM    cmsearch  -Z 274931 -E 1000000  --toponly  CM SEQDB
+#=GF DR    SO:0000204 SO:five_prime_UTR
+#=GF RN    [1]
+#=GF RM    10817759
+#=GF RT    An evolutionarily conserved RNA stem-loop functions as a sensor that
+#=GF RT    directs feedback regulation of RNase E gene expression.
+#=GF RA    Diwa A, Bricker AL, Jain C, Belasco JG;
+#=GF RL    Genes Dev 2000;14:1249-1260.
+#=GF CC    This family represents a conserved element found in the 5' UTR
+#=GF CC    of RNase E mRNA.  RNase E is a key regulatory enzyme in the pathway
+#=GF CC    of mRNA degradation in E. coli that is able to auto-regulate the
+#=GF CC    degradation of its own mRNA in response to changes in RNase E 
+#=GF CC    activity.  This rne 5' UTR element acts as a sensor of cellular 
+#=GF CC    RNase E concentration enabling tight regulation of RNase E 
+#=GF CC    concentration and synthesis.
+#=GF WK    http://en.wikipedia.org/wiki/RNase_E_5'_UTR_element
+#=GF SQ    6
+
+#=GS Pectobacterium_atros.1 AC    BX950851.1/2038367-2038030
+#=GS Photorhabdus_lumines.1 AC    BX571868.1/245396-245719
+#=GS P.alcalifaciens.1      AC    AF259268.1/36-432
+#=GS S.enterica.1           AC    AL627269.1/129907-129570
+#=GS S.marcescens.1         AC    AF259269.1/38-376
+#=GS Y.pseudotuberculosis.1 AC    AF259267.1/37-374
+
+Pectobacterium_atros.1             UUUCCCACGCGGA..UUUCCGAUAAACAAGGGGAAAUU...GCGAAGUUA
+Photorhabdus_lumines.1             CAGUUUU..UUAA..UCCU...GAAU....GGCGAAGU....UAAACGUU
+P.alcalifaciens.1                  CUGCCAA....GA..UGUU...UAAA....AACGAAAA....UUGGCUUU
+S.enterica.1                       GUUUCCGCACCGAAACUUGU..UAAA...ACAAAAAGUUUAGCGGAAUAA
+S.marcescens.1                     CUUUCCGCGUUGA..UUCUCGUUAAACA.GGGAAAACG...GUGGAAUUA
+Y.pseudotuberculosis.1             AAUUCUACGUUGA..UUCUCGUUAGACC.AAGAGACUU...GUGGAAUAA
+#=GC SS_cons                       ..<<<<<<.......<<<<<.........>>>>>.......>>>>>>...
+
+Pectobacterium_atros.1             C.................................................
+Photorhabdus_lumines.1             U.................................................
+P.alcalifaciens.1                  GCUAUGUUAGCUUUAGGUGUUUUUGCACUUUCAGCUAUAAUUAUUUUUAG
+S.enterica.1                       C.................................................
+S.marcescens.1                     U.................................................
+Y.pseudotuberculosis.1             U.................................................
+#=GC SS_cons                       ..................................................
+
+Pectobacterium_atros.1             .................................UAAAU..UUGCCUGAUA
+Photorhabdus_lumines.1             .................................GUUCU..UCAUUUGAUU
+P.alcalifaciens.1                  CUAGUAGAAUACAAGUUAGACGUAAUACUGUAGGAAUUUAUUAUUUGAUG
+S.enterica.1                       .................................CCAUU..UUGUCUGA.C
+S.marcescens.1                     .................................AAAAU..UUGUCUGAUC
+Y.pseudotuberculosis.1             .................................AAACU..UUGCCUGAUC
+#=GC SS_cons                       ........................................<<<<<<<<..
+
+Pectobacterium_atros.1             ACGCACAC.ACGCAGCAAUGGCGUAAGACGU.AAUGCGAA.AUCAAGCAG
+Photorhabdus_lumines.1             GCACAAAA.ACGCAGCAAUGGCGUAAGACGU.ACUGGGAA.AUCAAAUAA
+P.alcalifaciens.1                  GCGU.AACGAUGCUGCAAUGGCGUAAGACAUCUA.AC.AAGAUCAAGUAA
+S.enterica.1                       CGAUCAUCAACGCAGCAAUGGCGUAAGACGUAUUGAUUUU..UCAGACAG
+S.marcescens.1                     GCGCAAAA.ACGCAGCAAUGGCGUAAGACGU.AAUGCGAA.AUCAAACAA
+Y.pseudotuberculosis.1             ACACAAAA.ACGCGGCAAUGGCGUAAGACGU.AAUGUGAA.AUCAAGCAA
+#=GC SS_cons                       .<<<<....<<<..<<....>>......>>>...>>>>....>>>>>>>>
+
+Pectobacterium_atros.1             .UUAGCGGGCUGUGGAUUGCAGC.UUGGCCGGCAAAU...GGAAUCAGAU
+Photorhabdus_lumines.1             .UUAGCGGGCUACGGGUAGCAGA.U.UACUGGAAU.....CGGAUCAAAU
+P.alcalifaciens.1                  AUUAGCGAGCAACGAA.UUUU.....AGCU.UAUUGGGUUGGG.AGUCUC
+S.enterica.1                       .UUAGCGGGCUGCGGGUUGCAGUCCUUACCGGUAGAU...AGGAUCUUCU
+S.marcescens.1                     .UUAGCGGGCUGCGGGUUGCAGC.UUGGCCGGCAAAU...GGAAUCAGAU
+Y.pseudotuberculosis.1             .UUAGCGGGCUGCGGGUUGCAGC.UUGGCCGGCAAGU...GGGUAAAGCU
+#=GC SS_cons                       ......<<<<<<<<<<<........<<<<<<<........<<<<<....<
+
+Pectobacterium_atros.1             CUGG.CGACAU.UAU..UCAGAAGCUGUUCCCUCAGUA.AAUGCGCUGU.
+Photorhabdus_lumines.1             CAGCUUCAUUUAUAUUUGCAGA..UUAUUCCUAGAAA..AGGGUACUGU.
+P.alcalifaciens.1                  CGUUUUCUAAGAAAU.UUACGGCA..UCCUGAUUA....AGAACGCUGAA
+S.enterica.1                       CUGG.AGAGUAAUGC..CCAGG.CUGCUUCCCUGAUA..AUUGCGCUGUG
+S.marcescens.1                     CUG.UCGACGUAAAU...CAGAGGCUAUUCCCCUAGUA.AAAGUGCUGUC
+Y.pseudotuberculosis.1             CUGU.UGUCUUAAAU..UCAGAAGC.UACCCUUUAUAUAAAAGCGCUGUU
+#=GC SS_cons                       <<<<.............>>>>>....>>>>>..........<<<.<<<<.
+
+Pectobacterium_atros.1             UUUC.CAUCAGGAAA.UACAGGCU.ACCGA.AACA.UGCGUCUCUAUGCA
+Photorhabdus_lumines.1             UUUC.UAAGU.GAAAAUUCAGACCUGCCGA.AAAUAUGCGUCUCUAUACA
+P.alcalifaciens.1                  UUUUUAAUCUAAAAA..UCAGGUUCACCGAAUACUGCGCGUCUCUAUACG
+S.enterica.1                       UUUC.CGUAU.GAAA.UACAGGCA.ACCGA.CACUCUGCGCCUCUUUGAG
+S.marcescens.1                     UUUC.ACAAA.GAAA.AGCAGGCUUACCGA.GAUAAUGCGCCCCUAUGCA
+Y.pseudotuberculosis.1             UUUC.AGAAC.GAAA.CACAGGCUUACCGA.AAUAAUGCGCCCCUAUGCA
+#=GC SS_cons                       <<<<.......>>>>..>>>>>>>.<<<<<.........<<<<<......
+
+Pectobacterium_atros.1             ..GGCGACAACCGGGAGGUUGACGUCCCUGCGAUAAGCCACGAGGCCAUC
+Photorhabdus_lumines.1             ..AACGACAACCGGGAGGUUGGCGGAUUUG.UAAAAGACACGAGACCAUC
+P.alcalifaciens.1                  ..AACGACUGCCGAGAGGUAGACGGCUUUG.UAAAAAUCAUGAGGCCAUC
+S.enterica.1                       CUGACGAUAACCGUGAGGUUGGCGACGCGA..AAUAGUCACGAGGCCAUC
+S.marcescens.1                     ..GGCGACAACCGUGAGGUUGACGACUUUGCGAGAAGACACGGGGCUUUC
+Y.pseudotuberculosis.1             ..GGCGACAACCGUGAGGUUGACGGCUUAGCUAGAAGACUCGGGGCCAUC
+#=GC SS_cons                       ....<<.<<<<<....>>>>>.>>.................>>>>>..>>
+
+Pectobacterium_atros.1             GGUUC..ACUCCGGUCAUGCGGUUCU.....UUUUGUCCGCAGCUCUAUC
+Photorhabdus_lumines.1             GGU.U..A..CCAGUC....GCUCAUCUAUAUUU.GCCCGUAGCUCUAUA
+P.alcalifaciens.1                  GGUUUACAGU..AGCU.....CUUUC.....U....UUCGCUGCUCUUU.
+S.enterica.1                       GGUUCAUGC.CCGGUAA.GGCGUCAC.....CAU.GCCCGCAGCUUAGUC
+S.marcescens.1                     GGUUUA.ACUCCGGCCAUGAGGUUAU.....UUU.GCCCGCAGCUUUGUC
+Y.pseudotuberculosis.1             GGUUU..AC.CCGGUCAUGAGGUUAU.....UUU.GCCCGCAGUUCUAAC
+#=GC SS_cons                       >>>.......>>>>>>>..................>>>>>>>>>>>....
+
+Pectobacterium_atros.1             AAUAA
+Photorhabdus_lumines.1             ACUAA
+P.alcalifaciens.1                  .AUUA
+S.enterica.1                       GUCAA
+S.marcescens.1                     GAUAA
+Y.pseudotuberculosis.1             GCCAA
+#=GC SS_cons                       .....
+//
