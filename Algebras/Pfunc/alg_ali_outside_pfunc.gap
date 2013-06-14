@@ -26,7 +26,7 @@ algebra alg_ali_outside_pfunc implements sig_outside_foldrna(alphabet = M_Char, 
 	}
 	double outer_sr(Subsequence rb, double x, Subsequence lb) {
 		Subsequence shifted = shiftIndex(lb);
-		return x * scale(2) * mk_pf(int(sr_energy(shifted, rb) / float(rows(lb))) + covscore(shifted, shifted.i, rb.i));
+		return x * scale(2) * mk_pf(sr_energy(shifted, rb) / float(rows(lb)) + covscore(shifted, shifted.i, rb.i));
 	}
 	double outer_bl(Subsequence loc, double x, Subsequence leftRegion) {
 		Subsequence nlb = loc;
