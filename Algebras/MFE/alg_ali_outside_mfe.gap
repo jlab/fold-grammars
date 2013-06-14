@@ -90,7 +90,7 @@ algebra alg_ali_outside_mfe implements sig_outside_foldrna(alphabet = M_Char, an
 		mfecovar res = x;
 		Subsequence shifted = shiftIndex(lb);
 		res.covar = res.covar + covscore(shifted, shifted.i, rb.i);
-		return x;
+		return res;
 	}
 	mfecovar window(Subsequence l, mfecovar x, Subsequence r) {
 		return x;
