@@ -34,10 +34,10 @@
     return x * mk_pf(termau_energy(lb, rb) / float(rows(lb)));
   }
   double sr(Subsequence lb, double x, Subsequence rb) {
-	return x * scale(2) * mk_pf(int(sr_energy(lb, rb) / float(rows(lb))) + covscore(lb, lb.i, rb.i));
+	return x * scale(2) * mk_pf(sr_energy(lb, rb) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
   }
   double hl(Subsequence lb, Subsequence r, Subsequence rb) {
-	return scale(2+r.j-r.i) * mk_pf(int(hl_energy(r) / float(rows(r))) + covscore(lb, lb.i, rb.i));
+	return scale(2+r.j-r.i) * mk_pf(hl_energy(r) / float(rows(r)) + covscore(lb, lb.i, rb.i));
   }
   double bl(Subsequence lb, Subsequence lr, double x, Subsequence rb) {
 	return x * scale(2+lr.j-lr.i) * mk_pf(bl_energy(lr, rb) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
