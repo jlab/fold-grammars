@@ -29,10 +29,9 @@ my %NAMES = (
 );
 
 #read Files
-	my %distances = ();
 	my %distSum = ();
 	my %distNumSamples = ();
-	my ($minValue, $maxValue) = (99999, -99999);
+	print STDERR "read dot-plots: ";
 	for (my $i = 5; $i <= 50; $i++) {
 		my $fileNotMissing = 'true';
 		foreach my $grammar (@GRAMMARS) {
@@ -49,19 +48,17 @@ my %NAMES = (
 					$data{$grammar.$lp} = Helper::readDotplot_Hash('PLOTS/plot_unnamed-sequence-'.$i.'_gapc_'.$grammar.'_'.$lp.'.ps');
 				}
 			}
-			
+			print STDERR ".";
 			foreach my $a (@COMBINATIONS) {
 				foreach my $b (@COMBINATIONS) {
 					my $distance = compare_bbp($data{$a}, $data{$b});
-					$distances{$i}->{$a}->{$b} += $distance;
 					$distSum{$a}->{$b} += $distance;
 					$distNumSamples{$a}->{$b}++;
-					$minValue = $distance if ($distance < $minValue);
-					$maxValue = $distance if ($distance > $maxValue);
 				}
 			}
 		}
 	}
+	print STDERR " done.\n";
 
 our $LATEX .= '\documentclass[paper=A3,landscape]{scrartcl}'."\n";
 $LATEX .= '\usepackage{tabularx,colortbl}'."\n";
@@ -72,14 +69,13 @@ $LATEX .= '\usepackage{rotating}'."\n";
 $LATEX .= '\usepackage{multicol}'."\n\n";
 $LATEX .= '\usepackage{xspace}'."\n\n";
 $LATEX .= '\begin{document}'."\n";
-foreach my $seq (sort {$a <=> $b} keys(%distances)) {
-#~ foreach my $pre ('PLOTS/plot_unnamed-sequence-20_gapc_','PLOTS/plot_unnamed-sequence-10_gapc_') {
-#~ for (my $i = 5; $i <= 50; $i++) {
-	$LATEX .= createLatexTable($distances{$seq}, 'PLOTS/plot_unnamed-sequence-'.$seq.'_gapc_');
-}
+my ($minValue, $maxValue) = (99999, -99999);
 foreach my $a (@COMBINATIONS) {
 	foreach my $b (@COMBINATIONS) {
-		$distSum{$a}->{$b} /= $distNumSamples{$a}->{$b};
+		my $distance = $distSum{$a}->{$b} / $distNumSamples{$a}->{$b};
+		$distSum{$a}->{$b} = $distance;
+		$minValue = $distance if ($distance < $minValue);
+		$maxValue = $distance if ($distance > $maxValue);
 	}
 }
 $LATEX .= createLatexTable(\%distSum, 'average');
@@ -124,7 +120,7 @@ sub createLatexTable {
 			}
 			$LATEX .= $NAMES{$a}." \\\\ \n";
 		}
-	$LATEX .= "\t\\multicolumn{".(1+@COMBINATIONS)."}{c}{".escapeLatex($name)."} \\\\ \n";
+	#~ $LATEX .= "\t\\multicolumn{".(1+@COMBINATIONS)."}{c}{".escapeLatex($name)."} \\\\ \n";
 	$LATEX .= "\t\\end{tabularx}\n";
 	
 	return $LATEX;

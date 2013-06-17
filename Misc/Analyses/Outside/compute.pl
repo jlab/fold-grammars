@@ -1,17 +1,24 @@
 #!/usr/bin/env perl
 
-use lib "../../Applications/lib/";
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+
+use lib getPath($0)."../../Applications/lib/";
 
 use strict;
 use warnings;
 use Data::Dumper;
 use foldGrammars::Utils;
+use foldGrammars::Settings;
+use Helper;
 
 my $binDir = "bin/";
 $binDir = Utils::absFilename($binDir).'/';
-my $binRNAsubopt = 'RNAsubopt';
-my $binRNAfold = 'RNAfold';
-my $binRNAalifold = 'RNAalifold';
 
 my @grammars = ("nodangle","overdangle","microstate");
 
@@ -38,42 +45,59 @@ my $idName = $parts[$#parts];
 
 my %bpprobs = ();
 my %sssizes = ();
-print STDERR "computing base pair probabilities: ";
+print STDERR "input file is: '$input'\n";
+print STDERR "grammar: $grammar\n";
+print STDERR "lp: $lp\n";
 my $settingsSuffix = $grammar.'_lp='.$lp;
 foreach my $plotType ('gapc','vienna','truthVienna','truthGapc') {
 #~ foreach my $plotType ('truthGapc') {
-	#~ print STDERR ". ($plotType)";
-	print STDERR ".";
+	print STDERR "computing '$plotType': ";
 	my $plotFileName = $plotDir.'/'.$idName.'-'.$settingsSuffix.'-'.$plotType.'.ps';
 	my ($refHash_bpprobs, $sssize) = (undef, undef);
 	if (! -e $plotFileName) {
 		if ($plotType =~ m/^truth(\w+)/) {
 			my $package = lc($1);
 			($refHash_bpprobs, $sssize) = getSuboptBPprobs($package,$type,$input,$grammar,$lp) unless (($type eq 'ali') && ($package eq 'vienna'));
+		#~ print Dumper 	$refHash_bpprobs, $sssize;die;
 			$sssizes{$plotType} = $sssize;
 		} else {
 			$refHash_bpprobs = computeBPprobs($plotType, $type, $input, $grammar, $lp);
 		}
-		open (PS, "> ".$plotFileName) || die "can't write to '$plotFileName': $1";
-			my $sequence = getGapInput($input, 0);
-			($sequence) = ($sequence =~ m/^(.+?)#/) if ($sequence =~ m/#/);
-			print PS printPS($refHash_bpprobs, $sequence);
-		close (PS);
+		if (defined $refHash_bpprobs) {
+			open (PS, "> ".$plotFileName) || die "can't write to '$plotFileName': $1";
+				my $sequence = getGapInput($input, 0);
+				($sequence) = ($sequence =~ m/^(.+?)#/) if ($sequence =~ m/#/);
+				print PS printPS($refHash_bpprobs, $sequence);
+			close (PS);
+		}
 	} else {
-		$refHash_bpprobs = readDotplot($plotFileName);
+		$refHash_bpprobs = Helper::readDotplot($plotFileName);
 	}
 	$bpprobs{$plotType} = $refHash_bpprobs;
+	print STDERR " done.\n";
 }
 my $sssizeFilename = $plotDir."/".$idName."-".$settingsSuffix.".info";
-open (SSS, "> ".$sssizeFilename) || die "can't write to '$sssizeFilename': $!";
-	print SSS "search space size gapc: ".$sssizes{'truthGapc'}."\n";
-	my $ssVienna = $sssizes{'truthVienna'};
-	$ssVienna = 'unknown' if (not defined $ssVienna);
-	print SSS "search space size vienna: ".$ssVienna."\n";
-close (SSS);
-print STDERR " done.\n";
+if (-e $sssizeFilename) {
+	open (SSS, $sssizeFilename) || die "can't read '$sssizeFilename': $!";
+		while (my $line = <SSS>) {
+			if ($line =~ m/search space size (\w+):\s+(\d+)/) {
+				my $name = $1;
+				$name = substr(uc($name),0,1).substr($name,1);
+				$sssizes{'truth'.$1} = $2;
+			}
+		}
+	close (SSS);
+} else {
+	open (SSS, "> ".$sssizeFilename) || die "can't write to '$sssizeFilename': $!";
+		print SSS "search space size gapc: ".$sssizes{'truthGapc'}."\n";
+		my $ssVienna = $sssizes{'truthVienna'};
+		$ssVienna = 'unknown' if (not defined $ssVienna);
+		print SSS "search space size vienna: ".$ssVienna."\n";
+	close (SSS);
+}
+print STDERR "successfully ended!\n";
 
-#~ print Dumper \%bpprobs, \%sssizes;
+#~ print Dumper $bpprobs{randomSequence_5.fasta};
 
 
 sub getSuboptBPprobs {
@@ -84,7 +108,16 @@ sub getSuboptBPprobs {
 		my $binary = $binDir.'RNA'.($type eq 'ali' ? 'ali' : '').'shapes_enum_'.$grammar;
 		my $options = '-e 99999 -u '.($lp eq 'yes' ? '1' : '0');
 		my $gapcInput = getGapInput($input, 0);
-		$results = qx($binary $options $gapcInput);
+		for (my $runs = 0; $runs < 3; $runs++) {
+			$results = qx($binary $options $gapcInput 2>&1);
+			if ($results =~ m/Resource temporarily unavailable/) {
+				sleep 5;
+			} elsif ($results =~ m/abort/i) {
+				print STDERR "ERROR! Input was $binary $options $gapcInput\n";
+			} else {
+				last;
+			}
+		}
 	} else {
 		if ($type eq 'ali') {
 			die "there is no RNAsubopt equivalent for alignments!\n";
@@ -97,13 +130,23 @@ sub getSuboptBPprobs {
 			} elsif ($grammar eq 'microstate') {
 				$options .= " -d1";
 			}
-			$results = qx($binRNAsubopt $options < $input);
+			for (my $runs = 0; $runs < 3; $runs++) {
+				$results = qx($Settings::BINARIES{'RNAsubopt'} $options < $input);
+				if ($results =~ m/Resource temporarily unavailable/) {
+					sleep 5;
+				} elsif ($results =~ m/abort/i) {
+					print STDERR "ERROR! Input was $Settings::BINARIES{'RNAsubopt'} $options $input\n";
+				} else {
+					last;
+				}
+			}
 		}
 	}
 
 	my $pfAll = 0;
 	my $searchSpaceSize = 0;
 	my %pfBP = ();
+	my $minOneStructure = 'false';
 	foreach my $line (split(m/\r?\n/, $results)) {
 		my ($energy, $structure) = (undef, undef);
 		if ($line =~ m/^\( (.+?) , \( (.+?) = energy: .+? \+ covar\.: .+? \) \)$/) {
@@ -117,12 +160,13 @@ sub getSuboptBPprobs {
 		}
 		
 		if (defined $energy && defined $structure) {
+			$minOneStructure = 'true';
 			my %pairs = %{Utils::getPairList($structure)};
 			my $pfValue = exp(-1 * ($energy) / (0.00198717*310.15));
 			$pfAll += $pfValue;
 			$searchSpaceSize++;
 			foreach my $open (keys(%pairs)) {
-				$pfBP{$open}->{$pairs{$open}} += $pfValue;
+				$pfBP{$open+1}->{$pairs{$open}+1} += $pfValue;
 			}
 		}
 	}
@@ -133,7 +177,11 @@ sub getSuboptBPprobs {
 		}
 	}
 	
-	return (\%pfBP, $searchSpaceSize);
+	if ($minOneStructure eq 'false') {
+		return (undef, $searchSpaceSize);
+	} else {
+		return (\%pfBP, $searchSpaceSize);
+	}
 }
 
 sub computeBPprobs {
@@ -144,16 +192,26 @@ sub computeBPprobs {
 		my $binary = $binDir.'RNA'.($type eq 'ali' ? 'ali' : '').'shapes_outside_'.$grammar;
 		my $gapcInput = getGapInput($input, 1);
 		my $currentDir = qx(pwd); chomp $currentDir;
-		my $tmpDir = Utils::createUniqueTempDir('/tmp/', 'outsideEvaluation_');
+		my $tmpDir = Utils::createUniqueTempDir('/vol/cluster-data/sjanssen/TMP/', 'outsideEvaluation_');
 		my $psName = $tmpDir.'/dotPlot.ps';
-		my $options = ' -u '.($lp eq 'yes' ? '1' : '0').' -o '.$psName;
-		my $results = qx($binary $options $gapcInput);
-		%bpp = %{readDotplot($psName)};
+		my $options = '-F 0 -u '.($lp eq 'yes' ? '1' : '0').' -o '.$psName;
+		my $results = undef;
+		for (my $runs = 0; $runs < 3; $runs++) {
+			$results = qx($binary $options $gapcInput 2>&1);
+			if ($results =~ m/Resource temporarily unavailable/) {
+				sleep 5;
+			} elsif ($results =~ m/abort/i) {
+				print STDERR "ERROR! Input was $binary $options $gapcInput\n";
+			} else {
+				last;
+			}
+		}
+		%bpp = %{Helper::readDotplot($psName)};
 		chdir $currentDir;
 		qx(rm -rf $tmpDir);
 	} else {
-		my $binary = ($type eq 'single' ? $binRNAfold : $binRNAalifold);
-		my $options = "-p ".($lp eq 'no' ? '--noLP' : '');
+		my $binary = ($type eq 'single' ? $Settings::BINARIES{'RNAfold'} : $Settings::BINARIES{'RNAalifold'});
+		my $options = "--bppmThreshold=0 -p ".($lp eq 'no' ? '--noLP' : '');
 		if ($grammar eq 'overdangle') {
 			$options .= " -d2";
 		} elsif ($grammar eq 'nodangle') {
@@ -162,8 +220,18 @@ sub computeBPprobs {
 			$options .= " -d1";
 		}
 		my $currentDir = qx(pwd); chomp $currentDir;
-		my $tmpDir = Utils::createUniqueTempDir('/tmp/', 'outsideEvaluation_');
-		my $results = qx($binary $options < $input);
+		my $tmpDir = Utils::createUniqueTempDir('/vol/cluster-data/sjanssen/TMP/', 'outsideEvaluation_');
+		my $results = undef;
+		for (my $runs = 0; $runs < 3; $runs++) {
+			$results = qx($binary $options < $input 2>&1);
+			if ($results =~ m/Resource temporarily unavailable/) {
+				sleep 5;
+			} elsif ($results =~ m/abort/i) {
+				print STDERR "ERROR! Input was $binary $options $input\n";
+			} else {
+				last;
+			}
+		}
 		my $psName = undef;
 		foreach my $file (split(m/,\s+/, join("", qx(ls -m $tmpDir)))) {
 			chomp $file;
@@ -173,32 +241,12 @@ sub computeBPprobs {
 			}
 		}
 		$psName = $tmpDir.'/'.($type eq 'ali' ? 'ali' : '').'dot.ps' if (not defined $psName || $psName eq '');
-		%bpp = %{readDotplot($psName)};
+		%bpp = %{Helper::readDotplot($psName)};
 		chdir $currentDir;
 		qx(rm -rf $tmpDir);
 	}
 	
 	return \%bpp;
-}
-
-sub readDotplot {
-	my ($filename) = @_;
-	
-	my $seqSize = 0;
-	my %bpprobs = ();
-	open (DP, $filename) || die "can't read dotplot '$filename': $!";
-		while (my $line = <DP>) {
-			if ($line =~ m/^(\d+)\s+(\d+)\s+(\d\.\d+)\s+ubox/) {
-				$bpprobs{$1}->{$2} = $3**2;
-				$seqSize = $2 if ($2 > $seqSize);
-			} elsif ($line =~ m/^.+?\s+.+?\s+hsb\s+(\d+)\s+(\d+)\s+(.+?)\s+ubox$/) {
-				$bpprobs{$1}->{$2} = $3**2;
-				$seqSize = $2 if ($2 > $seqSize);
-			}
-		}
-	close (DP);
-	
-	return \%bpprobs;
 }
 
 sub getGapInput {
@@ -217,7 +265,7 @@ sub getGapInput {
 sub extractInput_fasta {
 	my ($refHash_sequence, $forOutside) = @_;
 	my $seq = lc($refHash_sequence->{sequence});
-	$seq .= 'N'.lc($refHash_sequence->{sequence}) if (defined $forOutside && $forOutside);
+	$seq .= '+'.lc($refHash_sequence->{sequence}) if (defined $forOutside && $forOutside);
 	return $seq;
 }
 
@@ -227,7 +275,7 @@ sub extractInput_clustal {
 	my $gapInput = "";
 	foreach my $ID (keys(%{$refHash_alignment->{sequences}})) {
 		$gapInput .= lc($refHash_alignment->{sequences}->{$ID});
-		$gapInput .= 'N'.lc($refHash_alignment->{sequences}->{$ID}) if (defined $forOutside && $forOutside);
+		$gapInput .= '+'.lc($refHash_alignment->{sequences}->{$ID}) if (defined $forOutside && $forOutside);
 		$gapInput .= "#";
 	}
 	$gapInput =~ s/\./_/g;
@@ -241,7 +289,7 @@ sub printPS {
 	my $pairs = "";
 	foreach my $open (sort {$a <=> $b} keys(%{$refList_bpProbs})) {
 		foreach my $close (sort {$a <=> $b} keys(%{$refList_bpProbs->{$open}})) {
-			$pairs .= ($open+1)." ".($close+1)." ".sqrt($refList_bpProbs->{$open}->{$close})." ubox\n";
+			$pairs .= ($open)." ".($close)." ".sqrt($refList_bpProbs->{$open}->{$close})." ubox\n";
 			$guessedSeqSize = $close if ($close > $guessedSeqSize);
 		}
 	}
