@@ -13,7 +13,7 @@
              | outer_il(REGION with maxsize(30), outer_bp(BASE, outer_strong, BASE) with basepair, REGION with maxsize(30))
              # h;
 
-  outer_dangle = sep(struct, BASE with containsBase(N_BASE), struct)
+  outer_dangle = sep(struct, BASE with containsBase(SEPARATOR_BASE), struct)
                | incl(outer_multiloop)
                # h;
 

@@ -157,7 +157,7 @@ sub doComputation {
 		$seq =~ s/t/u/gi;
 		$seq =~ s/\.|\-/\_/g;
 		$seq = uc($seq);
-		$seq = $seq.'N'.$seq if ($settings->{mode} eq $Settings::MODE_OUTSIDE);
+		$seq = $seq.'+'.$seq if ($settings->{mode} eq $Settings::MODE_OUTSIDE);
 		$gapInput .= $seq.'#';
 	}
 	
