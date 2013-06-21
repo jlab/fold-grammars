@@ -257,44 +257,5 @@ inline const std::string getRepresentation(Basic_Subsequence<char, unsigned> inp
 		}\
 		std::cout << "\n";\
 
-//the energy function ext_mismatch_energy must be adapted for outside computations, because the right border is no longer size of the input sequence, due to seq#seq trick
-template<typename alphabet, typename pos_type>
-inline int ext_mismatch_energy_outside(const Basic_Subsequence<alphabet, pos_type> &a, const Basic_Subsequence<alphabet, pos_type> &b) {
-	int energy = 0;
-	assert(a.seq->rows() == b.seq->rows());
-
-	unsigned int n = (a.seq->n-1)/2;
-	unsigned int left = a.i;
-	unsigned int right = b.j-1;
-	if (a.i > n) {
-		left = left - n - 1;
-		right = right - n - 1;
-	}
-	for (unsigned k = 0; k < a.seq->rows(); k++) {
-		energy += ext_mismatch_energy(a.seq->row(k), left, right, n);
-	}
-
-	return energy;
-}
-
-template<typename alphabet, typename pos_type>
-inline int dr_energy_outside(const Basic_Subsequence<alphabet, pos_type> &a, const Basic_Subsequence<alphabet, pos_type> &b) {
-	int energy = 0;
-	assert(a.seq->rows() == b.seq->rows());
-
-	unsigned int n = (a.seq->n-1)/2;
-	unsigned int left = a.i;
-	unsigned int right = b.j-1;
-	if (a.i > n) {
-		left = left - n - 1;
-		right = right - n - 1;
-	}
-	for (unsigned k = 0; k < a.seq->rows(); k++) {
-		energy += dr_energy(a.seq->row(k), left, right, n);
-	}
-
-	return energy;
-}
-
 #endif
 
