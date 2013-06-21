@@ -1,4 +1,4 @@
-algebra alg_ali_outside_pfunc_dummy implements sig_outside_foldrna(alphabet = M_Char, answer = double) {
+algebra alg_ali_outside_pfunc implements sig_outside_foldrna(alphabet = M_Char, answer = double) {
 	include "Algebras/Pfunc/Parts/algpart_ali_pfunc_basic.gap"
   
 	double sep(double innerRight, Subsequence sepChar, double innerLeft) {
@@ -15,14 +15,14 @@ algebra alg_ali_outside_pfunc_dummy implements sig_outside_foldrna(alphabet = M_
 	double outer_edr(Subsequence rdangle, double x, Subsequence lb) {
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return x * scale(1) * mk_pf((termau_energy(shiftIndex(lb), rb) + dr_energy_outside(shiftIndex(lb), rb)) / float(rows(lb)));
+		return x * scale(1) * mk_pf((termau_energy(shiftIndex(lb), rb) + dr_energy(shiftIndex(lb), rb)) / float(rows(lb)));
 	}
 	double outer_edlr(Subsequence rdangle, double x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
 		Subsequence rb = rdangle;
 		rb.j = rdangle.j-1;
-		return x * scale(2) * mk_pf((termau_energy(shiftIndex(lb), rb) + ext_mismatch_energy_outside(shiftIndex(lb), rb)) / float(rows(ldangle)));
+		return x * scale(2) * mk_pf((termau_energy(shiftIndex(lb), rb) + ext_mismatch_energy(shiftIndex(lb), rb)) / float(rows(ldangle)));
 	}
 	double outer_sr(Subsequence rb, double x, Subsequence lb) {
 		Subsequence shifted = shiftIndex(lb);
@@ -68,21 +68,4 @@ algebra alg_ali_outside_pfunc_dummy implements sig_outside_foldrna(alphabet = M_
 		MAKEPLOT(pos);
 		return 1.0; 
 	}
-}
-
-algebra alg_ali_outside_pfunc extends alg_ali_outside_pfunc_dummy {
-  double edr(Subsequence lb, double x, Subsequence rdangle) {
-    Subsequence rb = rdangle;
-    rb.j = rdangle.j-1;
-
-	return x * scale(1) * mk_pf((termau_energy(lb, rb) + dr_energy_outside(lb, rb)) / float(rows(lb)));
-  }
-  double edlr(Subsequence ldangle, double x, Subsequence rdangle) {
-    Subsequence lb = ldangle;
-    lb.i = ldangle.i+1;
-    Subsequence rb = rdangle;
-    rb.j = rdangle.j-1;
-	  
-	return x * scale(2) * mk_pf((termau_energy(lb, rb) + ext_mismatch_energy_outside(lb,rb)) / float(rows(ldangle)));
-  }
 }
