@@ -1,3 +1,27 @@
+rnaalishapes (2.3.1-0ubuntu1~raring1) raring; urgency=low
+
+  * corrections to energy libraries
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 21 Jun 2013 22:11:42 +0200
+
+rnaalishapes (2.3.1-0ubuntu1~quantal1) quantal; urgency=low
+
+  * corrections to energy libraries
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 21 Jun 2013 22:11:35 +0200
+
+rnaalishapes (2.3.1-0ubuntu1~precise1) precise; urgency=low
+
+  * corrections to energy libraries
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 21 Jun 2013 22:11:28 +0200
+
+rnaalishapes (2.3.1-0ubuntu1~lucid1) lucid; urgency=low
+
+  * corrections to energy libraries
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 21 Jun 2013 22:06:51 +0200
+
 rnaalishapes (2.3.0-0ubuntu1~raring1) raring; urgency=low
 
   * added individual structure probability computation at user request
