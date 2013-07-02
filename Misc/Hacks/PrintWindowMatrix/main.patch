@@ -1,0 +1,14 @@
+--- out_main.cc	2013-07-02 12:11:47.928664849 +0200
++++ new_main.cc	2013-07-02 12:11:54.172695812 +0200
+@@ -71,11 +71,7 @@
+ #ifdef WINDOW_MODE
+   unsigned n = obj.t_0_seq.size();
+   for (unsigned int i = 0; ; i+=gapc::Opts::getOpts()->window_increment) {
+-    unsigned int right = std::min(n, i+gapc::Opts::getOpts()->window_size);
+     gapc::return_type res = obj.run();
+-    std::cout << "Answer ("
+-      << i << ", " << right << ") :\n";
+-    obj.print_result(std::cout, res);
+     for (unsigned int j = 0; j<gapc::Opts::getOpts()->repeats; ++j)
+       obj.print_backtrack(std::cout, res);
+     if (i+gapc::Opts::getOpts()->window_size >= n)

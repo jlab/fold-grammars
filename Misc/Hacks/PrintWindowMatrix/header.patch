@@ -1,0 +1,47 @@
+--- out.hh	2013-07-02 11:51:08.570519208 +0200
++++ adapt.hh	2013-07-02 11:50:11.038233920 +0200
+@@ -1142,6 +1142,20 @@
+  public:
+    void cyk();
+ 
++ private:
++   template <typename PFUNC, typename SHAPE>
++   void printWindows(Hash::Ref<std::pair<Shape, PFUNC> , SHAPE > result, unsigned int left, unsigned int right) {
++	   PFUNC pfAll = 0.0;
++	   for (typename Hash::Ref<std::pair<Shape, PFUNC> , SHAPE >::iterator shape = result.ref().begin(); shape != result.ref().end(); ++shape) {
++		   pfAll += (*shape).second;
++	   }
++	   for (typename Hash::Ref<std::pair<Shape, PFUNC> , SHAPE >::iterator shape = result.ref().begin(); shape != result.ref().end(); ++shape) {
++		   PFUNC prob = (*shape).second;
++		   prob /= pfAll;
++		   std::cout << left << "\t" << (right-1) << "\t" << (*shape).first << "\t" << prob << "\n";
++	   }
++   }
++
+  public:
+    out_hash_h &  run()
+ {
+@@ -1145,7 +1145,22 @@
+  public:
+    out_hash_h &  run()
+ {
+-  return nt_struct(t_0_left_most, t_0_right_most);
++	   if (gapc::Opts::getOpts()->window_increment != 1) {
++		   std::cerr << "window increment must be 1!\n";
++		   exit(1);
++	   }
++	   for (unsigned int i = t_0_left_most+1; i <= t_0_right_most; i++) {
++		   printWindows(nt_struct(t_0_left_most, i), t_0_left_most, i);
++	   }
++	   //for the last window only: print the right triangle of sub-words
++	   if (t_0_right_most == t_0_seq.n) {
++		   for (unsigned int i = t_0_left_most; i <= t_0_right_most; i++) {
++			   for (unsigned int j = i+1; j <= t_0_right_most; j++) {
++				   printWindows(nt_struct(i, j), i, j);
++			   }
++		   }
++	   }
++	   return nt_struct(t_0_left_most, t_0_right_most);
+ }
+ void print_stats(std::ostream &o)
+ {
