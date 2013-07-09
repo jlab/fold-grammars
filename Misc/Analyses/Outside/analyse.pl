@@ -50,8 +50,90 @@ opendir(DIR, $plotDir) || die "can't read directory '$plotDir': $1";
 closedir(DIR);
 print STDERR " done.\n";
 
-plotCorrectness(\%probs, 'fasta', 'data_single.pdf');
-plotCorrectness(\%probs, 'clustalW', 'data_ali.pdf');
+plotCorrectness(\%probs, 'fasta', 'correctness_bppm_sequence.pdf');
+plotCorrectness(\%probs, 'clustalW', 'correctness_bppm_alignment.pdf');
+plotDangles(\%probs, 'fasta', 'dangles_seq.pdf');
+plotDangles(\%probs, 'clustalW', 'dangles_ali.pdf');
+
+sub plotDangles {
+	my ($refHash_probs, $fileEnding, $pdffile) = @_;
+	
+	my $datafile = 'tmpD.data';
+	writeDanglesData($refHash_probs, $fileEnding, $datafile);
+	
+	open (R, " | R --vanilla");
+		print R 'require(gplots)'."\n";
+		print R 'pdf("'.$pdffile.'", width='.(1*7).', height=7)'."\n";
+		print R 'require(gplots)'."\n";
+		print R 'seq <- read.csv("'.$datafile.'", header=TRUE, sep="\t")'."\n";
+		print R 'data <- data.matrix(seq[2:7]);'."\n";
+		print R 'heatmap.2(data, labRow=seq$comp, labCol=seq$comp, Rowv=F, Colv=F,dendrogram="none", trace="none",key=F,col=colorRampPalette(c("white","black"))(256), cellnote=round(data.matrix(seq[2:7]),2), notecex=1.7, lmat=rbind(c(1,2),c(3,4)), lwid=c(1.0,0.2), lhei=c(1.0,0.2), notecol=c(apply(t(data[order(c(6,5,4,3,2,1)),]),1:2,function(x) if (x >= max(data)/2) {"white"} else {"black"})));'."\n";
+		print R 'dev.off()'."\n";
+	close (R);
+
+	#~ unlink $datafile;
+}
+
+sub writeDanglesData {
+	my ($refHash_probs, $fileEnding, $datafile) = @_;
+	
+	my @pairs = ();
+	foreach my $a_grammar (@grammars) {
+		foreach my $a_lp (@lps) {
+			foreach my $b_grammar (@grammars) {
+				foreach my $b_lp (@lps) {
+					push @pairs, [$a_grammar, $a_lp, $b_grammar, $b_lp];
+				}
+			}
+		}
+	}
+#~ print Dumper \$refHash_probs; die;	
+	my %distances = ();
+	my $count = 0;
+	foreach my $file (keys(%{$refHash_probs})) {
+		if ($file =~ m/_(\d+)\.$fileEnding$/) {
+			foreach my $pair (@pairs) {
+				$distances{$pair->[0]}->{$pair->[1]}->{$pair->[2]}->{$pair->[3]} += compare_bbp($refHash_probs->{$file}->{gapc}->{$pair->[0]}->{$pair->[1]}, $refHash_probs->{$file}->{gapc}->{$pair->[2]}->{$pair->[3]});
+			}
+			$count++;
+		}
+	}
+	
+	open (DATA, "> ".$datafile) || die "can't write data file '$datafile': $!";
+		#~ print DATA "grammarA\tlpA\tgrammarB\tlpB\tdistance\n";
+		foreach my $a (keys(%distances)) {
+			foreach my $b (keys(%{$distances{$a}})) {
+				foreach my $c (keys(%{$distances{$a}->{$b}})) {
+					foreach my $d (keys(%{$distances{$a}->{$b}->{$c}})) {
+						$distances{$a}->{$b}->{$c}->{$d} /= $count;
+						#~ print DATA $a."\t".$b."\t".$c."\t".$d."\t".$distances{$a}->{$b}->{$c}->{$d}."\n";
+					}
+				}
+			}
+		}
+		
+		print DATA "comp";
+		foreach my $a (@grammars) {
+			foreach my $b (@lps) {
+				print DATA "\t".$a.'_'.$b;
+			}
+		}
+		print DATA "\n";
+		foreach my $a (@grammars) {
+			foreach my $b (@lps) {
+				print DATA $graNames{$a}.', '.($b eq 'yes' ? "with LP" : "no LP");
+				foreach my $c (@grammars) {
+					foreach my $d (@lps) {
+						print DATA "\t".$distances{$a}->{$b}->{$c}->{$d};
+					}
+				}
+				print DATA "\n";
+			}
+		}
+	close (DATA);
+	
+	#~ print Dumper \%distances;
+}
 
 sub plotCorrectness {
 	my ($refHash_probs, $fileEnding, $pdffile) = @_;
@@ -143,7 +225,7 @@ sub plotCorrectness {
 		}
 		print R 'dev.off()'."\n";
 	close (R);
-	unlink $datafile;
+	#~ unlink $datafile;
 }
 
 #~ print Dumper \%distances;
