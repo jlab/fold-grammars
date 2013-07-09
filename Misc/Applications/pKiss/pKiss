@@ -45,6 +45,7 @@ $PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "s
 $PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => $Settings::PROGINFOS{$PROGID}->{name}." expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
 $PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => $Settings::PROGINFOS{$PROGID}->{name}.'_', info => $Settings::PROGINFOS{$PROGID}->{name}." expects a special naming schema for the according Bellman's GAP compiled binaries. On default, each binary is named \"@(DEFAULT)\", followed by the mode, followed by \"_window\" for the window mode version. Thus, for non-window mode \"$Settings::MODE_SUBOPT\" the name would be \"@(DEFAULT)$Settings::MODE_SUBOPT\". With --@(binaryprefix) you can change the prefix into some arbitary one."};
 $PARAM{probdecimals} = {modes => [$Settings::MODE_PROBS], key => 'probDecimals', type => 'i', default => 7, info => "Sets the number of digits used for printing shape probabilities.\n<int> must be a positive integer number.\nDefault is @(DEFAULT)."};
+$PARAM{verbose} = {modes => \@ALLMODES, key => 'verbose', default => 0, type => 'i', info => "Prints the actual command for Bellman's GAP binary."};
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
@@ -182,6 +183,7 @@ sub doComputation {
 		$structure = "'".$refHash_sequence->{structure}."'";
 	}
 	
+	print "Actual call was: $command \"$seq\" $structure\n" if ($settings->{verbose});
 	my $result = qx($command "$seq" $structure 2>&1);
 	Utils::qxDieMessage($command, $?);
 
@@ -283,7 +285,7 @@ EOF
 	push @paramGroups, {name => "GENERAL OPTIONS", elements => ['mode', 'absolutedeviation', 'relativedeviation', 'shapelevel', 'lowprobfilter', 'lowprobfilteroutput', 'windowsize', 'windowincrement']};
 	push @paramGroups, {name => "PSEUDOKNOT OPTIONS", elements => ['strategy', 'minhairpinlength', 'maxknotsize', 'hpenalty', 'kpenalty']};
 	push @paramGroups, {name => "FOLDING OPTIONS", elements => ['allowlp', 'temperature', 'param']};
-	push @paramGroups, {name => "SYSTEM OPTIONS", elements => ['binarypath', 'binaryprefix', 'probdecimals', 'help']};
+	push @paramGroups, {name => "SYSTEM OPTIONS", elements => ['binarypath', 'binaryprefix', 'probdecimals', 'help', 'verbose']};
 	foreach my $refHash_group (@paramGroups) {
 		$HELP .= $refHash_group->{name}.":\n";
 		for my $par (@{$refHash_group->{elements}}) {

@@ -52,6 +52,7 @@ $PARAM{bppmthreshold} = {modes => [$Settings::MODE_OUTSIDE], gapc => 'F', key =>
 $PARAM{dotplotfilename} = {modes => [$Settings::MODE_OUTSIDE], gapc => 'o', key => 'dotplot', default => 'dotPlot.ps', type => 's', info => "Sets the filename for the probability dot plot, produced in \"$Settings::MODE_OUTSIDE\" mode.\nDefault is \"@(DEFAULT)\"."};
 $PARAM{dotplotpng} = {modes => [$Settings::MODE_OUTSIDE], key => 'png', default => 0, type => 'i', info => "Activate this option to also produce a png file of the \"dot plot\". This is deactivated by default and requires an installation of the program \"GhostScript\"."};
 $PARAM{structureprobabilities} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST], key => 'structureProbs', default => 0, type => 'i', info => "If activated, in addition to free energy also the probability of structures will be computed. To speed up computation, this calculation is switched off by default."};
+$PARAM{verbose} = {modes => \@ALLMODES, key => 'verbose', default => 0, type => 'i', info => "Prints the actual command for Bellman's GAP binary."};
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
@@ -185,6 +186,7 @@ sub doComputation {
 		$pfallSettings{mode} = $Settings::MODE_PFALL;
 		Utils::checkBinaryPresents(\%pfallSettings, "wrong command line parameter:\n  ", [$Settings::MODE_CAST], []);
 		my $pfallCommand = buildCommand(\%pfallSettings, $refHash_sequence);
+		print "Actual call was: $pfallCommand \"$seq\"\n" if ($settings->{verbose});
 		my $res = qx($pfallCommand "$seq" 2>&1);
 		Utils::qxDieMessage($pfallCommand, $?);
 		%pfAll = %{IO::parse($res, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, \%pfallSettings, $inputIndex)};
@@ -197,6 +199,7 @@ sub doComputation {
 		$structure = "'".$refHash_sequence->{structure}."'";
 	}
 
+	print "Actual call was: $command \"$seq\" $structure\n" if ($settings->{verbose});
 	my $result = qx($command "$seq" $structure 2>&1);
 	Utils::qxDieMessage($command, $?);
 	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);
@@ -296,7 +299,7 @@ EOF
 	push @paramGroups, {name => 'GENERAL OPTIONS', elements => ['mode', 'absolutedeviation', 'relativedeviation', 'shapelevel', 'lowprobfilter', 'lowprobfilteroutput', 'numsamples', 'showsamples', 'windowsize', 'windowincrement','structureprobabilities']};
 	push @paramGroups, {name => 'FOLDING OPTIONS', elements => ['grammar','temperature','param','allowlp']};
 	push @paramGroups, {name => 'OUTSIDE OPTIONS', elements => ['bppmthreshold','dotplotfilename','dotplotpng']};
-	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','probdecimals','help']};
+	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','probdecimals','help','verbose']};
 	foreach my $refHash_group (@paramGroups) {
 		$HELP .= $refHash_group->{name}.":\n";
 		for my $par (@{$refHash_group->{elements}}) {
