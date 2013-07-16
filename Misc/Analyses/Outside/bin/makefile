@@ -18,7 +18,7 @@ enum:
 	for grammar in `echo "$(grammars)"`; do \
 		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
-		if [ ! -f "RNAshapes_subopt_$${grammar}" ]; then \
+		if [ ! -f "RNAshapes_enum_$${grammar}" ]; then \
 			$(GAPC) -I $(BASEDIR) -p "alg_dotBracket * alg_mfe$${suffix}" $(BASEDIR)$${grammar}.gap -o enum_$${grammar}.cc; \
 			$(MAKE) compile outname="enum_$${grammar}" PROGRAMPREFIX="RNAshapes_"; \
 		fi; \

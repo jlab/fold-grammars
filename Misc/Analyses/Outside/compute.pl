@@ -65,7 +65,7 @@ foreach my $plotType ('gapc','vienna','truthVienna','truthGapc') {
 		}
 		if (defined $refHash_bpprobs) {
 			open (PS, "> ".$plotFileName) || die "can't write to '$plotFileName': $1";
-				my $sequence = getGapInput($input, 0);
+				my $sequence = Helper::getGapInput($input, 0, $type);
 				($sequence) = ($sequence =~ m/^(.+?)#/) if ($sequence =~ m/#/);
 				print PS printPS($refHash_bpprobs, $sequence);
 			close (PS);
@@ -107,7 +107,7 @@ sub getSuboptBPprobs {
 	if ($package eq 'gapc') {
 		my $binary = $binDir.'RNA'.($type eq 'ali' ? 'ali' : '').'shapes_enum_'.$grammar;
 		my $options = '-e 99999 -u '.($lp eq 'yes' ? '1' : '0');
-		my $gapcInput = getGapInput($input, 0);
+		my $gapcInput = Helper::getGapInput($input, 0, $type);
 		for (my $runs = 0; $runs < 3; $runs++) {
 			$results = qx($binary $options $gapcInput 2>&1);
 			if ($results =~ m/Resource temporarily unavailable/) {
@@ -190,7 +190,7 @@ sub computeBPprobs {
 	my %bpp = ();
 	if ($package eq 'gapc') {
 		my $binary = $binDir.'RNA'.($type eq 'ali' ? 'ali' : '').'shapes_outside_'.$grammar;
-		my $gapcInput = getGapInput($input, 1);
+		my $gapcInput = Helper::getGapInput($input, 1, $type);
 		my $currentDir = qx(pwd); chomp $currentDir;
 		my $tmpDir = Utils::createUniqueTempDir('/vol/cluster-data/sjanssen/TMP/', 'outsideEvaluation_');
 		my $psName = $tmpDir.'/dotPlot.ps';
@@ -249,38 +249,7 @@ sub computeBPprobs {
 	return \%bpp;
 }
 
-sub getGapInput {
-	my ($input, $forOutside) = @_;
 
-	my $gapInput = undef;
-	if ($type eq 'single') {
-		$gapInput = Utils::applyFunctionToFastaFile($input, \&extractInput_fasta, $forOutside)->[0]->{result};
-	} else {
-		$gapInput = Utils::applyFunctionToClustalFile($input, \&extractInput_clustal, $forOutside)->[0]->{result};
-	}
-	
-	return $gapInput;
-}
-
-sub extractInput_fasta {
-	my ($refHash_sequence, $forOutside) = @_;
-	my $seq = lc($refHash_sequence->{sequence});
-	$seq .= '+'.lc($refHash_sequence->{sequence}) if (defined $forOutside && $forOutside);
-	return $seq;
-}
-
-sub extractInput_clustal {
-	my ($refHash_alignment, $forOutside) = @_;
-	
-	my $gapInput = "";
-	foreach my $ID (keys(%{$refHash_alignment->{sequences}})) {
-		$gapInput .= lc($refHash_alignment->{sequences}->{$ID});
-		$gapInput .= '+'.lc($refHash_alignment->{sequences}->{$ID}) if (defined $forOutside && $forOutside);
-		$gapInput .= "#";
-	}
-	$gapInput =~ s/\./_/g;
-	return $gapInput;
-}
 
 sub printPS {
 	my ($refList_bpProbs, $sequence) = @_;

@@ -12,27 +12,64 @@ PROGRAMPREFIX=
 
 TARGETDIR=/vol/cluster-data/sjanssen/bin/
 
-all: obwe ibwe mfepp
+all: obwe ibwe mfepp ali_obwe ali_ibwe ali_mfepp
 
 obwe:
-	$(GAPC) -I $(BASEDIR) -p "alg_outside_pfunc" $(BASEDIR)outside_$(grammar).gap
-	$(PERL) $(RNAOPTIONSPERLSCRIPT) out.mf 0
-	$(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
-	mv out $(TARGETDIR)/oa_o_nodangle_pfunc
+	if [ ! -f "$(TARGETDIR)/oa_o_nodangle_pfunc" ]; then \
+		$(GAPC) -I $(BASEDIR) -p "alg_outside_pfunc" $(BASEDIR)outside_$(grammar).gap; \
+		$(PERL) $(RNAOPTIONSPERLSCRIPT) out.mf 0; \
+		$(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		mv out $(TARGETDIR)/oa_o_nodangle_pfunc; \
+	fi;
 	
 ibwe:
-	$(GAPC) -I $(BASEDIR) -p "alg_pfunc" $(BASEDIR)$(grammar).gap
-	$(PERL) $(RNAOPTIONSPERLSCRIPT) out.mf 0
-	$(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
-	mv out $(TARGETDIR)/oa_i_nodangle_pfunc
+	if [ ! -f "$(TARGETDIR)/oa_i_nodangle_pfunc" ]; then \
+		$(GAPC) -I $(BASEDIR) -p "alg_pfunc" $(BASEDIR)$(grammar).gap; \
+		$(PERL) $(RNAOPTIONSPERLSCRIPT) out.mf 0; \
+		$(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		mv out $(TARGETDIR)/oa_i_nodangle_pfunc; \
+	fi;
 	
 mfepp:
-	$(GAPC) -I $(BASEDIR) -p "alg_mfe * alg_dotBracket" --kbacktrace --no-coopt $(BASEDIR)$(grammar).gap
-	$(PERL) $(RNAOPTIONSPERLSCRIPT) out.mf 0
-	$(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
-	mv out $(TARGETDIR)/oa_i_nodangle_mfepp
+	if [ ! -f "$(TARGETDIR)/oa_i_nodangle_mfepp" ]; then \
+		$(GAPC) -I $(BASEDIR) -p "alg_mfe * alg_dotBracket" --kbacktrace --no-coopt $(BASEDIR)$(grammar).gap; \
+		$(PERL) $(RNAOPTIONSPERLSCRIPT) out.mf 0; \
+		$(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		mv out $(TARGETDIR)/oa_i_nodangle_mfepp; \
+	fi;
+	
+ali_obwe:
+	if [ ! -f "$(TARGETDIR)/ali_oa_o_nodangle_pfunc" ]; then \
+		$(GAPC) -I $(BASEDIR) -p "alg_ali_outside_pfunc" $(BASEDIR)ali_outside_$(grammar).gap; \
+		$(PERL) $(RNAOPTIONSPERLSCRIPT) out.mf 0; \
+		$(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		mv out $(TARGETDIR)/ali_oa_o_nodangle_pfunc; \
+	fi;
+	
+ali_ibwe:
+	if [ ! -f "$(TARGETDIR)/ali_oa_i_nodangle_pfunc" ]; then \
+		$(GAPC) -I $(BASEDIR) -p "alg_ali_pfunc" $(BASEDIR)ali_$(grammar).gap; \
+		$(PERL) $(RNAOPTIONSPERLSCRIPT) out.mf 0; \
+		$(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		mv out $(TARGETDIR)/ali_oa_i_nodangle_pfunc; \
+	fi;
+	
+ali_mfepp:
+	if [ ! -f "$(TARGETDIR)/ali_oa_i_nodangle_mfepp" ]; then \
+		$(GAPC) -I $(BASEDIR) -p "alg_ali_mfe * alg_ali_dotBracket" --kbacktrace --no-coopt $(BASEDIR)ali_$(grammar).gap; \
+		$(PERL) $(RNAOPTIONSPERLSCRIPT) out.mf 0; \
+		$(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		mv out $(TARGETDIR)/ali_oa_i_nodangle_mfepp; \
+	fi;
 	
 clean:
 	rm -f *.cc *.d *.hh *.o *.mf
 	rm -f string.*
 
+cleandist:
+	rm -f $(TARGETDIR)/oa_o_nodangle_pfunc
+	rm -f $(TARGETDIR)/oa_i_nodangle_pfunc
+	rm -f $(TARGETDIR)/oa_i_nodangle_mfepp
+	rm -f $(TARGETDIR)/ali_oa_o_nodangle_pfunc
+	rm -f $(TARGETDIR)/ali_oa_i_nodangle_pfunc
+	rm -f $(TARGETDIR)/ali_oa_i_nodangle_mfepp

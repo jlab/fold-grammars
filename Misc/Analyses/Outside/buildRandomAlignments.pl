@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-use lib "/home/sjanssen/bin";
+use lib "/homes/sjanssen/bin";
 use lib "../../Applications/lib/";
 
 use strict;
