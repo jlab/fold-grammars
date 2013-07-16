@@ -10,6 +10,10 @@ my $resultCorrectnessDir = 'Correctness/';
 my $nameAlignment = 'Alignments';
 my $nameSS = 'Singlesequences';
 
+my ($mode) = @ARGV;
+die "usage: perl $0 mode=compute|analyse\n" if (@ARGV != 1);
+
+if ($mode eq 'compute') {
 #compile binaries
 	system "cd bin && make";
 	system "cd bin && make -f make_runtimes";
@@ -37,4 +41,11 @@ my $nameSS = 'Singlesequences';
 	system "qsub -v grammar=\"overdangle\" -v lp=\"yes\" -cwd -l arch=sol-amd64 -l hostname=\"fuc*\" cluster_correctness.sh";
 	system "qsub -v grammar=\"microstate\" -v lp=\"yes\" -cwd -l arch=sol-amd64 -l hostname=\"fuc*\" cluster_correctness.sh";
 
-print "After cluster jobs have finished, which may take some time, run startAnalysis.pl!\n";
+	print "After cluster jobs have finished, which may take some time, re-run startComputation.pl with parameter 'analyse'!\n";
+} elsif ($mode eq 'analyse') {
+	system "perl analyse_runtimes.pl ".$resultDir.$resultRuntimesDir.$nameSS.'/OUT/';
+	system "perl analyse_runtimes.pl ".$resultDir.$resultRuntimesDir.$nameAlignment.'/OUT/ 1';
+	system "perl analyse_correctness.pl ".$resultDir.$resultCorrectnessDir.'Plots/';
+} else {
+	print "unknown mode\n";
+}

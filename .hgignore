@@ -5,4 +5,8 @@ Misc/Applications/RNAalishapes/RNAalishapes_*
 Misc/Applications/RNAshapes/RNAshapes_*
 Misc/Applications/pKiss/pKiss_*
 Misc/Applications/RapidShapes/RapidShapes_*
-Misc/Analyses/Outside/temp/*
+Misc/Analyses/Outside/Results/*
+Misc/Analyses/Outside/OLD/*
+Misc/Analyses/LibrnaTest/ERR*
+Misc/Analyses/LibrnaTest/OUT*
+Misc/Analyses/Testinputs/*

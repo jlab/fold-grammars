@@ -7,7 +7,7 @@
 #$ -o /vol/fold-grammars/src/Misc/Analyses/Outside/Results/Runtimes/Singlesequences/OUT/
 
 seqLen=`echo "5 * $SGE_TASK_ID" | bc`;
-sequenceFile=/vol/fold-grammars/src/Misc/Analyses/Outside/RuntimeInputs/randomSequence_$seqLen.fasta;
+sequenceFile=/vol/fold-grammars/src/Misc/Analyses/Testinputs/Outside/Runtime/Singlesequences/randomSequence_$seqLen.fasta;
 sequence=`/vol/gnu/bin/cat $sequenceFile | /vol/gnu/bin/tail -n1`;
 
 uname -a

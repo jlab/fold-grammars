@@ -5,6 +5,8 @@ use warnings;
 use Data::Dumper;
 
 my ($dir, $isAlignment) = @ARGV;
+die "usage: perl $0 dir isAlignment=undef|1\n" if (@ARGV < 1 || @ARGV > 2);
+
 if (defined $isAlignment) {
 	$isAlignment = 'ali_' ;
 } else {
@@ -94,7 +96,7 @@ open (OUT, "> $datafile") || die "can't write to '$datafile': $!\n";
 	}
 close (OUT);
 
-my $pdffile = "runtimes".$isAlignment.".pdf";
+my $pdffile = "plot_runtimes".$isAlignment.".pdf";
 open (R, " | R --vanilla");
 	print R 'require(gplots)'."\n";
 	print R 'pdf("'.$pdffile.'", width=10, height=7)'."\n";
@@ -103,7 +105,7 @@ open (R, " | R --vanilla");
 	print R 'data <- read.csv("'.$datafile.'", header=TRUE, sep="\t")'."\n";
 	print R 'tmp = data;'."\n";
 	print R 'par(mar=c(5.1, 4.1, 0.5, 0.5));'."\n";
-	print R 'plot(log="y", tmp$'.$isAlignment.'oa_o_nodangle_pfunc ~ tmp$length, xlab="'.(defined $isAlignment ? "alignment length" : "sequence length").'", ylab="run-time in sec.", cex=.0)'."\n";
+	print R 'plot(log="y", tmp$'.$isAlignment.'oa_o_nodangle_pfunc ~ tmp$length, xlab="'.($isAlignment eq 'ali_' ? "alignment length" : "sequence length").'", ylab="run-time in sec.", cex=.0)'."\n";
 	for (my $i = 0; $i < @progOrder; $i++) {
 		print R 'lines(tmp$'.getRname($progOrder[$i]).' ~ tmp$length, col='.$colors[$i].',lwd=2)'."\n";
 		#~ print R 'lines(predict(interpSpline(tmp$length, tmp$'.getRname($progOrder[$i]).')) , col='.$colors[$i].',lwd=2)'."\n";
@@ -111,6 +113,7 @@ open (R, " | R --vanilla");
 	print R 'smartlegend(x="left",y="top", inset = 0.05, c('.join(',', (map {translateNames($_)} @progOrder)).'), fill=c('.join(',', @colors).'), bg="white");'."\n";
 	print R 'dev.off()'."\n";
 close (R);
+unlink $datafile;
 
 sub translateNames {
 	my ($name) = @_;

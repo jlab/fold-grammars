@@ -31,7 +31,7 @@ my %comparisons = (
 #~ my @comparisons = (['truthGapc','gapc'],['truthVienna','vienna'],['truthVienna','truthGapc']);
 
 my ($plotDir) = @ARGV;
-#~ die "usage: <plotDir> <input=random file> <grammar=".join("|", @grammars)."> <lp=yes|no>\n" if (@ARGV != 4);
+die "usage: <plotDir>" if (@ARGV != 1);
 
 my %probs = ();
 print STDERR "read data: ";
@@ -50,10 +50,10 @@ opendir(DIR, $plotDir) || die "can't read directory '$plotDir': $1";
 closedir(DIR);
 print STDERR " done.\n";
 
-plotCorrectness(\%probs, 'fasta', 'correctness_bppm_sequence.pdf');
-plotCorrectness(\%probs, 'clustalW', 'correctness_bppm_alignment.pdf');
-plotDangles(\%probs, 'fasta', 'dangles_seq.pdf');
-plotDangles(\%probs, 'clustalW', 'dangles_ali.pdf');
+plotCorrectness(\%probs, 'fasta', 'plot_correctness_bppm_sequence.pdf');
+plotCorrectness(\%probs, 'clustalW', 'plot_correctness_bppm_alignment.pdf');
+plotDangles(\%probs, 'fasta', 'plot_dangles_seq.pdf');
+plotDangles(\%probs, 'clustalW', 'plot_dangles_ali.pdf');
 
 sub plotDangles {
 	my ($refHash_probs, $fileEnding, $pdffile) = @_;
@@ -71,7 +71,7 @@ sub plotDangles {
 		print R 'dev.off()'."\n";
 	close (R);
 
-	#~ unlink $datafile;
+	unlink $datafile;
 }
 
 sub writeDanglesData {
@@ -225,7 +225,7 @@ sub plotCorrectness {
 		}
 		print R 'dev.off()'."\n";
 	close (R);
-	#~ unlink $datafile;
+	unlink $datafile;
 }
 
 #~ print Dumper \%distances;
