@@ -55,6 +55,10 @@ struct filterLowProbShapes {
   }
 };
 
+template <typename SHAPE>
+inline double getPfuncValue(std::pair<SHAPE, answer_macrostate_pfunc> x) {
+	return sum_elems(x.second.pf);
+}
 
 
 template <typename SHAPE, typename PFUNC>
