@@ -1,0 +1,14 @@
+Parameters taken from:
+
+"Computational approaches for RNA energy parameter estimation" MIRELA ANDRONESCU, ANNE CONDON, HOLGER H. HOOS, DAVID H. MATHEWS, and KEVIN P. MURPHY 2010 RNA
+and converted (and dropped first lines) with RNAparconv from Vienna 2.1.2
+	rna_andronescu2010_BLstar.par
+	rna_andronescu2010_CGstar.par
+	rna_andronescu2010_NOMCG.par
+
+Vienna Package 2.1.2
+	dna_mathews1999.par
+	dna_mathews2004.par
+	rna_andronescu2007.par
+	rna_turner1999.par
+	rna_turner2004.par
