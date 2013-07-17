@@ -58,8 +58,9 @@ sub parse {
 			$fieldLengths{windowStartPos} = length($windowStartPos) if (length($windowStartPos) > $fieldLengths{windowStartPos});
 		} elsif ($line =~ m/^Answer:\s*$/) {
 			#answer for complete input, must do nothing because window size is already correctly initialized
-		} elsif ($line =~ m/WARNING: stacking enthalpies not symmetric/) {
-			#ignore this warning of energy parameters
+		} elsif (($line =~ m/WARNING: stacking enthalpies not symmetric/) || ($line =~ m/^Missing header line in file\./) || ($line =~ m/^May be this file has not v2.0 format\./) || ($line =~ m/^Use INTERRUPT-key to stop\./)) {
+			#report warnings of energy parameters
+			print STDERR $line."\n";
 			
 	#parsing result lines	
 		} elsif ($program eq $PROG_RNAALISHAPES) {
