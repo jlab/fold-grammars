@@ -1,0 +1,135 @@
+#!/usr/bin/env perl -w
+
+# Perlpfad setzen
+use lib "/vol/biotools/lib/perl-5.8.0";
+use lib "/vol/bibidev/knotinframe/knotinframe_serverVersion/lib/";
+#Umgebungsvariable setzen
+$ENV{PATH}="/vol/biotools/bin:/vol/fshift/bin/";
+
+
+use Split_Fasta_Input;
+use Find_Possible_Pknots;
+use Start_Stop_Filter;
+use Filter;
+use Output;
+use Time::HiRes qw(gettimeofday);
+use strict;
+use warnings;
+use Data::Dumper;
+
+
+
+my ($startseconds, $startmicroseconds) = gettimeofday;
+
+####globale Variablen, die hauptsaechlich vom Paket Find_Possible_Pknots gebraucht werden zur Berechnung der Substrings
+##Anzahl der substrings, fuer die pknots-frameshift und RNAfold aufgerufen wird
+my $steps = 5;
+##Differenz zwischen den einzelnen substrings
+my $step_length = 20;
+##Laenge der Slippery 
+my $slippery_length = 7;
+##Minimale Stringlaenge, ab der nach slipperys gesucht wird
+my $min_seq_length_for_find_slippery = 50;
+##Kleinster ausgegebener substring
+my $minimal_substring_length = 40;
+##Groesster ausgegebener substring
+my $maximal_substring_length = 120;
+##in den kleinen slippery-Hashes sind 3 Werte konstant (Slippery, Position und "substring"), die anderen keys enthalten MFE-Ergebnisse
+my $constant_values_of_hash = 3;
+##folgende 2 Werte liegen ober- bzw. unterhalb der MFE und werden beim FIltern zum Vergleichen gebraucht
+my $geringste_diff1 = -100;
+my $geringste_diff2 = 100;
+my $number_of_best_results;
+
+my @no_existing_slippery_list;
+my @no_third_filter_slippery_list;
+my @no_inframe_slippery_list;
+
+my ($input_anzahl_ergebnisse, $input_path) = @ARGV;
+
+my $gesamt = 0;
+
+if ($input_anzahl_ergebnisse != 10 && $input_anzahl_ergebnisse > 0 && $input_anzahl_ergebnisse <= 50) {
+	$number_of_best_results = $input_anzahl_ergebnisse;
+}
+else {
+	$number_of_best_results = 10;
+}
+
+
+
+
+
+####Aufruf eines Methoden-Pakets, welches die Fasta- Sequenzen splittet und eine Liste mit einem Hash fuer jede Sequenz erstellt
+my $ref_list_of_fasta_sequence_hashes = Split_Fasta_Input::split_fasta_input($input_path);
+my $fault = pop(@$ref_list_of_fasta_sequence_hashes);
+
+if (@$fault > 0){
+	foreach my $bad_sequence (@$fault){
+		print "The sequence $bad_sequence contains invalid symbols!\n";
+	}
+}
+
+	
+for (my $z = 0; $z < @$ref_list_of_fasta_sequence_hashes; $z++) {
+
+	my $ref_sequence_hash = $$ref_list_of_fasta_sequence_hashes[$z];
+	my $seq_name = $ref_sequence_hash -> {Sequence_Name};
+	my $sequence = $ref_sequence_hash -> {Sequence};
+	my $list_of_best_slipperys_after_fourth_filter;
+
+	
+	if (defined($seq_name) && defined($sequence)) {
+		
+		##ruft eine Methode auf, die nach vorhandenen slipperys in einer Sequenz sucht
+		my $list_of_existing_slipperys = Find_Possible_Pknots::find_existing_slipperys($sequence, $min_seq_length_for_find_slippery, $slippery_length, $minimal_substring_length);
+		
+			
+		if (@$list_of_existing_slipperys > 0) {
+			
+			my $list_of_nominee_slipperys = Start_Stop_Filter::start_n_stop_codon_filter($seq_name, $sequence, $list_of_existing_slipperys, $minimal_substring_length, $slippery_length);
+			
+			
+			if (@$list_of_nominee_slipperys > 0) {
+				my $list_of_hashes_for_possible_slipperys = Find_Possible_Pknots::get_substrings($list_of_nominee_slipperys, $sequence, $steps, $step_length, $slippery_length, $maximal_substring_length);
+				
+				if (@$list_of_hashes_for_possible_slipperys > 0) {
+##berechnet fuer jede existierende slippery einen moeglichen Pseudoknoten, dessen minimale 	Energie und im Vergleich dazu die minimale Energie einer freien Faltung mit RNAfold
+					
+					my $list_of_hashes_for_existing_slipperys = Find_Possible_Pknots::fold_possible_pknots($list_of_hashes_for_possible_slipperys, $step_length, $steps, $minimal_substring_length);			
+					
+					my $result_list_after_third_filter = Filter::filter_slipperys($seq_name, $list_of_hashes_for_existing_slipperys);
+					
+					if (@$result_list_after_third_filter > 0) {
+						
+						my $sorted_slipperys = Filter::sorted_results($number_of_best_results, $seq_name, $result_list_after_third_filter);
+						
+						Output::ranking_list($seq_name, $sorted_slipperys, $list_of_hashes_for_existing_slipperys, $number_of_best_results);
+					}
+					else{
+						push(@no_third_filter_slippery_list, $seq_name);
+					}
+				}
+			}
+			else {
+				#print  STDOUT "No in-frame slipperys present in sequence!\n";
+				push(@no_inframe_slippery_list, $seq_name);
+			}
+		}
+		else {
+			if (@$fault == 0){
+				#print STDOUT "No slipperys present in sequence $seq_name!\n";
+				push(@no_existing_slippery_list, $seq_name);
+			}
+		}
+	}
+	else {
+		print STDOUT "Eingabe nicht im FASTA-Format !\n\n";
+	}
+}
+if(@no_third_filter_slippery_list > 0 || @no_inframe_slippery_list > 0 || @no_existing_slippery_list > 0) {
+	Output::info(\@no_third_filter_slippery_list, \@no_existing_slippery_list, \@no_inframe_slippery_list);
+}
+#my ($endseconds, $endmicroseconds) = gettimeofday;
+#my $durationKIF = ($endseconds/60) - ($startseconds/60);
+#print "Dauer:  ".sprintf("%.2f",$durationKIF)."    Minuten\n";
