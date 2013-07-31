@@ -1,3 +1,27 @@
+knotinframe (2.0.0-0ubuntu1~raring1) raring; urgency=low
+
+  * First commit to Launchpad
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 31 Jul 2013 15:10:09 +0200
+
+knotinframe (2.0.0-0ubuntu1~quantal1) quantal; urgency=low
+
+  * First commit to Launchpad
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 31 Jul 2013 15:10:02 +0200
+
+knotinframe (2.0.0-0ubuntu1~precise1) precise; urgency=low
+
+  * First commit to Launchpad
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 31 Jul 2013 15:09:56 +0200
+
+knotinframe (2.0.0-0ubuntu1~lucid1) lucid; urgency=low
+
+  * First commit to Launchpad
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 31 Jul 2013 15:09:36 +0200
+
 knotinframe (1.9.9-0ubuntu1~precise) precise; urgency=low
 
   * Initial release
