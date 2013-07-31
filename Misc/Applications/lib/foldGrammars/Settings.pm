@@ -13,6 +13,7 @@ our %PROGINFOS = (
 	'rapidshapes', 			{date => '06.03.2013', version => '2.0.0', name => 'RapidShapes'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
 	'getoutsidetruth', 	{date => '19.04.2013', version => '1.0.0', name => 'getOutsideTruth'},
+	'knotinframe', 			{date => '31.07.2013', version => '2.0.0', name => 'knotinframe'},
 );
 
 
@@ -75,4 +76,6 @@ our $MODE_ABSTRACT = 'abstract';
 our $MODE_OUTSIDE = 'outside';
 our $MODE_ANALYSE_OUTSIDE = 'analyse_outside';
 our $MODE_PFALL = 'pfall';
+
+our $MODE_KIF = 'kif'; #single and thus default mode for KnotInFrame
 1;

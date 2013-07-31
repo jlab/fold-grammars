@@ -1,135 +1,308 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
-# Perlpfad setzen
-use lib "/vol/biotools/lib/perl-5.8.0";
-use lib "/vol/bibidev/knotinframe/knotinframe_serverVersion/lib/";
-#Umgebungsvariable setzen
-$ENV{PATH}="/vol/biotools/bin:/vol/fshift/bin/";
+my $PROGID = 'knotinframe';
 
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
 
-use Split_Fasta_Input;
-use Find_Possible_Pknots;
-use Start_Stop_Filter;
-use Filter;
-use Output;
-use Time::HiRes qw(gettimeofday);
+use lib getPath($0)."../lib/";
+
 use strict;
 use warnings;
 use Data::Dumper;
+use Getopt::Long;
+use foldGrammars::Utils;
+use foldGrammars::RNAcast;
+use foldGrammars::IO;
+use POSIX 'isatty';
 
+our @ALLMODES = ($Settings::MODE_KIF);
+@References::ORDER = ('lor:ber:sie:taf:fla:sta:hof:2011','the:jan:gie:2010','tur:mat:2009','mat:dis:chi:schroe:zuk:tur:2004','the:ree:gie:2008');
 
+my %PARAM;
 
-my ($startseconds, $startmicroseconds) = gettimeofday;
+$PARAM{mode} = {modes => \@ALLMODES, key => 'mode', type => 's', default => $Settings::MODE_KIF, info => "Select the computation mode. Available modes are \"".join('", "', @ALLMODES)."\". Omit the ticks on input.\nDefault is \"@(DEFAULT)\"."};
+$PARAM{windowsize} = {modes => \@ALLMODES, key => 'windowSize', type => 'i', gapc => undef, default => 120, info => "If a slippery site is detected a sub-string downstream is analysed. --@(windowsize) sets the maximal length of this sub-string, which is @(DEFAULT) by default. Must be a multiple of --@(windowincrement)!"};
+$PARAM{windowincrement} = {modes => \@ALLMODES, key => 'windowIncrement', gapc => undef, type => 'i', default => 20, info => "The --@(windowsize) bp long sub-string, downstream to the slippery site, is analysed in different chunks sizes. These chunks grow with --@(windowincrement) bp. Maximal size if --@(windowsize). Default value is @(DEFAULT)."};
+$PARAM{temperature} = {modes => \@ALLMODES, key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
+$PARAM{param} = {modes => \@ALLMODES, key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [".References::getNumber('mat:dis:chi:schroe:zuk:tur:2004')."] and [".References::getNumber('tur:mat:2009')."])."};
+$PARAM{numberoutputs} = {modes => \@ALLMODES, key => 'numberOutputs', gapc => undef, type => 'i', default => 10, info => "Some sequences have a high amount of possible slippery site candidates, thus output is cut off after printing the best --@(numberoutputs) results, which is @(DEFAULT) by default."};
+$PARAM{minknottedenergy} = {modes => \@ALLMODES, key => 'minKnottedEnergy', gapc => undef, type => 'f', default => -7.4, info => "The pseudoknot structure induces the ribosomal frame shift, thus it should have a stability of at least @(DEFAULT) kcal/mol. Theis et al. [".References::getNumber('the:ree:gie:2008')."] call this the \"low energy filter (LEF)\" and the parameter \"alpha\"."};
+$PARAM{minenergydifference} = {modes => \@ALLMODES, key => 'minEnergyDifference', gapc => undef, type => 'f', default => -8.71, info => "The candidate sub-sequence should be more likely fold a pseudoknot than a nested structure. Thus, candidates where (nested energy + --@(minenergydifference) < knotted energy) are ruled out. Theis et al. [".References::getNumber('the:ree:gie:2008')."] call this the \"energy difference filter (EDF)\" and the according parameter \"beta\". Default is @(DEFAULT) kcal/mol."};
+$PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
+$PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => $Settings::PROGINFOS{$PROGID}->{name}." expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
+$PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => $Settings::PROGINFOS{$PROGID}->{name}.'_', info => $Settings::PROGINFOS{$PROGID}->{name}." expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\n.\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
+$PARAM{verbose} = {modes => \@ALLMODES, key => 'verbose', default => 0, type => 'i', info => "Prints the actual command for Bellman's GAP binary."};
 
-####globale Variablen, die hauptsaechlich vom Paket Find_Possible_Pknots gebraucht werden zur Berechnung der Substrings
-##Anzahl der substrings, fuer die pknots-frameshift und RNAfold aufgerufen wird
-my $steps = 5;
-##Differenz zwischen den einzelnen substrings
-my $step_length = 20;
-##Laenge der Slippery 
-my $slippery_length = 7;
-##Minimale Stringlaenge, ab der nach slipperys gesucht wird
-my $min_seq_length_for_find_slippery = 50;
-##Kleinster ausgegebener substring
-my $minimal_substring_length = 40;
-##Groesster ausgegebener substring
-my $maximal_substring_length = 120;
-##in den kleinen slippery-Hashes sind 3 Werte konstant (Slippery, Position und "substring"), die anderen keys enthalten MFE-Ergebnisse
-my $constant_values_of_hash = 3;
-##folgende 2 Werte liegen ober- bzw. unterhalb der MFE und werden beim FIltern zum Vergleichen gebraucht
-my $geringste_diff1 = -100;
-my $geringste_diff2 = 100;
-my $number_of_best_results;
-
-my @no_existing_slippery_list;
-my @no_third_filter_slippery_list;
-my @no_inframe_slippery_list;
-
-my ($input_anzahl_ergebnisse, $input_path) = @ARGV;
-
-my $gesamt = 0;
-
-if ($input_anzahl_ergebnisse != 10 && $input_anzahl_ergebnisse > 0 && $input_anzahl_ergebnisse <= 50) {
-	$number_of_best_results = $input_anzahl_ergebnisse;
+my $settings = {};
+foreach my $param (keys %PARAM) {
+	$settings->{$param} = $PARAM{$param}->{default};
 }
-else {
-	$number_of_best_results = 10;
+my %help = ();
+foreach my $param (keys %PARAM) {
+	my $optionSec = $PARAM{$param}->{key};
+	$optionSec .= "=".$PARAM{$param}->{type} if (exists $PARAM{$param}->{type});
+	$help{$optionSec} = \$settings->{$param};
+}
+&GetOptions( 	
+	%help
+);
+
+
+checkParameters($settings);
+
+usage() if (defined $settings->{'help'}); #user asks for help --> print usage and die
+our $inputIndex = 0;
+if (@ARGV == 0) {
+	#input not given via command line parameter
+	if (isatty(*STDIN)) {
+		#we are somehow in an interactive mode
+		#expecting a sequence or a filename
+		print "Please give me either your RNA sequence, or a (multiple) FASTA file, containing your sequences:\n";
+		my $input = <STDIN>; chomp $input;
+		if (-e $input) {
+			#since there is a file, having the name of the user input it is very likely that we really should read from a file
+			processInput($input, $settings);
+		} else {
+			#otherwise, we assume it is a single, plain RNA sequence
+			processInput({sequence => $input, header => "unnamed sequence"}, $settings);
+		}
+	} else {
+		#input must be delivered via pipe
+		processInput(\*STDIN, $settings);
+	}
+} elsif (@ARGV == 1) {
+	#rna sequence, secondary structure or filename, given as command line parameter
+	if (-e $ARGV[0]) {
+		#since there is a file, having the name of the user input it is very likely that we really should read from a file
+		processInput($ARGV[0], $settings);
+	} else {
+		#otherwise, we assume it is a single, plain RNA sequence or a 2D structure
+		processInput({sequence => $ARGV[0], header => "unnamed sequence"}, $settings);
+	}
+} else {
+	print STDERR "You gave me too many inputs. Please ask for help, via \"".$Settings::PROGINFOS{$PROGID}->{name}." --".$PARAM{help}->{key}."\".\n";
+	exit(1);
 }
 
-
-
-
-
-####Aufruf eines Methoden-Pakets, welches die Fasta- Sequenzen splittet und eine Liste mit einem Hash fuer jede Sequenz erstellt
-my $ref_list_of_fasta_sequence_hashes = Split_Fasta_Input::split_fasta_input($input_path);
-my $fault = pop(@$ref_list_of_fasta_sequence_hashes);
-
-if (@$fault > 0){
-	foreach my $bad_sequence (@$fault){
-		print "The sequence $bad_sequence contains invalid symbols!\n";
+sub processInput {
+	my ($input, $refHash_settings) = @_;
+	
+	if (ref($input) =~ m/HASH/) {
+		#input is a sequence
+		doComputation($input, $refHash_settings);
+	} elsif (ref($input) =~ m/GLOB/) {
+		#input is STDIN
+		Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $refHash_settings);
+	} else {
+		#input is a filename
+		die "The file '$input' does not exist!\n" if (not -e $input);
+		Utils::applyFunctionToFastaFile($input, \&doComputation, $refHash_settings);
 	}
 }
 
-	
-for (my $z = 0; $z < @$ref_list_of_fasta_sequence_hashes; $z++) {
+sub doComputation {
+	my ($refHash_sequence, $settings) = @_;
 
-	my $ref_sequence_hash = $$ref_list_of_fasta_sequence_hashes[$z];
-	my $seq_name = $ref_sequence_hash -> {Sequence_Name};
-	my $sequence = $ref_sequence_hash -> {Sequence};
-	my $list_of_best_slipperys_after_fourth_filter;
-
+	$inputIndex++;
 	
-	if (defined($seq_name) && defined($sequence)) {
-		
-		##ruft eine Methode auf, die nach vorhandenen slipperys in einer Sequenz sucht
-		my $list_of_existing_slipperys = Find_Possible_Pknots::find_existing_slipperys($sequence, $min_seq_length_for_find_slippery, $slippery_length, $minimal_substring_length);
-		
-			
-		if (@$list_of_existing_slipperys > 0) {
-			
-			my $list_of_nominee_slipperys = Start_Stop_Filter::start_n_stop_codon_filter($seq_name, $sequence, $list_of_existing_slipperys, $minimal_substring_length, $slippery_length);
-			
-			
-			if (@$list_of_nominee_slipperys > 0) {
-				my $list_of_hashes_for_possible_slipperys = Find_Possible_Pknots::get_substrings($list_of_nominee_slipperys, $sequence, $steps, $step_length, $slippery_length, $maximal_substring_length);
-				
-				if (@$list_of_hashes_for_possible_slipperys > 0) {
-##berechnet fuer jede existierende slippery einen moeglichen Pseudoknoten, dessen minimale 	Energie und im Vergleich dazu die minimale Energie einer freien Faltung mit RNAfold
-					
-					my $list_of_hashes_for_existing_slipperys = Find_Possible_Pknots::fold_possible_pknots($list_of_hashes_for_possible_slipperys, $step_length, $steps, $minimal_substring_length);			
-					
-					my $result_list_after_third_filter = Filter::filter_slipperys($seq_name, $list_of_hashes_for_existing_slipperys);
-					
-					if (@$result_list_after_third_filter > 0) {
-						
-						my $sorted_slipperys = Filter::sorted_results($number_of_best_results, $seq_name, $result_list_after_third_filter);
-						
-						Output::ranking_list($seq_name, $sorted_slipperys, $list_of_hashes_for_existing_slipperys, $number_of_best_results);
-					}
-					else{
-						push(@no_third_filter_slippery_list, $seq_name);
+	if ($refHash_sequence->{sequence} !~ m/^\s*((A|C|G|U|T)+)\s*$/i) {
+		print STDERR "sequence '".$refHash_sequence->{header}."' has been skipped, due to non RNA letter. Only A,C,G,U,T,a,c,g,u,t are allowed.";
+	}
+
+	kif($refHash_sequence, $settings);	
+
+	return undef;
+}
+
+sub kif {
+	my $MAX_WINDOW_SIZE = 120;
+	my $WINDOW_INCREASE = 20;
+	my $MIN_KNOTTED_ENERGY = -7.4;
+	my $MIN_ENERGY_DIFFERENCE = -8.71;
+	my $NUMBER_PRINTED_RESULTS = 10;
+	
+	my %CODONS = (
+		'start', ['AUG'],
+		'stop', ['UAA','UGA','UAG'],
+	);
+	
+	my ($refHash_sequence, $settings) = @_;
+	
+	my $seq = uc($refHash_sequence->{sequence});
+	$seq =~ s/T/U/g;
+
+	#a bit of preprocessing to find all start and stop codons and store them in a hash ordered by their absolute frame (i.e. relative to start of input sequence)
+		my %specialCodonPositions = ();
+		foreach my $codonType (keys(%CODONS)) {
+			foreach my $frame (0,1,2) {
+				$specialCodonPositions{$codonType}->{$frame} = [];
+			}
+			my $regex = '(?:'.join('|',@{$CODONS{$codonType}}).')';
+			while ($seq =~ m/($regex)/g) {
+				my $frame = $-[0] % 3;
+				push @{$specialCodonPositions{$codonType}->{$frame}}, $-[0];
+			}
+		}
+	
+	my %candidates = ();
+	while ($seq =~ m/(?=([A,G,C,U,T]{1})\1\1([A,U,T]{1})\2\2([A,G,C,U,T]{1}))/gi) { #search phase: search for slippery sites of pattern XXXYYYZ (where X and Z stand for arbitray nucleotides but Y must be A,T or U
+		my $slipperyStart = $-[0];
+		my $slipperyFrame = ($slipperyStart % 3)+1;
+		$slipperyFrame = 0 if ($slipperyFrame >= 3);
+
+		#application of "inframe stopcodon filter": omit slippery site iff we find an upstream inframe stop codon. That is revoked iff there is another upstream inframe startcodon between found stop codon and slippery site
+			my $ISF_ruleout = 'false';
+			foreach my $stopCodonPos (sort {$b <=> $a} @{$specialCodonPositions{'stop'}->{$slipperyFrame}}) {
+				next if ($stopCodonPos+3 >= $slipperyStart);
+				$ISF_ruleout = 'true'; #rule slippery sequence out, because we found an upstream inframe stop codon
+				foreach my $startCodonPos (@{$specialCodonPositions{'start'}->{$slipperyFrame}}) {
+					next if ($startCodonPos <= $stopCodonPos);
+					last if ($startCodonPos+3 >= $slipperyStart);
+					$ISF_ruleout = 'false'; #reconsidere ruling out, because we also found another upstream inframe start codon.
+					last;
+				}
+				last; #just check the one stopcodon that is directly in front of the slippery site. Don't check for further upstream ones.
+			}
+			next if ($ISF_ruleout eq 'true');
+
+		#folding with pseudoknot and nested MFE program
+			my @slipperySiteCandidates = ();
+			for (my $windowLength = $WINDOW_INCREASE; $windowLength <= $MAX_WINDOW_SIZE; $windowLength += $WINDOW_INCREASE) {
+				last if ($windowLength > length($seq)-$slipperyStart-7);
+				my $candidateSequence = substr($seq, $slipperyStart+7, $windowLength);
+				my %foldings = ();
+				foreach my $task ('nested','knotted') {
+					my $command = buildCommand($settings, $task);
+					print "Actual call was: $command \"$candidateSequence\"\n" if ($settings->{verbose});
+					my $result = qx($command "$candidateSequence" 2>&1);
+					Utils::qxDieMessage($command, $?);
+					foreach my $line (split(m/\n/, $result)) {
+						if ($line =~ m/^\( (.+?) , (.+?) \)$/) {
+							$foldings{$task} = {energy => $1/100, structure => $2};
+							last;
+						}
 					}
 				}
+				
+				next if ($foldings{'knotted'}->{energy} > $MIN_KNOTTED_ENERGY); #this is the LEF (low energy filter) filter, ruling out candidates whose pseudoknot energy is too high
+				next if ($foldings{'nested'}->{energy} - $MIN_ENERGY_DIFFERENCE < $foldings{'knotted'}->{energy}); #this is the EDF (energy difference filter) filter, ruling out candidates where energy difference between nested and knotted structures are too close, i.e. a nested structure is more likely
+				
+				push @slipperySiteCandidates, \%foldings;
 			}
-			else {
-				#print  STDOUT "No in-frame slipperys present in sequence!\n";
-				push(@no_inframe_slippery_list, $seq_name);
+
+		#NDF (normalized dominance filter): not really filtering out something, but sorting it according to the two criteria: 1. length normalized energy difference and 2. knotted energy. Only the topmost candidate is taken
+			@slipperySiteCandidates = sort {(lengthNormalizedEnergy($b) <=> lengthNormalizedEnergy($a)) || ($a->{knotted}->{energy} <=> $b->{knotted}->{energy})} @slipperySiteCandidates;
+			if (@slipperySiteCandidates > 0) {
+				push @{$candidates{lengthNormalizedEnergy($slipperySiteCandidates[0])}->{$slipperySiteCandidates[0]->{knotted}->{energy}}}, {slippery => {site => substr($refHash_sequence->{sequence}, $slipperyStart, 7), position => $slipperyStart}, foldings => $slipperySiteCandidates[0]};
 			}
+	}
+
+	#output results, sorted first bei length normalized energy and then by energy of the knotted structure. Output is stopped after $NUMBER_PRINTED_RESULTS results have been printed
+		print STDOUT "The ".$NUMBER_PRINTED_RESULTS." best results (if list of slippery-sequences containes enough entries, else less!)\n\n\n";
+		print STDOUT  "Sequence name:  ".$refHash_sequence->{header}."\n\n\n";
+		my $rank = 1;
+		my $quit = 'false';
+		foreach my $lenNormEnergy (sort {$b <=> $a} keys(%candidates)) {
+			foreach my $knotEnergy (sort {$a <=> $b} keys(%{$candidates{$lenNormEnergy}})) {
+				foreach my $candidate (@{$candidates{$lenNormEnergy}->{$knotEnergy}}) {
+					print STDOUT $rank.".    Slippery sequence:       ".$candidate->{slippery}->{site}."\n";
+					print STDOUT      "      Slippery position:       ".($candidate->{slippery}->{position}+1)."\n";
+					print STDOUT      "      MFE pknotsRG-fs (v1.13): ".sprintf("%.1f", $candidate->{foldings}->{knotted}->{energy})." kcal/mol\n";
+					print STDOUT      "      MFE RNAfold:             ".sprintf("%.1f", $candidate->{foldings}->{nested}->{energy})." kcal/mol\n";
+					print STDOUT      "      Substring length:        ".length($candidate->{foldings}->{knotted}->{structure})."\n";
+					print STDOUT      "      Deltarel:   ".sprintf("%.3f", $lenNormEnergy)."\n";
+					print STDOUT      "      Substring sequence and MFE structure of pseudoknot:\n";
+					print STDOUT      "      ".substr($refHash_sequence->{sequence}, $candidate->{slippery}->{position}+7, length($candidate->{foldings}->{knotted}->{structure}))."\n";
+					print STDOUT      "      ".$candidate->{foldings}->{knotted}->{structure}."\n\n\n";
+					$rank++;
+					$quit = 'true' if (($rank > $NUMBER_PRINTED_RESULTS) || ($candidate->{foldings}->{knotted}->{energy} > $candidate->{foldings}->{nested}->{energy}));
+					last if ($quit eq 'true');
+				}
+				last if ($quit eq 'true');
+			}
+			last if ($quit eq 'true');
 		}
-		else {
-			if (@$fault == 0){
-				#print STDOUT "No slipperys present in sequence $seq_name!\n";
-				push(@no_existing_slippery_list, $seq_name);
-			}
+		print STDOUT "\n\n\n";
+}
+
+sub lengthNormalizedEnergy {
+	my ($refHash_foldings) = @_;
+	return ($refHash_foldings->{nested}->{energy} - $refHash_foldings->{knotted}->{energy}) / length($refHash_foldings->{knotted}->{structure});
+}
+
+sub buildCommand {
+	my ($settings, $task) = @_;
+
+	my $cmd = "";
+	$cmd .= $settings->{'binarypath'};
+	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
+	$cmd .= $settings->{'binaryprefix'};
+	$cmd .= $task;
+	$cmd .= " -".$PARAM{temperature}->{gapc}." ".$settings->{'temperature'} if ($settings->{'temperature'} != $PARAM{temperature}->{default});
+	$cmd .= " -".$PARAM{param}->{gapc}." ".$settings->{'param'} if (defined $settings->{'param'});
+	
+	return $cmd;
+}
+
+sub checkParameters {
+	my ($settings) = @_;
+	
+	my $diePrefix = "wrong command line parameter:\n  ";
+	
+	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
+	Utils::checkBinaryPresents($settings, $diePrefix, [$Settings::MODE_KIF], ['knotted', 'nested']);
+
+	die $diePrefix."--".$PARAM{'windowsize'}->{key}." must be a positive integer!\n" if ((defined $settings->{'windowsize'}) && ($settings->{'windowsize'} < 1));
+	die $diePrefix."--".$PARAM{'windowsize'}->{key}." is smaller than --".$PARAM{'windowincrement'}->{key}." !\n" if ((defined $settings->{'windowsize'}) && ($settings->{'windowsize'} < $settings->{'windowincrement'}));
+	die $diePrefix."the parameter file you specified could not be found.\n" if ((defined $settings->{'param'}) && (not -e $settings->{'param'}));
+	die $diePrefix."--".$PARAM{'numberoutputs'}->{key}." must be a positive integer number, otherwise you would get no results!\n" if ((defined $settings->{'numberoutputs'}) && ($settings->{'numberoutputs'} < 1));
+}
+
+sub usage {
+	my ($settings) = @_;
+
+my $HELP = <<EOF;
+# $Settings::PROGINFOS{$PROGID}->{name}: predict ribosomal -1 frameshift sites
+#              version $Settings::PROGINFOS{$PROGID}->{version} ($Settings::PROGINFOS{$PROGID}->{date})
+#              Stefan Janssen (bibi-help\@techfak.uni-bielefeld.de)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+USAGE: 
+perl $Settings::PROGINFOS{$PROGID}->{name} [-mode] [-options] <fasta file name or RNA sequence>
+
+EOF
+;
+
+	$HELP .= Utils::printIdent("  ", $Settings::PROGINFOS{$PROGID}->{name}." is a pipeline to predict ribosomal -1 frameshift sites with a simple pseudoknot as secondary structure in DNA and RNA sequences. The prediction is based on a comparison between the minimal free energy (mfe) structure calculated by an RNAfold [".References::getNumber('lor:ber:sie:taf:fla:sta:hof:2011')."] like program and the mfe-structure computed by a modified version of pKiss, called pknotsRG-frameshift [".References::getNumber('the:jan:gie:2010')."].")."\n";
+	
+	my @paramGroups = ();
+	push @paramGroups, {name => 'GENERAL OPTIONS', elements => [ 'numberoutputs','windowsize','windowincrement','minknottedenergy','minenergydifference']};
+	push @paramGroups, {name => 'FOLDING OPTIONS', elements => ['temperature','param']};
+	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','help','verbose']};
+	foreach my $refHash_group (@paramGroups) {
+		$HELP .= $refHash_group->{name}.":\n";
+		for my $par (@{$refHash_group->{elements}}) {
+			$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
 		}
 	}
-	else {
-		print STDOUT "Eingabe nicht im FASTA-Format !\n\n";
+	
+	$HELP .= "REFERENCES:\n";
+	foreach my $refID (@References::ORDER) {
+		last if ($refID eq $References::ORDER[$#References::ORDER]);
+		$HELP .= References::printReference($refID);
 	}
+	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
+	foreach my $refID ('the:ree:gie:2008') {
+		$HELP .= References::printReference($refID);
+	}
+
+	print $HELP;
+	exit(0);
 }
-if(@no_third_filter_slippery_list > 0 || @no_inframe_slippery_list > 0 || @no_existing_slippery_list > 0) {
-	Output::info(\@no_third_filter_slippery_list, \@no_existing_slippery_list, \@no_inframe_slippery_list);
-}
-#my ($endseconds, $endmicroseconds) = gettimeofday;
-#my $durationKIF = ($endseconds/60) - ($startseconds/60);
-#print "Dauer:  ".sprintf("%.2f",$durationKIF)."    Minuten\n";
+
