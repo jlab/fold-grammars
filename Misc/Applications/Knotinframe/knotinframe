@@ -36,7 +36,7 @@ $PARAM{minknottedenergy} = {modes => \@ALLMODES, key => 'minKnottedEnergy', gapc
 $PARAM{minenergydifference} = {modes => \@ALLMODES, key => 'minEnergyDifference', gapc => undef, type => 'f', default => -8.71, info => "The candidate sub-sequence should be more likely fold a pseudoknot than a nested structure. Thus, candidates where (nested energy + --@(minenergydifference) < knotted energy) are ruled out. Theis et al. [".References::getNumber('the:ree:gie:2008')."] call this the \"energy difference filter (EDF)\" and the according parameter \"beta\". Default is @(DEFAULT) kcal/mol."};
 $PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
 $PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => $Settings::PROGINFOS{$PROGID}->{name}." expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
-$PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => $Settings::PROGINFOS{$PROGID}->{name}.'_', info => $Settings::PROGINFOS{$PROGID}->{name}." expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of two components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the folding mode, i.e. \"knotted\" or \"nested\".\n\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
+$PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => $Settings::PROGINFOS{$PROGID}->{name}.'_', info => $Settings::PROGINFOS{$PROGID}->{name}." expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of two components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the folding mode, i.e. \"knotted\" or \"nested\".\n.\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
 $PARAM{verbose} = {modes => \@ALLMODES, key => 'verbose', default => 0, type => 'i', info => "Prints the actual command for Bellman's GAP binary."};
 
 my $settings = {};
@@ -125,7 +125,6 @@ sub kif {
 	my $WINDOW_INCREASE = 20;
 	my $MIN_KNOTTED_ENERGY = -7.4;
 	my $MIN_ENERGY_DIFFERENCE = -8.71;
-	my $NUMBER_PRINTED_RESULTS = 10;
 	
 	my %CODONS = (
 		'start', ['AUG'],
@@ -203,32 +202,101 @@ sub kif {
 			}
 	}
 
-	#output results, sorted first bei length normalized energy and then by energy of the knotted structure. Output is stopped after $NUMBER_PRINTED_RESULTS results have been printed
-		print STDOUT "The ".$NUMBER_PRINTED_RESULTS." best results (if list of slippery-sequences containes enough entries, else less!)\n\n\n";
-		print STDOUT  "Sequence name:  ".$refHash_sequence->{header}."\n\n\n";
-		my $rank = 1;
-		my $quit = 'false';
-		foreach my $lenNormEnergy (sort {$b <=> $a} keys(%candidates)) {
-			foreach my $knotEnergy (sort {$a <=> $b} keys(%{$candidates{$lenNormEnergy}})) {
-				foreach my $candidate (@{$candidates{$lenNormEnergy}->{$knotEnergy}}) {
-					print STDOUT $rank.".    Slippery sequence:       ".$candidate->{slippery}->{site}."\n";
-					print STDOUT      "      Slippery position:       ".($candidate->{slippery}->{position}+1)."\n";
-					print STDOUT      "      MFE pknotsRG-fs (v1.13): ".sprintf("%.1f", $candidate->{foldings}->{knotted}->{energy})." kcal/mol\n";
-					print STDOUT      "      MFE RNAfold:             ".sprintf("%.1f", $candidate->{foldings}->{nested}->{energy})." kcal/mol\n";
-					print STDOUT      "      Substring length:        ".length($candidate->{foldings}->{knotted}->{structure})."\n";
-					print STDOUT      "      Deltarel:   ".sprintf("%.3f", $lenNormEnergy)."\n";
-					print STDOUT      "      Substring sequence and MFE structure of pseudoknot:\n";
-					print STDOUT      "      ".substr($refHash_sequence->{sequence}, $candidate->{slippery}->{position}+7, length($candidate->{foldings}->{knotted}->{structure}))."\n";
-					print STDOUT      "      ".$candidate->{foldings}->{knotted}->{structure}."\n\n\n";
-					$rank++;
-					$quit = 'true' if (($rank > $NUMBER_PRINTED_RESULTS) || ($candidate->{foldings}->{knotted}->{energy} > $candidate->{foldings}->{nested}->{energy}));
+	#output results, sorted first bei length normalized energy and then by energy of the knotted structure. Output is stopped after $settings->{numberoutputs} results have been printed
+		my $output = 'new';
+		if ($output eq 'new') {
+			print ">".$refHash_sequence->{header}."\n";
+			my $rank = 1;
+			my $quit = 'false';
+			if (keys(%candidates) <= 0) {
+				print "No suitable slippery sites have been detected.\n";
+			} else {
+				my $maxLeftLen = 0;
+				my $formatEnergy = "%.2f";
+				foreach my $lenNormEnergy (sort {$b <=> $a} keys(%candidates)) {
+					foreach my $knotEnergy (sort {$a <=> $b} keys(%{$candidates{$lenNormEnergy}})) {
+						foreach my $candidate (@{$candidates{$lenNormEnergy}->{$knotEnergy}}) {
+							my $value = undef;
+							foreach my $type ('nested','knotted') {
+								$value = length(sprintf($formatEnergy, $candidate->{foldings}->{$type}->{energy}));
+								$maxLeftLen = $value if ($value > $maxLeftLen);
+							}
+							$value = length(($candidate->{slippery}->{position}+1)+7+length($candidate->{foldings}->{knotted}->{structure}));
+							$maxLeftLen = $value if ($value > $maxLeftLen);
+						}
+					}
+				}
+				
+				foreach my $lenNormEnergy (sort {$b <=> $a} keys(%candidates)) {
+					foreach my $knotEnergy (sort {$a <=> $b} keys(%{$candidates{$lenNormEnergy}})) {
+						foreach my $candidate (@{$candidates{$lenNormEnergy}->{$knotEnergy}}) {
+							my @infos = ();
+							push @infos, {'Rank' => $rank};
+							push @infos, {'Slippery sequence' => $candidate->{slippery}->{site}};
+							push @infos, {'Slippery position' => ($candidate->{slippery}->{position}+1)};
+							push @infos, {'Substring length' => length($candidate->{foldings}->{knotted}->{structure})};
+							push @infos, {'Deltarel' => sprintf("%.3f", $lenNormEnergy)};
+							
+							my $maxLen = 0;
+							foreach my $refHash_info (@infos) {
+								foreach my $key (keys(%{$refHash_info})) {
+									$maxLen = length($key) if (length($key) > $maxLen);
+								}
+							}
+							foreach my $refHash_info (@infos) {
+								foreach my $key (keys(%{$refHash_info})) {
+									print $IO::SEPARATOR.$key.":".(" " x ($maxLen - length($key)))." ".$refHash_info->{$key}."\n";
+								}
+							}
+							my $text = ($candidate->{slippery}->{position}+1+7);
+							print $IO::SEPARATOR.(" " x ($maxLeftLen - length($text))).$text.$IO::SEPARATOR.substr($refHash_sequence->{sequence}, $candidate->{slippery}->{position}+7, length($candidate->{foldings}->{knotted}->{structure})).$IO::SEPARATOR.(($candidate->{slippery}->{position}+1)+7+length($candidate->{foldings}->{knotted}->{structure}))."\n";
+							
+							$text = sprintf($formatEnergy, $candidate->{foldings}->{knotted}->{energy});
+							print $IO::SEPARATOR.(" " x ($maxLeftLen - length($text))).$text.$IO::SEPARATOR.$candidate->{foldings}->{knotted}->{structure}.$IO::SEPARATOR."knotted structure"."\n";
+							
+							$text = sprintf($formatEnergy, $candidate->{foldings}->{nested}->{energy});
+							print $IO::SEPARATOR.(" " x ($maxLeftLen - length($text))).$text.$IO::SEPARATOR.$candidate->{foldings}->{nested}->{structure}.$IO::SEPARATOR."nested structure"."\n";
+							
+							$quit = 'true' if (($rank > $settings->{numberoutputs}) || ($candidate->{foldings}->{knotted}->{energy} > $candidate->{foldings}->{nested}->{energy}));
+							if ($quit eq 'true') {
+								print "\n".$IO::SEPARATOR."Warning: some further results are not shown. Increase --".$PARAM{numberoutputs}->{key}." to display them!\n";
+								last;
+							}
+							print "\n";
+							$rank++;
+						}
+						last if ($quit eq 'true');
+					}
+					last if ($quit eq 'true');
+				}
+			}
+		} else {
+			print STDOUT "The ".$settings->{numberoutputs}." best results (if list of slippery-sequences containes enough entries, else less!)\n\n\n";
+			print STDOUT  "Sequence name:  ".$refHash_sequence->{header}."\n\n\n";
+			my $rank = 1;
+			my $quit = 'false';
+			foreach my $lenNormEnergy (sort {$b <=> $a} keys(%candidates)) {
+				foreach my $knotEnergy (sort {$a <=> $b} keys(%{$candidates{$lenNormEnergy}})) {
+					foreach my $candidate (@{$candidates{$lenNormEnergy}->{$knotEnergy}}) {
+						print STDOUT $rank.".    Slippery sequence:       ".$candidate->{slippery}->{site}."\n";
+						print STDOUT      "      Slippery position:       ".($candidate->{slippery}->{position}+1)."\n";
+						print STDOUT      "      MFE pknotsRG-fs (v2.00): ".sprintf("%.1f", $candidate->{foldings}->{knotted}->{energy})." kcal/mol\n";
+						print STDOUT      "      MFE RNAfold:             ".sprintf("%.1f", $candidate->{foldings}->{nested}->{energy})." kcal/mol\n";
+						print STDOUT      "      Substring length:        ".length($candidate->{foldings}->{knotted}->{structure})."\n";
+						print STDOUT      "      Deltarel:   ".sprintf("%.3f", $lenNormEnergy)."\n";
+						print STDOUT      "      Substring sequence and MFE structure of pseudoknot:\n";
+						print STDOUT      "      ".substr($refHash_sequence->{sequence}, $candidate->{slippery}->{position}+7, length($candidate->{foldings}->{knotted}->{structure}))."\n";
+						print STDOUT      "      ".$candidate->{foldings}->{knotted}->{structure}."\n\n\n";
+						$rank++;
+						$quit = 'true' if (($rank > $settings->{numberoutputs}) || ($candidate->{foldings}->{knotted}->{energy} > $candidate->{foldings}->{nested}->{energy}));
+						last if ($quit eq 'true');
+					}
 					last if ($quit eq 'true');
 				}
 				last if ($quit eq 'true');
 			}
-			last if ($quit eq 'true');
+			print STDOUT "\n\n\n";
 		}
-		print STDOUT "\n\n\n";
 }
 
 sub lengthNormalizedEnergy {
