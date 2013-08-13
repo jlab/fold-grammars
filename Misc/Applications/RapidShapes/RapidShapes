@@ -300,12 +300,15 @@ sub compileSample {
 	if (not -e $bin_sample) {
 		print STDERR "compiling programm to estimate shape class frequencies for '".$refHash_settings->{grammar}."' ... ";
 		my $alg_pfunc = "alg_pfunc";
+		my $alg_pfuncID = "alg_pfunc_id";
 		if ($refHash_settings->{grammar} eq 'macrostate') {
 			$alg_pfunc = "alg_pfunc_macrostate";
+			$alg_pfuncID = "alg_pfunc_id_macrostate";
 		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
 			$alg_pfunc = "alg_pfunc_overdangle";
+			$alg_pfuncID = "alg_pfunc_id_overdangle";
 		}
-		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "((('.$alg_pfunc.' | '.$alg_pfunc.'_id) * alg_shapeX) suchthat sample_filter)"', "-t --sample", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, undef, 'addRNAoptions');
+		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "((('.$alg_pfunc.' | '.$alg_pfuncID.') * alg_shapeX) suchthat sample_filter)"', "-t --sample", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, undef, 'addRNAoptions');
 		qx($Settings::BINARIES{mv} $tmpBin $bin_sample);
 		print STDERR "done.\n";
 	}

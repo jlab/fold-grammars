@@ -36,7 +36,7 @@ sub compileGAP {
 	mkdir($tmpDir) || die "cannot create working directory '$tmpDir': $!";
 
 	print STDERR "==== compileGAP: 2 of 5) copy necessary GAP files into temporary directory ..." if ($VERBOSE); 
-	foreach my $file ((@{findDependentFiles($gapDir, $gapFile)}, $gapDir.'/Extensions/typesRNAfolding.hh', $gapDir.'/Extensions/rnaoptions_defaults.hh', $gapDir.'Extensions/singlefold.hh', $gapDir.'Extensions/mfesubopt.hh', $gapDir.'Extensions/probabilities.hh', $gapDir.'/Extensions/rnaoptions.hh', $gapDir.'/Extensions/rules.hh', $gapDir.'/Misc/Applications/addRNAoptions.pl')) {
+	foreach my $file ((@{findDependentFiles($gapDir, $gapFile)}, $gapDir.'/Extensions/typesRNAfolding.hh', $gapDir.'/Extensions/rnaoptions_defaults.hh', $gapDir.'Extensions/singlefold.hh', $gapDir.'Extensions/mfesubopt.hh', $gapDir.'Extensions/probabilities.hh', $gapDir.'/Extensions/rnaoptions.hh', $gapDir.'/Extensions/rules.hh', $gapDir.'/Extensions/shapes.hh', $gapDir.'/Misc/Applications/addRNAoptions.pl')) {
 		my $unrootedGapfile = substr($file, length($gapDir));
 		my ($subDir) = @{separateDirAndFile($unrootedGapfile)};
 		qx($Settings::BINARIES{mkdir} -p $tmpDir$subDir) if (defined $subDir);

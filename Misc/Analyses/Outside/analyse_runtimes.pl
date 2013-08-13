@@ -67,6 +67,10 @@ open (OUT, "> $datafile") || die "can't write to '$datafile': $!\n";
 		}
 	);
 	my @progOrder = sort {$programs{$isAlignment.'progs'}->{$a}->{'pos'} <=> $programs{$isAlignment.'progs'}->{$b}->{'pos'}} keys(%{$programs{$isAlignment.'progs'}});
+#Ordnung wie Robert sie gerne haette	
+	@progOrder = ('oa_o_nodangle_pfunc','oa_i_nodangle_pfunc','oa_i_nodangle_mfepp','RNAfold-p','RNAfold') if (not $isAlignment);
+	@progOrder = ('ali_oa_o_nodangle_pfunc','RNAalifold-p','ali_oa_i_nodangle_pfunc','ali_oa_i_nodangle_mfepp','RNAalifold') if ($isAlignment);
+
 	my @colors = ();
 	foreach my $prog (@progOrder) {
 		push @colors, $programs{$isAlignment.'progs'}->{$prog}->{'color'};
@@ -105,15 +109,18 @@ open (R, " | R --vanilla");
 	print R 'data <- read.csv("'.$datafile.'", header=TRUE, sep="\t")'."\n";
 	print R 'tmp = data;'."\n";
 	print R 'par(mar=c(5.1, 4.1, 0.5, 0.5));'."\n";
-	print R 'plot(log="y", tmp$'.$isAlignment.'oa_o_nodangle_pfunc ~ tmp$length, xlab="'.($isAlignment eq 'ali_' ? "alignment length" : "sequence length").'", ylab="run-time in sec.", cex=.0)'."\n";
+	print R 'plot(yaxt="n", log="y", tmp$'.$isAlignment.'oa_o_nodangle_pfunc ~ tmp$length, xlab="'.($isAlignment eq 'ali_' ? "alignment length" : "sequence length").'", ylab="run-time in sec.", cex=.0)'."\n";
 	for (my $i = 0; $i < @progOrder; $i++) {
 		print R 'lines(tmp$'.getRname($progOrder[$i]).' ~ tmp$length, col='.$colors[$i].',lwd=2)'."\n";
 		#~ print R 'lines(predict(interpSpline(tmp$length, tmp$'.getRname($progOrder[$i]).')) , col='.$colors[$i].',lwd=2)'."\n";
 	}
+	print R 'aty <- axTicks(2);'."\n";
+	print R 'labels <- sapply(aty, function(i) as.expression(bquote(10^ .(log10(i)))));'."\n";
+	print R 'axis(2,at=aty,labels=labels);'."\n";
 	print R 'smartlegend(x="left",y="top", inset = 0.05, c('.join(',', (map {translateNames($_)} @progOrder)).'), fill=c('.join(',', @colors).'), bg="white");'."\n";
 	print R 'dev.off()'."\n";
 close (R);
-unlink $datafile;
+#~ unlink $datafile;
 
 sub translateNames {
 	my ($name) = @_;
