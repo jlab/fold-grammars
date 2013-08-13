@@ -11,7 +11,7 @@ MAKE=make
 PERL=perl
 BASEDIR=../../../../
 
-targets=probs sample
+targets=probs sample eval
 targets_window=
 grammars=nodangle overdangle microstate macrostate
 #~ nodangle overdangle microstate macrostate
@@ -26,6 +26,8 @@ else
 	current_windowmodesuffix=
 endif
 
+all: probs sample eval clean
+	
 probs:
 	for grammar in `echo "$(grammars)"`; do \
 		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
@@ -45,6 +47,18 @@ sample:
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
 			$(GAPC) -I $(BASEDIR) -p "((alg_pfunc$${suffix} | alg_pfunc_id$${suffix}) * alg_shapeX) suchthat sample_filter" $(BASEDIR)$${grammar}.gap --sample $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(MAKE) compile outname="sample_$${grammar}"; \
+		fi; \
+	done
+	
+eval:
+	for grammar in `echo "$(grammars)"`; do \
+		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
+		sMi=`if [ $$grammar = "microstate" ]; then echo "_id"; fi`; \
+		suffix=`echo "$${sOv}$${sMa}"`; \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
+			$(GAPC) -I $(BASEDIR) -p "alg_dotBracket$${sMi} * alg_mfe$${suffix} * alg_shapeX" $(BASEDIR)eval_$${grammar}.gap $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(MAKE) compile outname="eval_$${grammar}" isEval=1; \
 		fi; \
 	done
 
