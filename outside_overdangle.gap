@@ -41,7 +41,13 @@ algebra alg_outside_pfunc_overdangle extends alg_outside_pfunc {
 	double outer_ml(Subsequence rb, double x, Subsequence lb) {
 		return scale(2) * x * mk_pf(ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb) + ml_mismatch_energy(shiftIndex(lb), rb));
 	}
+}
 
+algebra alg_outside_bppm_overdangle extends alg_outside_pfunc_overdangle {
+	double makeplot(Subsequence pos) { 
+		STOREPROBS(pos);
+		return 1.0; 
+	}
 }
 
 include "Grammars/gra_outside_overdangle.gap"

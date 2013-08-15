@@ -1,6 +1,8 @@
 #ifndef OUTSIDE_HH
 #define OUTSIDE_HH
 
+extern double **bpprobs;
+
 template<typename T>
 inline bool containsBase(const Basic_Sequence<> &seq, T i, T j, base_t x) {
   if (j<i) return false;
@@ -212,6 +214,32 @@ inline const std::string getRepresentation(Basic_Subsequence<char, unsigned> inp
 	psfile.close(); \
 	std::cout << "wrote Post-Script dot-plot to '" << getDotplotFilename() << "'\n";
 
+//for MEA structure prediction: we collect the structure with the highest BP prob sum, thus we need to store these probabilities in "bpprobs"
+#define STOREPROBS(rnaSeq) \
+	unsigned int i,j,n=(rnaSeq.seq->size()-1)/2; \
+	bpprobs = (double**) malloc(sizeof (double *) * n); \
+	for (unsigned int i = 0; i < n; i++) { \
+		bpprobs[i] = (double*) malloc(sizeof (double) * n); \
+		for (unsigned int j = 0; j < n; j++) { \
+			bpprobs[i][j] = 0; \
+		} \
+	} \
+	for (i = 0; i <= n; i++) { \
+		for (j = i+2; j <= n; j++) { \
+			double prob = 0.0; \
+			if (nt_weak(i,j) != std::numeric_limits<double>::infinity() && nt_outer_strong(j,n+i+1) != std::numeric_limits<double>::infinity()) { \
+				prob += nt_weak(i,j) * nt_outer_strong(j,n+i+1); \
+			} \
+			if (!gapc::Opts::getOpts()->allowLonelyBasepairs) {\
+				if (nt_strong(i,j) != std::numeric_limits<double>::infinity() && nt_outer_weak(j,n+i+1) != std::numeric_limits<double>::infinity()) {\
+					prob += nt_strong(i,j) * nt_outer_weak(j,n+i+1); \
+				} \
+			} \
+			prob /= nt_struct(0,n); \
+			bpprobs[i][j] = prob; \
+		} \
+	} \
+
 //just for debugging purposes:
 #define PLOTCOUNT() \
 	unsigned int i,j,n=(t_0_seq.size()-1)/2; \
@@ -258,4 +286,3 @@ inline const std::string getRepresentation(Basic_Subsequence<char, unsigned> inp
 		std::cout << "\n";\
 
 #endif
-

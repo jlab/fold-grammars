@@ -3,6 +3,7 @@ import "Extensions/singlefold.hh" //necessary to redefine the meaning of the fil
 import "Extensions/mfesubopt.hh"
 import "Extensions/probabilities.hh"
 import "Extensions/shapes.hh"
+import "Extensions/mea.hh"
 
 input rna
 
@@ -32,6 +33,7 @@ algebra alg_mfe_subopt_overdangle extends alg_mfe_overdangle {
   }
 }
 
+include "Algebras/alg_mea.gap"
 
 include "Algebras/Pfunc/alg_pfunc.gap"
 algebra alg_pfunc_overdangle extends alg_pfunc {

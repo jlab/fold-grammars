@@ -3,6 +3,7 @@ import "Extensions/singlefold.hh" //necessary to redefine the meaning of the fil
 import "Extensions/mfesubopt.hh"
 import "Extensions/probabilities.hh"
 import "Extensions/shapes.hh"
+import "Extensions/mea.hh"
 
 input rna
 
@@ -18,6 +19,7 @@ algebra alg_count auto count;
 algebra alg_enum auto enum;
 
 include "Algebras/MFE/alg_mfe.gap"
+include "Algebras/alg_mea.gap"
 include "Algebras/Pfunc/alg_pfunc.gap"
 
 include "Grammars/gra_nodangle.gap"

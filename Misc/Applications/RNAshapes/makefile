@@ -10,9 +10,10 @@ GAPC=gapc
 MAKE=make
 PERL=perl
 BASEDIR=../../../
+SED=sed
 
-targets=mfe subopt shapes probs sample eval outside pfall
-targets_window=mfe subopt shapes probs sample pfall
+targets=mfe subopt shapes probs sample eval outside mea pfall
+targets_window=mfe subopt shapes probs sample mea pfall
 grammars=nodangle overdangle microstate macrostate
 #~ nodangle overdangle microstate macrostate
 window=
@@ -139,6 +140,25 @@ outside:
 		fi; \
 	done
 	
+mea:
+	for grammar in `echo "$(grammars)"`; do \
+		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+		suffix=`echo "$${sOv}$${sMa}"`; \
+		if [ $${grammar} = "macrostate" ]; then \
+			echo "Sorry, we don't provide a outside version for macrostate yet"; \
+			continue; \
+		fi; \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
+			$(GAPC) -I $(BASEDIR) -p "alg_outside_bppm$${suffix}" $(BASEDIR)outside_$${grammar}.gap $(windowmodeflag) -o bppm.cc; \
+			$(SED) "s/namespace gapc {/namespace outside_gapc {/" -i bppm.hh; \
+			$(GAPC) -I $(BASEDIR) -p "alg_mea * (alg_dotBracket * alg_mfe$${suffix} * alg_shapeX)" $(BASEDIR)$${grammar}.gap --backtrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
+			$(PERL) $(RNAOPTIONSPERLSCRIPT) $@_$${grammar}$(current_windowmodesuffix).mf 2; \
+			$(MAKE) -f $@_$${grammar}$(current_windowmodesuffix).mf bppm.o CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./"; \
+			$(MAKE) -f $@_$${grammar}$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="bppm.o"; \
+			mv $@_$${grammar}$(current_windowmodesuffix) $(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix); \
+		fi; \
+	done
+	
 pfall:
 	for grammar in `echo "$(grammars)"`; do \
 		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
@@ -160,6 +180,7 @@ clean:
 	for program in `echo "$(targets)"`; do rm -f $${program}.*; rm -f $${program}_*; done
 	for program in `echo "$(targets_window)"`; do rm -f $${program}$(WINDOWSUFFIX).*; rm -f $${program}$(WINDOWSUFFIX)_*; done	
 	rm -f string.*
+	rm -f bppm*
 	
 cleandist: clean
 	for grammar in `echo "$(grammars)"`; do \
