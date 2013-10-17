@@ -264,16 +264,18 @@ sub buildCommand {
 	$cmd .= $settings->{'binarypath'};
 	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
 	$cmd .= $settings->{'binaryprefix'};
-	$cmd .= $settings->{'grammar'};
 	if (defined $task) {
 		if ($task eq $TASK_PFALL) {
-			$cmd .= '_'.$task;
+			$cmd .= $task.'_';
+			$cmd .= $settings->{'grammar'};
 		} elsif ($task eq $TASK_TDMRUN) {
 			$cmd = 'out';
 		}
 	} else {
-		$cmd .= '_'.$settings->{'mode'} ;
+		$cmd .= $settings->{'mode'}.'_';
+		$cmd .= $settings->{'grammar'};
 	}
+	
 	$cmd .= " -".$PARAM{temperature}->{gapc}." ".$settings->{'temperature'} if ($settings->{'temperature'} != $PARAM{temperature}->{default});
 	$cmd .= " -".$PARAM{param}->{gapc}." ".$settings->{'param'} if (defined $settings->{'param'});
 	$cmd .= " -".$PARAM{allowlp}->{gapc}." ".$settings->{'allowlp'} if ($settings->{'allowlp'} != $PARAM{allowlp}->{default});
@@ -296,7 +298,7 @@ sub buildCommand {
 
 sub compileSample {
 	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_sample = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$refHash_settings->{grammar}.'_'.$Settings::MODE_SAMPLE;
+	my $bin_sample = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$Settings::MODE_SAMPLE.'_'.$refHash_settings->{grammar};
 	if (not -e $bin_sample) {
 		print STDERR "compiling programm to estimate shape class frequencies for '".$refHash_settings->{grammar}."' ... ";
 		my $alg_pfunc = "alg_pfunc";
@@ -353,7 +355,7 @@ sub compileEnergy {
 
 sub compilePFall {
 	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_pfall = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$refHash_settings->{grammar}.'_'.$TASK_PFALL;
+	my $bin_pfall = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$TASK_PFALL.'_'.$refHash_settings->{grammar};
 	if (not -e $bin_pfall) {
 		print STDERR "compiling programm to compute the partition function for complete folding space of grammar '".$refHash_settings->{grammar}."' ...";
 		my $alg_pfunc = "alg_pfunc";
@@ -390,7 +392,8 @@ sub guessShapesSampling {
 	my %sampledShapes = ();
 	my $command = buildCommand($refHash_settings);
 	foreach my $line (split(m/\r?\n/, qx($command "$inputSequence"))) {
-		if ($line =~ m/\(\s+.+?\s+,\s+(\S+)\s+\)/) {
+		#( 0.0135213 , ( ( ( [] , -20 ) , ...((......))...... ) , 0.0047145 ) )
+		if ($line =~ m/\( .+? , \( \( \( (.+?) , .+? \) , .+? \) , .+? \) \)/) {
 			$sampledShapes{$1}++;
 		}
 	}
@@ -399,7 +402,7 @@ sub guessShapesSampling {
 		push @shapes, {shapestring => $shape, frequency => $sampledShapes{$shape}/$refHash_settings->{numsamples}};
 	}
 	print STDERR "found ".scalar(@shapes)." promising shapes.\n";
-	
+
 	return \@shapes;
 }
 

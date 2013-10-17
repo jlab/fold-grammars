@@ -315,7 +315,7 @@ sub generateGrammar {
 
 sub compileGenerator {
 	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_tdmGenerator = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$refHash_settings->{grammar}.'_generator_'.$refHash_settings->{shapelevel};
+	my $bin_tdmGenerator = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.'tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapelevel};
 	if (not -e $bin_tdmGenerator) {
 		print STDERR "compiling TDM generator for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapelevel}." ... ";
 		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMgenerator, '-i tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapelevel}, "-t", '', $workingDirectory, undef, undef, undef, 0);
