@@ -591,4 +591,56 @@ sub qxDieMessage {
 	}
 }
 
+#computes the base-pair distance between two RNA secondary structures according to our definition in the foldingspaces paper, i.e. first structure is a reference, second a prediction. The speciality is, that additional, non-coonflicting base-pairs in the prediction don't increase the distance.
+sub getBPdistance_foldingspaces {
+	my ($reference, $prediction) = @_;
+	
+	my $refHash_pairs_reference = Utils::getPairList($reference,0);
+	my $refHash_pairs_prediction = Utils::getPairList($prediction,0);
+	
+	my %identical_pairs = ();
+	my %compatible_pairs = ();
+	foreach my $pred_open (keys(%{$refHash_pairs_prediction})) {
+		my $pred_close = $refHash_pairs_prediction->{$pred_open};
+		
+		my $isIncompatible = 'false';
+		foreach my $ref_open (keys(%{$refHash_pairs_reference})) {
+			my $ref_close = $refHash_pairs_reference->{$ref_open};
+			if (
+				(($pred_open <= $ref_open) && ($ref_open <= $pred_close) && ($pred_close <= $ref_close)) || # < ( > )
+				(($ref_open <= $pred_open) && ($pred_open <= $ref_close) && ($ref_close <= $pred_close))    #   ( < ) >
+				) {
+				$isIncompatible = 'true';
+				last;
+			}
+		}
+			
+		if ($isIncompatible eq 'false') {
+			if ((exists $refHash_pairs_reference->{$pred_open}) && ($refHash_pairs_reference->{$pred_open} == $refHash_pairs_prediction->{$pred_open})) {
+				$identical_pairs{$pred_open} = $pred_close;
+			} else {
+				$compatible_pairs{$pred_open} = $pred_close;
+			}
+		}
+	}
+
+	# determin number of base-pairs in Reference but not in Prediction
+		my $R_minus_P = 0;
+		foreach my $ref_open (keys(%{$refHash_pairs_reference})) {
+			if ((not (exists $refHash_pairs_prediction->{$ref_open})) || ($refHash_pairs_prediction->{$ref_open} != $refHash_pairs_reference->{$ref_open})) {
+				$R_minus_P++;
+			}
+		}
+		
+	# determine number of base-pairs in Prediction but not in Reference and not compatible to Reference
+		my $Pcomp_minus_R = 0;
+		foreach my $pred_open (keys(%{$refHash_pairs_prediction})) {
+			if (((not (exists $compatible_pairs{$pred_open})) || ($refHash_pairs_prediction->{$pred_open} != $compatible_pairs{$pred_open})) && ((not (exists $refHash_pairs_reference->{$pred_open})) || ($refHash_pairs_prediction->{$pred_open} != $refHash_pairs_reference->{$pred_open}))) {
+				$Pcomp_minus_R++;
+			}
+		}
+	
+	return $R_minus_P+$Pcomp_minus_R;
+}
+
 1;

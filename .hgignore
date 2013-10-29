@@ -11,3 +11,5 @@ Misc/Analyses/LibrnaTest/ERR*
 Misc/Analyses/LibrnaTest/OUT*
 Misc/Analyses/Testinputs/*
 Misc/Analyses/Foldingspaces/Results/*
+Misc/Analyses/Foldingspaces/MFE/sfull_lenSort_30/*
+Misc/Analyses/Foldingspaces/MFE/sfull_lenSort/*

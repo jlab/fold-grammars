@@ -37,7 +37,8 @@ open (R, " | R --vanilla");
 	print R 'info <- hist('.$histcommand.', plot=F);'."\n";
 	print R 'if (dim(data)[1]-dim(sub)[1] > 1) { omText=paste("(omitting",dim(data)[1]-dim(sub)[1],"sequences larger than '.$cutoff.' bases)", sep=" "); } else {omText=""};'."\n";
 	print R 'hist('.$histcommand.', labels=T, xlim=c(0,'.$cutoff.'), col="#5e94c3", main=paste("Histogram for \''.$name.'\' (N=",dim(data)[1], ")", sep=""), xlab=paste("sequence length", omText), ylim=c(0,max(info$counts)*1.2));'."\n";
+	print R 'mean(sub$length);'."\n";
 	print R 'dev.off()'."\n";
 close (R);
-unlink $dataFile;
+#~ unlink $dataFile;
 
