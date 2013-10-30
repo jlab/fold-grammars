@@ -35,7 +35,7 @@
 +	   }
 +	   //for the last window only: print the right triangle of sub-words
 +	   if (t_0_right_most == t_0_seq.n) {
-+		   for (unsigned int i = t_0_left_most; i <= t_0_right_most; i++) {
++		   for (unsigned int i = t_0_left_most+1; i <= t_0_right_most; i++) {
 +			   for (unsigned int j = i+1; j <= t_0_right_most; j++) {
 +				   printWindows(nt_struct(i, j), i, j);
 +			   }
