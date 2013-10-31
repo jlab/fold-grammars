@@ -269,6 +269,7 @@ sub applyFunctionToFastaFile {
 				unless (length($header) == 0 && length($comments) == 0 && length($sequence) == 0) {
 					#wenn wenigstens einer der drei Informationstypen nicht leer ist ...
 					$header = "unnamed sequence ".($unnamedSequenceNumber++) if ($header eq ""); #falls der Header leer ist, wird ein Header "unnamed sequence X" vergeben
+					($sequence) = ($sequence =~ m/^\s*(.+?)\s*$/);
 					push (@Results, {sequence => $header, result => (&$refsub_function({header => $header, comments => $comments, sequence=> $sequence}, @additionalFunctionParameters))}); #... wird die Sequenz mit der uebergebenen Funktion und evtl. zusaetzlich uebergebenen Argumenten aufgerufen
 				}	
 				
@@ -291,6 +292,7 @@ sub applyFunctionToFastaFile {
 	unless (length($header) == 0 && length($comments) == 0 && length($sequence) == 0) {
 		#wenn wenigstens einer der drei Informationstypen nicht leer ist ...
 		$header = "unnamed sequence ".($unnamedSequenceNumber++) if ($header eq ""); #falls der Header leer ist, wird ein Header "unnamed sequence X" vergeben
+		($sequence) = ($sequence =~ m/^\s*(.+?)\s*$/);
 		push (@Results, {sequence => $header, result => (&$refsub_function({header => $header, comments => $comments, sequence=> $sequence}, @additionalFunctionParameters))}); #... wird die Sequenz mit der uebergebenen Funktion und evtl. zusaetzlich uebergebenen Argumenten aufgerufen
 	}
 	
