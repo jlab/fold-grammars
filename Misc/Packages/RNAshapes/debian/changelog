@@ -1,3 +1,31 @@
+rnashapes (3.1.2-0ubuntu1~raring1) raring; urgency=low
+
+  * bugfix: leading or trailing whitespaces for fasta sequences are now
+    ignored: lead to bgap problems due to unknown bases
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 31 Oct 2013 12:04:56 +0100
+
+rnashapes (3.1.2-0ubuntu1~quantal1) quantal; urgency=low
+
+  * bugfix: leading or trailing whitespaces for fasta sequences are now
+    ignored: lead to bgap problems due to unknown bases
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 31 Oct 2013 12:04:49 +0100
+
+rnashapes (3.1.2-0ubuntu1~precise1) precise; urgency=low
+
+  * bugfix: leading or trailing whitespaces for fasta sequences are now
+    ignored: lead to bgap problems due to unknown bases
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 31 Oct 2013 12:04:42 +0100
+
+rnashapes (3.1.2-0ubuntu1~lucid1) lucid; urgency=low
+
+  * bugfix: leading or trailing whitespaces for fasta sequences are now
+    ignored: lead to bgap problems due to unknown bases
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 31 Oct 2013 12:04:31 +0100
+
 rnashapes (3.1.1-0ubuntu1~raring1) raring; urgency=low
 
   * corrections to energy libraries
