@@ -319,7 +319,7 @@ sub compileSample {
 
 sub compileKbest {
 	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_ssa = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$refHash_settings->{grammar}.'_'.$Settings::MODE_KBEST;
+	my $bin_ssa = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$Settings::MODE_KBEST.'_'.$refHash_settings->{grammar};
 	if (not -e $bin_ssa) {
 		print STDERR "compiling programm to perform simple shape analysis for '".$refHash_settings->{grammar}."' ... ";
 		my $alg_mfe = "alg_mfe";
@@ -337,7 +337,7 @@ sub compileKbest {
 
 sub compileEnergy {
 	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_energy = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$refHash_settings->{grammar}.'_'.$Settings::MODE_ENERGY;
+	my $bin_energy = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$Settings::MODE_ENERGY.'_'.$refHash_settings->{grammar};
 	if (not -e $bin_energy) {
 		print STDERR "compiling programm to perform suboptimal shape analysis for '".$refHash_settings->{grammar}."' ... ";
 		my $alg_mfe = "alg_mfe";
