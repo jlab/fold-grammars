@@ -6,11 +6,11 @@ WINDOWSUFFIX=_window
 FASTLIBRNA=
 RNAOPTIONSPERLSCRIPT=../addRNAoptions.pl
 
-GAPC=gapc
+GAPC=/vol/bibi/bin/gapc/bin/gapc
 MAKE=make
 PERL=perl
 BASEDIR=../../../
-SED=sed
+SED=/vol/bibi/bin/gapc/bin/sed
 
 targets=mfe subopt shapes probs sample eval outside mea pfall
 targets_window=mfe subopt shapes probs sample mea pfall
@@ -150,7 +150,9 @@ mea:
 		fi; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
 			$(GAPC) -I $(BASEDIR) -p "alg_outside_bppm$${suffix}" $(BASEDIR)outside_$${grammar}.gap $(windowmodeflag) -o bppm.cc; \
-			$(SED) "s/namespace gapc {/namespace outside_gapc {/" -i bppm.hh; \
+			$(SED) -i "s/namespace gapc {/namespace outside_gapc {/" bppm.hh; \
+			$(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.hh; \
+			$(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.cc; \
 			$(GAPC) -I $(BASEDIR) -p "alg_mea * (alg_dotBracket * alg_mfe$${suffix} * alg_shapeX)" $(BASEDIR)$${grammar}.gap --backtrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
 			$(PERL) $(RNAOPTIONSPERLSCRIPT) $@_$${grammar}$(current_windowmodesuffix).mf 2; \
 			$(MAKE) -f $@_$${grammar}$(current_windowmodesuffix).mf bppm.o CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./"; \
