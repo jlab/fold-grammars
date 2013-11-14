@@ -858,7 +858,7 @@ algebra alg_tdm_macrostate_5 extends alg_tdm_overdangle_5 {
 	insertProduction(res, "no_dl_ss_end__"+y.shape, "ml_comps3__"+y.shape);
 	insertProduction(res, "dl_or_ss_left_ss_end__"+y.shape, "ml_comps4__"+y.shape);
 	  
-    insertProduction(res, "block_dl__"+x.shape, "sadd(REGION, edanglel__"+x.shape+")");
+    insertProduction(res, "block_dl__"+x.shape, "ssadd(REGION, edanglel__"+x.shape+")");
     insertProduction(res, "block_dl__"+x.shape, "incl(edanglel__"+x.shape+")");
 	insertProduction(res, "block_dlr__"+x.shape, "ssadd(REGION, edanglelr__"+x.shape+")");
 	insertProduction(res, "block_dlr__"+x.shape, "incl(edanglelr__"+x.shape+")");
@@ -891,12 +891,12 @@ algebra alg_tdm_macrostate_5 extends alg_tdm_overdangle_5 {
 	insertProduction(res, "dl_or_ss_left_ss_end__"+y.shape, "block_dlr__"+y.shape);
 	insertProduction(res, "dl_or_ss_left_ss_end__"+y.shape, "addss(block_dlr__"+y.shape+", REGION)");
 
-    insertProduction(res, "block_dl__"+x.shape, "sadd(REGION, edanglel__"+x.shape+")");
+    insertProduction(res, "block_dl__"+x.shape, "ssadd(REGION, edanglel__"+x.shape+")");
     insertProduction(res, "block_dl__"+x.shape, "incl(edanglel__"+x.shape+")");
 	insertProduction(res, "block_dlr__"+x.shape, "ssadd(REGION, edanglelr__"+x.shape+")");
 	insertProduction(res, "block_dlr__"+x.shape, "incl(edanglelr__"+x.shape+")");
 	
-	insertProduction(res, "block_dl__"+y.shape, "sadd(REGION, edanglel__"+y.shape+")");
+	insertProduction(res, "block_dl__"+y.shape, "ssadd(REGION, edanglel__"+y.shape+")");
     insertProduction(res, "block_dl__"+y.shape, "incl(edanglel__"+y.shape+")");
 	insertProduction(res, "block_dlr__"+y.shape, "ssadd(REGION, edanglelr__"+y.shape+")");
 	insertProduction(res, "block_dlr__"+y.shape, "incl(edanglelr__"+y.shape+")");
