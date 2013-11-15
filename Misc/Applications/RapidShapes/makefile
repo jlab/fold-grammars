@@ -13,9 +13,9 @@ BASEDIR=../../../
 
 grammars=nodangle overdangle microstate macrostate
 levels=5 4 3 2 1
-targets=sample pfall tdm
+targets=pfall sample subopt kbest
 
-all: sample pfall tdm clean
+all: pfall sample subopt kbest tdm clean
 
 pfall:
 	for grammar in `echo "$(grammars)"`; do \
@@ -33,6 +33,25 @@ sample:
 		fi; \
 	done;
 		
+subopt:
+	for grammar in `echo "$(grammars)"`; do \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}" ]; then \
+			make -C $(DIRRNASHAPES) $@ grammars=$${grammar}; \
+			cp $(DIRRNASHAPES)/$(RNASHAPESPREFIX)$@_$${grammar} $(PROGRAMPREFIX)$@_$${grammar}; \
+		fi; \
+	done;
+	
+kbest:
+	for grammar in `echo "$(grammars)"`; do \
+		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
+		suffix=`echo "$${sOv}$${sMa}"`; \
+		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}" ]; then \
+			$(GAPC) -I $(BASEDIR) -p "alg_shapeX * alg_mfe$${suffix}" -t --kbest $(BASEDIR)$${grammar}.gap -o $@_$${grammar}.cc; \
+			$(MAKE) compile outname="$@_$${grammar}"; \
+		fi; \
+	done
+		
 tdm:
 	for grammar in `echo "$(grammars)"`; do \
 		for level in `echo "$(levels)"`; do \
@@ -48,6 +67,7 @@ compile:
 	mv $(outname) $(PROGRAMPREFIX)$(outname)
 
 clean:
+	for program in `echo "$(targets)"`; do rm -f $${program}.*; rm -f $${program}_*; done
 	for grammar in `echo "$(grammars)"`; do \
 		for level in `echo "$(levels)"`; do \
 			rm -f tdm_$${grammar}_$${level}.*; \
