@@ -8,5 +8,5 @@ Homepage: http://bibiserv.cebitec.uni-bielefeld.de/rapidshapes
 
 Package: rapidshapes
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, bellmansgapc-librna (>= 2013.04.12) | bellmansgapc (>= 2013.04.12), libgsl0-dev, libgmp3-dev, libgsl0-dev (>= 1.13), libgsl0ldbl (>= 1.13), libfoldgrammars (>= 1.0.8)
+Depends: ${shlibs:Depends}, ${misc:Depends}, bellmansgapc-librna (>= 2013.04.12), bellmansgapc (>= 2013.04.12), libgsl0-dev, libgmp3-dev, libgsl0-dev (>= 1.13), libgsl0ldbl (>= 1.13), libfoldgrammars (>= 1.0.8)
 Description: RapidShapes computes the shapes above a specified probability threshold T by generating a list of promising shapes and constructing specialized folding programs for each shape to compute its probability. This aims at a heuristic improvement of runtime, while still computing exact probability values.
