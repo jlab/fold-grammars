@@ -47,12 +47,12 @@ my ($inputFile) = @ARGV;
 	my %results = %{parseResults()};
 
 #~ findMostExpensiveCombination(\%results);
-
+print Dumper \%results; die;
 getSPS(\%results, \@sfullLengths);
 
 sub getSPS {
 	my ($refHash_results, $refList_inputLengths) = @_;
-	
+
 	my $truthMode = 'probs';
 	my $truthParameter = 0;
 	my %SPS = ();
@@ -149,7 +149,7 @@ sub getSPS {
 		print R 'data <- read.csv("'.$dataFile.'", sep="\t", header=T);'."\n";
 		print R 'par(mar=c(4, 10, 2, 2.5));'."\n";
 		my $boxplotCommand = 'data$SPS ~ data$name, horizontal=T,las=1, col=c("'.join('","',@colors).'"), at=c(1,2,6,7,8,9,10,5,4,3,20,18,16,14,12,19,17,15,13,11)';
-		print R 'med <- boxplot('.$boxplotCommand.', plot=F)$stats[4,1];'."\n";
+		print R 'med <- boxplot('.$boxplotCommand.', plot=F)$stats[3,1];'."\n";
 		print R 'boxplot(frame.plot=F,'.$boxplotCommand.', ylim=c(0,0.35), xlab="Shape Probability Shift");'."\n";
 		print R 'abline(v=med,col="red");'."\n";
 		
@@ -185,6 +185,7 @@ sub findMostExpensiveCombination {
 						my $value = 1;
 						if ($refHash_results->{data}->{$length}->{$originGrammar}->{$originLevel}->{$mode}->{$parameter}->{$res} != 0) {
 							$value = $refHash_results->{data}->{$length}->{$grammar}->{$level}->{$mode}->{$parameter}->{$res} / $refHash_results->{data}->{$length}->{$originGrammar}->{$originLevel}->{$mode}->{$parameter}->{$res};
+							#~ print STDERR "length $length, grammar $grammar, level $level, res $res: ".$refHash_results->{data}->{$length}->{$originGrammar}->{$originLevel}->{$mode}->{$parameter}->{$res}."\n";
 						}
 						push @{$resources{$res}->{$grammar}->{$level}}, $value;
 					}

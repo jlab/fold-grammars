@@ -65,9 +65,9 @@ sub translateGrammarName {
 		return 'OverDangle';
 	} elsif ($input eq 'wuchty98') {
 		return 'NoDangle';
-	} elsif ($input eq 'macrostates') {
+	} elsif ($input eq 'macrostate') {
 		return 'MacroStates';
-	} elsif ($input eq 'microstates') {
+	} elsif ($input eq 'microstate') {
 		return 'MicroStates';
 	} elsif ($input eq 'overdangle') {
 		return 'OverDangle';
@@ -89,11 +89,11 @@ sub translateGrammarNameLatex {
 		return '\overdangle';
 	} elsif ($input eq 'wuchty98') {
 		return '\nodangle';
-	} elsif ($input eq 'macrostates') {
+	} elsif ($input eq 'macrostate') {
 		return '\macrostate';
 	} elsif ($input eq 'macrostate_T2004') {
 		return '\macrostate';
-	} elsif ($input eq 'microstates') {
+	} elsif ($input eq 'microstate') {
 		return '\microstate';
 	} elsif ($input eq 'microstate_T2004') {
 		return '\microstate';
