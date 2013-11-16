@@ -231,7 +231,8 @@ sub doComputation {
 				} elsif ($settings->{grammar} eq 'overdangle') {
 					$alg_pfunc = "alg_pfunc_overdangle";
 				}
-				my $pfShape = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&Utils::generateGrammar, $bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $seq], "pf".$settings->{shapelevel}."__".$ljshape, 'addRNAoptions');
+				my $pfShape = Utils::compileAndrunTDM($shape->{shapestring}, $settings, $refHash_sequence);		
+				#~ my $pfShape = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&Utils::generateGrammar, $bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $seq], "pf".$settings->{shapelevel}."__".$ljshape, 'addRNAoptions');
 				$pfShapeSum += $pfShape;
 				$shape->{probability} = $pfShape/$pfAll;
 				print STDERR sprintf("%8.4f", $shape->{probability}*100)." %.\n";

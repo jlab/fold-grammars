@@ -10,6 +10,7 @@ install:
 	for file in foldGrammars/*; do \
 		install -m 644 $$file $(PREFIX)/lib/foldGrammars; \
 	done;
+	sed -i "s|our \$$prototypeDirectory = \$$rootDir;|our \$$prototypeDirectory = '$(PREFIX)/share/fold-grammars/';|" $(PREFIX)/lib/foldGrammars/Settings.pm 
 
 clean:
 	echo "Nothing to do"

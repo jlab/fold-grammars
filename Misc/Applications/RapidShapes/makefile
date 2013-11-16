@@ -1,4 +1,4 @@
-PREFIX=$(HOME)/local/RNAshapes
+PREFIX=$(HOME)/local/RapidShapes
 #~ CXXFLAGS_EXTRA="-O3 -DNDEBUG"
 CXXFLAGS_EXTRA=-O3 -DNDEBUG
 PROGRAMPREFIX=RapidShapes_
@@ -16,6 +16,28 @@ levels=5 4 3 2 1
 targets=pfall sample subopt kbest
 
 all: pfall sample subopt kbest tdm clean
+
+install: install-lib install-program
+
+install-program:
+	if [ ! -d "$(PREFIX)/bin" ]; then install -d $(PREFIX)/bin; fi;
+	for grammar in `echo "$(grammars)"`; do \
+		for mode in $(targets); do \
+			install -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar} $(PREFIX)/bin; \
+		done; \
+		for level in $(levels); do \
+			install -m 755 $(PROGRAMPREFIX)tdm_$${grammar}_$${level} $(PREFIX)/bin; \
+		done; \
+	done;
+	install -m 755 RapidShapes $(PREFIX)/bin
+	if [ ! -d "$(PREFIX)/share/fold-grammars" ]; then install -d $(PREFIX)/share/fold-grammars; fi;
+	if [ ! -d "$(PREFIX)/share/fold-grammars/Misc/Applications" ]; then install -d $(PREFIX)/share/fold-grammars/Misc/Applications; fi;
+	rsync -av --exclude='Misc/' --exclude='.hg/' --exclude='.hgignore' --exclude='makefile' --exclude='fold-grammars.xsd' --exclude='basePairProb_errors.ods' --exclude='description.xml' --exclude='*.html' $(BASEDIR) $(PREFIX)/share/fold-grammars/
+	install -m 755 $(BASEDIR)/Misc/Applications/addRNAoptions.pl $(PREFIX)/share/fold-grammars/Misc/Applications/addRNAoptions.pl;
+	
+install-lib:
+	make -C $(BASEDIR)/Misc/Applications/lib/ install PREFIX=$(PREFIX)
+
 
 pfall:
 	for grammar in `echo "$(grammars)"`; do \
