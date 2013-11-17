@@ -1,3 +1,33 @@
+rapidshapes (2.0.4-0ubuntu1~saucy1) saucy; urgency=low
+
+  * resolvong dependency conflict
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 16:11:29 +0100
+
+rapidshapes (2.0.4-0ubuntu1~raring1) raring; urgency=low
+
+  * resolvong dependency conflict
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 16:11:21 +0100
+
+rapidshapes (2.0.4-0ubuntu1~quantal1) quantal; urgency=low
+
+  * resolvong dependency conflict
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 16:11:14 +0100
+
+rapidshapes (2.0.4-0ubuntu1~precise1) precise; urgency=low
+
+  * resolvong dependency conflict
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 16:11:06 +0100
+
+rapidshapes (2.0.4-0ubuntu1~lucid1) lucid; urgency=low
+
+  * resolvong dependency conflict
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 16:04:31 +0100
+
 rapidshapes (2.0.3-0ubuntu1~raring1) raring; urgency=low
 
   * rsync dependency

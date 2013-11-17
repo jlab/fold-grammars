@@ -42,7 +42,7 @@ install: build
 
 	# Add here commands to install the package into debian/<packagename>
 	pwd
-	$(MAKE) -C rapidshapes/Misc/Applications/RapidShapes/ PREFIX=`pwd`/debian/`dh_listpackages`/usr install-program
+	$(MAKE) -C rapidshapes/Misc/Applications/RapidShapes/ PREFIX=`pwd`/debian/`dh_listpackages`/usr install-program INSTALLDIR=/usr
 
 # Build architecture-independent files here.
 binary-indep: build install

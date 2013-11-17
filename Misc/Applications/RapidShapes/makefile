@@ -36,7 +36,7 @@ install-program:
 	install -m 755 $(BASEDIR)/Misc/Applications/addRNAoptions.pl $(PREFIX)/share/fold-grammars/Misc/Applications/addRNAoptions.pl;
 	
 install-lib:
-	make -C $(BASEDIR)/Misc/Applications/lib/ install PREFIX=$(PREFIX)
+	make -C $(BASEDIR)/Misc/Applications/lib/ install
 
 
 pfall:
