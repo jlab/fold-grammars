@@ -1,3 +1,33 @@
+rapidshapes (2.0.2-0ubuntu1~saucy1) saucy; urgency=low
+
+  * New system to copy source files to a specific directory
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 16 Nov 2013 13:19:17 +0100
+
+rapidshapes (2.0.2-0ubuntu1~raring1) raring; urgency=low
+
+  * New system to copy source files to a specific directory
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 16 Nov 2013 13:19:10 +0100
+
+rapidshapes (2.0.2-0ubuntu1~quantal1) quantal; urgency=low
+
+  * New system to copy source files to a specific directory
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 16 Nov 2013 13:19:02 +0100
+
+rapidshapes (2.0.2-0ubuntu1~precise1) precise; urgency=low
+
+  * New system to copy source files to a specific directory
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 16 Nov 2013 13:18:55 +0100
+
+rapidshapes (2.0.2-0ubuntu1~lucid1) lucid; urgency=low
+
+  * New system to copy source files to a specific directory
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 16 Nov 2013 13:11:56 +0100
+
 rapidshapes (2.0.1-0ubuntu1~saucy1) saucy; urgency=low
 
   * initial commit
