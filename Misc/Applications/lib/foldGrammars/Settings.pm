@@ -9,7 +9,7 @@ our %PROGINFOS = (
 	'rnashapes', 				{date => '31.10.2013', version => '3.1.2', name => 'RNAshapes', packageDir => 'RNAshapes/'},
 	'rnaalishapes', 		{date => '31.10.2013', version => '2.3.2', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
 	'pkiss', 						{date => '31.10.2013', version => '2.2.3', name => 'pKiss', packageDir => 'pKiss/'},
-	'libfoldgrammars', 	{date => '17.11.2013', version => '1.0.13', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
+	'libfoldgrammars', 	{date => '17.11.2013', version => '1.0.14', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
 	'rapidshapes', 			{date => '17.11.2013', version => '2.0.5', name => 'RapidShapes', packageDir => 'RapidShapes/'},
 	'knotinframe', 			{date => '31.10.2013', version => '2.0.2', name => 'knotinframe', packageDir => 'Knotinframe/'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
