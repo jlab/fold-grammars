@@ -113,6 +113,11 @@ sub parse {
 			} elsif ($settings->{mode} eq $Settings::MODE_PFALL && ($line =~ m/^(.+?)$/)) {
 				($pfunc) = ($1);
 				$windowPos = $windowStartPos.$DATASEPARATOR.$windowEndPos;
+			} elsif ($settings->{mode} eq $Settings::MODE_ABSTRACT && ($line =~ m/^\[\]$/)) {
+				my $userMessage = "Your input structure is not compatible with the underlying grammar. Thus, it cannot be translated it into a shape string.";
+				$userMessage .= " Lonely base-pairs are currently not allowed. You might get the desired result if you activate them and re-compute." if ($settings->{allowlp} != 1);
+				print Utils::printIdent("", $userMessage);
+				exit 0;
 			} else {
 				die "Parsing error: $line";
 			}

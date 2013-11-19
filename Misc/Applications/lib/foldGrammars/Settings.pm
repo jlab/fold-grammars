@@ -9,15 +9,16 @@ our %PROGINFOS = (
 	'rnashapes', 				{date => '31.10.2013', version => '3.1.2', name => 'RNAshapes', packageDir => 'RNAshapes/'},
 	'rnaalishapes', 		{date => '31.10.2013', version => '2.3.2', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
 	'pkiss', 						{date => '31.10.2013', version => '2.2.3', name => 'pKiss', packageDir => 'pKiss/'},
-	'libfoldgrammars', 	{date => '31.10.2013', version => '1.0.11', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
-	'rapidshapes', 			{date => '06.03.2013', version => '2.0.0', name => 'RapidShapes'},
+	'libfoldgrammars', 	{date => '17.11.2013', version => '1.0.14', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
+	'rapidshapes', 			{date => '17.11.2013', version => '2.0.5', name => 'RapidShapes', packageDir => 'RapidShapes/'},
+	'knotinframe', 			{date => '31.10.2013', version => '2.0.2', name => 'knotinframe', packageDir => 'Knotinframe/'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
 	'getoutsidetruth', 	{date => '19.04.2013', version => '1.0.0', name => 'getOutsideTruth'},
-	'knotinframe', 			{date => '31.10.2013', version => '2.0.2', name => 'knotinframe', packageDir => 'Knotinframe/'},
 );
 
 
 our $rootDir = '/home/sjanssen/Desktop/fold-grammars/'; #must point to the root directory of the fold-grammars repository!
+our $prototypeDirectory = $rootDir; #for RapidShapes: directory where to find bgap sources, i.e. the fold-grammars repository somewhere in the file system
 
 our $tmpdir = '/tmp/'; #temporary directory
 our $fileseparater = '/'; #character that separates directories in a path, / in unix but \ in windows
@@ -46,6 +47,7 @@ our %BINARIES = (
 	'RNAsubopt', 'RNAsubopt',
 	'RNAfold', 'RNAfold',
 	'date', 'date',
+	'ln', 'ln',
 );
 
 our %TDMfiles = (

@@ -1,3 +1,63 @@
+libfoldgrammars (1.0.13-0ubuntu1~saucy1) saucy; urgency=low
+
+  * differenciate between PREFIX and INSTALLDIR on the target system
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 16:53:39 +0100
+
+libfoldgrammars (1.0.13-0ubuntu1~raring1) raring; urgency=low
+
+  * differenciate between PREFIX and INSTALLDIR on the target system
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 16:53:30 +0100
+
+libfoldgrammars (1.0.13-0ubuntu1~quantal1) quantal; urgency=low
+
+  * differenciate between PREFIX and INSTALLDIR on the target system
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 16:53:22 +0100
+
+libfoldgrammars (1.0.13-0ubuntu1~precise1) precise; urgency=low
+
+  * differenciate between PREFIX and INSTALLDIR on the target system
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 16:53:15 +0100
+
+libfoldgrammars (1.0.13-0ubuntu1~lucid1) lucid; urgency=low
+
+  * differenciate between PREFIX and INSTALLDIR on the target system
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 16:46:39 +0100
+
+libfoldgrammars (1.0.12-0ubuntu1~saucy1) saucy; urgency=low
+
+  * new variable for source code location, needed by RapidShapes
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 16 Nov 2013 13:11:29 +0100
+
+libfoldgrammars (1.0.12-0ubuntu1~raring1) raring; urgency=low
+
+  * new variable for source code location, needed by RapidShapes
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 16 Nov 2013 13:11:19 +0100
+
+libfoldgrammars (1.0.12-0ubuntu1~quantal1) quantal; urgency=low
+
+  * new variable for source code location, needed by RapidShapes
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 16 Nov 2013 13:11:10 +0100
+
+libfoldgrammars (1.0.12-0ubuntu1~precise1) precise; urgency=low
+
+  * new variable for source code location, needed by RapidShapes
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 16 Nov 2013 13:11:02 +0100
+
+libfoldgrammars (1.0.12-0ubuntu1~lucid1) lucid; urgency=low
+
+  * new variable for source code location, needed by RapidShapes
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 16 Nov 2013 13:04:05 +0100
+
 libfoldgrammars (1.0.11-0ubuntu1~raring1) raring; urgency=low
 
   * bugfix: leading or trailing whitespaces for fasta sequences are now

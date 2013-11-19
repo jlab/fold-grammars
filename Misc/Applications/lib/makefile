@@ -1,4 +1,5 @@
 PREFIX=$(HOME)/local/
+INSTALLDIR ?= $(PREFIX)
 
 MAKE=make
 PERL=perl
@@ -10,6 +11,7 @@ install:
 	for file in foldGrammars/*; do \
 		install -m 644 $$file $(PREFIX)/lib/foldGrammars; \
 	done;
+	sed -i "s|our \$$prototypeDirectory = \$$rootDir;|our \$$prototypeDirectory = '$(INSTALLDIR)/share/fold-grammars/';|" $(PREFIX)/lib/foldGrammars/Settings.pm 
 
 clean:
 	echo "Nothing to do"

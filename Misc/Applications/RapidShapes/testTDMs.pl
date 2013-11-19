@@ -30,7 +30,7 @@ our $GRAMMAR_MACROSTATE = 'macrostate';
 our $TASK_TRUTH = 'truth';
 our $TASK_TDMRUN = 'tdmrun';
 
-our @ALLMODES = ($Settings::MODE_SAMPLE, $Settings::MODE_KBEST, $Settings::MODE_LIST, $Settings::MODE_ENERGY);
+our @ALLMODES = ($Settings::MODE_SAMPLE, $Settings::MODE_KBEST, $Settings::MODE_LIST, $Settings::MODE_SUBOPT);
 @References::ORDER = ('mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','voss:gie:reh:2006','jan:gie:2010');
 
 my %PARAM;

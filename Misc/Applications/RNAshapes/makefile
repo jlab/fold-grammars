@@ -6,11 +6,11 @@ WINDOWSUFFIX=_window
 FASTLIBRNA=
 RNAOPTIONSPERLSCRIPT=../addRNAoptions.pl
 
-GAPC=/vol/bibi/bin/gapc/bin/gapc
+GAPC=gapc
 MAKE=make
 PERL=perl
 BASEDIR=../../../
-SED=/vol/bibi/bin/gapc/bin/sed
+SED=sed
 
 targets=mfe subopt shapes probs sample eval outside mea pfall
 targets_window=mfe subopt shapes probs sample mea pfall

@@ -30,16 +30,16 @@ our $GRAMMAR_MACROSTATE = 'macrostate';
 our $TASK_PFALL = 'pfall';
 our $TASK_TDMRUN = 'tdmrun';
 
-our @ALLMODES = ($Settings::MODE_SAMPLE, $Settings::MODE_KBEST, $Settings::MODE_LIST, $Settings::MODE_ENERGY);
+our @ALLMODES = ($Settings::MODE_SAMPLE, $Settings::MODE_KBEST, $Settings::MODE_LIST, $Settings::MODE_SUBOPT);
 @References::ORDER = ('mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','voss:gie:reh:2006','jan:gie:2010');
 
 my %PARAM;
-$PARAM{mode} = {modes => \@ALLMODES, key => 'mode', gapc => undef, type => 's', default => $Settings::MODE_SAMPLE, info => "Set the \"guess\" mode as one of the strings \"$Settings::MODE_SAMPLE\" (which is default), \"$Settings::MODE_KBEST\" \"$Settings::MODE_ENERGY\" or \"$Settings::MODE_LIST\"."};
+$PARAM{mode} = {modes => \@ALLMODES, key => 'mode', gapc => undef, type => 's', default => $Settings::MODE_SAMPLE, info => "Set the \"guess\" mode as one of the strings \"$Settings::MODE_SAMPLE\" (which is default), \"$Settings::MODE_KBEST\" \"$Settings::MODE_SUBOPT\" or \"$Settings::MODE_LIST\"."};
 $PARAM{temperature} = {modes => \@ALLMODES, key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
 $PARAM{param} = {modes => \@ALLMODES, key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [".References::getNumber('mat:dis:chi:schroe:zuk:tur:2004')."] and [".References::getNumber('tur:mat:2009')."])."};
 $PARAM{allowlp} = {modes => \@ALLMODES, key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
-$PARAM{absolutedeviation} = {modes => [$Settings::MODE_ENERGY], key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation)."};
-$PARAM{relativedeviation} = {modes => [$Settings::MODE_ENERGY], key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation)."};
+$PARAM{absolutedeviation} = {modes => [$Settings::MODE_SUBOPT], key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation)."};
+$PARAM{relativedeviation} = {modes => [$Settings::MODE_SUBOPT], key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation)."};
 $PARAM{shapelevel} = {modes => \@ALLMODES, key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels, where 5 is the most abstract and 1 the most concrete one.\nLevel 1 abstracts from all lengths (unpaired regions and stacks) and is the most concrete level. In Level 2 unpaired regions between components (e.g. between two hairpins) are not recognized. Level 3 does not differentiate between different types of helix interruptions like intern loops or bulges. Level 4 does only recognize internal loops as helix interrutions and finally in level 5 all interruptions are ignored, thus only ordering and nesting of hairpins and multiloops are shown. (see ".References::getNumber('jan:gie:2010')."] for more formal shape level definitions)\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
 $PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
 $PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => $Settings::PROGINFOS{$PROGID}->{name}." expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
@@ -107,7 +107,15 @@ sub checkParameters {
 	my $diePrefix = "wrong command line parameter:\n  ";
 	
 	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
-	
+	my @additionalBins = ();
+	foreach my $grammar (keys (%Settings::TDMfiles)) {
+		push @additionalBins, 'pfall_'.$grammar;
+		foreach my $level (5,4,3,2,1) {
+			push @additionalBins, 'tdm_'.$grammar.'_'.$level;
+		}
+	}
+	Utils::checkBinaryPresents($settings, $diePrefix, [$Settings::MODE_CAST], \@additionalBins);
+
 	die $diePrefix."the parameter file you specified could not be found.\n" if ((defined $settings->{'param'}) && (not -e $settings->{'param'}));
 	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
 	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
@@ -186,15 +194,7 @@ sub doComputation {
 			print ARRAY $Settings::BINARIES{perl}." ".Utils::absFilename($0)." ".$command."\n";
 		close (ARRAY);
 		
-		if ($settings->{mode} eq $Settings::MODE_KBEST) {
-			my $bin_ssa = compileKbest($settings, $workingDirectory);
-		} elsif ($settings->{mode} eq $Settings::MODE_ENERGY) {
-			my $bin_energy = compileEnergy($settings, $workingDirectory);
-		} else {
-			my $bin_sample = compileSample($settings, $workingDirectory);
-		}
-		my $bin_pfall = compilePFall($settings, $workingDirectory);
-		my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
+		my $bin_tdmGenerator = getCompilerBinary($settings);
 		
 		my $arch = '-l arch="sol-amd64"';
 		$arch = '-l linh=1' if (qx($Settings::BINARIES{uname} -o) !~ m/Sun/i);
@@ -204,8 +204,8 @@ sub doComputation {
 			my @shapes = ();
 			if ($settings->{mode} eq $Settings::MODE_KBEST) {
 				@shapes = @{guessShapesKbest($seq, $settings, $workingDirectory)};
-			} elsif ($settings->{mode} eq $Settings::MODE_ENERGY) {
-				@shapes = @{guessShapesEnergy($seq, $settings, $workingDirectory)};
+			} elsif ($settings->{mode} eq $Settings::MODE_SUBOPT) {
+				@shapes = @{guessShapesSubopt($seq, $settings, $workingDirectory)};
 			} elsif ($settings->{mode} eq $Settings::MODE_LIST) {
 				@shapes = @{$settings->{list}};
 				print STDERR "step 1: using a provided list of ".@shapes." shapes.\n";		
@@ -218,7 +218,7 @@ sub doComputation {
 			
 		#3) compile TDM generator if not available
 			print STDERR "step 3: compute exact probabilities for guessed shapes:\n";
-			my $bin_tdmGenerator = Utils::compileGenerator($settings, $workingDirectory);
+			my $bin_tdmGenerator = getCompilerBinary($settings);
 			my $pfShapeSum = 0;
 			foreach my $shape (@shapes) {
 				my $ljshape = $shape->{shapestring};
@@ -231,7 +231,8 @@ sub doComputation {
 				} elsif ($settings->{grammar} eq 'overdangle') {
 					$alg_pfunc = "alg_pfunc_overdangle";
 				}
-				my $pfShape = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&Utils::generateGrammar, $bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $seq], "pf".$settings->{shapelevel}."__".$ljshape, 'addRNAoptions');
+				my $pfShape = Utils::compileAndrunTDM($shape->{shapestring}, $settings, $refHash_sequence);		
+				#~ my $pfShape = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&Utils::generateGrammar, $bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $seq], "pf".$settings->{shapelevel}."__".$ljshape, 'addRNAoptions');
 				$pfShapeSum += $pfShape;
 				$shape->{probability} = $pfShape/$pfAll;
 				print STDERR sprintf("%8.4f", $shape->{probability}*100)." %.\n";
@@ -259,7 +260,7 @@ sub doComputation {
 
 sub buildCommand {
 	my ($settings, $task) = @_;
-	
+	#~ $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$Settings::MODE_SAMPLE.'_'.$refHash_settings->{grammar}
 	my $cmd = "";
 	$cmd .= $settings->{'binarypath'};
 	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
@@ -272,6 +273,7 @@ sub buildCommand {
 			$cmd = 'out';
 		}
 	} else {
+		my $modename = $settings->{'mode'};
 		$cmd .= $settings->{'mode'}.'_';
 		$cmd .= $settings->{'grammar'};
 	}
@@ -285,7 +287,7 @@ sub buildCommand {
 			$cmd .= " -".$PARAM{numsamples}->{gapc}." ".$settings->{'numsamples'};
 		} elsif ($settings->{'mode'} eq $Settings::MODE_KBEST) {
 			$cmd .= " -".$PARAM{kbest}->{gapc}." ".$settings->{'kbest'};
-		} elsif ($settings->{'mode'} eq $Settings::MODE_ENERGY) {
+		} elsif ($settings->{'mode'} eq $Settings::MODE_SUBOPT) {
 			$cmd .= " -".$PARAM{relativedeviation}->{gapc}." ".$settings->{'relativedeviation'} if ($settings->{'relativedeviation'} != $PARAM{relativedeviation}->{default});
 			$cmd .= " -".$PARAM{absolutedeviation}->{gapc}." ".$settings->{'absolutedeviation'} if (defined $settings->{'absolutedeviation'});
 		}
@@ -296,87 +298,12 @@ sub buildCommand {
 	return $cmd;
 }
 
-sub compileSample {
-	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_sample = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$Settings::MODE_SAMPLE.'_'.$refHash_settings->{grammar};
-	if (not -e $bin_sample) {
-		print STDERR "compiling programm to estimate shape class frequencies for '".$refHash_settings->{grammar}."' ... ";
-		my $alg_pfunc = "alg_pfunc";
-		my $alg_pfuncID = "alg_pfunc_id";
-		if ($refHash_settings->{grammar} eq 'macrostate') {
-			$alg_pfunc = "alg_pfunc_macrostate";
-			$alg_pfuncID = "alg_pfunc_id_macrostate";
-		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
-			$alg_pfunc = "alg_pfunc_overdangle";
-			$alg_pfuncID = "alg_pfunc_id_overdangle";
-		}
-		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "((('.$alg_pfunc.' | '.$alg_pfuncID.') * alg_shapeX) suchthat sample_filter)"', "-t --sample", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, undef, 'addRNAoptions');
-		qx($Settings::BINARIES{mv} $tmpBin $bin_sample);
-		print STDERR "done.\n";
-	}
-	return Utils::absFilename($bin_sample);
-}
-
-sub compileKbest {
-	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_ssa = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$Settings::MODE_KBEST.'_'.$refHash_settings->{grammar};
-	if (not -e $bin_ssa) {
-		print STDERR "compiling programm to perform simple shape analysis for '".$refHash_settings->{grammar}."' ... ";
-		my $alg_mfe = "alg_mfe";
-		if ($refHash_settings->{grammar} eq 'macrostate') {
-			$alg_mfe = "alg_mfe_macrostate";
-		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
-			$alg_mfe = "alg_mfe_overdangle";
-		}
-		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "(alg_shapeX * '.$alg_mfe.')"', "-t --kbest", '', $workingDirectory, undef, undef, undef, 'addRNAoptions');
-		qx($Settings::BINARIES{mv} $tmpBin $bin_ssa);
-		print STDERR "done.\n";
-	}
-	return Utils::absFilename($bin_ssa);
-}
-
-sub compileEnergy {
-	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_energy = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$Settings::MODE_ENERGY.'_'.$refHash_settings->{grammar};
-	if (not -e $bin_energy) {
-		print STDERR "compiling programm to perform suboptimal shape analysis for '".$refHash_settings->{grammar}."' ... ";
-		my $alg_mfe = "alg_mfe";
-		if ($refHash_settings->{grammar} eq 'macrostate') {
-			$alg_mfe = "alg_mfe_macrostate";
-		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
-			$alg_mfe = "alg_mfe_overdangle";
-		}
-		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "((alg_shapeX * '.$alg_mfe.') * alg_dotBracket) suchthat suboptShapeClasses"', "-t --kbacktrace --no-coopt-class", '', $workingDirectory, undef, undef, undef, 'addRNAoptions');
-		qx($Settings::BINARIES{mv} $tmpBin $bin_energy);
-		print STDERR "done.\n";
-	}
-	return Utils::absFilename($bin_energy);
-}
-
-sub compilePFall {
-	my ($refHash_settings, $workingDirectory) = @_;
-	my $bin_pfall = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$TASK_PFALL.'_'.$refHash_settings->{grammar};
-	if (not -e $bin_pfall) {
-		print STDERR "compiling programm to compute the partition function for complete folding space of grammar '".$refHash_settings->{grammar}."' ...";
-		my $alg_pfunc = "alg_pfunc";
-		if ($refHash_settings->{grammar} eq 'macrostate') {
-			$alg_pfunc = "alg_pfunc_macrostate";
-		} elsif ($refHash_settings->{grammar} eq 'overdangle') {
-			$alg_pfunc = "alg_pfunc_overdangle";
-		}
-		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$refHash_settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, undef, undef, undef, 'addRNAoptions');
-		qx($Settings::BINARIES{mv} $tmpBin $bin_pfall);
-		print STDERR " done.\n";
-	}
-	return Utils::absFilename($bin_pfall);
-}
 
 
 sub getPFall {
 	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
 	
 	print STDERR "step 2: computing partition function value for complete folding space ... ";
-	my $bin_pfall = compilePFall($refHash_settings, $workingDirectory);
 	my $command = buildCommand($refHash_settings, $TASK_PFALL);
 	my $pfAll = parsePFanswer(qx($command "$inputSequence"));
 	print STDERR $pfAll.".\n";
@@ -384,11 +311,15 @@ sub getPFall {
 	return $pfAll;
 }
 
+sub getCompilerBinary {
+	my ($refHash_settings) = @_;
+	return Utils::absFilename($refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.'tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapelevel});
+}
+
 sub guessShapesSampling {
 	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
 	
 	print STDERR "step 1: guess shapes, via sampling, to be further analyzed via TDMs ... ";
-	my $bin_sample = compileSample($refHash_settings, $workingDirectory);
 	my %sampledShapes = ();
 	my $command = buildCommand($refHash_settings);
 	foreach my $line (split(m/\r?\n/, qx($command "$inputSequence"))) {
@@ -410,7 +341,6 @@ sub guessShapesKbest {
 	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
 	
 	print STDERR "step 1: guess shapes, via simple shape analysis, to be further analyzed via TDMs ... ";
-	my $bin_ssa = compileKbest($refHash_settings, $workingDirectory);
 	my %kbestShapes = ();
 	my $command = buildCommand($refHash_settings);
 	foreach my $line (split(m/\r?\n/, qx($command "$inputSequence"))) {
@@ -427,16 +357,15 @@ sub guessShapesKbest {
 	return \@shapes;
 }
 	
-sub guessShapesEnergy {
+sub guessShapesSubopt {
 	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
 	
 	print STDERR "step 1: guess shapes, via suboptimal shape analysis, to be further analyzed via TDMs ... ";
-	my $bin_energy = compileEnergy($refHash_settings, $workingDirectory);
 	my %energyShapes = ();
 	my $command = buildCommand($refHash_settings);
 	foreach my $line (split(m/\r?\n/, qx($command "$inputSequence"))) {
-		if ($line =~ m/\(\s+\(\s+(\S+)\s+,\s+(.+?)\s+\)\s+,\s+.+?\s+\)/) { #( ( [][][] , 570 ) , ..(((....))).((....))..(((....))) )
-			$energyShapes{$1} = $2;
+		if ($line =~ m/\( (.+?) , \( \( \S+ , (\S+) \) , .+? \) \)/) { #( -120 , ( ( ...((((....))))...... , [] ) , 0.0131327 ) )
+			$energyShapes{$2} = $1;
 		}
 	}
 	my @shapes = ();
@@ -505,7 +434,7 @@ EOF
 	$HELP .= Utils::printIdent(" ", "First step of ".$Settings::PROGINFOS{$PROGID}->{name}." is to somehow guess promising shape classes, whoes probability is exactly computed via thermodynamic matchers later on.\n".$Settings::PROGINFOS{$PROGID}->{name}." provides four different ways of \"guessing\" these shape classes:")."\n";
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_SAMPLE." : ", Utils::usage_convertInfoText("estimate shape frequencies via sampling a specific number of secondary structure from the folding-space, via stochastical backtracing. See options --@(numsamples).\n(default in ".$Settings::PROGINFOS{$PROGID}->{name}.")", \%PARAM))."\n";	
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_KBEST."  : ", Utils::usage_convertInfoText("a simple shape class analysis is performed and the kbest energetically ordered shape classes are selected. See option --@(kbest).", \%PARAM))."\n";	
-	$HELP .= Utils::printIdent("  ".$Settings::MODE_ENERGY." : ", Utils::usage_convertInfoText("similar to \"$Settings::MODE_KBEST\". Instead of the kbest energetically shape classes, those shape classes are used whoes energy deviates up to a certain threshlold from minimal free energy for the input sequence. See options --@(absolutedeviation) and --@(relativedeviation).", \%PARAM))."\n";	
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_SUBOPT." : ", Utils::usage_convertInfoText("similar to \"$Settings::MODE_KBEST\". Instead of the kbest energetically shape classes, those shape classes are used whoes energy deviates up to a certain threshlold from minimal free energy for the input sequence. See options --@(absolutedeviation) and --@(relativedeviation).", \%PARAM))."\n";	
 	$HELP .= Utils::printIdent("  ".$Settings::MODE_LIST."   : ", Utils::usage_convertInfoText("If you have an alternative method of guessing shapes, you can also provide a list of these shape classes. Take care, that your input sequence can fold into these shapes at all! See option --@(list).", \%PARAM))."\n";	
 
 	$HELP .= "GUESS MODE SPECIFIC OPTIONS:\n";
