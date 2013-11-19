@@ -18,6 +18,7 @@ use foldGrammars::Utils;
 
 my $INF = 5000000;
 my $INPUTSEQFILE = '/vol/fold-grammars/src/Misc/Analyses/Testinputs/Foldingspaces/sfull_lenSort.fasta';
+#~ my $INPUTSEQFILE = '/vol/fold-grammars/src/Misc/Analyses/Testinputs/Foldingspaces/lostInFoldingspace.fas';
 my $OUTDIR = '/vol/fold-grammars/src/Misc/Analyses/Foldingspaces/Results/ParamComp/';
 my $ERRDIR = '/vol/fold-grammars/src/Misc/Analyses/Foldingspaces/Results/ParamComp/';
 #~ my $QSUBREST = '-l JANS=1 -l hostname="'.$FSsettings::MYMACHINE.'"';
@@ -28,13 +29,12 @@ my $QSUBREST = '-l linh=1 -l hostname="suc*"';
 qx(mkdir -p $OUTDIR) if (not (-d $OUTDIR));
 qx(mkdir -p $ERRDIR) if (not (-d $ERRDIR));
 
-my $inputFile = '/vol/fold-grammars/src/Misc/Analyses/Testinputs/Foldingspaces/sfull_lenSort.fasta';
-my ($grammar, $level) = @ARGV;
+my ($parameter, $grammar, $level) = @ARGV;
 
 my $maxClusterArrayNumber = 1;
 my $pos = 1;
 my %availableSequenceIDs = ();
-foreach my $refHash_result (sort {length($a->{result}->{sequence}) <=> length($b->{result}->{sequence})} @{Utils::applyFunctionToFastaFile($inputFile, \&FSsettings::getSequenceLength)}) {
+foreach my $refHash_result (sort {length($a->{result}->{sequence}) <=> length($b->{result}->{sequence})} @{Utils::applyFunctionToFastaFile($INPUTSEQFILE, \&FSsettings::getSequenceLength)}) {
 	if (length($refHash_result->{result}->{sequence}) <= $MAXLEN) {
 		my ($header) = ($refHash_result->{result}->{header} =~ m/^\s*(.+?)$/);
 		$availableSequenceIDs{$header}->{occ}++;
@@ -47,7 +47,7 @@ foreach my $refHash_result (sort {length($a->{result}->{sequence}) <=> length($b
 
 my %calls = (
 	'T',
-	[18,26,31,34,36,37,38,40,43,48,56],
+	[18,26,31,34,36,37,38,40,43,48,56,66,76,100,200],
 	'P', [
 		'/vol/fold-grammars/src/Misc/Analyses/Foldingspaces/Energyparameters/dna_mathews1999.par',
 		'/vol/fold-grammars/src/Misc/Analyses/Foldingspaces/Energyparameters/dna_mathews2004.par',
@@ -63,24 +63,115 @@ my %calls = (
 		1,
 	],
 );
+#~ %calls = ('T', [66,76]);
 #~ startClusterRun(\@FSsettings::GRAMMARS, \@FSsettings::SHAPELEVELS, \%calls, $maxClusterArrayNumber);
+
 
 #~ my $grammar = 'macrostate';
 #~ my $level = 5;
 
 #~ my %help;
-#~ parseOutfile('/homes/sjanssen/CUR/Results/ParamComp/OUT/nodangle/5/r_nodangle_q5_T18.o2579195.1659', \%help);
+#~ parseOutfile('/homes/sjanssen/CUR/Results/ParamComp/u/OUT/nodangle/5/r_nodangle_q5_u0.o2587476.1659', \%help);
 #~ print Dumper \%help;
 #~ die;
 
-#~ plotTemperatures("temperatures.pdf", 20);
-plotTemperaturesGrammar('T', "tempGrammars_", 'microstate', 20);
-plotTemperaturesGrammar('P', "tempGrammars_", 'microstate', 20);
-plotTemperaturesGrammar('u', "tempGrammars_", 'microstate', 20);
+#~ plotTemperaturesGrammar('T', "tempGrammars_", 'microstate', 20);
+#~ plotTemperaturesGrammar('P', "tempGrammars_", 'microstate', 20);
+#~ plotTemperaturesGrammar('u', "tempGrammars_", 'microstate', 20);
+plotTemperatures("temperatures.pdf", 20);
 #~ plotParameter("parameters.pdf", 20);
 #~ plotLP("lonelyPairs.pdf", 20);
 
-#~ getData('u',$grammar,$level);
+#~ getData($parameter,$grammar,$level);
+
+#~ die;
+	#~ my $region = 20;
+	#~ my $refGrammar = 'nodangle';
+	#~ my %rankMoves = ();
+	#~ my %sumRankMoves = ();
+	#~ $parameter = 'T';
+	#~ my @values = ();
+	#~ @values = sort {$a <=> $b} @{$calls{$parameter}} if (($parameter eq 'T') || ($parameter eq 'u'));
+	#~ @values = sort {$a cmp $b} @{$calls{$parameter}} if ($parameter eq 'P');
+	#~ @values = (56);
+	#~ foreach my $level (@FSsettings::SHAPELEVELS) {
+		#~ next if ($level != 5);
+		#~ my %refResults = %{getData($parameter,$refGrammar, $level)};
+		#~ foreach my $grammar ("overdangle") {
+			#~ my %results = %{getData($parameter,$grammar, $level)};
+			#~ foreach my $seqID (keys(%availableSequenceIDs)) {
+				#~ for (my $i = 0; $i < @values; $i++) {
+					#~ if (exists $refResults{$seqID}->{$refGrammar}->{$level}->{getShortDescription($values[$i])}->{10000}->{true}->{shape}) {
+						#~ my $refRank = $refResults{$seqID}->{$refGrammar}->{$level}->{getShortDescription($values[$i])}->{10000}->{true}->{rank};
+						#~ my $Trank = $results{$seqID}->{$grammar}->{$level}->{getShortDescription($values[$i])}->{10000}->{true}->{rank};
+						#~ my $move = undef;
+						#~ if (($refRank == $INF) && ($Trank == $INF)) {
+							#~ $move = 0;
+						#~ } elsif (($refRank == $INF) && ($Trank != $INF)) {
+							#~ $move = -1 * ($region+5);
+						#~ } elsif (($refRank != $INF) && ($Trank == $INF)) {
+							#~ $move = +1 * ($region+5);
+						#~ } elsif (($refRank != $INF) && ($Trank != $INF)) {
+							#~ $move = $Trank - $refRank;
+							#~ $move = -1*($region+1) if ($move < -1*$region);
+							#~ $move = +1*($region+1) if ($move > +1*$region);
+						#~ }
+						#~ $rankMoves{$grammar}->{$level}->{getShortDescription($values[$i])}->{$move}++;
+						#~ $sumRankMoves{$grammar}->{$move}++;
+						#~ if (($move > -25) && ($move < 25)) {
+							#~ my $open = $refResults{$seqID}->{$refGrammar}->{$level}->{getShortDescription($values[$i])}->{10000}->{true}->{shape};
+							#~ $open =~ s|\]||g;
+							#~ $open =~ s|_||g;
+							#~ print STDERR Dumper $refResults{$seqID}->{$refGrammar}->{$level}->{getShortDescription($values[$i])}->{10000}->{true}->{shapeProb}, $refResults{$seqID}->{$refGrammar}->{$level}->{'37'}->{10000}->{true}->{shapeProb};
+							#~ print "".length($open)."\t".$move."\n";
+						#~ }
+					#~ }
+				#~ }
+			#~ }
+		#~ }
+	#~ }
+#~ die;
+
+	#~ my %rankMoves = ();
+	#~ my %probShifts = ();
+	#~ my $referenceValue = '/vol/fold-grammars/src/Misc/Analyses/Foldingspaces/Energyparameters/rna_turner2004.par';
+	#~ my @values = ();
+	#~ @values = sort {$a <=> $b} @{$calls{$parameter}} if (($parameter eq 'T') || ($parameter eq 'u'));
+	#~ @values = sort {$a cmp $b} @{$calls{$parameter}} if ($parameter eq 'P');
+	#~ foreach my $grammar (@FSsettings::GRAMMARS) {
+		#~ foreach my $level (@FSsettings::SHAPELEVELS) {
+			#~ my %results = %{getData($parameter,$grammar, $level)};
+			#~ foreach my $seqID (keys(%availableSequenceIDs)) {
+				#~ if (exists $results{$seqID}->{$grammar}->{$level}->{getShortDescription($referenceValue)}->{10000}->{true}->{shape}) {
+					#~ my $refProb = $results{$seqID}->{$grammar}->{$level}->{getShortDescription($referenceValue)}->{10000}->{true}->{shapeProb};
+					#~ my $refRank = $results{$seqID}->{$grammar}->{$level}->{getShortDescription($referenceValue)}->{10000}->{true}->{rank};
+					#~ foreach my $value (@values) {
+						#~ if (exists $results{$seqID}->{$grammar}->{$level}->{getShortDescription($value)}->{10000}->{true}->{shape}) {
+							#~ my $prob = $results{$seqID}->{$grammar}->{$level}->{getShortDescription($value)}->{10000}->{true}->{shapeProb};
+							#~ my $Trank = $results{$seqID}->{$grammar}->{$level}->{getShortDescription($value)}->{10000}->{true}->{rank};
+							#~ if (($refRank == $INF) && ($Trank == $INF)) {
+							#~ } elsif (($refRank == $INF) && ($Trank != $INF)) {
+							#~ } elsif (($refRank != $INF) && ($Trank == $INF)) {
+							#~ } elsif (($refRank != $INF) && ($Trank != $INF)) {
+								#~ push @{$probShifts{getShortDescription($value)}}, $prob - $refProb;
+							#~ }
+						#~ }
+					#~ }
+				#~ }
+			#~ }
+		#~ }
+	#~ }
+	
+	#~ print "shift\tvalue\n";
+	#~ foreach my $value (@values) {
+		#~ $value = getShortDescription($value);
+		#~ foreach my $shift (@{$probShifts{$value}}) {
+			#~ print $value."\t".$shift."\n";
+		#~ }
+	#~ }
+#~ print Dumper \%probShifts; die;
+
+
 
 sub plotLP {
 	my ($pdffile, $region) = @_;
@@ -255,15 +346,21 @@ sub plotParameter {
 sub plotTemperaturesGrammar {
 	my ($parameter, $pdffilePrefix, $refGrammar, $region) = @_;
 
+	my @nonRefGrammars = ();
+	foreach my $grammar (@FSsettings::GRAMMARS) {
+		next if ($grammar eq $refGrammar);
+		push @nonRefGrammars, $grammar;
+	}
+
 	my %rankMoves = ();
 	my %sumRankMoves = ();
 	my @values = ();
 	@values = sort {$a <=> $b} @{$calls{$parameter}} if (($parameter eq 'T') || ($parameter eq 'u'));
 	@values = sort {$a cmp $b} @{$calls{$parameter}} if ($parameter eq 'P');
 	foreach my $level (@FSsettings::SHAPELEVELS) {
+		#~ next;
 		my %refResults = %{getData($parameter,$refGrammar, $level)};
-		foreach my $grammar (@FSsettings::GRAMMARS) {
-			next if ($grammar eq $refGrammar);
+		foreach my $grammar (@nonRefGrammars) {
 			my %results = %{getData($parameter,$grammar, $level)};
 			foreach my $seqID (keys(%availableSequenceIDs)) {
 				for (my $i = 0; $i < @values; $i++) {
@@ -294,31 +391,28 @@ sub plotTemperaturesGrammar {
 	
 	#create mean latex table
 		my $format = "%.2f";
-		my $LATEX = "\\begin{tabular}{l".(("||".("r" x (@FSsettings::SHAPELEVELS))."|r") x (@FSsettings::GRAMMARS-1))."}\n";
+		my $LATEX = "\\begin{tabular}{l".(("||".("r" x (@FSsettings::SHAPELEVELS))."|r") x (@nonRefGrammars))."}\n";
 		
 		$LATEX .= "\t ";
-		foreach my $grammar (@FSsettings::GRAMMARS) {
-			next if ($grammar eq $refGrammar);
-			$LATEX .= "& \\multicolumn{".(@FSsettings::SHAPELEVELS+1)."}{c".($grammar ne $FSsettings::GRAMMARS[$#FSsettings::GRAMMARS] ? "||" : "")."}{".$grammar."} ";
+		foreach my $grammar (@nonRefGrammars) {
+			$LATEX .= "& \\multicolumn{".(@FSsettings::SHAPELEVELS+1)."}{c".($grammar ne $nonRefGrammars[$#nonRefGrammars] ? "||" : "")."}{".renaming($grammar, $parameter)."} ";
 		}
 		$LATEX .= "\\\\ \n";
 		
 		$LATEX .= "\t ";
-		foreach my $grammar (@FSsettings::GRAMMARS) {
-			next if ($grammar eq $refGrammar);
+		foreach my $grammar (@nonRefGrammars) {
 			foreach my $level (@FSsettings::SHAPELEVELS) {
 				$LATEX .= " & \\multicolumn{1}{c}{".$level."} ";
 			}
-			$LATEX .= " & \\multicolumn{1}{|c".($grammar ne $FSsettings::GRAMMARS[$#FSsettings::GRAMMARS] ? "||" : "")."}{avg.} ";
+			$LATEX .= " & \\multicolumn{1}{|c".($grammar ne $nonRefGrammars[$#nonRefGrammars] ? "||" : "")."}{avg.} ";
 		}
 		$LATEX .= "\\\\ \\hline \n";
 		
 		my %param_nominators = ();
 		my %all_nominators = ();
 		for (my $i = 0; $i < @values; $i++) {
-			$LATEX .= "\t ".formatLatex(getShortDescription($values[$i]), $parameter);
-			foreach my $grammar (@FSsettings::GRAMMARS) {	
-				next if ($grammar eq $refGrammar);
+			$LATEX .= "\t ".formatLatex(renaming(getShortDescription($values[$i]), $parameter), $parameter);
+			foreach my $grammar (@nonRefGrammars) {	
 				my $level_nominator = 0;
 				foreach my $level (@FSsettings::SHAPELEVELS) {
 					my $mean = computeMeanMove($rankMoves{$grammar}->{$level}->{getShortDescription($values[$i])});
@@ -333,8 +427,7 @@ sub plotTemperaturesGrammar {
 		}
 		
 		$LATEX .= "\t avg.";
-		foreach my $grammar (@FSsettings::GRAMMARS) {	
-			next if ($grammar eq $refGrammar);
+		foreach my $grammar (@nonRefGrammars) {	
 			foreach my $level (@FSsettings::SHAPELEVELS) {
 				$LATEX .= " & ".sprintf($format, $param_nominators{$grammar}->{$level} / @values);
 			}
@@ -350,8 +443,7 @@ sub plotTemperaturesGrammar {
 		my $tmpDataFile = "grammarCompares_".$parameter.".data";
 		open (DATA, "> ".$tmpDataFile) || die "can't write: $!";
 			print DATA "grammar\trankmove\tfreq\n";
-			foreach my $grammar (@FSsettings::GRAMMARS) {
-				next if ($grammar eq $refGrammar);
+			foreach my $grammar (@nonRefGrammars) {
 				foreach my $move (sort {$a <=> $b} keys(%{$sumRankMoves{$grammar}})) {
 					print DATA $grammar."\t".$move."\t".$sumRankMoves{$grammar}->{$move}."\n";
 				}
@@ -359,31 +451,32 @@ sub plotTemperaturesGrammar {
 		close (DATA);
 
 		my $pdffile = $pdffilePrefix.$refGrammar.'_'.$parameter.'.pdf';
-		my @colors = ('"magenta"','"blue"','"red"','"green"');
+		my @colors = ('"magenta"','"blue"','"green"','"red"');
 		open (R, " | R --vanilla");
 			print R 'require(gplots)'."\n";
 			print R 'pdf("'.$pdffile.'", width=10, height=10)'."\n";
 			print R 'data <- read.csv("'.$tmpDataFile.'", sep="\t", header=T);'."\n";
-			print R 'plot(max(data$freq), log="y", xlim=c('.(-1*($region+5)).','.(+1*($region+5)).'), ylim=c(10,max(data$freq)),cex=0, xlab="rank shift, relative to '.$refGrammar.' (smaller is better)", ylab="frequency (log scale)")'."\n";
-			print R 'lines(c('.(-1*($region+5)).','.(-1*($region+5)).'),c(1000,20000),col=c("#666666"));'."\n";
-			print R 'lines(c('.(-1*($region+1)).','.(-1*($region+1)).'),c(500,10000),col=c("#666666"));'."\n";
-			print R 'lines(c('.(+1*($region+1)).','.(+1*($region+1)).'),c(500,10000),col=c("#666666"));'."\n";
-			print R 'lines(c('.(+1*($region+5)).','.(+1*($region+5)).'),c(1000,20000),col=c("#666666"));'."\n";
+			print R 'plot(main="Grammar comparison, averaged over all '.$parameter.' values", max(data$freq), log="y", xlim=c('.(-1*($region+5)).','.(+1*($region+5)).'), ylim=c(min(data$freq)/2,max(data$freq)),cex=0, xlab="rank shift, relative to \\"'.renaming($refGrammar, $parameter).'\\" (smaller is better)", ylab="frequency (log scale)")'."\n";
+			my ($inf_top, $inf_bottom, $large_top, $large_bottom) = (12000,1000,8000,200);
+			($inf_top, $inf_bottom, $large_top, $large_bottom) = (3000,250,2200,10) if ($parameter eq 'u');
+			print R 'lines(c('.(-1*($region+5)).','.(-1*($region+5)).'),c('.$inf_bottom.','.$inf_top.'),col=c("#666666"));'."\n";
+			print R 'lines(c('.(-1*($region+1)).','.(-1*($region+1)).'),c('.$large_bottom.','.$large_top.'),col=c("#666666"));'."\n";
+			print R 'lines(c('.(+1*($region+1)).','.(+1*($region+1)).'),c('.$large_bottom.','.$large_top.'),col=c("#666666"));'."\n";
+			print R 'lines(c('.(+1*($region+5)).','.(+1*($region+5)).'),c('.$inf_bottom.','.$inf_top.'),col=c("#666666"));'."\n";
 			print R 'abline(v=0,col=c("#999999"));'."\n";
-			print R 'text('.(-1*($region+5)).',25000, col=c("#666666"), "-inf");'."\n";
-			print R 'text('.(-1*($region+0)).',12000, col=c("#666666"), "< -20");'."\n";
-			print R 'text('.(+1*($region+0)).',12000, col=c("#666666"), "> +20");'."\n";
-			print R 'text('.(+1*($region+5)).',25000, col=c("#666666"), "+inf");'."\n";
-			print R 'text(0,75, col=c("#666666"), "means:");'."\n";
-			for (my $i = 0; $i < @FSsettings::GRAMMARS; $i++) {
-				next if ($FSsettings::GRAMMARS[$i] eq $refGrammar);
-				print R 'sub <- subset(data, data$grammar=="'.$FSsettings::GRAMMARS[$i].'");'."\n";
+			print R 'text('.(-1*($region+5)).','.($inf_top*1.25).', col=c("#666666"), "-inf");'."\n";
+			print R 'text('.(-1*($region+0)).','.($large_top*1.25).', col=c("#666666"), "< -20");'."\n";
+			print R 'text('.(+1*($region+0)).','.($large_top*1.25).', col=c("#666666"), "> +20");'."\n";
+			print R 'text('.(+1*($region+5)).','.($inf_top*1.25).', col=c("#666666"), "+inf");'."\n";
+			print R 'text(0,max(data$freq)*0.0011, col=c("#666666"), "means:");'."\n";
+			for (my $i = 0; $i < @nonRefGrammars; $i++) {
+				print R 'sub <- subset(data, data$grammar=="'.$nonRefGrammars[$i].'");'."\n";
 				print R 'mid <- sum(sub$rank * sub$freq) / sum(sub$freq);'."\n";
 				print R 'col <- c('.$colors[$i].');'."\n";
-				print R 'lines(c(mid,mid),c(1,70), col=col)'."\n";
+				print R 'lines(c(mid,mid),c(1,max(data$freq)*0.001), col=col)'."\n";
 				print R 'lines(sub$freq ~ sub$rankmove, col=col);'."\n";
 			}
-			print R 'smartlegend(x="left", y="bottom", c("'.join('", "', @FSsettings::GRAMMARS).'"), col=c('.join(',', @colors).'), lw=2, inset=0);'."\n";
+			print R 'smartlegend(x="left", y="bottom", c("'.join('", "', map {renaming($_, $parameter)} @nonRefGrammars).'"), col=c('.join(',', @colors).'), lw=2, inset=0);'."\n";
 			print R 'dev.off()'."\n";
 		close (R);
 		#~ unlink ($tmpDataFile);
@@ -411,7 +504,6 @@ sub plotTemperatures {
 	#~ my %medians = ();
 	my @temperatures = sort {$a <=> $b} @{$calls{'T'}};
 	foreach my $grammar (@FSsettings::GRAMMARS) {
-		#~ last;
 		foreach my $level (@FSsettings::SHAPELEVELS) {
 			my %results = %{getData('T',$grammar, $level)};
 			foreach my $seqID (keys(%availableSequenceIDs)) {
@@ -454,7 +546,7 @@ sub plotTemperatures {
 
 	#~ my $pdffile = 'temperatures.pdf';
 	#~ my @colors = ('#002255','#0044aa','#0066ff','#5599ff','#aaccff','#ffffff','#550000','#aa0000','#ff0000','#ff5555','#ffaaaa');
-	my @colors = ('#002255','#0044aa','#0066ff','#5599ff','#aaccff','#ffffff','#ffaaaa','#ff5555','#ff0000','#aa0000','#550000');
+	my @colors = ('#002255','#0044aa','#0066ff','#5599ff','#aaccff','#ffffff','#ffaaaa','#ff5555','#ff0000','#aa0000','#550000','magenta','green','black','cyan');
 	open (R, " | R --vanilla");
 		print R 'require(gplots)'."\n";
 		print R 'pdf("'.$pdffile.'", width=10, height=10)'."\n";
@@ -501,12 +593,10 @@ sub getData {
 	} else {
 		print STDERR "parsing out files: ";
 		for (my $i = 1; $i <= $maxClusterArrayNumber; $i++) {
-			#~ foreach my $parameter (keys(%calls)) {
-				foreach my $value (@{$calls{$parameter}}) {
-					my $filename = $OUTDIR.$parameter.'/OUT/'.$grammar.'/'.$level.'/r_'.$grammar.'_q'.$level.'_'.$parameter.getShortDescription($value).'.o*.'.$i;
-					parseOutfile($filename, \%results);
-				}
-			#~ }
+			foreach my $value (@{$calls{$parameter}}) {
+				my $filename = $OUTDIR.$parameter.'/OUT/'.$grammar.'/'.$level.'/r_'.$grammar.'_q'.$level.'_'.$parameter.getShortDescription($value).'.o*.'.$i;
+				parseOutfile($filename, \%results);
+			}
 		}
 		Storable::nstore \%results, $STOREFILE;
 		print STDERR " done.\n";
@@ -564,22 +654,24 @@ sub parseOutfile {
 					if ($1 != 0) {
 						%result = ();
 					} else {
-						$result{canonical}->{rank} = $INF;
-						for (my $rank = 1; $rank <= @{$result{shapeProbs}}; $rank++) {
-							if ($result{canonical}->{shape} eq $result{shapeProbs}->[$rank-1]->{shape}) {
-								$result{canonical}->{rank} = $rank;
-								last;
-							}
-						}
+						#~ $result{canonical}->{rank} = $INF;
+						#~ for (my $rank = 1; $rank <= @{$result{shapeProbs}}; $rank++) {
+							#~ if ($result{canonical}->{shape} eq $result{shapeProbs}->[$rank-1]->{shape}) {
+								#~ $result{canonical}->{rank} = $rank;
+								#~ last;
+							#~ }
+						#~ }
 						$result{true}->{rank} = $INF;
 						for (my $rank = 1; $rank <= @{$result{shapeProbs}}; $rank++) {
 							if ($result{true}->{shape} eq $result{shapeProbs}->[$rank-1]->{shape}) {
 								$result{true}->{rank} = $rank;
+								$result{true}->{shapeProb} = $result{shapeProbs}->[$rank-1]->{prob};
 								last;
 							}
 						}
 						#~ $refHash_results->{$result{header}}->{$result{grammar}}->{$result{shapelevel}}->{$result{temperature}}->{$result{samplesize}} = {canonical => $result{canonical}, true => $result{true}, probabilities => $result{shapeProbs}};
 						$refHash_results->{$result{header}}->{$result{grammar}}->{$result{shapelevel}}->{$result{$parameterName}}->{$result{samplesize}} = {canonical => $result{canonical}, true => $result{true}};
+						$refHash_results->{$result{header}}->{$result{grammar}}->{$result{shapelevel}}->{$result{$parameterName}}->{$result{samplesize}} = {true => $result{true}};
 						$refHash_results->{$result{header}}->{sequence} = $result{sequence};
 					}
 				} else {
@@ -608,7 +700,7 @@ sub startClusterRun {
 	my @jobIDs = ();
 	
 	foreach my $parameter (keys(%{$refHash_calls})) {
-		next if ($parameter ne 'u');
+		#~ next if ($parameter ne 'T');
 		qx(mkdir -p $OUTDIR/$parameter/OUT/) if (not (-d $OUTDIR.'/'.$parameter.'/OUT'));
 		qx(mkdir -p $ERRDIR/$parameter/ERR/) if (not (-d $ERRDIR.'/'.$parameter.'/ERR'));
 		foreach my $grammar (@{$reflist_grammars}) {
@@ -678,7 +770,6 @@ sub startClusterRun {
 					my $qsubCommand = 'qsub -cwd '.$QSUBREST.' -l virtual_free='.$FSsettings::MAXMEM.'GB -l h_vmem='.$FSsettings::MAXMEM.'GB '.$clusterScript;
 					my $sub = "Your job-array 000";
 					#~ my $sub = qx($qsubCommand);
-					#~ print $sub;
 					my ($jobID) = ($sub =~ m/Your job-array (\d+)/);
 					push @jobIDs, $jobID;
 					print $jobName.": ".$qsubCommand."\n";
@@ -704,4 +795,18 @@ sub formatLatex {
 		}
 	}
 	return $text;
+}
+
+sub renaming {
+	my ($text, $parameter) = @_;
+	
+	if ($text eq 'microstate') {
+		return 'MicroState';
+	} elsif ($text eq 'macrostate') {
+		return 'MacroState';
+	} elsif ($text eq 'overdangle') {
+		return 'OverDangle';
+	} elsif ($text eq 'nodangle') {
+		return 'NoDangle';
+	}
 }

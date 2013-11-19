@@ -21,55 +21,23 @@ use grammarEvaluation;
 my $OUTDIR = '/vol/fold-grammars/src/Misc/Analyses/Foldingspaces/Results/ParamComp/P/OUT/';
 my $ERRDIR = '/vol/fold-grammars/src/Misc/Analyses/Foldingspaces/Results/ParamComp/P/ERR/';
 my $STOREFILE = '/tmp/tmp_compareGrammars.store';
-my $STOREFILE_OUT = '/tmp/tmp_compareGrammars_out.store';
+my $STOREFILE_OUT = '/tmp/tmp_compareGrammars_out2.store';
 
 #~ my $refHash_result = parseOutfile('/vol/fold-grammars/src/Misc/Analyses/Foldingspaces/Results/ParamComp/P/OUT/microstate/5/r_microstate_q5_Prna_turner2004.par.o2587051.1005', 'microstate', 5, 91);
 #~ print Dumper $refHash_result; die;
 
 my %avgData = %{retrieveData()};
-#~ print createLatex($avgData{sps}, 0);
-#~ print createLatex($avgData{avgsps}, 1);
-print createLaTeXtable_positionOfCorrectShape($avgData{domRanks}, ['macrostate','microstate','overdangle','nodangle'], [50,75,90,100]);
+#~ foreach my $target ('sps','avgsps') {
+	#~ open (OUT, "> tmp.tex") || die "can't write tmp tex file: $!";
+		#~ print OUT createLatex($avgData{$target}, ($target eq 'sps' ? 0 : 1));
+	#~ close (OUT);
+	#~ system("pdflatex tmp.tex && pdflatex tmp.tex && pdfcrop tmp.pdf $target.pdf && rm -f tmp.*");
+#~ }
+#~ print createLatex_firstplaces(\%avgData, ['macrostate','microstate','overdangle','nodangle']);
+#~ print createLatex_positionOfCorrectShape(\%avgData, ['macrostate','microstate','overdangle','nodangle'], [25,50,75,100]);
+print Dumper $avgData{domRanks}->{'macrostate'}->{5}; die;
+#~ print createLatex_positionOfCorrectShape(\%avgData, ['macrostate','microstate','overdangle','nodangle'], [5,10,15,20,25,30,35,40,45,50,75,100]);
 
-sub createLaTeXtable_positionOfCorrectShape {
-	my ($refHash_noAverageRank, $refList_grammars, $refList_quants) = @_;
-
-	my $LATEX = "";
-	#~ $LATEX .= '\begin{tabcaption}[\label{tab:shapePositions}Positions of correct shapes.]'."\n";
-	#~ $LATEX .= '\end{tabcaption}'."\n";
-	$LATEX .= '\mbox{%'."\n";
-	$LATEX .= "\t\\begin{tabular}{c".('r' x (scalar(@{$refList_quants}) * scalar(@{$refList_grammars})))."} \\hline \n";
-	#~ $LATEX .= "\t\t\\multicolumn{".(1+(@{$refList_grammars} * @{$refList_quants}))."}{c}{\\large{\\textbf{positions of correct shapes}}} \\\\ \\hline\n";
-	$LATEX .= "\t\t\\raisebox{-1ex}[1ex]{\\textbf{Level}}";
-	foreach my $grammar (@{$refList_grammars}) {
-		$LATEX .= " & \\multicolumn{".@{$refList_quants}."}{|c}{\\textbf{".grammarEvaluation::translateGrammarName($grammar)."}".($grammar eq $refList_grammars->[@{$refList_grammars}-1] ? "\\myruleu" : "")."}";
-	}
-	$LATEX .= "\\\\ \n";
-	$LATEX .= "\t\t ";
-	foreach my $grammar (@{$refList_grammars}) {
-		foreach my $quant (@{$refList_quants}) {
-			$LATEX .= " & \\tiny{".$quant."\\%}";
-		}
-	}
-	$LATEX .= " \\\\ \\hline\n";
-	for (my $shapeLevel = 5; $shapeLevel > 0; $shapeLevel--) {
-		$LATEX .= "\t\t\\textbf{".$shapeLevel."} ";
-		foreach my $grammar (@{$refList_grammars}) {
-			my @ranks = sort {$a <=> $b} @{$refHash_noAverageRank->{$grammar}->{$shapeLevel}};
-			#~ print Dumper \@ranks; die;
-			foreach my $quant (@{$refList_quants}) {
-				$LATEX .= " & \\footnotesize{".sprintf("%i", $ranks[$#ranks * $quant/100])."}";
-			}
-		}
-		$LATEX .= "\\myruleu" if ($shapeLevel == 5);
-		$LATEX .= " \\\\ \n";
-	}
-	#~ $LATEX .= "\t\t\\hline\n";
-	$LATEX .= "\t\\end{tabular}%\n";
-	$LATEX .= "}\n";
-	
-	return $LATEX;
-}
 
 sub createLatex {
 	my ($data, $isavg) = @_;
@@ -105,6 +73,9 @@ sub createLatex {
 }
 
 sub retrieveData {
+	#~ @FSsettings::GRAMMARS = ('macrostate');
+	#~ @FSsettings::SHAPELEVELS = ('5');
+	
 	my %resultAvailability = ();
 	if (-e $STOREFILE) {
 		print STDERR "loading stored results from '$STOREFILE' ...";
@@ -175,7 +146,8 @@ sub retrieveData {
 					foreach my $grammar (@FSsettings::GRAMMARS) {
 						my $refHash_result = parseOutfile($resultAvailability{$sequence}->{$grammar}->{$level}, $grammar, $level, length($sequence));
 						$tmpResults{$grammar} = $refHash_result->{shapes};
-						push @{$avgData{domRanks}->{$grammar}->{$level}}, $refHash_result->{domRank};
+						#~ push @{$avgData{domRanks}->{$grammar}->{$level}}, $refHash_result->{domRank};
+						$avgData{domRanks}->{$grammar}->{$level}->{$resultAvailability{$sequence}->{$grammar}->{$level}} = $refHash_result->{domRank};
 					}
 					foreach my $grammarA (@FSsettings::GRAMMARS) {
 						foreach my $grammarB (@FSsettings::GRAMMARS) {
@@ -348,10 +320,13 @@ sub parseOutfile {
 		#~ $results{data}->{$length}->{$grammar}->{$level}->{$mode}->{$parameter}->{shapeProbs} = \%shapes;
 	close (OUTFILE);
 	
-	my $rank = 0;
-	foreach my $shape (sort {$shapes{$b} <=> $shapes{$a}} keys(%shapes)) {
-		$rank++;
-		last if ($shape eq $trueShape);
+	my $rank = 999999999;
+	my @sortedByProb = sort {$shapes{$b} <=> $shapes{$a}} keys(%shapes);
+	for (my $i = 0; $i < @sortedByProb; $i++) {
+		if ($sortedByProb[$i] eq $trueShape) {
+			$rank = $i+1;
+			last;
+		}
 	}
 	
 	return {shapes => \%shapes, domRank => $rank};
@@ -366,4 +341,81 @@ sub clearLaTeX {
 	my ($text) = @_;
 	$text =~ s|_|\\_|g;
 	return $text;
+}
+
+
+
+
+sub createLatex_positionOfCorrectShape {
+	my ($refHash_noAverageRank, $refList_grammars, $refList_quants) = @_;
+
+	my $LATEX = '\begin{table}'."\n";
+	$LATEX .= '	\begin{center}'."\n";
+	$LATEX .= '		\caption{Positions of correct shapes.}'."\n";
+	$LATEX .= '		\label{tab:positionCorrectShapes}'."\n";
+	$LATEX .= '		\begin{tabular}{l'.('r' x (@{$refList_grammars} * @{$refList_quants}))."}\\toprule\n";
+	$LATEX .= '		\textbf{Level}';
+	foreach my $grammar (@{$refList_grammars}) {
+		$LATEX .= ' & \multicolumn{'.@{$refList_quants}.'}{c}{\textbf{'.grammarEvaluation::translateGrammarName($grammar).'}}';
+	}
+	$LATEX .= ' \\\\ '."\n";
+	$LATEX .= '		 ';
+	foreach my $grammar (@{$refList_grammars}) {
+		foreach my $quant (@{$refList_quants}) {
+			$LATEX .= ' & \textbf{'.$quant.'\%}';
+		}
+	}
+	$LATEX .= ' \\\\ \midrule'."\n";
+	
+	foreach my $level (sort {$b <=> $a} @FSsettings::SHAPELEVELS) {
+		$LATEX .= '			\textbf{'.$level.'}';
+		foreach my $grammar (@{$refList_grammars}) {
+			my @ranks = sort {$a <=> $b} (values %{$refHash_noAverageRank->{domRanks}->{$grammar}->{$level}});
+			foreach my $quant (@{$refList_quants}) {
+				my $value = sprintf("%i", $ranks[$#ranks * $quant/100]);
+				$value = "-" if ($value >= 999999999);
+				$LATEX .= " & ".$value;
+			}
+		}
+		$LATEX .= ' \\\\ ';
+		$LATEX .= ' \bottomrule ' if ($level == $FSsettings::SHAPELEVELS[$#FSsettings::SHAPELEVELS]);
+		$LATEX .= "\n";
+	}
+	$LATEX .= '		\end{tabular}'."\n";
+	$LATEX .= '	\end{center}'."\n";
+	$LATEX .= '\end{table}'."\n";
+	return $LATEX;
+}
+
+sub createLatex_firstplaces {
+	my ($refHash_data, $refList_grammars) = @_;
+	
+	my $LATEX = '\begin{table}'."\n";
+	$LATEX .= '	\begin{center}'."\n";
+	$LATEX .= '		\caption{Ratio of agreement between dominant shape and gold shape for the different grammars (columns) and different shape abstraction levels (rows).}'."\n";
+	$LATEX .= '		\label{tab:firstplaces}'."\n";
+	$LATEX .= '		\begin{tabular}{l'.('c' x @{$refList_grammars})."}\\toprule\n";
+	$LATEX .= '			\textbf{Level}';
+	foreach my $grammar (@{$refList_grammars}) {
+		$LATEX .= ' & \textbf{'.grammarEvaluation::translateGrammarName($grammar).'}';
+	}
+	$LATEX .= ' \\\\ \midrule'."\n";
+	foreach my $level (sort {$b <=> $a} @FSsettings::SHAPELEVELS) {
+		$LATEX .= '			\textbf{'.$level.'}';
+		foreach my $grammar (@{$refList_grammars}) {
+			my @ranks = sort {$a <=> $b} (values %{$refHash_data->{domRanks}->{$grammar}->{$level}});
+			my $firstPlace = 0;
+			foreach my $rank (@ranks) {
+				$firstPlace++ if ($rank == 1);
+			}
+			$LATEX .= " & ".sprintf("%.3f", $firstPlace / @ranks);
+		}
+		$LATEX .= ' \\\\ ';
+		$LATEX .= ' \bottomrule ' if ($level == $FSsettings::SHAPELEVELS[$#FSsettings::SHAPELEVELS]);
+		$LATEX .= "\n";
+	}
+	$LATEX .= '		\end{tabular}'."\n";
+	$LATEX .= '	\end{center}'."\n";
+	$LATEX .= '\end{table}'."\n";
+	return $LATEX;
 }
