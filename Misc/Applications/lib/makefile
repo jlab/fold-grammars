@@ -1,10 +1,8 @@
-PREFIX=$(HOME)/local/
-INSTALLDIR ?= $(PREFIX)
-
-MAKE=make
-PERL=perl
-INSTALL=install
 BASEDIR=../../../
+include $(BASEDIR)/makefile
+
+PREFIX ?= $(HOME)/local/
+INSTALLDIR ?= $(PREFIX)
 
 install:
 	if [ ! -d "$(PREFIX)/lib" ]; then $(INSTALL) -d $(PREFIX)/lib; fi;

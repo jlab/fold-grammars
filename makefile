@@ -1,26 +1,108 @@
 PREFIX=/vol/fold-grammars
+
+#programs
 GAPC=gapc
+MAKE=make
+PERL=perl
+INSTALL=install
+SED=sed
+
+#system dependend tools
+TMPDIR := $(shell mktemp -d)
+PWD := $(shell pwd)
+ARCHTRIPLE := $(gcc -dumpmachine)
+
+#fold-grammars specific variables
+grammars=nodangle overdangle microstate macrostate
+levels=5 4 3 2 1
+isEval=0
+RNAOPTIONSPERLSCRIPT=Misc/Applications/addRNAoptions.pl
+
+#compile options
+CXXFLAGS_EXTRA=-O3 -DNDEBUG
+FASTLIBRNA=
+WINDOWSUFFIX=_window
+window=
+ifdef window
+	windowmodeflag=--window-mode
+	current_windowmodesuffix=$(WINDOWSUFFIX)
+else
+	windowmodeflag=
+	current_windowmodesuffix=
+endif
 
 dummy:
-	echo "Do nothing"
+	@if [ "$(BASEDIR)" = "" ]; then \
+		echo "To build all programs of the fold-grammars suite, type 'make build-suite' and 'make install-suite'!"; \
+	else \
+		echo "If you wan't to compile just one program from the fold-grammars suite, type 'make all' instead of 'make'!"; \
+	fi;
+
+build-suite:
+	$(MAKE) -C Misc/Applications/pKiss all
+	$(MAKE) -C Misc/Applications/RNAshapes all
+	$(MAKE) -C Misc/Applications/RNAalishapes all
+	$(MAKE) -C Misc/Applications/Knotinframe all
+	$(MAKE) -C Misc/Applications/RapidShapes all
+
+install-suite:
+	$(MAKE) -C Misc/Applications/Knotinframe install
+	$(MAKE) -C Misc/Applications/lib install
+	$(MAKE) -C Misc/Applications/pKiss install
+	$(MAKE) -C Misc/Applications/RapidShapes install
+	$(MAKE) -C Misc/Applications/RNAalishapes install
+	$(MAKE) -C Misc/Applications/RNAshapes install
 	
-all: build install
-	
-build:
-	make -C Misc/Applications/pKiss all GAPC=$(GAPC)
-	make -C Misc/Applications/RNAshapes all GAPC=$(GAPC)
-	make -C Misc/Applications/RNAalishapes all GAPC=$(GAPC)
-	make -C Misc/Applications/Knotinframe all GAPC=$(GAPC)
-	
-install:
-	make -C Misc/Applications/lib install PREFIX=$(PREFIX)
-	make -C Misc/Applications/pKiss install-program PREFIX=$(PREFIX)
-	make -C Misc/Applications/RNAshapes install-program PREFIX=$(PREFIX)
-	make -C Misc/Applications/RNAalishapes install-program PREFIX=$(PREFIX)
-	make -C Misc/Applications/Knotinframe install-program PREFIX=$(PREFIX)
-	
-cleandist:
-	make -C Misc/Applications/pKiss cleandist
-	make -C Misc/Applications/RNAshapes cleandist
-	make -C Misc/Applications/RNAalishapes cleandist
-	make -C Misc/Applications/Knotinframe cleandist
+cleandist-suite:
+	$(MAKE) -C Misc/Applications/Knotinframe cleandist
+	$(MAKE) -C Misc/Applications/pKiss cleandist
+	$(MAKE) -C Misc/Applications/RapidShapes cleandist
+	$(MAKE) -C Misc/Applications/RNAalishapes cleandist
+	$(MAKE) -C Misc/Applications/RNAshapes cleandist
+
+install-lib:
+	$(MAKE) -C $(BASEDIR)/Misc/Applications/lib/ install
+
+compile:
+	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
+		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
+	fi;
+	cd $(PWD) && rm -rf $(TMPDIR);
+
+compile_instance:
+	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -i "$(gapc_instance)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
+		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
+	fi;
+	cd $(PWD) && rm -rf $(TMPDIR);
+
+compile_mea:
+	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product1)" $(gapc_options1) $(PWD)/$(BASEDIR)/$(gapc_file1) -o bppm.cc; \
+		cd $(TMPDIR) && $(SED) -i "s/namespace gapc {/namespace outside_gapc {/" bppm.hh; \
+		cd $(TMPDIR) && $(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.hh; \
+		cd $(TMPDIR) && $(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.cc; \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product2)" $(gapc_options2) $(PWD)/$(BASEDIR)/$(gapc_file2); \
+		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf 2; \
+		cd $(TMPDIR) && $(MAKE) -f out.mf bppm.o CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="bppm.o"; \
+		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
+	fi;
+	cd $(PWD) && rm -rf $(TMPDIR);
+
+compile_local:
+	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
+		cd $(TMPDIR) && ln -s $(PWD)/$(BASEDIR)/$(gapc_file) .; \
+		mkdir -p $(TMPDIR)/Grammars; \
+		cat $(PWD)/$(BASEDIR)/Grammars/$(GRAMMARFILE) | sed "s|axiom = struct|axiom = local|" > $(TMPDIR)/Grammars/gra_pknot_microstate.gap; \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
+		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
+	fi;
+	cd $(PWD) && rm -rf $(TMPDIR);

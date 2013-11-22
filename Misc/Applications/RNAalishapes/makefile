@@ -1,37 +1,12 @@
-PREFIX=$(HOME)/local/RNAalishapes
-#~ CXXFLAGS_EXTRA="-O3 -DNDEBUG"
-CXXFLAGS_EXTRA=-O3 -DNDEBUG
-PROGRAMPREFIX=RNAalishapes_
-WINDOWSUFFIX=_window
-FASTLIBRNA=
-RNAOPTIONSPERLSCRIPT=../addRNAoptions.pl
-
-GAPC=gapc
-MAKE=make
-PERL=perl
-INSTALL=install
 BASEDIR=../../../
+include $(BASEDIR)/makefile
+
+PREFIX ?= $(HOME)/local/RNAalishapes
+PROGRAMPREFIX=RNAalishapes_
 
 targets=mfe subopt shapes probs sample eval outside pfall
 targets_window=mfe subopt shapes probs sample pfall
-grammars=nodangle overdangle microstate macrostate
-#~ nodangle overdangle microstate macrostate
 consensus=consensus mis
-#~ consensus mis
-window=
-outname=out
-isEval=0
-ifdef window
-	windowmodeflag=--window-mode
-	current_windowmodesuffix=$(WINDOWSUFFIX)
-else
-	windowmodeflag=
-	current_windowmodesuffix=
-endif
-
-TMPDIR := $(shell mktemp -d)
-PWD := $(shell pwd)
-ARCHTRIPLE := $(gcc -dumpmachine)
 
 all:
 	$(MAKE) all_normal
@@ -65,9 +40,6 @@ install-program:
 		$(INSTALL) -m 755 $(PROGRAMPREFIX)rep_$${consensus} $(PREFIX)/bin; \
 	done;
 	$(INSTALL) -m 755 RNAalishapes $(PREFIX)/bin
-
-install-lib:
-	make -C $(BASEDIR)/Misc/Applications/lib/ install PREFIX=$(PREFIX)
 
 mfe: mfe_nodangle mfe_overdangle mfe_microstate mfe_macrostate
 mfe_%:
@@ -181,16 +153,6 @@ pfall_%:
 		gapc_file="ali_${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
-	
-compile:
-	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
-		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
-		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
-		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
-		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
-	fi;
-	cd $(PWD) && rm -rf $(TMPDIR);
-	
 cleandist: clean
 	for grammar in `echo "$(grammars)"`; do \
 		for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}; done; \

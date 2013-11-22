@@ -1,24 +1,12 @@
-PREFIX=$(HOME)/local/RapidShapes
-#~ CXXFLAGS_EXTRA="-O3 -DNDEBUG"
-CXXFLAGS_EXTRA=-O3 -DNDEBUG
+BASEDIR=../../../
+include $(BASEDIR)/makefile
+
+PREFIX ?= $(HOME)/local/RapidShapes
 PROGRAMPREFIX=RapidShapes_
 RNASHAPESPREFIX=RNAshapes_
-FASTLIBRNA=
 DIRRNASHAPES=../RNAshapes
 
-GAPC=gapc
-MAKE=make
-PERL=perl
-INSTALL=install
-BASEDIR=../../../
-
-grammars=nodangle overdangle microstate macrostate
-levels=5 4 3 2 1
 targets=pfall sample subopt kbest
-
-TMPDIR := $(shell mktemp -d)
-PWD := $(shell pwd)
-ARCHTRIPLE := $(gcc -dumpmachine)
 
 all: pfall sample subopt kbest tdm
 
@@ -40,9 +28,6 @@ install-program:
 	rsync -av --exclude='Misc/' --exclude='.hg/' --exclude='.hgignore' --exclude='makefile' --exclude='fold-grammars.xsd' --exclude='basePairProb_errors.ods' --exclude='description.xml' --exclude='*.html' $(BASEDIR) $(PREFIX)/share/fold-grammars/
 	$(INSTALL) -m 755 $(BASEDIR)/Misc/Applications/addRNAoptions.pl $(PREFIX)/share/fold-grammars/Misc/Applications/addRNAoptions.pl;
 	
-install-lib:
-	$(MAKE) -C $(BASEDIR)/Misc/Applications/lib/ install
-
 pfall: pfall_nodangle pfall_overdangle pfall_microstate pfall_macrostate
 pfall_%:
 	if [ ! -f "$(PROGRAMPREFIX)$@" ]; then \
@@ -82,24 +67,6 @@ tdm_%:
 		gapc_options="" \
 		gapc_file="tdmGenerator.gap" \
 		gapc_binaryname="$@";
-
-compile:
-	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
-		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
-		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
-		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
-		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
-	fi;
-	cd $(PWD) && rm -rf $(TMPDIR);
-
-compile_instance:
-	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
-		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -i "$(gapc_instance)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
-		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
-		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
-		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
-	fi;
-	cd $(PWD) && rm -rf $(TMPDIR);
 
 cleandist:
 	for grammar in `echo "$(grammars)"`; do \
