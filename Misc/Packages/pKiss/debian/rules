@@ -30,7 +30,7 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	pwd
-	$(MAKE) -C pkiss/Misc/Applications/pKiss/ cleandist
+	$(MAKE) -C pkiss/Misc/Applications/pKiss/ distclean
 
 	dh_clean
 

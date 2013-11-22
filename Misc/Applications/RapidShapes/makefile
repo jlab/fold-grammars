@@ -61,5 +61,5 @@ tdm_%:
 		gapc_file="tdmGenerator.gap" \
 		gapc_binaryname="$@";
 
-cleandist:
+distclean:
 	rm -rf $(ARCHTRIPLE);

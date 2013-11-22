@@ -1,3 +1,33 @@
+rnashapes (3.1.3-0ubuntu1~saucy1) saucy; urgency=low
+
+  * new makefile mechanism
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 22 Nov 2013 15:36:13 +0100
+
+rnashapes (3.1.3-0ubuntu1~raring1) raring; urgency=low
+
+  * new makefile mechanism
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 22 Nov 2013 15:35:52 +0100
+
+rnashapes (3.1.3-0ubuntu1~quantal1) quantal; urgency=low
+
+  * new makefile mechanism
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 22 Nov 2013 15:35:44 +0100
+
+rnashapes (3.1.3-0ubuntu1~precise1) precise; urgency=low
+
+  * new makefile mechanism
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 22 Nov 2013 15:35:37 +0100
+
+rnashapes (3.1.3-0ubuntu1~lucid1) lucid; urgency=low
+
+  * new makefile mechanism
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 22 Nov 2013 15:35:25 +0100
+
 rnashapes (3.1.2-0ubuntu1~raring1) raring; urgency=low
 
   * bugfix: leading or trailing whitespaces for fasta sequences are now

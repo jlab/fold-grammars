@@ -30,7 +30,7 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	pwd
-	$(MAKE) -C knotinframe/Misc/Applications/Knotinframe/ cleandist
+	$(MAKE) -C knotinframe/Misc/Applications/Knotinframe/ distclean
 
 	dh_clean
 

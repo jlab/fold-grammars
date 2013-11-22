@@ -59,7 +59,7 @@ clean:
 	rm -f string.*
 	rm -f bppm*
 	
-cleandist: clean
+distclean: clean
 	for grammar in `echo "$(grammars)"`; do \
 		for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}; done; \
 	done

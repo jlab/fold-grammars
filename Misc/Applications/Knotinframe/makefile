@@ -27,5 +27,5 @@ nested:
 		gapc_file="microstate.gap" \
 		gapc_binaryname="$@";
 
-cleandist:
+distclean:
 	rm -rf $(ARCHTRIPLE);

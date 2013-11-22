@@ -63,6 +63,6 @@ clean:
 	rm -f *.cc *.d *.hh *.o *.mf
 	rm -f string.*
 
-cleandist: clean
+distclean: clean
 	rm -f RNAalishapes*
 	rm -f RNAshapes*

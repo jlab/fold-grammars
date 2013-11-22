@@ -74,5 +74,5 @@ eval:
 		gapc_binaryname="$@$(current_windowmodesuffix)" \
 		isEval=1;
 
-cleandist:
+distclean:
 	rm -rf $(ARCHTRIPLE);

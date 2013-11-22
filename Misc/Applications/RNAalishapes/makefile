@@ -133,5 +133,5 @@ pfall_%:
 		gapc_file="ali_${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
-cleandist:
+distclean:
 	rm -rf $(ARCHTRIPLE);

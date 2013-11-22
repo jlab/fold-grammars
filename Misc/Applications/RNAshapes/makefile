@@ -136,5 +136,5 @@ pfall_%:
 
 
 
-cleandist:
+distclean:
 	rm -rf $(ARCHTRIPLE);

@@ -54,12 +54,12 @@ install-suite:
 	$(MAKE) -C Misc/Applications/RNAalishapes install-program
 	$(MAKE) -C Misc/Applications/RNAshapes install-program
 	
-cleandist-suite:
-	$(MAKE) -C Misc/Applications/Knotinframe cleandist
-	$(MAKE) -C Misc/Applications/pKiss cleandist
-	$(MAKE) -C Misc/Applications/RapidShapes cleandist
-	$(MAKE) -C Misc/Applications/RNAalishapes cleandist
-	$(MAKE) -C Misc/Applications/RNAshapes cleandist
+distclean-suite:
+	$(MAKE) -C Misc/Applications/Knotinframe distclean
+	$(MAKE) -C Misc/Applications/pKiss distclean
+	$(MAKE) -C Misc/Applications/RapidShapes distclean
+	$(MAKE) -C Misc/Applications/RNAalishapes distclean
+	$(MAKE) -C Misc/Applications/RNAshapes distclean
 
 install-lib:
 	$(MAKE) -C $(BASEDIR)/Misc/Applications/lib/ install

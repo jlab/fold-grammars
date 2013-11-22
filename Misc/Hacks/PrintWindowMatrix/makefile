@@ -30,5 +30,5 @@ clean:
 	rm -f printallwindows*
 	rm -f string.*
 	
-cleandist: clean
+distclean: clean
 	rm -f $(outname)
