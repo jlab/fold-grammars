@@ -9,8 +9,9 @@ RNAOPTIONSPERLSCRIPT=../addRNAoptions.pl
 GAPC=gapc
 MAKE=make
 PERL=perl
+INSTALL=install
 BASEDIR=../../../
-GRAMMARFILE=$(BASEDIR)Grammars/gra_pknot_microstate.gap
+GRAMMARFILE=gra_pknot_microstate.gap
 
 targets=mfe subopt enforce local shapes probs eval
 targets_window=mfe subopt enforce local shapes probs
@@ -25,75 +26,108 @@ else
 	current_windowmodesuffix=
 endif
 
-all: all_normal all_window clean
+TMPDIR := $(shell mktemp -d)
+PWD := $(shell pwd)
+ARCHTRIPLE := $(gcc -dumpmachine)
 
+all:
+	$(MAKE) all_normal
+	$(MAKE) all_window
+	
+all_normal: mfe subopt enforce local shapes probs eval
+	
+all_window: windowmodeflag = --window-mode
+all_window: current_windowmodesuffix = $(WINDOWSUFFIX)
+all_window: mfe subopt enforce local shapes probs
+	
 install: install-lib install-program
 
 install-program:
-	if [ ! -d "$(PREFIX)/bin" ]; then install -d $(PREFIX)/bin; fi;
+	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
 	for file in $(targets); do \
-		install -m 755 $(PROGRAMPREFIX)$${file} $(PREFIX)/bin; \
+		$(INSTALL) -m 755 $(PROGRAMPREFIX)$${file} $(PREFIX)/bin; \
 	done
 	for file in $(targets_window); do \
-		install -m 755 $(PROGRAMPREFIX)$${file}$(WINDOWSUFFIX) $(PREFIX)/bin; \
+		$(INSTALL) -m 755 $(PROGRAMPREFIX)$${file}$(WINDOWSUFFIX) $(PREFIX)/bin; \
 	done
-	install -m 755 pKiss $(PREFIX)/bin
+	$(INSTALL) -m 755 pKiss $(PREFIX)/bin
 	
 install-lib:
 	make -C $(BASEDIR)/Misc/Applications/lib/ install PREFIX=$(PREFIX)
 
-all_normal:
-	@ $(foreach var,$(targets), if [ ! -f "$(PROGRAMPREFIX)$(var)" ]; then $(MAKE) $(var); fi;)
-	
-all_window:
-	@ $(foreach var,$(targets_window), if [ ! -f "$(PROGRAMPREFIX)$(var)$(WINDOWSUFFIX)" ]; then $(MAKE) $(var) window="yes"; fi;)
-	
 mfe:
-	$(GAPC) -I $(BASEDIR) -p "alg_pknot_mfe * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --kbacktrace --tab-all --no-coopt $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="mfe"
+	$(MAKE) compile \
+		gapc_product="alg_pknot_mfe * alg_pknot_dotBracket" \
+		gapc_options="--kbacktrace --no-coopt --tab-all $(windowmodeflag)" \
+		gapc_file="pKiss.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
 
 subopt:
-	$(GAPC) -I $(BASEDIR) -p "alg_pknot_mfe_subopt * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="subopt"
+	$(MAKE) compile \
+		gapc_product="alg_pknot_mfe_subopt * alg_pknot_dotBracket" \
+		gapc_options="--kbacktrace --tab-all $(windowmodeflag)" \
+		gapc_file="pKiss.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
 
 enforce:
-	$(GAPC) -I $(BASEDIR) -p "(alg_pknot_pktype * alg_pknot_mfe) * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --kbacktrace --tab-all --no-coopt-class $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="enforce"
+	$(MAKE) compile \
+		gapc_product="(alg_pknot_pktype * alg_pknot_mfe) * alg_pknot_dotBracket" \
+		gapc_options="--kbacktrace --tab-all --no-coopt-class $(windowmodeflag)" \
+		gapc_file="pKiss.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
 
 local:
-	cp $(GRAMMARFILE) $(GRAMMARFILE).original
-	sed -i "s%axiom = struct%axiom = local%" $(GRAMMARFILE);
-	$(GAPC) -I $(BASEDIR) -p "alg_pknot_mfe_subopt * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	mv $(GRAMMARFILE).original $(GRAMMARFILE)
-	$(MAKE) compile outname="local"
+	$(MAKE) compile_local \
+		gapc_product="alg_pknot_mfe_subopt * alg_pknot_dotBracket" \
+		gapc_options="--kbacktrace --tab-all $(windowmodeflag)" \
+		gapc_file="pKiss.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
 
 shapes:
-	$(GAPC) -I $(BASEDIR) -p "((alg_pknot_shapeX * alg_pknot_mfe) * alg_pknot_dotBracket) suchthat suboptShapeClasses" $(BASEDIR)pKiss.gap --kbacktrace --tab-all --no-coopt-class $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="shapes"
+	$(MAKE) compile \
+		gapc_product="((alg_pknot_shapeX * alg_pknot_mfe) * alg_pknot_dotBracket) suchthat suboptShapeClasses" \
+		gapc_options="--kbacktrace --tab-all --no-coopt-class $(windowmodeflag)" \
+		gapc_file="pKiss.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
 
 probs:
-	$(GAPC) -I $(BASEDIR) -p "((alg_pknot_shapeX * (alg_pknot_mfe % alg_pknot_pfunc)) suchthat filterLowProbShapes) * alg_pknot_dotBracket" $(BASEDIR)pKiss.gap --no-coopt-class --kbacktrace --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="probs" FASTLIBRNA="LDLIBS=-lrnafast" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA) -ffast-math"
+	$(MAKE) compile \
+		gapc_product="((alg_pknot_shapeX * (alg_pknot_mfe % alg_pknot_pfunc)) suchthat filterLowProbShapes) * alg_pknot_dotBracket" \
+		gapc_options="--kbacktrace --tab-all --no-coopt-class $(windowmodeflag)" \
+		gapc_file="pKiss.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)" \
+		FASTLIBRNA="LDLIBS=-lrnafast" \
+		CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA) -ffast-math";
 
 eval:
-	$(GAPC) -I $(BASEDIR) -p "alg_pknot_dotBracket_id * alg_pknot_mfe * alg_pknot_shapeX" $(BASEDIR)eval_pKiss.gap --tab-all $(windowmodeflag) -o $@$(current_windowmodesuffix).cc
-	$(MAKE) compile outname="eval" isEval=1
-
-
-
+	$(MAKE) compile \
+		gapc_product="alg_pknot_dotBracket_id * alg_pknot_mfe * alg_pknot_shapeX" \
+		gapc_options="--tab-all $(windowmodeflag)" \
+		gapc_file="eval_pKiss.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)" \
+		isEval=1;
 
 compile:
-	$(PERL) $(RNAOPTIONSPERLSCRIPT) $(outname)$(current_windowmodesuffix).mf $(isEval)
-	$(MAKE) -f $(outname)$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
-	mv $(outname)$(current_windowmodesuffix) $(PROGRAMPREFIX)$(outname)$(current_windowmodesuffix)
+	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
+		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
+	fi;
+	cd $(PWD) && rm -rf $(TMPDIR);
 
+compile_local:
+	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
+		cd $(TMPDIR) && ln -s $(PWD)/$(BASEDIR)/$(gapc_file) .; \
+		mkdir -p $(TMPDIR)/Grammars; \
+		cat $(PWD)/$(BASEDIR)/Grammars/$(GRAMMARFILE) | sed "s|axiom = struct|axiom = local|" > $(TMPDIR)/Grammars/gra_pknot_microstate.gap; \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
+		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
+	fi;
+	cd $(PWD) && rm -rf $(TMPDIR);
 
-clean:
-	for program in `echo "$(targets)"`; do rm -f $${program}.*; rm -f $${program}_*; done
-	for program in `echo "$(targets_window)"`; do rm -f $${program}$(WINDOWSUFFIX).*; rm -f $${program}$(WINDOWSUFFIX)_*; done
-	rm -f string.*
-	
-cleandist: clean
+cleandist:
 	for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}; done
 	for program in `echo "$(targets_window)"`; do rm -f $(PROGRAMPREFIX)$${program}$(WINDOWSUFFIX); done
-	

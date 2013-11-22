@@ -9,96 +9,99 @@ DIRRNASHAPES=../RNAshapes
 GAPC=gapc
 MAKE=make
 PERL=perl
+INSTALL=install
 BASEDIR=../../../
 
 grammars=nodangle overdangle microstate macrostate
 levels=5 4 3 2 1
 targets=pfall sample subopt kbest
 
-all: pfall sample subopt kbest tdm clean
+TMPDIR := $(shell mktemp -d)
+PWD := $(shell pwd)
+ARCHTRIPLE := $(gcc -dumpmachine)
+
+all: pfall sample subopt kbest tdm
 
 install: install-lib install-program
 
 install-program:
-	if [ ! -d "$(PREFIX)/bin" ]; then install -d $(PREFIX)/bin; fi;
+	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
 	for grammar in `echo "$(grammars)"`; do \
 		for mode in $(targets); do \
-			install -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar} $(PREFIX)/bin; \
+			$(INSTALL) -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar} $(PREFIX)/bin; \
 		done; \
 		for level in $(levels); do \
-			install -m 755 $(PROGRAMPREFIX)tdm_$${grammar}_$${level} $(PREFIX)/bin; \
+			$(INSTALL) -m 755 $(PROGRAMPREFIX)tdm_$${grammar}_$${level} $(PREFIX)/bin; \
 		done; \
 	done;
-	install -m 755 RapidShapes $(PREFIX)/bin
-	if [ ! -d "$(PREFIX)/share/fold-grammars" ]; then install -d $(PREFIX)/share/fold-grammars; fi;
-	if [ ! -d "$(PREFIX)/share/fold-grammars/Misc/Applications" ]; then install -d $(PREFIX)/share/fold-grammars/Misc/Applications; fi;
+	$(INSTALL) -m 755 RapidShapes $(PREFIX)/bin
+	if [ ! -d "$(PREFIX)/share/fold-grammars" ]; then $(INSTALL) -d $(PREFIX)/share/fold-grammars; fi;
+	if [ ! -d "$(PREFIX)/share/fold-grammars/Misc/Applications" ]; then $(INSTALL) -d $(PREFIX)/share/fold-grammars/Misc/Applications; fi;
 	rsync -av --exclude='Misc/' --exclude='.hg/' --exclude='.hgignore' --exclude='makefile' --exclude='fold-grammars.xsd' --exclude='basePairProb_errors.ods' --exclude='description.xml' --exclude='*.html' $(BASEDIR) $(PREFIX)/share/fold-grammars/
-	install -m 755 $(BASEDIR)/Misc/Applications/addRNAoptions.pl $(PREFIX)/share/fold-grammars/Misc/Applications/addRNAoptions.pl;
+	$(INSTALL) -m 755 $(BASEDIR)/Misc/Applications/addRNAoptions.pl $(PREFIX)/share/fold-grammars/Misc/Applications/addRNAoptions.pl;
 	
 install-lib:
-	make -C $(BASEDIR)/Misc/Applications/lib/ install
+	$(MAKE) -C $(BASEDIR)/Misc/Applications/lib/ install
 
+pfall: pfall_nodangle pfall_overdangle pfall_microstate pfall_macrostate
+pfall_%:
+	if [ ! -f "$(PROGRAMPREFIX)$@" ]; then \
+		$(MAKE) -C $(DIRRNASHAPES) $@; \
+		$(INSTALL) $(DIRRNASHAPES)/$(RNASHAPESPREFIX)$@ $(PROGRAMPREFIX)$@; \
+	fi;
 
-pfall:
-	for grammar in `echo "$(grammars)"`; do \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}" ]; then \
-			make -C $(DIRRNASHAPES) $@ grammars=$${grammar}; \
-			cp $(DIRRNASHAPES)/$(RNASHAPESPREFIX)$@_$${grammar} $(PROGRAMPREFIX)$@_$${grammar}; \
-		fi; \
-	done;
+sample: sample_nodangle sample_overdangle sample_microstate sample_macrostate
+sample_%:
+	if [ ! -f "$(PROGRAMPREFIX)$@" ]; then \
+		$(MAKE) -C $(DIRRNASHAPES) $@; \
+		$(INSTALL) $(DIRRNASHAPES)/$(RNASHAPESPREFIX)$@ $(PROGRAMPREFIX)$@; \
+	fi;
 		
-sample:
-	for grammar in `echo "$(grammars)"`; do \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}" ]; then \
-			make -C $(DIRRNASHAPES) $@ grammars=$${grammar}; \
-			cp $(DIRRNASHAPES)/$(RNASHAPESPREFIX)$@_$${grammar} $(PROGRAMPREFIX)$@_$${grammar}; \
-		fi; \
-	done;
-		
-subopt:
-	for grammar in `echo "$(grammars)"`; do \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}" ]; then \
-			make -C $(DIRRNASHAPES) $@ grammars=$${grammar}; \
-			cp $(DIRRNASHAPES)/$(RNASHAPESPREFIX)$@_$${grammar} $(PROGRAMPREFIX)$@_$${grammar}; \
-		fi; \
-	done;
+subopt: subopt_nodangle subopt_overdangle subopt_microstate subopt_macrostate
+subopt_%:
+	if [ ! -f "$(PROGRAMPREFIX)$@" ]; then \
+		$(MAKE) -C $(DIRRNASHAPES) $@; \
+		$(INSTALL) $(DIRRNASHAPES)/$(RNASHAPESPREFIX)$@ $(PROGRAMPREFIX)$@; \
+	fi;
 	
-kbest:
-	for grammar in `echo "$(grammars)"`; do \
-		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
-		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
-		suffix=`echo "$${sOv}$${sMa}"`; \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_shapeX * alg_mfe$${suffix}" -t --kbest $(BASEDIR)$${grammar}.gap -o $@_$${grammar}.cc; \
-			$(MAKE) compile outname="$@_$${grammar}"; \
-		fi; \
-	done
+kbest: kbest_nodangle kbest_overdangle kbest_microstate kbest_macrostate
+kbest_%:
+	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
+	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
+	suffix=`echo "$${sOv}$${sMa}"`; \
+	$(MAKE) compile \
+		gapc_product="alg_shapeX * alg_mfe$${suffix}" \
+		gapc_options="--kbest" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@";
 		
-tdm:
-	for grammar in `echo "$(grammars)"`; do \
-		for level in `echo "$(levels)"`; do \
-			if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}_$${level}" ]; then \
-				$(GAPC) -I $(BASEDIR) -i "$@_$${grammar}_$${level}" $(BASEDIR)tdmGenerator.gap -o $@_$${grammar}_$${level}.cc; \
-				$(MAKE) compile outname="$@_$${grammar}_$${level}"; \
-			fi; \
-		done; \
-	done
+tdm: tdm_nodangle_5 tdm_overdangle_5 tdm_microstate_5 tdm_macrostate_5 tdm_nodangle_4 tdm_overdangle_4 tdm_microstate_4 tdm_macrostate_4 tdm_nodangle_3 tdm_overdangle_3 tdm_microstate_3 tdm_macrostate_3 tdm_nodangle_2 tdm_overdangle_2 tdm_microstate_2 tdm_macrostate_2 tdm_nodangle_1 tdm_overdangle_1 tdm_microstate_1 tdm_macrostate_1 
+tdm_%:
+	$(MAKE) compile_instance \
+		gapc_instance="$@" \
+		gapc_options="" \
+		gapc_file="tdmGenerator.gap" \
+		gapc_binaryname="$@";
 
 compile:
-	$(MAKE) -f $(outname).mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
-	mv $(outname) $(PROGRAMPREFIX)$(outname)
+	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
+		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
+	fi;
+	cd $(PWD) && rm -rf $(TMPDIR);
 
-clean:
-	for program in `echo "$(targets)"`; do rm -f $${program}.*; rm -f $${program}_*; done
-	for grammar in `echo "$(grammars)"`; do \
-		for level in `echo "$(levels)"`; do \
-			rm -f tdm_$${grammar}_$${level}.*; \
-			rm -f tdm_$${grammar}_$${level}_main.*; \
-		done; \
-	done;
-	rm -f string.*
-	
-cleandist: clean
+compile_instance:
+	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -i "$(gapc_instance)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
+		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
+	fi;
+	cd $(PWD) && rm -rf $(TMPDIR);
+
+cleandist:
 	for grammar in `echo "$(grammars)"`; do \
 		for level in `echo "$(levels)"`; do \
 			rm -f $(PROGRAMPREFIX)tdm_$${grammar}_$${level}; \

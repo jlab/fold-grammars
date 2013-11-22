@@ -3,13 +3,14 @@ INSTALLDIR ?= $(PREFIX)
 
 MAKE=make
 PERL=perl
+INSTALL=install
 BASEDIR=../../../
 
 install:
-	if [ ! -d "$(PREFIX)/lib" ]; then install -d $(PREFIX)/lib; fi;
-	install -d $(PREFIX)/lib/foldGrammars
+	if [ ! -d "$(PREFIX)/lib" ]; then $(INSTALL) -d $(PREFIX)/lib; fi;
+	$(INSTALL) -d $(PREFIX)/lib/foldGrammars
 	for file in foldGrammars/*; do \
-		install -m 644 $$file $(PREFIX)/lib/foldGrammars; \
+		$(INSTALL) -m 644 $$file $(PREFIX)/lib/foldGrammars; \
 	done;
 	sed -i "s|our \$$prototypeDirectory = \$$rootDir;|our \$$prototypeDirectory = '$(INSTALLDIR)/share/fold-grammars/';|" $(PREFIX)/lib/foldGrammars/Settings.pm 
 

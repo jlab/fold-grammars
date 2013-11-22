@@ -1,3 +1,33 @@
+libfoldgrammars (1.0.14-0ubuntu1~saucy1) saucy; urgency=low
+
+  * lib with extra Path info
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 19:16:48 +0100
+
+libfoldgrammars (1.0.14-0ubuntu1~raring1) raring; urgency=low
+
+  * lib with extra Path info
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 19:16:37 +0100
+
+libfoldgrammars (1.0.14-0ubuntu1~quantal1) quantal; urgency=low
+
+  * lib with extra Path info
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 19:16:27 +0100
+
+libfoldgrammars (1.0.14-0ubuntu1~precise1) precise; urgency=low
+
+  * lib with extra Path info
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 19:16:17 +0100
+
+libfoldgrammars (1.0.14-0ubuntu1~lucid1) lucid; urgency=low
+
+  * lib with extra Path info
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 17 Nov 2013 19:09:40 +0100
+
 libfoldgrammars (1.0.13-0ubuntu1~saucy1) saucy; urgency=low
 
   * differenciate between PREFIX and INSTALLDIR on the target system

@@ -9,6 +9,7 @@ RNAOPTIONSPERLSCRIPT=../addRNAoptions.pl
 GAPC=gapc
 MAKE=make
 PERL=perl
+INSTALL=install
 BASEDIR=../../../
 SED=sed
 
@@ -27,164 +28,177 @@ else
 	current_windowmodesuffix=
 endif
 
-all: all_normal all_window clean
+TMPDIR := $(shell mktemp -d)
+PWD := $(shell pwd)
+ARCHTRIPLE := $(gcc -dumpmachine)
 
-all_normal:
-	for target in `echo "$(targets)"`; do \
-		$(MAKE) $${target}; \
-	done
-	
-all_window:
-	for target in `echo "$(targets_window)"`; do \
-		$(MAKE) $${target} window="yes"; \
-	done
+all:
+	$(MAKE) all_normal
+	$(MAKE) all_window
+
+all_normal: mfe subopt shapes probs sample eval outside mea pfall
+
+all_window: windowmodeflag = --window-mode
+all_window: current_windowmodesuffix = $(WINDOWSUFFIX)
+all_window: mfe subopt shapes probs sample mea pfall
+
 
 install: install-lib install-program
 
 install-program:
-	if [ ! -d "$(PREFIX)/bin" ]; then install -d $(PREFIX)/bin; fi;
+	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
 	for grammar in `echo "$(grammars)"`; do \
 		for mode in $(targets); do \
 			if [ $${grammar} = "macrostate" ] && [ $${mode} = "outside" ]; then \
 				continue; \
 			fi; \
-			install -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar} $(PREFIX)/bin; \
+			$(INSTALL) -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar} $(PREFIX)/bin; \
 		done; \
 		for mode in $(targets_window); do \
-			install -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar}$(WINDOWSUFFIX) $(PREFIX)/bin; \
+			$(INSTALL) -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar}$(WINDOWSUFFIX) $(PREFIX)/bin; \
 		done; \
 	done;
-	install -m 755 RNAshapes $(PREFIX)/bin
+	$(INSTALL) -m 755 RNAshapes $(PREFIX)/bin
 
 install-lib:
 	make -C $(BASEDIR)/Misc/Applications/lib/ install PREFIX=$(PREFIX)
 
-mfe:
-	for grammar in `echo "$(grammars)"`; do \
-		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
-		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
-		suffix=`echo "$${sOv}$${sMa}"`; \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_mfe$${suffix} * (alg_dotBracket * alg_shapeX * alg_pfunc$${suffix})" $(BASEDIR)$${grammar}.gap --kbacktrace --no-coopt $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-			$(MAKE) compile outname="$@_$${grammar}"; \
-		fi; \
-	done
+mfe: mfe_nodangle mfe_overdangle mfe_microstate mfe_macrostate
+mfe_%:
+	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
+	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
+	suffix=`echo "$${sOv}$${sMa}"`; \
+	$(MAKE) compile \
+		gapc_product="alg_mfe$${suffix} * (alg_dotBracket * alg_shapeX * alg_pfunc$${suffix})" \
+		gapc_options="--kbacktrace --no-coopt $(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
 
-subopt:
-	for grammar in `echo "$(grammars)"`; do \
-		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
-		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
-		suffix=`echo "$${sOv}$${sMa}"`; \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_mfe_subopt$${suffix} * (alg_dotBracket * alg_shapeX * alg_pfunc$${suffix})" $(BASEDIR)$${grammar}.gap --kbacktrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-			$(MAKE) compile outname="subopt_$${grammar}"; \
-		fi; \
-	done
+subopt: subopt_nodangle subopt_overdangle subopt_microstate subopt_macrostate
+subopt_%:
+	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
+	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
+	suffix=`echo "$${sOv}$${sMa}"`; \
+	$(MAKE) compile \
+		gapc_product="alg_mfe_subopt$${suffix} * (alg_dotBracket * alg_shapeX * alg_pfunc$${suffix})" \
+		gapc_options="--kbacktrace $(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
 
-shapes:
-	for grammar in `echo "$(grammars)"`; do \
-		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
-		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
-		suffix=`echo "$${sOv}$${sMa}"`; \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "((alg_shapeX * alg_mfe$${suffix}) * (alg_dotBracket * alg_pfunc$${suffix})) suchthat suboptShapeClasses" $(BASEDIR)$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-			$(MAKE) compile outname="shapes_$${grammar}"; \
-		fi; \
-	done
+shapes: shapes_nodangle shapes_overdangle shapes_microstate shapes_macrostate
+shapes_%:
+	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
+	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
+	suffix=`echo "$${sOv}$${sMa}"`; \
+	$(MAKE) compile \
+		gapc_product="((alg_shapeX * alg_mfe$${suffix}) * (alg_dotBracket * alg_pfunc$${suffix})) suchthat suboptShapeClasses" \
+		gapc_options="--kbacktrace --no-coopt-class $(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
 
-probs:
-	for grammar in `echo "$(grammars)"`; do \
-		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
-		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
-		suffix=`echo "$${sOv}$${sMa}"`; \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "((alg_shapeX * (alg_mfe$${suffix} % alg_pfunc$${suffix})) suchthat filterLowProbShapes) * (alg_dotBracket * alg_pfunc$${suffix})" $(BASEDIR)$${grammar}.gap --kbacktrace --no-coopt-class $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-			$(MAKE) compile outname="probs_$${grammar}"; \
-		fi; \
-	done
+probs: probs_nodangle probs_overdangle probs_microstate probs_macrostate
+probs_%:
+	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
+	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
+	suffix=`echo "$${sOv}$${sMa}"`; \
+	$(MAKE) compile \
+		gapc_product="((alg_shapeX * (alg_mfe$${suffix} % alg_pfunc$${suffix})) suchthat filterLowProbShapes) * (alg_dotBracket * alg_pfunc$${suffix})" \
+		gapc_options="--kbacktrace --no-coopt-class $(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
 
-sample:
-	for grammar in `echo "$(grammars)"`; do \
-		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
-		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
-		suffix=`echo "$${sOv}$${sMa}"`; \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "(((alg_pfunc$${suffix} | alg_pfunc_id$${suffix}) * (alg_shapeX * alg_mfe$${suffix} * alg_dotBracket * alg_pfunc$${suffix})) suchthat sample_filter)" $(BASEDIR)$${grammar}.gap --sample $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-			$(MAKE) compile outname="sample_$${grammar}"; \
-		fi; \
-	done
+sample: sample_nodangle sample_overdangle sample_microstate sample_macrostate
+sample_%:
+	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
+	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
+	suffix=`echo "$${sOv}$${sMa}"`; \
+	$(MAKE) compile \
+		gapc_product="(((alg_pfunc$${suffix} | alg_pfunc_id$${suffix}) * (alg_shapeX * alg_mfe$${suffix} * alg_dotBracket * alg_pfunc$${suffix})) suchthat sample_filter)" \
+		gapc_options="--sample $(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
 	
-eval:
-	for grammar in `echo "$(grammars)"`; do \
-		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
-		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
-		sMi=`if [ $$grammar = "microstate" ]; then echo "_id"; fi`; \
-		suffix=`echo "$${sOv}$${sMa}"`; \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_dotBracket$${sMi} * alg_mfe$${suffix} * alg_shapeX" $(BASEDIR)eval_$${grammar}.gap $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-			$(MAKE) compile outname="eval_$${grammar}" isEval=1; \
-		fi; \
-	done
+eval: eval_nodangle eval_overdangle eval_microstate eval_macrostate
+eval_%:
+	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
+	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
+	sMi=`if [ ${*} = "microstate" ]; then echo "_id"; fi`; \
+	suffix=`echo "$${sOv}$${sMa}"`; \
+	$(MAKE) compile \
+		gapc_product="alg_dotBracket$${sMi} * alg_mfe$${suffix} * alg_shapeX" \
+		gapc_options="" \
+		gapc_file="eval_${*}.gap" \
+		gapc_binaryname="$@" \
+		isEval="1"; 
 
-outside:
-	for grammar in `echo "$(grammars)"`; do \
-		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+outside: outside_nodangle outside_overdangle outside_microstate
+outside_%:
+	if [ ${*} = "macrostate" ]; then \
+		echo "Sorry, we don't provide a outside version for macrostate yet"; \
+		continue; \
+	else \
+		sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
 		suffix=`echo "$${sOv}"`; \
-		if [ $${grammar} = "macrostate" ]; then \
-			echo "Sorry, we don't provide a outside version for macrostate yet"; \
-			continue; \
-		fi; \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_outside_pfunc$${suffix}" $(BASEDIR)outside_$${grammar}.gap $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-			$(MAKE) compile outname="outside_$${grammar}"; \
-		fi; \
-	done
-	
-mea:
-	for grammar in `echo "$(grammars)"`; do \
-		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
+		$(MAKE) compile \
+			gapc_product="alg_outside_pfunc$${suffix}" \
+			gapc_options="" \
+			gapc_file="outside_${*}.gap" \
+			gapc_binaryname="$@"; \
+	fi; \
+
+mea: mea_nodangle mea_overdangle mea_microstate
+mea_%:
+	if [ ${*} = "macrostate" ]; then \
+		echo "Sorry, we don't provide a outside version for macrostate yet"; \
+		continue; \
+	else \
+		sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
 		suffix=`echo "$${sOv}$${sMa}"`; \
-		if [ $${grammar} = "macrostate" ]; then \
-			echo "Sorry, we don't provide a outside version for macrostate yet"; \
-			continue; \
-		fi; \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_outside_bppm$${suffix}" $(BASEDIR)outside_$${grammar}.gap $(windowmodeflag) -o bppm.cc; \
-			$(SED) -i "s/namespace gapc {/namespace outside_gapc {/" bppm.hh; \
-			$(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.hh; \
-			$(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.cc; \
-			$(GAPC) -I $(BASEDIR) -p "alg_mea * (alg_dotBracket * alg_mfe$${suffix} * alg_shapeX)" $(BASEDIR)$${grammar}.gap --backtrace $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-			$(PERL) $(RNAOPTIONSPERLSCRIPT) $@_$${grammar}$(current_windowmodesuffix).mf 2; \
-			$(MAKE) -f $@_$${grammar}$(current_windowmodesuffix).mf bppm.o CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./"; \
-			$(MAKE) -f $@_$${grammar}$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="bppm.o"; \
-			mv $@_$${grammar}$(current_windowmodesuffix) $(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix); \
-		fi; \
-	done
-	
-pfall:
-	for grammar in `echo "$(grammars)"`; do \
-		sOv=`if [ $$grammar = "overdangle" ]; then echo "_overdangle"; fi`; \
-		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
-		suffix=`echo "$${sOv}$${sMa}"`; \
-		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_pfunc$${suffix}" $(BASEDIR)$${grammar}.gap $(windowmodeflag) -o $@_$${grammar}$(current_windowmodesuffix).cc; \
-			$(MAKE) compile outname="pfall_$${grammar}"; \
-		fi; \
-	done
+		$(MAKE) compile_mea \
+			gapc_product1="alg_outside_bppm$${suffix}" \
+			gapc_product2="alg_mea * (alg_dotBracket * alg_mfe$${suffix} * alg_shapeX)" \
+			gapc_options1="$(windowmodeflag)" \
+			gapc_options2="--backtrace $(windowmodeflag)" \
+			gapc_file1="outside_${*}.gap" \
+			gapc_file2="${*}.gap" \
+			gapc_binaryname="$@"; \
+	fi;
+
+pfall: pfall_nodangle pfall_overdangle pfall_microstate pfall_macrostate
+pfall_%:
+	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
+	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
+	suffix=`echo "$${sOv}$${sMa}"`; \
+	$(MAKE) compile \
+		gapc_product="alg_pfunc$${suffix}" \
+		gapc_options="$(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)"; \
 
 compile:
-	$(PERL) $(RNAOPTIONSPERLSCRIPT) $(outname)$(current_windowmodesuffix).mf $(isEval)
-	$(MAKE) -f $(outname)$(current_windowmodesuffix).mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)
-	mv $(outname)$(current_windowmodesuffix) $(PROGRAMPREFIX)$(outname)$(current_windowmodesuffix)
+	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
+		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
+	fi;
+	cd $(PWD) && rm -rf $(TMPDIR);
 
+compile_mea:
+	if [ ! -f "$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product1)" $(gapc_options1) $(PWD)/$(BASEDIR)/$(gapc_file1) -o bppm.cc; \
+		cd $(TMPDIR) && $(SED) -i "s/namespace gapc {/namespace outside_gapc {/" bppm.hh; \
+		cd $(TMPDIR) && $(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.hh; \
+		cd $(TMPDIR) && $(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.cc; \
+		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product2)" $(gapc_options2) $(PWD)/$(BASEDIR)/$(gapc_file2); \
+		$(PERL) $(PWD)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf 2; \
+		cd $(TMPDIR) && $(MAKE) -f out.mf bppm.o CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="bppm.o"; \
+		$(INSTALL) $(TMPDIR)/out $(PWD)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
+	fi;
+	cd $(PWD) && rm -rf $(TMPDIR);
 
-clean:
-	for program in `echo "$(targets)"`; do rm -f $${program}.*; rm -f $${program}_*; done
-	for program in `echo "$(targets_window)"`; do rm -f $${program}$(WINDOWSUFFIX).*; rm -f $${program}$(WINDOWSUFFIX)_*; done	
-	rm -f string.*
-	rm -f bppm*
-	
-cleandist: clean
+cleandist:
 	for grammar in `echo "$(grammars)"`; do \
 		for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}; done; \
 		for program in `echo "$(targets_window)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}$(WINDOWSUFFIX); done; \
