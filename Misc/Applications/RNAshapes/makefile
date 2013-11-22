@@ -120,7 +120,7 @@ mea_%:
 			gapc_options2="--backtrace $(windowmodeflag)" \
 			gapc_file1="outside_${*}.gap" \
 			gapc_file2="${*}.gap" \
-			gapc_binaryname="$@"; \
+			gapc_binaryname="$@$(current_windowmodesuffix)"; \
 	fi;
 
 pfall: pfall_nodangle pfall_overdangle pfall_microstate pfall_macrostate
