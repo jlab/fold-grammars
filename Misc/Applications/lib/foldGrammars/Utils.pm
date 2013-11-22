@@ -48,7 +48,9 @@ sub compileAndrunTDM {
 	my $make = qx($Settings::BINARIES{make} -f out.mf CPPFLAGS_EXTRA="-I $Settings::prototypeDirectory -ffast-math" LDLIBS="-lrnafast" 2>&1);
 	die $diePrefix."make execution failed: $make" if ($? != 0);
 
-	my $tdmResult = qx(./out $tdmCall "$refHash_sequence->{sequence}" 2>&1); 
+	my $seq = $refHash_sequence->{sequence};
+	$seq =~ s/t/u/gi;
+	my $tdmResult = qx(./out $tdmCall "$seq" 2>&1); 
 	die $diePrefix."TDM execution failed: $tdmResult" if ($? != 0);
 	
 	$tdmResult =~ s/Answer://;
