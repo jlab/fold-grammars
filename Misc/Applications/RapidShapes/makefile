@@ -25,21 +25,21 @@ pfall: pfall_nodangle pfall_overdangle pfall_microstate pfall_macrostate
 pfall_%:
 	if [ ! -f "$(PROGRAMPREFIX)$@" ]; then \
 		$(MAKE) -C $(DIRRNASHAPES) $@; \
-		$(INSTALL) $(DIRRNASHAPES)/$(ARCHTRIPLE)/$(RNASHAPESPREFIX)$@ $(PROGRAMPREFIX)$@; \
+		$(INSTALL) $(DIRRNASHAPES)/$(ARCHTRIPLE)/$(RNASHAPESPREFIX)$@ $(ARCHTRIPLE)/$(PROGRAMPREFIX)$@; \
 	fi;
 
 sample: sample_nodangle sample_overdangle sample_microstate sample_macrostate
 sample_%:
 	if [ ! -f "$(PROGRAMPREFIX)$@" ]; then \
 		$(MAKE) -C $(DIRRNASHAPES) $@; \
-		$(INSTALL) $(DIRRNASHAPES)/$(ARCHTRIPLE)/$(RNASHAPESPREFIX)$@ $(PROGRAMPREFIX)$@; \
+		$(INSTALL) $(DIRRNASHAPES)/$(ARCHTRIPLE)/$(RNASHAPESPREFIX)$@ $(ARCHTRIPLE)/$(PROGRAMPREFIX)$@; \
 	fi;
 		
 subopt: subopt_nodangle subopt_overdangle subopt_microstate subopt_macrostate
 subopt_%:
 	if [ ! -f "$(PROGRAMPREFIX)$@" ]; then \
 		$(MAKE) -C $(DIRRNASHAPES) $@; \
-		$(INSTALL) $(DIRRNASHAPES)/$(ARCHTRIPLE)/$(RNASHAPESPREFIX)$@ $(PROGRAMPREFIX)$@; \
+		$(INSTALL) $(DIRRNASHAPES)/$(ARCHTRIPLE)/$(RNASHAPESPREFIX)$@ $(ARCHTRIPLE)/$(PROGRAMPREFIX)$@; \
 	fi;
 	
 kbest: kbest_nodangle kbest_overdangle kbest_microstate kbest_macrostate
