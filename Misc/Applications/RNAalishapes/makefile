@@ -153,7 +153,7 @@ pfall_%:
 		gapc_file="ali_${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
-cleandist: clean
+cleandist:
 	for grammar in `echo "$(grammars)"`; do \
 		for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}; done; \
 		for program in `echo "$(targets_window)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}$(WINDOWSUFFIX); done; \
