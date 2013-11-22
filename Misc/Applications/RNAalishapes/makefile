@@ -101,7 +101,7 @@ outside_%:
 			gapc_options="$(windowmodeflag)" \
 			gapc_file="ali_outside_${*}.gap" \
 			gapc_binaryname="$@"; \
-	fi; \
+	fi;
 
 helper_consensus: helper_consensus_consensus helper_consensus_mis
 helper_consensus_%:

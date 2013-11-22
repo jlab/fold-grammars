@@ -103,7 +103,7 @@ outside_%:
 			gapc_options="" \
 			gapc_file="outside_${*}.gap" \
 			gapc_binaryname="$@"; \
-	fi; \
+	fi;
 
 mea: mea_nodangle mea_overdangle mea_microstate
 mea_%:
@@ -132,7 +132,9 @@ pfall_%:
 		gapc_product="alg_pfunc$${suffix}" \
 		gapc_options="$(windowmodeflag)" \
 		gapc_file="${*}.gap" \
-		gapc_binaryname="$@$(current_windowmodesuffix)"; \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
+
+
 
 cleandist:
 	rm -rf $(ARCHTRIPLE);
