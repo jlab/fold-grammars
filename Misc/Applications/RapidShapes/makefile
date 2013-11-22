@@ -14,14 +14,7 @@ install: install-lib install-program
 
 install-program:
 	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
-	for grammar in `echo "$(grammars)"`; do \
-		for mode in $(targets); do \
-			$(INSTALL) -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar} $(PREFIX)/bin; \
-		done; \
-		for level in $(levels); do \
-			$(INSTALL) -m 755 $(PROGRAMPREFIX)tdm_$${grammar}_$${level} $(PREFIX)/bin; \
-		done; \
-	done;
+	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
 	$(INSTALL) -m 755 RapidShapes $(PREFIX)/bin
 	if [ ! -d "$(PREFIX)/share/fold-grammars" ]; then $(INSTALL) -d $(PREFIX)/share/fold-grammars; fi;
 	if [ ! -d "$(PREFIX)/share/fold-grammars/Misc/Applications" ]; then $(INSTALL) -d $(PREFIX)/share/fold-grammars/Misc/Applications; fi;
@@ -69,11 +62,4 @@ tdm_%:
 		gapc_binaryname="$@";
 
 cleandist:
-	for grammar in `echo "$(grammars)"`; do \
-		for level in `echo "$(levels)"`; do \
-			rm -f $(PROGRAMPREFIX)tdm_$${grammar}_$${level}; \
-		done; \
-	done;
-	for grammar in `echo "$(grammars)"`; do \
-		for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}; done; \
-	done
+	rm -rf $(ARCHTRIPLE);

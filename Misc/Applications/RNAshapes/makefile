@@ -4,9 +4,6 @@ include $(BASEDIR)/makefile
 PREFIX ?= $(HOME)/local/RNAshapes
 PROGRAMPREFIX=RNAshapes_
 
-targets=mfe subopt shapes probs sample eval outside mea pfall
-targets_window=mfe subopt shapes probs sample mea pfall
-
 all:
 	$(MAKE) all_normal
 	$(MAKE) all_window
@@ -22,17 +19,7 @@ install: install-lib install-program
 
 install-program:
 	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
-	for grammar in `echo "$(grammars)"`; do \
-		for mode in $(targets); do \
-			if [ $${grammar} = "macrostate" ] && [ $${mode} = "outside" ]; then \
-				continue; \
-			fi; \
-			$(INSTALL) -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar} $(PREFIX)/bin; \
-		done; \
-		for mode in $(targets_window); do \
-			$(INSTALL) -m 755 $(PROGRAMPREFIX)$${mode}_$${grammar}$(WINDOWSUFFIX) $(PREFIX)/bin; \
-		done; \
-	done;
+	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
 	$(INSTALL) -m 755 RNAshapes $(PREFIX)/bin
 
 mfe: mfe_nodangle mfe_overdangle mfe_microstate mfe_macrostate
@@ -148,7 +135,4 @@ pfall_%:
 		gapc_binaryname="$@$(current_windowmodesuffix)"; \
 
 cleandist:
-	for grammar in `echo "$(grammars)"`; do \
-		for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}; done; \
-		for program in `echo "$(targets_window)"`; do rm -f $(PROGRAMPREFIX)$${program}_$${grammar}$(WINDOWSUFFIX); done; \
-	done
+	rm -rf $(ARCHTRIPLE);

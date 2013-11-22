@@ -4,16 +4,13 @@ include $(BASEDIR)/makefile
 PREFIX ?= $(HOME)/local/knotinframe
 PROGRAMPREFIX=knotinframe_
 
-targets=knotted nested
-
 all: knotted nested
 
 install: install-lib install-program
 
 install-program:
 	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
-	$(INSTALL) -m 755 $(PROGRAMPREFIX)knotted $(PREFIX)/bin; \
-	$(INSTALL) -m 755 $(PROGRAMPREFIX)nested $(PREFIX)/bin; \
+	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
 	$(INSTALL) -m 755 knotinframe $(PREFIX)/bin
 
 knotted:
@@ -31,4 +28,4 @@ nested:
 		gapc_binaryname="$@";
 
 cleandist:
-	for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}; done; \
+	rm -rf $(ARCHTRIPLE);

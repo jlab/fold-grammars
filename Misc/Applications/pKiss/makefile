@@ -6,8 +6,6 @@ PROGRAMPREFIX=pKiss_
 
 GRAMMARFILE=gra_pknot_microstate.gap
 
-targets=mfe subopt enforce local shapes probs eval
-
 all:
 	$(MAKE) all_normal
 	$(MAKE) all_window
@@ -21,13 +19,7 @@ all_window: mfe subopt enforce local shapes probs
 install: install-lib install-program
 
 install-program:
-	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
-	for file in $(targets); do \
-		$(INSTALL) -m 755 $(PROGRAMPREFIX)$${file} $(PREFIX)/bin; \
-	done
-	for file in $(targets_window); do \
-		$(INSTALL) -m 755 $(PROGRAMPREFIX)$${file}$(WINDOWSUFFIX) $(PREFIX)/bin; \
-	done
+	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
 	$(INSTALL) -m 755 pKiss $(PREFIX)/bin
 	
 mfe:
@@ -83,5 +75,4 @@ eval:
 		isEval=1;
 
 cleandist:
-	for program in `echo "$(targets)"`; do rm -f $(PROGRAMPREFIX)$${program}; done
-	for program in `echo "$(targets_window)"`; do rm -f $(PROGRAMPREFIX)$${program}$(WINDOWSUFFIX); done
+	rm -rf $(ARCHTRIPLE);
