@@ -47,12 +47,12 @@ build-suite:
 	$(MAKE) -C Misc/Applications/RapidShapes all
 
 install-suite:
-	$(MAKE) -C Misc/Applications/Knotinframe install
 	$(MAKE) -C Misc/Applications/lib install
-	$(MAKE) -C Misc/Applications/pKiss install
-	$(MAKE) -C Misc/Applications/RapidShapes install
-	$(MAKE) -C Misc/Applications/RNAalishapes install
-	$(MAKE) -C Misc/Applications/RNAshapes install
+	$(MAKE) -C Misc/Applications/Knotinframe install-program
+	$(MAKE) -C Misc/Applications/pKiss install-program
+	$(MAKE) -C Misc/Applications/RapidShapes install-program
+	$(MAKE) -C Misc/Applications/RNAalishapes install-program
+	$(MAKE) -C Misc/Applications/RNAshapes install-program
 	
 cleandist-suite:
 	$(MAKE) -C Misc/Applications/Knotinframe cleandist
