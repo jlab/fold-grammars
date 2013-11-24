@@ -19,7 +19,7 @@ build-stamp:
 
 	# Add here commands to compile the package.
 	pwd
-	$(MAKE) -C libfoldgrammars/Misc/Applications/lib install
+	$(MAKE) -C libfoldgrammars/Misc/Applications/lib install PREFIX=/usr
 
 	touch build-stamp
 

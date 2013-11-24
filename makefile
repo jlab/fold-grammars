@@ -1,4 +1,4 @@
-PREFIX=/vol/fold-grammars
+PREFIX=/usr
 
 #programs
 GAPC=gapc

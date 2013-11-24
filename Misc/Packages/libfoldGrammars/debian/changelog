@@ -1,3 +1,39 @@
+libfoldgrammars (1.0.17-0ubuntu1~lucid1) lucid; urgency=low
+
+  * makefile fix 2
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 23 Nov 2013 13:14:59 +0100
+
+libfoldgrammars (1.0.16-0ubuntu1~saucy1) saucy; urgency=low
+
+  * makefile fix
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 23 Nov 2013 12:26:17 +0100
+
+libfoldgrammars (1.0.16-0ubuntu1~raring1) raring; urgency=low
+
+  * makefile fix
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 23 Nov 2013 12:26:10 +0100
+
+libfoldgrammars (1.0.16-0ubuntu1~quantal1) quantal; urgency=low
+
+  * makefile fix
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 23 Nov 2013 12:26:02 +0100
+
+libfoldgrammars (1.0.16-0ubuntu1~precise1) precise; urgency=low
+
+  * makefile fix
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 23 Nov 2013 12:25:55 +0100
+
+libfoldgrammars (1.0.16-0ubuntu1~lucid1) lucid; urgency=low
+
+  * makefile fix
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sat, 23 Nov 2013 12:19:12 +0100
+
 libfoldgrammars (1.0.15-0ubuntu1~saucy1) saucy; urgency=low
 
   * new makefile mechanism
