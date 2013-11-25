@@ -19,6 +19,7 @@ all_window: mfe subopt enforce local shapes probs
 install: install-lib install-program
 
 install-program:
+	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
 	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
 	$(INSTALL) -m 755 pKiss $(PREFIX)/bin
 	
