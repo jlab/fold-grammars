@@ -78,6 +78,7 @@ our $MODE_ABSTRACT = 'abstract';
 our $MODE_OUTSIDE = 'outside';
 our $MODE_ANALYSE_OUTSIDE = 'analyse_outside';
 our $MODE_PFALL = 'pfall';
+our $MODE_MEA = 'mea';
 
 our $MODE_KIF = 'kif'; #single and thus default mode for KnotInFrame
 1;

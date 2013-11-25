@@ -96,6 +96,9 @@ sub parse {
 			if ((($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT)) && ($line =~ m/^\( (.+?) , \( \( (.+?) , (.+?) \) , (.+?) \) \)$/)) {
 				#( -30 , ( ( ...((((((...))).))) , [] ) , 0.00554499 ) )
 				($energy, $structure, $shape, $structureProb) = ($1/100,$2,$3,$4);
+			} elsif (($settings->{mode} eq $Settings::MODE_MEA) && ($line =~ m/^\( (.+?) , \( \( (.+?) , (.+?) \) , (.+?) \) \)$/)) {
+				#( 12.2094 , ( ( ((((((((.((.((((....))))))))))).)))..... , -820 ) , [] ) )
+				($energy, $structure, $shape, $structureProb) = ($3/100,$2,$4,$1);
 			} elsif (($settings->{mode} eq $Settings::MODE_SHAPES) && ($line =~ m/^\( \( (.+?) , (.+?) \) , \( (.+?) , (.+?) \) \)$/)) {
 				#( ( [] , -130 ) , ( ........((((((........)))))) , 0.00190434 ) )
 				($shape, $energy, $structure, $structureProb) = ($1,$2/100,$3,$4);
@@ -359,8 +362,14 @@ sub output {
 						if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
 							print $SEPARATOR;
 							my $probability = 0;
-							$probability = $result->{structureProb}/$refHash_pfall->{$windowPos};
-							print sprintf("%1.$settings->{'probdecimals'}f", $probability);
+							my $decimals = $settings->{'probdecimals'};
+							if ($settings->{'mode'} eq $Settings::MODE_MEA) {
+								$probability = $result->{structureProb};
+								$decimals -= int(log($probability)/log(10));
+							} else {
+								$probability = $result->{structureProb}/$refHash_pfall->{$windowPos};
+							}
+							print sprintf("%1.${decimals}f", $probability);
 						}
 					
 					#dot bracket structure
