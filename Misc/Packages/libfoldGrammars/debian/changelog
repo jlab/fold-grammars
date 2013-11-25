@@ -1,3 +1,99 @@
+libfoldgrammars (1.0.21-0ubuntu1~lucid1) lucid; urgency=low
+
+  * makefile fix 6
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 25 Nov 2013 09:15:17 +0100
+
+libfoldgrammars (1.0.20-0ubuntu1~saucy1) saucy; urgency=low
+
+  * makefile fix 5
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 25 Nov 2013 09:08:30 +0100
+
+libfoldgrammars (1.0.20-0ubuntu1~raring1) raring; urgency=low
+
+  * makefile fix 5
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 25 Nov 2013 09:08:23 +0100
+
+libfoldgrammars (1.0.20-0ubuntu1~quantal1) quantal; urgency=low
+
+  * makefile fix 5
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 25 Nov 2013 09:08:15 +0100
+
+libfoldgrammars (1.0.20-0ubuntu1~precise1) precise; urgency=low
+
+  * makefile fix 5
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 25 Nov 2013 09:08:08 +0100
+
+libfoldgrammars (1.0.20-0ubuntu1~lucid1) lucid; urgency=low
+
+  * makefile fix 5
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 25 Nov 2013 09:01:05 +0100
+
+libfoldgrammars (1.0.19-0ubuntu1~saucy1) saucy; urgency=low
+
+  * makefile fix 4
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 24 Nov 2013 23:23:50 +0100
+
+libfoldgrammars (1.0.19-0ubuntu1~raring1) raring; urgency=low
+
+  * makefile fix 4
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 24 Nov 2013 23:23:42 +0100
+
+libfoldgrammars (1.0.19-0ubuntu1~quantal1) quantal; urgency=low
+
+  * makefile fix 4
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 24 Nov 2013 23:23:35 +0100
+
+libfoldgrammars (1.0.19-0ubuntu1~precise1) precise; urgency=low
+
+  * makefile fix 4
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 24 Nov 2013 23:23:27 +0100
+
+libfoldgrammars (1.0.19-0ubuntu1~lucid1) lucid; urgency=low
+
+  * makefile fix 4
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 24 Nov 2013 23:16:49 +0100
+
+libfoldgrammars (1.0.18-0ubuntu1~saucy1) saucy; urgency=low
+
+  * makefile fix 3
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 24 Nov 2013 21:24:05 +0100
+
+libfoldgrammars (1.0.18-0ubuntu1~raring1) raring; urgency=low
+
+  * makefile fix 3
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 24 Nov 2013 21:23:58 +0100
+
+libfoldgrammars (1.0.18-0ubuntu1~quantal1) quantal; urgency=low
+
+  * makefile fix 3
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 24 Nov 2013 21:23:50 +0100
+
+libfoldgrammars (1.0.18-0ubuntu1~precise1) precise; urgency=low
+
+  * makefile fix 3
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 24 Nov 2013 21:23:41 +0100
+
+libfoldgrammars (1.0.18-0ubuntu1~lucid1) lucid; urgency=low
+
+  * makefile fix 3
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 24 Nov 2013 21:16:24 +0100
+
 libfoldgrammars (1.0.17-0ubuntu1~lucid1) lucid; urgency=low
 
   * makefile fix 2
