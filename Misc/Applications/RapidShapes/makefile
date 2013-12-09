@@ -5,7 +5,7 @@ PREFIX ?= $(HOME)/local/RapidShapes
 PROGRAMPREFIX=RapidShapes_
 RNASHAPESPREFIX=RNAshapes_
 DIRRNASHAPES=../RNAshapes
-
+foldgrammarsfilelist=$(BASEDIR)/Algebras $(BASEDIR)/Extensions $(BASEDIR)/Grammars $(BASEDIR)/Signatures $(BASEDIR)/*.gap $(BASEDIR)/Misc/Applications/addRNAoptions.pl
 targets=pfall sample subopt kbest
 
 all: pfall sample subopt kbest tdm
@@ -18,7 +18,9 @@ install-program:
 	$(INSTALL) -m 755 RapidShapes $(PREFIX)/bin
 	if [ ! -d "$(PREFIX)/share/fold-grammars" ]; then $(INSTALL) -d $(PREFIX)/share/fold-grammars; fi;
 	if [ ! -d "$(PREFIX)/share/fold-grammars/Misc/Applications" ]; then $(INSTALL) -d $(PREFIX)/share/fold-grammars/Misc/Applications; fi;
-	rsync -av --exclude='Misc/' --exclude='.hg/' --exclude='.hgignore' --exclude='makefile' --exclude='fold-grammars.xsd' --exclude='basePairProb_errors.ods' --exclude='description.xml' --exclude='*.html' $(BASEDIR) $(PREFIX)/share/fold-grammars/
+	rsync -av $(foldgrammarsfilelist) $(PREFIX)/share/fold-grammars/
+	
+	
 	$(INSTALL) -m 755 $(BASEDIR)/Misc/Applications/addRNAoptions.pl $(PREFIX)/share/fold-grammars/Misc/Applications/addRNAoptions.pl;
 	
 pfall: pfall_nodangle pfall_overdangle pfall_microstate pfall_macrostate
