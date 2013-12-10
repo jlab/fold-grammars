@@ -18,7 +18,7 @@ install-program:
 	$(INSTALL) -m 755 RapidShapes $(PREFIX)/bin
 	if [ ! -d "$(PREFIX)/share/fold-grammars" ]; then $(INSTALL) -d $(PREFIX)/share/fold-grammars; fi;
 	if [ ! -d "$(PREFIX)/share/fold-grammars/Misc/Applications" ]; then $(INSTALL) -d $(PREFIX)/share/fold-grammars/Misc/Applications; fi;
-	rsync -av $(foldgrammarsfilelist) $(PREFIX)/share/fold-grammars/
+	$(RSYNC) -av $(foldgrammarsfilelist) $(PREFIX)/share/fold-grammars/
 	
 	
 	$(INSTALL) -m 755 $(BASEDIR)/Misc/Applications/addRNAoptions.pl $(PREFIX)/share/fold-grammars/Misc/Applications/addRNAoptions.pl;

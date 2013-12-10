@@ -7,6 +7,7 @@ PERL=perl
 INSTALL=install
 SED=sed
 CC=gcc
+RSYNC=rsync
 
 #system dependend tools
 TMPDIR := $(shell mktemp -d)
@@ -24,6 +25,7 @@ CXXFLAGS_EXTRA=-O3 -DNDEBUG
 FASTLIBRNA=
 WINDOWSUFFIX=_window
 window=
+EXTRARUNTIMEPATHS=
 ifdef window
 	windowmodeflag=--window-mode
 	current_windowmodesuffix=$(WINDOWSUFFIX)
@@ -68,7 +70,7 @@ compile:
 	if [ ! -f "$(ARCHTRIPLE)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
 		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
 		$(PERL) $(PWD)/$(BASEDIR)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
-		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="$(EXTRARUNTIMEPATHS)"; \
 		$(INSTALL) -d $(PWD)/$(ARCHTRIPLE); \
 		$(INSTALL) $(TMPDIR)/out $(PWD)/$(ARCHTRIPLE)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
 	fi;
@@ -78,7 +80,7 @@ compile_instance:
 	if [ ! -f "$(ARCHTRIPLE)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix)" ]; then \
 		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -i "$(gapc_instance)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
 		$(PERL) $(PWD)/$(BASEDIR)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
-		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="$(EXTRARUNTIMEPATHS)"; \
 		$(INSTALL) -d $(PWD)/$(ARCHTRIPLE); \
 		$(INSTALL) $(TMPDIR)/out $(PWD)/$(ARCHTRIPLE)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
 	fi;
@@ -92,8 +94,8 @@ compile_mea:
 		cd $(TMPDIR) && $(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.cc; \
 		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product2)" $(gapc_options2) $(PWD)/$(BASEDIR)/$(gapc_file2); \
 		$(PERL) $(PWD)/$(BASEDIR)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf 2; \
-		cd $(TMPDIR) && $(MAKE) -f out.mf bppm.o CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
-		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="bppm.o"; \
+		cd $(TMPDIR) && $(MAKE) -f out.mf bppm.o CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="$(EXTRARUNTIMEPATHS)"; \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="bppm.o $(EXTRARUNTIMEPATHS)"; \
 		$(INSTALL) -d $(PWD)/$(ARCHTRIPLE); \
 		$(INSTALL) $(TMPDIR)/out $(PWD)/$(ARCHTRIPLE)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
 	fi;
@@ -106,7 +108,7 @@ compile_local:
 		cat $(PWD)/$(BASEDIR)/Grammars/$(GRAMMARFILE) | sed "s|axiom = struct|axiom = local|" > $(TMPDIR)/Grammars/gra_pknot_microstate.gap; \
 		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
 		$(PERL) $(PWD)/$(BASEDIR)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval); \
-		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA); \
+		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="$(EXTRARUNTIMEPATHS)"; \
 		$(INSTALL) -d $(PWD)/$(ARCHTRIPLE); \
 		$(INSTALL) $(TMPDIR)/out $(PWD)/$(ARCHTRIPLE)/$(PROGRAMPREFIX)$(gapc_binaryname)$(current_windowmodesuffix); \
 	fi;
