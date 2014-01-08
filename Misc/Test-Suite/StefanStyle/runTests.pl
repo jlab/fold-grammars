@@ -12,13 +12,14 @@ use Data::Dumper;
 our $testIndex = 1;
 our @failedTests = ();
 
-our $RNAPARAM1999 = '/stefan/share/gapc/librna/rna_turner1999.par';
-our $RNAPARAM2004 = '/stefan/share/gapc/librna/rna_turner2004.par';
-our $TMPDIR = "temp";
+our $RNAPARAM1999 = '/vol/gapc/share/gapc/librna/rna_turner1999.par';
+our $RNAPARAM2004 = '/vol/gapc/share/gapc/librna/rna_turner2004.par';
+our $TMPDIR = "temp_solaris";
 our $PROGRAMPREFIX = "pKiss_";
 our $RNAALISHAPES = "RNAalishapes";
 our $PERL = "perl"; 
 $PERL = "/vol/perl-5.10/bin/64/perl" if (qx(uname -a) =~ m/waldorf/); #use perl 5.10 on solaris cebitec to have the same rounding behaviour as on stefans laptop.
+my $ARCHTRIPLE = qx($Settings::BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
 
 qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 
@@ -29,7 +30,7 @@ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy A", "-s A
 checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy B", "-s B -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissB.out");
 checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissC.out");
 checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
-checkParameters("pseudoknots parameter check", $TMPDIR."/".$PROGRAMPREFIX."mfe", "pseudoknots.parametercheck.out");
+checkParameters("pseudoknots parameter check", $TMPDIR."/".$ARCHTRIPLE.'/'.$PROGRAMPREFIX."mfe", "pseudoknots.parametercheck.out");
 checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
 checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
 checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
@@ -67,7 +68,7 @@ sub compile {
 	mkdir($TMPDIR) if (!-d $TMPDIR);
 	qx(cp $sourcedir/makefile $TMPDIR);
 	qx(cp $sourcedir/$progamName $TMPDIR);
-	print qx(make -C $TMPDIR all RNAOPTIONSPERLSCRIPT=../../../Applications/addRNAoptions.pl BASEDIR=../../../../);
+	print qx(make -C $TMPDIR all BASEDIR=../../../../);
 }
 
 sub checkProgram {
@@ -134,8 +135,8 @@ sub checkBasicFunctions {
 	print "\trunning basic tests: ";
 	foreach my $run (@runs) {
 		print ".";
-		qx(echo "#CMD: $TMPDIR/${PROGRAMPREFIX}$run $sequence" >> $TMPDIR/$truth);
-		qx($TMPDIR/${PROGRAMPREFIX}$run $sequence >> $TMPDIR/$truth);
+		qx(echo "#CMD: $TMPDIR/$ARCHTRIPLE/${PROGRAMPREFIX}$run $sequence" >> $TMPDIR/$truth);
+		qx($TMPDIR/$ARCHTRIPLE/${PROGRAMPREFIX}$run $sequence >> $TMPDIR/$truth);
 		qx(echo "" >> $TMPDIR/$truth);
 	}
 	
@@ -176,8 +177,8 @@ sub checkParameters {
 	}
 	foreach my $run (@runs) {
 		print ".";
-		qx(echo "#CMD: $TMPDIR/${PROGRAMPREFIX}$run $sequence" >> $TMPDIR/$truth);
-		qx($TMPDIR/${PROGRAMPREFIX}$run $sequence >> $TMPDIR/$truth);
+		qx(echo "#CMD: $TMPDIR/$ARCHTRIPLE/${PROGRAMPREFIX}$run $sequence" >> $TMPDIR/$truth);
+		qx($TMPDIR/$ARCHTRIPLE/${PROGRAMPREFIX}$run $sequence >> $TMPDIR/$truth);
 		qx(echo "" >> $TMPDIR/$truth);
 	}
 	print " done.\n";
@@ -190,10 +191,10 @@ sub checkPseudoknotMFEPP {
 	
 	print "==== starting test ".$testIndex.") '".$testname."' ====\n";
 	compileMFE("mfe");
-	
+
 	print "\trun on sequences: ";
 	open (OUT, "> ".$TMPDIR."/".$truth) || die "error on writing test output file '$TMPDIR/$truth': $!\n";
-		Utils::applyFunctionToFastaFile($infile, \&runProg, $TMPDIR."/".$PROGRAMPREFIX."mfe", $runParameters);
+		Utils::applyFunctionToFastaFile($infile, \&runProg, $TMPDIR."/".$ARCHTRIPLE.'/'.$PROGRAMPREFIX."mfe", $runParameters);
 	close (OUT);
 	print " done.\n";
 
@@ -239,16 +240,17 @@ sub evaluateTest {
 sub compileMFE {
 	my ($program) = @_;
 	
-	unless (-e $TMPDIR."/".$PROGRAMPREFIX.$program) {
+	
+	unless (-e $TMPDIR."/".$ARCHTRIPLE.'/'.$PROGRAMPREFIX.$program) {
 		print "\tcompiling binary ...";
 		qx(cp ../../Applications/pKiss/makefile $TMPDIR/);
 		my $makeWindowMode = "";
 		if ($program =~ m/(.+?)_window$/) {
 			$program = $1;
-			$makeWindowMode = 'window="yes"';
+			$makeWindowMode = 'window="yes" ';
 		}
 
-		qx(cd $TMPDIR && make $program $makeWindowMode RNAOPTIONSPERLSCRIPT=../../../Applications/addRNAoptions.pl BASEDIR=../../../../);
+		qx(cd $TMPDIR && $Settings::BINARIES{make} $program $makeWindowMode BASEDIR=../../../../);
 		print " done.\n";
 	}
 }
