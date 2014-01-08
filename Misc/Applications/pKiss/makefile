@@ -53,7 +53,7 @@ local:
 
 shapes:
 	$(MAKE) compile \
-		gapc_product="((alg_pknot_shapeX * alg_pknot_mfe) * alg_pknot_dotBracket) suchthat suboptShapeClasses" \
+		gapc_product="(((alg_pknot_shapeX * alg_pknot_mfe) suchthat suboptShapeClasses) * alg_pknot_dotBracket)" \
 		gapc_options="--kbacktrace --tab-all --no-coopt-class $(windowmodeflag)" \
 		gapc_file="pKiss.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";

@@ -50,7 +50,7 @@ shapes_%:
 	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
 	suffix=`echo "$${sOv}$${sMa}"`; \
 	$(MAKE) compile \
-		gapc_product="((alg_shapeX * alg_mfe$${suffix}) * (alg_dotBracket * alg_pfunc$${suffix})) suchthat suboptShapeClasses" \
+		gapc_product="(((alg_shapeX * alg_mfe$${suffix}) suchthat suboptShapeClasses) * (alg_dotBracket * alg_pfunc$${suffix}))" \
 		gapc_options="--kbacktrace --no-coopt-class $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";

@@ -112,30 +112,43 @@ inline List_Ref<answer_pknot_mfe> mfeSuboptKnot(std::pair<Iterator, Iterator> i)
 }
 
 
-template<typename MFE, typename SHAPE, typename DOTBRACKET>
-inline List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > suboptShapeClasses(List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > candidateList) {
-	if (candidateList.ref().isEmpty()) {
-		return candidateList;
-	} else {
-		List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > answers = List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >();
-		int mfe = std::numeric_limits<int>::max();
-		for (typename List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >::iterator it = candidateList.ref().begin(); it != candidateList.ref().end(); ++it) {
-			int energy = getEnergy((*it).first.second);
-			if (mfe > energy) {
-				mfe = energy;
-			}
-		}
-		int range = getSuboptRange(mfe);
-		for (typename List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >::iterator it = candidateList.ref().begin(); it != candidateList.ref().end(); ++it) {
+//~ template<typename MFE, typename SHAPE, typename DOTBRACKET>
+//~ inline List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > suboptShapeClasses(List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > candidateList) {
+	//~ if (candidateList.ref().isEmpty()) {
+		//~ return candidateList;
+	//~ } else {
+		//~ List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > answers = List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >();
+		//~ int mfe = std::numeric_limits<int>::max();
+		//~ for (typename List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >::iterator it = candidateList.ref().begin(); it != candidateList.ref().end(); ++it) {
+			//~ int energy = getEnergy((*it).first.second);
+			//~ if (mfe > energy) {
+				//~ mfe = energy;
+			//~ }
+		//~ }
+		//~ int range = getSuboptRange(mfe);
+		//~ for (typename List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >::iterator it = candidateList.ref().begin(); it != candidateList.ref().end(); ++it) {
 
-			if (getEnergy((*it).first.second) <= range) {
-				answers->push_back(*it);
-			}
-		}
-		return answers;
-	}
-}
+			//~ if (getEnergy((*it).first.second) <= range) {
+				//~ answers->push_back(*it);
+			//~ }
+		//~ }
+		//~ return answers;
+	//~ }
+//~ }
 
+template<typename T>
+struct suboptShapeClasses {
+  int currMin;
+  suboptShapeClasses() {
+	currMin = INT_MAX/10; //set init MFE to a infinity like value
+  }
+  void update(const T &src) {
+	if (getEnergy(src.second) < currMin) currMin = getEnergy(src.second);
+  }
+  bool ok(const T &x) const {
+	return getEnergy(x.second) <= getSuboptRange(currMin);
+  }
+};
 
 #endif
 
