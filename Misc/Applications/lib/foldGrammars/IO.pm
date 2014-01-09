@@ -341,9 +341,17 @@ sub output {
 			}
 			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$a}->{score} <=> $predictions->{$windowPos}->{$blockPos}->{$b}->{score}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_LOCAL));
 			
+			my $bestscore = $predictions->{$windowPos}->{$blockPos}->{$sortedStructures[0]}->{score};
+			my $range = $bestscore;
+			if (not defined $settings->{absolutedeviation}) {
+				$range = $bestscore * (100 - $settings->{relativedeviation} * ($bestscore < 0 ? 1 : -1)) / 100;
+			} else {
+				$range = $bestscore + $settings->{absolutedeviation};
+			}
 			foreach my $structure (@sortedStructures) {
 				last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{pfunc}/$sumPfunc->{$windowPos} < $settings->{lowprobfilteroutput}));
 				last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
+				last if (($settings->{mode} eq $Settings::MODE_SHAPES) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{score} > $range));
 				
 				my @results = ($predictions->{$windowPos}->{$blockPos}->{$structure});
 				@results = sort {splitFields($a->{score})->[0] <=> splitFields($b->{score})->[0]} @{$predictions->{$windowPos}->{$blockPos}->{$structure}} if ($settings->{mode} eq $Settings::MODE_EVAL);
