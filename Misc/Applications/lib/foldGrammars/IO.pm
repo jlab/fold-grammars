@@ -340,14 +340,18 @@ sub output {
 				@sortedStructures =  sort {$ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$a}->{shape}} <=> $ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$b}->{shape}}} keys(%{$predictions->{$windowPos}->{$blockPos}});
 			}
 			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$a}->{score} <=> $predictions->{$windowPos}->{$blockPos}->{$b}->{score}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_LOCAL));
-			
-			my $bestscore = $predictions->{$windowPos}->{$blockPos}->{$sortedStructures[0]}->{score};
-			my $range = $bestscore;
-			if (not defined $settings->{absolutedeviation}) {
-				$range = $bestscore * (100 - $settings->{relativedeviation} * ($bestscore < 0 ? 1 : -1)) / 100;
-			} else {
-				$range = $bestscore + $settings->{absolutedeviation};
-			}
+	
+			#define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
+				my $range = undef;
+				if ($settings->{mode} eq $Settings::MODE_SHAPES) {
+					my $bestscore = $predictions->{$windowPos}->{$blockPos}->{$sortedStructures[0]}->{score};
+					if (not defined $settings->{absolutedeviation}) {
+						$range = $bestscore * (100 - $settings->{relativedeviation} * ($bestscore < 0 ? 1 : -1)) / 100;
+					} else {
+						$range = $bestscore + $settings->{absolutedeviation};
+					}
+				}
+			#END: define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
 			foreach my $structure (@sortedStructures) {
 				last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{pfunc}/$sumPfunc->{$windowPos} < $settings->{lowprobfilteroutput}));
 				last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
