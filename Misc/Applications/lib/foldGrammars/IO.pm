@@ -344,7 +344,7 @@ sub output {
 			#define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
 				my $range = undef;
 				if ($settings->{mode} eq $Settings::MODE_SHAPES) {
-					my $bestscore = $predictions->{$windowPos}->{$blockPos}->{$sortedStructures[0]}->{score};
+					my $bestscore = splitFields($predictions->{$windowPos}->{$blockPos}->{$sortedStructures[0]}->{score})->[0];
 					if (not defined $settings->{absolutedeviation}) {
 						$range = $bestscore * (100 - $settings->{relativedeviation} * ($bestscore < 0 ? 1 : -1)) / 100;
 					} else {
@@ -355,7 +355,7 @@ sub output {
 			foreach my $structure (@sortedStructures) {
 				last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{pfunc}/$sumPfunc->{$windowPos} < $settings->{lowprobfilteroutput}));
 				last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
-				last if (($settings->{mode} eq $Settings::MODE_SHAPES) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{score} > $range));
+				last if (($settings->{mode} eq $Settings::MODE_SHAPES) && (splitFields($predictions->{$windowPos}->{$blockPos}->{$structure}->{score})->[0] > $range));
 				
 				my @results = ($predictions->{$windowPos}->{$blockPos}->{$structure});
 				@results = sort {splitFields($a->{score})->[0] <=> splitFields($b->{score})->[0]} @{$predictions->{$windowPos}->{$blockPos}->{$structure}} if ($settings->{mode} eq $Settings::MODE_EVAL);
