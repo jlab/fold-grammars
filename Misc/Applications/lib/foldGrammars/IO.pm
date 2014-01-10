@@ -343,7 +343,7 @@ sub output {
 	
 			#define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
 				my $range = undef;
-				if ($settings->{mode} eq $Settings::MODE_SHAPES) {
+				if (($settings->{mode} eq $Settings::MODE_SHAPES) || ($settings->{mode} eq $Settings::MODE_SUBOPT) || ($settings->{mode} eq $Settings::MODE_CAST) || ($settings->{mode} eq $Settings::MODE_LOCAL)) {
 					my $bestscore = splitFields($predictions->{$windowPos}->{$blockPos}->{$sortedStructures[0]}->{score})->[0];
 					if (not defined $settings->{absolutedeviation}) {
 						$range = $bestscore * (100 - $settings->{relativedeviation} * ($bestscore < 0 ? 1 : -1)) / 100;
