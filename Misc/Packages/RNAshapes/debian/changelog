@@ -1,3 +1,38 @@
+rnashapes (3.1.4-0ubuntu1~saucy1) saucy; urgency=low
+
+  * Bugfix: shapes modi now compute in two phases, which gives a
+    significant speed-up.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 12 Jan 2014 17:38:09 +0100
+
+rnashapes (3.1.4-0ubuntu1~raring1) raring; urgency=low
+
+  * Bugfix: shapes modi now compute in two phases, which gives a
+    significant speed-up.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 12 Jan 2014 17:38:02 +0100
+
+rnashapes (3.1.4-0ubuntu1~quantal1) quantal; urgency=low
+
+  * Bugfix: shapes modi now compute in two phases, which gives a
+    significant speed-up.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 12 Jan 2014 17:37:54 +0100
+
+rnashapes (3.1.4-0ubuntu1~precise1) precise; urgency=low
+
+  * Bugfix: shapes modi now compute in two phases, which gives a
+    significant speed-up.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 12 Jan 2014 17:37:47 +0100
+
+rnashapes (3.1.4-0ubuntu1~lucid1) lucid; urgency=low
+
+  * Bugfix: shapes modi now compute in two phases, which gives a
+    significant speed-up.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Sun, 12 Jan 2014 17:31:08 +0100
+
 rnashapes (3.1.3-0ubuntu1~saucy1) saucy; urgency=low
 
   * new makefile mechanism
