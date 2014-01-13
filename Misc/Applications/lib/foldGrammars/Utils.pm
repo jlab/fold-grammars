@@ -702,7 +702,8 @@ sub getBPdistance_foldingspaces {
 sub writeInputToTempfile {
 	my ($input) = @_;
 	
-	my $tmpInputFilename = qx($Settings::BINARIES{mktemp});
+	my $tmpInputFilename = qx($Settings::BINARIES{mktemp}); 
+	chomp $tmpInputFilename;
 	die "could not create temporary file for input sequence: $!\n"  if ($? != 0);
 	open (FILE, "> ".$tmpInputFilename) || die "could not write to temporary file '$tmpInputFilename' to store input: $!";
 		print FILE $input;

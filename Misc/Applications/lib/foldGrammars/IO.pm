@@ -253,7 +253,9 @@ sub output {
 			if ($settings->{dotplotpng} == 1) {
 				my $dotplotPNGfilename = $dotplotfilename;
 				$dotplotPNGfilename =~ s/\.\w+/\.png/g;
-				qx($Settings::BINARIES{gs} -dBATCH -dNOPAUSE -sDEVICE=pnggray -sOutputFile=$dotplotPNGfilename -r200 $dotplotfilename);
+				my $command = "$Settings::BINARIES{gs} -dBATCH -dNOPAUSE -sDEVICE=pnggray -sOutputFile=$dotplotPNGfilename -r200 $dotplotfilename";
+				qx($command);
+				Utils::qxDieMessage($command, $?);
 				print "Also converted the \"dot plot\" into PNG file '$dotplotPNGfilename'.\n";
 			}
 		} else {
@@ -458,7 +460,11 @@ sub getAvgSingleMFEs {
 		my $seq = substr($refHash_alignment->{sequences}->{$id}, $startPos, $endPos - $startPos + 1);
 		$seq =~ s/\.|\-|\_//g;
 		$seq =~ s/T/U/gi;
-		foreach my $line (split(m/\n/, qx($cmd "$seq"))) {
+		my $inputFile = Utils::writeInputToTempfile($seq);
+		my $result = qx($cmd -f $inputFile);
+		Utils::qxDieMessage("$cmd -f $inputFile", $?);
+		unlink $inputFile;
+		foreach my $line (split(m/\n/, $result)) {
 			if ($line =~ m/Answer/) {
 			} elsif ($line =~ m/^\s*$/) {
 			} else {

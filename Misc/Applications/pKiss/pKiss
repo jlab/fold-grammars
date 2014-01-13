@@ -115,7 +115,9 @@ if (@ARGV == 0) {
 	#only for MODE_EVAL, rna sequence and secondary structure are given as two command line parameters
 	my $inputStructure = $ARGV[1];
 	if (-e $inputStructure) { #especially for BiBiServ: structure must be delivered as a filename, thus read the file to get the structure.
-		$inputStructure = qx(cat $inputStructure); 
+		my $command = "$Settings::BINARIES{cat} $inputStructure";
+		$inputStructure = qx($command); 
+		Utils::qxDieMessage($command, $?);
 		chomp $inputStructure;
 	}
 	processInput({sequence => $ARGV[0], header => "unnamed sequence", structure => $inputStructure}, $settings);
@@ -177,17 +179,20 @@ sub doComputation {
 	my $seq = $refHash_sequence->{sequence};
 	$seq =~ s/t/u/gi;
 	my $command = buildCommand($settings, $refHash_sequence);
-	my $structure = "";
+	my $structureInputFile = undef;
+	my $structureArg = "";
 	if (($settings->{'mode'} eq $Settings::MODE_EVAL) || ($settings->{'mode'} eq $Settings::MODE_ABSTRACT)) {
 		die "You are in \"$Settings::MODE_EVAL\", but your input of RNA sequence and structure is of unequal length!\n" if (length($refHash_sequence->{sequence}) != length($refHash_sequence->{structure}));
-		$structure = "'".$refHash_sequence->{structure}."'";
+		$structureInputFile = Utils::writeInputToTempfile($refHash_sequence->{structure});
+		$structureArg = " -f $structureInputFile";
 	}
 	
-	print "Actual call was: $command \"$seq\" $structure\n" if ($settings->{verbose});
+	print "Actual call was: $command \"$seq\" $structureArg\n" if ($settings->{verbose});
 	my $inputFile = Utils::writeInputToTempfile($seq);
-	my $result = qx($command -f $inputFile $structure 2>&1);
-	unlink $inputFile if (!$settings->{verbose});
+	my $result = qx($command -f $inputFile $structureArg 2>&1);
 	Utils::qxDieMessage($command, $?);
+	unlink $inputFile if (!$settings->{verbose});
+	unlink $structureInputFile if ((defined $structureInputFile) && (!$settings->{verbose}));
 
 	print "\n" if ($sequenceNumber != 0);
 	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings);

@@ -117,7 +117,9 @@ if (@ARGV == 0) {
 	#only for MODE_EVAL, rna alignment filename and secondary structure are given as two command line parameters
 	my $inputStructure = $ARGV[1];
 	if (-e $inputStructure) { #especially for BiBiServ: structure must be delivered as a filename, thus read the file to get the structure.
-		$inputStructure = qx(cat $inputStructure); 
+		my $command = "$Settings::BINARIES{cat} $inputStructure";
+		$inputStructure = qx($command); 
+		Utils::qxDieMessage($command, $?);
 		chomp $inputStructure;
 	}
 	processInput($ARGV[0], $inputStructure, $settings);
@@ -164,10 +166,12 @@ sub doComputation {
 	
 	$refHash_alignment->{representation} = getAlignmentRepresentation($gapInput, $refHash_alignment, $settings);
 	my $command = buildCommand($settings, $refHash_alignment);
-	my $structure = "";
+	my $structureInputFile = undef;
+	my $structureArg = "";
 	if ($settings->{'mode'} eq $Settings::MODE_EVAL) {
 		die "You are in \"$Settings::MODE_EVAL\", but your input of RNA alignment and structure is of unequal length!\n" if ($refHash_alignment->{length} != length($inputStructure));
-		$structure = "'".$inputStructure."'";
+		$structureInputFile = Utils::writeInputToTempfile($inputStructure);
+		$structureArg = " -f $structureInputFile";
 	}
 	
 	my %pfAll = ();
@@ -179,17 +183,18 @@ sub doComputation {
 		my $inputFile = Utils::writeInputToTempfile($gapInput);
 		print "Actual call was: $pfallCommand -f $inputFile\n" if ($settings->{verbose});
 		my $res = qx($pfallCommand -f $inputFile 2>&1);
-		unlink $inputFile if (!$settings->{verbose});
 		Utils::qxDieMessage($pfallCommand, $?);
+		unlink $inputFile if (!$settings->{verbose});
 		%pfAll = %{IO::parse($res, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, \%pfallSettings, 0)};
 	}
 #~ print Dumper $gapInput;
 
-	print "Actual call was: $command \"$gapInput\" $structure\n" if ($settings->{verbose});
+	print "Actual call was: $command \"$gapInput\" $structureArg\n" if ($settings->{verbose});
 	my $inputFile = Utils::writeInputToTempfile($gapInput);
-	my $result = qx($command -f $inputFile $structure 2>&1);
-	unlink $inputFile if (!$settings->{verbose});
+	my $result = qx($command -f $inputFile $structureArg 2>&1);
 	Utils::qxDieMessage($command, $?);
+	unlink $inputFile if (!$settings->{verbose});
+	unlink $structureInputFile if ((defined $structureInputFile) && (!$settings->{verbose}));
 	IO::parse($result, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);
 	
 	return undef;
@@ -202,8 +207,8 @@ sub getAlignmentRepresentation {
 	print "Actual call for alignment representation was: $command \"$gapInput\"\n" if ($settings->{verbose});
 	my $inputFile = Utils::writeInputToTempfile($gapInput);
 	my $result = qx($command -f $inputFile);
-	unlink $inputFile if (!$settings->{verbose});
 	Utils::qxDieMessage($command, $?);
+	unlink $inputFile if (!$settings->{verbose});
 
 	foreach my $line (split(m/\r?\n/, $result)) {
 		if ($line =~ m/^Answer:\s*$/) {

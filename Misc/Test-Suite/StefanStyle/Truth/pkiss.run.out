@@ -1,24 +1,24 @@
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=mfe --allowLP=0 --strategy=C --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=10 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=mfe --allowLP=0 --strategy=C --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -87.14  [[[.[[.[[.{{]]..}}{{]]..}}.{{.]]]..}}.[[..{{]]..}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=mfe --allowLP=1 --strategy=B --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=10 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=mfe --allowLP=1 --strategy=B --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
       1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -100.43  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}..
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=mfe --allowLP=0 --strategy=D --minHairpinLength=4 --windowIncrement=10 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=mfe --allowLP=0 --strategy=D --minHairpinLength=4 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -52.50  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=mfe --allowLP=1 --strategy=B --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=20 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=mfe --allowLP=1 --strategy=B --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -75.14  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=mfe --windowSize=40 --allowLP=0 --strategy=P --minHairpinLength=4 --maxKnotSize=40 --windowIncrement=10 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=mfe --windowSize=40 --allowLP=0 --strategy=P --minHairpinLength=4 --maxKnotSize=40 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGG  40
 -41.67  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}.
@@ -32,7 +32,7 @@
     31  GUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -43.70  .[[[....{{{]]]....}}}[[[.{{{.]]]..}}}..
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=mfe --windowSize=40 --allowLP=1 --strategy=B --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=mfe --windowSize=40 --allowLP=1 --strategy=B --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGU  40
 -50.63  ..[[[[[.{{.]]]]].....}}[[.{{{{]]...}}}}.
@@ -40,17 +40,17 @@
     31  UGACUACUGUUAUGU  45
 -17.73  .[[[.{{.]]]..}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=mfe --windowSize=100 --allowLP=0 --strategy=B --minHairpinLength=2 --maxKnotSize=40 --windowIncrement=10 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=mfe --windowSize=100 --allowLP=0 --strategy=B --minHairpinLength=2 --maxKnotSize=40 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -61.80  [[.[[[.{{{]]]...}}}{{.]]....}}[[[.{{.....]]]..}}..
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=mfe --windowSize=100 --allowLP=1 --strategy=D --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=mfe --windowSize=100 --allowLP=1 --strategy=D --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -74.28  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].......}}[[.{{{.]]...}}}..
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=subopt --allowLP=0 --strategy=B --minHairpinLength=2 --windowIncrement=20 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=subopt --allowLP=0 --strategy=B --minHairpinLength=2 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -77.38  [[....{{]]....<<<<....}}....>>>>[[....{{{]].....}}}[[[.{{{.]]]..}}}..
@@ -60,7 +60,7 @@
 -76.52  [[....{{]]....<<<<....}}....>>>>[[...{{{{]]...}}}}.[[[.{{{.]]]..}}}..
 -76.38  [[....{{]]....<<<<....}}....>>>>[[....{{{]].....}}}[[[..{{.]]]..}}...
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=subopt --allowLP=1 --strategy=C --minHairpinLength=6 --windowIncrement=20 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=subopt --allowLP=1 --strategy=C --minHairpinLength=6 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -88.43  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}..
@@ -69,7 +69,7 @@
 -87.81  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].......}}[[.{{{.]]...}}}..
 -87.51  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}.[[.{{{.]]...}}}..
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=subopt --allowLP=0 --strategy=D --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=10 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=subopt --allowLP=0 --strategy=D --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -87.14  [[[.[[.[[.{{]]..}}{{]]..}}.{{.]]]..}}.[[..{{]]..}}
@@ -77,7 +77,7 @@
 -86.50  [[[.[[.[[.{{]]..}}{{]]..}}{{{.]]]..}}}[[..{{]]..}}
 -86.34  [[[.[[.[[.{{]]..}}{{]]..}}{{{.]]]..}}}[[.{{.]]..}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=subopt --allowLP=1 --strategy=C --minHairpinLength=2 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=subopt --allowLP=1 --strategy=C --minHairpinLength=2 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -81.00  [[[.[[.[[.{{]]..}}{{]]..}}{{{.]]]..}}}[[..{{]]..}}
@@ -85,7 +85,7 @@
 -80.80  [[[.[[.[[.{{]]..}}{{]]..}}.{{.]]]..}}.[[..{{]]..}}
 -80.80  [[[.[[.[[.{{]]..}}{{]]..}}.{{.]]]..}}.[[.{{.]]..}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=subopt --windowSize=40 --allowLP=0 --strategy=C --minHairpinLength=6 --windowIncrement=20 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=subopt --windowSize=40 --allowLP=0 --strategy=C --minHairpinLength=6 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACU  40
 -58.98  [[[.[[.[[.{{]]..}}{{]]..}}.{{{]]]....}}}
@@ -96,7 +96,7 @@
 -37.44  .[[..{{.]]....}}..[[.{{.]]..}}
 -36.76  .[[.{{..]]..}}.[[..{{]]..}}...
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=subopt --windowSize=40 --allowLP=1 --strategy=P --minHairpinLength=4 --maxKnotSize=40 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=subopt --windowSize=40 --allowLP=1 --strategy=P --minHairpinLength=4 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGG  40
 -38.10  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}.
@@ -107,13 +107,13 @@
 -39.50  .[[[....{{{]]]....}}}[[[..{{.]]]..}}...
 -39.40  .[[[....{{{]]]....}}}.[[.{{{.]]...}}}..
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=subopt --windowSize=100 --allowLP=0 --strategy=A --minHairpinLength=2 --maxKnotSize=40 --windowIncrement=10 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=subopt --windowSize=100 --allowLP=0 --strategy=A --minHairpinLength=2 --maxKnotSize=40 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -80.85  [[.[[[.{{{]]]...}}}..{{]]...}}[[[.{{.....]]]..}}..
 -80.74  [[.[[[.{{{]]]...}}}{{.]]....}}[[[.{{.....]]]..}}..
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=subopt --windowSize=100 --allowLP=1 --strategy=A --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=20 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=subopt --windowSize=100 --allowLP=1 --strategy=A --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
       1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -100.43  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}..
@@ -122,7 +122,7 @@
  -99.81  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].......}}[[.{{{.]]...}}}..
  -99.51  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}.[[.{{{.]]...}}}..
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=enforce --allowLP=0 --strategy=P --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=enforce --allowLP=0 --strategy=P --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -26.59  ..(((((....))))).....(((((((((.....))))))))).  best 'nested structure'
@@ -130,7 +130,7 @@
         no structure available                         best 'K-type pseudoknot'
         no structure available                         best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=enforce --allowLP=1 --strategy=P --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=enforce --allowLP=1 --strategy=P --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -28.50  .((((((((((((................))))))))))))........(((((((...)))))))...  best 'nested structure'
@@ -138,7 +138,7 @@
         no structure available                                                 best 'K-type pseudoknot'
         no structure available                                                 best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=enforce --allowLP=0 --strategy=D --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=enforce --allowLP=0 --strategy=D --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -24.10  (((((.((((((......)))))).....((((........)))))))))  best 'nested structure'
@@ -146,7 +146,7 @@
 -52.90  ....[[[[[[[.{{{{{..]]]]]]]...<<<<.}}}}}..>>>>.....  best 'K-type pseudoknot'
 -56.30  ..[[[[.{{.]]]].[[..{{]]..}}..<<<<.}}.....>>>>.....  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=enforce --allowLP=1 --strategy=D --minHairpinLength=6 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=enforce --allowLP=1 --strategy=D --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -27.58  ((((((((((((......))))))))..)))).((((........)))).  best 'nested structure'
@@ -154,7 +154,7 @@
         no structure available                              best 'K-type pseudoknot'
         no structure available                              best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=enforce --allowLP=0 --strategy=C --minHairpinLength=4 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=enforce --allowLP=0 --strategy=C --minHairpinLength=4 --maxKnotSize=40 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -24.07  ..(((((....))))).....(((((((((.....))))))))).  best 'nested structure'
@@ -162,7 +162,7 @@
 -47.50  ..[[[[[.{{.]]]]].......<<<<<<<}}...>>>>>>>...  best 'K-type pseudoknot'
 -55.93  ...[[[[..{{]]]].[[.{{]]..}}...<<<<.}}.>>>>...  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=enforce --allowLP=1 --strategy=P --minHairpinLength=4 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=enforce --allowLP=1 --strategy=P --minHairpinLength=4 --maxKnotSize=40 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -26.59  ..(((((....))))).....(((((((((.....))))))))).  best 'nested structure'
@@ -170,7 +170,7 @@
         no structure available                         best 'K-type pseudoknot'
         no structure available                         best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=enforce --allowLP=0 --strategy=A --minHairpinLength=4 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=enforce --allowLP=0 --strategy=A --minHairpinLength=4 --maxKnotSize=40 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -34.35  .((((((((((((................))))))))))))........(((((((...)))))))...  best 'nested structure'
@@ -178,7 +178,7 @@
 -42.05  ....(((((((((................)))))))))[[[[...{{.]]]]...<<<<}}.>>>>...  best 'K-type pseudoknot'
 -80.05  [[..{{{{]].[[.{{{{....]]....}}}}..}}}}[[[[...{{.]]]]...<<<<}}.>>>>...  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=enforce --allowLP=1 --strategy=D --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=enforce --allowLP=1 --strategy=D --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -19.90  ..(((((....))))).....(((((((((.....))))))))).  best 'nested structure'
@@ -186,7 +186,7 @@
 -48.00  ..[[[[[..{{]]]]].....<<<<<<<<<..}}.>>>>>>>>>.  best 'K-type pseudoknot'
 -46.00  ...[[[[..{{]]]].[[.{{]]..}}...<<<<.}}.>>>>...  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=local --allowLP=0 --strategy=C --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=local --allowLP=0 --strategy=C --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 50: ===
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
@@ -365,7 +365,7 @@
      4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
 -68.60  [[[.{{.]]][[[[.[[.{{.]]..}}{{{.]]]]...}}}..}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=local --allowLP=1 --strategy=A --minHairpinLength=6 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=local --allowLP=1 --strategy=A --minHairpinLength=6 --maxKnotSize=40 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 69: ===
     15  ACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCC  52
@@ -475,7 +475,7 @@
     27  AACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCG  64
 -42.30  [[...[[[....{{{]]]....}}}{{{{]]...}}}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=local --allowLP=0 --strategy=A --minHairpinLength=4 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=local --allowLP=0 --strategy=A --minHairpinLength=4 --maxKnotSize=40 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 50: ===
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACU  40
@@ -561,7 +561,7 @@
     10  GCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -56.46  [[[..{{{.]]]....[[[[.{{{..]]]]..}}}..}}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=local --allowLP=1 --strategy=B --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=local --allowLP=1 --strategy=B --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 69: ===
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGA  66
@@ -1800,7 +1800,7 @@
 -84.07  [[..[[.{{]][[[..[[[.....{{]]]...}}{{{]]]....}}}..}}..{{]]...}}
 -83.26  [[..[[.{{]].[[..[[[.....{{]]]...}}.{{]]......}}..}}..{{]]...}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=local --allowLP=0 --strategy=B --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=local --allowLP=0 --strategy=B --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 45: ===
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
@@ -1875,7 +1875,7 @@
      4  GGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUG  44
 -54.90  [[.[[.{{{]]..[[.{{]]..}}....}}}{{]]....}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=local --allowLP=1 --strategy=D --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=local --allowLP=1 --strategy=D --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 50: ===
      3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
@@ -1996,7 +1996,7 @@
      8  GCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
 -54.90  [[[[..{{]]]]..<<<<.}}[[.{{.]].....}}.>>>>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=local --allowLP=0 --strategy=A --minHairpinLength=6 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=local --allowLP=0 --strategy=A --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 50: ===
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
@@ -2035,8 +2035,8 @@
      3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -54.50  [[.{{{{]].[[[[[.[[.{{.]]..}}{{{.]]]]]..}}}..}}}}
 -53.80  [[.{{]][[[..{{]]]...}}.[[[[.{{{..]]]]..}}}....}}
--52.90  [[.{{]][[[..{{]]]...}}.[[[.{{{{...]]]..}}}}...}}
 -52.90  [[.{{]][[[..{{]]]...}}.[[..{{{{.]].....}}}}...}}
+-52.90  [[.{{]][[[..{{]]]...}}.[[[.{{{{...]]]..}}}}...}}
 -52.70  [[.{{]][[[..{{]]]...}}.[[[[[.{{.]]]]]...}}....}}
 -52.60  [[.{{{{]].[[[[[.[[.{{.]]..}}.{{.]]]]]..}}...}}}}
 -52.50  [[.{{{{]].[[.{{]]..}}..[[[[.{{{..]]]]..}}}..}}}}
@@ -2072,7 +2072,7 @@
      6  GGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -52.30  [[[[[[[..{{{.]]]]]]][[[[.{{{..]]]]..}}}..}}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=local --allowLP=1 --strategy=P --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=local --allowLP=1 --strategy=P --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 45: ===
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
@@ -2128,30 +2128,30 @@
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUG  44
 -50.68  [[.[[[....{{]]]..}}..{{{{{{{{]].....}}}}}}}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=shapes --allowLP=0 --strategy=C --minHairpinLength=2 --windowIncrement=20 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=shapes --allowLP=0 --strategy=C --minHairpinLength=2 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -79.66  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].......}}[[.{{{.]]...}}}..  [{]}[[{]}{]}[{]}
 -79.64  [[....{{]]....<<<<....}}....>>>>[[....{{{]].....}}}[[[.{{{.]]]..}}}..  [{]<}>[{]}[{]}
 -79.18  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}..  [{][{]}}[{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=shapes --allowLP=1 --strategy=P --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --absoluteDeviation=1 --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=shapes --allowLP=1 --strategy=P --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --absoluteDeviation=1 --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -53.40  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=shapes --allowLP=0 --strategy=B --minHairpinLength=2 --windowIncrement=10 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=shapes --allowLP=0 --strategy=B --minHairpinLength=2 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -70.80  [[.[[[.{{{]]]...}}}{{.]]....}}[[[.{{.....]]]..}}..  [[{]}{]}[{]}
 -69.90  ..[[[[..{{]]]]..}}[[.{{.]]..}}[[[.{{.....]]]..}}..  [{]}[{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=shapes --allowLP=1 --strategy=D --minHairpinLength=4 --maxKnotSize=40 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=shapes --allowLP=1 --strategy=D --minHairpinLength=4 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -70.50  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=shapes --windowSize=40 --allowLP=0 --strategy=B --minHairpinLength=2 --maxKnotSize=40 --windowIncrement=20 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=shapes --windowSize=40 --allowLP=0 --strategy=B --minHairpinLength=2 --maxKnotSize=40 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGG  40
 -47.46  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}.  [{][{]}}
@@ -2162,7 +2162,7 @@
     41  GGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -33.46  [[....{{]][[....{{]]...}}..}}  [{][{]}}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=shapes --windowSize=40 --allowLP=1 --strategy=D --minHairpinLength=6 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=shapes --windowSize=40 --allowLP=1 --strategy=D --minHairpinLength=6 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACU  40
 -54.80  [[[.[[.[[.{{]]..}}{{]]..}}.{{{]]]....}}}  [[[{]}{]}{]}
@@ -2170,40 +2170,40 @@
     31  CCCAGCUACUCGGGAGGCUC  50
 -25.50  [[[.{{.....]]]..}}..  [{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=shapes --windowSize=100 --allowLP=0 --strategy=D --minHairpinLength=2 --maxKnotSize=40 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=shapes --windowSize=100 --allowLP=0 --strategy=D --minHairpinLength=2 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -69.93  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=shapes --windowSize=100 --allowLP=1 --strategy=B --minHairpinLength=4 --maxKnotSize=40 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=shapes --windowSize=100 --allowLP=1 --strategy=B --minHairpinLength=4 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -90.87  [[[.[[.[[.{{]]..}}{{]]..}}.{{.]]]..}}.[[..{{]]..}}  [[[{]}{]}{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=probs --allowLP=0 --strategy=A --minHairpinLength=6 --probDecimals=7 --lowProbFilter=0.01 --windowIncrement=20 --param=/stefan/share/gapc/librna/rna_turner1999.par --outputLowProbFilter=0.1 --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=probs --allowLP=0 --strategy=A --minHairpinLength=6 --probDecimals=7 --lowProbFilter=0.01 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --outputLowProbFilter=0.1 --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
       1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -103.66  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].......}}[[.{{{.]]...}}}..  0.9553630  [{]}[[{]}{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=probs --allowLP=1 --strategy=A --minHairpinLength=4 --probDecimals=7 --maxKnotSize=40 --lowProbFilter=0.01 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner2004.par --outputLowProbFilter=0.0001 --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=probs --allowLP=1 --strategy=A --minHairpinLength=4 --probDecimals=7 --maxKnotSize=40 --lowProbFilter=0.01 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --outputLowProbFilter=0.0001 --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -75.55  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  0.9721051  [{][{]}}[{]}
 -73.41  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  0.0278949  [{]}[{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=probs --allowLP=0 --strategy=C --minHairpinLength=6 --probDecimals=7 --lowProbFilter=0.01 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner1999.par --outputLowProbFilter=0 --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=probs --allowLP=0 --strategy=C --minHairpinLength=6 --probDecimals=7 --lowProbFilter=0.01 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --outputLowProbFilter=0 --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -98.28  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].......}}[[.{{{.]]...}}}..  0.9627138  [{]}[[{]}{]}[{]}
 -97.75  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}..  0.0372862  [{][{]}}[{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=probs --allowLP=1 --strategy=D --minHairpinLength=6 --probDecimals=2 --maxKnotSize=40 --lowProbFilter=0.01 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner1999.par --outputLowProbFilter=0 --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=probs --allowLP=1 --strategy=D --minHairpinLength=6 --probDecimals=2 --maxKnotSize=40 --lowProbFilter=0.01 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --outputLowProbFilter=0 --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -68.00  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].....}}.[[[.{{{.]]]..}}}..  0.98  [{]}[[{]}{]}[{]}
 -67.20  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}..  0.02  [{][{]}}[{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=probs --windowSize=40 --allowLP=0 --strategy=D --minHairpinLength=4 --probDecimals=2 --maxKnotSize=40 --lowProbFilter=0.01 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner2004.par --outputLowProbFilter=0.0001 --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=probs --windowSize=40 --allowLP=0 --strategy=D --minHairpinLength=4 --probDecimals=2 --maxKnotSize=40 --lowProbFilter=0.01 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --outputLowProbFilter=0.0001 --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGU  40
 -46.70  ....[[[.{{.]]]..}}.[[[[..{{{{.]]]]..}}}}  0.84  [{]}[{]}
@@ -2212,7 +2212,7 @@
     31  UGACUACUGUUAUGU  45
 -16.50  .[[[.{{.]]]..}}  1.00  [{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=probs --windowSize=40 --allowLP=1 --strategy=P --minHairpinLength=4 --probDecimals=7 --lowProbFilter=0.01 --windowIncrement=20 --param=/stefan/share/gapc/librna/rna_turner2004.par --outputLowProbFilter=0.1 --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=probs --windowSize=40 --allowLP=1 --strategy=P --minHairpinLength=4 --probDecimals=7 --lowProbFilter=0.01 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --outputLowProbFilter=0.1 --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGG  40
 -38.10  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}.  1.0000000  [{][{]}}
@@ -2224,7 +2224,7 @@
 -26.10  [[....{{]][[....{{]]...}}..}}  0.7948369  [{][{]}}
 -24.80  ....[[[..{{{{{]]]....}}}}}...  0.2051631  [{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=probs --windowSize=100 --allowLP=0 --strategy=P --minHairpinLength=4 --probDecimals=2 --maxKnotSize=40 --lowProbFilter=0.01 --windowIncrement=30 --param=/stefan/share/gapc/librna/rna_turner1999.par --outputLowProbFilter=0 --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=probs --windowSize=100 --allowLP=0 --strategy=P --minHairpinLength=4 --probDecimals=2 --maxKnotSize=40 --lowProbFilter=0.01 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --outputLowProbFilter=0 --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -61.50  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  0.84  [{][{]}}[{]}
@@ -2233,7 +2233,7 @@
 -44.00  [[.[[[[.{{.]]]]......}}..{{{{]].....}}}}.....  0.00  [[{]}{]}
 -41.70  (([[[[[.{{.]]]]].....}}......))[[[.{{.]]]..}}  0.00  ([{]})[{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=probs --windowSize=100 --allowLP=1 --strategy=B --minHairpinLength=6 --probDecimals=7 --lowProbFilter=0.01 --windowIncrement=10 --param=/stefan/share/gapc/librna/rna_turner2004.par --outputLowProbFilter=0 --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=probs --windowSize=100 --allowLP=1 --strategy=B --minHairpinLength=6 --probDecimals=7 --lowProbFilter=0.01 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --outputLowProbFilter=0 --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -60.95  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  0.7910523  [{][{]}}[{]}
@@ -2241,7 +2241,7 @@
 -49.90  .[[.[[[.{{.]]]..}}...{{{{{{{{]].....}}}}}}}}.  0.0000000  [[{]}{]}
 -48.90  .[[.[[[.{{.]]]..[[.{{]]..}}...}}..{{]]....}}.  0.0000000  [[{][{]}}{]}
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast --allowLP=0 --strategy=A --minHairpinLength=6 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 castInput.mfa --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=cast --allowLP=0 --strategy=A --minHairpinLength=6 --maxKnotSize=40 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 castInput.mfa --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 1)  Shape: [{]}[{]}[{]}  Score: -175.10  Ratio of MFE: 0.96
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -2265,11 +2265,11 @@
 -56.00  ..[[.{{]][[[..{{]]]...}}.....}}[[.{{{....]]..}}}..  R: 6  [{][{]}}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast  --strategy=B --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 castInput.mfa --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=cast  --strategy=B --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 castInput.mfa --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 1)  Shape: [{][{]}}[{]}  Score: -256.76  Ratio of MFE: 0.94
 >seq1
       1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
- -94.42  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 15  [{][{]}}[{]}
+ -94.42  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 16  [{][{]}}[{]}
 >seq2
       1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
  -78.93  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  R: 1  [{][{]}}[{]}
@@ -2278,7 +2278,7 @@
  -83.41  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 8  [{][{]}}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast --allowLP=0 --strategy=A --minHairpinLength=4 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 castInput.mfa --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=cast --allowLP=0 --strategy=A --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=17 castInput.mfa --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 1)  Shape: [{][{]}}[{]}  Score: -199.60  Ratio of MFE: 0.96
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -2302,7 +2302,7 @@
 -67.80  ..[[[[.{{{]]]]..}}}[[..{{{..]]..}}}...[[..{{]]..}}  R: 3  [{]}[{]}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast  --strategy=D --minHairpinLength=6 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 castInput.mfa --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=cast  --strategy=D --minHairpinLength=6 --maxKnotSize=40 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 castInput.mfa --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 1)  Shape: [{]}[{]}[{]}  Score: -188.72  Ratio of MFE: 0.96
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -2326,7 +2326,7 @@
 -59.96  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 6  [{][{]}}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast --allowLP=0 --strategy=A --minHairpinLength=6 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 castInput.mfa --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=cast --allowLP=0 --strategy=A --minHairpinLength=6 --maxKnotSize=40 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 castInput.mfa --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 1)  Shape: [{][{]}}[{]}  Score: -202.76  Ratio of MFE: 0.95
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -2350,7 +2350,7 @@
 -69.62  ...[[[.{{.]]]..}}.[[.{{.]]..}}[[[.{{.....]]]..}}..  R: 2  [{]}[{]}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast  --strategy=D --minHairpinLength=2 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 castInput.mfa --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=cast  --strategy=D --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 castInput.mfa --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
 1)  Shape: [{][{]}}[{]}  Score: -229.76  Ratio of MFE: 0.95
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -2365,7 +2365,7 @@
 2)  Shape: [{]}[{]}[{]}  Score: -228.69  Ratio of MFE: 0.94
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
--82.76  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  R: 19  [{]}[{]}[{]}
+-82.76  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  R: 20  [{]}[{]}[{]}
 >seq2
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -67.31  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  R: 2  [{]}[{]}[{]}
@@ -2374,7 +2374,7 @@
 -78.62  ...[[[.{{.]]]..}}.[[.{{.]]..}}[[[.{{.....]]]..}}..  R: 2  [{]}[{]}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast --allowLP=0 --strategy=B --minHairpinLength=4 --maxKnotSize=40 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 castInput.mfa --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=cast --allowLP=0 --strategy=B --minHairpinLength=4 --maxKnotSize=40 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=17 castInput.mfa --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
 1)  Shape: [{][{]}}[{]}  Score: -226.60  Ratio of MFE: 0.95
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -2398,11 +2398,11 @@
 -76.80  ..[[[[.{{{]]]]..}}}[[..{{{..]]..}}}...[[..{{]]..}}  R: 3  [{]}[{]}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=cast  --strategy=A --minHairpinLength=6 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37 castInput.mfa --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=cast  --strategy=A --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 castInput.mfa --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
 1)  Shape: [{]}[{]}[{]}  Score: -202.80  Ratio of MFE: 0.96
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
--72.60  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  R: 13  [{]}[{]}[{]}
+-72.60  ......[[[.....{{{{...]]]....}}}}[[....{{{]].....}}}[[[.{{{.]]]..}}}..  R: 14  [{]}[{]}[{]}
 >seq2
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -61.30  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  R: 2  [{]}[{]}[{]}
@@ -2413,7 +2413,7 @@
 2)  Shape: [{][{]}}[{]}  Score: -199.80  Ratio of MFE: 0.94
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
--72.70  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 10  [{][{]}}[{]}
+-72.70  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}[[[[......{{{{{]]]]...}}}}}...  R: 13  [{][{]}}[{]}
 >seq2
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -62.40  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  R: 1  [{][{]}}[{]}
@@ -2422,7 +2422,7 @@
 -64.70  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 6  [{][{]}}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=eval --allowLP=0 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=eval --allowLP=0 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -50.76  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
@@ -2490,7 +2490,7 @@
 -45.83  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 -45.83  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=eval --allowLP=1 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=eval --allowLP=1 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -62.13  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
@@ -2590,7 +2590,7 @@
 -55.63  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 -55.50  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=eval --allowLP=0 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=eval --allowLP=0 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -52.90  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
@@ -2690,7 +2690,7 @@
 -47.60  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 -47.60  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=eval --allowLP=1 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=eval --allowLP=1 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -65.13  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
@@ -2790,7 +2790,7 @@
 -58.63  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 -58.50  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=eval --allowLP=0 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=eval --allowLP=0 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -59.44  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
@@ -2858,7 +2858,7 @@
 -53.91  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 -53.91  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=eval --allowLP=1 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=eval --allowLP=1 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -61.01  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
@@ -2958,7 +2958,7 @@
 -55.09  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 -54.97  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=eval --allowLP=0 --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=eval --allowLP=0 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -61.10  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
@@ -3026,7 +3026,7 @@
 -53.76  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 -53.76  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=eval --allowLP=1 --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...' --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=eval --allowLP=1 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...' --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -73.49  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
@@ -3094,27 +3094,27 @@
 -70.89  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
 -70.89  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=0 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=abstract --allowLP=0 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
 [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=1 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=abstract --allowLP=1 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
 [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=0 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=abstract --allowLP=0 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
 [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=1 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=abstract --allowLP=1 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
 [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=0 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=abstract --allowLP=0 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
 [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=1 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=abstract --allowLP=1 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
 [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=0 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=abstract --allowLP=0 --minHairpinLength=2 '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --shapeLevel=5
 [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ temp/pKiss  --mode=convert --allowLP=1 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
+#CMD: perl -I ../../Applications/lib/ temp_solaris/pKiss  --binPath='temp_solaris/i386-pc-solaris2.10/'  --mode=abstract --allowLP=1 --minHairpinLength=2 '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --shapeLevel=5
 [{]<}>
 
