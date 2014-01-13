@@ -179,7 +179,9 @@ sub kif {
 				foreach my $task ('nested','knotted') {
 					my $command = buildCommand($settings, $task);
 					print "Actual call was: $command \"$candidateSequence\"\n" if ($settings->{verbose});
-					my $result = qx($command "$candidateSequence" 2>&1);
+					my $inputFile = Utils::writeInputToTempfile($candidateSequence);
+					my $result = qx($command -f $inputFile 2>&1);
+					unlink $inputFile if (!$settings->{verbose});
 					Utils::qxDieMessage($command, $?);
 					foreach my $line (split(m/\n/, $result)) {
 						if ($line =~ m/^\( (.+?) , (.+?) \)$/) {

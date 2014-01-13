@@ -48,6 +48,7 @@ our %BINARIES = (
 	'RNAfold', 'RNAfold',
 	'date', 'date',
 	'ln', 'ln',
+	'mktemp', 'mktemp',
 );
 
 our %TDMfiles = (

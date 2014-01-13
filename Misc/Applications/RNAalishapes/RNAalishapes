@@ -176,15 +176,19 @@ sub doComputation {
 		$pfallSettings{mode} = $Settings::MODE_PFALL;
 		Utils::checkBinaryPresents(\%pfallSettings, "wrong command line parameter:\n  ", [$Settings::MODE_CAST], []);
 		my $pfallCommand = buildCommand(\%pfallSettings, $refHash_alignment);
-		print "Actual call was: $pfallCommand \"$gapInput\"\n" if ($settings->{verbose});
-		my $res = qx($pfallCommand "$gapInput" 2>&1);
+		my $inputFile = Utils::writeInputToTempfile($gapInput);
+		print "Actual call was: $pfallCommand -f $inputFile\n" if ($settings->{verbose});
+		my $res = qx($pfallCommand -f $inputFile 2>&1);
+		unlink $inputFile if (!$settings->{verbose});
 		Utils::qxDieMessage($pfallCommand, $?);
 		%pfAll = %{IO::parse($res, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, \%pfallSettings, 0)};
 	}
 #~ print Dumper $gapInput;
 
 	print "Actual call was: $command \"$gapInput\" $structure\n" if ($settings->{verbose});
-	my $result = qx($command "$gapInput" $structure 2>&1);
+	my $inputFile = Utils::writeInputToTempfile($gapInput);
+	my $result = qx($command -f $inputFile $structure 2>&1);
+	unlink $inputFile if (!$settings->{verbose});
 	Utils::qxDieMessage($command, $?);
 	IO::parse($result, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);
 	
@@ -196,7 +200,9 @@ sub getAlignmentRepresentation {
 	
 	my $command = buildCommand($settings, $refHash_alignment, $TASK_REP);
 	print "Actual call for alignment representation was: $command \"$gapInput\"\n" if ($settings->{verbose});
-	my $result = qx($command "$gapInput");
+	my $inputFile = Utils::writeInputToTempfile($gapInput);
+	my $result = qx($command -f $inputFile);
+	unlink $inputFile if (!$settings->{verbose});
 	Utils::qxDieMessage($command, $?);
 
 	foreach my $line (split(m/\r?\n/, $result)) {

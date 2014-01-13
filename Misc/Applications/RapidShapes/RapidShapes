@@ -305,7 +305,9 @@ sub getPFall {
 	
 	print STDERR "step 2: computing partition function value for complete folding space ... ";
 	my $command = buildCommand($refHash_settings, $TASK_PFALL);
-	my $pfAll = parsePFanswer(qx($command "$inputSequence"));
+	my $inputFile = Utils::writeInputToTempfile($inputSequence);
+	my $pfAll = parsePFanswer(qx($command -f $inputFile));
+	unlink $inputFile;
 	print STDERR $pfAll.".\n";
 	
 	return $pfAll;
@@ -322,12 +324,14 @@ sub guessShapesSampling {
 	print STDERR "step 1: guess shapes, via sampling, to be further analyzed via TDMs ... ";
 	my %sampledShapes = ();
 	my $command = buildCommand($refHash_settings);
-	foreach my $line (split(m/\r?\n/, qx($command "$inputSequence"))) {
+	my $inputFile = Utils::writeInputToTempfile($inputSequence);
+	foreach my $line (split(m/\r?\n/, qx($command -f $inputFile))) {
 		#( 0.0135213 , ( ( ( [] , -20 ) , ...((......))...... ) , 0.0047145 ) )
 		if ($line =~ m/\( .+? , \( \( \( (.+?) , .+? \) , .+? \) , .+? \) \)/) {
 			$sampledShapes{$1}++;
 		}
 	}
+	unlink $inputFile;
 	my @shapes = ();
 	foreach my $shape (sort {$sampledShapes{$b} <=> $sampledShapes{$a}} keys(%sampledShapes)) {
 		push @shapes, {shapestring => $shape, frequency => $sampledShapes{$shape}/$refHash_settings->{numsamples}};
@@ -343,11 +347,13 @@ sub guessShapesKbest {
 	print STDERR "step 1: guess shapes, via simple shape analysis, to be further analyzed via TDMs ... ";
 	my %kbestShapes = ();
 	my $command = buildCommand($refHash_settings);
-	foreach my $line (split(m/\r?\n/, qx($command "$inputSequence"))) {
+	my $inputFile = Utils::writeInputToTempfile($inputSequence);
+	foreach my $line (split(m/\r?\n/, qx($command -f $inputFile))) {
 		if ($line =~ m/\(\s+(\S+)\s+,\s+(.+?)\s+\)/) { #( [_[_[[]_]_]] , 70 )
 			$kbestShapes{$1} = $2;
 		}
 	}
+	unlink $inputFile;
 	my @shapes = ();
 	foreach my $shape (sort {$kbestShapes{$a} <=> $kbestShapes{$b}} keys(%kbestShapes)) {
 		push @shapes, {shapestring => $shape, mfe => $kbestShapes{$shape}/100};
@@ -363,11 +369,13 @@ sub guessShapesSubopt {
 	print STDERR "step 1: guess shapes, via suboptimal shape analysis, to be further analyzed via TDMs ... ";
 	my %energyShapes = ();
 	my $command = buildCommand($refHash_settings);
-	foreach my $line (split(m/\r?\n/, qx($command "$inputSequence"))) {
+	my $inputFile = Utils::writeInputToTempfile($inputSequence);
+	foreach my $line (split(m/\r?\n/, qx($command $inputFile))) {
 		if ($line =~ m/\( (.+?) , \( \( \S+ , (\S+) \) , .+? \) \)/) { #( -120 , ( ( ...((((....))))...... , [] ) , 0.0131327 ) )
 			$energyShapes{$2} = $1;
 		}
 	}
+	unlink $inputFile;
 	my @shapes = ();
 	foreach my $shape (sort {$energyShapes{$a} <=> $energyShapes{$b}} keys(%energyShapes)) {
 		push @shapes, {shapestring => $shape, mfe => $energyShapes{$shape}/100};
@@ -398,7 +406,9 @@ sub runTDM {
 	my ($tmpDir, $refHash_settings, $inputSequence) = @_;
 	print STDERR "done.\texecuting ... "; 
 	my $command = buildCommand($refHash_settings, $TASK_TDMRUN);
-	my $pfShape = parsePFanswer(qx($tmpDir/$command "$inputSequence"));
+	my $inputFile = Utils::writeInputToTempfile($inputSequence);
+	my $pfShape = parsePFanswer(qx($tmpDir/$command -f $inputFile));
+	unlink $inputFile;
 	return $pfShape;
 }
 

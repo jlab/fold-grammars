@@ -184,7 +184,9 @@ sub doComputation {
 	}
 	
 	print "Actual call was: $command \"$seq\" $structure\n" if ($settings->{verbose});
-	my $result = qx($command "$seq" $structure 2>&1);
+	my $inputFile = Utils::writeInputToTempfile($seq);
+	my $result = qx($command -f $inputFile $structure 2>&1);
+	unlink $inputFile if (!$settings->{verbose});
 	Utils::qxDieMessage($command, $?);
 
 	print "\n" if ($sequenceNumber != 0);

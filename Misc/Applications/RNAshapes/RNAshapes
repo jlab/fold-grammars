@@ -186,8 +186,10 @@ sub doComputation {
 		$pfallSettings{mode} = $Settings::MODE_PFALL;
 		Utils::checkBinaryPresents(\%pfallSettings, "wrong command line parameter:\n  ", [$Settings::MODE_CAST], []);
 		my $pfallCommand = buildCommand(\%pfallSettings, $refHash_sequence);
-		print "Actual call was: $pfallCommand \"$seq\"\n" if ($settings->{verbose});
-		my $res = qx($pfallCommand "$seq" 2>&1);
+		my $inputFile = Utils::writeInputToTempfile($seq);
+		print "Actual call was: $pfallCommand -f $inputFile\n" if ($settings->{verbose});
+		my $res = qx($pfallCommand -f $inputFile 2>&1);
+		unlink $inputFile if (!$settings->{verbose});
 		Utils::qxDieMessage($pfallCommand, $?);
 		%pfAll = %{IO::parse($res, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, \%pfallSettings, $inputIndex)};
 	}
@@ -199,8 +201,10 @@ sub doComputation {
 		$structure = "'".$refHash_sequence->{structure}."'";
 	}
 
-	print "Actual call was: $command \"$seq\" $structure\n" if ($settings->{verbose});
-	my $result = qx($command "$seq" $structure 2>&1);
+	my $inputFile = Utils::writeInputToTempfile($seq);
+	print "Actual call was: $command -f $inputFile $structure\n" if ($settings->{verbose});
+	my $result = qx($command -f $inputFile $structure 2>&1);
+	unlink $inputFile if (!$settings->{verbose});
 	Utils::qxDieMessage($command, $?);
 	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);
 	
