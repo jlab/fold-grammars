@@ -134,6 +134,13 @@ sub processInput {
 		if ($settings->{mode} eq $Settings::MODE_CAST) {
 			die "You are in \"$Settings::MODE_CAST\" mode, but you provided just one sequence. Search for common shapes is useless, just use mode \"$Settings::MODE_SHAPES\" or provide at least two sequences!\n";
 		} else {
+			if (($settings->{mode} eq $Settings::MODE_EVAL) && (-e $input->{sequence})) {
+				foreach my $refHash_seqBlock (@{Utils::applyFunctionToFastaFile($input->{sequence}, sub {my ($refHash_sequence) = @_; return @_;})}) {
+					$input->{sequence} = $refHash_seqBlock->{result}->{sequence};
+					$input->{header} = $refHash_seqBlock->{result}->{header};
+					last;
+				}
+			}
 			doComputation($input, $refHash_settings);
 		}
 	} elsif (ref($input) =~ m/GLOB/) {
