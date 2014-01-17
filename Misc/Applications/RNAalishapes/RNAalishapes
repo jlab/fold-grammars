@@ -137,8 +137,11 @@ sub processInput {
 	} else {
 		#input is a filename
 		if ($refHash_settings->{mode} eq $Settings::MODE_ABSTRACT) {
-			my $structure = qx($Settings::BINARIES{cat} $input); chomp $structure;
-			Utils::qxDieMessage("$Settings::BINARIES{cat} $input", $?);
+			my $structure = $input;
+			if (-e $input) {
+				my $structure = qx($Settings::BINARIES{cat} $input); chomp $structure;
+				Utils::qxDieMessage("$Settings::BINARIES{cat} $input", $?);
+			}
 			my $command = buildCommand($settings, undef);
 			my $seqDummy = 'a' x length($structure);
 			
