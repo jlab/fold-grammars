@@ -14,12 +14,12 @@ our @failedTests = ();
 
 our $RNAPARAM1999 = '/vol/gapc/share/gapc/librna/rna_turner1999.par';
 our $RNAPARAM2004 = '/vol/gapc/share/gapc/librna/rna_turner2004.par';
-our $TMPDIR = "temp_solaris";
 our $PROGRAMPREFIX = "pKiss_";
 our $RNAALISHAPES = "RNAalishapes";
 our $PERL = "perl"; 
 $PERL = "/vol/perl-5.10/bin/64/perl" if (qx(uname -a) =~ m/waldorf/); #use perl 5.10 on solaris cebitec to have the same rounding behaviour as on stefans laptop.
 my $ARCHTRIPLE = qx($Settings::BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
+our $TMPDIR = "temp_".$ARCHTRIPLE;
 
 qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 
@@ -91,10 +91,13 @@ sub checkProgram {
 	
 	print "\trunning $testname (".scalar(@calls)." calls): ";
 	foreach my $run (@calls) {
+		next if (($run->{call} =~ m/mode=outside/) && ($run->{call} =~ m/grammar=macrostate/));
+		$run->{call} = " --binPath='$TMPDIR/$ARCHTRIPLE/' ".$run->{call};
 		print ".";
 		qx(echo "#CMD: $PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call}" >> $TMPDIR/$truth 2>&1);
 		if ($run->{call} =~ m/mode=outside/) {
-			$run->{call} =~ s/--dotplot=dotPlot.ps/--dotplot=$TMPDIR\/gapc.ps/ ;
+			$run->{call} =~ s/--dotplot=dotPlot.ps/--dotplot=$TMPDIR\/gapc.ps/;
+			qx(rm -f $TMPDIR/gapc.ps);
 			qx($PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call});
 			qx(cat $TMPDIR/gapc.ps | grep "ubox\$" | grep -v "^%" >> $TMPDIR/$truth);
 		} else {

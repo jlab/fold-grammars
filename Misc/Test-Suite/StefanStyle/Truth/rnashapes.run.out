@@ -3964,25 +3964,6 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 29 37 0.999957 ubox
 30 36 0.97898 ubox
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=0 --grammar=macrostate --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --dotplot=dotPlot.ps --bppmThreshold=1e-05
-3 16 0.986181 ubox
-3 17 0.162516 ubox
-4 15 0.986703 ubox
-4 16 0.162523 ubox
-5 14 0.993152 ubox
-5 15 0.116817 ubox
-6 13 0.999373 ubox
-7 12 0.985335 ubox
-22 44 0.98106 ubox
-23 43 0.999529 ubox
-24 42 0.999875 ubox
-25 41 0.999525 ubox
-26 40 0.999895 ubox
-27 39 0.999994 ubox
-28 38 0.999968 ubox
-29 37 0.999957 ubox
-30 36 0.97898 ubox
-
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=nodangle --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --dotplot=dotPlot.ps --bppmThreshold=0.1
 3 16 0.998481 ubox
 4 15 0.999334 ubox
@@ -4021,47 +4002,6 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 35 39 0.396824 ubox
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=microstate --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --dotplot=dotPlot.ps --bppmThreshold=1e-05
-1 21 0.0020227 ubox
-2 21 0.00405076 ubox
-3 15 0.00217332 ubox
-3 16 0.996715 ubox
-3 17 0.0676406 ubox
-4 14 0.0015448 ubox
-4 15 0.99845 ubox
-4 16 0.0555349 ubox
-5 14 0.999203 ubox
-5 15 0.0398286 ubox
-6 13 0.999942 ubox
-7 11 0.00198752 ubox
-7 12 0.996171 ubox
-7 14 0.00936271 ubox
-8 13 0.00878555 ubox
-17 23 0.0013522 ubox
-17 44 0.0017142 ubox
-18 22 0.00185611 ubox
-18 45 0.00472913 ubox
-19 35 0.00217927 ubox
-19 45 0.00933608 ubox
-20 34 0.00230105 ubox
-20 45 0.0723131 ubox
-21 33 0.00230127 ubox
-21 44 0.00370402 ubox
-22 32 0.00230128 ubox
-22 44 0.99432 ubox
-23 31 0.00219709 ubox
-23 43 0.999209 ubox
-24 42 0.999835 ubox
-25 41 0.999395 ubox
-26 40 0.999739 ubox
-27 39 0.999993 ubox
-28 38 0.999861 ubox
-29 34 0.0012214 ubox
-29 37 0.999975 ubox
-30 36 0.989635 ubox
-31 36 0.0224494 ubox
-37 44 0.001075 ubox
-
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=macrostate --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --dotplot=dotPlot.ps --bppmThreshold=1e-05
 1 21 0.0020227 ubox
 2 21 0.00405076 ubox
 3 15 0.00217332 ubox
@@ -4170,39 +4110,6 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 55 61 0.980266 ubox
 56 60 0.79542 ubox
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=0 --grammar=macrostate --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --dotplot=dotPlot.ps --bppmThreshold=0.001
-1 43 0.161808 ubox
-2 41 0.985249 ubox
-2 42 0.167166 ubox
-3 40 0.989557 ubox
-3 41 0.144115 ubox
-4 39 0.993511 ubox
-4 40 0.113687 ubox
-5 38 0.997343 ubox
-6 37 0.999901 ubox
-7 36 0.99999 ubox
-8 35 0.999911 ubox
-9 34 0.999973 ubox
-10 33 0.99807 ubox
-11 32 0.916828 ubox
-12 31 0.895971 ubox
-13 30 0.823637 ubox
-15 32 0.39194 ubox
-16 31 0.441528 ubox
-17 30 0.464539 ubox
-18 29 0.45581 ubox
-47 68 0.31916 ubox
-47 69 0.286326 ubox
-48 67 0.31916 ubox
-48 68 0.286326 ubox
-50 66 0.980017 ubox
-51 65 0.999663 ubox
-52 64 0.999809 ubox
-53 63 0.999844 ubox
-54 62 0.999824 ubox
-55 61 0.980266 ubox
-56 60 0.79542 ubox
-
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=nodangle --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --dotplot=dotPlot.ps --bppmThreshold=0.001
 1 21 0.0893953 ubox
 3 16 0.9952 ubox
@@ -4274,39 +4181,6 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 37 44 0.00142904 ubox
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=microstate --param=/stefan/share/gapc/librna/rna_turner2004.par --temperature=17 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --dotplot=dotPlot.ps --bppmThreshold=0.01
-1 43 0.115251 ubox
-2 41 0.993544 ubox
-2 42 0.109382 ubox
-3 40 0.995633 ubox
-4 39 0.997267 ubox
-5 38 0.998828 ubox
-6 37 0.99994 ubox
-7 36 0.999998 ubox
-8 35 0.999924 ubox
-9 34 0.999998 ubox
-10 33 0.999843 ubox
-11 32 0.986413 ubox
-12 31 0.982475 ubox
-13 30 0.966026 ubox
-15 26 0.495146 ubox
-15 32 0.163 ubox
-16 31 0.185558 ubox
-17 24 0.785933 ubox
-17 30 0.202311 ubox
-18 29 0.205534 ubox
-47 68 0.231311 ubox
-47 69 0.254926 ubox
-48 67 0.239942 ubox
-48 68 0.31826 ubox
-50 66 0.970385 ubox
-51 65 0.999898 ubox
-52 64 0.999948 ubox
-53 63 0.999958 ubox
-54 62 0.99996 ubox
-55 61 0.99477 ubox
-56 60 0.96519 ubox
-
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=macrostate --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --dotplot=dotPlot.ps --bppmThreshold=0.001
 1 43 0.115251 ubox
 2 41 0.993544 ubox
 2 42 0.109382 ubox
@@ -4447,22 +4321,6 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 29 37 0.999996 ubox
 30 36 0.991021 ubox
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=0 --grammar=macrostate --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --dotplot=dotPlot.ps --bppmThreshold=0.1
-3 16 0.998537 ubox
-4 15 0.999029 ubox
-5 14 0.999507 ubox
-6 13 0.999982 ubox
-7 12 0.998588 ubox
-22 44 0.997159 ubox
-23 43 0.999891 ubox
-24 42 0.999935 ubox
-25 41 0.999652 ubox
-26 40 0.999847 ubox
-27 39 0.999998 ubox
-28 38 0.999925 ubox
-29 37 0.999996 ubox
-30 36 0.991021 ubox
-
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=nodangle --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --dotplot=dotPlot.ps --bppmThreshold=0.01
 1 43 0.361929 ubox
 2 41 0.941661 ubox
@@ -4523,54 +4381,6 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 35 39 0.408608 ubox
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=microstate --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --dotplot=dotPlot.ps --bppmThreshold=0.001
-1 43 0.181914 ubox
-2 41 0.985028 ubox
-2 42 0.168464 ubox
-3 40 0.989636 ubox
-3 41 0.143547 ubox
-4 39 0.993563 ubox
-4 40 0.113228 ubox
-5 38 0.997363 ubox
-5 39 0.0709149 ubox
-6 37 0.999901 ubox
-7 36 0.99999 ubox
-8 35 0.999912 ubox
-9 34 0.999976 ubox
-10 33 0.998873 ubox
-11 32 0.961736 ubox
-12 31 0.952481 ubox
-13 27 0.0422881 ubox
-13 30 0.910347 ubox
-14 26 0.0730449 ubox
-15 26 0.224698 ubox
-15 32 0.26723 ubox
-16 24 0.117878 ubox
-16 31 0.301492 ubox
-17 24 0.697177 ubox
-17 30 0.317784 ubox
-18 22 0.0605289 ubox
-18 26 0.049011 ubox
-18 29 0.315955 ubox
-19 26 0.171326 ubox
-20 26 0.0367482 ubox
-21 31 0.0345148 ubox
-22 30 0.0360048 ubox
-24 29 0.044233 ubox
-47 67 0.0559743 ubox
-47 68 0.304755 ubox
-47 69 0.293694 ubox
-48 67 0.324854 ubox
-48 68 0.369419 ubox
-50 66 0.980385 ubox
-50 67 0.0397557 ubox
-51 65 0.99966 ubox
-52 64 0.999795 ubox
-53 63 0.999848 ubox
-54 62 0.999826 ubox
-55 61 0.980211 ubox
-56 60 0.795449 ubox
-
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=macrostate --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --dotplot=dotPlot.ps --bppmThreshold=0.001
 1 43 0.181914 ubox
 2 41 0.985028 ubox
 2 42 0.168464 ubox
@@ -4715,64 +4525,6 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 36 47 0.108497 ubox
 37 46 0.103614 ubox
 
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=0 --grammar=macrostate --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --dotplot=dotPlot.ps --bppmThreshold=0.001
-1 32 0.104707 ubox
-1 33 0.0336848 ubox
-1 50 0.871616 ubox
-2 24 0.0328084 ubox
-2 31 0.105508 ubox
-2 32 0.0338973 ubox
-2 49 0.973342 ubox
-3 23 0.032812 ubox
-3 30 0.105573 ubox
-3 31 0.0336043 ubox
-3 48 0.991254 ubox
-4 29 0.105237 ubox
-4 47 0.990251 ubox
-5 26 0.283129 ubox
-5 46 0.946009 ubox
-6 24 0.108055 ubox
-6 25 0.536123 ubox
-7 23 0.108055 ubox
-7 24 0.596193 ubox
-8 19 0.0366425 ubox
-8 21 0.13337 ubox
-8 23 0.596367 ubox
-9 18 0.0366556 ubox
-9 20 0.133455 ubox
-9 22 0.596415 ubox
-10 17 0.0366604 ubox
-10 19 0.133673 ubox
-10 21 0.596367 ubox
-11 16 0.036293 ubox
-11 18 0.13369 ubox
-11 20 0.596351 ubox
-12 17 0.128971 ubox
-12 19 0.584102 ubox
-13 19 0.0341479 ubox
-14 18 0.0341479 ubox
-23 43 0.037782 ubox
-23 44 0.0659373 ubox
-24 42 0.037782 ubox
-24 43 0.066363 ubox
-25 42 0.0612022 ubox
-26 39 0.168045 ubox
-26 41 0.0357514 ubox
-27 38 0.171333 ubox
-28 37 0.172226 ubox
-29 36 0.17216 ubox
-30 35 0.135529 ubox
-30 45 0.524379 ubox
-31 44 0.575494 ubox
-32 43 0.575872 ubox
-33 42 0.573211 ubox
-34 40 0.203682 ubox
-34 49 0.086522 ubox
-35 39 0.203682 ubox
-35 48 0.108569 ubox
-36 47 0.108497 ubox
-37 46 0.103614 ubox
-
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=nodangle --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=17 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --dotplot=dotPlot.ps --bppmThreshold=0.01
 1 32 0.160738 ubox
 1 33 0.119872 ubox
@@ -4843,22 +4595,6 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 30 36 0.951414 ubox
 
 #CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=microstate --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --dotplot=dotPlot.ps --bppmThreshold=0.1
-3 16 0.986286 ubox
-4 15 0.991947 ubox
-5 14 0.995664 ubox
-6 13 0.999177 ubox
-7 12 0.968948 ubox
-22 44 0.967882 ubox
-23 43 0.996247 ubox
-24 42 0.998998 ubox
-25 41 0.998286 ubox
-26 40 0.99935 ubox
-27 39 0.9999 ubox
-28 38 0.999614 ubox
-29 37 0.999646 ubox
-30 36 0.951448 ubox
-
-#CMD: perl -I ../../Applications/lib/ temp/RNAshapes  --mode=outside --allowLP=1 --grammar=macrostate --param=/stefan/share/gapc/librna/rna_turner1999.par --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --dotplot=dotPlot.ps --bppmThreshold=0.001
 3 16 0.986286 ubox
 4 15 0.991947 ubox
 5 14 0.995664 ubox
