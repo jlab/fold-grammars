@@ -137,11 +137,19 @@ sub processInput {
 	} else {
 		#input is a filename
 		if ($refHash_settings->{mode} eq $Settings::MODE_ABSTRACT) {
+			my $structure = qx($Settings::BINARIES{cat} $input); chomp $structure;
+			Utils::qxDieMessage("$Settings::BINARIES{cat} $input", $?);
 			my $command = buildCommand($settings, undef);
-			my $seqDummy = 'a' x length($input);
-			my $result = qx($command "$seqDummy" "$input" 2>&1);
+			my $seqDummy = 'a' x length($structure);
+			
+			my $inputFileSequence = Utils::writeInputToTempfile($seqDummy);
+			my $inputFileStructure = Utils::writeInputToTempfile($structure);
+			print "Actual call was: $command -f $inputFileSequence -f $inputFileStructure\n" if ($settings->{verbose});
+			my $result = qx($command -f $inputFileSequence -f $inputFileStructure 2>&1);
 			Utils::qxDieMessage($command, $?);
-
+			unlink $inputFileSequence if (!$settings->{verbose});
+			unlink $inputFileStructure if (!$settings->{verbose});
+	
 			IO::parse($result, {header => "dummy", sequence => "a", structure => $input}, $Settings::PROGINFOS{$PROGID}->{name}, $settings);
 		} else {
 			die "The file '$input' does not exist!\n" if (not -e $input);
