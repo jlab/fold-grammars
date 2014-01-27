@@ -15,6 +15,7 @@ use foldGrammars::Utils;
 
 package Pseudoknots;
 
+my $VERBOSE = 0;
 use Data::Dumper;
 
 our @OPEN_CHAR  = ('(','{','[','<','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
@@ -301,9 +302,10 @@ sub getStemDistance {
 		next if (checkStructure($refHash_candidate, \%pairs_reference) eq 'false');
 		push @permutations, $refHash_candidate;
 	}
-
+#~ print printCandidates(\@permutations); die;
 	foreach my $refHash_candidate (@permutations) {
 		#~ print Dumper $refHash_candidate;
+		#~ print printCandidates([$refHash_candidate]);
 		my %res = %{mapStructures2($refHash_candidate, \%pairs_reference)};
 		if ((not defined $bestScore) || ($res{distance} < $bestScore)) {
 			@solutions = (\%res);
@@ -311,9 +313,31 @@ sub getStemDistance {
 		} elsif ($res{distance} == $bestScore) {
 			push @solutions, \%res;
 		}
+		#~ print Dumper \%res;
+		#~ die "ENTE\n";
 	}
 
 	return \@solutions;
+}
+
+sub printCandidates {
+	my ($refList_candidates) = @_;
+	
+	my $out = "";
+	my $count = 1;
+	foreach my $refHash_candidate (@{$refList_candidates}) {
+		$out .= "CANDIDATE ".($count++)."\n";
+		foreach my $refHash_pair (@{$refHash_candidate->{ordered}}) {
+			$out .= "  ordered:   (".$refHash_pair->{open}.",".$refHash_pair->{close}.")\n";
+		}
+		foreach my $open (sort {$a <=> $b} keys(%{$refHash_candidate->{remainingPairs}})) {
+			$out .= "  remaining: (".$open.",".$refHash_candidate->{remainingPairs}->{$open}.")\n";
+		}
+		$out .= "\n";
+		#~ print Dumper $refHash_candidate; die;
+	}
+	
+	return $out;
 }
 
 sub checkStructure {
@@ -340,13 +364,14 @@ sub checkStructure {
 		
 		if ($relationReference ne $relationCandidate) {
 			$wrongOrdering = 'true';
+			print STDERR "candidate skipped due to 'wrong ordering'\n" if ($VERBOSE);
 			return 'false';
 		}
 	}
 	
 	#satisfies crossing pattern?
 		my $reference = " " x (scalar(keys(%{$refHash_reference}))*2);
-		my @opens = keys(%{$refHash_reference});
+		my @opens = sort {$a <=> $b} keys(%{$refHash_reference});
 		for (my $i = 0; $i < @opens; $i++) {
 			next if ((defined $refHash_candidate->{ordered}->[$i]) && ($refHash_candidate->{ordered}->[$i]->{open} eq 'dummy'));
 			my $char = ('A'..'Z')[$i];
@@ -364,6 +389,7 @@ sub checkStructure {
 		$reference =~ s/ //g;
 		$candidate =~ s/ //g;
 		if ($reference ne $candidate) {
+			print STDERR "candidate skipped due to 'violating crossing pattern'\n" if ($VERBOSE);
 			return 'false';
 		}
 	
@@ -374,24 +400,25 @@ sub mapStructures2 {
 	my ($refHash_candidate, $refHash_reference) = @_;
 
 	my @combine = ();
-	foreach my $openReference (sort {$a <=> $b} keys(%{$refHash_reference})) {
-		if ($refHash_candidate->{ordered}->[$openReference]->{open} eq 'dummy') {
+	my @referenceOpens = sort {$a <=> $b} keys(%{$refHash_reference});
+	for (my $i = 0; $i < @referenceOpens; $i++) {
+		if ($refHash_candidate->{ordered}->[$i]->{open} eq 'dummy') {
 			push @combine, {
 				reference => {
-					open => $openReference, 
-					close => $refHash_reference->{$openReference}
+					open => $referenceOpens[$i], 
+					close => $refHash_reference->{$referenceOpens[$i]}
 				}, 
 				type => 'deletion',
 				};
 		} else {
 			push @combine, {
 				reference => {
-					open => $openReference, 
-					close => $refHash_reference->{$openReference}
+					open => $referenceOpens[$i], 
+					close => $refHash_reference->{$referenceOpens[$i]}
 				}, 
 				candidate => {
-					open => $refHash_candidate->{ordered}->[$openReference]->{open}, 
-					close => $refHash_candidate->{ordered}->[$openReference]->{close}
+					open => $refHash_candidate->{ordered}->[$i]->{open}, 
+					close => $refHash_candidate->{ordered}->[$i]->{close}
 				},
 				type => 'match',
 			};
@@ -477,7 +504,7 @@ sub permutate {
 	
 	my @newSolutions = ();
 	foreach my $refHash_solution (@{$refList_solutions}) {
-		if (keys(%{$refHash_solution->{remainingPairs}}) > 0) {
+		#~ if (keys(%{$refHash_solution->{remainingPairs}}) > 0) {
 			foreach my $open (keys(%{$refHash_solution->{remainingPairs}}), 'dummy') {
 				#create extended candidate
 					my @opens = ();
@@ -505,9 +532,9 @@ sub permutate {
 					push @newSolutions, {ordered => \@opens, remainingPairs => \%remainingPairs};
 				}
 			}
-		} else {
-			push @newSolutions, $refHash_solution;
-		}
+		#~ } else {
+			#~ push @newSolutions, $refHash_solution;
+		#~ }
 	}
 
 	if ($remainingIterations > 1) {
