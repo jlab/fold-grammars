@@ -12,6 +12,7 @@ use lib getPath($0)."../../Applications/lib/";
 use strict;
 use warnings;
 use foldGrammars::Utils;
+use Imager::Color;
 
 package Pseudoknots;
 
@@ -21,7 +22,7 @@ use Data::Dumper;
 our @OPEN_CHAR  = ('(','{','[','<','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 our @CLOSE_CHAR = (')','}',']','>','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
 our @KISSINGHAIRPINS_pseudobase = ('PKB150','PKB163','PKB169','PKB171','PKB173','PKB178','PKB344');
-our @KISSINGHAIRPINS_rnastrand = ('PDB_00886','PDB_00817','PDB_00749','PDB_01194','PDB_01021','PDB_00917','PDB_00990','PDB_00816','PDB_00128','PDB_00944','PDB_01023','PDB_00352','PDB_01040','PDB_00018','PDB_00988','PDB_01024','PDB_01066','PDB_00123','PDB_01070','PDB_00828','PDB_00818','PDB_01165','PDB_00020','PDB_00056','PDB_01022','PDB_00829','PDB_01020');
+our @KISSINGHAIRPINS_rnastrand = ('PDB_00886','PDB_00817','PDB_00749','PDB_01194','PDB_01021','PDB_00990','PDB_00816','PDB_00128','PDB_00944','PDB_01023','PDB_00352','PDB_01040','PDB_00018','PDB_00988','PDB_01024','PDB_01066','PDB_00123','PDB_01070','PDB_00828','PDB_00818','PDB_01165','PDB_00020','PDB_00056','PDB_01022','PDB_00829','PDB_01020');
 
 sub compressStems {
 	my ($refHash_pairs) = @_;
@@ -479,18 +480,19 @@ sub mapStructures2 {
 			my $char = ('A'..'Z')[$i];
 			$reference = substr($reference,0,$open).$char.substr($reference,$open+1,$close-$open-1).$char.substr($reference,$close+1);
 			$candidate = substr($candidate,0,$open).$char.substr($candidate,$open+1,$close-$open-1).$char.substr($candidate,$close+1);
+			$distance += 0;
 		} elsif ($combine[$i]->{type} eq 'insertion') {
 			my ($open, $close) = ($combine[$i]->{candidate}->{open}, $combine[$i]->{candidate}->{close});
 			my $char = ('a'..'z')[$i];
 			$reference = substr($reference,0,$open).'-'.substr($reference,$open+1,$close-$open-1).'-'.substr($reference,$close+1);
 			$candidate = substr($candidate,0,$open).$char.substr($candidate,$open+1,$close-$open-1).$char.substr($candidate,$close+1);
-			$distance++;
+			$distance += 0;
 		} elsif ($combine[$i]->{type} eq 'deletion') {
 			my ($open, $close) = ($combine[$i]->{reference}->{open}, $combine[$i]->{reference}->{close});
 			my $char = ('a'..'z')[$i];
 			$reference = substr($reference,0,$open).$char.substr($reference,$open+1,$close-$open-1).$char.substr($reference,$close+1);
 			$candidate = substr($candidate,0,$open).'-'.substr($candidate,$open+1,$close-$open-1).'-'.substr($candidate,$close+1);
-			$distance++;
+			$distance += 1;
 		}
 	}
 
@@ -542,6 +544,117 @@ sub permutate {
 	}
 	
 	return \@newSolutions;
+}
+
+
+sub drawHistogram {
+	my $texCellSize = '5ex';
+	
+	my ($refHash_data, $refList_ordering, $isTwo, $refHash_optionalInfos) = @_;
+
+	my ($minValue, $maxValue) = ($refHash_data->{$refList_ordering->[0]}->{$refList_ordering->[0]}, $refHash_data->{$refList_ordering->[0]}->{$refList_ordering->[0]});
+	for (my $i = 0; $i < @{$refList_ordering}; $i++) {
+		for (my $j = 0; $j < @{$refList_ordering}; $j++) {
+			$minValue = $refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} if ($refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} < $minValue);
+			$maxValue = $refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} if ($refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} > $maxValue);
+		}
+	}
+	
+	my ($minValueUR, $maxValueUR) = ($refHash_data->{$refList_ordering->[0]}->{$refList_ordering->[0]}, $refHash_data->{$refList_ordering->[0]}->{$refList_ordering->[0]});
+	my ($minValueLL, $maxValueLL) = ($refHash_data->{$refList_ordering->[0]}->{$refList_ordering->[0]}, $refHash_data->{$refList_ordering->[0]}->{$refList_ordering->[0]});
+	if ($isTwo) {
+		for (my $i = 0; $i < @{$refList_ordering}; $i++) {
+			for (my $j = 0; $j < @{$refList_ordering}; $j++) {
+				if ($j <= $i) {
+					$minValueLL = $refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} if ($refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} < $minValueLL);
+					$maxValueLL = $refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} if ($refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} > $maxValueLL);
+				}
+				if ($j >= $i) {
+					$minValueUR = $refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} if ($refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} < $minValueUR);
+					$maxValueUR = $refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} if ($refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} > $maxValueUR);
+				}
+			}
+		}
+	}
+
+	my $TEX = '\setlength{\arrayrulewidth}{10pt} % set width of table lines'."\n".'\arrayrulecolor{white} %set color of table lines'."\n";
+	my $cellType = 'p{'.$texCellSize.'}';
+	$TEX .= '\begin{tabular}{rl'.$cellType.'|'.($cellType x(@{$refList_ordering}-1)).'@{}m{0cm}@{}}'."\n";
+	$TEX .= ' & ';
+	for (my $i = 0; $i < @{$refList_ordering}; $i++) {
+		my $label = $refList_ordering->[$i];
+		$TEX .= ' & \\centering \\rotatebox{90}{'.$label.'}';
+	}
+	$TEX .= '& \\\\'."\n";
+	for (my $i = 0; $i < @{$refList_ordering}; $i++) {
+		$TEX .= $refList_ordering->[$i]." &  ";
+		for (my $j = 0; $j < @{$refList_ordering}; $j++) {
+			my $intensity = sprintf("%i", (1-$refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} / ($maxValue-$minValue)) * 255);
+			my $texColor = '';
+			my $texTextColor = '';
+			if ($isTwo) {
+				if ($i > $j) {
+					if (($maxValueLL - $minValueLL) != 0) {
+						$intensity = sprintf("%i", (1-$refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} / ($maxValueLL-$minValueLL)) * 100);
+					} else {
+						$intensity = 0;
+					}
+					$texColor = '[RGB]{'.join(',',@{hsl2rgb(100,1.0,$intensity/100)}).'}';
+					$texTextColor = '[RGB]{255,255,255}'; $texTextColor = '[RGB]{0,0,0}' if ($intensity > 0.5 * 100);
+				} else {
+					if (($maxValueUR - $minValueUR) != 0) {
+						$intensity = sprintf("%i", (1-$refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} / ($maxValueUR-$minValueUR)) * 100);
+					} else {
+						$intensity = 0;
+					}
+					$texColor = '[RGB]{'.join(',',@{hsl2rgb(50,1.0,$intensity/100)}).'}';
+					$texTextColor = '[RGB]{255,255,255}'; $texTextColor = '[RGB]{0,0,0}' if ($intensity > 0.5 * 100);
+				}
+			}
+			$TEX .= " & \\centering \\cellcolor".$texColor.'\\textcolor'.$texTextColor.'{\\textsf{\\textbf{'.$refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]}.'}}}';
+		}
+		$TEX .= ' & \\\\ ['.$texCellSize.']';
+		if ($refList_ordering->[$i] eq 'Truth') {
+			$TEX .= ' \\hline';
+		}
+		$TEX .= "\n";
+	}
+	
+	$TEX .= '\end{tabular}'."\n";
+	$TEX .= '\caption{Dataset: "'.$refHash_optionalInfos->{databasename}.'" with '.$refHash_optionalInfos->{numSequences}.' sequences (yellowish), '.$refHash_optionalInfos->{numKHs}.' of them contain kissing hairpins (greenish). Distance mode is ``'.$refHash_optionalInfos->{mode}.'\'\'. '.$refHash_optionalInfos->{info}.'}.'."\n";
+		
+	return $TEX;
+}
+
+sub hsl2rgb {
+	use POSIX "fmod";
+	
+	#http://www.rapidtables.com/convert/color/hsl-to-rgb.htm
+	my ($h, $s, $l) = @_;
+	
+	die "0 <= \$h < 360 not satisfied\n" if ($h < 0 || $h >= 360);
+	die "0 <= \$s <= 1 not satisfied\n" if ($s < 0 || $s > 1);
+	die "0 <= \$l <= 1 not satisfied\n" if ($l < 0 || $l > 1);
+
+	my $C = (1 - abs(2*$l-1)) * $s;
+	my $X = $C * (1 - abs(fmod(($h / 60), 2) - 1));
+	my $m = $l - $C / 2;
+	my ($Rprime, $Gprime, $Bprime) = (undef,undef,undef);
+	if ((0 <= $h) && ($h < 60)) {
+		($Rprime, $Gprime, $Bprime) = ($C,$X,0);
+	} elsif ((60 <= $h) && ($h < 120)) {
+		($Rprime, $Gprime, $Bprime) = ($X,$C,0);
+	} elsif ((120 <= $h) && ($h < 180)) {
+		($Rprime, $Gprime, $Bprime) = (0,$C,$X);
+	} elsif ((180 <= $h) && ($h < 240)) {
+		($Rprime, $Gprime, $Bprime) = (0,$X,$C);
+	} elsif ((240 <= $h) && ($h < 300)) {
+		($Rprime, $Gprime, $Bprime) = ($X,0,$C);
+	} elsif ((300 <= $h) && ($h < 360)) {
+		($Rprime, $Gprime, $Bprime) = ($C,0,$X);
+	}
+	
+	return [sprintf("%i",($Rprime+$m)*255), sprintf("%i",($Gprime+$m)*255), sprintf("%i",($Bprime+$m)*255)];
 }
 
 1;
