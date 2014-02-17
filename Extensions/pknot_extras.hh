@@ -77,11 +77,11 @@ static const int pkmlinit = 600; //additional penalty for a pseudoknot inside fr
 	}
 
 
-	#define get_pk_free_kl(i, m) get_pk_fn( nt_help_pknot_free_kl(i, m) )	//for strategy A
+	#define get_pk_free_hk(i, m) get_pk_fn( nt_help_pknot_free_hk(i, m) )	//for strategy A
 	#define get_pk(i,j,k,l) get_pk_fn( nt_help_pknot(i,j,k,l) )	 //for strategy B and strategy C
 
-	#define get_pk_free_k(h, j, m, l) get_pk_fn( nt_help_pknot_free_k(h, j, m, l) )
-	#define get_pk_free_l(i, m, h, l) get_pk_fn( nt_help_pknot_free_l(i, m, h, l) )
+	#define get_pk_free_h(h, j, m, l) get_pk_fn( nt_help_pknot_free_h(h, j, m, l) )
+	#define get_pk_free_k(i, m, h, l) get_pk_fn( nt_help_pknot_free_k(i, m, h, l) )
 /* END: everything for strategy A: finding compatible pseudoknots */
 
 	

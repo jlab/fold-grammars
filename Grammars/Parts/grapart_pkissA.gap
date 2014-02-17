@@ -1,32 +1,32 @@
-  //computes csrPKs, given left and right borders of the subword, namely i and j AND the right stop position for alpha-helix, namely l. Thus we only iterate over k.
-  help_pknot_free_k(int ll, int startK) = 
+  //computes csrPKs, given left and right borders of the subword, namely i and j AND the right stop position for alpha-helix, namely k. Thus we only iterate over h.
+  help_pknot_free_h(int kk, int startH) = 
     .[
       int i = t_0_i;
       int j = t_0_j;
-      int l = ll;
+      int k = kk;
        
       if ((i+11 <= j) && (j-i <= maxPseudoknotSize())) {
-        int alphamaxlen = length(stacklen(t_0_seq, i, l));
+        int alphamaxlen = length(stacklen(t_0_seq, i, k));
         if (alphamaxlen >= 2) {
-          for (int k = startK; k <= l-4; k=k+1) {
-            int alphareallen = min(l-k-2, min(alphamaxlen, k-i-1)); // min(range k to l must have enough space to hold minimal (2) beta stem + alpha stem, min(maximal alpha stem, alpha stem cannot consume k or its preceeding unpaired base))
+          for (int h = startH; h <= k-4; h=h+1) {
+            int alphareallen = min(k-h-2, min(alphamaxlen, h-i-1)); // min(range h to k must have enough space to hold minimal (2) beta stem + alpha stem, min(maximal alpha stem, alpha stem cannot consume h or its preceeding unpaired base))
             if (alphareallen < 2) {
               continue;
             }
-            int betamaxlen = length(stacklen(t_0_seq, k, j));
+            int betamaxlen = length(stacklen(t_0_seq, h, j));
             if (betamaxlen < 2) {
               continue;
             }
-            int betareallen = min(min(betamaxlen, j-l-2), l-k-alphareallen); //min(min(maximal beta stem, range l to j must have enough space for the two unpaired bases), alpha stem length is set thus beta can consume left space between k to l at most)
+            int betareallen = min(min(betamaxlen, j-k-2), k-h-alphareallen); //min(min(maximal beta stem, range k to j must have enough space for the two unpaired bases), alpha stem length is set thus beta can consume left space between h to k at most)
             if (betareallen < 2) {
               continue;
             }
-			if (not(regionpair(i,l,alphareallen)) || not(regionpair(k, j, betareallen))) continue; //this filter is only for "evalfold" and ensures that those positions are correctly paired in the given structure (in Vienna Dot Bracket format). For normal "singlefold", thus filter must always return true.
+			if (not(regionpair(i,k,alphareallen)) || not(regionpair(h, j, betareallen))) continue; //this filter is only for "evalfold" and ensures that those positions are correctly paired in the given structure (in Vienna Dot Bracket format). For normal "singlefold", thus filter must always return true.
             int stackenergies = 
-                  energy(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
-                + energy(stacklen(t_0_seq, k,                j               ))  // maximal beta helix
-                - energy(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1))  // reduced part of alpha helix
-                - energy(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
+                  energy(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                + energy(stacklen(t_0_seq, h,                j               ))  // maximal beta helix
+                - energy(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                - energy(stacklen(t_0_seq, h+betareallen -1, j-betareallen +1)); // reduced part of beta helix
   
             INNER(CODE);
           }
@@ -36,43 +36,43 @@
     {
       pknot(REGION, REGION, REGION) .{
         pknot(REGION[i, i+alphareallen],
-        front[i+alphareallen+1, k] .(j).,
-        REGION[k, k+betareallen],
-        middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
-        REGION[l-alphareallen, l],
-        back[l, j-betareallen-2] .(i).,
+        front[i+alphareallen+1, h] .(j).,
+        REGION[h, h+betareallen],
+        middle[h+betareallen, k-alphareallen] .(j-betareallen, i+alphareallen).,
+        REGION[k-alphareallen, k],
+        back[k, j-betareallen-2] .(i).,
         REGION[j-betareallen, j] ;
         stackenergies) 
       }.
     } # hKnot;  
 
-  //computes csrPKs, given left and right borders of the subword, namely i and j AND the left start position for beta-helix, namely k. Thus we only iterate over l.	
-  help_pknot_free_l(int k, int endL) = 
+  //computes csrPKs, given left and right borders of the subword, namely i and j AND the left start position for beta-helix, namely h. Thus we only iterate over k.	
+  help_pknot_free_k(int h, int endK) = 
     .[
       int i = t_0_i;
       int j = t_0_j;
       if ((i+11 <= j) && (j-i <= maxPseudoknotSize())) {
-        int betamaxlen = length(stacklen(t_0_seq, k, j));
+        int betamaxlen = length(stacklen(t_0_seq, h, j));
         if (betamaxlen >= 2) {
-          for (int l = k+4; l <= endL; l=l+1) {
-             int alphamaxlen = length(stacklen(t_0_seq, i, l));
+          for (int k = h+4; k <= endK; k=k+1) {
+             int alphamaxlen = length(stacklen(t_0_seq, i, k));
              if (alphamaxlen < 2) {
                continue;
              }
-             int alphareallen = min(l-k-2, min(alphamaxlen, k-i-1)); // min(range k to l must have enough space to hold minimal (2) beta stem + alpha stem, min(maximal alpha stem, alpha stem cannot consume k or its preceeding unpaired base))
+             int alphareallen = min(k-h-2, min(alphamaxlen, h-i-1)); // min(range h to k must have enough space to hold minimal (2) beta stem + alpha stem, min(maximal alpha stem, alpha stem cannot consume h or its preceeding unpaired base))
              if (alphareallen < 2) {
                continue;
              }
-             int betareallen = min(min(betamaxlen, j-l-2), l-k-alphareallen); //min(min(maximal beta stem, range l to j must have enough space for the two unpaired bases), alpha stem length is set thus beta can consume left space between k to l at most)
+             int betareallen = min(min(betamaxlen, j-k-2), k-h-alphareallen); //min(min(maximal beta stem, range k to j must have enough space for the two unpaired bases), alpha stem length is set thus beta can consume left space between h to k at most)
              if (betareallen < 2) {
                continue;
              }
-			 if (not(regionpair(i,l,alphareallen)) || not(regionpair(k, j, betareallen))) continue; //this filter is only for "evalfold" and ensures that those positions are correctly paired in the given structure (in Vienna Dot Bracket format). For normal "singlefold", thus filter must always return true.
+			 if (not(regionpair(i,k,alphareallen)) || not(regionpair(h, j, betareallen))) continue; //this filter is only for "evalfold" and ensures that those positions are correctly paired in the given structure (in Vienna Dot Bracket format). For normal "singlefold", thus filter must always return true.
              int stackenergies = 
-                   energy(stacklen(t_0_seq, i,                l               ))  // maximal alpha helix
-                 + energy(stacklen(t_0_seq, k,                j               ))  // maximal beta helix
-                 - energy(stacklen(t_0_seq, i+alphareallen-1, l-alphareallen+1))  // reduced part of alpha helix
-                 - energy(stacklen(t_0_seq, k+betareallen -1, j-betareallen +1)); // reduced part of beta helix
+                   energy(stacklen(t_0_seq, i,                k               ))  // maximal alpha helix
+                 + energy(stacklen(t_0_seq, h,                j               ))  // maximal beta helix
+                 - energy(stacklen(t_0_seq, i+alphareallen-1, k-alphareallen+1))  // reduced part of alpha helix
+                 - energy(stacklen(t_0_seq, h+betareallen -1, j-betareallen +1)); // reduced part of beta helix
 
              INNER(CODE);
           }
@@ -82,11 +82,11 @@
     {
       pknot(REGION, REGION, REGION) .{
         pknot(REGION[i, i+alphareallen],
-        front[i+alphareallen+1, k] .(j).,
-        REGION[k, k+betareallen],
-        middle[k+betareallen, l-alphareallen] .(j-betareallen, i+alphareallen).,
-        REGION[l-alphareallen, l],
-        back[l, j-betareallen-2] .(i).,
+        front[i+alphareallen+1, h] .(j).,
+        REGION[h, h+betareallen],
+        middle[h+betareallen, k-alphareallen] .(j-betareallen, i+alphareallen).,
+        REGION[k-alphareallen, k],
+        back[k, j-betareallen-2] .(i).,
         REGION[j-betareallen, j] ;
         stackenergies) 
       }.
@@ -99,7 +99,7 @@
       int j = t_0_j;
       if (j-i <= maxPseudoknotSize()) {
         for (int m = i+3*minLengthKissingHairpinStems()+7; m<=j-minLengthKissingHairpinStems()-1; m=m+1) {
-          answer_pknot_mfe leftPK = get_pk_free_kl(i, m);
+          answer_pknot_mfe leftPK = get_pk_free_hk(i, m);
           if (isEmpty(leftPK)) {
             continue;
           }
@@ -117,7 +117,7 @@
           if (betamaxlen < 2) {
             continue;
           }
-          answer_pknot_mfe rightPK = get_pk_free_k(h, j, m, k+2);
+          answer_pknot_mfe rightPK = get_pk_free_h(h, j, m, k+2);
           if (isEmpty(rightPK)) {
             continue;
           }
@@ -171,7 +171,7 @@
 	  
 	  if (j-i <= maxPseudoknotSize()) {
         for (int h = i+minLengthKissingHairpinStems()+1; h<=j-3*minLengthKissingHairpinStems()-7; h=h+1) {
-          answer_pknot_mfe rightPK = get_pk_free_kl(h, j);
+          answer_pknot_mfe rightPK = get_pk_free_hk(h, j);
           if (isEmpty(rightPK)) {
             continue;
           }
@@ -189,7 +189,7 @@
           if (betamaxlen < 2) {
             continue;
           }
-          answer_pknot_mfe leftPK = get_pk_free_l(i, m, h, l-2);
+          answer_pknot_mfe leftPK = get_pk_free_k(i, m, h, l-2);
           if (isEmpty(leftPK)) {
             continue;
           }

@@ -62,25 +62,25 @@ grammar gra_pknot_microstate uses sig_pknot_foldrna(axiom = struct) {
        | {pknotsRG } with selectStrategy('P') 
        # hKnot;
   
-  strategyA =  help_pknot_free_kl							//for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG.
-            | {help_pknot_free_k .(0, 0). 					//A: lookup table for PKs in csrKHs left computation
-            |  help_pknot_free_l .(0, 0). }  with ignore 	//A: lookup table for PKs in csrKHs right computation
+  strategyA =  help_pknot_free_hk							//for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG.
+            | {help_pknot_free_h .(0, 0). 					//A: lookup table for PKs in csrKHs left computation
+            |  help_pknot_free_k .(0, 0). }  with ignore 	//A: lookup table for PKs in csrKHs right computation
             |  help_pkiss_Aleft 							//A: csrKHs left (optimal csrPK on the left half, suboptimal PK on the right)
             |  help_pkiss_Aright 							//A: csrKHs right (optimal csrPK on the right half, suboptimal PK on the left)
 			# hKnot;
-  strategyB =  help_pknot_free_kl_3D						//B: csrPKs AND lookup table for PKs in csrKH computation
+  strategyB =  help_pknot_free_hk_3D						//B: csrPKs AND lookup table for PKs in csrKH computation
             | {help_pknot .(0, 0). } with ignore			//B: lookup table for PKs given all four indices, in csrKHs computation
             |  help_pkiss_B .(false).						//B: csrKHs whose indices l and k may cross each other
             |  help_pkiss_B .(true).						//B: csrKHs whose indices l and k can't cross because of an arbitrary boundary
             # hKnot;
-  strategyC =  help_pknot_free_kl					        //for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG.
+  strategyC =  help_pknot_free_hk					        //for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG.
             | {help_pknot .(0, 0). } with ignore	        //C: lookup table for PKs in csrKHs computation
             |  help_pkiss_C							        //C: csrPKs
             # hKnot;        
-  strategyD =  help_pknot_free_kl	                        //for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG.
+  strategyD =  help_pknot_free_hk	                        //for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG.
 		    |  help_pkiss_D			                        //D: csrKHs
             # hKnot;
-  pknotsRG  =  help_pknot_free_kl							//for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG
+  pknotsRG  =  help_pknot_free_hk							//for H-type pseudoknots, aka canonical simple recursive pseudoknots which are calculated by pknotsRG
             # hKnot;
 			
   // following three  non-terminals are for a "local" mode of pseudoknot program, i.e. if the user asks for the best pseudoknot for the complete input. Leading and trailing bases can be skipped. The according makefile just replaces the axiom.
