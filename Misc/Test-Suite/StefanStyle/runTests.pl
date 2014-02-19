@@ -32,9 +32,9 @@ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C
 checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
 checkParameters("pseudoknots parameter check", $TMPDIR."/".$ARCHTRIPLE.'/'.$PROGRAMPREFIX."mfe", "pseudoknots.parametercheck.out");
 checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
-checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
-checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
-checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
+#~ checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
+#~ checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
+#~ checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
 
 #add your tests above this line!
 printStatistics();
