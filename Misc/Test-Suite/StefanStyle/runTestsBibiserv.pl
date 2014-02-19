@@ -15,15 +15,21 @@ our @failedTests = ();
 our $RNAPARAM1999 = 'rna_turner1999.par';
 our $RNAPARAM2004 = 'rna_turner2004.par';
 our $TMPDIR = "temp_bibi";
+
+#~ my $bibiservURL = 'http://localhost:9080';
+#~ my $bibiservURL = 'http://bibiserv2.cebitec.uni-bielefeld.de:80';
+my ($bibiservURL) = @ARGV;
+die "usage: perl $0 <BiBiServ URL>\n\texample urls are:\n\t\tbibiserv2: http://bibiserv2.cebitec.uni-bielefeld.de:80\n\t\tlocal version: http://localhost:9080\n" if (@ARGV != 1);
+
 my $ARCHTRIPLE = qx($Settings::BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
 
 qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 
 #add your testest below this line!
 
-checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
-checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
-checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
+checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes", $bibiservURL);
+checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes", $bibiservURL);
+checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss", $bibiservURL);
 
 #add your tests above this line!
 printStatistics();
@@ -46,19 +52,9 @@ sub printStatistics {
 }
 
 
-sub compile {
-	my ($TMPDIR, $sourcedir, $progamName) = @_;
-	
-	mkdir($TMPDIR) if (!-d $TMPDIR);
-	qx(cp $sourcedir/makefile $TMPDIR);
-	qx(cp $sourcedir/$progamName $TMPDIR);
-	print qx(make -C $TMPDIR all BASEDIR=../../../../);
-}
 
 sub checkProgram {
-	my ($TMPDIR, $truth, $programDir, $programName) = @_;
-	#~ my $bibiservURL = 'http://localhost:9080';
-	my $bibiservURL = 'http://bibiserv2.cebitec.uni-bielefeld.de:80';
+	my ($TMPDIR, $truth, $programDir, $programName, $bibiservURL) = @_;
 	
 	$bibiservURL .= '/' if ($bibiservURL !~ m|/$|);
 	srand(2342);
@@ -74,6 +70,7 @@ sub checkProgram {
 #~ print Dumper \@calls; die;	
 	my @requests = ();
 	my $testname = "$programName tests";
+
 	print "\trunning $testname (".scalar(@calls)." calls): ";
 	my $testNumber = 1;
 	foreach my $run (@calls) {
@@ -149,7 +146,7 @@ sub checkProgram {
 		my $restCommand = 'curl -X POST -d @'.$tmpfilename.' '.$bibiservURL.'rest/'.lc($programName).'/'.lc($programName).'_function_'.$mode.'/request -H "Content-Type: application/json"';
 		my $restID = qx($restCommand); chomp $restID;
 #~ print Dumper $restCommand, $restID;
-		if (not defined $restID) {
+		if ((not defined $restID) || ($restID =~ m/^\s*$/)) {
 			die "something is wrong with the curl command: '".$restCommand."', contents of json file:\n".$jsonContent."\n";
 		}
 		#~ my $restID = 0;
@@ -174,13 +171,14 @@ sub checkProgram {
 					$restCommand = 'curl --silent -X POST -d '.$request->{id}.' '.$bibiservURL.'rest/'.lc($programName).'/'.lc($programName).'_function_'.$request->{function}.'/response -H "Content-Type: text/plain"';
 					my $response = qx($restCommand); chomp $response;
 					if ($request->{function} eq $Settings::MODE_OUTSIDE) {
-						my $filteresResponse = "";
+						my $filteredResponse = "";
 						foreach my $line (split(m/\r?\n/, $response)) {
 							if (($line =~ m/ubox$/) && ($line !~ m/^\%/)) {
-								$filteresResponse .= $line."\n";
+								$filteredResponse .= $line."\n";
 							}
 						}
-						$response = $filteresResponse;
+						chomp $filteredResponse;
+						$response = $filteredResponse;
 					}
 					push @results, {origRun => $request->{origRun}, result => $response, rank => $request->{rank}, json => $request->{json}};
 				}
