@@ -2528,7 +2528,7 @@ AACCCCCUGAUCCUAUUUCAGAACUUUGGCCGGCUCGGAAUAGAAUCAGGGGGUGCCCGGCCAAUAUG
 ;#position paired=<pre>558-567; 601-610569-575; 593-599577-578; 591-592582-589; 669-676</pre>
 >PKB180
 ACCCCCACUAUUUUUCCUCGAACUUGGCGGAACGCAGAAAAAUAAUGGGGGCCGCUCCGCCAUA
-;.((((((.((((((((..((....[[[[[[[.))..)))))))).))))))..
+;.((((((.((((((((..((....[[[[[[[.))..)))))))).))))))....]]]]]]]..
 ;#embl number=M28718
 ;#abbreviation=pMU720_repBA
 ;#definition=Pseudoknot of the regulatory regionof the repBA gene
@@ -3049,20 +3049,6 @@ CUUCUUAUAUGAUUAGGUUGUCAUUUAGAAUAAGAAAAUAACCUG
 ;#submitted by=A.P.Gultyaev(<a href="mailto:gultyaev@rulsfb.LeidenUniv.nl">gultyaev@rulsfb.LeidenUniv.nl</a>)
 ;#stem sizes=9 5 <br>1 0 9 
 ;#position paired=<pre>6224-6227; 6249-62526231-6235; 6242-62466237-6241; 6262-6266</pre>
->PKB217
-UUUAAACUGCUAGCCACCUCUGGUCUCGACCGCUGUACUAGAGGUGGGCUGACGGUGUYUGGCGAUGCGGUCA
-;.............(((((((((((...[[[[[[...)))))))))))...................]]]]]].
-;#embl number=L13298
-;#abbreviation=LDV-C
-;#definition=ORF1a/ORF1b (polymerase) ribosomal frameshift site
-;#organism=lactate dehydrogenase-elevating virus, strain C
-;#rna type=Viral Frameshift
-;#keywords=arterivirus;ribosomal frameshifting;polymerase
-;#supported by=Sequence comparison
-;#references=[1] Godeny E.K. et al. (1993). Virology 194:585-596.
-;#submitted by=A.P. Gultyaev(<a href="mailto:gultyaev@rulsfb.LeidenUniv.nl">gultyaev@rulsfb.LeidenUniv.nl</a>)
-;#stem sizes=11 6 <br>3 3 19 
-;#position paired=<pre>6843-6853; 6866-68766857-6862; 6896-6901</pre>
 >PKB218
 UUUAAACUGCUAGCCGCCAGCGGCUUGACCCGCUGUGGUCGCGGCGGCUUGGUUGUUACUGAGACAGCGGUA
 ;............((((((.((((((....[[[[[[[))))))))))))...............]]]]]]]..
