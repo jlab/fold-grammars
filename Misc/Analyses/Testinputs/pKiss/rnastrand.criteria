@@ -1,0 +1,15 @@
+General features
+Type: Any type
+Organism: Any
+Source: Any source , Source ID: Any
+Length: Less than or equal to 300
+Validated by NMR or X-Ray: Yes 	Number of molecules in complex: Any number
+Fragment: Any
+Duplicates: Non-redundant sequences only
+Sequence pattern: Any
+Abstract shape: Any
+Sequence length: <= 200nt
+allowed base letters: ACGUT, but no P!
+
+Pseudoknot features	
+Number of pseudoknots per molecule: Greater than or equal to 1 
