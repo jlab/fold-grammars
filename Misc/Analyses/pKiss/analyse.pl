@@ -36,9 +36,7 @@ if (@files == 0) {
 }
 my @programs = keys(%{readResults($files[0])->{programs}});
 
-#~ analyse_runtimes();
-
-analyse_bpdistance(\@files, [
+my @ordering = (
 	'Truth',
 	'nested microstate',
 	'pKiss P',
@@ -51,7 +49,11 @@ analyse_bpdistance(\@files, [
 	'HotKnots RE',
 	'ProbKnot -i 10',
 	'pknotsSE-1.05',
-], $mode, \@ARGV);
+);
+
+#~ analyse_runtimes(\@ordering);
+#~ analyse_memory(\@ordering);
+analyse_bpdistance(\@files, \@ordering, $mode, \@ARGV);
 
 sub analyse_bpdistance {
 	my ($refListe_files, $refList_programOrder, $mode, $refList_dirNames) = @_;
@@ -144,33 +146,95 @@ sub analyse_bpdistance {
 }
 
 sub analyse_runtimes {
-	print "id\tprogram\truntime\n";
-	foreach my $file (@files) {
-		my %data = %{readResults($file)};
-		
-		foreach my $prog (@programs) {
-			print $data{header}."\t".$prog;
-			my $value = 0.01;
-			$value = $data{programs}->{$prog}->{runtime} if (exists $data{programs}->{$prog}->{runtime} && $data{programs}->{$prog}->{runtime} >= 0.01);
-			print "\t".$value;
-			print "\n";
-		}
+	my @combined = (@Pseudoknots::KISSINGHAIRPINS_pseudobase, @Pseudoknots::KISSINGHAIRPINS_rnastrand);
+	
+	my ($refList_ordering) = @_;
+	
+	my @ordering = ();
+	foreach my $prog (@{$refList_ordering}) {
+		push @ordering, $prog if (lc($prog) ne 'truth');
 	}
+	
+	my $tmpFilename = 'tmp.data';
+	open (TMP, "> ".$tmpFilename) || die "can't write $!";
+		print TMP "id\tprogram\truntime\tisKH\n";
+		foreach my $file (@files) {
+			my %data = %{readResults($file)};
+			
+			foreach my $prog (@ordering) {
+				print TMP $data{header}."\t".$prog;
+				my $value = 0.01;
+				$value = $data{programs}->{$prog}->{runtime} if (exists $data{programs}->{$prog}->{runtime} && $data{programs}->{$prog}->{runtime} >= 0.01);
+				print TMP "\t".$value;
+				print TMP "\t".Utils::contains(\@combined, $data{header});
+				print TMP "\n";
+			}
+		}
+	close (TMP);
+	
+	my $pdffile = 'runtime.pdf';
+	open (R, " | R --vanilla");
+		print R 'require(gplots)'."\n";
+		print R 'pdf("'.$pdffile.'", width=15, height=10)'."\n";
+		print R 'data <- read.csv("'.$tmpFilename.'", sep="\t", header=T);'."\n";
+		print R 'data$program <- ordered(data$program, levels=c("'.join('","', reverse(@ordering)).'"))'."\n";
+		print R 'par(mar=c(5.1,11,4.1,2.1));'."\n";
+		print R 'boxplot(data$runtime ~ data$program, horizontal=T, las=1, log="x", xlab="runtime in seconds (log-scale)", main="Runtimes for '.scalar(@files).' sequences.", axes=F, frame=T);'."\n";
+		print R 'axis(2,at=c(1:'.@ordering.'),las=1,labels=c(
+			expression("pknotsSE-1.05:" ~ O(n^6)),"ProbKnot -i 10","HotKnots RE","HotKnots CC","HotKnots DP",expression("pKiss D:" ~ O(n^6)),expression("pKiss C:" ~ O(n^5)),expression("pKiss B:" ~ O(n^4)),expression("pKiss A:" ~ O(n^4)),expression("pKiss P:" ~ O(n^4)),expression("nested microstate:" ~ O(n^3))
+		));'."\n";
+		print R 'axis(1);'."\n";
+		print R 'dev.off()'."\n";
+	close (R);
+	unlink $tmpFilename;
+
 }
 
 sub analyse_memory {
-	print "id\tprogram\tmemory\n";
-	foreach my $file (@files) {
-		my %data = %{readResults($file)};
-		
-		foreach my $prog (@programs) {
-			print $data{header}."\t".$prog;
-			my $value = 1;
-			$value = $data{programs}->{$prog}->{memory} if (exists $data{programs}->{$prog}->{memory} && $data{programs}->{$prog}->{memory} >= 1);
-			print "\t".$value;
-			print "\n";
-		}
+	my @combined = (@Pseudoknots::KISSINGHAIRPINS_pseudobase, @Pseudoknots::KISSINGHAIRPINS_rnastrand);
+
+	my ($refList_ordering) = @_;
+	my @ordering = ();
+	foreach my $prog (@{$refList_ordering}) {
+		push @ordering, $prog if (lc($prog) ne 'truth');
 	}
+	
+	my $tmpFilename = 'tmp.data';
+	open (TMP, "> ".$tmpFilename) || die "can't write $!";
+		print TMP "id\tprogram\tmemory\tisKH\n";
+		foreach my $file (@files) {
+			my %data = %{readResults($file)};
+			
+			foreach my $prog (@ordering) {
+				print TMP $data{header}."\t".$prog;
+				my $value = 1;
+				$value = $data{programs}->{$prog}->{memory} if (exists $data{programs}->{$prog}->{memory} && $data{programs}->{$prog}->{memory} >= 1);
+				print TMP "\t".$value;
+				print TMP "\t".Utils::contains(\@combined, $data{header});
+				print TMP "\n";
+			}
+		}
+	close (TMP);
+
+	my $pdffile = 'memory.pdf';
+	open (R, " | R --vanilla");
+		print R 'require(gplots)'."\n";
+		print R 'pdf("'.$pdffile.'", width=15, height=10)'."\n";
+		print R 'data <- read.csv("'.$tmpFilename.'", sep="\t", header=T);'."\n";
+		print R 'data$program <- ordered(data$program, levels=c("'.join('","', reverse(@ordering)).'"))'."\n";
+		print R 'par(mar=c(5.1,11,4.1,2.1));'."\n";
+		#~ print R 'boxplot(data$memory ~ data$program, horizontal=T, las=1, log="x", xlab="max RSS in KB (log-scale)", main="Memory consumption for '.scalar(@files).' sequences.");'."\n";
+
+		print R 'boxplot(data$memory ~ data$program, horizontal=T, las=1, log="x", xlab="max RSS in KB (log-scale)", main="Memory consumption for '.scalar(@files).' sequences.", axes=F, frame=T);'."\n";
+		print R 'axis(2,at=c(1:'.@ordering.'),las=1,labels=c(
+			expression("pknotsSE-1.05:" ~ O(n^4)),"ProbKnot -i 10","HotKnots RE","HotKnots CC","HotKnots DP",expression("pKiss D:" ~ O(n^2)),expression("pKiss C:" ~ O(n^2)),expression("pKiss B:" ~ O(n^3)),expression("pKiss A:" ~ O(n^2)),expression("pKiss P:" ~ O(n^2)),expression("nested microstate:" ~ O(n^2))
+		));'."\n";
+		print R 'axis(1);'."\n";
+
+		print R 'dev.off()'."\n";
+	close (R);
+	unlink $tmpFilename;
+
 }
 
 sub getBPdistances {

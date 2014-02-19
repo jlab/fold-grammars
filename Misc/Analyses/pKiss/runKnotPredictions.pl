@@ -30,12 +30,36 @@ my %PK_BINARIES = (
 my $MAXLEN = 20;
 my $VERBOSE = 1;
 
-my ($filename) = @ARGV;
+if (@ARGV == 1) {
+	my ($filename) = @ARGV;
+	Utils::applyFunctionToFastaFile($filename, \&analyse);
+	#~ Utils::applyFunctionToFastaFile($filename, \&getType);
+} elsif (@ARGV == 3) {
+	analyse({header => $ARGV[0], sequence => $ARGV[1], comments => $ARGV[2]});
+} else {
+	die "usage: perl $0 <fasta filename>\n       perl $0 <header> <sequence> <structure>\n";
+}
 
-Utils::applyFunctionToFastaFile($filename, \&analyse);
+sub getType {
+	my ($refHash_sequence) = @_;
+	
+	my $structure = undef;
+	foreach my $line (split(m/\n/, $refHash_sequence->{comments})) {
+		if ($line =~ m/^#/) {
+		} else {
+			$structure = $line;
+			last;
+		}
+	}
+	
+	print Pseudoknots::getPKtype($structure)->{meta}."\t".$refHash_sequence->{header}."\n";
+	#~ die;
+}
 
 sub analyse {
 	my ($refHash_sequence) = @_;
+	
+	$refHash_sequence->{sequence} =~ s/t/u/gi;
 	
 	my $structure = undef;
 	foreach my $line (split(m/\n/, $refHash_sequence->{comments})) {

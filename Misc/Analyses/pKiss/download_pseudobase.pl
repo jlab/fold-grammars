@@ -33,6 +33,7 @@ my %optionalKeys = (
 
 #~ print "filename\t".join("\t",@header)."\n";
 #~ parseData('/vol/fold-grammars/src/Misc/Analyses/pKiss/PseudobaseHTMLdata/PKB00166.HTML', 'debug');
+
 for (my $i = 1; $i <= $HIGHESTID; $i++) {
 	my $id = sprintf("PKB%05i", $i);
 	print STDERR '========= '.$id.' ==========='."\n";
@@ -107,7 +108,7 @@ sub parseData {
 					my $help = $1;
 					$help =~ s/=\d+$//g;
 					$data{sequence} .= $help;
-				} elsif ($lines[$j] =~ m|\s*\%\s+\d+\s*(\S+)|) {
+				} elsif ($lines[$j] =~ m|\s*\%\s+\d*\s*(\S+)|) {
 					$data{structure} .= $1;
 					#~ last;
 				} elsif ($lines[$j] =~ m|</pre>|) {
@@ -123,10 +124,18 @@ sub parseData {
 		}
 	}
 	$data{structure} =~ s/:/\./g;
-	return undef if ($data{'pkb-number'} =~ m/106$/); #since thise sequence has a hugh gap!
-	return undef if ($data{'pkb-number'} =~ m/127$/); #since thise sequence has a hugh gap!
-	return undef if ($data{'pkb-number'} =~ m/149$/); #since thise sequence has a hugh gap!
-
+	if (($data{'pkb-number'} =~ m/106$/) || ($data{'pkb-number'} =~ m/127$/) || ($data{'pkb-number'} =~ m/149$/)) {
+		#since thise sequence has a hugh gap!
+		print STDERR "excluding ".$filename." because it contains hugh sequence gaps\n";
+		return undef;
+	}
+	my $testSequence = $data{sequence};
+	$testSequence =~ s/A|C|G|U|T//gi;
+	if (length($testSequence) > 0) {
+		print STDERR "excluding ".$filename." because of non RNA letter: $testSequence\n";
+		return undef;
+	}
+die "seq. str. length mismatch at '".$filename."'\n" if (length($data{structure}) != length($data{sequence}));
 if ($isDebug) {
 	print Dumper \%data; 
 	die;
