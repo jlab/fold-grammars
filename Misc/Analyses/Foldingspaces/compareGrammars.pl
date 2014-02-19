@@ -27,16 +27,19 @@ my $STOREFILE_OUT = '/tmp/tmp_compareGrammars_out2.store';
 #~ print Dumper $refHash_result; die;
 
 my %avgData = %{retrieveData()};
-#~ foreach my $target ('sps','avgsps') {
-	#~ open (OUT, "> tmp.tex") || die "can't write tmp tex file: $!";
-		#~ print OUT createLatex($avgData{$target}, ($target eq 'sps' ? 0 : 1));
-	#~ close (OUT);
-	#~ system("pdflatex tmp.tex && pdflatex tmp.tex && pdfcrop tmp.pdf $target.pdf && rm -f tmp.*");
-#~ }
-#~ print createLatex_firstplaces(\%avgData, ['macrostate','microstate','overdangle','nodangle']);
+foreach my $file (sort {$avgData{domRanks}->{'microstate'}->{2}->{$a} <=> $avgData{domRanks}->{'microstate'}->{2}->{$b}} keys(%{$avgData{domRanks}->{'microstate'}->{2}})) {
+	print $avgData{domRanks}->{'microstate'}->{2}->{$file}."\t".$file."\n";
+}
+die;
+foreach my $target ('sps','avgsps') {
+	open (OUT, "> tmp.tex") || die "can't write tmp tex file: $!";
+		print OUT createLatex($avgData{$target}, ($target eq 'sps' ? 0 : 1));
+	close (OUT);
+	system("pdflatex tmp.tex && pdflatex tmp.tex && pdfcrop tmp.pdf $target.pdf && rm -f tmp.*");
+}
+print createLatex_firstplaces(\%avgData, ['macrostate','microstate','overdangle','nodangle']);
 #~ print createLatex_positionOfCorrectShape(\%avgData, ['macrostate','microstate','overdangle','nodangle'], [25,50,75,100]);
-print Dumper $avgData{domRanks}->{'macrostate'}->{5}; die;
-#~ print createLatex_positionOfCorrectShape(\%avgData, ['macrostate','microstate','overdangle','nodangle'], [5,10,15,20,25,30,35,40,45,50,75,100]);
+print createLatex_positionOfCorrectShape(\%avgData, ['macrostate','microstate','overdangle','nodangle'], [20,35,50,65]);
 
 
 sub createLatex {
@@ -353,16 +356,16 @@ sub createLatex_positionOfCorrectShape {
 	$LATEX .= '	\begin{center}'."\n";
 	$LATEX .= '		\caption{Positions of correct shapes.}'."\n";
 	$LATEX .= '		\label{tab:positionCorrectShapes}'."\n";
-	$LATEX .= '		\begin{tabular}{l'.('r' x (@{$refList_grammars} * @{$refList_quants}))."}\\toprule\n";
-	$LATEX .= '		\textbf{Level}';
+	$LATEX .= '		\begin{tabular}{c'.('r' x (@{$refList_grammars} * @{$refList_quants}))."}\\toprule\n";
+	$LATEX .= '		 ';
 	foreach my $grammar (@{$refList_grammars}) {
 		$LATEX .= ' & \multicolumn{'.@{$refList_quants}.'}{c}{\textbf{'.grammarEvaluation::translateGrammarName($grammar).'}}';
 	}
 	$LATEX .= ' \\\\ '."\n";
-	$LATEX .= '		 ';
+	$LATEX .= '		 \scriptsize{Level}';
 	foreach my $grammar (@{$refList_grammars}) {
 		foreach my $quant (@{$refList_quants}) {
-			$LATEX .= ' & \textbf{'.$quant.'\%}';
+			$LATEX .= ' & \scriptsize{'.$quant.'\%}';
 		}
 	}
 	$LATEX .= ' \\\\ \midrule'."\n";
@@ -392,7 +395,7 @@ sub createLatex_firstplaces {
 	
 	my $LATEX = '\begin{table}'."\n";
 	$LATEX .= '	\begin{center}'."\n";
-	$LATEX .= '		\caption{Ratio of agreement between dominant shape and gold shape for the different grammars (columns) and different shape abstraction levels (rows).}'."\n";
+	$LATEX .= '		\caption{Ratio of agreement between dominant shape and reference shape for the different grammars (columns) and different shape abstraction levels (rows).}'."\n";
 	$LATEX .= '		\label{tab:firstplaces}'."\n";
 	$LATEX .= '		\begin{tabular}{l'.('c' x @{$refList_grammars})."}\\toprule\n";
 	$LATEX .= '			\textbf{Level}';
