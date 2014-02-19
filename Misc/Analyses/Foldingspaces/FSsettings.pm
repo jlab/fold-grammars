@@ -90,15 +90,15 @@ sub computeMedian {
 
 sub getSequenceLength {
 	my ($refHash_sequence) = @_;
-	
-	my $muell;
-	($refHash_sequence->{sequence}, $muell, $refHash_sequence->{trueStructure}) = ($refHash_sequence->{sequence} =~ m/^((a|c|g|u|t)+)((\(|\)|\.|\{|\})+$)/i);
-	($refHash_sequence->{trueStructure}, $refHash_sequence->{trueCanonicalStructure}) = (substr($refHash_sequence->{trueStructure}, 0, length($refHash_sequence->{trueStructure})/2), substr($refHash_sequence->{trueStructure}, length($refHash_sequence->{trueStructure})/2)) if (length($refHash_sequence->{trueStructure}) / 2 == length($refHash_sequence->{sequence}));
-	
-	my $a = $refHash_sequence->{trueStructure};
-	$a =~ s/\{|\}/\./g;	#remove pseudoknot annotation
-	$a =~ s/\(\)/\.\./g; $a =~ s/\(\.\)/\.\.\./g; $a =~ s/\(\.\.\)/\.\.\.\./g; #flaten hairpin loops with region < 3
-	$refHash_sequence->{trueCanonicalStructure} = $a;
+
+	if ($refHash_sequence->{sequence} =~ m/^((a|c|g|u|t)+)((\(|\)|\.|\{|\})+$)/i) {
+		($refHash_sequence->{sequence}, $refHash_sequence->{trueStructure}) = ($1,$3);
+		($refHash_sequence->{trueStructure}, $refHash_sequence->{trueCanonicalStructure}) = (substr($refHash_sequence->{trueStructure}, 0, length($refHash_sequence->{trueStructure})/2), substr($refHash_sequence->{trueStructure}, length($refHash_sequence->{trueStructure})/2)) if (length($refHash_sequence->{trueStructure}) / 2 == length($refHash_sequence->{sequence}));
+		my $a = $refHash_sequence->{trueStructure};
+		$a =~ s/\{|\}/\./g;	#remove pseudoknot annotation
+		$a =~ s/\(\)/\.\./g; $a =~ s/\(\.\)/\.\.\./g; $a =~ s/\(\.\.\)/\.\.\.\./g; #flaten hairpin loops with region < 3
+		$refHash_sequence->{trueCanonicalStructure} = $a;
+	}
 
 	#~ return length($refHash_sequence->{sequence});
 	return $refHash_sequence;
