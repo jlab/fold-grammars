@@ -78,9 +78,9 @@ my %calls = (
 #~ plotTemperaturesGrammar('T', "tempGrammars_", 'microstate', 20);
 #~ plotTemperaturesGrammar('P', "tempGrammars_", 'microstate', 20);
 #~ plotTemperaturesGrammar('u', "tempGrammars_", 'microstate', 20);
-plotTemperatures("temperatures.pdf", 20);
-#~ plotParameter("parameters.pdf", 20);
-#~ plotLP("lonelyPairs.pdf", 20);
+#~ plotTemperatures("temperatures.pdf", 20);
+plotParameter("parameters.pdf", 20);
+plotLP("lonelyPairs.pdf", 20);
 
 #~ getData($parameter,$grammar,$level);
 
@@ -229,7 +229,7 @@ sub plotLP {
 		print R 'pdf("'.$pdffile.'", width=10, height=10)'."\n";
 		print R 'data <- read.csv("'.$tmpDataFile.'", sep="\t", header=T);'."\n";
 		print R 'rgb.palette <- colorRampPalette(c("blue", "red"),space="rgb");'."\n";
-		print R 'plot(max(data$freq), log="y", xlim=c('.(-1*($region+5)).','.(+1*($region+5)).'), ylim=c(1,max(data$freq)),cex=0, xlab="rank shift, relative to \'no lonely-pairs\' (smaller is better)", ylab="frequency (log scale)")'."\n";
+		print R 'plot(max(data$freq), log="y", xlim=c('.(-1*($region+5)).','.(+1*($region+5)).'), ylim=c(1,max(data$freq)),cex=0, xlab="rank shift, relative to \'no lonely pairs\' (smaller is better)", ylab="frequency (log scale)")'."\n";
 		print R 'lines(c('.(-1*($region+5)).','.(-1*($region+5)).'),c(200,10000),col=c("#666666"));'."\n";
 		print R 'lines(c('.(-1*($region+1)).','.(-1*($region+1)).'),c(50,6000),col=c("#666666"));'."\n";
 		print R 'lines(c('.(+1*($region+1)).','.(+1*($region+1)).'),c(50,6000),col=c("#666666"));'."\n";
@@ -252,9 +252,18 @@ sub plotLP {
 			print R 'lines(c(mid,mid),c(0.0001,10), col=rainbow('.@files.')['.($i+1).'])'."\n";
 			print R 'lines(sub$freq ~ sub$rankmove, col=rainbow('.@files.')['.($i+1).']);'."\n";
 		}
-		print R 'smartlegend(x="right", y="bottom", c("'.join('", "', map {getShortDescription($_)} @files).'"), col=c(rainbow('.@files.')), lw=2, inset=0, cex=0.9);'."\n";
+		my @readableLegend = ();
+		foreach my $file (@files) {
+			if (getShortDescription($file) eq '1') {
+				push @readableLegend, "allow lonely pairs";
+			} elsif (getShortDescription($file) eq '0') {
+				push @readableLegend, "no lonely pairs";
+			}
+		}
+		print R 'smartlegend(x="right", y="bottom", c("'.join('", "', @readableLegend).'"), col=c(rainbow('.@files.')), lw=2, inset=0, cex=0.9);'."\n";
 		print R 'dev.off()'."\n";
 	close (R);
+	system("pdfcrop $pdffile $pdffile");
 	#~ unlink ($tmpDataFile);
 }
 
@@ -340,6 +349,7 @@ sub plotParameter {
 		print R 'smartlegend(x="right", y="bottom", c("'.join('", "', map {getShortDescription($_)} @files).'"), col=c(rainbow('.@files.')), lw=2, inset=0, cex=0.9);'."\n";
 		print R 'dev.off()'."\n";
 	close (R);
+	system("pdfcrop $pdffile $pdffile");
 	#~ unlink ($tmpDataFile);
 }
 
