@@ -134,17 +134,17 @@ sub translateNames {
 	} elsif ($name eq 'RNAalifold-p') {
 		return '"RNAalifold -d0 -p"';
 	} elsif ($name eq 'oa_i_nodangle_mfepp') {
-		return 'expression(paste("G"[inside],"(I"[mfe], " * I"[db], ")"))';
+		return 'expression(paste("G"[nodangle],"(I"[mfe], " * I"[db], ")"))';
 	} elsif ($name eq 'ali_oa_i_nodangle_mfepp') {
-		return 'expression(paste("G"[ali_inside],"(I"[mfe], " * I"[db], ")"))';
+		return 'expression(paste("G"[ali_nodangle],"(I"[mfe], " * I"[db], ")"))';
 	} elsif ($name eq 'oa_o_nodangle_pfunc') {
-		return 'expression(paste("G"[outside],"(I"[o_bwe], ")"))';
+		return 'expression(paste("G"[o_nodangle],"(I"[o_bwe], ")"))';
 	} elsif ($name eq 'ali_oa_o_nodangle_pfunc') {
-		return 'expression(paste("G"[ali_outside],"(I"[o_bwe], ")"))';
+		return 'expression(paste("G"[ali_o_nodangle],"(I"[o_bwe], ")"))';
 	} elsif ($name eq 'oa_i_nodangle_pfunc') {
-		return 'expression(paste("G"[inside],"(I"[bwe], ")"))';
+		return 'expression(paste("G"[nodangle],"(I"[bwe], ")"))';
 	} elsif ($name eq 'ali_oa_i_nodangle_pfunc') {
-		return 'expression(paste("G"[ali_inside],"(I"[bwe], ")"))';
+		return 'expression(paste("G"[ali_nodangle],"(I"[bwe], ")"))';
 	} else {
 		return '"'.$name.'"';
 	}

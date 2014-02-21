@@ -204,11 +204,11 @@ sub plotCorrectness {
 				#~ print R 'plot(tmp$truthVienna_vienna ~ tmp$seqLen, ylim=c(minV,maxV), xlab="sequence length", ylab="relative error", main=paste("'.$grammar.', '.($allowLP eq 'yes' ? "with LP" : "no LP").', n=", n, sep=""), cex=.0)'."\n";
 				if ($fileEnding eq 'fasta') { 
 					print R 'plot(tmp$truthVienna_vienna ~ tmp$seqLength, ylim=c(minV,maxV), xlab="sequence length", ylab="relative error", main=paste("'.$graNames{$grammar}.', '.($allowLP eq 'yes' ? "with LP" : "no LP").' (n=", n, ")", sep=""), cex=.0)'."\n";
-					print R 'lines(tmp$truthVienna_truthGapc ~ tmp$seqLength, col="grey")'."\n";
+					print R 'lines((tmp$truthVienna_truthGapc+0.05) ~ tmp$seqLength, col="grey")'."\n";
 					print R 'lines(tmp$truthVienna_vienna ~ tmp$seqLength, col="red")'."\n";
 					print R 'lines(tmp$truthGapc_gapc ~ tmp$seqLength, col="green")'."\n";
 				} elsif ($fileEnding eq 'clustalW') {
-					print R 'plot(tmp$truthGapc_gapc ~ tmp$seqLength, ylim=c(minV,maxV), xlab="sequence length", ylab="relative error", main=paste("'.$graNames{$grammar}.', '.($allowLP eq 'yes' ? "with LP" : "no LP").' (n=", n, ")", sep=""), cex=.0)'."\n";
+					print R 'plot(tmp$truthGapc_gapc ~ tmp$seqLength, ylim=c(minV,maxV), xlab="alignment length", ylab="relative error", main=paste("'.$graNames{$grammar}.', '.($allowLP eq 'yes' ? "with LP" : "no LP").' (n=", n, ")", sep=""), cex=.0)'."\n";
 					#~ print R 'lines(tmp$gapc_vienna ~ tmp$seqLength, col="grey")'."\n";
 					print R 'lines(tmp$truthGapc_vienna ~ tmp$seqLength, col="magenta")'."\n";
 					print R 'lines(tmp$truthGapc_gapc ~ tmp$seqLength, col="green")'."\n";
