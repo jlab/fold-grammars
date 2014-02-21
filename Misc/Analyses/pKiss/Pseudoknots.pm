@@ -621,7 +621,7 @@ sub drawHistogram {
 	}
 	
 	$TEX .= '\end{tabular}'."\n";
-	$TEX .= '\caption{Dataset: "'.$refHash_optionalInfos->{databasename}.'" with '.$refHash_optionalInfos->{numSequences}.' sequences (yellowish), '.$refHash_optionalInfos->{numKHs}.' of them contain kissing hairpins (greenish). Distance mode is ``'.$refHash_optionalInfos->{mode}.'\'\'. '.$refHash_optionalInfos->{info}.'}.'."\n";
+	#~ $TEX .= '\caption{Dataset: "'.$refHash_optionalInfos->{databasename}.'" with '.$refHash_optionalInfos->{numSequences}.' sequences (yellowish), '.$refHash_optionalInfos->{numKHs}.' of them contain kissing hairpins (greenish). Distance mode is ``'.$refHash_optionalInfos->{mode}.'\'\'. '.$refHash_optionalInfos->{info}.'}.'."\n";
 		
 	return $TEX;
 }
@@ -655,6 +655,89 @@ sub hsl2rgb {
 	}
 	
 	return [sprintf("%i",($Rprime+$m)*255), sprintf("%i",($Gprime+$m)*255), sprintf("%i",($Bprime+$m)*255)];
+}
+
+sub readResults {
+	my ($filename) = @_;
+	
+	my %data = ();
+	open (IN, $filename) || die "can't read file '$filename': $!";
+		while (my $line = <IN>) {
+			if ($line =~ m/^>(.+)$/) {
+				$data{header} = $1;
+			} elsif ($line =~ m/^\s+([A|C|G|U|T]+)$/i) {
+				$data{sequence} = $1;
+			} elsif ($line =~ m/^Truth\s+\t(.+?)\t(.+?)\t(.+?)\t\t$/) {
+				$data{programs}->{Truth} = {structure => $1, stems => $2, energy => $3};
+			} elsif ($line =~ m/^(.+?)\s*\t(.+?)\t(.*?)\t(.+?)\t(.+?)\t(\d+)$/) {
+				$data{programs}->{$1} = {structure => $2, stems => $3, energy => $4, runtime => $5, memory => $6};
+			} elsif ($line =~ m/status: (\d+)/) {
+				$data{status} = $1;
+			}
+		}
+	close (IN);
+
+	return \%data;
+}
+
+sub getBPdistances {
+	my ($refHash_data, $mode) = @_;
+	
+	my %data = %{$refHash_data};
+	my %distances_bp = ();
+	#~ print "comp\t".join("\t",keys(%{$data{programs}}))."\n";
+	foreach my $progA (keys(%{$data{programs}})) {
+		#~ print $progA;
+		foreach my $progB (keys(%{$data{programs}})) {
+			if ($mode eq 'bp') {
+				$distances_bp{$progA}->{$progB} = getBPdistance($data{programs}->{$progA}->{structure}, $data{programs}->{$progB}->{structure});
+			} elsif ($mode eq 'stem') {
+				$distances_bp{$progA}->{$progB} = getStemDistance($data{programs}->{$progA}->{stems}, $data{programs}->{$progB}->{stems})->[0]->{distance};
+			} elsif ($mode eq 'type') {
+				$distances_bp{$progA}->{$progB} = getPKtypeDistance($data{programs}->{$progA}->{stems}, $data{programs}->{$progB}->{stems});
+			}
+			#~ print "\t".$distances_bp{$progA}->{$progB};
+			#~ print Dumper $distances_bp{$progA}->{$progB};
+		}
+		#~ print "\n";
+	}
+	#~ print Dumper \%data;
+	#~ die;
+	return \%distances_bp;
+}
+
+sub getBPdistance {
+	my ($structureA, $structureB) = @_;
+	
+	my %pairsA = %{Utils::getPairList($structureA)};
+	my %pairsB = %{Utils::getPairList($structureB)};
+
+	foreach my $openA (keys(%pairsA)) {
+		if ((exists $pairsB{$openA}) && ($pairsB{$openA} == $pairsA{$openA})) {
+			delete $pairsA{$openA};
+			delete $pairsB{$openA};
+		}
+	}
+	foreach my $openB (keys(%pairsB)) {
+		if ((exists $pairsA{$openB}) && ($pairsA{$openB} == $pairsB{$openB})) {
+			delete $pairsA{$openB};
+			delete $pairsB{$openB};
+		}
+	}
+	
+	return (scalar(keys(%pairsA)) + scalar(keys(%pairsB)))/1;
+}
+
+sub getPKtypeDistance {
+	my ($structureA, $structureB) = @_;
+	my $typeA = Pseudoknots::getPKtype($structureA)->{meta};
+	my $typeB = Pseudoknots::getPKtype($structureB)->{meta};
+	
+	if ($typeA eq $typeB) {
+		return 0;
+	} else {
+		return 1;
+	}
 }
 
 1;

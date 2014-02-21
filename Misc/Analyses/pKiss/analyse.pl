@@ -34,13 +34,14 @@ foreach my $dirName (@ARGV) {
 if (@files == 0) {
 	push @files, '/vol/fold-grammars/src/Misc/Analyses/pKiss/Cluster_pseudobase.fasta/OUT/pseudoknots.o2937084.1';
 }
-my @programs = keys(%{readResults($files[0])->{programs}});
+my @programs = keys(%{Pseudoknots::readResults($files[0])->{programs}});
 
 my @ordering = (
 	'Truth',
 	'nested microstate',
 	'pKiss P',
 	'pKiss A',
+	'pKiss A left',
 	'pKiss B',
 	'pKiss C',
 	'pKiss D',
@@ -48,6 +49,7 @@ my @ordering = (
 	'HotKnots CC',
 	'HotKnots RE',
 	'ProbKnot -i 10',
+	'DotKnot -k -g',
 	'pknotsSE-1.05',
 );
 
@@ -68,10 +70,10 @@ sub analyse_bpdistance {
 		my @combined = (@Pseudoknots::KISSINGHAIRPINS_pseudobase, @Pseudoknots::KISSINGHAIRPINS_rnastrand);
 		foreach my $file (@{$refListe_files}) {
 			print STDERR ".";
-			my $refHash_data = readResults($file);
+			my $refHash_data = Pseudoknots::readResults($file);
 			my $isKH = Utils::contains(\@combined, $refHash_data->{header});
 			#~ #next unless ());
-			my %distances = %{getBPdistances($refHash_data, $mode)};
+			my %distances = %{Pseudoknots::getBPdistances($refHash_data, $mode)};
 			foreach my $progA (keys(%distances)) {
 				foreach my $progB (keys(%{$distances{$progA}})) {
 					$KH_distances{$progA}->{$progB} += $distances{$progA}->{$progB} if ($isKH);
@@ -159,7 +161,7 @@ sub analyse_runtimes {
 	open (TMP, "> ".$tmpFilename) || die "can't write $!";
 		print TMP "id\tprogram\truntime\tisKH\n";
 		foreach my $file (@files) {
-			my %data = %{readResults($file)};
+			my %data = %{Pseudoknots::readResults($file)};
 			
 			foreach my $prog (@ordering) {
 				print TMP $data{header}."\t".$prog;
@@ -181,7 +183,7 @@ sub analyse_runtimes {
 		print R 'par(mar=c(5.1,11,4.1,2.1));'."\n";
 		print R 'boxplot(data$runtime ~ data$program, horizontal=T, las=1, log="x", xlab="runtime in seconds (log-scale)", main="Runtimes for '.scalar(@files).' sequences.", axes=F, frame=T);'."\n";
 		print R 'axis(2,at=c(1:'.@ordering.'),las=1,labels=c(
-			expression("pknotsSE-1.05:" ~ O(n^6)),"ProbKnot -i 10","HotKnots RE","HotKnots CC","HotKnots DP",expression("pKiss D:" ~ O(n^6)),expression("pKiss C:" ~ O(n^5)),expression("pKiss B:" ~ O(n^4)),expression("pKiss A:" ~ O(n^4)),expression("pKiss P:" ~ O(n^4)),expression("nested microstate:" ~ O(n^3))
+			expression("pknotsSE-1.05:" ~ O(n^6)), "DotKnot -k -g", "ProbKnot -i 10","HotKnots RE","HotKnots CC","HotKnots DP",expression("pKiss D:" ~ O(n^6)),expression("pKiss C:" ~ O(n^5)),expression("pKiss B:" ~ O(n^4)),expression("pKiss A left:" ~ O(n^4)),expression("pKiss A:" ~ O(n^4)),expression("pKiss P:" ~ O(n^4)),expression("nested microstate:" ~ O(n^3))
 		));'."\n";
 		print R 'axis(1);'."\n";
 		print R 'dev.off()'."\n";
@@ -203,7 +205,7 @@ sub analyse_memory {
 	open (TMP, "> ".$tmpFilename) || die "can't write $!";
 		print TMP "id\tprogram\tmemory\tisKH\n";
 		foreach my $file (@files) {
-			my %data = %{readResults($file)};
+			my %data = %{Pseudoknots::readResults($file)};
 			
 			foreach my $prog (@ordering) {
 				print TMP $data{header}."\t".$prog;
@@ -227,7 +229,7 @@ sub analyse_memory {
 
 		print R 'boxplot(data$memory ~ data$program, horizontal=T, las=1, log="x", xlab="max RSS in KB (log-scale)", main="Memory consumption for '.scalar(@files).' sequences.", axes=F, frame=T);'."\n";
 		print R 'axis(2,at=c(1:'.@ordering.'),las=1,labels=c(
-			expression("pknotsSE-1.05:" ~ O(n^4)),"ProbKnot -i 10","HotKnots RE","HotKnots CC","HotKnots DP",expression("pKiss D:" ~ O(n^2)),expression("pKiss C:" ~ O(n^2)),expression("pKiss B:" ~ O(n^3)),expression("pKiss A:" ~ O(n^2)),expression("pKiss P:" ~ O(n^2)),expression("nested microstate:" ~ O(n^2))
+			expression("pknotsSE-1.05:" ~ O(n^4)), "DotKnot -k -g","ProbKnot -i 10","HotKnots RE","HotKnots CC","HotKnots DP",expression("pKiss D:" ~ O(n^2)),expression("pKiss C:" ~ O(n^2)),expression("pKiss B:" ~ O(n^3)),expression("pKiss A left:" ~ O(n^2)),expression("pKiss A:" ~ O(n^2)),expression("pKiss P:" ~ O(n^2)),expression("nested microstate:" ~ O(n^2))
 		));'."\n";
 		print R 'axis(1);'."\n";
 
@@ -236,88 +238,3 @@ sub analyse_memory {
 	unlink $tmpFilename;
 
 }
-
-sub getBPdistances {
-	my ($refHash_data, $mode) = @_;
-	
-	my %data = %{$refHash_data};
-	my %distances_bp = ();
-	#~ print "comp\t".join("\t",keys(%{$data{programs}}))."\n";
-	foreach my $progA (keys(%{$data{programs}})) {
-		#~ print $progA;
-		foreach my $progB (keys(%{$data{programs}})) {
-			if ($mode eq 'bp') {
-				$distances_bp{$progA}->{$progB} = getBPdistance($data{programs}->{$progA}->{structure}, $data{programs}->{$progB}->{structure});
-			} elsif ($mode eq 'stem') {
-				$distances_bp{$progA}->{$progB} = Pseudoknots::getStemDistance($data{programs}->{$progA}->{stems}, $data{programs}->{$progB}->{stems})->[0]->{distance};
-			} elsif ($mode eq 'type') {
-				$distances_bp{$progA}->{$progB} = getPKtypeDistance($data{programs}->{$progA}->{stems}, $data{programs}->{$progB}->{stems});
-			}
-			#~ print "\t".$distances_bp{$progA}->{$progB};
-			#~ print Dumper $distances_bp{$progA}->{$progB};
-		}
-		#~ print "\n";
-	}
-	#~ print Dumper \%data;
-	#~ die;
-	return \%distances_bp;
-}
-
-sub getPKtypeDistance {
-	my ($structureA, $structureB) = @_;
-	my $typeA = Pseudoknots::getPKtype($structureA)->{meta};
-	my $typeB = Pseudoknots::getPKtype($structureB)->{meta};
-	
-	if ($typeA eq $typeB) {
-		return 0;
-	} else {
-		return 1;
-	}
-}
-
-sub getBPdistance {
-	my ($structureA, $structureB) = @_;
-	
-	my %pairsA = %{Utils::getPairList($structureA)};
-	my %pairsB = %{Utils::getPairList($structureB)};
-
-	foreach my $openA (keys(%pairsA)) {
-		if ((exists $pairsB{$openA}) && ($pairsB{$openA} == $pairsA{$openA})) {
-			delete $pairsA{$openA};
-			delete $pairsB{$openA};
-		}
-	}
-	foreach my $openB (keys(%pairsB)) {
-		if ((exists $pairsA{$openB}) && ($pairsA{$openB} == $pairsB{$openB})) {
-			delete $pairsA{$openB};
-			delete $pairsB{$openB};
-		}
-	}
-	
-	return (scalar(keys(%pairsA)) + scalar(keys(%pairsB)))/1;
-}
-
-sub readResults {
-	my ($filename) = @_;
-	
-	my %data = ();
-	open (IN, $filename) || die "can't read file '$filename': $!";
-		while (my $line = <IN>) {
-			if ($line =~ m/^>(.+)$/) {
-				$data{header} = $1;
-			} elsif ($line =~ m/^\s+([A|C|G|U|T]+)$/i) {
-				$data{sequence} = $1;
-			} elsif ($line =~ m/^Truth\s+\t(.+?)\t(.+?)\t(.+?)\t\t$/) {
-				$data{programs}->{Truth} = {structure => $1, stems => $2, energy => $3};
-			} elsif ($line =~ m/^(.+?)\s*\t(.+?)\t(.*?)\t(.+?)\t(.+?)\t(\d+)$/) {
-				$data{programs}->{$1} = {structure => $2, stems => $3, energy => $4, runtime => $5, memory => $6};
-			} elsif ($line =~ m/status: (\d+)/) {
-				$data{status} = $1;
-			}
-		}
-	close (IN);
-
-	return \%data;
-}
-
-

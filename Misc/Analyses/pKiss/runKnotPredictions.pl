@@ -19,11 +19,13 @@ use Pseudoknots;
 
 my %PK_BINARIES = (
 	'pkiss', '/vol/fold-grammars/bin/pKiss_mfe',
+	'pkissLeft', '/vol/fold-grammars/bin/pKiss_mfeLeft',
 	'nested', '/vol/fold-grammars/bin/RNAshapes_mfe_microstate',
 	'eval', '/vol/fold-grammars/bin/pKiss_eval',
 	'hotknots', '/vol/pi/src/HotKnots_v2.0/bin/HotKnots',
 	'probknot', '/vol/pi/bin/ProbKnot',
 	'pknotse', '/vol/pi/bin/pknotsSE-1.05',
+	'dotknot', '/vol/pi/src/DotKnot_1.3.1/src/dotknot.py',
 	'memtime', $Settings::BINARIES{'time'}.' -f "RT: %U user, %S system, %E elapsed -- Max VSize = %ZKB, Max RSS = %MKB :RT"',
 );
 
@@ -74,12 +76,12 @@ sub analyse {
 	print ">".$refHash_sequence->{header}."\n";
 	print "".(' ' x $MAXLEN)."\t".$refHash_sequence->{sequence}."\n";
 	print STDERR "computing $refHash_sequence->{header} (".length($refHash_sequence->{sequence})." bp):\n" if ($VERBOSE);
-	print STDERR "\t".($compNr++)." / 12: evaluating true energy ..." if ($VERBOSE);
+	print STDERR "\t".($compNr++)." / 14: evaluating true energy ..." if ($VERBOSE);
 	printResult($MAXLEN, 'Truth', $structure, evaluateEnergy($refHash_sequence->{sequence}, $structure), {});
 	print STDERR " done.\n" if ($VERBOSE);
 	
 	#nested prediction
-		print STDERR "\t".($compNr++)." / 12: RNAshapes_mfe_microstate prediction ..." if ($VERBOSE);
+		print STDERR "\t".($compNr++)." / 14: RNAshapes_mfe_microstate prediction ..." if ($VERBOSE);
 		my $result = qx($PK_BINARIES{memtime} $PK_BINARIES{nested} '$refHash_sequence->{sequence}' 2>&1);
 		if ($? != 0) {
 			print Dumper $result;
@@ -101,9 +103,14 @@ sub analyse {
 		print STDERR " done.\n" if ($VERBOSE);
 		
 	#pseudoknots via fold-grammars
-		foreach my $strategy ('P','A','B','C','D') {
-			print STDERR "\t".($compNr++)." / 12: pKiss $strategy ..." if ($VERBOSE);
-			my $result = qx($PK_BINARIES{memtime} $PK_BINARIES{pkiss} -s $strategy '$refHash_sequence->{sequence}' 2>&1);
+		foreach my $strategy ('P','A','B','C','D','A left') {
+			print STDERR "\t".($compNr++)." / 14: pKiss $strategy ..." if ($VERBOSE);
+			my $result = undef;
+			if ($strategy eq 'A left') {
+				$result = qx($PK_BINARIES{memtime} $PK_BINARIES{pkissLeft} -s A '$refHash_sequence->{sequence}' 2>&1);
+			} else {
+				$result = qx($PK_BINARIES{memtime} $PK_BINARIES{pkiss} -s $strategy '$refHash_sequence->{sequence}' 2>&1);
+			}
 			if ($? != 0) {
 				print Dumper $result;
 				die "died on: pkiss -s ".$strategy;
@@ -131,7 +138,7 @@ sub analyse {
 			'CC', '/vol/pi/src/HotKnots_v2.0/bin/params/parameters_CC09.txt',
 		);
 		foreach my $param (keys(%HotKnots_params)) {
-			print STDERR "\t".($compNr++)." / 12: HotKnots $param prediction ..." if ($VERBOSE);
+			print STDERR "\t".($compNr++)." / 14: HotKnots $param prediction ..." if ($VERBOSE);
 			my ($parameterName, $parameterFile) = ($param, $HotKnots_params{$param});
 			$result = qx(cd /vol/pi/src/HotKnots_v2.0/bin && $PK_BINARIES{memtime} $PK_BINARIES{hotknots} -m $parameterName -p $parameterFile -noPS -s '$refHash_sequence->{sequence}' 2>&1 && cd -);
 			if ($? != 0) {
@@ -154,7 +161,7 @@ sub analyse {
 	#ProbKnot
 		my $inputFile = Utils::writeInputToTempfile(">".$refHash_sequence->{header}."\n".$refHash_sequence->{sequence}."\n");
 		my $outputFile = Utils::writeInputToTempfile("");
-		print STDERR "\t".($compNr++)." / 12: ProbKnot prediction ..." if ($VERBOSE);
+		print STDERR "\t".($compNr++)." / 14: ProbKnot prediction ..." if ($VERBOSE);
 		$result = qx(export DATAPATH=/vol/pi/src/RNAstructure/data_tables; $PK_BINARIES{memtime} $PK_BINARIES{probknot} $inputFile $outputFile -i 10 --sequence 2>&1);
 		if ($? != 0) {
 			print Dumper $result;
@@ -172,11 +179,35 @@ sub analyse {
 		unlink $outputFile;
 		printResult($MAXLEN, 'ProbKnot -i 10', $ProbKnotStructure, evaluateEnergy($refHash_sequence->{sequence}, $ProbKnotStructure), \%performance);
 		print STDERR " done.\n" if ($VERBOSE);
-		
+
+	#DotKnot
+		$inputFile = Utils::writeInputToTempfile(">".$refHash_sequence->{header}."\n".$refHash_sequence->{sequence}."\n");
+		print STDERR "\t".($compNr++)." / 14: DotKnot prediction ..." if ($VERBOSE);
+		$result = qx(cd /vol/pi/src/DotKnot_1.3.1/src/ && $PK_BINARIES{memtime} python $PK_BINARIES{dotknot} $inputFile -k -g 2>&1);
+		if ($? != 0) {
+			print Dumper $result;
+			die "died on: DotKnot";
+		}
+		%performance = ();
+		my @lines = split(m/\n/, $result);
+		my $dotKnotStructure = undef;
+		for (my $i = 0; $i < @lines; $i++) {
+			if ($lines[$i] =~ m/^RT:.+?:RT/) {
+				%performance = %{Pseudoknots::getTimeMem($lines[$i])};
+				last;
+			} elsif ($lines[$i] =~ m/Predicted global structure/) {
+				$dotKnotStructure = $lines[$i+2];
+				chomp $dotKnotStructure;
+			}
+		}
+		unlink $inputFile;
+		printResult($MAXLEN, 'DotKnot -k -g', $dotKnotStructure, evaluateEnergy($refHash_sequence->{sequence}, $dotKnotStructure), \%performance);
+		print STDERR " done.\n" if ($VERBOSE);
+
 	#pknotsSE
 		$inputFile = Utils::writeInputToTempfile(">".$refHash_sequence->{header}."\n".$refHash_sequence->{sequence}."\n");
 		$outputFile = Utils::writeInputToTempfile("");
-		print STDERR "\t".($compNr++)." / 12: pknotsSE-1.05 prediction ..." if ($VERBOSE);
+		print STDERR "\t".($compNr++)." / 14: pknotsSE-1.05 prediction ..." if ($VERBOSE);
 		$result = qx($PK_BINARIES{memtime} $PK_BINARIES{pknotse} -k -g -o $outputFile $inputFile 2>&1);
 		unlink $inputFile;
 		if ($? != 0) {
