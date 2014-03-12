@@ -17,8 +17,9 @@ our %PROGINFOS = (
 );
 
 
-our $rootDir = '/home/sjanssen/Desktop/fold-grammars/'; #must point to the root directory of the fold-grammars repository!
+our $rootDir = '/vol/fold-grammars/src/'; #must point to the root directory of the fold-grammars repository!
 our $prototypeDirectory = $rootDir; #for RapidShapes: directory where to find bgap sources, i.e. the fold-grammars repository somewhere in the file system
+our $bgapDir = '/vol/gapc/'; #must point to the directory containing "bin" "include" "share" and "lib" sub-directories of Bellman's Gap Compiler
 
 our $tmpdir = '/tmp/'; #temporary directory
 our $fileseparater = '/'; #character that separates directories in a path, / in unix but \ in windows
@@ -48,11 +49,15 @@ our %BINARIES = (
 	'RNAfold', 'RNAfold',
 	'date', 'date',
 	'ln', 'ln',
+	'hybrid-ss-min', 'hybrid-ss-min',
+	'ct2b.pl', 'ct2b.pl',
+	'centroid_fold', 'centroid_fold',
 	'ulimit', 'ulimit',
 	'mktemp', 'mktemp',
 	'cut', 'cut',
 	'wc', 'wc',
 	'gcc','gcc',
+	'ls','ls',
 );
 
 our %TDMfiles = (
@@ -86,4 +91,9 @@ our $MODE_PFALL = 'pfall';
 our $MODE_MEA = 'mea';
 
 our $MODE_KIF = 'kif'; #single and thus default mode for KnotInFrame
+
+our $ARCHTRIPLE = qx($BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
+our $RNAPARAM1999 =  $Settings::bgapDir.'share/gapc/librna/rna_turner1999.par';
+our $RNAPARAM2004 = $Settings::bgapDir.'share/gapc/librna/rna_turner2004.par';
+
 1;
