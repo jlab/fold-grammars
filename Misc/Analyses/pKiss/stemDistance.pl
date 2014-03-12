@@ -15,9 +15,10 @@ use Data::Dumper;
 use Storable qw(nstore);
 use foldGrammars::Utils;
 use foldGrammars::Settings;
+use foldGrammars::Structure;
 use Pseudoknots;
 
-#~ print Dumper Pseudoknots::getPKtype($ARGV[0]);
+#~ print Dumper Structure::getPKtype($ARGV[0]);
 #~ exit(0);
 #~ my ($a, $b) = ("AaBb","AaBb");
 #~ my ($a, $b) = ("ABab","ABab");
@@ -27,7 +28,7 @@ use Pseudoknots;
 #~ my ($a,$b) = ("Aa","AaBb");
 my ($a,$b) = ("ABCbca","ABaCcb");
 
-foreach my $refHash_candidate (@{Pseudoknots::getStemDistance($a,$b)}) {
+foreach my $refHash_candidate (@{Structure::getStemDistance($a,$b)}) {
 	print Dumper $refHash_candidate;
 }
 

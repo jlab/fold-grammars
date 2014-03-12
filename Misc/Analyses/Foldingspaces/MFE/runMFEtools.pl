@@ -16,6 +16,7 @@ use strict;
 use Data::Dumper;
 use foldGrammars::Settings;
 use foldGrammars::Utils;
+use foldGrammars::Structure;
 
 my $PWD = qx(pwd); chomp $PWD; $PWD .= "/";
 
@@ -103,7 +104,7 @@ foreach my $progA (@programs) {
 		my $bestDist = 999999;
 		foreach my $Astructure (@Astructures) {
 			foreach my $Bstructure (@Bstructures) {
-				my $distance = Utils::getBPdistance_foldingspaces($Astructure, $Bstructure);
+				my $distance = Structure::getBPdistance_foldingspaces($Astructure, $Bstructure);
 				$bestDist = $distance if ($bestDist > $distance);
 			}
 		}
@@ -143,7 +144,7 @@ sub runFoldGrammars {
 	my $bestDistance = 999999;
 	my $bestStructure = undef;
 	foreach my $structure (@results) {
-		my $distance = Utils::getBPdistance_foldingspaces($targetStructure, $structure);
+		my $distance = Structure::getBPdistance_foldingspaces($targetStructure, $structure);
 		if ($distance < $bestDistance) {
 			$bestStructure = $structure;
 			$bestDistance = $distance;
@@ -169,7 +170,7 @@ sub runMEA {
 	my $bestDistance = 999999;
 	my $bestStructure = undef;
 	foreach my $structure (@results) {
-		my $distance = Utils::getBPdistance_foldingspaces($targetStructure, $structure);
+		my $distance = Structure::getBPdistance_foldingspaces($targetStructure, $structure);
 		if ($distance < $bestDistance) {
 			$bestStructure = $structure;
 			$bestDistance = $distance;
@@ -219,7 +220,7 @@ sub runRNAsubopt {
 	my $bestDistance = 999999;
 	my $bestStructure = undef;
 	foreach my $structure (@{$results{$bestEnergy}}) {
-		my $distance = Utils::getBPdistance_foldingspaces($targetStructure, $structure);
+		my $distance = Structure::getBPdistance_foldingspaces($targetStructure, $structure);
 		if ($distance < $bestDistance) {
 			$bestStructure = $structure;
 			$bestDistance = $distance;

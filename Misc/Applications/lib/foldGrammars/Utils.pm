@@ -2,6 +2,7 @@
 
 use foldGrammars::Settings;
 use foldGrammars::References;
+use foldGrammars::Structure;
 use strict;
 use warnings;
 
@@ -498,6 +499,31 @@ sub contains {
 	return 0;
 }
 
+sub computeAVG {
+	my ($refList) = @_;
+
+	my $sum = 0;
+	foreach my $elem (@{$refList}) {
+		$sum += $elem;
+	}
+	if (@{$refList} != 0) {
+		return ($sum / @{$refList});
+	} else {
+		return 0;
+	}
+}
+
+sub computeMedian {
+	my ($refList) = @_;
+
+	my @sorted = sort {$a <=> $b} (@{$refList});
+	if (@sorted % 2 == 1) {
+		return $sorted[$#sorted/2];
+	} else {
+		return ($sorted[@sorted/2]+$sorted[@sorted/2-1])/2;
+	}
+}
+
 sub automatedParameterChecks {
 	my ($refHash_params, $refHash_settings, $refList_allmodes, $diePrefix) = @_;
 	
@@ -557,71 +583,6 @@ sub checkBinaryPresents {
 
 }
 
-
-sub normalizePKannotation { #change usage of small and capital letter for crossing basepairs if they are the "wrong" way around, e.g. ((aa))AA instead if ((AA))aa
-	my ($structure) = @_;
-	
-	if ($structure =~ m/A/) {
-		my $firstCapital = $-[0];
-		$structure =~ m/a/;
-		my $firstSmall = $-[0];
-		if ($firstCapital > $firstSmall) {
-			die "crossing stems are annotated with the \"wrong\" order of capital and small letter usage, e.g. ((aa))AA instead if ((AA))aa. I can't change that, since the structure also contains temporary character '#'." if ($structure =~ m/#/);
-			foreach my $letter ('A'..'Z') {
-				if ($structure =~ m/$letter/) {
-					my $lcLetter = lc($letter);
-					$structure =~ s/$letter/#/g;
-					$structure =~ s/$lcLetter/$letter/g;
-					$structure =~ s/#/$lcLetter/g;
-				} else {
-					last;
-				}
-			}
-		}
-	}
-	
-	return $structure;
-}
-
-sub getPairList {
-	my ($structure, $removeUnpairedBases) = @_;
-	
-	#change usage of small and capital letter for crossing basepairs if they are the "wrong" way around, e.g. ((aa))AA instead if ((AA))aa
-		$structure = normalizePKannotation($structure);
-	
-	#find partners of basepairs
-		my @stacks = ();
-		my %pairs = ();
-		$structure =~ s/\.//g if ($removeUnpairedBases); #remove unpaired bases
-		for (my $i = 0; $i < length($structure); $i++) {
-			my $char = substr($structure, $i, 1);
-			my ($bracketStyle, $bracketType) = @{getBracketIndex($char)};
-			if ($bracketType eq 'open') {
-				push @{$stacks[$bracketStyle]}, $i;
-			} elsif ($bracketType eq 'close') {
-				$pairs{pop @{$stacks[$bracketStyle]}} = $i;
-			}
-		}
-
-	return \%pairs;
-}
-
-our @OPEN_CHAR  = ('(','{','[','<','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-our @CLOSE_CHAR = (')','}',']','>','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
-sub getBracketIndex { #returns the right "type" of opening or closing bracket, depends on OPEN_CHAR and CLOSE_CHAR arrays, which are defined in the header of this file
-	my ($char, $mustHaveType) = @_;
-	
-	for (my $i = 0; $i < scalar(@OPEN_CHAR); $i++) {
-		if ($char eq $OPEN_CHAR[$i]) {
-			return [$i, 'open'] if ((not defined $mustHaveType) || ($mustHaveType eq 'open'));
-		} elsif ($char eq $CLOSE_CHAR[$i]) {
-			return [$i, 'close'] if ((not defined $mustHaveType) || ($mustHaveType eq 'close'));
-		}
-	}
-	return [-1, 'unpaired'];
-}
-
-
 sub createUniqueTempDir { #create temporary unique directory
 	my ($BASEDIR, $dirSuffixName) = @_;
 	
@@ -647,57 +608,7 @@ sub qxDieMessage {
 	}
 }
 
-#computes the base-pair distance between two RNA secondary structures according to our definition in the foldingspaces paper, i.e. first structure is a reference, second a prediction. The speciality is, that additional, non-coonflicting base-pairs in the prediction don't increase the distance.
-sub getBPdistance_foldingspaces {
-	my ($reference, $prediction) = @_;
-	
-	my $refHash_pairs_reference = Utils::getPairList($reference,0);
-	my $refHash_pairs_prediction = Utils::getPairList($prediction,0);
-	
-	my %identical_pairs = ();
-	my %compatible_pairs = ();
-	foreach my $pred_open (keys(%{$refHash_pairs_prediction})) {
-		my $pred_close = $refHash_pairs_prediction->{$pred_open};
-		
-		my $isIncompatible = 'false';
-		foreach my $ref_open (keys(%{$refHash_pairs_reference})) {
-			my $ref_close = $refHash_pairs_reference->{$ref_open};
-			if (
-				(($pred_open <= $ref_open) && ($ref_open <= $pred_close) && ($pred_close <= $ref_close)) || # < ( > )
-				(($ref_open <= $pred_open) && ($pred_open <= $ref_close) && ($ref_close <= $pred_close))    #   ( < ) >
-				) {
-				$isIncompatible = 'true';
-				last;
-			}
-		}
-			
-		if ($isIncompatible eq 'false') {
-			if ((exists $refHash_pairs_reference->{$pred_open}) && ($refHash_pairs_reference->{$pred_open} == $refHash_pairs_prediction->{$pred_open})) {
-				$identical_pairs{$pred_open} = $pred_close;
-			} else {
-				$compatible_pairs{$pred_open} = $pred_close;
-			}
-		}
-	}
 
-	# determin number of base-pairs in Reference but not in Prediction
-		my $R_minus_P = 0;
-		foreach my $ref_open (keys(%{$refHash_pairs_reference})) {
-			if ((not (exists $refHash_pairs_prediction->{$ref_open})) || ($refHash_pairs_prediction->{$ref_open} != $refHash_pairs_reference->{$ref_open})) {
-				$R_minus_P++;
-			}
-		}
-		
-	# determine number of base-pairs in Prediction but not in Reference and not compatible to Reference
-		my $Pcomp_minus_R = 0;
-		foreach my $pred_open (keys(%{$refHash_pairs_prediction})) {
-			if (((not (exists $compatible_pairs{$pred_open})) || ($refHash_pairs_prediction->{$pred_open} != $compatible_pairs{$pred_open})) && ((not (exists $refHash_pairs_reference->{$pred_open})) || ($refHash_pairs_prediction->{$pred_open} != $refHash_pairs_reference->{$pred_open}))) {
-				$Pcomp_minus_R++;
-			}
-		}
-	
-	return $R_minus_P+$Pcomp_minus_R;
-}
 
 sub writeInputToTempfile {
 	my ($input) = @_;
@@ -710,6 +621,65 @@ sub writeInputToTempfile {
 	close (FILE);
 
 	return $tmpInputFilename;
+}
+
+
+sub getSPSdistance {
+	my ($probsA, $probsB) = @_;
+	
+	my %seenShapes = ();
+	my $distance = 0;
+	#add distances for shape classes that exist in A and eventually in B, if not in B assume prob as 0.
+		foreach my $shape (keys(%{$probsA})) {
+			$seenShapes{$shape}=1;
+			my $probB = 0;
+			$probB = $probsB->{$shape} if (exists $probsB->{$shape});
+			$distance += abs($probsA->{$shape} - $probB);
+		}
+	#add distances for shape classes that are in B but not in A
+		foreach my $shape (keys(%{$probsB})) {
+			next if (exists $seenShapes{$shape});
+			$distance += $probsB->{$shape};
+		}
+		
+	return $distance / 2;
+}
+
+sub getTimeMem {
+	my ($line) = @_;
+	my ($user, $system, $elapsed, $vsize, $rss) = ($line =~ m/RT: (.+?) user, (.+?) system, (.+?) elapsed -- Max VSize = (\d+)KB, Max RSS = (\d+)KB :RT$/);
+	return {runtime => $system+$user, memory => $rss};
+}
+
+sub hsl2rgb {
+	use POSIX "fmod";
+	
+	#http://www.rapidtables.com/convert/color/hsl-to-rgb.htm
+	my ($h, $s, $l) = @_;
+	
+	die "0 <= \$h < 360 not satisfied\n" if ($h < 0 || $h >= 360);
+	die "0 <= \$s <= 1 not satisfied\n" if ($s < 0 || $s > 1);
+	die "0 <= \$l <= 1 not satisfied\n" if ($l < 0 || $l > 1);
+
+	my $C = (1 - abs(2*$l-1)) * $s;
+	my $X = $C * (1 - abs(fmod(($h / 60), 2) - 1));
+	my $m = $l - $C / 2;
+	my ($Rprime, $Gprime, $Bprime) = (undef,undef,undef);
+	if ((0 <= $h) && ($h < 60)) {
+		($Rprime, $Gprime, $Bprime) = ($C,$X,0);
+	} elsif ((60 <= $h) && ($h < 120)) {
+		($Rprime, $Gprime, $Bprime) = ($X,$C,0);
+	} elsif ((120 <= $h) && ($h < 180)) {
+		($Rprime, $Gprime, $Bprime) = (0,$C,$X);
+	} elsif ((180 <= $h) && ($h < 240)) {
+		($Rprime, $Gprime, $Bprime) = (0,$X,$C);
+	} elsif ((240 <= $h) && ($h < 300)) {
+		($Rprime, $Gprime, $Bprime) = ($X,0,$C);
+	} elsif ((300 <= $h) && ($h < 360)) {
+		($Rprime, $Gprime, $Bprime) = ($C,0,$X);
+	}
+	
+	return [sprintf("%i",($Rprime+$m)*255), sprintf("%i",($Gprime+$m)*255), sprintf("%i",($Bprime+$m)*255)];
 }
 
 1;

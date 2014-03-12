@@ -184,8 +184,8 @@ sub retrieveData {
 		foreach my $level (sort {$b <=> $a} @FSsettings::SHAPELEVELS) {
 			foreach my $grammarA (@FSsettings::GRAMMARS) {
 				foreach my $grammarB (@FSsettings::GRAMMARS) {
-					$avgData{sps}->{$level}->{$grammarA}->{$grammarB} = FSsettings::computeAVG($sps{sps}->{$level}->{$grammarA}->{$grammarB});
-					$avgData{avgsps}->{$level}->{$grammarA}->{$grammarB} = FSsettings::computeAVG($sps{avgsps}->{$level}->{$grammarA}->{$grammarB});
+					$avgData{sps}->{$level}->{$grammarA}->{$grammarB} = Utils::computeAVG($sps{sps}->{$level}->{$grammarA}->{$grammarB});
+					$avgData{avgsps}->{$level}->{$grammarA}->{$grammarB} = Utils::computeAVG($sps{avgsps}->{$level}->{$grammarA}->{$grammarB});
 				}
 			}
 		}

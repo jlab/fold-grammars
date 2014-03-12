@@ -19,6 +19,7 @@ use Getopt::Long;
 use foldGrammars::Utils;
 use foldGrammars::RNAcast;
 use foldGrammars::IO;
+use foldGrammars::Structure;
 use POSIX 'isatty';
 
 our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT);
@@ -173,7 +174,7 @@ sub doComputation {
 		$refHash_sequence->{structure} = $refHash_sequence->{sequence};
 		my $dummySequence = "a" x length($refHash_sequence->{structure});
 		#to be able to form stacks fake input sequence is a bit more complicated than all 'a'.
-		my %pairs = %{Utils::getPairList($refHash_sequence->{structure})};
+		my %pairs = %{Structure::getPairList($refHash_sequence->{structure})};
 		foreach my $open (keys(%pairs)) {
 			$dummySequence = substr($dummySequence, 0, $open).'G'.substr($dummySequence, $open+1);
 			$dummySequence = substr($dummySequence, 0, $pairs{$open}).'C'.substr($dummySequence, $pairs{$open}+1);

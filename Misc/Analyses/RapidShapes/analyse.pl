@@ -1,10 +1,20 @@
 #!/usr/bin/env perl
 
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+use lib getPath($0)."../../Applications/lib/";
+
 use strict;
 use warnings;
 use Data::Dumper;
 use Storable qw(nstore);
 use RapidShapesTools;
+use foldGrammars::Utils;
 
 my $index = 0;
 
@@ -46,7 +56,7 @@ sub parseProbsResults {
 				if ($line =~ m/^Linux suc\d+/) {
 					#uname -a line
 				} elsif ($line =~ m/^RT:.+?:RT/) {
-					%runtime = %{RapidShapesTools::getTimeMem($line)};
+					%runtime = %{Utils::getTimeMem($line)};
 					$runtime{time} = 0.01 if ($runtime{time} == 0);
 				} elsif ($line =~ m/^status: (\d+)$/) {
 					$status = $1;
