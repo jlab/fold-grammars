@@ -203,7 +203,7 @@ sub addRandomParameters {
 }
 
 sub evaluateTest {
-	my ($testname, $truth) = @_;
+	my ($testname, $truth, $TMPDIR, $testIndex, $refList_failedTests) = @_;
 	
 	my $status = 'failed';
 	if (-e "Truth/".$truth) {
@@ -221,23 +221,25 @@ sub evaluateTest {
 		print "==-== test ".$testIndex.") '".$testname."' PASSED ==-==\n\n";
 	} else {
 		print "==-== test ".$testIndex.") '".$testname."' FAILED ==-==\n\n";
-		push @failedTests, $testname;
+		push @{$refList_failedTests}, $testname;
 	}
 	
 	$testIndex++;
 }
 
 sub printStatistics {
+	my ($testIndex, $refList_failedTests) = @_;
+	
 	my $maxLen = 30;
-	foreach my $test (@failedTests) {
+	foreach my $test (@{$refList_failedTests}) {
 		$maxLen = length($test) if (length($test) > $maxLen);
 	}
 	
 	print "=" x ($maxLen+6+4)."\n";	
-	print "|| PASSED: ".sprintf("% 3i", $testIndex-1-scalar(@failedTests))."     |   FAILED: ".sprintf("% 3i", scalar(@failedTests)).(" " x ($maxLen - 26))."||\n";
-	if (@failedTests > 0) {
+	print "|| PASSED: ".sprintf("% 3i", $testIndex-1-scalar(@{$refList_failedTests}))."     |   FAILED: ".sprintf("% 3i", scalar(@{$refList_failedTests})).(" " x ($maxLen - 26))."||\n";
+	if (@{$refList_failedTests} > 0) {
 		print "|| follwing tests failed:".(" " x ($maxLen-17))."||\n";  
-		foreach my $testname (@failedTests) {
+		foreach my $testname (@{$refList_failedTests}) {
 			print "|| - '$testname'".(" " x ($maxLen-length($testname)+1))."||\n";
 		}
 	}

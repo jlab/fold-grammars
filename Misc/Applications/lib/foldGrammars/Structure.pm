@@ -366,6 +366,8 @@ sub getStemDistance {
 }
 
 sub checkStructure {
+	my $VERBOSE = 0;
+
 	my ($refHash_candidate, $refHash_reference) = @_;
 
 	my $wrongOrdering = 'false';

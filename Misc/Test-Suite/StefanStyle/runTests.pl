@@ -39,7 +39,7 @@ checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
 checkProgram($TMPDIR, "knotinframe.run.out", "../../Applications/Knotinframe/","Knotinframe");
 
 #add your tests above this line!
-Testing::printStatistics();
+Testing::printStatistics($testIndex, \@failedTests);
 
 
 sub compile {
@@ -91,7 +91,7 @@ sub checkProgram {
 	}
 	
 	print " done.\n";
-	Testing::evaluateTest($testname, $truth);
+	Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
 }
 
 sub checkBasicFunctions {
@@ -128,7 +128,7 @@ sub checkBasicFunctions {
 	}
 	
 	print " done.\n";
-	Testing::evaluateTest($testname, $truth);
+	Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
 }
 
 sub checkParameters {
@@ -170,7 +170,7 @@ sub checkParameters {
 	}
 	print " done.\n";
 	
-	Testing::evaluateTest($testname, $truth);
+	Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
 }
 
 sub checkPseudoknotMFEPP {
@@ -185,7 +185,7 @@ sub checkPseudoknotMFEPP {
 	close (OUT);
 	print " done.\n";
 
-	Testing::evaluateTest($testname, $truth);
+	Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
 }
 
 sub runProg {

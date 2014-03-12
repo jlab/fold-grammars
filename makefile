@@ -8,6 +8,7 @@ INSTALL=install
 SED=sed
 CC=gcc
 RSYNC=rsync
+BASH=bash
 
 #system dependend tools
 TMPDIR := $(shell mktemp -d)
@@ -113,3 +114,7 @@ compile_local:
 		$(INSTALL) $(TMPDIR)/out $(PWD)/$(ARCHTRIPLE)/$(PROGRAMPREFIX)$(gapc_binaryname); \
 	fi;
 	cd $(PWD) && rm -rf $(TMPDIR);
+
+test: build-suite
+	cd Misc/Test-Suite/GeorgStyle/ && $(BASH) run.sh ../Truth
+	cd Misc/Test-Suite/StefanStyle/ && $(PERL) runTests.pl

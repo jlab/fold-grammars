@@ -27,7 +27,7 @@ checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAs
 checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss", $bibiservURL);
 
 #add your tests above this line!
-Testing::printStatistics();
+Testing::printStatistics($testIndex, \@failedTests);
 
 sub checkProgram {
 	my ($TMPDIR, $truth, $programDir, $programName, $bibiservURL) = @_;
@@ -173,7 +173,7 @@ sub checkProgram {
 	close ($tmpResultFile);
 	
 	print " done.\n";
-	Testing::evaluateTest($testname, $truth);
+	Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
 }
 
 
