@@ -1,0 +1,14 @@
+>Alanine tRNA of Natronobacterium pharaonis (gb: AB003409.1/96-167)
+;tRNA
+GGGCCCAUAGCUCAGUGGUAGAGUGCCUCCUUUGCAAGGAGGAUGCCCUGGGUUCGAAUCCCAGUGGGUCCA
+........................................................................
+
+>DA
+;example from Andi
+CAGCCAACACAUCCCCUUUAAACUGGCUgGCUGACCUGACCAGUGGCAAUGUCAACAAGGAAAACAAGGAAAAACAGCUGACUAUGCC
+........................................................................................
+
+>SSTRAND_ID=CRW_01502; TYPE=5S Ribosomal RNA; EXT_SOURCE=Gutell Lab CRW; EXT_ID=d.5.a.P.occultum; ORGANISM=Pyrodictium occultum
+;median sequence in S-STRAND2.fasta
+UGGCCCGACCCGGCCAUAGCGGCCGGGCAACACCCGGACUCAUGUCGAACCCGGAAGUUAAGCCGGCCGCGUUGGGGGAUGCUGUGGGGUCCGCGAGGCCCCGCAGCGCCCCCAAGCCGGGAUCGGGCCG
+((((((((((((((....((((((((.....((((((.............))))..))....)))))))).(((((((...((((((((.((....))))))))))..))))))))))))).))))))))
