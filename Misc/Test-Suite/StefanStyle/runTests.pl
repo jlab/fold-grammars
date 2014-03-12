@@ -32,9 +32,10 @@ checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C
 checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
 checkParameters("pseudoknots parameter check", $TMPDIR."/".$ARCHTRIPLE.'/'.$PROGRAMPREFIX."mfe", "pseudoknots.parametercheck.out");
 checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
-#~ checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
-#~ checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
-#~ checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
+checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
+checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
+checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
+checkProgram($TMPDIR, "knotinframe.run.out", "../../Applications/Knotinframe/","Knotinframe");
 
 #add your tests above this line!
 printStatistics();
@@ -63,11 +64,12 @@ sub checkFormerPseudoknotProblems {
 }
 
 sub compile {
-	my ($TMPDIR, $sourcedir, $progamName) = @_;
+	my ($TMPDIR, $sourcedir, $programName) = @_;
 	
 	mkdir($TMPDIR) if (!-d $TMPDIR);
 	qx(cp $sourcedir/makefile $TMPDIR);
-	qx(cp $sourcedir/$progamName $TMPDIR);
+	$programName =~ s/Knotinframe/knotinframe/;
+	qx(cp $sourcedir/$programName $TMPDIR);
 	print qx(make -C $TMPDIR all BASEDIR=../../../../);
 }
 
@@ -87,9 +89,12 @@ sub checkProgram {
 		@calls = @{Testing::addRandomParameters($Testing::pKiss, Testing::permutate($Testing::pKiss, [{call => ""}]))};
 	} elsif ($programName eq 'RNAshapes') {
 		@calls = @{Testing::addRandomParameters($Testing::RNAshapes, Testing::permutate($Testing::RNAshapes, [{call => ""}]))};
+	} elsif ($programName eq 'Knotinframe') {
+		@calls = @{Testing::addRandomParameters($Testing::Knotinframe, Testing::permutate($Testing::Knotinframe, [{call => ""}]))};
 	}
 	
 	print "\trunning $testname (".scalar(@calls)." calls): ";
+	$programName =~ s/Knotinframe/knotinframe/;	
 	foreach my $run (@calls) {
 		next if (($run->{call} =~ m/mode=outside/) && ($run->{call} =~ m/grammar=macrostate/));
 		$run->{call} = " --binPath='$TMPDIR/$ARCHTRIPLE/' ".$run->{call};
