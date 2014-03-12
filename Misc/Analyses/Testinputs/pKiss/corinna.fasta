@@ -1,0 +1,151 @@
+>Coxsackie(115)_Masterarbeit
+UUUUAGAUUACAGACAAUUUGAAAUAAUUUAGAUUGGCUUAACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAAAAAA
+;((((::::{:{{{:{{{{{{{{{::::}}}}}}}}}:}}}:}[[[[[[[[[[[[:{{{{{{:::::::::]]]]]]]]]]]]:::::((:(((((:}}}}}}))))):))))))
+
+>2.7a_Masterarbeit
+AGAUAUGAUCCGUAAGAGGACGGGAUAAACCUCAA
+;::::::::((((:::[[[[:)))):::::]]]]::
+
+>1.9b_Masterarbeit
+GAGAGUAUCAUCCGUGCCGGCGGGAUAUCGGCGAUCU
+;::::::::::(((([[[[[[)))):::]]]]]]::::
+
+>2.11_Masterarbeit
+gUCAUAUUACCGUUACUCCUCGGGAUAAAGGAGAUCU
+;:::::::::(((:::[[[[[))):::::]]]]]::::
+
+>2.5a_Masterarbeit
+UCAAGAUAGUAUCCGUUCUUGAUCAUCGGGACAAAUGAUCU
+;:::::::::::((((:::::[[[[[[))))::::]]]]]]:
+
+>1.7_Masterarbeit
+AGGAAUCGACCCAAGCCAAAGGGGAUAAUGCGGCAUC
+;:::::::::(((::[[[:::)))::::::::]]]:::
+
+>2.1b_Masterarbeit
+CAAGAAUAUAUCCGAACUCGACGGGAUAACGAGAAGaGC
+;::::::::::((((::[[[[:))))::::]]]]::::::
+
+>1.8_Masterarbeit
+UCAAGGAUUAACCGACGCCAACGGGAGAAUGGCAGGGAU
+;:::::::::::(((::[[[[:))):::::]]]]::::::
+
+>2.12_Masterarbeit
+UCAAGAAUAAUCCGACUCGCGGGAUAACGAGAAGAGC
+;::::::::::((((:[[[[))))::::]]]]::::::
+
+>1.6_Masterarbeit
+GAAGAAGAUUACCCAAGCGCAGGGGAGAAGCGCAUCU
+;:::::::::::(((::[[[[:))):::::]]]]::::
+
+>2.6b_Masterarbeit
+AGUGAAACUUAACCGUUAUCAUAGAUCGGGACAAAUCUAUGA
+;::::::::::::(((:::[[[[[[[[))))::::]]]]]]]]
+
+>2.10_Masterarbeit
+AGUAAAUGAGUCCGUAGGAGGCGGGAUAUCUCCAACU
+;::::::::::((((::[[[[[)))):::)))))::::
+
+>2.3a_Masterarbeit
+GUUAAACAUAAUCCGUGAUCUUUCACACGGGAGAUCUAUGAAAGA
+;:::::::::::((((((:[[[[[[[)))))):::::::]]]]]]]
+
+>1.17_Masterarbeit
+AGUAAUGACCAGAGGCCCAACUGGUAAACGGGCGGUC
+;:::::::(((((::[[[[::)))))::::]]]]::::
+
+>2.4a_Masterarbeit
+AGUAGAUAUCCGAAGCUCAACGGGAUAAUGAGCAUCU
+;::::::::((((::[[[[[:))))::::]]]]]::::
+
+>2.9_Masterarbeit
+UCAAGGUUUCCGAAAGAAAUCGGGAAAACUGUCU
+;:::::::(((((::[[[:::)))))::::::]]]
+
+>2.2b_Masterarbeit
+GACAAUCAAGUACCUAGGUGAUAAAAGGGAGAACACGUGUGA
+;::::::::::::(((::[[[:::::))):::::]]]::::::
+
+>RM-8530(77)_Masterarbeit
+GGGGUGGUGGCGCAGUUGGCUAGCGCGUAGGUCUCAUAAUCCUGAGGUCGAGAGUUCGAGCCUCUCUCACCCCACCA
+;(((((((..((((.........)))).((((.........)))).....(((((.......))))))))))))....
+
+>RK-5280(67)_Masterarbeit
+CAUUGCGAAGCUUAGAGCGUUAACCUUUUAAGUUAAAGUUAGAGACAACAAAUCUCCACAAUGACCA
+;(((((.(..(((...))).(((((.......))))).....((((.......))))).)))))....
+
+>RR-4640(54)_Masterarbeit
+GACAAAUGUUUUCAGGUCUUCUAAAUCUGUUUUGGAGAAAUCCGUUUGUUUCCA
+;(((((((............((((((.....)))))).......)))))))....
+
+>RG-6241(65)_Masterarbeit
+GCUGUGUUAGUAUAAAGUAAUAUAUGUGAUUUCUAAUCAUGGGAUCCUUUAGGGACGUAGUACCA
+;(((((((..((((......)))).(((((.......)))))...(((....))))))))))....
+
+>RA-1662(76)_Masterarbeit
+GGGGCUAUAGCUCAGCUGGGAGAGCGCCUGCUUUGCACGCAGGAGGUCUGCGGUUCGAUCCCGCAUAGCUCCACCA
+;(((((((..((((........)))).(((((.......))))).....(((((.......))))))))))))....
+
+>RK-5280_Masterarbeit
+CAUUGCGAAGCUUAGAGCGUUAACCUUUUAAGUUAAAGUUAGAGACAACAAAUCUCCACAAUGACCA
+;(((((.(..(((...))).(((((.......))))).....((((.......))))).)))))....
+
+>Coxsackie_115_fold-grammars-Tests
+UUUUAGAUUACAGACAAUUUGAAAUAAUUUAGAUUGGCUUAACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAAAAAA
+;((((....{.{{{.{{{{{{{{{....}}}}}}}}}.}}}.}[[[[[[[[[[[[.{{{{{{.........]]]]]]]]]]]].....((.(((((.}}}}}}))))).))))))
+
+>PDB_00352# RNA SSTRAND database# External source: RCSB Protein Data Bank 1E8O, number of molecules: 1# The secondary structure annotation was obtained with RNAview_fold-grammars-Tests
+gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC
+;(((((((((((((..[[))))))))....((((.]].....)))))))))
+;koennte ein wahrer KH sein!!! CORE OF THE ALU DOMAIN OF THE MAMMALIAN SRP
+
+>PDB_00749# RNA SSTRAND database# External source: RCSB Protein Data Bank 1U8D, number of molecules: 1# The secondary structure annotation was obtained with RNAview_fold-grammars-Tests
+GGACAUAUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGACUAUGUCC
+;(((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..)))))))
+;koennte ein wahrer KH sein!!! Guanine riboswitch bound to hypoxanthine
+
+>PDB_00828# RNA SSTRAND database# External source: RCSB Protein Data Bank 1Y26, number of molecules: 1# The secondary structure annotation was obtained with RNAview_fold-grammars-Tests
+CGCUUCAUAUAAUCCUAAUGAUAUGGUUUGGGAGUUUCUACCAAGAGCCUUAAACUCUUGAUUAUGAAGUG
+;(((((((((...(((((((.[[[.[[)))))))........((((((]]..]]]))))))..)))))))))
+;koennte ein wahrer KH sein!!! A-riboswitch-adenine complex
+
+>PDB_00829# RNA SSTRAND database# External source: RCSB Protein Data Bank 1Y27, number of molecules: 1# The secondary structure annotation was obtained with RNAview_fold-grammars-Tests
+gGAUCAUAUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGACUAUGGUC
+;.(((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..)))))))
+;koennte ein wahrer KH sein!!! G-riboswitch-guanine complex
+
+>PDB_00944# RNA SSTRAND database# External source: RCSB Protein Data Bank 2B57, number of molecules: 1# The secondary structure annotation was obtained with RNAview_fold-grammars-Tests
+GACAUAUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGAUUAUGUC
+;((((((.....(((((.[[[.[[)))))..........((((((]]..]]]))))))..))))))
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+
+>PDB_01020# RNA SSTRAND database# External source: RCSB Protein Data Bank 2EES, number of molecules: 1# The secondary structure annotation was obtained with RNAview_fold-grammars-Tests
+GGACAUUUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGACAAUGUCCa
+;.((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..))))))..
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+
+>PDB_01021# RNA SSTRAND database# External source: RCSB Protein Data Bank 2EET, number of molecules: 1# The secondary structure annotation was obtained with RNAview_fold-grammars-Tests
+GGACAUGUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGACCAUGUCCa
+;.((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..))))))..
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+
+>PDB_01022# RNA SSTRAND database# External source: RCSB Protein Data Bank 2EEU, number of molecules: 1# The secondary structure annotation was obtained with RNAview_fold-grammars-Tests
+GGACAUAAAAUCGCGUGGAUAUGGCACGCAAGUUUCUUCCGGGCACCGUAAAUGUCCGACUAUGUCCa
+;(((((((.....(((((.[[..[[)))))..........((((((]]...]]))))))..))))))).
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+
+>PDB_01023# RNA SSTRAND database# External source: RCSB Protein Data Bank 2EEV, number of molecules: 1# The secondary structure annotation was obtained with RNAview_fold-grammars-Tests
+GGACAUACAAUCGCGUGGAUAUGGCACGCAAGUUUCUGCCGGGCACCGUAAAUGUCCGACUAUGUCCa
+;(((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..))))))).
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+
+>PDB_01024# RNA SSTRAND database# External source: RCSB Protein Data Bank 2EEW, number of molecules: 1# The secondary structure annotation was obtained with RNAview_fold-grammars-Tests
+GGACAUAUAAUCGCGUGGAUAUGGCACGCAAGCUUCUACCGGGCACCGUAAAUGUCCGACUAUGUCCa
+;(((((((.....(((((.[[..[[)))))..........((((((]]...]]))))))..))))))).
+;koennte ein wahrer KH sein!!! Purine Riboswitch Aptamer Domain
+
+>PDB_01066# RNA SSTRAND database# External source: RCSB Protein Data Bank 2G9C, number of molecules: 1# The secondary structure annotation was obtained with RNAview_fold-grammars-Tests
+GGACAUAUAAUCGCGUGGAUAUGGCACGCAAGUUUCUACCGGGCACCGUAAAUGUCCGAUUAUGUCCu
+;(((((((...(((((((.[[..[[)))))))........((((((]]...]]))))))..))))))).
+;koennte ein wahrer KH sein!!! Purine Riboswitch
+
