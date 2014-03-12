@@ -1,5 +1,5 @@
 
-BASE="/stefan/"
+BASE=$1; #base now comes as command line parameter and is set by run.sh
 #BASE="../../../../adpc-tng-multi/"
 
 PARAMSET2004=""

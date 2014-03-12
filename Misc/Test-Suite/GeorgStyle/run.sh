@@ -1,11 +1,20 @@
 #!/bin/ksh
 
+BASE="/vol/gapc"
+#example call: bash run.sh ../Truth
+#don't forget to set BASE to the path where gapc is located with all its headers and libraries!
+
+ARCHTRIPLE=`gcc -dumpmachine`;
+if [[ $ARCHTRIPLE =~ "linux" ]] ; then
+	OSSUFFIX="_linux";
+else
+	OSSUFFIX="";
+fi
 set -u
 
 NO_CONFIG_MF="foo"
 export NO_CONFIG_MF
 
-BASE="/stefan"
 
 GAPC=$BASE/bin/gapc
 GHC=ghc
@@ -13,7 +22,7 @@ MAKE=make
 MAKEFLAGS=
 PERL=perl
 
-TEMP=./temp
+TEMP=./tmp_$ARCHTRIPLE/
 GRAMMAR=../
 LHS_DIR=..
 RTLIB=$BASE/include/rtlib/
@@ -24,8 +33,8 @@ RUN_CPP_FLAGS=""
 KSH="ksh"
 
 
-if [ -e $BASE/share/gapc/config.mf ]; then
-  CONFIG_MF=$BASE/share/gapc/config.mf
+if [ -e $BASE/share/gapc/config$OSSUFFIX.mf ]; then
+  CONFIG_MF=$BASE/share/gapc/config$OSSUFFIX.mf
 else
   CONFIG_MF=$BASE/config/generic.mf
 fi
@@ -237,7 +246,7 @@ check_external()
   echo +------------------------------------------------------------------------------+
 }
 
-. ../config
+. ../config $BASE
 
 . ../stats.sh
 
