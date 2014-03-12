@@ -1,0 +1,200 @@
+#CMD: perl -I ../../Applications/lib/ temp_x86_64-redhat-linux/knotinframe  --binPath='temp_x86_64-redhat-linux/x86_64-redhat-linux/'  --mode=kif --minknottedenergy=-10 --minenergydifference=-8.71 --windowsize=120 --windowincrement=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=5 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9
+>pol_m_vir_hastr
+  Rank:              1
+  Slippery sequence: CCCTTTT
+  Slippery position: 104
+  Substring length:  80
+  Deltarel:          0.022
+     111  AAGGTGTATATAGAACACTGCCTATCACGGACTGCAAAGCAGCTTCGTGACTCTGGCCTACCGGCCAGGCTCACAGAAGA  191
+  -38.38  .........[[[[....{{{.]]]]((((((((((...)))).))))))..(((((((....)))))))....}}}....  knotted structure
+  -36.63  ..(((((.......))))).((......)).((((...))))((((((((.(((((((....))))))).)))).)))).  nested structure
+
+>test
+  Rank:              1
+  Slippery sequence: GGGUUUc
+  Slippery position: 35
+  Substring length:  80
+  Deltarel:          -0.058
+      42  cccccccccccccugacugguagucguguaugcugguacguggacggagucugagucugaugcguagucguaugcguauu  122
+  -20.55  .............[[[[[[.....(((((((....)))))))..((((.......)))){{{{{]]]]]]....}}}}}.  knotted structure
+  -25.18  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
+
+  Warning: some further results are not shown. Increase --numberOutputs to display them!
+>pol_m_vir_mhv|AF029248.1
+  Rank:              1
+  Slippery sequence: AAAAAAG
+  Slippery position: 56
+  Substring length:  60
+  Deltarel:          0.093
+      63  AAAGGTAAGACCAAGCATGGTAGGGGTAGAGTCAGACGTAACCTTAGAAAAGGCGTGAAA  123
+  -14.43  .[[[[[...((((....))))..((......))..{{{{.]]]]].......}}}}....  knotted structure
+   -8.84  ...........((.((....(((((.....((...))....)))))......)).))...  nested structure
+
+
+#CMD: perl -I ../../Applications/lib/ temp_x86_64-redhat-linux/knotinframe  --binPath='temp_x86_64-redhat-linux/x86_64-redhat-linux/'  --mode=kif --minknottedenergy=-10 --minenergydifference=-10.34 --windowsize=160 --windowincrement=20 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37
+>pol_m_vir_hastr
+  Rank:              1
+  Slippery sequence: CCCTTTT
+  Slippery position: 104
+  Substring length:  80
+  Deltarel:          -0.014
+     111  AAGGTGTATATAGAACACTGCCTATCACGGACTGCAAAGCAGCTTCGTGACTCTGGCCTACCGGCCAGGCTCACAGAAGA  191
+  -26.70  .........[[[[....{{{.]]]]((((((((((...)))).))))))..(((((((....)))))))....}}}....  knotted structure
+  -27.80  ..(((((.......)))))............((((...))))((((((((..((((((....))))))..)))).)))).  nested structure
+
+  Warning: some further results are not shown. Increase --numberOutputs to display them!
+>test
+  Rank:              1
+  Slippery sequence: GGGUUUc
+  Slippery position: 35
+  Substring length:  80
+  Deltarel:          -0.061
+      42  cccccccccccccugacugguagucguguaugcugguacguggacggagucugagucugaugcguagucguaugcguauu  122
+  -14.40  .............[[[[[[....((((.((((......)))).))))............{{{{{]]]]]]....}}}}}.  knotted structure
+  -19.30  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
+
+  Warning: some further results are not shown. Increase --numberOutputs to display them!
+>pol_m_vir_mhv|AF029248.1
+  Rank:              1
+  Slippery sequence: AAAAAAG
+  Slippery position: 56
+  Substring length:  60
+  Deltarel:          0.032
+     63  AAAGGTAAGACCAAGCATGGTAGGGGTAGAGTCAGACGTAACCTTAGAAAAGGCGTGAAA  123
+  -8.60  .[[[[[...((((....))))..............{{{{.]]]]].......}}}}....  knotted structure
+  -6.70  .(((((...((((....))))....((........))...)))))...............  nested structure
+
+
+#CMD: perl -I ../../Applications/lib/ temp_x86_64-redhat-linux/knotinframe  --binPath='temp_x86_64-redhat-linux/x86_64-redhat-linux/'  --mode=kif --minknottedenergy=-7.4 --minenergydifference=-8.71 --windowsize=120 --windowincrement=20 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=5 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17
+>pol_m_vir_hastr
+  Rank:              1
+  Slippery sequence: CCCTTTT
+  Slippery position: 104
+  Substring length:  40
+  Deltarel:          0.012
+    111  AAGGTGTATATAGAACACTGCCTATCACGGACTGCAAAGC  151
+  -9.64  ..[[[[[...{{{.]]]]]............}}}......  knotted structure
+  -9.17  ..(((((.......))))).((......))..........  nested structure
+
+>test
+  Rank:              1
+  Slippery sequence: GGGUUUc
+  Slippery position: 35
+  Substring length:  80
+  Deltarel:          -0.083
+      42  cccccccccccccugacugguagucguguaugcugguacguggacggagucugagucugaugcguagucguaugcguauu  122
+  -24.69  .............[[[[[[.(((((((.((((......)))).))))...)))......{{{{{]]]]]]....}}}}}.  knotted structure
+  -31.33  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
+
+  Warning: some further results are not shown. Increase --numberOutputs to display them!
+>pol_m_vir_mhv|AF029248.1
+  Rank:              1
+  Slippery sequence: AAAAAAG
+  Slippery position: 56
+  Substring length:  60
+  Deltarel:          0.038
+      63  AAAGGTAAGACCAAGCATGGTAGGGGTAGAGTCAGACGTAACCTTAGAAAAGGCGTGAAA  123
+  -17.99  .[[[[[..(((...((.........))...)))..{{{{.]]]]].......}}}}....  knotted structure
+  -15.73  ....((...((((....)))).(((((...((...))...))))).......))......  nested structure
+
+
+#CMD: perl -I ../../Applications/lib/ temp_x86_64-redhat-linux/knotinframe  --binPath='temp_x86_64-redhat-linux/x86_64-redhat-linux/'  --mode=kif --minknottedenergy=-7.4 --minenergydifference=-10.34 --windowsize=160 --windowincrement=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17
+>pol_m_vir_hastr
+  Rank:              1
+  Slippery sequence: CCCTTTT
+  Slippery position: 104
+  Substring length:  40
+  Deltarel:          0.012
+    111  AAGGTGTATATAGAACACTGCCTATCACGGACTGCAAAGC  151
+  -9.64  ..[[[[[...{{{.]]]]]............}}}......  knotted structure
+  -9.17  ..(((((.......))))).((......))..........  nested structure
+
+>test
+  Rank:              1
+  Slippery sequence: GGGUUUc
+  Slippery position: 35
+  Substring length:  80
+  Deltarel:          -0.083
+      42  cccccccccccccugacugguagucguguaugcugguacguggacggagucugagucugaugcguagucguaugcguauu  122
+  -24.69  .............[[[[[[.(((((((.((((......)))).))))...)))......{{{{{]]]]]]....}}}}}.  knotted structure
+  -31.33  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
+
+  Warning: some further results are not shown. Increase --numberOutputs to display them!
+>pol_m_vir_mhv|AF029248.1
+  Rank:              1
+  Slippery sequence: AAAAAAG
+  Slippery position: 56
+  Substring length:  60
+  Deltarel:          0.038
+      63  AAAGGTAAGACCAAGCATGGTAGGGGTAGAGTCAGACGTAACCTTAGAAAAGGCGTGAAA  123
+  -17.99  .[[[[[..(((...((.........))...)))..{{{{.]]]]].......}}}}....  knotted structure
+  -15.73  ....((...((((....)))).(((((...((...))...))))).......))......  nested structure
+
+
+#CMD: perl -I ../../Applications/lib/ temp_x86_64-redhat-linux/knotinframe  --binPath='temp_x86_64-redhat-linux/x86_64-redhat-linux/'  --mode=kif --minknottedenergy=-5 --minenergydifference=-8.71 --windowsize=80 --windowincrement=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=15 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37
+>pol_m_vir_hastr
+  Rank:              1
+  Slippery sequence: CCCTTTT
+  Slippery position: 104
+  Substring length:  80
+  Deltarel:          -0.014
+     111  AAGGTGTATATAGAACACTGCCTATCACGGACTGCAAAGCAGCTTCGTGACTCTGGCCTACCGGCCAGGCTCACAGAAGA  191
+  -26.70  .........[[[[....{{{.]]]]((((((((((...)))).))))))..(((((((....)))))))....}}}....  knotted structure
+  -27.80  ..(((((.......)))))............((((...))))((((((((..((((((....))))))..)))).)))).  nested structure
+
+  Warning: some further results are not shown. Increase --numberOutputs to display them!
+>test
+  Rank:              1
+  Slippery sequence: GGGUUUc
+  Slippery position: 35
+  Substring length:  80
+  Deltarel:          -0.061
+      42  cccccccccccccugacugguagucguguaugcugguacguggacggagucugagucugaugcguagucguaugcguauu  122
+  -14.40  .............[[[[[[....((((.((((......)))).))))............{{{{{]]]]]]....}}}}}.  knotted structure
+  -19.30  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
+
+  Warning: some further results are not shown. Increase --numberOutputs to display them!
+>pol_m_vir_mhv|AF029248.1
+  Rank:              1
+  Slippery sequence: AAAAAAG
+  Slippery position: 56
+  Substring length:  60
+  Deltarel:          0.032
+     63  AAAGGTAAGACCAAGCATGGTAGGGGTAGAGTCAGACGTAACCTTAGAAAAGGCGTGAAA  123
+  -8.60  .[[[[[...((((....))))..............{{{{.]]]]].......}}}}....  knotted structure
+  -6.70  .(((((...((((....))))....((........))...)))))...............  nested structure
+
+
+#CMD: perl -I ../../Applications/lib/ temp_x86_64-redhat-linux/knotinframe  --binPath='temp_x86_64-redhat-linux/x86_64-redhat-linux/'  --mode=kif --minknottedenergy=-5 --minenergydifference=-10.34 --windowsize=120 --windowincrement=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9
+>pol_m_vir_hastr
+  Rank:              1
+  Slippery sequence: CCCTTTT
+  Slippery position: 104
+  Substring length:  40
+  Deltarel:          0.014
+    111  AAGGTGTATATAGAACACTGCCTATCACGGACTGCAAAGC  151
+  -7.44  ..[[[[[...{{{.]]]]]............}}}......  knotted structure
+  -6.89  ..(((((.......))))).((......))..........  nested structure
+
+>test
+  Rank:              1
+  Slippery sequence: GGGUUUc
+  Slippery position: 35
+  Substring length:  80
+  Deltarel:          -0.074
+      42  cccccccccccccugacugguagucguguaugcugguacguggacggagucugagucugaugcguagucguaugcguauu  122
+  -20.03  .............[[[[[[.(((((((.((((......)))).))))...)))......{{{{{]]]]]]....}}}}}.  knotted structure
+  -25.94  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
+
+  Warning: some further results are not shown. Increase --numberOutputs to display them!
+>pol_m_vir_mhv|AF029248.1
+  Rank:              1
+  Slippery sequence: AAAAAAG
+  Slippery position: 56
+  Substring length:  60
+  Deltarel:          0.037
+      63  AAAGGTAAGACCAAGCATGGTAGGGGTAGAGTCAGACGTAACCTTAGAAAAGGCGTGAAA  123
+  -13.64  .[[[[[..(((...((.........))...)))..{{{{.]]]]].......}}}}....  knotted structure
+  -11.42  ...((.....))..((......(((((...((...))...))))).......))......  nested structure
+
+

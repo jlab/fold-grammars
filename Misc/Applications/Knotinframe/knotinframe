@@ -344,7 +344,7 @@ my $HELP = <<EOF;
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 USAGE: 
-perl $Settings::PROGINFOS{$PROGID}->{name} [-mode] [-options] <fasta file name or RNA sequence>
+perl $Settings::PROGINFOS{$PROGID}->{name} [-options] <fasta file name or RNA sequence>
 
 EOF
 ;

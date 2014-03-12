@@ -106,7 +106,7 @@ our $RNAshapes = {
 };
 
 our $Knotinframe = {
-	' ' => {	values => [$inputFileDir.'RECODE.fas'], 
+	' ' => {	values => [$inputFileDir.'knotinframe_test.fas'], 
 					secondValues => [], 
 					valueSelection => $VALUE_SELECTION_RANDOM,
 					modes => \@knotinframe_ALLMODES},
