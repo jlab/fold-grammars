@@ -12,17 +12,12 @@ use Data::Dumper;
 our $testIndex = 1;
 our @failedTests = ();
 
-our $RNAPARAM1999 = 'rna_turner1999.par';
-our $RNAPARAM2004 = 'rna_turner2004.par';
-our $TMPDIR = "temp_bibi";
-
 #~ my $bibiservURL = 'http://localhost:9080';
 #~ my $bibiservURL = 'http://bibiserv2.cebitec.uni-bielefeld.de:80';
 my ($bibiservURL) = @ARGV;
 die "usage: perl $0 <BiBiServ URL>\n\texample urls are:\n\t\tbibiserv2: http://bibiserv2.cebitec.uni-bielefeld.de:80\n\t\tlocal version: http://localhost:9080\n" if (@ARGV != 1);
 
-my $ARCHTRIPLE = qx($Settings::BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
-
+our $TMPDIR = "bibiserv-rest";
 qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 
 #add your testest below this line!
@@ -32,26 +27,7 @@ checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAs
 checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss", $bibiservURL);
 
 #add your tests above this line!
-printStatistics();
-
-sub printStatistics {
-	my $maxLen = 30;
-	foreach my $test (@failedTests) {
-		$maxLen = length($test) if (length($test) > $maxLen);
-	}
-	
-	print "=" x ($maxLen+6+4)."\n";	
-	print "|| PASSED: ".sprintf("% 3i", $testIndex-1-scalar(@failedTests))."     |   FAILED: ".sprintf("% 3i", scalar(@failedTests)).(" " x ($maxLen - 26))."||\n";
-	if (@failedTests > 0) {
-		print "|| follwing tests failed:".(" " x ($maxLen-17))."||\n";  
-		foreach my $testname (@failedTests) {
-			print "|| - '$testname'".(" " x ($maxLen-length($testname)+1))."||\n";
-		}
-	}
-	print "=" x ($maxLen+6+4)."\n";	
-}
-
-
+Testing::printStatistics();
 
 sub checkProgram {
 	my ($TMPDIR, $truth, $programDir, $programName, $bibiservURL) = @_;
@@ -197,31 +173,7 @@ sub checkProgram {
 	close ($tmpResultFile);
 	
 	print " done.\n";
-	evaluateTest($testname, $truth);
+	Testing::evaluateTest($testname, $truth);
 }
 
-sub evaluateTest {
-	my ($testname, $truth) = @_;
-	
-	my $status = 'failed';
-	if (-e "Truth/".$truth) {
-		my $diffResult = qx(diff -I "^#CMD:" Truth/$truth $TMPDIR/$truth); chomp $diffResult;
-		if ($diffResult eq "") {
-			$status = 'passed';
-		} else {
-			print $diffResult."\n";
-		}
-	} else {
-		print "truth file 'Truth/$truth' does not exist!\n";
-	}
-	
-	if ($status eq 'passed') {
-		print "==-== test ".$testIndex.") '".$testname."' PASSED ==-==\n\n";
-	} else {
-		print "==-== test ".$testIndex.") '".$testname."' FAILED ==-==\n\n";
-		push @failedTests, $testname;
-	}
-	
-	$testIndex++;
-}
 

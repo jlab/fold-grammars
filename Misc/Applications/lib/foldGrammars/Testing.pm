@@ -202,4 +202,46 @@ sub addRandomParameters {
 	return $refList_permutations;
 }
 
+sub evaluateTest {
+	my ($testname, $truth) = @_;
+	
+	my $status = 'failed';
+	if (-e "Truth/".$truth) {
+		my $diffResult = qx(diff -I "^#CMD:" Truth/$truth $TMPDIR/$truth); chomp $diffResult;
+		if ($diffResult eq "") {
+			$status = 'passed';
+		} else {
+			print $diffResult."\n";
+		}
+	} else {
+		print "truth file 'Truth/$truth' does not exist!\n";
+	}
+	
+	if ($status eq 'passed') {
+		print "==-== test ".$testIndex.") '".$testname."' PASSED ==-==\n\n";
+	} else {
+		print "==-== test ".$testIndex.") '".$testname."' FAILED ==-==\n\n";
+		push @failedTests, $testname;
+	}
+	
+	$testIndex++;
+}
+
+sub printStatistics {
+	my $maxLen = 30;
+	foreach my $test (@failedTests) {
+		$maxLen = length($test) if (length($test) > $maxLen);
+	}
+	
+	print "=" x ($maxLen+6+4)."\n";	
+	print "|| PASSED: ".sprintf("% 3i", $testIndex-1-scalar(@failedTests))."     |   FAILED: ".sprintf("% 3i", scalar(@failedTests)).(" " x ($maxLen - 26))."||\n";
+	if (@failedTests > 0) {
+		print "|| follwing tests failed:".(" " x ($maxLen-17))."||\n";  
+		foreach my $testname (@failedTests) {
+			print "|| - '$testname'".(" " x ($maxLen-length($testname)+1))."||\n";
+		}
+	}
+	print "=" x ($maxLen+6+4)."\n";	
+}
+
 1;

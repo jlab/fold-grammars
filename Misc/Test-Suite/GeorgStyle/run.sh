@@ -1,8 +1,9 @@
 #!/bin/ksh
 
-BASE="/vol/gapc"
 #example call: bash run.sh ../Truth
-#don't forget to set BASE to the path where gapc is located with all its headers and libraries!
+
+PERL=perl
+BASE=`$PERL -e 'use lib "../../Applications/lib/foldGrammars/"; use Settings; print $Settings::bgapDir;'`;
 
 ARCHTRIPLE=`gcc -dumpmachine`;
 if [[ $ARCHTRIPLE =~ "linux" ]] ; then
@@ -20,9 +21,8 @@ GAPC=$BASE/bin/gapc
 GHC=ghc
 MAKE=make
 MAKEFLAGS=
-PERL=perl
 
-TEMP=./tmp_$ARCHTRIPLE/
+TEMP=./$ARCHTRIPLE/
 GRAMMAR=../
 LHS_DIR=..
 RTLIB=$BASE/include/rtlib/

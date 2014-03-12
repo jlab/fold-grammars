@@ -1,6 +1,13 @@
 #!/usr/bin/env perl
 
-use lib "../../Applications/lib/";
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+use lib getPath($0)."../../Applications/lib/";
 
 use foldGrammars::Settings;
 use foldGrammars::Utils;
@@ -9,28 +16,22 @@ use strict;
 use warnings;
 use Data::Dumper;
 
+our $PERL = "perl"; 
+$PERL = "/vol/perl-5.10/bin/64/perl" if (qx(uname -a) =~ m/waldorf/); #use perl 5.10 on solaris cebitec to have the same rounding behaviour as on stefans laptop.
+
+our $TMPDIR = $Settings::ARCHTRIPLE;
+qx(mkdir $TMPDIR) unless (-d $TMPDIR);
+
 our $testIndex = 1;
 our @failedTests = ();
 
-our $RNAPARAM1999 = '/vol/gapc/share/gapc/librna/rna_turner1999.par';
-our $RNAPARAM2004 = '/vol/gapc/share/gapc/librna/rna_turner2004.par';
-our $PROGRAMPREFIX = "pKiss_";
-our $RNAALISHAPES = "RNAalishapes";
-our $PERL = "perl"; 
-$PERL = "/vol/perl-5.10/bin/64/perl" if (qx(uname -a) =~ m/waldorf/); #use perl 5.10 on solaris cebitec to have the same rounding behaviour as on stefans laptop.
-my $ARCHTRIPLE = qx($Settings::BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
-our $TMPDIR = "temp_".$ARCHTRIPLE;
-
-qx(mkdir $TMPDIR) unless (-d $TMPDIR);
-
 #add your testest below this line!
-
-checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp pknotsRG",   "-s P -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pknotsRG.out");
-checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy A", "-s A -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissA.out");
-checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy B", "-s B -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissB.out");
-checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissC.out");
-checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
-checkParameters("pseudoknots parameter check", $TMPDIR."/".$ARCHTRIPLE.'/'.$PROGRAMPREFIX."mfe", "pseudoknots.parametercheck.out");
+checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp pknotsRG",   "-s P -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pknotsRG.out");
+checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy A", "-s A -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissA.out");
+checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy B", "-s B -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissB.out");
+checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissC.out");
+checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
+checkParameters("pseudoknots parameter check", $TMPDIR."/".$Settings::ARCHTRIPLE.'/'.$Settings::PROGINFOS{'pkiss'}->{name}."_mfe", "pseudoknots.parametercheck.out");
 checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
 checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
 checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
@@ -38,30 +39,8 @@ checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
 checkProgram($TMPDIR, "knotinframe.run.out", "../../Applications/Knotinframe/","Knotinframe");
 
 #add your tests above this line!
-printStatistics();
+Testing::printStatistics();
 
-sub printStatistics {
-	my $maxLen = 30;
-	foreach my $test (@failedTests) {
-		$maxLen = length($test) if (length($test) > $maxLen);
-	}
-	
-	print "=" x ($maxLen+6+4)."\n";	
-	print "|| PASSED: ".sprintf("% 3i", $testIndex-1-scalar(@failedTests))."     |   FAILED: ".sprintf("% 3i", scalar(@failedTests)).(" " x ($maxLen - 26))."||\n";
-	if (@failedTests > 0) {
-		print "|| follwing tests failed:".(" " x ($maxLen-17))."||\n";  
-		foreach my $testname (@failedTests) {
-			print "|| - '$testname'".(" " x ($maxLen-length($testname)+1))."||\n";
-		}
-	}
-	print "=" x ($maxLen+6+4)."\n";	
-}
-
-
-sub checkFormerPseudoknotProblems {
-	#~ './pKiss_shapes -q 1  ggggggUUUaaCCCCCCAAAaaaaaaUAAAAAaaGGGGGaaUUUUUA'; #hier wurden shapestrings teilweise mit __ gebaut, weil das Dangling innerhalb von Knoteninnereien auch _ einfügte wenn die freie Faltung die offene Struktur war.
-	#~ './pKiss_mfe ggggggUUUaaCCCCCCAAAaaaaaaUAAAAAaaGGGGGaaUUUUUA'; #liefert ( -1390 , (((((((...))))))).............................. ), subopt jedoch eine Struktur mit ( -1400 , [[[[[[.{{{.]]]]]]..<<<<<..}}}............>>>>>. ) ( -1400 , [[[[[[.{{{.]]]]]]..<<<<<..}}}............>>>>>. )
-}
 
 sub compile {
 	my ($TMPDIR, $sourcedir, $programName) = @_;
@@ -97,7 +76,7 @@ sub checkProgram {
 	$programName =~ s/Knotinframe/knotinframe/;	
 	foreach my $run (@calls) {
 		next if (($run->{call} =~ m/mode=outside/) && ($run->{call} =~ m/grammar=macrostate/));
-		$run->{call} = " --binPath='$TMPDIR/$ARCHTRIPLE/' ".$run->{call};
+		$run->{call} = " --binPath='$TMPDIR/$Settings::ARCHTRIPLE/' ".$run->{call};
 		print ".";
 		qx(echo "#CMD: $PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call}" >> $TMPDIR/$truth 2>&1);
 		if ($run->{call} =~ m/mode=outside/) {
@@ -112,7 +91,7 @@ sub checkProgram {
 	}
 	
 	print " done.\n";
-	evaluateTest($testname, $truth);
+	Testing::evaluateTest($testname, $truth);
 }
 
 sub checkBasicFunctions {
@@ -127,7 +106,7 @@ sub checkBasicFunctions {
 	push @runs, "enforce_window -w 30 -i 8";
 	push @runs, "local -s P -e 0.5";
 	push @runs, "local_window -l 30 -w 40 -i 4";
-	push @runs, "mfe -P $RNAPARAM1999 -u 1";
+	push @runs, "mfe -P $Settings::RNAPARAM1999 -u 1";
 	push @runs, "mfe_window -w 70 -i 2 -u 1";
 	push @runs, "probs -F 0.01 -q 3";
 	push @runs, "probs_window -w 20 -i 10 -q 1";
@@ -143,13 +122,13 @@ sub checkBasicFunctions {
 	print "\trunning basic tests: ";
 	foreach my $run (@runs) {
 		print ".";
-		qx(echo "#CMD: $TMPDIR/$ARCHTRIPLE/${PROGRAMPREFIX}$run $sequence" >> $TMPDIR/$truth);
-		qx($TMPDIR/$ARCHTRIPLE/${PROGRAMPREFIX}$run $sequence >> $TMPDIR/$truth);
+		qx(echo "#CMD: $TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence" >> $TMPDIR/$truth);
+		qx($TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence >> $TMPDIR/$truth);
 		qx(echo "" >> $TMPDIR/$truth);
 	}
 	
 	print " done.\n";
-	evaluateTest($testname, $truth);
+	Testing::evaluateTest($testname, $truth);
 }
 
 sub checkParameters {
@@ -172,8 +151,8 @@ sub checkParameters {
 	push @runs, "mfe -s p"; #use strategy pknotsRG --> no K-type PKs
 	push @runs, "mfe -l 57"; #limit maximal size of a PK to 57 bases
 	push @runs, "mfe -l 56"; #limit maximal size of a PK to 57 bases
-	push @runs, "mfe -P $RNAPARAM1999"; #use old 1999 turner energy parameter
-	push @runs, "mfe -P $RNAPARAM2004"; #use new 2004 turner energy parameter
+	push @runs, "mfe -P $Settings::RNAPARAM1999"; #use old 1999 turner energy parameter
+	push @runs, "mfe -P $Settings::RNAPARAM2004"; #use new 2004 turner energy parameter
 	push @runs, "subopt -c 5.8"; #set subopt range to 5.8% of MFE
 	push @runs, "subopt -e 3.5"; #set subopt range to 3.5 kcal/mol
 	push @runs, "probs_window -q 5 -w 30 -i 10 -F 0"; #shapelevel 5, window size 30 bases, window increment 10 bases, low prob filter off
@@ -185,13 +164,13 @@ sub checkParameters {
 	}
 	foreach my $run (@runs) {
 		print ".";
-		qx(echo "#CMD: $TMPDIR/$ARCHTRIPLE/${PROGRAMPREFIX}$run $sequence" >> $TMPDIR/$truth);
-		qx($TMPDIR/$ARCHTRIPLE/${PROGRAMPREFIX}$run $sequence >> $TMPDIR/$truth);
+		qx(echo "#CMD: $TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence" >> $TMPDIR/$truth);
+		qx($TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence >> $TMPDIR/$truth);
 		qx(echo "" >> $TMPDIR/$truth);
 	}
 	print " done.\n";
 	
-	evaluateTest($testname, $truth);
+	Testing::evaluateTest($testname, $truth);
 }
 
 sub checkPseudoknotMFEPP {
@@ -202,11 +181,11 @@ sub checkPseudoknotMFEPP {
 
 	print "\trun on sequences: ";
 	open (OUT, "> ".$TMPDIR."/".$truth) || die "error on writing test output file '$TMPDIR/$truth': $!\n";
-		Utils::applyFunctionToFastaFile($infile, \&runProg, $TMPDIR."/".$ARCHTRIPLE.'/'.$PROGRAMPREFIX."mfe", $runParameters);
+		Utils::applyFunctionToFastaFile($infile, \&runProg, $TMPDIR."/".$Settings::ARCHTRIPLE.'/'.$Settings::PROGINFOS{'pkiss'}->{name}."_mfe", $runParameters);
 	close (OUT);
 	print " done.\n";
 
-	evaluateTest($testname, $truth);
+	Testing::evaluateTest($testname, $truth);
 }
 
 sub runProg {
@@ -220,36 +199,12 @@ sub runProg {
 	return undef;
 }
 
-sub evaluateTest {
-	my ($testname, $truth) = @_;
-	
-	my $status = 'failed';
-	if (-e "Truth/".$truth) {
-		my $diffResult = qx(diff -I "^#CMD:" Truth/$truth $TMPDIR/$truth); chomp $diffResult;
-		if ($diffResult eq "") {
-			$status = 'passed';
-		} else {
-			print $diffResult."\n";
-		}
-	} else {
-		print "truth file 'Truth/$truth' does not exist!\n";
-	}
-	
-	if ($status eq 'passed') {
-		print "==-== test ".$testIndex.") '".$testname."' PASSED ==-==\n\n";
-	} else {
-		print "==-== test ".$testIndex.") '".$testname."' FAILED ==-==\n\n";
-		push @failedTests, $testname;
-	}
-	
-	$testIndex++;
-}
 
 sub compileMFE {
 	my ($program) = @_;
 	
 	
-	unless (-e $TMPDIR."/".$ARCHTRIPLE.'/'.$PROGRAMPREFIX.$program) {
+	unless (-e $TMPDIR."/".$Settings::ARCHTRIPLE.'/'.$Settings::PROGINFOS{'pkiss'}->{name}."_".$program) {
 		print "\tcompiling binary ...";
 		qx(cp ../../Applications/pKiss/makefile $TMPDIR/);
 		my $makeWindowMode = "";
