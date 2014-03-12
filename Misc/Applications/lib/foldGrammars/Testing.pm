@@ -9,8 +9,8 @@ package Testing;
 
 use Data::Dumper;
 
-my $inputFileDir = "/home/sjanssen/Desktop/fold-grammars/Misc/Test-Suite/StefanStyle/";
-my $energyParameterDir = "/stefan/share/gapc/librna/";
+my $inputFileDir = "/vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/";
+my $energyParameterDir = "/vol/gapc/share/gapc/librna/";
 my $program = "/home/sjanssen/Desktop/fold-grammars/Misc/Applications/RNAalishapes/RNAalishapes";
 
 my $VALUE_SELECTION_ALL = 'all';
@@ -19,6 +19,7 @@ my $VALUE_SELECTION_RANDOM = 'random';
 our @RNAalishapes_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_OUTSIDE);
 our @RNAshapes_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_OUTSIDE);
 our @pKiss_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT);
+our @knotinframe_ALLMODES = ($Settings::MODE_KIF);
 
 our $RNAalishapes = {
 	' ' => {	values => [$inputFileDir.'t-box.aln',$inputFileDir.'tRNA_example_ungap.aln',$inputFileDir.'trp_attenuator.aln'], 
@@ -102,6 +103,22 @@ our $RNAshapes = {
 	'bppmThreshold' => {modes => [$Settings::MODE_OUTSIDE], values => [0.1, 0.01, 0.001, 0.00001], valueSelection => $VALUE_SELECTION_RANDOM},
 	'dotplot' => {modes => [$Settings::MODE_OUTSIDE], values => ['dotPlot.ps'], valueSelection => $VALUE_SELECTION_RANDOM},
 	'structureProbs' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST], values => [0,1], valueSelection => $VALUE_SELECTION_RANDOM},
+};
+
+our $Knotinframe = {
+	' ' => {	values => [$inputFileDir.'RECODE.fas'], 
+					secondValues => [], 
+					valueSelection => $VALUE_SELECTION_RANDOM,
+					modes => \@knotinframe_ALLMODES},
+
+	'mode' => {modes => \@knotinframe_ALLMODES, values => \@knotinframe_ALLMODES, valueSelection => $VALUE_SELECTION_ALL},
+	'temperature' => {modes => \@knotinframe_ALLMODES, values => [17, 25.9, 37], valueSelection => $VALUE_SELECTION_RANDOM},
+	'param' => {modes => \@knotinframe_ALLMODES, values => [$energyParameterDir.'rna_turner1999.par',$energyParameterDir.'rna_turner2004.par'], valueSelection => $VALUE_SELECTION_RANDOM},
+	'windowsize' => {modes => \@knotinframe_ALLMODES, values => [80,120,160], valueSelection => $VALUE_SELECTION_RANDOM},
+	'windowincrement' => {modes => \@knotinframe_ALLMODES, values => [20,40], valueSelection => $VALUE_SELECTION_RANDOM},
+	'numberoutputs' => {modes => \@knotinframe_ALLMODES, values => [5,10,15], valueSelection => $VALUE_SELECTION_RANDOM},
+	'minknottedenergy' => {modes => \@knotinframe_ALLMODES, values => [-10,-7.4,-5], valueSelection => $VALUE_SELECTION_ALL},
+	'minenergydifference' => {modes => \@knotinframe_ALLMODES, values => [-8.71,-10.34], valueSelection => $VALUE_SELECTION_ALL},
 };
 
 #~ foreach my $call (@{addRandomParameters($RNAalishapes, permutate($RNAalishapes, [{call => ""}]))}) {
