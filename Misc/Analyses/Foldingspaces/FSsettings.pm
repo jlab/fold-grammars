@@ -42,51 +42,6 @@ our %CONFIGS = (
 	],
 );
 
-sub getSPSdistance {
-	my ($probsA, $probsB) = @_;
-	
-	my %seenShapes = ();
-	my $distance = 0;
-	#add distances for shape classes that exist in A and eventually in B, if not in B assume prob as 0.
-		foreach my $shape (keys(%{$probsA})) {
-			$seenShapes{$shape}=1;
-			my $probB = 0;
-			$probB = $probsB->{$shape} if (exists $probsB->{$shape});
-			$distance += abs($probsA->{$shape} - $probB);
-		}
-	#add distances for shape classes that are in B but not in A
-		foreach my $shape (keys(%{$probsB})) {
-			next if (exists $seenShapes{$shape});
-			$distance += $probsB->{$shape};
-		}
-		
-	return $distance / 2;
-}
-
-sub computeAVG {
-	my ($refList) = @_;
-
-	my $sum = 0;
-	foreach my $elem (@{$refList}) {
-		$sum += $elem;
-	}
-	if (@{$refList} != 0) {
-		return ($sum / @{$refList});
-	} else {
-		return 0;
-	}
-}
-
-sub computeMedian {
-	my ($refList) = @_;
-
-	my @sorted = sort {$a <=> $b} (@{$refList});
-	if (@sorted % 2 == 1) {
-		return $sorted[$#sorted/2];
-	} else {
-		return ($sorted[@sorted/2]+$sorted[@sorted/2-1])/2;
-	}
-}
 
 sub getSequenceLength {
 	my ($refHash_sequence) = @_;

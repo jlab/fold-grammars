@@ -15,6 +15,7 @@ use warnings;
 use Data::Dumper;
 use foldGrammars::Utils;
 use foldGrammars::Settings;
+use foldGrammars::Structure;
 use Helper;
 
 my $binDir = "bin/";
@@ -161,7 +162,7 @@ sub getSuboptBPprobs {
 		
 		if (defined $energy && defined $structure) {
 			$minOneStructure = 'true';
-			my %pairs = %{Utils::getPairList($structure)};
+			my %pairs = %{Structure::getPairList($structure)};
 			my $pfValue = exp(-1 * ($energy) / (0.00198717*310.15));
 			$pfAll += $pfValue;
 			$searchSpaceSize++;

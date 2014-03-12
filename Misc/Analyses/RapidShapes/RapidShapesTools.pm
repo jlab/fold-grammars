@@ -1,9 +1,19 @@
 #!/usr/bin/env perl
 
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+use lib getPath($0)."../../Applications/lib/";
+
 use strict;
 use warnings;
 use Data::Dumper;
 use Storable qw(nstore);
+use foldGrammars::Utils;
 
 package RapidShapesTools;
 
@@ -42,7 +52,7 @@ sub parseRapidshapesOut {
 			} elsif ($line =~ m/^run pfall: (.+?) sec\., (\d+) KB RSS, result: (.+?)\s*$/) {
 				%pfall = ('runtime', $1, 'memory', $2, 'pfuncValue', $3);
 			} elsif ($line =~ m/^RT:.+?:RT/) {
-				%totalruntime = %{getTimeMem($line)};
+				%totalruntime = %{Utils::getTimeMem($line)};
 			#~ } elsif ($line =~ m/[TMP|FINAL]\t([\[|\_|\]]+)\t(.+?)\t(.+?)\t(.+?)\t(.+?)\t(\d+)\t(\d+)\t?(\d*)\t?(.*?)$/) {
 			} elsif ($line =~ m/[TMP|FINAL]\s+([\[|\_|\]]+)\s+(.+?)\s+(.+?)\s+(.+?)\s+(.+?)\s+(\d+)\s+(\d+)\s*(\d*)\s*(.*?)$/) {
 				my ($shapestring, $energy, $probability, $pfuncValue, $runtime, $memory, $probRank, $samplesize, $frequency) = ($1,$2,$3,$4,$5,$6,$7,$8,$9);
@@ -114,7 +124,7 @@ sub parseRapidshapesOut {
 				if ($line =~ m/^\s*(.+?)  ([\(|\)|\.]+)  (.+?)  ([\[|\_|\]]+)$/) {
 					$results{$header}->{sample}->{10000}->{shapes}->{$4} = $3;
 				} elsif ($line =~ m/^RT:.+?:RT/) {
-					my %sampleruntime = %{getTimeMem($line)};
+					my %sampleruntime = %{Utils::getTimeMem($line)};
 					$results{$header}->{sample}->{10000}->{runtime} = $sampleruntime{time};
 					$results{$header}->{sample}->{10000}->{memory} = $sampleruntime{memory};
 				} elsif ($line =~ m/^Linux suc\d+/) {
@@ -136,11 +146,6 @@ sub parseRapidshapesOut {
 	return \%results;
 }
 
-sub getTimeMem {
-	my ($line) = @_;
-	my ($user, $system, $elapsed, $vsize, $rss) = ($line =~ m/RT: (.+?) user, (.+?) system, (.+?) elapsed -- Max VSize = (\d+)KB, Max RSS = (\d+)KB :RT$/);
-	return {time => $system+$user, memory => $rss};
-}
 
 
 1;

@@ -73,7 +73,7 @@ sub getSPS {
 	foreach my $grammarA (@FSsettings::GRAMMARS) {
 		foreach my $grammarB (@FSsettings::GRAMMARS) {
 			next if ($grammarA eq $grammarB);
-			my $IGsps = FSsettings::computeMedian($interGrammarSPS{$grammarA}->{$grammarB});
+			my $IGsps = Utils::computeMedian($interGrammarSPS{$grammarA}->{$grammarB});
 			if ($IGsps < $smallestIG{value}) {
 				$smallestIG{value} = $IGsps;
 				$smallestIG{A} = $grammarA;
@@ -216,18 +216,18 @@ sub createLatexTable {
 		$table .= $grammar;
 		my @avgLevel = ();
 		foreach my $level (sort {$b <=> $a} @FSsettings::SHAPELEVELS) {
-			$table .= " & ".sprintf($format, FSsettings::computeAVG($refHash_resources->{$resource}->{$grammar}->{$level}));
+			$table .= " & ".sprintf($format, Utils::computeAVG($refHash_resources->{$resource}->{$grammar}->{$level}));
 			push @avgLevel, @{$refHash_resources->{$resource}->{$grammar}->{$level}};
 			push @{$avgsLevels{$level}}, @{$refHash_resources->{$resource}->{$grammar}->{$level}};
 		}
-		$table .= " & ".sprintf($format, FSsettings::computeAVG(\@avgLevel));
+		$table .= " & ".sprintf($format, Utils::computeAVG(\@avgLevel));
 		$table .= "\\\\ ";
 		$table .= " \\midrule " if ($grammar eq $FSsettings::GRAMMARS[$#FSsettings::GRAMMARS]);
 		$table .= "\n";
 	}
 	$table .= "avg.";
 	foreach my $level (sort {$b <=> $a} @FSsettings::SHAPELEVELS) {
-		$table .=  " & ".sprintf($format, FSsettings::computeAVG($avgsLevels{$level}));
+		$table .=  " & ".sprintf($format, Utils::computeAVG($avgsLevels{$level}));
 	}
 	$table .= "\\\\ \\bottomrule\n";
 	$table .= '\end{tabular}'."\n";
@@ -341,13 +341,13 @@ sub parseResults {
 			if ($resultMissing eq 'false') {
 				foreach my $mode (keys(%FSsettings::CONFIGS)) {
 					foreach my $parameter (@{$FSsettings::CONFIGS{$mode}}) {
-						$results{data}->{$length}->{$FSsettings::REFERENCE_GRAMMAR}->{$FSsettings::REFERENCE_SHAPELEVEL}->{$mode}->{$parameter}->{SPS}->{$FSsettings::REFERENCE_GRAMMAR}->{$FSsettings::REFERENCE_SHAPELEVEL}->{'probs'}->{0} = FSsettings::getSPSdistance($results{data}->{$length}->{$FSsettings::REFERENCE_GRAMMAR}->{$FSsettings::REFERENCE_SHAPELEVEL}->{$mode}->{$parameter}->{shapeProbs}, $results{data}->{$length}->{$FSsettings::REFERENCE_GRAMMAR}->{$FSsettings::REFERENCE_SHAPELEVEL}->{'probs'}->{0}->{shapeProbs});
+						$results{data}->{$length}->{$FSsettings::REFERENCE_GRAMMAR}->{$FSsettings::REFERENCE_SHAPELEVEL}->{$mode}->{$parameter}->{SPS}->{$FSsettings::REFERENCE_GRAMMAR}->{$FSsettings::REFERENCE_SHAPELEVEL}->{'probs'}->{0} = Utils::getSPSdistance($results{data}->{$length}->{$FSsettings::REFERENCE_GRAMMAR}->{$FSsettings::REFERENCE_SHAPELEVEL}->{$mode}->{$parameter}->{shapeProbs}, $results{data}->{$length}->{$FSsettings::REFERENCE_GRAMMAR}->{$FSsettings::REFERENCE_SHAPELEVEL}->{'probs'}->{0}->{shapeProbs});
 					}
 				}
 				
 				foreach my $grammarA (@FSsettings::GRAMMARS) {
 					foreach my $grammarB (@FSsettings::GRAMMARS) {
-						$results{data}->{$length}->{$grammarA}->{1}->{'probs'}->{0}->{SPS}->{$grammarB}->{1}->{'probs'}->{0} = FSsettings::getSPSdistance($results{data}->{$length}->{$grammarA}->{1}->{'probs'}->{0}->{shapeProbs}, $results{data}->{$length}->{$grammarB}->{1}->{'probs'}->{0}->{shapeProbs});
+						$results{data}->{$length}->{$grammarA}->{1}->{'probs'}->{0}->{SPS}->{$grammarB}->{1}->{'probs'}->{0} = Utils::getSPSdistance($results{data}->{$length}->{$grammarA}->{1}->{'probs'}->{0}->{shapeProbs}, $results{data}->{$length}->{$grammarB}->{1}->{'probs'}->{0}->{shapeProbs});
 					}
 				}
 			}

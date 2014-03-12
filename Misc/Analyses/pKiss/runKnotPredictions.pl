@@ -15,6 +15,7 @@ use Data::Dumper;
 use Storable qw(nstore);
 use foldGrammars::Utils;
 use foldGrammars::Settings;
+use foldGrammars::Structure;
 use Pseudoknots;
 
 my %PK_BINARIES = (
@@ -54,7 +55,7 @@ sub getType {
 		}
 	}
 	
-	print Pseudoknots::getPKtype($structure)->{meta}."\t".$refHash_sequence->{header}."\n";
+	print Structure::getPKtype($structure)->{meta}."\t".$refHash_sequence->{header}."\n";
 	#~ die;
 }
 
@@ -93,7 +94,7 @@ sub analyse {
 				my ($energy, $struct) = ($1/100,$2);
 				push @res, {energy => $energy, structure => $struct};
 			} elsif ($line =~ m/^RT:.+?:RT/) {
-				my %performance = %{Pseudoknots::getTimeMem($line)};
+				my %performance = %{Utils::getTimeMem($line)};
 				foreach my $prediction (sort {$a->{energy} <=> $b->{energy}} @res) {
 					printResult($MAXLEN, 'nested microstate', $prediction->{structure}, $prediction->{energy}, \%performance);
 					last;
@@ -119,9 +120,9 @@ sub analyse {
 			foreach my $line (split(m/\n/, $result)) {
 				if ($line =~ m/^\( (.+?) , ([\.|\[|\]|\(|\)|\<|\>|\{|\}]+?) \)$/) {
 					my ($energy, $struct) = ($1/100,$2);
-					push @res, {energy => $energy, structure => $struct, stemArrangement => Pseudoknots::pairs2pkType(Pseudoknots::compressStems(Utils::getPairList($struct, 1)))->{type}};
+					push @res, {energy => $energy, structure => $struct, stemArrangement => Structure::pairs2pkType(Structure::compressStems(Structure::getPairList($struct, 1)))->{type}};
 				} elsif ($line =~ m/^RT:.+?:RT/) {
-					my %performance = %{Pseudoknots::getTimeMem($line)};
+					my %performance = %{Utils::getTimeMem($line)};
 					foreach my $prediction (@res) {
 						printResult($MAXLEN, 'pKiss '.$strategy, $prediction->{structure}, $prediction->{energy}, \%performance);
 						last;
@@ -151,7 +152,7 @@ sub analyse {
 				if ($line =~ m/S0:\s+(.+?)\s+(.+?)\s*$/) {
 					($structure, $energy) = ($1,$2);
 				} elsif ($line =~ m/^RT:.+?:RT/) {
-					my %performance = %{Pseudoknots::getTimeMem($line)};
+					my %performance = %{Utils::getTimeMem($line)};
 					printResult($MAXLEN, 'HotKnots '.$parameterName, $structure, $energy, \%performance);
 				}
 			}
@@ -170,12 +171,12 @@ sub analyse {
 		my %performance = ();
 		foreach my $line (split(m/\n/, $result)) {
 			if ($line =~ m/^RT:.+?:RT/) {
-				%performance = %{Pseudoknots::getTimeMem($line)};
+				%performance = %{Utils::getTimeMem($line)};
 				last;
 			}
 		}
 		unlink $inputFile;
-		my $ProbKnotStructure = Pseudoknots::ct2db($outputFile);
+		my $ProbKnotStructure = Structure::ct2db($outputFile);
 		unlink $outputFile;
 		printResult($MAXLEN, 'ProbKnot -i 10', $ProbKnotStructure, evaluateEnergy($refHash_sequence->{sequence}, $ProbKnotStructure), \%performance);
 		print STDERR " done.\n" if ($VERBOSE);
@@ -193,7 +194,7 @@ sub analyse {
 		my $dotKnotStructure = undef;
 		for (my $i = 0; $i < @lines; $i++) {
 			if ($lines[$i] =~ m/^RT:.+?:RT/) {
-				%performance = %{Pseudoknots::getTimeMem($lines[$i])};
+				%performance = %{Utils::getTimeMem($lines[$i])};
 				last;
 			} elsif ($lines[$i] =~ m/Predicted global structure/) {
 				$dotKnotStructure = $lines[$i+2];
@@ -217,7 +218,7 @@ sub analyse {
 		%performance = ();
 		foreach my $line (split(m/\n/, $result)) {
 			if ($line =~ m/^RT:.+?:RT/) {
-				%performance = %{Pseudoknots::getTimeMem($line)};
+				%performance = %{Utils::getTimeMem($line)};
 				last;
 			}
 		}
@@ -254,7 +255,7 @@ sub readPknotsse {
 	close (IN);
 	
 	my $pureCTfile = Utils::writeInputToTempfile($ctContent);
-	my $structure = Pseudoknots::ct2db($pureCTfile);
+	my $structure = Structure::ct2db($pureCTfile);
 	unlink $pureCTfile;
 	
 	return {structure => $structure, energy => $energy};
@@ -283,7 +284,7 @@ sub printResult {
 	
 	print $name.(' ' x ($maxLen - length($name)));
 	print "\t".$structure;
-	print "\t".Pseudoknots::pairs2pkType(Pseudoknots::compressStems(Utils::getPairList($structure, 1)))->{type};
+	print "\t".Structure::pairs2pkType(Structure::compressStems(Structure::getPairList($structure, 1)))->{type};
 	print "\t".$energy;
 	print "\t".(defined $refHash_perforcmance->{runtime} ? $refHash_perforcmance->{runtime} : "");
 	print "\t".(defined $refHash_perforcmance->{memory} ? $refHash_perforcmance->{memory} : "");

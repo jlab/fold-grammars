@@ -78,7 +78,7 @@ print "grammar: ".$GRAMMAR."\n";
 	foreach my $line (split(m/\r|\n/, $pfallresult)) {
 		if ($line =~ m/Answer/) {
 		} elsif ($line =~ m/^RT:.+?:RT/) {
-			print "run pfall: ".getTimeMem($line)->{time}." sec., ".getTimeMem($line)->{memory}." KB RSS, result: $pfall\n";
+			print "run pfall: ".Utils::getTimeMem($line)->{time}." sec., ".Utils::getTimeMem($line)->{memory}." KB RSS, result: $pfall\n";
 		} elsif ($line =~ m/^(\S+)$/) {
 			$pfall = $1;
 		}
@@ -260,12 +260,6 @@ sub gatherTDMresults {
 	return \%shapes;
 }
 
-sub getTimeMem {
-	my ($line) = @_;
-	my ($user, $system, $elapsed, $vsize, $rss) = ($line =~ m/RT: (.+?) user, (.+?) system, (.+?) elapsed -- Max VSize = (\d+)KB, Max RSS = (\d+)KB :RT$/);
-	return {time => $system+$user, memory => $rss};
-}
-
 sub parseOutfile {
 	my ($filename) = @_;
 	
@@ -278,8 +272,8 @@ sub parseOutfile {
 			} elsif ($line =~ m/^MFE:\t([\[|\]|\_]+)\t(.+?)$/) {
 				$result{mfe} = $2;
 			} elsif ($line =~ m/^RT:.+?:RT/) {
-				$result{time} = getTimeMem($line)->{time};
-				$result{memory} = getTimeMem($line)->{memory};
+				$result{time} = Utils::getTimeMem($line)->{time};
+				$result{memory} = Utils::getTimeMem($line)->{memory};
 			} elsif ($line =~ m/status: (\d+)/) {
 				if ($1 != 0) {
 					return undef;
@@ -322,7 +316,7 @@ sub getPromisingShapes {
 						print "sampled shape size=".$currentSampleSize.": ".$shape."\t".$frequency."\t".$energy."\n";
 					} elsif ($line =~ m/^RT:.+?:RT/) {
 						#~ print "run RNAshapes in sample mode --numSamples $currentSampleSize: ".getTimeMem($line)->{time}." sec., ".getTimeMem($line)->{memory}." KB RSS. Found ".scalar(keys(%{$sampledShapes{$currentSampleSize}}))." shape classes (".$nrShapeClasses." enumerated by Sampling).\n";
-						print "run RNAshapes in sample mode --numSamples $currentSampleSize: ".getTimeMem($line)->{time}." sec., ".getTimeMem($line)->{memory}." KB RSS. Found ".scalar(keys(%{$sampledShapes{$currentSampleSize}}))." shape classes (".$nrShapeClasses." enumerated by Sampling).\n";
+						print "run RNAshapes in sample mode --numSamples $currentSampleSize: ".Utils::getTimeMem($line)->{time}." sec., ".Utils::getTimeMem($line)->{memory}." KB RSS. Found ".scalar(keys(%{$sampledShapes{$currentSampleSize}}))." shape classes (".$nrShapeClasses." enumerated by Sampling).\n";
 					} else {
 						#~ print $line."\n";
 					}
@@ -352,7 +346,7 @@ sub getPromisingShapes {
 						$deviationShapes{$3} = $1*100 if (not exists $refHash_analysedShapes->{$3});
 						$nrShapeClasses++;
 					} elsif ($line =~ m/^RT:.+?:RT/) {
-						print STDERR "run old RNAshapes -c $currentAbsDeviation: ".getTimeMem($line)->{time}." sec., ".getTimeMem($line)->{memory}." KB RSS. Found ".scalar(keys(%deviationShapes))." shape classes.\n";
+						print STDERR "run old RNAshapes -c $currentAbsDeviation: ".Utils::getTimeMem($line)->{time}." sec., ".Utils::getTimeMem($line)->{memory}." KB RSS. Found ".scalar(keys(%deviationShapes))." shape classes.\n";
 					} else {
 						#~ print $line."\n";
 					}
