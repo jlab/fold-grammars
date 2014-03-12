@@ -24,14 +24,10 @@ my $BINARYSDIR = "/vol/cluster-data/sjanssen/bin/";
 my ($header, $sequence, $pdbStructure, $goodStructure) = @ARGV;
 
 #"pdb2il91M" "CUGACUAUGUGAUCUUAUUAAAAUUAGGUUAAAUCGAGGUUAAAAAUAGUUUUAAUAUUGCUAAGAGGUCUUGCGAAAGCUUACCACACAAGAUGGACCGGAGCGAAAGCUCCAAUAUCUAGUGUACCCUCG"  "..................((...(((....................)))...)).............((((.((....))..............))))..(((......)))...................." ".(..........(.....((...(.(....................).)...)).....)....)..((((..(....)...........(((.))))..(.(......).).....)))............"
-$header = "pdb2il91M";
-$sequence = "CUGACUAUGUGAUCUUAUUAAAAUUAGGUUAAAUCGAGGUUAAAAAUAGUUUUAAUAUUGCUAAGAGGUCUUGCGAAAGCUUACCACACAAGAUGGACCGGAGCGAAAGCUCCAAUAUCUAGUGUACCCUCG";
-$pdbStructure = '..................((...(((....................)))...)).............((((.((....))..............))))..(((......)))....................';
-$goodStructure = '.(..........(.....((...(.(....................).)...)).....)....)..((((..(....)...........(((.))))..(.(......).).....)))............';
-#~ $header = "SSTRAND_ID=PDB_00826;TYPE=Unknown;EXT_SOURCE=RCSBProteinDataBank;EXT_ID=1XWU;ORGANISM=NULL";
-#~ $sequence = "CGAAACAUAGAUUCGA";
-#~ $pdbStructure = '((((.(...).)))).';
-#~ $goodStructure = '((((.(...).)))).';
+#~ $header = "pdb2il91M";
+#~ $sequence = "CUGACUAUGUGAUCUUAUUAAAAUUAGGUUAAAUCGAGGUUAAAAAUAGUUUUAAUAUUGCUAAGAGGUCUUGCGAAAGCUUACCACACAAGAUGGACCGGAGCGAAAGCUCCAAUAUCUAGUGUACCCUCG";
+#~ $pdbStructure = '..................((...(((....................)))...)).............((((.((....))..............))))..(((......)))....................';
+#~ $goodStructure = '.(..........(.....((...(.(....................).)...)).....)....)..((((..(....)...........(((.))))..(.(......).).....)))............';
 
 my %predictions = ();
 $predictions{' pdb structure'} = {mfe => 0, structure => $pdbStructure};
@@ -63,6 +59,7 @@ $predictions{'CentroidFold McCaskill'} = runCentroidFold($header, $sequence, "Mc
 $predictions{'CentroidFold CONTRAfold'} = runCentroidFold($header, $sequence, "CONTRAfold");
 foreach my $grammar ("macrostate", "nodangle", "overdangle", "microstate") {
 	$predictions{$grammar} = runFoldGrammars($header, $sequence, $grammar, $pdbStructure, '');
+	#~ $predictions{$grammar.'_mea'} = runMEA($header, $sequence, $grammar, $pdbStructure, '') if ($grammar ne 'macrostate');
 }
 #~ $predictions{'macrostate_T2004 MIN'} = runFoldGrammars($header, $sequence, 'macrostateMinEDLR', $pdbStructure, 'T2004');
 
@@ -154,6 +151,32 @@ sub runFoldGrammars {
 	}
 	
 	return {structures => \@results, bestStructure => $bestStructure, mfe => $mfe / 100};
+}
+
+sub runMEA {
+	my ($header, $sequence, $grammar, $targetStructure, $energyModel) = @_;
+
+	my @results = ();
+	my $mfe = 99999999;
+	foreach my $line (split(m/\n/, qx(/vol/fold-grammars/bin/RNAshapes --mode=mea --grammar=${grammar} ${sequence}))) {
+		if ($line =~ m/^(.+?)  ([\(|\)|\.].+?)  ([\[|\]|\_].+?)$/) {
+			my ($energy, $structure) = ($1, $2);
+			push @results, $structure;
+			$mfe = $energy;
+		}
+	}
+	
+	my $bestDistance = 999999;
+	my $bestStructure = undef;
+	foreach my $structure (@results) {
+		my $distance = Utils::getBPdistance_foldingspaces($targetStructure, $structure);
+		if ($distance < $bestDistance) {
+			$bestStructure = $structure;
+			$bestDistance = $distance;
+		}
+	}
+	
+	return {structures => \@results, bestStructure => $bestStructure, mfe => $mfe};
 }
 
 sub runRNAfold {
