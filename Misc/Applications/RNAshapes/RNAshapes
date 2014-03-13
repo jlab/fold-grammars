@@ -212,11 +212,18 @@ sub doComputation {
 		$structureArg = " -f $structureInputFile";
 	}
 
-	my $inputFile = Utils::writeInputToTempfile($seq);
-	print "Actual call was: $command -f $inputFile $structureArg\n" if ($settings->{verbose});
-	my $result = qx($command -f $inputFile $structureArg 2>&1);
+	my $result = undef;
+	my $inputFile = undef;
+	if ($settings->{mode} eq $Settings::MODE_MEA) {
+		print "Actual call was: $command $seq\n" if ($settings->{verbose});
+		$result = qx($command $seq 2>&1);
+	} else {
+		$inputFile = Utils::writeInputToTempfile($seq);
+		print "Actual call was: $command -f $inputFile $structureArg\n" if ($settings->{verbose});
+		$result = qx($command -f $inputFile $structureArg 2>&1);
+	}
 	Utils::qxDieMessage($command, $?);
-	unlink $inputFile if (!$settings->{verbose});
+	unlink $inputFile if ((defined $inputFile) && (!$settings->{verbose}));
 	unlink $structureInputFile if ((defined $structureInputFile) && (!$settings->{verbose}));
 	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);
 	
