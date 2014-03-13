@@ -9,6 +9,9 @@ GHC=ghc
 WORKDIR=$(ARCHTRIPLE)
 OPTIONS= -tmpdir $(WORKDIR)/ -O -fglasgow-exts -odir $(WORKDIR) -i$(WORKDIR):$(HASKELLDIR)/Lib/ -hidir $(WORKDIR)
 
+all: Train
+	
+	
 workingdir:
 	@echo "workingdir is $(WORKDIR)";
 	if [ ! -d "$(WORKDIR)" ]; then \
@@ -29,7 +32,9 @@ Build: $(HASKELLDIR)/mcmbuild.lhs $(HASKELLDIR)/Lib/ADPCombinators.lhs $(HASKELL
 	$(GHC) $(OPTIONS)  --make $< -o $(WORKDIR)/$(PROGRAMPREFIX)build$(FAMILYNAME)
 
 install: install-lib install-program
-
+	$(INSTALL) -m 644 nearzero_npo.priors $(PREFIX)/share;
+	$(INSTALL) -m 644 nilPairOpen.priors $(PREFIX)/share;
+	
 install-program:
 	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
 	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
