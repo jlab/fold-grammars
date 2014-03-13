@@ -28,6 +28,13 @@ Build: $(HASKELLDIR)/mcmbuild.lhs $(HASKELLDIR)/Lib/ADPCombinators.lhs $(HASKELL
 	rm -f $(WORKDIR)/Main.hi $(WORKDIR)/Main.o
 	$(GHC) $(OPTIONS)  --make $< -o $(WORKDIR)/$(PROGRAMPREFIX)build$(FAMILYNAME)
 
+install: install-lib install-program
+
+install-program:
+	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
+	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
+	$(INSTALL) -m 755 acmbuild $(PREFIX)/bin
+
 clean:
 	rm -f $(ARCHTRIPLE)/*.hi
 	rm -f $(ARCHTRIPLE)/*.o
