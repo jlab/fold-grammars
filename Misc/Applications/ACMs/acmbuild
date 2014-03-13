@@ -121,8 +121,8 @@ sub doComputation {
 	my ($refHash_family, $settings, $refHash_priors, $refHash_nullmodel) = @_;
 
 	my $currentDir = qx($Settings::BINARIES{pwd}); chomp $currentDir;
-	my $tmpDir = '/tmp/tmp.SBZEaP52Dr/';
-	#~ my $tmpDir = qx($Settings::BINARIES{mktemp} -d); chomp $tmpDir;
+	#~ my $tmpDir = '/tmp/tmp.SBZEaP52Dr/';
+	my $tmpDir = qx($Settings::BINARIES{mktemp} -d); chomp $tmpDir;
 	print STDERR "Training and building an ambivalent covariance model for family '".$refHash_family->{familyname}."':\n" if ($VERBOSE);
 	print STDERR "  (temporary directory is '$tmpDir'.)\n" if ($VERBOSE);
 
