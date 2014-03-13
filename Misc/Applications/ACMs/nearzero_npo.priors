@@ -1,0 +1,58 @@
+#transitions
+13
+1
+1.0
+#transition 'Nil->(END)'
+#toStates: INS	NIL
+0.0000001	0.0000001
+#transition 'Open->(Nil)'
+#toStates: INS	MAT	DEL
+0.0000001	0.0000001	0.0000001
+#transition 'Open->(Pair)'
+#toStates: INS	MAT	DEL
+0.0000001	0.0000001	0.0000001
+#transition 'Open->(Open)'
+#toStates: INS	MAT	DEL
+0.0000001	0.0000001	0.0000001
+#transition 'Pair->(Nil,Nil)'
+#toStates: INS	PK	Lr	lR	bg
+0.0000001	0.0000001	0.0000001	0.0000001	0.0000001
+#transition 'Pair->(Nil,Pair)'
+#toStates: INS	PK	Lr	lR	bg
+0.0000001	0.0000001	0.0000001	0.0000001	0.0000001
+#transition 'Pair->(Nil,Open)'
+#toStates: INS	PK	Lr	lR	bg
+0.0000001	0.0000001	0.0000001	0.0000001	0.0000001
+#transition 'Pair->(Pair,Nil)'
+#toStates: INS	PK	Lr	lR	bg
+0.0000001	0.0000001	0.0000001	0.0000001	0.0000001
+#transition 'Pair->(Pair,Pair)'
+#toStates: INS	PK	Lr	lR	bg
+0.0000001	0.0000001	0.0000001	0.0000001	0.0000001
+#transition 'Pair->(Pair,Open)'
+#toStates: INS	PK	Lr	lR	bg
+0.0000001	0.0000001	0.0000001	0.0000001	0.0000001
+#transition 'Pair->(Open,Nil)'
+#toStates: INS	PK	Lr	lR	bg
+0.0000001	0.0000001	0.0000001	0.0000001	0.0000001
+#transition 'Pair->(Open,Pair)'
+#toStates: INS	PK	Lr	lR	bg
+0.0000001	0.0000001	0.0000001	0.0000001	0.0000001
+#transition 'Pair->(Open,Open)'
+#toStates: INS	PK	Lr	lR	bg
+0.0000001	0.0000001	0.0000001	0.0000001	0.0000001
+#emissions: pair
+16
+1
+1.0
+0.0000001 0.0000001 0.0000001 0.0000001 0.0000001 0.0000001 0.0000001 0.0000001 0.0000001 0.0000001 0.0000001 0.0000001 0.0000001 0.0000001 0.0000001 0.0000001
+#emissions: match
+4
+1
+1.0
+0.0000001 0.0000001 0.0000001 0.0000001 
+#emissions: insert
+4
+1
+1.0
+0.0000001 0.0000001 0.0000001 0.0000001 

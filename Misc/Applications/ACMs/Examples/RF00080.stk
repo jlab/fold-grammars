@@ -1,0 +1,63 @@
+# STOCKHOLM 1.0
+
+#=GF ID   yybP-ykoY
+#=GF AC   RF00080
+#=GF SQ   17
+#=GF CC   This RNA was originally discovered in E. coli during a large scale screen
+#=GF CC   and was named SraF [1]. The family was later found to exist upstream of
+#=GF CC   related families of protein genes in many bacteria, including the the yybP
+#=GF CC   and ykoK genes in B. subtilis. The specific functions of these proteins are
+#=GF CC   unknown, but this structured RNA element may be involved in their genetic
+#=GF CC   regulation as a riboswitch [2].
+#=GF AU   Moxon SJ
+#=GF NC   30.02
+#=GF DR   SO:0000233 SO:mature_transcript
+#=GF TP   Cis-reg;
+#=GF RM   11448770
+#=GF RM   15096624
+#=GF SS   Predicted; Barrick JE, Breaker RR
+#=GF RA   Argaman L, Hershberg R, Vogel J, Bejerano G, Wagner EG, Margalit H,
+#=GF RA   Altuvia S;
+#=GF RA   Barrick JE, Corbino KA, Winkler WC, Nahvi A, Mandal M, Collins J, Lee
+#=GF RA   M, Roth A, Sudarsan N, Jona I, Wickiser JK, Breaker RR;
+#=GF RN   [1]
+#=GF RN   [2]
+#=GF SE   Barrick JE, Breaker RR
+#=GF DE   yybP-ykoY leader
+#=GF BM   cmbuild  -F CM SEED; cmcalibrate --mpi -s 1 CM
+#=GF BM   cmsearch  -Z 169604 -E 1000000  --toponly  CM SEQDB
+#=GF WK   http://en.wikipedia.org/wiki/yybP-ykoY_leader
+#=GF TC   32.33
+#=GF RT   Novel small RNA-encoding genes in the intergenic regions of
+#=GF RT   Escherichia coli.
+#=GF RT   New RNA motifs suggest an expanded scope for riboswitches in
+#=GF RT   bacterial genetic control.
+#=GF GA   32.00
+#=GF RL   Curr Biol 2001;11:941-950.
+#=GF RL   Proc Natl Acad Sci U S A 2004;101:6421-6426.
+#=GF PI   SraF
+
+AF270169.1/2621-2476            AAAACUGUCAGAGGGGAGUAACUUGAGAAUA.......GUUAUUGAAUGCAUUUAAACCGAUAAUAACUAUUCAACACUU.UG..UCGUCAUUACGAAGA........UAAG................UCUUCCGG.UAAAGUG.GGCAAA............AAU...........................AUUGCUAAGUGAGACCUUUGCUAUUAAA
+Y14370.1/1315-1188              CAUUUUGUCAGAGGGGAGUAACUUAAGAAUCAUGACCGUAUAA.......................AUGAUUCGACACUU.UA..UCGUCAUUACGAAG.........AUAU.................CUUCCGG.UAAAGUG.GGCAAU............UAA...........................AUUGCUUAGUGAGACCUUUGCUAUUUAU
+AE008691.1/255474-255595        AACAUAAGUAAAGGGGAGUAGCUU.GCCACA.......GUAU...........................GUGGUUUAACC.UG..UCGUCAGCACGGGAA.........AUU................UUCUCCGG.CAGGUUA.GAAACUCCG.........GACG.........................GAGUUUUGAGCAAGACCUUUAUAGAGGUA
+AL009126.3/1410625-1410749      UGAAAUCCCAAAGGGGAGUAGCG.UCCGGAAU......GUAU...........................UCCGGAAACAA.AG..UCGUCAUUUCAUGGA........UUGU...............AUCCAUCGG.CUUUGUU.GGCAUGCCU.........GAAU.........................UCAUGUCUAGCAAGACCUUUGCCUUAUGU
+AL596167.1/48063-48187          ACAAAUGUCAGAGGGGAGUAGCG.CUGAUUAG......CUUUU..........................AAUCAGGAUAA.AG..UCGUCAUUACAUGAUA.......GAGA...............UAUCAUCGG.UUUUAUC.ACAUUUA...........ACUU.........................UAAAUGUUAGCGAGACCUUUGCCUUUAUG
+AL591977.1/131463-131588        ACAAAUGUCAGAGGGGAGUAGCG.CUGAUUAG......CUUUU.........................UAAUCAGGAUAA.AG..UCGUCAUUACAUGAUA.......GAGA...............UAUCAUCGG.UUUUAUC.ACAUUUA...........ACUU.........................UAAAUGUUAGCGAGACCUUUGCCUUUACG
+AF109909.2/85-201               UUACGGAGUAAAGGGGAGUAGCG.UCAGG.........GAAA............................CCUGAAACAA.AG..UCGUCAUUACAUGGA........GUAU................UCCAUCGG.CUUUGUU.GGCAUAA...........UGA..........................UUAUGCUUAGCAAGACCUUUGCCAUAUUU
+#=GC SS_cons                    ......<<<<<<<<......<<<<<<<<<<.......................................>>>>>><<<<<.<<..<<<.......<<<<<............................>>>>>>>>.>>>>>>>.<<<<<<<........................................>>>>>>>>>>>....>>>>>>>>......
+
+head@AL935253.1/180146-180248   GAUACAAUCAUAAGGGAGUAACUAGCAGAA.........AUA...........................UUCUGCGGCAA.UA..UCGUCAGCAAGAA..........GCCA..................AUCCGG.UAUUGUCU..................UAAA................................UAGUGAGACUUAUGUAUGUUCA
+head@BA000034.2/1414659-1414556 GUUAUUAUAUCAAGGGAGUAGCAGACGG..........CUAG.............................CCGUGAUUG.UA..UCGUCAAUACGGAAU........UUCG................GUUUCCGG.UACAAUCU..................UAAA................................CAGCGAGACUUGUUUAAGAAAA
+head@CP000114.1/594401-594502   AUUAACAUAUCAAGGGAGUAGCAGACGG..........UUUA.............................CCGUGGCAA.UG..UCGUCAUUACGAAA.........GAAA.................UUUCCGG.CGUUGUCU..................UAAA................................CAGCGAGACUUGUUUUCAUAAA
+#=GC head@SS_cons               ......<<<<<<<<......<<<<<<<<<<.......................................>>>>>><<<<<.<<..<<<.......<<<<<............................>>>>>>>>.>>>>>>>.......................................................>>>>....>>>>>>>>......
+
+tail@AE008691.1/36537-36635     UCU..CGGUAAAGGGGAGUAACUC..............UAAAU................................CAAUC.AG..UCGUCAUGACGGC..........UUUU...............U..GCCCGG.CUGAUUGAGCAG..............AUA.............................AUGCGAGUGAGACCUUUACUUUGUGG
+tail@BX842584.1/155440-155547   GACGUUAGCGAAGGGGAGUAGUCC..............CGAA.................................UCGUCGAG..UCGACAUACUGGC..........GAAA...............A..GCCCGG.CUGGCGA.ACCGUUUG..........AUAC.........................CAACGGUGGGCGAGACCUUCGACCGAUGU
+tail@BX927153.1/297716-297548   UCCCGUAUUGGAGGGGAGUACCCC..............ACAAG................................CAGCGUUGAUUCGUCAACACGGAAAUCAAACUUUAAAGAAUUUUAGGUUGUGAAUUCCCGGUCACACUG.GCCCAUUUUGUUU.....UUCAGAUGCAUGUUAGAUGCGUUGAGGGACAAGGGUGGGGGAGACCUCCGGUUCUUAA
+tail@BX248358.1/90582-90421     ACUGUAGUUGGAGGGGAGUACCCC......A.......CCCAC................................GGCAUUGA..UCGUCAACACGGUUACCAUGCGAGAAU........UCUCGUACGAUCCCGG.UCAUGUCGGUUUACUUUGAUUUUAGGUUAU...UUGCUCAAGCAGGCCGGAUCAGAGUGAGCGGGGGAGACCUCCGGUUCAUCU
+tail@AF325827.1/1344-1451       AAACUUCCUAAAGGGGAGUAGCU...............UUAAC................................AGCAA.AG..UCGUCAUUACGGAGUA.......UAAU...............UACUCUCGG.CUUUGUU.GGCAAC............GAUC..........................GUUGUU.AGCAAGACCUUUACUCGAGAU
+tail@AL009126.3/4169927-4169822 GAACACUCCAAAGGGGAGUAGCU...............UUCAC................................AGUAA.AG..UCGUCAUUACGGGA.........CAAG.............GUG.UCCUCGG.CUUUGCU.GGCAAU............CUC...........................AUUGUU.AGCGAGACCUUUGCCAAAUCU
+tail@AL939112.1/94442-94322     GACGGCGCAGAAGGGGAGUAGCU...............CUUCG................................CCGGACCG..UCGACAUACUGCUCAG.......CCCG..............CCUGAGCCGG.CGCCCGGAGGCAGGCCUCGUGCG...CGAG.........................GCGGGCC.AGCGAGACCUUCGGCAAGCAG
+#=GC tail@SS_cons               ......<<<<<<<<......<<<<...................................................<<<<<.<<..<<<.......<<<<<............................>>>>>>>>.>>>>>>>.<<<<<<<........................................>>>>>>>>>>>....>>>>>>>>......
+
+//

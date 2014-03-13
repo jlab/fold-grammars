@@ -1,0 +1,342 @@
+#!/usr/bin/env perl
+
+my $PROGID = 'acmbuild';
+
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+
+use lib getPath($0)."../lib/";
+
+use strict;
+use warnings;
+use Data::Dumper;
+use Getopt::Long;
+use foldGrammars::Utils;
+use foldGrammars::CMs;
+use POSIX 'isatty';
+use lib "Lib";
+#~ use Priors;
+use cmUtils;
+use Nullmodel;
+use Weights;
+use EM;
+
+our @ALLMODES = ($Settings::MODE_ACM);
+@References::ORDER = ();
+
+my %PARAM;
+$PARAM{mode} = {modes => \@ALLMODES, key => 'mode', type => 's', default => $Settings::MODE_ACM, info => "Select the computation mode. Available modes are \"".join('", "', @ALLMODES)."\". Omit the ticks on input.\nDefault is \"@(DEFAULT)\"."};
+$PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
+$PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => $Settings::PROGINFOS{$PROGID}->{name}." expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
+$PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => $Settings::PROGINFOS{$PROGID}->{name}.'_', info => $Settings::PROGINFOS{$PROGID}->{name}." expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"$Settings::MODE_ACM\", with grammar \"\" and \"mis\" representation, the name would be \"@(DEFAULT)"."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
+$PARAM{verbose} = {modes => \@ALLMODES, key => 'verbose', default => 0, type => 'i', info => "Prints the actual command for Bellman's GAP binary."};
+$PARAM{iins} = {modes => \@ALLMODES, key => 'iins', default => 0, type => 'i', info => "Allow informative insert emissions, do not zero them. Default is \"@(DEFAULT)\"."};
+$PARAM{wbeta} = {modes => \@ALLMODES, key => 'Wbeta', default => 0.0000001, type => 'f', info => "Set tail loss prob for calc'ing W (max size of a hit) to Wbeta. Default is \"@(DEFAULT)\"."};
+$PARAM{gapthresh} = {modes => \@ALLMODES, key => 'gapthresh', default => 0.5, type => 'f', info => "Fraction of gaps to allow in a consensus column [0..1]. Default is \"@(DEFAULT)\"."};
+$PARAM{gscweights} = {modes => \@ALLMODES, key => 'GSCweights', default => 1, type => 'i', info => "Gerstein/Sonnhammer/Chothia tree weights. Default is \"@(DEFAULT)\"."};
+$PARAM{em} = {modes => \@ALLMODES, key => 'EM', default => 1, type => 'i', info => "Adjust eff seq # to achieve relative entropy target. Default is \"@(DEFAULT)\"."};
+$PARAM{ere} = {modes => \@ALLMODES, key => 'ere', default => 0.59, type => 'f', info => "For --eent: set CM target relative entropy to <x>  (x>0). Default is \"@(DEFAULT)\"."};
+$PARAM{eX} = {modes => \@ALLMODES, key => 'eX', default => 6.0, type => 'f', info => "For --eent: set minimum total rel ent param to <x>. Default is \"@(DEFAULT)\"."};
+$PARAM{null} = {modes => \@ALLMODES, key => 'null', default => undef, type => 's', info => "Read null (random sequence) model from file <s>."};
+$PARAM{prior} = {modes => \@ALLMODES, key => 'prior', default => undef, type => 's', info => "Read priors from file <f>."};
+$PARAM{elself} = {modes => \@ALLMODES, key => 'elself', default => 0.94, type => 'f', info => "set EL self transition prob to <x>. Default is \"@(DEFAULT)\"."};
+
+my $settings = {};
+foreach my $param (keys %PARAM) {
+	$settings->{$param} = $PARAM{$param}->{default};
+}
+my %help = ();
+foreach my $param (keys %PARAM) {
+	my $optionSec = $PARAM{$param}->{key};
+	$optionSec .= "=".$PARAM{$param}->{type} if (exists $PARAM{$param}->{type});
+	$help{$optionSec} = \$settings->{$param};
+}
+&GetOptions( 	
+	%help
+);
+
+checkParameters($settings);
+
+usage() if (defined $settings->{'help'}); #user asks for help --> print usage and die
+our $inputIndex = 0;
+
+#precomputations
+my %priors = %{cmUtils::readPriorFile($settings->{'prior'})} if (defined $settings->{'prior'});
+my %nullmodel = %{Nullmodel::defaultNullmodel()};
+%nullmodel = %{Nullmodel::readNullmodelFile($settings->{'null'})} if ((defined $settings->{'null'}) && ($settings->{'null'} ne ''));
+
+if (@ARGV == 0) {
+	#input not given via command line parameter
+	if (isatty(*STDIN)) {
+		#we are somehow in an interactive mode
+			#expecting a sequence or a filename
+			print "Please tell me a filename of one or more stockholm formated RNA families.\n";
+			my $input = <STDIN>; chomp $input;
+			if (-e $input) {
+				#since there is a file, having the name of the user input it is very likely that we really should read from a file
+				processInput($input, $settings, \%priors, \%nullmodel);
+			} else {
+				#otherwise, we assume it is a single, plain RNA sequence
+				die "Cannot read file '$input', does is really exist?\n";
+			}
+	} else {
+		#input must be delivered via pipe
+		processInput(\*STDIN, $settings, \%priors, \%nullmodel);
+	}
+} elsif (@ARGV == 1) {
+	#rna sequence, secondary structure or filename, given as command line parameter
+	if (-e $ARGV[0]) {
+		#since there is a file, having the name of the user input it is very likely that we really should read from a file
+		processInput($ARGV[0], $settings, \%priors, \%nullmodel);
+	} else {
+		die "cannot read file '".$ARGV[0].", does is really exist?\n";
+	}
+} else {
+	print STDERR "You gave me too many inputs. Please ask for help, via \"".$Settings::PROGINFOS{$PROGID}->{name}." --".$PARAM{help}->{key}."\".\n";
+	exit(1);
+}
+
+sub processInput {
+	my ($input, $refHash_settings, $refHash_priors, $refHash_nullmodel) = @_;
+	
+	if (ref($input) =~ m/GLOB/) {
+		#input is STDIN
+		CMs::applyFunctionToStockholmFile(\*STDIN, \&doComputation, $refHash_settings, $refHash_priors, $refHash_nullmodel);
+	} else {
+		#input is a filename
+		die "The file '$input' does not exist!\n" if (not -e $input);
+		CMs::applyFunctionToStockholmFile($input, \&doComputation, $refHash_settings, $refHash_priors, $refHash_nullmodel);
+	}
+}
+
+sub doComputation {
+	my $VERBOSE = 1;
+	my $taskCount = 1;
+	
+	my ($refHash_family, $settings, $refHash_priors, $refHash_nullmodel) = @_;
+
+	my $currentDir = qx($Settings::BINARIES{pwd}); chomp $currentDir;
+	my $tmpDir = '/tmp/tmp.SBZEaP52Dr/';
+	#~ my $tmpDir = qx($Settings::BINARIES{mktemp} -d); chomp $tmpDir;
+	print STDERR "Training and building an ambivalent covariance model for family '".$refHash_family->{familyname}."':\n" if ($VERBOSE);
+	print STDERR "  (temporary directory is '$tmpDir'.)\n" if ($VERBOSE);
+
+	#an alignment column might have so few bases, i.e. so many gaps, that we prefere to model this column as an insertion rather than as a match. We can set the ratio of character and gaps via the GAPTHRESH parameter. Care must be taken if one partner of a basepair gets transformed!
+		print STDERR "  ".($taskCount++)." determining multiple consensus structures ..." if ($VERBOSE);
+		my %matchConsensi = %{cmUtils::markMatchColumns($refHash_family, $settings->{gapthresh})};
+		my @consensiOrdering = ();
+		foreach my $key (sort {$refHash_family->{originalSSconsOrdering}->{$a} <=> $refHash_family->{originalSSconsOrdering}->{$b}} keys(%{$refHash_family->{originalSSconsOrdering}})) {
+			push @consensiOrdering, cmUtils::getAltID($key);
+		}
+		my $alignmentLength = length($matchConsensi{$consensiOrdering[0]});
+		print STDERR " done.\n" if ($VERBOSE);
+		
+	#generate GAP code to train the stochastic parameters
+		print STDERR "  ".($taskCount++)." compiling bgap binary for two-track-training ..." if ($VERBOSE);
+		my $trainBinaryFilename = $tmpDir.'/'.$PROGID.'_train_'.$refHash_family->{familyname};
+		my $concatConsensi;
+		foreach my $id (@consensiOrdering) { $concatConsensi .= "'".'("'.$id.'","'.$matchConsensi{$id}.'")'."' "; }
+		my $trainBuildCmd = buildCommand($settings, {header => undef, sequence => $concatConsensi}, 'trainbuild');
+		my $trainGAP = qx($trainBuildCmd); 
+		Utils::qxDieMessage($trainBuildCmd, $?);
+		my %nodeLists = ();
+		my %trees = ();
+		my $idIndex = 0;
+		foreach my $line (split(m/\n/, $trainGAP)) {
+			if ($line =~ m/^\s*(.+?):\s+\S+?\s+\(as tree: '(.+?)'/) {
+				my ($ssConsName, $tree) = ($1,$2);
+				$trees{$ssConsName} = cmUtils::parseGTenum($tree);
+				$nodeLists{$ssConsName} = cmUtils::gt2nodelist($trees{$ssConsName});
+			}
+		}
+		if (not -e $trainBinaryFilename) {
+			my $gapfilename = $tmpDir.'/'.$PROGID.'_train_'.$refHash_family->{familyname}.'.gap';
+			open (OUT, "> ".$gapfilename) || die "cannot write gap source code to '$gapfilename': $!";
+				print OUT $trainGAP;
+			close (OUT);
+			my $cmd = "cd $tmpDir && $Settings::BINARIES{gapc} --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc && make -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\" && rm -f string.*";
+			qx($cmd);
+			Utils::qxDieMessage($cmd, $?);
+			print STDERR " done.\n" if ($VERBOSE);
+		} else {
+			print STDERR " using existing one.\n" if ($VERBOSE);
+		}
+
+	#integrate different sequence weights
+		print STDERR "  ".($taskCount++)." sequence weighting ..." if ($VERBOSE);
+		my $refHash_sequenceWeights = undef;
+		my $exampleSequence = undef;
+		if ($settings->{gscweights}) {
+			my %sequenceGroups = ();
+			foreach my $id (keys(%{$refHash_family->{sequences}})) {
+				my $altID = cmUtils::getAltID($id);
+				$sequenceGroups{$altID}->{sequences}->{$id} = $refHash_family->{sequences}->{$id};
+				$exampleSequence = $refHash_family->{sequences}->{$id} if (not defined $exampleSequence);
+				$sequenceGroups{$altID}->{originalSequenceOrdering}->{$id} = $refHash_family->{originalSequenceOrdering}->{$id};
+			}
+			foreach my $id (keys(%sequenceGroups)) {
+				$refHash_sequenceWeights->{$id} = Weights::getUPGMAweights($sequenceGroups{$id});
+			}
+		} else {
+			foreach my $id (keys(%{$refHash_family->{sequences}})) {
+				my $altID = cmUtils::getAltID($id);
+				$refHash_sequenceWeights->{$altID}->{$id} = 1.0;
+			}
+		}
+		print STDERR " done.\n" if ($VERBOSE);
+
+	#train with sequences from the alignment
+		print STDERR "  ".($taskCount++)." train with ".scalar(keys(%{$refHash_family->{sequences}}))." sequences: " if ($VERBOSE);
+		my %counts_transitions = ();
+		my %counts_emissions = ();
+		foreach my $seqID (keys(%{$refHash_family->{sequences}})) {
+			print STDERR ".";
+			my $altID = cmUtils::getAltID($seqID);
+			my $mix = cmUtils::getTrainSeqStruct($refHash_family->{sequences}->{$seqID}, $matchConsensi{$altID});
+			my $cmd = "$trainBinaryFilename -- \"$mix\" | grep -v \"Answer\" | grep -v \"^\$\"";
+			my $gapres = qx($cmd);
+			Utils::qxDieMessage($cmd, $?);
+			cmUtils::parseTrainEnum($gapres, \%counts_transitions, \%counts_emissions, $seqID, $altID);
+		}
+		print STDERR " done.\n" if ($VERBOSE);
+
+	#Expectation Maximization
+		print STDERR "  ".($taskCount++)." Expectation Maximization: " if ($VERBOSE);
+		if ($settings->{'em'}) {
+			print STDERR "yes ... " if ($VERBOSE);
+			foreach my $altID (keys(%trees)) {
+				my $effNseq = scalar(keys(%{$refHash_sequenceWeights->{$altID}}));
+				print STDERR "('".$altID."': n=".$effNseq." -> ";
+				$effNseq = cmUtils::getRootByBisection_NilPairOpen({'dummy' => $counts_emissions{$altID}}, {'dummy' => $trees{$altID}}, $effNseq, {'dummy' => $refHash_sequenceWeights->{$altID}}, $refHash_priors, $refHash_nullmodel, $settings);
+				print STDERR $effNseq.") ";
+				$refHash_sequenceWeights->{$altID} = EM::rescaleWeights($refHash_sequenceWeights->{$altID}, $effNseq);
+			}
+		} else {
+			print STDERR "no " if ($VERBOSE);
+		}
+		print STDERR "done.\n" if ($VERBOSE);
+		
+	#weight sequences
+		my ($refT, $refE) = @{cmUtils::weightCounts(\%counts_transitions, \%counts_emissions, $refHash_sequenceWeights, $settings)};
+		my %weighted_transitions = %{$refT};
+		my %weighted_emissions = %{$refE};
+
+	#priorize
+		print STDERR "  ".($taskCount++)." priorize: " if ($VERBOSE);
+		if (%{$refHash_priors}) {
+			print STDERR "yes ... " if ($VERBOSE);
+			my ($refTp, $refEp) = @{cmUtils::priorize(\%weighted_transitions, \%weighted_emissions, $refHash_priors, $refHash_nullmodel, $settings, \%trees)};
+			%weighted_transitions = %{$refTp};
+			%weighted_emissions = %{$refEp};
+			print STDERR "done.\n" if ($VERBOSE);
+		} else {
+			print STDERR "no.\n" if ($VERBOSE);
+		}
+
+	#move all necessary files into a temporary directory to compile there without race conditions the Haskell-ADP generator with correct Probs.lhs, i.e. probabilities.
+		my $targetBinary = 'acmsearch_'.$refHash_family->{familyname};
+		print STDERR "  ".($taskCount++)." compiling final bgap program '$targetBinary' ..." if ($VERBOSE);
+		if (! -e $targetBinary) {
+			my $buildBinary = $tmpDir.'/'.$PROGID.'_build_'.$refHash_family->{familyname};
+			if (not -e $buildBinary) {
+				open (PROBS, "> ".$tmpDir."/Probs.lhs") || die "can't write to '".$tmpDir."/Probs.lhs'\n";
+					print PROBS cmUtils::generateHaskellProbMaps(\%weighted_transitions, \%weighted_emissions, $refHash_family->{familyname});
+				close (PROBS);
+				system($Settings::BINARIES{make}." Build WORKDIR=".$tmpDir." FAMILYNAME=_".$refHash_family->{familyname});
+			}
+			my $cmd = "$buildBinary $concatConsensi";
+			my $buildGAP = qx($cmd);
+			Utils::qxDieMessage($cmd, $?);
+			my $targetGapFile = $targetBinary.'.gap';
+			open (OUT, "> ".$currentDir.'/'.$targetGapFile) || die "cannot write gap source code to '".$currentDir.'/'.$targetGapFile."': $!";
+				print OUT $buildGAP;
+			close (OUT);
+			$cmd = "cd $tmpDir && cp $currentDir/$targetGapFile $tmpDir/ && $Settings::BINARIES{gapc} --tab-all -i cykali --kbacktrace $targetGapFile -o $targetBinary.cc && make -f $targetBinary.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\" && rm -f string.* && cp $targetBinary $currentDir/";
+			qx($cmd);
+			Utils::qxDieMessage($cmd, $?);
+			print STDERR " done.\n" if ($VERBOSE);
+		} else {
+			print STDERR " using existing one.\n" if ($VERBOSE);
+		}
+		
+	$exampleSequence =~ s/\.//g;
+	print STDERR "sucessfully compiled '$targetBinary'\nuse it like \"$targetBinary ".uc($exampleSequence)."\"\n" if ($VERBOSE);
+		
+	return undef;
+}
+
+sub buildCommand {
+	my ($settings, $refHash_sequence, $task) = @_;
+
+	my $cmd = "";
+	$cmd .= $settings->{'binarypath'};
+	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
+	$cmd .= $settings->{'binaryprefix'};
+	if ($task eq 'trainbuild') {
+		$cmd .= 'train';
+		$cmd .= ' '.$refHash_sequence->{sequence};
+	}
+	
+	return $cmd;
+}
+
+sub checkParameters {
+	my ($settings) = @_;
+
+	my $diePrefix = "wrong command line parameter:\n  ";
+
+	die $diePrefix."--".$PARAM{'prior'}->{key}." file '".$settings->{'prior'}."' does not exists.\n" if ((defined $settings->{'prior'}) && (not -e $settings->{'prior'}));
+	die $diePrefix."--".$PARAM{'null'}->{key}." file '".$settings->{'null'}."' does not exists.\n" if ((defined $settings->{'null'}) && (not -e $settings->{'null'}));
+	
+	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
+	Utils::checkBinaryPresents($settings, $diePrefix, [$Settings::MODE_ACM], ['train']);
+}
+
+sub usage {
+	my ($settings) = @_;
+
+my $HELP = <<EOF;
+# $Settings::PROGINFOS{$PROGID}->{name}: Construction of ambivalent covariance models
+#            version $Settings::PROGINFOS{$PROGID}->{version} ($Settings::PROGINFOS{$PROGID}->{date})
+#            Stefan Janssen (bibi-help\@techfak.uni-bielefeld.de)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+USAGE: 
+perl $Settings::PROGINFOS{$PROGID}->{name} [-options] <stockholm file>
+
+EOF
+;
+	
+	my @paramGroups = ();
+	push @paramGroups, {name => 'GENERAL OPTIONS', elements => ['iins','wbeta']};
+	push @paramGroups, {name => 'EXPERT MODEL CONSTRUCTION OPTIONS', elements => ['gapthresh']};
+	push @paramGroups, {name => 'SEQUENCE WEIGHTING OPTIONS', elements => ['gscweights']};
+	push @paramGroups, {name => 'EFFECTIVE SEQUENCE NUMBER RELATED OPTIONS', elements => ['em','ere','eX']};
+	push @paramGroups, {name => 'CUSTOMIZATION OF NULL MODEL AND PRIORS', elements => ['null','prior']};
+	push @paramGroups, {name => 'UNDOCUMENTED DEVELOPER OPTIONS FOR DEBUGGING, EXPERIMENTATION', elements => ['elself']};
+	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','help','verbose']};
+	foreach my $refHash_group (@paramGroups) {
+		$HELP .= $refHash_group->{name}.":\n";
+		for my $par (@{$refHash_group->{elements}}) {
+			$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
+		}
+	}
+	
+	#~ $HELP .= "REFERENCES:\n";
+	#~ foreach my $refID ('lor:ber:sie:taf:fla:sta:hof:2011','gru:lor:ber:neu:hof:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','ree:gie:2005','ste:voss:reh:ree:gie:2006','mcc:1990') {
+		#~ $HELP .= References::printReference($refID);
+	#~ }
+	#~ $HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
+	#~ foreach my $refID ('gie:voss:reh:2004') {
+		#~ $HELP .= References::printReference($refID);
+	#~ }
+
+	print $HELP;
+	exit(0);
+}
+

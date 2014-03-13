@@ -14,6 +14,7 @@ our %PROGINFOS = (
 	'knotinframe', 			{date => '22.11.2013', version => '2.0.3', name => 'knotinframe', packageDir => 'Knotinframe/'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
 	'getoutsidetruth', 	{date => '19.04.2013', version => '1.0.0', name => 'getOutsideTruth'},
+	'acmbuild', 				{date => '12.03.2014', version => '1.0.0', name => 'acmbuild'},
 );
 
 
@@ -91,6 +92,8 @@ our $MODE_PFALL = 'pfall';
 our $MODE_MEA = 'mea';
 
 our $MODE_KIF = 'kif'; #single and thus default mode for KnotInFrame
+
+our $MODE_ACM = 'acm'; #single and thus default mode for ACMs
 
 our $ARCHTRIPLE = qx($BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
 our $RNAPARAM1999 =  $Settings::bgapDir.'share/gapc/librna/rna_turner1999.par';
