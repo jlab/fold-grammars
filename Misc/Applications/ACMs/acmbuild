@@ -264,6 +264,10 @@ sub doComputation {
 			print STDERR " using existing one.\n" if ($VERBOSE);
 		}
 		
+	#remove temp directory
+		chdir($currentDir);
+		qx(rm -rf $tmpDir) if (!$settings->{verbose});
+		
 	$exampleSequence =~ s/\.//g;
 	print STDERR "sucessfully compiled '$targetBinary'\nuse it like \"$targetBinary ".uc($exampleSequence)."\"\n" if ($VERBOSE);
 		
