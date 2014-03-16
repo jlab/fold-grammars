@@ -19,9 +19,7 @@
 				<li>signature names start with the prefix &quot;sig_&quot;</li>
 				<li>algebra names start with the prefix &quot;alg_&quot;</li>
 				<li>grammar names start with the prefix &quot;gra_&quot;</li>
-				<ul>
-					<li>for large grammars, sub-fragments are outsourced in files starting with &quot;grapart_&quot;</li>
-				</ul>
+				<li>for large elements, sub-fragments are outsourced in files starting with &quot;XXXpart_&quot;</li>
 			</ul> 
 			We don't have a naming convention for instances, since they appear in a program just once. Names and file extensions for source code files can be chosen freely, but we prefer to use &quot;.gap&quot; for the file extension. Furthermore, if we split components of our program, we use the prefixes for the filenames as well. 
 			
@@ -32,6 +30,7 @@
 				<li>sequence structure evaluation (similar to <a href="http://www.tbi.univie.ac.at/~ronny/RNA/RNAeval.html">RNAeval</a>) [filenames with &quot;eval_&quot;] ,</li>
 				<li>abstract shape analysis (similar the <a href="http://bibiserv.cebitec.uni-bielefeld.de/rnashapes/">RNAshapes</a>) and HIshapes, and</li>
 				<li>pseudoknot prediction (similar to <a href="http://bibiserv.cebitec.uni-bielefeld.de/pknotsrg/">pknotsRG</a> and <a href="http://bibiserv.cebitec.uni-bielefeld.de/pkiss/">pKiss</a>) [filenames with &quot;pknot_&quot;].</li>
+				<li>outside computations, e.g. McCaskill base-pair probabilities, which also allow for Maximum Expected Accuracy (MEA) computations [filenames with &quot;outside_&quot;]</li>
 			</ul> To capture different handling of dangling bases implemented in various programs, we provide the four different grammars (for details see <a href="http://www.biomedcentral.com/1471-2105/12/429/">Lost in folding space? Comparing four variants of the thermodynamic model for RNA secondary structure prediction</a>). Compared to the supplementary file of that paper, we refined the grammars a little for more comfortable support of lonely base-pairs. This does not change their folding space. We also introduced filters for maximal loop length for bulges to be closer to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna RNA package</a>, the only difference is, that the size of both unpaired regions of internal loops may not exceed 30 bases in Vienna RNA; we allow up to 30 bases on each side.) 
 			<ul class="grammars">
 				<li>&quot;nodangle&quot; (no energy contributions of dangling bases at all),</li>
@@ -46,8 +45,12 @@
 		<structure>
 			<dir descr="1. Signatures">
 				<file id="sig_foldrna.gap" ref="Signatures/sig_foldrna.gap"/>
+				<file id="sig_outside_foldrna.gap" ref="Signatures/sig_outside_foldrna.gap"/>
 				<file id="sig_pknot_foldrna.gap" ref="Signatures/sig_pknot_foldrna.gap"/>
 				<file id="sig_tdm.gap" ref="Signatures/sig_tdm.gap" />
+				<dir descr="Parts">
+					<file id="sigpart_basic.gap" ref="Signatures/Parts/sigpart_basic.gap"/>
+				</dir>
 			</dir>
 			<dir descr="2. Grammars" >
 				<file id="gra_nodangle.gap" ref="Grammars/gra_nodangle.gap"/>
@@ -56,14 +59,23 @@
 				<file id="gra_macrostate.gap" ref="Grammars/gra_macrostate.gap"/>
 				<file id="gra_macrostate_center.gap" ref="Grammars/gra_macrostate_centers.gap"/>
 				<file id="gra_pknot_microstate.gap" ref="Grammars/gra_pknot_microstate.gap"/>
-				<file id="grapart_pkinnards.gap" ref="Grammars/grapart_pkinnards.gap"/>
-				<file id="grapart_pknotsrg.gap" ref="Grammars/grapart_pknotsrg.gap"/>
-				<file id="grapart_pkissA.gap" ref="Grammars/grapart_pkissA.gap"/>
-				<file id="grapart_pkissB.gap" ref="Grammars/grapart_pkissB.gap"/>
-				<file id="grapart_pkissBC.gap" ref="Grammars/grapart_pkissBC.gap"/>
-				<file id="grapart_pkissC.gap" ref="Grammars/grapart_pkissC.gap"/>
-				<file id="grapart_pkissD.gap" ref="Grammars/grapart_pkissD.gap"/>
+				<file id="gra_knotInFrame.gap" ref="Grammars/gra_knotInFrame.gap"/>
 				<file id="gra_tdm.gap" ref="Grammars/gra_tdm.gap"/>
+				<file id="gra_outside_nodangle.gap" ref="Grammars/gra_outside_nodangle.gap"/>
+				<file id="gra_outside_overdangle.gap" ref="Grammars/gra_outside_overdangle.gap"/>
+				<file id="gra_outside_microstate.gap" ref="Grammars/gra_outside_microstate.gap"/>
+				<dir descr="Parts">
+					<file id="grapart_basic.gap" ref="Grammars/Parts/grapart_basic.gap"/>
+					<file id="grapart_outside_basic.gap" ref="Grammars/Parts/grapart_outside_basic.gap"/>
+					<file id="grapart_pkinnards.gap" ref="Grammars/Parts/grapart_pkinnards.gap"/>
+					<file id="grapart_pknotsrg.gap" ref="Grammars/Parts/grapart_pknotsrg.gap"/>
+					<file id="grapart_pkissA.gap" ref="Grammars/Parts/grapart_pkissA.gap"/>
+					<file id="grapart_pkissB.gap" ref="Grammars/Parts/grapart_pkissB.gap"/>
+					<file id="grapart_pkissBC.gap" ref="Grammars/Parts/grapart_pkissBC.gap"/>
+					<file id="grapart_pkissC.gap" ref="Grammars/Parts/grapart_pkissC.gap"/>
+					<file id="grapart_pkissD.gap" ref="Grammars/Parts/grapart_pkissD.gap"/>
+					<file id="grapart_knotinframe.gap" ref="Grammars/Parts/grapart_knotinframe.gap"/>
+				</dir>
 			</dir>
 			<element id="Algebras" descr="3. Algebras">
 				<html>
@@ -72,22 +84,41 @@
 				<structure>
 					<dir descr="DotBracket">
 						<file id="alg_dotBracket.gap" ref="Algebras/DotBracket/alg_dotBracket.gap"/>
+						<file id="alg_outside_dotBracket.gap" ref="Algebras/DotBracket/alg_outside_dotBracket.gap"/>
 						<file id="alg_pknot_dotBracket.gap" ref="Algebras/DotBracket/alg_pknot_dotBracket.gap"/>
 						<file id="alg_ali_dotBracket.gap" ref="Algebras/DotBracket/alg_ali_dotBracket.gap"/>
+						<file id="alg_ali_outside_dotBracket.gap" ref="Algebras/DotBracket/alg_ali_outside_dotBracket.gap"/>
+						<dir descr="Parts">
+							<file id="algpart_dotBracket_basic.gap" ref="Algebras/DotBracket/Parts/algpart_dotBracket_basic.gap"/>
+							<file id="algpart_outside_dotBracket.gap" ref="Algebras/DotBracket/Parts/algpart_outside_dotBracket.gap"/>
+							<file id="algpart_dotBracket_macrostate.gap" ref="Algebras/DotBracket/Parts/algpart_dotBracket_macrostate.gap"/>
+						</dir>
 					</dir>
 					<dir descr="MFE">
 						<file id="alg_mfe.gap" ref="Algebras/MFE/alg_mfe.gap"/>
 						<file id="alg_mfe_macrostate.gap" ref="Algebras/MFE/alg_mfe_macrostate.gap"/>
+						<file id="alg_outside_mfe.gap" ref="Algebras/MFE/alg_outside_mfe.gap"/>
 						<file id="alg_pknot_mfe.gap" ref="Algebras/MFE/alg_pknot_mfe.gap"/>
 						<file id="alg_ali_mfe.gap" ref="Algebras/MFE/alg_ali_mfe.gap"/>
+						<file id="alg_ali_outside_mfe.gap" ref="Algebras/MFE/alg_ali_outside_mfe.gap"/>
 						<file id="alg_ali_mfe_macrostate.gap" ref="Algebras/MFE/alg_ali_mfe_macrostate.gap"/>
+						<dir descr="Parts">
+							<file id="algpart_mfe_basic.gap" ref="Algebras/MFE/Parts/algpart_mfe_basic.gap"/>
+							<file id="algpart_ali_mfe_basic.gap" ref="Algebras/MFE/Parts/algpart_ali_mfe_basic.gap"/>
+						</dir>
 					</dir>
 					<dir descr="Pfunc">
 						<file id="alg_pfunc.gap" ref="Algebras/Pfunc/alg_pfunc.gap"/>
 						<file id="alg_pfunc_macrostate.gap" ref="Algebras/Pfunc/alg_pfunc_macrostate.gap"/>
+						<file id="alg_outside_pfunc.gap" ref="Algebras/Pfunc/alg_outside_pfunc.gap"/>
 						<file id="alg_pknot_pfunc.gap" ref="Algebras/Pfunc/alg_pknot_pfunc.gap"/>
 						<file id="alg_ali_pfunc.gap" ref="Algebras/Pfunc/alg_ali_pfunc.gap"/>
 						<file id="alg_ali_pfunc_macrostate.gap" ref="Algebras/Pfunc/alg_ali_pfunc_macrostate.gap"/>
+						<file id="alg_ali_outside_pfunc.gap" ref="Algebras/Pfunc/alg_ali_outside_pfunc.gap"/>
+						<dir descr="Parts">
+							<file id="algpart_pfunc_basic.gap" ref="Algebras/Pfunc/Parts/algpart_pfunc_basic.gap"/>
+							<file id="algpart_ali_pfunc_basic.gap" ref="Algebras/Pfunc/Parts/algpart_ali_pfunc_basic.gap"/>
+						</dir>
 					</dir>
 					<dir descr="Shapes">
 						<file id="alg_shapes.gap" ref="Algebras/Shapes/alg_shapes.gap"/>
@@ -96,8 +127,20 @@
 						<file id="alg_ali_hishapes.gap" ref="Algebras/Shapes/alg_ali_hishapes.gap"/>
 						<file id="alg_shapes_rope.gap" ref="Algebras/Shapes/alg_shapes_rope.gap"/>
 						<file id="alg_pknot_shapes.gap" ref="Algebras/Shapes/alg_pknot_shapes.gap"/>
+						<dir descr="Parts">
+							<file id="algpart_shape1_basic.gap" ref="Algebras/Shapes/Parts/algpart_shape1_basic.gap"/>
+							<file id="algpart_shape1_macrostate.gap" ref="Algebras/Shapes/Parts/algpart_shape1_macrostate.gap"/>
+							<file id="algpart_shape2_basic.gap" ref="Algebras/Shapes/Parts/algpart_shape2_basic.gap"/>
+							<file id="algpart_shape3_basic.gap" ref="Algebras/Shapes/Parts/algpart_shape3_basic.gap"/>
+							<file id="algpart_shape4_basic.gap" ref="Algebras/Shapes/Parts/algpart_shape4_basic.gap"/>
+							<file id="algpart_shape5_basic.gap" ref="Algebras/Shapes/Parts/algpart_shape5_basic.gap"/>
+							<file id="algpart_shape5_macrostate.gap" ref="Algebras/Shapes/Parts/algpart_shape5_macrostate.gap"/>
+							<file id="algpart_shapeX_basic.gap" ref="Algebras/Shapes/Parts/algpart_shapeX_basic.gap"/>
+							<file id="algpart_shapeX_macrostate.gap" ref="Algebras/Shapes/Parts/algpart_shapeX_macrostate.gap"/>
+						</dir>
 					</dir>
 					<file id="alg_basepairMax.gap" ref="Algebras/alg_basepairMax.gap"/>
+					<file id="alg_mea.gap" ref="Algebras/alg_mea.gap"/>
 					<file id="alg_count_id.gap" ref="Algebras/alg_count_id.gap"/>
 					<file id="alg_ali_consensus.gap" ref="Algebras/alg_ali_consensus.gap"/>
 					<file id="alg_ali_mis.gap" ref="Algebras/alg_ali_mis.gap"/>
@@ -110,7 +153,7 @@
 			<html>
 				At the root directory are all the &quot;main&quot; GAP-L files for the actual application of an algebra(product) to a grammar and an input. They mainly contain the declaration of instances, inclusion of code fragments like signatures, grammars and algebras and import statements for external functionality, found in *.hh files. Some exceptions are: 
 				<ul>
-					<li>&quot;overdangle.gap&quot; and &quot;ali_overdangle.gap&quot;: they overwrite the mfe and partition function algebra-functions <code>drem</code> and <code>ml</code> to realize the overdangling instead of nodangling.</li>
+					<li>&quot;ali_outside_overdangle.gap&quot;, &quot;ali_overdangle.gap&quot;, &quot;eval_ali_overdangle.gap&quot;, &quot;eval_overdangle.gap&quot;, &quot;outside_overdangle.gap&quot; and &quot;overdangle.gap&quot;: they overwrite the mfe and partition function algebra-functions <code>drem</code> and <code>ml</code> to realize the overdangling instead of nodangling.</li>
 					<li>&quot;MacrostateCenter.gap&quot;: previously we mentioned the need for computing the probability of hairpins. To do so, the signature must be extended by one algebra-function. <!-- TODO which is unfortunately impossible by heritage within GAP-L.--> Thus, we need special signature, algebras and grammars. The later is externalized in the file <a href="?id=gra_macrostate_centers.gap">Grammars/gra_macrostate_centers.gap</a>.</li>
 					<li>&quot;structure2shape.gap&quot;: often it is necessary to convert a Vienna-Dot-Bracket string into a shape string. This can be done with this file, but it is very inefficient to do within ADP - compared to other parser techniques.</li>
 				</ul>
@@ -139,6 +182,10 @@
 			<file id="alignment.hh" ref="Extensions/alignment.hh" />
 			<file id="bpfilter.hh" ref="Extensions/bpfilter.hh" />
 			<file id="evalfold.hh" ref="Extensions/evalfold.hh" />
+			
+			<file id="shapes.hh" ref="Extensions/shapes.hh" />
+			<file id="outside.hh" ref="Extensions/outside.hh" />
+			<file id="mea.hh" ref="Extensions/mea.hh" />
 		</structure>
 	</element>
 
@@ -153,6 +200,7 @@
 				</html>
 				<element id="pKiss" descr="pKiss">
 					<html>
+						<p>Checkout the interactive web-site <a href="bibiserv.cebitec.uni-bielefeld.de/pkiss">bibiserv.cebitec.uni-bielefeld.de/pkiss</a></p>
 						<p><i><b>pKiss</b></i> is a tool for folding RNA secondary structures, including two limited classes of pseudoknots.</p>
 						<p>As <i><b>pKiss</b></i> is the successor of <i>pknotsRG</i>, the first pseudoknot class is the <i>canonical simple recursive pseudoknot</i> from <i>pknotsRG</i>. The new class are <i>canonical simple recursive kissing hairpins</i>.</p>
 						<p>To retain the fast runtime while adding the more complicated kissing hairpin class, we heuristically construct a kissing hairpin from an overlay of two canonical simple recursive pseudoknots. By applying this trick, we loose a bit thoroughness. Due to our evaluations, performance is still very good. <br/> Should you feel uncomfortable with this situation, <i><b>pKiss</b></i> offers three more strategies to compute kissing hairpins. These strategies are either slower or consume more memory. <br/> We strongly suggest using Strategy A.</p>
@@ -160,23 +208,44 @@
 				</element>
 				<element id="RNAshapes" descr="RNAshapes">
 					<html>
-						<p>!!!RNAalishapes combines various secondary structure analysis methods, such as suboptimal folding and shape abstraction, with a comparative approach known as RNA alignment folding. RNAalishapes makes use of an extended thermodynamic model and covariance scoring, which allows to reward covariance of paired bases. Besides providing in-depth analysis methods for aligned RNAs, the tool also shows a fairly well prediction accuracy. Therefore, RNAalishapes provides the community with a powerful tool for structural analysis of classes of RNAs and is also a reasonable method for consensus structure prediction based on sequence alignments.</p>
+						<p>Checkout the interactive web-site <a href="bibiserv.cebitec.uni-bielefeld.de/rnashapes">bibiserv.cebitec.uni-bielefeld.de/rnashapes</a></p>
+						<p>abstraction maps structures to a tree-like domain of shapes, retaining adjacency and nesting of structural features, but disregarding helix lengths. Shape abstraction integrates well with dynamic programming algorithms, and hence it can be applied during structure prediction rather than afterwards. This avoids exponential explosion and can still give us a non-heuristic and complete account of properties of the molecule's folding space.</p>
 					</html>
 				</element>
 				<element id="RNAalishapes" descr="RNAalishapes">
 					<html>
+						<p>Checkout the interactive web-site <a href="bibiserv.cebitec.uni-bielefeld.de/rnaalishapes">bibiserv.cebitec.uni-bielefeld.de/rnaalishapes</a></p>
 						<p>RNAalishapes combines various secondary structure analysis methods, such as suboptimal folding and shape abstraction, with a comparative approach known as RNA alignment folding. RNAalishapes makes use of an extended thermodynamic model and covariance scoring, which allows to reward covariance of paired bases. Besides providing in-depth analysis methods for aligned RNAs, the tool also shows a fairly well prediction accuracy. Therefore, RNAalishapes provides the community with a powerful tool for structural analysis of classes of RNAs and is also a reasonable method for consensus structure prediction based on sequence alignments.</p>
 					</html>
 				</element>
 				<element id="Rapidshapes" descr="RapidShapes">
 					<html>
+						<p>Checkout the interactive web-site <a href="bibiserv.cebitec.uni-bielefeld.de/rapidshapes">bibiserv.cebitec.uni-bielefeld.de/rapidshapes</a></p>
 						<p>Computation of shape probabilities requires exponential runtime. RapidShapes aims at a heuristic improvement of runtime, while still computing exact probability values. It computes the shapes above a specified probability threshold T by generating a list of promising shapes and constructing specialized folding programs for each shape to compute its probability.</p>
+					</html>
+				</element>
+				<element id="KnotInFrame" descr="KnotInFrame">
+					<html>
+						<p>Checkout the interactive web-site <a href="bibiserv.cebitec.uni-bielefeld.de/knotinframe">bibiserv.cebitec.uni-bielefeld.de/knotinframe</a></p>
+						<p>KnotInFrame predicts -1 frameshift sites with simple pseudoknots. More complex knotted structures like triple crossing helices or kissing hairpins are excluded from calculation.</p>
+						<p>The prediction is based on a comparison between the minimal free energy (mfe) structure, calculated by an RNAfold like program and the mfe-structure, computed by a modified version of pknotsRG-mfe, called pknotsRG-frameshift developed by Jens Reeder and Robert Giegerich.</p>
+					</html>
+				</element>
+				<element id="acms" descr="acms">
+					<html>
+						<!--<p>Checkout the interactive web-site <a href="bibiserv.cebitec.uni-bielefeld.de/rapidshapes">bibiserv.cebitec.uni-bielefeld.de/rapidshapes</a></p>-->
+						<p>Ambivalent covariance models (aCMs) are a prototypic implementation of covariance models that allow for several conensus structures.</p>
 					</html>
 				</element>
 				<element id="addRNAoptions.pl" descr="addRNAoptions.pl">
 					<html>
 						<p>A small helper script that replaces the few built-in command line arguments for a compiled BGAP program with some more RNA specific ones. Use this between the steps of generating the C++ code with <code>gapc</code> and the <code>make</code> call.</p>
 						<p>With no special options set, <code>gapc</code> creates a &quot;out.mf&quot; file. Execute &quot;perl addRNAoptions.pl out.mf&quot; to automatically modify &quot;out.mf&quot;, such that the extended command line arguments are available.</p>
+					</html>
+				</element>
+				<element id="lib" descr="lib">
+					<html>
+						<p>The sub-directory <code>lib</code> contains a set of Perl functions, needed by the Perl-wrapper for the above described applications, the test-suits and the analyses.</p>
 					</html>
 				</element>
 			</element>
@@ -192,6 +261,23 @@
 						<li>&quot;GeorgStyle&quot; is to run some regression tests for the software in this repository. The &quot;truth&quot; is delivered in form of files in the subdirectory &quot;Truth/&quot;, which are outputs of controlled previous runs, which hopefully were correct. The file &quot;config&quot; lists all available tests. To run them, go into the Tests directory and type <code>ksh run.sh ../Truth</code>. You also find some Perl scripts, which I used to check consistency to the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna-Package</a>. All RNA components are compiled with the extended options of <a href="?id=rnaoptions.hh">Extensions/rnaoptions.hh</a>, such that you can modify the different parameters.</li>
 						<li>&quot;StefanStyle&quot; tests the developed applications by calling them through a Perl script and compares the results with files defined as truth, stored in a corresponding sub-directory. The test script is called &quot;test_pseudoknots.pl&quot; for historical reasons, but it also contains test runs for RNAalishapes.</li>
 					</ol>
+				</html>
+			</element>
+			<element id="Analyses" descr="Analyses">
+				<html>
+					<p>
+						The sub-directory &quot;Analyses&quot; contains a lot of Perl scripts to run all the analyses of the provided RNA secondary structure tools described in the PhD thesis of Stefan Janssen.
+						Here, you will also find the used Testinputs.
+					</p>
+				</html>
+			</element>
+			<element id="Hacks" descr="Hacks">
+				<html>
+					<p>
+						We want to collect all quick and dirty hacks of Bellman's GAP programs for the fold-grammars repository in the sub-directory &quot;Hacks&quot;.
+						Currently, it contains a special version to compute RNA shape probabilities for a sliding window mode version, which additionally outputs results for each possible sub-word.
+						This is needed by Andreas Bremges for a SNP analysis.
+					</p>
 				</html>
 			</element>
 		</structure>

@@ -1,1 +1,4 @@
 &quot;Algebras/Pfunc/alg_ali_pfunc.gap&quot; computes the partition function value for a candidate, where the input is an alignment of RNAs. As well as for <a href="?id=alg_ali_mfe.gap">Algebras/MFE/alg_ali_pfunc.gap</a> functions have to iterate through all alignment rows and RNA structures might change. We cannot keep energy and covariance as separate components, because it is unclear how to express zero covariance with Boltzmann's formula. Separation would cause problems with stochastic sampling.
+<br/>
+<br/>
+Since algebra functions are commonly used by another algebra (<a href="?id=alg_ali_outside_pfunc.gap">Algebras/Pfunc/alg_ali_outside_pfunc.gap</a>), they are outsourced in the file <a href="?id=algpart_pfunc_basic.gap">Algebras/Pfunc/algpart_ali_pfunc_basic.gap</a>.

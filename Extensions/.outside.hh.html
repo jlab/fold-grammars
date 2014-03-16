@@ -1,0 +1,22 @@
+<p>Outside-in computations are beyond the &quot;normal&quot; ADP concept. </p>
+<p>Unfortunately, ADP requires a single contiguous sub-word, for which intermediate results
+are computed. To make two sub-words (0, i) and (j, n) contiguous (0 &lt; i &lt; j &lt; n), we have to apply the following &quot;trick&quot;: we
+duplicate the input sequence but separate both copies with a special character, e. g.
+original input <code>ccaaagg</code> becomes <code>ccaaagg+ccaaagg</code>. Since
+everything is duplicated, sub-word (0, i) for the leading half is identical to (n+1, n+1+i).
+Concatenated with the trailing half (j, n) and the separator character (n, n + 1), we get
+the contiguous sub-word (j, n)+(n + 1, n + 1 + i), for which we can apply any ADP
+computation.</p>
+<p>The file &quot;outside.hh&quot; contains functions to realize the outside &quot;trick&quot;:
+<ul>
+<li><code>containsBase</code> is to check if a symbol is the input delimiter character.</li>
+<li><code>collfilter2</code> requires a sub-word from the duplicated string to be of the size of the original input sequence.</li>
+<li><code>shiftIndex</code> maps-back the border of a sub-word of the duplicated string to the original input sequence.</li>
+<li>The following code are basically C++ macros to alter the default output behavior of a Bellman's GAP program. Instead of an answer list, a PostScript file is generated, holding all base-pair probabilities in form of a Dot-Plot.</li>
+</ul>
+</p>
+
+<p> is a special data-type for TDM generation. It holds all rules of a grammar in an unique way, i.e. even if the generator adds twice the rules for a simple hairpin it will appear only once in the generated grammar. This is accomplished by using a two level hash. First level is for non-terminals, second level for alternatives of a non-terminal. </p>
+<p>For TDMs the rules must be indexed. We do so by using sub-shape strings, but have to convert <code>[</code> to <code>L</code> and <code>]</code> to <code>J</code> characters to fit GAP-L's requirements for valid non-terminal identifiers. Besides the two level hash, the sub-shape string is the second component of the <code>rules</code> data type. A special situation occurs for concatenating two level 1 sub-shapes. There interface might hold unpaired bases (<code>_</code>), but of course their concatenation must be <code>_</code> and not <code>__</code>. Ensuring this is the task of function <code>appendShape</code>.
+</p>
+<p>Please have a look at the application <a href="?id=Rapidshapes">RapidShapes</a>, to see TDMs in action.</p>

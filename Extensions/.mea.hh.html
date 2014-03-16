@@ -1,0 +1,8 @@
+The Maximum Expected Accuracy (MEA) secondary structure is the one holding the most base-pair probability weight as possible.
+It has to be computed in two Bellman's GAP runs:
+<ol>
+<li>Computation of all base-pair probabilities via an outside-in calculation.</li>
+<li>A Nussinov like determination of the structure with maximal number of base-pairs. Here, the weight is not a constant number, but the probability of a base-pair, computed in run 1).</li>
+</ol>
+The function <code>getBPprob</code> is to access base-pairs computed in run 1) from within run 2).
+Of course, code generation must be carefully orchestrated to combine both Bellman's GAP instances in the right way. See the <code>makefile</code> of the program RNAshapes: Misc/Applications/RNAshapes/makefile. 
