@@ -8,11 +8,11 @@ all:
 	$(MAKE) all_normal
 	$(MAKE) all_window
 
-all_normal: mfe subopt shapes probs sample eval outside pfall helper_consensus helper_sci
+all_normal: mfe subopt shapes probs sample eval outside mea pfall helper_consensus helper_sci
 	
 all_window: windowmodeflag = --window-mode
 all_window: current_windowmodesuffix = $(WINDOWSUFFIX)
-all_window: mfe subopt shapes probs sample pfall
+all_window: mfe subopt shapes probs sample mea pfall
 	
 install: install-lib install-program
 
