@@ -69,3 +69,10 @@ algebra alg_ali_outside_pfunc implements sig_outside_foldrna(alphabet = M_Char, 
 		return 1.0; 
 	}
 }
+
+algebra alg_ali_outside_bppm extends alg_ali_outside_pfunc {
+	double makeplot(Subsequence pos) { 
+		STOREPROBS(pos);
+		return 1.0; 
+	}
+}

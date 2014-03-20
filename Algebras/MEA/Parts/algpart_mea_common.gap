@@ -1,4 +1,3 @@
-algebra alg_mea implements sig_foldrna(alphabet = char, answer = double) {
   double sadd(Subsequence lb, double x) {
     return x;
   }
@@ -73,5 +72,4 @@ algebra alg_mea implements sig_foldrna(alphabet = char, answer = double) {
   double cadd_Pr_Pr(double le,double re) {return le+re;}
   double cadd_Pr(double le,double re) {return le+re;}
 
-}
 

@@ -59,6 +59,13 @@ algebra alg_ali_outside_pfunc_overdangle extends alg_ali_outside_pfunc {
 	}
 }
 
+algebra alg_ali_outside_bppm_overdangle extends alg_ali_outside_pfunc_overdangle {
+	double makeplot(Subsequence pos) { 
+		STOREPROBS(pos);
+		return 1.0; 
+	}
+}
+
 include "Grammars/gra_outside_overdangle.gap"
 
 

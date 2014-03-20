@@ -4,6 +4,7 @@ import "Extensions/mfesubopt.hh"
 import "Extensions/probabilities.hh"
 import "Extensions/typesRNAfolding.hh"
 import "Extensions/shapes.hh"
+import "Extensions/mea.hh"
 
 input rna
 
@@ -18,6 +19,7 @@ include "Algebras/DotBracket/alg_ali_dotBracket.gap"
 include "Algebras/Shapes/alg_ali_shapes.gap"
 include "Algebras/Shapes/alg_ali_hishapes.gap"
 include "Algebras/alg_ali_mis.gap"
+include "Algebras/MEA/alg_ali_mea.gap"
 include "Algebras/Pfunc/alg_ali_pfunc.gap"
 include "Algebras/alg_ali_consensus.gap"
 

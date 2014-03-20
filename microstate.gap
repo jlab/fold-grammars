@@ -19,7 +19,7 @@ algebra alg_count auto count;
 algebra alg_enum auto enum;
 
 include "Algebras/MFE/alg_mfe.gap"
-include "Algebras/alg_mea.gap"
+include "Algebras/MEA/alg_mea.gap"
 include "Algebras/Pfunc/alg_pfunc.gap"
 
 include "Grammars/gra_microstate.gap"

@@ -102,6 +102,25 @@ outside_%:
 			gapc_file="ali_outside_${*}.gap" \
 			gapc_binaryname="$@"; \
 	fi;
+	
+mea: mea_nodangle mea_overdangle mea_microstate
+mea_%:
+	if [ ${*} = "macrostate" ]; then \
+		echo "Sorry, we don't provide a outside version for macrostate yet"; \
+		continue; \
+	else \
+		sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
+		suffix=`echo "$${sOv}$${sMa}"`; \
+		$(MAKE) compile_mea \
+			gapc_product1="alg_ali_outside_bppm$${suffix}" \
+			gapc_product2="alg_ali_mea * (alg_ali_dotBracket * alg_ali_mfe$${suffix} * alg_ali_shapeX)" \
+			gapc_options1="$(windowmodeflag)" \
+			gapc_options2="--backtrace $(windowmodeflag)" \
+			gapc_file1="ali_outside_${*}.gap" \
+			gapc_file2="ali_${*}.gap" \
+			gapc_binaryname="$@$(current_windowmodesuffix)"; \
+	fi;
+
 
 helper_consensus: helper_consensus_consensus helper_consensus_mis
 helper_consensus_%:
