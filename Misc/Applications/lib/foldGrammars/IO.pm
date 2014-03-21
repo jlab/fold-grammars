@@ -67,6 +67,9 @@ sub parse {
 			if ((($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT)) && ($line =~ m/^\( \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) , \( \( (.+?) , (.+?) \) , (.+?) \) \)$/)) {
 				#( ( -2543 = energy: -1525 + covar.: -1018 ) , ( ( (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))). , [[][][]] ) , 1.12055e+08 ) )
 				($energy, $part_energy, $part_covar, $structure, $shape, $structureProb) = ($1/100,$2/100,$3/100,$4,$5,$6);
+			}elsif (($settings->{mode} eq $Settings::MODE_MEA) && ($line =~ m/^\( (.+?) , \( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \) \)$/)) {
+				#( 19.8974 , ( ( (((((((..(((..((...))....))).(((((.......))))).....(((((.......)))))))))))). , ( -2859 = energy: -1833 + covar.: -1026 ) ) , [[][][]] ) )
+				($energy, $part_energy, $part_covar, $structure, $shape, $structureProb) = ($3/100,$4/100,$5/100,$2,$6,$1);
 			} elsif (($settings->{mode} eq $Settings::MODE_SHAPES) && ($line =~ m/\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , \( (.+?) , (.+?) \) \)$/)) {
 				#( ( [[][][]] , ( -2543 = energy: -1525 + covar.: -1018 ) ) , ( (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))). , 1.12055e+08 ) )
 				($shape, $energy, $part_energy, $part_covar, $structure, $structureProb) = ($1,$2/100,$3/100,$4/100,$5,$6);

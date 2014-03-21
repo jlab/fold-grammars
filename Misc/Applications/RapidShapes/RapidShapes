@@ -67,7 +67,7 @@ foreach my $param (keys %PARAM) {
 	%help
 );
 
-checkParameters($settings);
+checkParameters($settings, \%PARAM);
 
 if (defined $settings->{'cluster'}) {
 	Utils::applyFunctionToFastaFile($settings->{'cluster'}, \&doComputation, $settings);
@@ -102,7 +102,7 @@ if (defined $settings->{'cluster'}) {
 }
 
 sub checkParameters {
-	my ($settings) = @_;
+	my ($settings, $refHash_params) = @_;
 	
 	my $diePrefix = "wrong command line parameter:\n  ";
 	
@@ -114,7 +114,7 @@ sub checkParameters {
 			push @additionalBins, 'tdm_'.$grammar.'_'.$level;
 		}
 	}
-	Utils::checkBinaryPresents($settings, $diePrefix, [$Settings::MODE_CAST], \@additionalBins);
+	Utils::checkBinaryPresents($settings, $diePrefix, [$Settings::MODE_CAST], \@additionalBins, $refHash_params);
 
 	die $diePrefix."the parameter file you specified could not be found.\n" if ((defined $settings->{'param'}) && (not -e $settings->{'param'}));
 	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);

@@ -54,7 +54,7 @@ foreach my $param (keys %PARAM) {
 );
 
 
-checkParameters($settings);
+checkParameters($settings, \%PARAM);
 
 usage() if (defined $settings->{'help'}); #user asks for help --> print usage and die
 our $inputIndex = 0;
@@ -321,12 +321,12 @@ sub buildCommand {
 }
 
 sub checkParameters {
-	my ($settings) = @_;
+	my ($settings, $refHash_params) = @_;
 	
 	my $diePrefix = "wrong command line parameter:\n  ";
 	
 	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
-	Utils::checkBinaryPresents($settings, $diePrefix, [$Settings::MODE_KIF], ['knotted', 'nested']);
+	Utils::checkBinaryPresents($settings, $diePrefix, [$Settings::MODE_KIF], ['knotted', 'nested'], $refHash_params);
 
 	die $diePrefix."--".$PARAM{'windowsize'}->{key}." must be a positive integer!\n" if ((defined $settings->{'windowsize'}) && ($settings->{'windowsize'} < 1));
 	die $diePrefix."--".$PARAM{'windowsize'}->{key}." is smaller than --".$PARAM{'windowincrement'}->{key}." !\n" if ((defined $settings->{'windowsize'}) && ($settings->{'windowsize'} < $settings->{'windowincrement'}));

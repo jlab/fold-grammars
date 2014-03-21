@@ -550,7 +550,7 @@ sub automatedParameterChecks {
 }
 
 sub checkBinaryPresents {
-	my ($refHash_settings, $diePrefix, $refList_omitModes, $refList_additionalBinaries) = @_;
+	my ($refHash_settings, $diePrefix, $refList_omitModes, $refList_additionalBinaries, $refHash_params) = @_;
 	
 	my ($programPath, $programName) = @{Utils::separateDirAndFile($0)};
 
@@ -572,7 +572,7 @@ sub checkBinaryPresents {
 	}
 	$binName .= '_'.$refHash_settings->{'grammar'} if (exists $refHash_settings->{'grammar'});
 	if (not Utils::contains($refList_omitModes, $refHash_settings->{mode})) {
-		die $diePrefix." could not find Bellman's GAP binary '".$binName."' for mode ".$refHash_settings->{'mode'}."!\n" if (not -e $binName);
+		die $diePrefix." could not find Bellman's GAP binary '".$binName."' for mode ".$refHash_settings->{'mode'}."!\n   Maybe you did not provide the correct path to the Bellman's GAP binaries.\n   You can do so by setting option '--".$refHash_params->{binarypath}->{key}."'\n" if (not -e $binName);
 		die $diePrefix." could not find window mode for Bellman's GAP binary '".$binName."_window' for mode ".$refHash_settings->{'mode'}."!\n" if ((not -e $binName."_window") && (defined $refHash_settings->{'windowsize'}));
 	}
 	
