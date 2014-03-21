@@ -18,7 +18,7 @@ use foldGrammars::Settings;
 use Pseudoknots;
 
 my ($mode, $dirNames) = @ARGV;
-die "usage: perl $0 <mode: bp | stem | type> <cluster OUT dirs>\n" if ((@ARGV < 2) || (($mode ne 'bp') && ($mode ne 'stem') && ($mode ne 'type')));
+die "usage: perl $0 <mode: bp | stem | type | mcc | cedric> <cluster OUT dirs>\n" if ((@ARGV < 2) || (($mode ne 'bp') && ($mode ne 'stem') && ($mode ne 'type') && ($mode ne 'mcc') && ($mode ne 'cedric')));
 shift @ARGV;
 
 my @files = ();
@@ -81,6 +81,7 @@ sub analyse_bpdistance {
 				}
 			}
 		}
+
 		print STDERR " done.\n";
 	
 		Storable::nstore([\%all_distances, \%KH_distances], $storeFilename);
@@ -105,7 +106,7 @@ sub analyse_bpdistance {
 			}
 		}
 	}
-	
+
 	my ($name) = ($storeFilename =~ m|Cluster_(.+?).fasta/|);
 	my $numKHs = -1;
 	$numKHs = scalar(@Pseudoknots::KISSINGHAIRPINS_pseudobase) if ($name =~ m/pseudobase/i);

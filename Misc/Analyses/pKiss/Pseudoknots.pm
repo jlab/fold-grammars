@@ -120,6 +120,10 @@ sub drawHistogram {
 		}
 	}
 
+	my $span = getSpan($minValue,$maxValue);
+	my $spanLL = getSpan($minValueLL,$maxValueLL);
+	my $spanUR = getSpan($minValueUR,$maxValueUR);
+
 	my $TEX = '\setlength{\arrayrulewidth}{10pt} % set width of table lines'."\n".'\arrayrulecolor{white} %set color of table lines'."\n";
 	my $cellType = 'p{'.$texCellSize.'}';
 	$TEX .= '\begin{tabular}{rl'.$cellType.'|'.($cellType x(@{$refList_ordering}-1)).'@{}m{0cm}@{}}'."\n";
@@ -132,21 +136,21 @@ sub drawHistogram {
 	for (my $i = 0; $i < @{$refList_ordering}; $i++) {
 		$TEX .= $refList_ordering->[$i]." &  ";
 		for (my $j = 0; $j < @{$refList_ordering}; $j++) {
-			my $intensity = sprintf("%i", (1-$refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} / ($maxValue-$minValue)) * 255);
+			my $intensity = sprintf("%i", (1-($refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]}-$minValue) / $span) * 255);
 			my $texColor = '';
 			my $texTextColor = '';
 			if ($isTwo) {
 				if ($i > $j) {
-					if (($maxValueLL - $minValueLL) != 0) {
-						$intensity = sprintf("%i", (1-$refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} / ($maxValueLL-$minValueLL)) * 100);
+					if ($spanLL != 0) {
+						$intensity = sprintf("%i", (1-($refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]}-$minValueLL) / $spanLL) * 100);
 					} else {
 						$intensity = 0;
 					}
 					$texColor = '[RGB]{'.join(',',@{Utils::hsl2rgb(100,1.0,$intensity/100)}).'}';
 					$texTextColor = '[RGB]{255,255,255}'; $texTextColor = '[RGB]{0,0,0}' if ($intensity > 0.5 * 100);
 				} else {
-					if (($maxValueUR - $minValueUR) != 0) {
-						$intensity = sprintf("%i", (1-$refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]} / ($maxValueUR-$minValueUR)) * 100);
+					if ($spanUR != 0) {
+						$intensity = sprintf("%i", (1-($refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]}-$minValueUR) / $spanUR) * 100);
 					} else {
 						$intensity = 0;
 					}
@@ -154,7 +158,9 @@ sub drawHistogram {
 					$texTextColor = '[RGB]{255,255,255}'; $texTextColor = '[RGB]{0,0,0}' if ($intensity > 0.5 * 100);
 				}
 			}
-			$TEX .= " & \\centering \\cellcolor".$texColor.'\\textcolor'.$texTextColor.'{\\textsf{\\textbf{'.$refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]}.'}}}';
+			my $value = $refHash_data->{$refList_ordering->[$i]}->{$refList_ordering->[$j]};
+			#~ $value = sprintf("%.1f", $value);
+			$TEX .= " & \\centering \\cellcolor".$texColor.'\\textcolor'.$texTextColor.'{\\textsf{\\textbf{'.$value.'}}}';
 		}
 		$TEX .= ' & \\\\ ['.$texCellSize.']';
 		if ($refList_ordering->[$i] eq 'Truth') {
@@ -167,6 +173,12 @@ sub drawHistogram {
 	#~ $TEX .= '\caption{Dataset: "'.$refHash_optionalInfos->{databasename}.'" with '.$refHash_optionalInfos->{numSequences}.' sequences (yellowish), '.$refHash_optionalInfos->{numKHs}.' of them contain kissing hairpins (greenish). Distance mode is ``'.$refHash_optionalInfos->{mode}.'\'\'. '.$refHash_optionalInfos->{info}.'}.'."\n";
 		
 	return $TEX;
+}
+
+sub getSpan {
+	my ($a, $b) = @_;
+	($a, $b) = ($b, $a) if ($a > $b);
+	return abs($b - $a);
 }
 
 sub readResults {
@@ -207,6 +219,10 @@ sub getBPdistances {
 				$distances_bp{$progA}->{$progB} = Structure::getStemDistance($data{programs}->{$progA}->{stems}, $data{programs}->{$progB}->{stems})->[0]->{distance};
 			} elsif ($mode eq 'type') {
 				$distances_bp{$progA}->{$progB} = Structure::getPKtypeDistance($data{programs}->{$progA}->{stems}, $data{programs}->{$progB}->{stems});
+			} elsif ($mode eq 'mcc') {
+				$distances_bp{$progA}->{$progB} = Structure::getMCCdistance($data{programs}->{$progA}->{structure}, $data{programs}->{$progB}->{structure});
+			} elsif ($mode eq 'cedriv') {
+				$distances_bp{$progA}->{$progB} = Structure::getCedricdistance($data{programs}->{$progA}->{structure}, $data{programs}->{$progB}->{structure});
 			}
 			#~ print "\t".$distances_bp{$progA}->{$progB};
 			#~ print Dumper $distances_bp{$progA}->{$progB};

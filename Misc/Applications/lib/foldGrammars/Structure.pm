@@ -595,6 +595,103 @@ sub getBPdistance {
 	return (scalar(keys(%pairsA)) + scalar(keys(%pairsB)))/1;
 }
 
+sub getMCCdistance {
+	#A = reference, B = prediction
+	my ($structureA, $structureB) = @_;
+	
+	my %pairsA = %{Structure::getPairList($structureA)};
+	my %pairsB = %{Structure::getPairList($structureB)};
+
+	my $TP = 0;
+	foreach my $openA (keys(%pairsA)) {
+		if ((exists $pairsB{$openA}) && ($pairsB{$openA} == $pairsA{$openA})) {
+			$TP++;
+		}
+	}
+	
+	my $FN = 0;
+	foreach my $openA (keys(%pairsA)) {
+		if ((not exists $pairsB{$openA}) || ($pairsB{$openA} != $pairsA{$openA})) {
+			$FN++;
+		}
+	}
+	my $FP = 0;
+	foreach my $openB (keys(%pairsB)) {
+		if ((not exists $pairsA{$openB}) || ($pairsA{$openB} != $pairsB{$openB})) {
+			$FP++;
+		}
+	}
+	
+	my $TN = 0;
+	for (my $i = 0; $i < length($structureA); $i++) {
+		if ((substr($structureA, $i, 1) eq '.') && (substr($structureB, $i, 1) eq '.')) {
+			$TN++;
+		}
+	}
+	
+	my $denominator = ($TP+$FP)*($TP+$FN)*($TN+$FP)*($TN+$FN);
+	if ($denominator != 0) {
+		return ($TP*$TN-$FP*$FN)/sqrt($denominator);
+	} else {
+		return 0;
+	}
+}
+
+sub getCedricdistance {
+#The mesure I used for Mattews correlation :
+#
+#Sensitivity=#Correctly Predicted Base-Pairs/#Base-Pairs in the Reference 
+#Structure;
+#
+#PPV is the ratio of number of correctly predicted base-pairs to the number of 
+#base-pairs in the predicted structure:
+#
+#PPV=#Correctly Predicted Base-Pairs/#Base-Pairs in the Predicted Structure;
+#
+#Correlation=SQRT(PPV*Sensitivity)
+#
+#Regards,
+
+	#A = reference, B = prediction
+	my ($structureA, $structureB) = @_;
+	
+	my %pairsA = %{Structure::getPairList($structureA)};
+	my %pairsB = %{Structure::getPairList($structureB)};
+
+	my $TP = 0;
+	foreach my $openA (keys(%pairsA)) {
+		if ((exists $pairsB{$openA}) && ($pairsB{$openA} == $pairsA{$openA})) {
+			$TP++;
+		}
+	}
+	
+	my $FN = 0;
+	foreach my $openA (keys(%pairsA)) {
+		if ((not exists $pairsB{$openA}) || ($pairsB{$openA} != $pairsA{$openA})) {
+			$FN++;
+		}
+	}
+	my $FP = 0;
+	foreach my $openB (keys(%pairsB)) {
+		if ((not exists $pairsA{$openB}) || ($pairsA{$openB} != $pairsB{$openB})) {
+			$FP++;
+		}
+	}
+	
+	my $TN = 0;
+	for (my $i = 0; $i < length($structureA); $i++) {
+		if ((substr($structureA, $i, 1) eq '.') && (substr($structureB, $i, 1) eq '.')) {
+			$TN++;
+		}
+	}
+	
+	my $sensitivity = 0;
+	$sensitivity = $TP / scalar(keys(%pairsA)) if (scalar(keys(%pairsA)) > 0);
+	my $ppv = 0;
+	$ppv = $TP / scalar(keys(%pairsB)) if (scalar(keys(%pairsB)) > 0);
+	return sqrt($ppv*$sensitivity);
+}
+
 sub getPKtypeDistance {
 	my ($structureA, $structureB) = @_;
 	my $typeA = Structure::getPKtype($structureA)->{meta};

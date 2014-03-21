@@ -657,9 +657,9 @@ sub hsl2rgb {
 	#http://www.rapidtables.com/convert/color/hsl-to-rgb.htm
 	my ($h, $s, $l) = @_;
 	
-	die "0 <= \$h < 360 not satisfied\n" if ($h < 0 || $h >= 360);
-	die "0 <= \$s <= 1 not satisfied\n" if ($s < 0 || $s > 1);
-	die "0 <= \$l <= 1 not satisfied\n" if ($l < 0 || $l > 1);
+	die "Utils::hsl2rgb: 0 <= \$h < 360 not satisfied\n" if ($h < 0 || $h >= 360);
+	die "Utils::hsl2rgb: 0 <= \$s <= 1 not satisfied\n" if ($s < 0 || $s > 1);
+	die "Utils::hsl2rgb: 0 <= \$l <= 1 not satisfied\n" if ($l < 0 || $l > 1);
 
 	my $C = (1 - abs(2*$l-1)) * $s;
 	my $X = $C * (1 - abs(fmod(($h / 60), 2) - 1));
