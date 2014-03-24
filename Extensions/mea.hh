@@ -11,7 +11,7 @@ inline double getBPprob(const TUSubsequence &leftBase, const TUSubsequence &righ
 //for alignments, it is a bit more complicated, because the duplication has to be applied row-wise not for the complete original input
 inline std::pair<const char*, unsigned int> duplicateInput(std::pair<const char*, unsigned int> origInputPair) {
 	//copy original input into a local variable of the right size
-		char *origInput = new char[origInputPair.second];
+		char *origInput = new char[origInputPair.second+1];
 		*origInput = 0;
 		std::strcat(origInput, origInputPair.first);
     //delimit input by # signs (necessary for alignments)
@@ -34,7 +34,7 @@ inline std::pair<const char*, unsigned int> duplicateInput(std::pair<const char*
 		if (numberRows > 1) {
 			doubleInputSize += numberRows; //size is extended by one #-delimiter per aligment row
 		}
-		char *doubleInput = new char[doubleInputSize];
+		char *doubleInput = new char[doubleInputSize+1];
 	//construct duplicated input
 		*doubleInput = 0;
 		while(alignmentRows) {
