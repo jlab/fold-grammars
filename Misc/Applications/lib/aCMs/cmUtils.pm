@@ -656,7 +656,13 @@ sub generateHaskellProbMaps {
 	$HAS .= ">                            Just a -> case (Map.lookup sym a) of\n";
 	$HAS .= ">                                            Nothing -> \"0\"\n";
 	$HAS .= ">                                            Just a -> a\n\n";
-	
+
+	$HAS .= "> getSeqCons :: String -> String\n";
+	$HAS .= "> getSeqCons nt = case (Map.lookup nt seqCons) of\n";
+	$HAS .= ">                       Nothing -> \"..\"\n";
+	$HAS .= ">                       Just a -> a\n\n";
+
+
 	$HAS .= "> transitions :: Map.Map String String\n";
 	$HAS .= "> transitions = Map.fromList [\n";
 	foreach my $transition (sort {getStateNr($a) <=> getStateNr($b)} keys(%{$refHash_transitions})) {
@@ -678,6 +684,18 @@ sub generateHaskellProbMaps {
 	}
 	$HAS = substr($HAS, 0, -2)."\n";
 	$HAS .= ">  ]\n";
+
+	$HAS .= "> seqCons :: Map.Map String String\n";
+	$HAS .= "> seqCons = Map.fromList [\n";
+	foreach my $state (sort {getStateNr($a) <=> getStateNr($b)} keys(%{$refHash_emissions})) {
+		my @orderedChars = sort {$refHash_emissions->{$state}->{$b} <=> $refHash_emissions->{$state}->{$a}} keys(%{$refHash_emissions->{$state}});
+		my $symbol = $orderedChars[0];
+		$symbol = ".." if ((@orderedChars > 1) && ($refHash_emissions->{$state}->{$orderedChars[1]} == $refHash_emissions->{$state}->{$orderedChars[0]}));
+		$HAS .= ">    (\"".$state."\", \"".$symbol."\"),\n";
+	}
+	$HAS = substr($HAS, 0, -2)."\n";
+	$HAS .= ">  ]\n\n";
+	
 
 	return $HAS;
 }

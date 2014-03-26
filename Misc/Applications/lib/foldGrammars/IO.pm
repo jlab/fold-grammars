@@ -222,6 +222,68 @@ sub parse {
 	output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll);
 }
 
+sub parse_acm {
+	my $spacer = 10;
+	my $rowlen = 20;
+	
+	my ($result, $input, $settings, $inputIndex) = @_;
+	
+	my @alignments = ();
+	foreach my $line (split(m/\r?\n/, $result)) {
+		my ($acm_score, $acm_model, $acm_sequence) = (undef, undef, undef);
+		if ($line =~ m/^Answer:\s*$/) {
+			#answer for complete input, must do nothing because window size is already correctly initialized
+		} else {
+			#( -30.8189 , (<<<<<<***>>>>>>***----------, acugguugagucguagucugaugcugac) )
+			if ($line =~ m/\( (.+?) , \((.+?), (.+?), (.+?)\) \)/) {
+				push @alignments, {score => $1, model => $2, sequence => $3, consensus => $4};
+			} else {
+				die "unparsable line for aCMs: '$line'";
+			}
+		}
+	}
+	
+	print ">".$input->{header}."\n\n";
+	print "  Plus strand results:\n\n";
+	my $GC = $input->{sequence};
+	$GC =~ s/a|u//gi;
+	$GC = sprintf("%i",length($GC)/length($input->{sequence})*100);
+	foreach my $refHash_ali (sort {$b->{score} <=> $a->{score}} @alignments) {
+		my $modelLen = $refHash_ali->{consensus};
+		$modelLen =~ s/\.//gi;
+		$modelLen = length($modelLen);
+		print " Query 1 = ".$modelLen.", Target = 1 - ".length($refHash_ali->{sequence})."\n";
+		print " Score = ".$refHash_ali->{score}.", GC = ".$GC."\n\n";
+		
+		my ($posModel, $posSequence, $posConsensus) = (1,1,1);
+		while (1) {
+			my ($chunk_model, $rest_model) = ($refHash_ali->{model} =~ m/^(.{1,$rowlen})(.+?)$/);
+			my ($chunk_sequence, $rest_sequence) = ($refHash_ali->{sequence} =~ m/^(.{1,$rowlen})(.+?)$/);
+			my ($chunk_consensus, $rest_consensus) = ($refHash_ali->{consensus} =~ m/^(.{1,$rowlen})(.+?)$/);
+			$refHash_ali->{model} = $rest_model;
+			$refHash_ali->{sequence} = $rest_sequence;
+			$refHash_ali->{consensus} = $rest_consensus;
+			
+			last if ((not defined $chunk_model) || (not defined $chunk_sequence) || (not defined $chunk_consensus));
+			
+			print "".(' ' x ($spacer))." ".$chunk_model."\n";
+			print "".(' ' x ($spacer-length($posConsensus))).$posConsensus." ".$chunk_consensus." ".($posConsensus+length($chunk_consensus)-1)."\n";
+			print "".(' ' x ($spacer))." ".(' ' x $rowlen)."\n";
+			print "".(' ' x ($spacer-length($posSequence))).$posSequence." ".$chunk_sequence." ".($posSequence+length($chunk_sequence)-1)."\n";
+			print "".(' ' x $spacer)."\n";
+			
+			$posModel += $rowlen;
+			$posSequence += $rowlen;
+			$posConsensus += $rowlen;
+		}
+		print "\n";
+	}
+	
+	#~ print Dumper \@alignments;
+	die;
+	#~ output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll);
+
+}
 sub output {
 	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex, $refHash_pfall) = @_;
 
