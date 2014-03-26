@@ -19,12 +19,11 @@ use Getopt::Long;
 use foldGrammars::Utils;
 use foldGrammars::CMs;
 use POSIX 'isatty';
-use lib "Lib";
 #~ use Priors;
-use cmUtils;
-use Nullmodel;
-use Weights;
-use EM;
+use aCMs::cmUtils;
+use aCMs::Nullmodel;
+use aCMs::Weights;
+use aCMs::EM;
 
 our @ALLMODES = ($Settings::MODE_ACM);
 @References::ORDER = ();
@@ -294,7 +293,7 @@ sub checkParameters {
 
 	my $diePrefix = "wrong command line parameter:\n  ";
 
-	die $diePrefix."--".$PARAM{'prior'}->{key}." file '".$settings->{'prior'}."' does not exists.\n" if ((defined $settings->{'prior'}) && (not -e $settings->{'prior'}));
+	die $diePrefix."--".$PARAM{'prior'}->{key}.": file does not exists. You can provide the filename to a prior file via the parameter '--".$PARAM{'prior'}->{key}."'.\n" if ((not defined $settings->{'prior'}) || (not -e $settings->{'prior'}));
 	die $diePrefix."--".$PARAM{'null'}->{key}." file '".$settings->{'null'}."' does not exists.\n" if ((defined $settings->{'null'}) && (not -e $settings->{'null'}));
 	
 	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);

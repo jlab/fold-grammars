@@ -34,6 +34,12 @@ Build: $(HASKELLDIR)/mcmbuild.lhs $(HASKELLDIR)/Lib/ADPCombinators.lhs $(HASKELL
 install: install-lib install-program
 	$(INSTALL) -m 644 nearzero_npo.priors $(PREFIX)/share;
 	$(INSTALL) -m 644 nilPairOpen.priors $(PREFIX)/share;
+	if [ ! -d "$(PREFIX)/lib" ]; then $(INSTALL) -d $(PREFIX)/lib; fi;
+	$(INSTALL) -d $(PREFIX)/lib/aCMs
+	for file in aCMs/*; do \
+		$(INSTALL) -m 644 $$file $(PREFIX)/lib/aCMs; \
+	done;
+
 	
 install-program:
 	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
