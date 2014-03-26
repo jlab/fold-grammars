@@ -1,0 +1,181 @@
+#!/usr/bin/env perl
+
+my $PROGID = 'acmsearch';
+
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+
+use lib getPath($0)."../lib/";
+
+use strict;
+use warnings;
+use Data::Dumper;
+use Getopt::Long;
+use foldGrammars::Utils;
+use foldGrammars::IO;
+use POSIX 'isatty';
+
+our @ALLMODES = ($Settings::MODE_ACM);
+@References::ORDER = ();
+
+my %PARAM;
+$PARAM{mode} = {modes => \@ALLMODES, key => 'mode', type => 's', default => $Settings::MODE_ACM, info => "Select the computation mode. Available modes are \"".join('", "', @ALLMODES)."\". Omit the ticks on input.\nDefault is \"@(DEFAULT)\"."};
+$PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
+$PARAM{verbose} = {modes => \@ALLMODES, key => 'verbose', default => 0, type => 'i', info => "Prints the actual command for Bellman's GAP binary."};
+
+my $settings = {};
+foreach my $param (keys %PARAM) {
+	$settings->{$param} = $PARAM{$param}->{default};
+}
+my %help = ();
+foreach my $param (keys %PARAM) {
+	my $optionSec = $PARAM{$param}->{key};
+	$optionSec .= "=".$PARAM{$param}->{type} if (exists $PARAM{$param}->{type});
+	$help{$optionSec} = \$settings->{$param};
+}
+&GetOptions( 	
+	%help
+);
+
+checkParameters($settings, \%PARAM);
+
+usage() if (defined $settings->{'help'}); #user asks for help --> print usage and die
+our $inputIndex = 0;
+
+if (@ARGV == 0) {
+	#input not given via command line parameter
+	if (isatty(*STDIN)) {
+		#we are somehow in an interactive mode
+		#expecting two inputs, first sequence, second structure
+		print "Please give me the name of the acmsearch binary.\n";
+		my $acmsearchBin = <STDIN>; chomp $acmsearchBin;
+		die "'$acmsearchBin' does not exists, please check the name or path of your acmsearch binary!\n" if (! -e $acmsearchBin);
+		$settings->{acmsearchBinary} = $acmsearchBin;
+		print "Second, I need an plain RNA sequence that should be search:\n";
+		my $inputSequence = <STDIN>; chomp $inputSequence;
+		processInput({sequence => $inputSequence, header => "unnamed sequence"}, $settings);
+	} else {
+		#input must be delivered via pipe
+		die "You have to provide first a acmsearch binary and secondly an RNA sequence. Unfortunately, I cannot them distinguish them if you deliver input via PIPE. Please choose another way to input your information.\n";
+	}
+} elsif (@ARGV == 1) {
+	my $acmsearchBin = $ARGV[0];
+	die "'$acmsearchBin' does not exists, please check the name or path of your acmsearch binary!\n" if (! -e $acmsearchBin);
+	$settings->{acmsearchBinary} = $acmsearchBin;
+	if (isatty(*STDIN)) {
+		print "You already provided an acmsearch binary. To start the search, I need an plain RNA sequence that should be search for:\n";
+		my $inputSequence = <STDIN>; chomp $inputSequence;
+		processInput({sequence => $inputSequence, header => "unnamed sequence"}, $settings);
+	} else {
+		processInput(\*STDIN, $settings);
+	}
+} elsif (@ARGV == 2) {
+	my $acmsearchBin = $ARGV[0];
+	die "'$acmsearchBin' does not exists, please check the name or path of your acmsearch binary!\n" if (! -e $acmsearchBin);
+	$settings->{acmsearchBinary} = $acmsearchBin;
+	my $inputSequence = $ARGV[1];
+	if (-e $inputSequence) { #especially for BiBiServ: structure must be delivered as a filename, thus read the file to get the structure.
+		processInput($inputSequence, $settings);
+	} else {
+		processInput({sequence => $ARGV[1], header => "unnamed sequence"}, $settings);
+	}
+} else {
+	print STDERR "You gave me too many inputs. Please ask for help, via \"".$Settings::PROGINFOS{$PROGID}->{name}." --".$PARAM{help}->{key}."\".\n";
+	exit(1);
+}
+
+sub processInput {
+	my ($input, $refHash_settings) = @_;
+	
+	if (ref($input) =~ m/HASH/) {
+		#input is a sequence
+		doComputation($input, $refHash_settings);
+	} elsif (ref($input) =~ m/GLOB/) {
+		#input is STDIN
+		Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $refHash_settings);
+	} else {
+		#input is a filename
+		die "The file '$input' does not exist!\n" if (not -e $input);
+		Utils::applyFunctionToFastaFile($input, \&doComputation, $refHash_settings);
+	}
+}
+
+sub doComputation {
+	my $VERBOSE = 1;
+	my $taskCount = 1;
+	
+	my ($refHash_sequence, $settings) = @_;
+
+	if ($refHash_sequence->{sequence} !~ m/^\s*((A|C|G|U|T)+)\s*$/i) {
+		print STDERR "sequence '".$refHash_sequence->{header}."' has been skipped, due to non RNA letter. Only A,C,G,U,T,a,c,g,u,t are allowed.";
+	}
+	my $seq = $refHash_sequence->{sequence};
+	$seq =~ s/t/u/gi;
+
+	$settings->{acmsearchBinary} = './'.$settings->{acmsearchBinary} if (substr($settings->{acmsearchBinary}, 0, 1) ne '/');
+
+	my $inputFile = Utils::writeInputToTempfile($seq);
+	my $command = $settings->{acmsearchBinary}." -f ".$inputFile;
+	print "Actual call was: $command\n" if ($settings->{verbose});
+	my $result = qx($command 2>&1);
+	Utils::qxDieMessage($command, $?);
+	unlink $inputFile if (!$settings->{verbose});
+
+	IO::parse_acm($result, $refHash_sequence, $settings, $inputIndex);
+		
+	return undef;
+}
+
+sub buildCommand {
+	my ($settings, $refHash_sequence, $task) = @_;
+
+	my $cmd = "";
+	$cmd .= $settings->{'binarypath'};
+	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
+	$cmd .= $settings->{'binaryprefix'};
+	if ($task eq 'trainbuild') {
+		$cmd .= 'train';
+		$cmd .= ' '.$refHash_sequence->{sequence};
+	}
+	
+	return $cmd;
+}
+
+sub checkParameters {
+	my ($settings, $refHash_params) = @_;
+
+}
+
+sub usage {
+	my ($settings) = @_;
+
+my $HELP = <<EOF;
+# $Settings::PROGINFOS{$PROGID}->{name}: Perform an RNA homology search
+#            version $Settings::PROGINFOS{$PROGID}->{version} ($Settings::PROGINFOS{$PROGID}->{date})
+#            Stefan Janssen (bibi-help\@techfak.uni-bielefeld.de)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+USAGE: 
+perl $Settings::PROGINFOS{$PROGID}->{name} <acmsearch binary> <RNA fasta file>
+
+EOF
+;
+	
+	my @paramGroups = ();
+	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['help','verbose']};
+	foreach my $refHash_group (@paramGroups) {
+		$HELP .= $refHash_group->{name}.":\n";
+		for my $par (@{$refHash_group->{elements}}) {
+			$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
+		}
+	}
+	
+	print $HELP;
+	exit(0);
+}
+
