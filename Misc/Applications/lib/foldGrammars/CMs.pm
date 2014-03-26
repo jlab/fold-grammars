@@ -30,13 +30,13 @@ sub applyFunctionToStockholmFile {
 		while (my $line = <$FH>) {
 			chomp ($line);
 			if ($line =~ m/^#/) {
-				if ($line =~ m/^#=GF\s+(\w{2})\s+(.*)/) {
+				if ($line =~ m/^#=GF\s+(\w{2})\s+(.*?)\s*\r?$/) {
 					if (not exists $GFdescriptions{$1}) {
 						$GFdescriptions{$1} = $2;
 					} else {
 						$GFdescriptions{$1} .= "\n".$2;
 					}
-				} elsif ($line =~ m/^#=GC\s+(.+?)\s+(.*)/) {
+				} elsif ($line =~ m/^#=GC\s+(.+?)\s+(.*?)\s*\r?$/) {
 					my ($tag, $value) = ($1, $2);
 					#~ if (not exists $GCinformation{$1}) {
 						$GCinformation{$tag} .= $value;

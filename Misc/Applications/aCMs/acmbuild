@@ -158,7 +158,7 @@ sub doComputation {
 			open (OUT, "> ".$gapfilename) || die "cannot write gap source code to '$gapfilename': $!";
 				print OUT $trainGAP;
 			close (OUT);
-			my $cmd = "cd $tmpDir && $Settings::BINARIES{gapc} --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc && make -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\" && rm -f string.*";
+			my $cmd = "cd $tmpDir && $Settings::BINARIES{gapc} --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc && make -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I ".getPath($0)."../include/\" && rm -f string.*";
 			qx($cmd);
 			Utils::qxDieMessage($cmd, $?);
 			print STDERR " done.\n" if ($VERBOSE);
@@ -247,7 +247,6 @@ sub doComputation {
 					print PROBS cmUtils::generateHaskellProbMaps(\%weighted_transitions, \%weighted_emissions, $refHash_family->{familyname});
 				close (PROBS);
 				my $command = $Settings::BINARIES{ghc}." -tmpdir ".$tmpDir."/ -O -fglasgow-exts -odir ".$tmpDir." -i".$tmpDir.":".getPath($0)."../lib/aCMs/ -hidir ".$tmpDir." --make ".getPath($0)."../lib/aCMs/mcmbuild.lhs -o ".$buildBinary;
-				print Dumper $command;
 				system($command);
 			}
 			my $cmd = "$buildBinary $concatConsensi";
@@ -270,7 +269,7 @@ sub doComputation {
 		qx(rm -rf $tmpDir) if (!$settings->{verbose});
 		
 	$exampleSequence =~ s/\.//g;
-	print STDERR "sucessfully compiled '$targetBinary'\nuse it like \"$targetBinary ".uc($exampleSequence)."\"\n" if ($VERBOSE);
+	print "sucessfully compiled '$targetBinary'\nuse it like \"$targetBinary ".uc($exampleSequence)."\"\n" if ($VERBOSE);
 		
 	return undef;
 }
