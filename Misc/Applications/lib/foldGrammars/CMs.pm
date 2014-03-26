@@ -61,7 +61,7 @@ sub applyFunctionToStockholmFile {
 				%originalSSconsOrdering = ();
 				$sequenceIndex = 0;
 			} elsif (length($line) > 0) {
-				if ($line =~ m|^(.+?)\s+(\S+)s*$|) {
+				if ($line =~ m|^(.+?)\s+(\S+)s*\r?\s*$|) {
 					$originalSequenceOrdering{$1} = $sequenceIndex++ if (not exists $sequences{$1});
 					$sequences{$1} .= $2;
 				}
