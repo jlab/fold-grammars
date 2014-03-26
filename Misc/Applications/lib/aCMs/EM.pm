@@ -2,9 +2,9 @@
 
 use strict;
 use warnings;
-use Priors;
-use Weights;
-use Counts;
+use aCMs::Priors;
+use aCMs::Weights;
+use aCMs::Counts;
 
 package EM;
 my $VERSION='1.0';

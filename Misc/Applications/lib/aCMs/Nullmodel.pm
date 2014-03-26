@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Priors;
+use aCMs::Priors;
 
 package Nullmodel;
 my $VERSION='1.0';

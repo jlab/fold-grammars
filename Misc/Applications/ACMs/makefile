@@ -1,7 +1,7 @@
 BASEDIR=../../../
 include $(BASEDIR)/makefile
 
-PREFIX ?= $(HOME)/local/acm
+PREFIX ?= $(HOME)/local/aCMs
 PROGRAMPREFIX=acmbuild_
 
 HASKELLDIR=Haskell
@@ -24,19 +24,14 @@ Train: $(HASKELLDIR)/mcmtrain.lhs $(HASKELLDIR)/Lib/ADPCombinators.lhs $(HASKELL
 	rm -f $(WORKDIR)/Main.hi $(WORKDIR)/Main.o
 	$(GHC) $(OPTIONS)  --make $< -o $(WORKDIR)/$(PROGRAMPREFIX)train
 
-Build: $(HASKELLDIR)/mcmbuild.lhs $(HASKELLDIR)/Lib/ADPCombinators.lhs $(HASKELLDIR)/Lib/Datatypes.lhs $(HASKELLDIR)/Lib/Treelist2cm.lhs $(HASKELLDIR)/Lib/Probs.lhs
-	$(MAKE) workingdir
-	@echo "== compiling Search.lhs =="
-	rm -f $(WORKDIR)/Probs.hi $(WORKDIR)/Probs.o
-	rm -f $(WORKDIR)/Main.hi $(WORKDIR)/Main.o
-	$(GHC) $(OPTIONS)  --make $< -o $(WORKDIR)/$(PROGRAMPREFIX)build$(FAMILYNAME)
-
 install: install-lib install-program
-	$(INSTALL) -m 644 nearzero_npo.priors $(PREFIX)/share;
-	$(INSTALL) -m 644 nilPairOpen.priors $(PREFIX)/share;
+	if [ ! -d "$(PREFIX)/share" ]; then $(INSTALL) -d $(PREFIX)/share; fi;
+	if [ ! -d "$(PREFIX)/share/aCMs" ]; then $(INSTALL) -d $(PREFIX)/share/aCMs; fi;
+	$(INSTALL) -m 644 nearzero_npo.priors $(PREFIX)/share/aCMs/;
+	$(INSTALL) -m 644 nilPairOpen.priors $(PREFIX)/share/aCMs/;
 	if [ ! -d "$(PREFIX)/lib" ]; then $(INSTALL) -d $(PREFIX)/lib; fi;
 	$(INSTALL) -d $(PREFIX)/lib/aCMs
-	for file in aCMs/*; do \
+	for file in $(BASEDIR)/Misc/Applications/lib/aCMs/*; do \
 		$(INSTALL) -m 644 $$file $(PREFIX)/lib/aCMs; \
 	done;
 

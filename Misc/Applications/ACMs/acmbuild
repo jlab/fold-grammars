@@ -19,7 +19,7 @@ use Getopt::Long;
 use foldGrammars::Utils;
 use foldGrammars::CMs;
 use POSIX 'isatty';
-#~ use Priors;
+use aCMs::Priors;
 use aCMs::cmUtils;
 use aCMs::Nullmodel;
 use aCMs::Weights;
@@ -246,7 +246,9 @@ sub doComputation {
 				open (PROBS, "> ".$tmpDir."/Probs.lhs") || die "can't write to '".$tmpDir."/Probs.lhs'\n";
 					print PROBS cmUtils::generateHaskellProbMaps(\%weighted_transitions, \%weighted_emissions, $refHash_family->{familyname});
 				close (PROBS);
-				system($Settings::BINARIES{make}." Build WORKDIR=".$tmpDir." FAMILYNAME=_".$refHash_family->{familyname});
+				my $command = $Settings::BINARIES{ghc}." -tmpdir ".$tmpDir."/ -O -fglasgow-exts -odir ".$tmpDir." -i".$tmpDir.":".getPath($0)."../lib/aCMs/ -hidir ".$tmpDir." --make ".getPath($0)."../lib/aCMs/mcmbuild.lhs -o ".$buildBinary;
+				print Dumper $command;
+				system($command);
 			}
 			my $cmd = "$buildBinary $concatConsensi";
 			my $buildGAP = qx($cmd);

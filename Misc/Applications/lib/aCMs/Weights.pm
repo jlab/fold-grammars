@@ -6,7 +6,7 @@ use lib "/vol/rnasifter/share/Bachelor/Perl/Objects";
 
 use strict;
 use warnings;
-use Priors;
+use aCMs::Priors;
 
 my $PATTERN_VALIDCHARS = "^(".join("|",@Priors::ALPHABET).")\$";
 

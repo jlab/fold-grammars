@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Priors;
+use aCMs::Priors;
 use List::Util qw[min max reduce];
 
 package Counts;

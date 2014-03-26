@@ -42,24 +42,32 @@ our %BINARIES = (
 	'head', 'head',
 	'tail', 'tail',
 	'perl', 'perl',
-	'readlink', 'readlink',
+	'readlink', '/vol/gnu/bin/readlink',
 	'uname', 'uname',
 	'find', 'find',
 	'gs', 'gs',
-	'RNAsubopt', 'RNAsubopt',
-	'RNAfold', 'RNAfold',
-	'date', 'date',
+	'RNAsubopt', '/vol/pi/bin/RNAsubopt-2.1.3',
+	'RNAfold', '/vol/pi/bin/RNAfold-2.1.3',
+	'date', '/vol/gnu/bin/date',
 	'ln', 'ln',
-	'hybrid-ss-min', 'hybrid-ss-min',
-	'ct2b.pl', 'ct2b.pl',
-	'centroid_fold', 'centroid_fold',
-	'ulimit', 'ulimit',
+	'hybrid-ss-min', '/vol/pi/bin/hybrid-ss-min-3.8',
+	'ct2b.pl', '/vol/pi/bin/ct2b.pl',
+	'centroid_fold', '/vol/pi/bin/centroid_fold',
+	'ulimit', '/usr/bin/ulimit',
 	'mktemp', 'mktemp',
 	'cut', 'cut',
 	'wc', 'wc',
 	'gcc','gcc',
 	'ls','ls',
+	'ghc','ghc',
 );
+
+if (qx(arch) =~ m/x86_64/) {
+	$BINARIES{'readlink'} = '/usr/bin/readlink';
+	$BINARIES{'gapc'} = '/vol/gapc/bin/gapc';
+	$BINARIES{'time'} = '/usr/bin/time';
+	$BINARIES{'date'} = '/usr/bin/date';
+}
 
 our %TDMfiles = (
 	'macrostate', 'macrostate.gap',
