@@ -44,6 +44,7 @@ $PARAM{eX} = {modes => \@ALLMODES, key => 'eX', default => 6.0, type => 'f', inf
 $PARAM{null} = {modes => \@ALLMODES, key => 'null', default => undef, type => 's', info => "Read null (random sequence) model from file <s>."};
 $PARAM{prior} = {modes => \@ALLMODES, key => 'prior', default => undef, type => 's', info => "Read priors from file <f>."};
 $PARAM{elself} = {modes => \@ALLMODES, key => 'elself', default => 0.94, type => 'f', info => "set EL self transition prob to <x>. Default is \"@(DEFAULT)\"."};
+$PARAM{name} = {modes => \@ALLMODES, key => 'name', default => undef, type => 's', info => "overrides the RNA family name given in the stockholm input file."};
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
@@ -119,6 +120,7 @@ sub doComputation {
 	
 	my ($refHash_family, $settings, $refHash_priors, $refHash_nullmodel) = @_;
 
+	$refHash_family->{familyname} = $settings->{name} if ((defined $settings->{name}) && ($settings->{name} ne ''));
 	my $currentDir = qx($Settings::BINARIES{pwd}); chomp $currentDir;
 	#~ my $tmpDir = '/tmp/tmp.SBZEaP52Dr/';
 	my $tmpDir = qx($Settings::BINARIES{mktemp} -d); chomp $tmpDir;
@@ -247,7 +249,7 @@ sub doComputation {
 					print PROBS cmUtils::generateHaskellProbMaps(\%weighted_transitions, \%weighted_emissions, $refHash_family->{familyname});
 				close (PROBS);
 				my $command = $Settings::BINARIES{ghc}." -tmpdir ".$tmpDir."/ -O -fglasgow-exts -odir ".$tmpDir." -i".$tmpDir.":".getPath($0)."../lib/aCMs/ -hidir ".$tmpDir." --make ".getPath($0)."../lib/aCMs/mcmbuild.lhs -o ".$buildBinary;
-				system($command);
+				system($command." 1>&2");
 			}
 			my $cmd = "$buildBinary $concatConsensi";
 			my $buildGAP = qx($cmd);
@@ -317,7 +319,7 @@ EOF
 ;
 	
 	my @paramGroups = ();
-	push @paramGroups, {name => 'GENERAL OPTIONS', elements => ['iins','wbeta']};
+	push @paramGroups, {name => 'GENERAL OPTIONS', elements => ['iins','wbeta','name']};
 	push @paramGroups, {name => 'EXPERT MODEL CONSTRUCTION OPTIONS', elements => ['gapthresh']};
 	push @paramGroups, {name => 'SEQUENCE WEIGHTING OPTIONS', elements => ['gscweights']};
 	push @paramGroups, {name => 'EFFECTIVE SEQUENCE NUMBER RELATED OPTIONS', elements => ['em','ere','eX']};
