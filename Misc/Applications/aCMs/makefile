@@ -42,6 +42,7 @@ install-program:
 	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
 	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
 	$(INSTALL) -m 755 acmbuild $(PREFIX)/bin
+	$(INSTALL) -m 755 acmsearch $(PREFIX)/bin
 
 clean:
 	rm -f $(ARCHTRIPLE)/*.hi
