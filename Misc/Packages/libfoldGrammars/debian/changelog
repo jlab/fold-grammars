@@ -1,3 +1,38 @@
+libfoldgrammars (1.1.0-0ubuntu1~saucy1) saucy; urgency=low
+
+  * input is delivered via temporary files from the wrapper to the
+    binaries
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 27 Mar 2014 15:39:13 +0100
+
+libfoldgrammars (1.1.0-0ubuntu1~raring1) raring; urgency=low
+
+  * input is delivered via temporary files from the wrapper to the
+    binaries
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 27 Mar 2014 15:38:01 +0100
+
+libfoldgrammars (1.1.0-0ubuntu1~quantal1) quantal; urgency=low
+
+  * input is delivered via temporary files from the wrapper to the
+    binaries
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 27 Mar 2014 15:37:53 +0100
+
+libfoldgrammars (1.1.0-0ubuntu1~precise1) precise; urgency=low
+
+  * input is delivered via temporary files from the wrapper to the
+    binaries
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 27 Mar 2014 15:37:45 +0100
+
+libfoldgrammars (1.1.0-0ubuntu1~lucid1) lucid; urgency=low
+
+  * input is delivered via temporary files from the wrapper to the
+    binaries
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 27 Mar 2014 15:37:25 +0100
+
 libfoldgrammars (1.0.23-0ubuntu1~saucy1) saucy; urgency=low
 
   * Bugfix: shapes modi now compute in two phases, which gives a

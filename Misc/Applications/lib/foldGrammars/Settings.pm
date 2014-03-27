@@ -14,14 +14,15 @@ our %PROGINFOS = (
 	'knotinframe', 			{date => '27.03.2014', version => '2.0.4', name => 'knotinframe', packageDir => 'Knotinframe/'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
 	'getoutsidetruth', 	{date => '19.04.2013', version => '1.0.0', name => 'getOutsideTruth'},
+	'acms',						{date => '27.03.2014', version => '1.0.1', name => 'acms', packageDir => 'aCMs/'},
 	'acmbuild', 				{date => '27.03.2014', version => '1.0.1', name => 'acmbuild'},
 	'acmsearch', 				{date => '27.03.2014', version => '1.0.1', name => 'acmsearch'},
 );
 
 
-our $rootDir = '/vol/fold-grammars/src/'; #must point to the root directory of the fold-grammars repository!
+our $rootDir = '/home/sjanssen/Desktop/fold-grammars/'; #must point to the root directory of the fold-grammars repository!
 our $prototypeDirectory = $rootDir; #for RapidShapes: directory where to find bgap sources, i.e. the fold-grammars repository somewhere in the file system
-our $bgapDir = '/vol/gapc/'; #must point to the directory containing "bin" "include" "share" and "lib" sub-directories of Bellman's Gap Compiler
+our $bgapDir = '/stefan/'; #must point to the directory containing "bin" "include" "share" and "lib" sub-directories of Bellman's Gap Compiler
 
 our $tmpdir = '/tmp/'; #temporary directory
 our $fileseparater = '/'; #character that separates directories in a path, / in unix but \ in windows

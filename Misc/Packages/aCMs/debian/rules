@@ -19,7 +19,7 @@ build-stamp:
 
 	# Add here commands to compile the package.
 	pwd
-	$(MAKE) -C pkiss/Misc/Applications/aCMs/ all
+	$(MAKE) -C acms/Misc/Applications/aCMs/ all
 
 	touch build-stamp
 
@@ -30,7 +30,7 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	pwd
-	$(MAKE) -C pkiss/Misc/Applications/aCMs/ distclean
+	$(MAKE) -C acms/Misc/Applications/aCMs/ distclean
 
 	dh_clean
 
@@ -42,7 +42,7 @@ install: build
 
 	# Add here commands to install the package into debian/<packagename>
 	pwd
-	$(MAKE) -C pkiss/Misc/Applications/aCMs/ PREFIX=`pwd`/debian/`dh_listpackages`/usr install-program
+	$(MAKE) -C acms/Misc/Applications/aCMs/ PREFIX=`pwd`/debian/`dh_listpackages`/usr install-program
 
 # Build architecture-independent files here.
 binary-indep: build install
