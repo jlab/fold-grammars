@@ -278,12 +278,8 @@ sub parse_acm {
 		}
 		print "\n";
 	}
-	
-	#~ print Dumper \@alignments;
-	die;
-	#~ output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll);
-
 }
+
 sub output {
 	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex, $refHash_pfall) = @_;
 
