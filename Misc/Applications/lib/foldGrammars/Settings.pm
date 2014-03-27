@@ -6,15 +6,16 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'rnashapes', 				{date => '12.01.2014', version => '3.1.4', name => 'RNAshapes', packageDir => 'RNAshapes/'},
-	'rnaalishapes', 		{date => '12.01.2014', version => '2.3.4', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
-	'pkiss', 						{date => '12.01.2014', version => '2.2.7', name => 'pKiss', packageDir => 'pKiss/'},
-	'libfoldgrammars', 	{date => '12.01.2014', version => '1.0.23', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
-	'rapidshapes', 			{date => '22.11.2013', version => '2.0.6', name => 'RapidShapes', packageDir => 'RapidShapes/'},
-	'knotinframe', 			{date => '22.11.2013', version => '2.0.3', name => 'knotinframe', packageDir => 'Knotinframe/'},
+	'rnashapes', 				{date => '27.03.2014', version => '3.2.0', name => 'RNAshapes', packageDir => 'RNAshapes/'},
+	'rnaalishapes', 		{date => '27.03.2014', version => '2.4.0', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
+	'pkiss', 						{date => '27.03.2014', version => '2.2.8', name => 'pKiss', packageDir => 'pKiss/'},
+	'libfoldgrammars', 	{date => '27.03.2014', version => '1.1.0', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
+	'rapidshapes', 			{date => '27.03.2014', version => '2.0.7', name => 'RapidShapes', packageDir => 'RapidShapes/'},
+	'knotinframe', 			{date => '27.03.2014', version => '2.0.4', name => 'knotinframe', packageDir => 'Knotinframe/'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
 	'getoutsidetruth', 	{date => '19.04.2013', version => '1.0.0', name => 'getOutsideTruth'},
-	'acmbuild', 				{date => '12.03.2014', version => '1.0.0', name => 'acmbuild'},
+	'acmbuild', 				{date => '27.03.2014', version => '1.0.1', name => 'acmbuild'},
+	'acmsearch', 				{date => '27.03.2014', version => '1.0.1', name => 'acmsearch'},
 );
 
 
@@ -61,13 +62,6 @@ our %BINARIES = (
 	'ls','ls',
 	'ghc','ghc',
 );
-
-if (qx(arch) =~ m/x86_64/) {
-	$BINARIES{'readlink'} = '/usr/bin/readlink';
-	$BINARIES{'gapc'} = '/vol/gapc/bin/gapc';
-	$BINARIES{'time'} = '/usr/bin/time';
-	$BINARIES{'date'} = '/usr/bin/date';
-}
 
 our %TDMfiles = (
 	'macrostate', 'macrostate.gap',
