@@ -25,6 +25,8 @@ Train: $(BASEDIR)/Misc/Applications/lib/aCMs/mcmtrain.lhs $(BASEDIR)/Misc/Applic
 	rm -f $(WORKDIR)/*.o $(WORKDIR)/*.hi
 
 install: install-lib install-program
+	
+install-program:
 	if [ ! -d "$(PREFIX)/share" ]; then $(INSTALL) -d $(PREFIX)/share; fi;
 	if [ ! -d "$(PREFIX)/share/aCMs" ]; then $(INSTALL) -d $(PREFIX)/share/aCMs; fi;
 	$(INSTALL) -m 644 nearzero_npo.priors $(PREFIX)/share/aCMs/;
@@ -36,9 +38,6 @@ install: install-lib install-program
 	for file in $(BASEDIR)/Misc/Applications/lib/aCMs/*; do \
 		$(INSTALL) -m 644 $$file $(PREFIX)/lib/aCMs; \
 	done;
-
-	
-install-program:
 	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
 	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
 	$(INSTALL) -m 755 acmbuild $(PREFIX)/bin
