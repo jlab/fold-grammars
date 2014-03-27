@@ -160,7 +160,7 @@ sub doComputation {
 			open (OUT, "> ".$gapfilename) || die "cannot write gap source code to '$gapfilename': $!";
 				print OUT $trainGAP;
 			close (OUT);
-			my $cmd = "cd $tmpDir && $Settings::BINARIES{gapc} --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc && make -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I ".getPath($0)."../include/\" && rm -f string.*";
+			my $cmd = "cd $tmpDir && $Settings::BINARIES{gapc} --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc && make -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/\" && rm -f string.*";
 			qx($cmd);
 			Utils::qxDieMessage($cmd, $?);
 			print STDERR " done.\n" if ($VERBOSE);
