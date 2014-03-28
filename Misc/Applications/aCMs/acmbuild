@@ -45,6 +45,7 @@ $PARAM{null} = {modes => \@ALLMODES, key => 'null', default => undef, type => 's
 $PARAM{prior} = {modes => \@ALLMODES, key => 'prior', default => undef, type => 's', info => "Read priors from file <f>."};
 $PARAM{elself} = {modes => \@ALLMODES, key => 'elself', default => 0.94, type => 'f', info => "set EL self transition prob to <x>. Default is \"@(DEFAULT)\"."};
 $PARAM{name} = {modes => \@ALLMODES, key => 'name', default => undef, type => 's', info => "overrides the RNA family name given in the stockholm input file."};
+$PARAM{outputdir} = {modes => \@ALLMODES, key => 'outputDir', default => undef, type => 's', info => "Sets the directory to which generated binary and source code should be saved."};
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
@@ -60,6 +61,11 @@ foreach my $param (keys %PARAM) {
 	%help
 );
 
+if (not (defined $settings->{'prior'})) {
+	my $path = $Settings::prototypeDirectory.$Settings::fileseparater.'nilPairOpen.priors';
+	$path =~ s|/fold-grammars/|/aCMs/|;
+	$settings->{'prior'} = $path if (-e $path);
+}
 checkParameters($settings, \%PARAM);
 
 usage() if (defined $settings->{'help'}); #user asks for help --> print usage and die
@@ -241,6 +247,8 @@ sub doComputation {
 
 	#move all necessary files into a temporary directory to compile there without race conditions the Haskell-ADP generator with correct Probs.lhs, i.e. probabilities.
 		my $targetBinary = 'acmsearch_'.$refHash_family->{familyname};
+		my $outputFile = $currentDir.$Settings::fileseparater.$targetBinary;
+		$outputFile = $settings->{'outputdir'}.$Settings::fileseparater.$targetBinary if (defined $settings->{'outputdir'});
 		print STDERR "  ".($taskCount++)." compiling final bgap program '$targetBinary' ..." if ($VERBOSE);
 		if (! -e $targetBinary) {
 			my $buildBinary = $tmpDir.'/'.$PROGID.'_build_'.$refHash_family->{familyname};
@@ -254,11 +262,11 @@ sub doComputation {
 			my $cmd = "$buildBinary $concatConsensi";
 			my $buildGAP = qx($cmd);
 			Utils::qxDieMessage($cmd, $?);
-			my $targetGapFile = $targetBinary.'.gap';
-			open (OUT, "> ".$currentDir.'/'.$targetGapFile) || die "cannot write gap source code to '".$currentDir.'/'.$targetGapFile."': $!";
+			my $targetGapFile = $outputFile.'.gap';
+			open (OUT, "> ".$targetGapFile) || die "cannot write gap source code to '".$targetGapFile."': $!";
 				print OUT $buildGAP;
 			close (OUT);
-			$cmd = "cd $tmpDir && cp $currentDir/$targetGapFile $tmpDir/ && $Settings::BINARIES{gapc} --tab-all -i cykali --kbacktrace $targetGapFile -o $targetBinary.cc && make -f $targetBinary.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\" && rm -f string.* && cp $targetBinary $currentDir/";
+			$cmd = "cd $tmpDir && cp $targetGapFile $tmpDir/ && $Settings::BINARIES{gapc} --tab-all -i cykali --kbacktrace $targetGapFile -o $targetBinary.cc && make -f $targetBinary.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\" && rm -f string.* && cp $targetBinary $outputFile";
 			qx($cmd);
 			Utils::qxDieMessage($cmd, $?);
 			print STDERR " done.\n" if ($VERBOSE);
@@ -271,7 +279,7 @@ sub doComputation {
 		qx(rm -rf $tmpDir) if (!$settings->{verbose});
 		
 	$exampleSequence =~ s/\.//g;
-	print "sucessfully compiled '$targetBinary'\nuse it like \"$targetBinary ".uc($exampleSequence)."\"\n" if ($VERBOSE);
+	print "sucessfully compiled '".$outputFile."'\nuse it like \"".$outputFile." ".uc($exampleSequence)."\"\n" if ($VERBOSE);
 		
 	return undef;
 }
@@ -299,6 +307,12 @@ sub checkParameters {
 	die $diePrefix."--".$PARAM{'prior'}->{key}.": file does not exists. You can provide the filename to a prior file via the parameter '--".$PARAM{'prior'}->{key}."'.\n" if ((not defined $settings->{'prior'}) || (not -e $settings->{'prior'}));
 	die $diePrefix."--".$PARAM{'null'}->{key}." file '".$settings->{'null'}."' does not exists.\n" if ((defined $settings->{'null'}) && (not -e $settings->{'null'}));
 	
+	if (defined $settings->{'outputdir'}) {
+		$settings->{'outputdir'} = Utils::absFilename($settings->{'outputdir'}).$Settings::fileseparater;
+		die $diePrefix."--".$PARAM{'outputdir'}->{key}.": output directory does not exist. Either give me another directory or create the given one.\n" if (!-d $settings->{'outputdir'});
+		die $diePrefix."--".$PARAM{'outputdir'}->{key}.": cannot write to output directory. Either give me another directory or make it writeable.\n" if (!-w $settings->{'outputdir'});
+	}
+
 	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
 	Utils::checkBinaryPresents($settings, $diePrefix, [$Settings::MODE_ACM], ['train'], $refHash_params);
 }
@@ -325,7 +339,7 @@ EOF
 	push @paramGroups, {name => 'EFFECTIVE SEQUENCE NUMBER RELATED OPTIONS', elements => ['em','ere','eX']};
 	push @paramGroups, {name => 'CUSTOMIZATION OF NULL MODEL AND PRIORS', elements => ['null','prior']};
 	push @paramGroups, {name => 'UNDOCUMENTED DEVELOPER OPTIONS FOR DEBUGGING, EXPERIMENTATION', elements => ['elself']};
-	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','help','verbose']};
+	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','help','verbose','outputdir']};
 	foreach my $refHash_group (@paramGroups) {
 		$HELP .= $refHash_group->{name}.":\n";
 		for my $par (@{$refHash_group->{elements}}) {

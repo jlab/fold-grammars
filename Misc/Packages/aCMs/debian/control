@@ -2,11 +2,11 @@ Source: acms
 Section: devel
 Priority: extra
 Maintainer: Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>
-Build-Depends: debhelper (>= 7), make (>= 3.81), bellmansgapc (>= 2013.04.12), perl (>= 5.10.1), g++ (>= 4:4.3.1), libfoldgrammars (>= 1.1.0), ghc (>=7.4.1)
+Build-Depends: debhelper (>= 7), make (>= 3.81), bellmansgapc (>= 2013.11.19), perl (>= 5.10.1), g++ (>= 4:4.3.1), libfoldgrammars (>= 1.1.0), ghc (>=7.4.1) | ghc6 (>=6.12.1)
 Standards-Version: 3.9.1
 Homepage: http://bibiserv.cebitec.uni-bielefeld.de/acms
 
 Package: acms
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, bellmansgapc-librna (>= 2013.04.12) | bellmansgapc (>= 2013.04.12), libgsl0-dev, libgmp3-dev, libgsl0-dev (>= 1.13), libgsl0ldbl (>= 1.13), libfoldgrammars (>= 1.0.8), ghc (>=7.4.1)
+Depends: ${shlibs:Depends}, ${misc:Depends}, bellmansgapc (>= 2013.11.19), libgsl0-dev, libgmp3-dev, libgsl0-dev (>= 1.13), libgsl0ldbl (>= 1.13), libfoldgrammars (>= 1.0.8), ghc (>=7.4.1) | ghc6 (>=6.12.1)
 Description:  Covariance models (CMs), as defined by Sean Eddy, do not reward insertions of valid base-pairs or complete sub-structures relative to the one consensus secondary structure. Nevertheless, some families, e. g. tRNA, contain minorities with additional informative sub-structures, which are crashed by the majority during formation of one consensus secondary structure. Ambivalent Covariance Models (aCMs) are our prototypic suggestion to extend CMs with more than one consensus structure.
