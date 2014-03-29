@@ -279,7 +279,7 @@ sub doComputation {
 		qx(rm -rf $tmpDir) if (!$settings->{verbose});
 		
 	$exampleSequence =~ s/\.//g;
-	print "sucessfully compiled '".$outputFile."'\nuse it like \"".$outputFile." ".uc($exampleSequence)."\"\n" if ($VERBOSE);
+	print "sucessfully compiled '".$outputFile."'\nuse it like \"".$outputFile." ".uc($exampleSequence)."\"\nHowever, we strongly suggest to use the Perl wrapper acmsearch for a more pretty output and FASTA parsing capabilities, e.g.\n  acmsearch ".$outputFile." \"".$exampleSequence."\"\n" if ($VERBOSE);
 		
 	return undef;
 }
