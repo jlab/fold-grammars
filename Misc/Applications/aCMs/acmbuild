@@ -205,7 +205,7 @@ sub doComputation {
 			print STDERR ".";
 			my $altID = cmUtils::getAltID($seqID);
 			my $mix = cmUtils::getTrainSeqStruct($refHash_family->{sequences}->{$seqID}, $matchConsensi{$altID});
-			my $cmd = "$trainBinaryFilename -- \"$mix\" | grep -v \"Answer\" | grep -v \"^\$\"";
+			my $cmd = "$trainBinaryFilename -- \"$mix\" | ".$Settings::BINARIES{grep}." -v \"Answer\" | ".$Settings::BINARIES{grep}." -v \"^\$\"";
 			my $gapres = qx($cmd);
 			Utils::qxDieMessage($cmd, $?);
 			cmUtils::parseTrainEnum($gapres, \%counts_transitions, \%counts_emissions, $seqID, $altID);
@@ -266,7 +266,7 @@ sub doComputation {
 			open (OUT, "> ".$targetGapFile) || die "cannot write gap source code to '".$targetGapFile."': $!";
 				print OUT $buildGAP;
 			close (OUT);
-			$cmd = "cd $tmpDir && cp $targetGapFile $tmpDir/ && $Settings::BINARIES{gapc} --tab-all -i cykali --kbacktrace $targetGapFile -o $targetBinary.cc && make -f $targetBinary.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\" && rm -f string.* && cp $targetBinary $outputFile";
+			$cmd = "cd $tmpDir && cp $targetGapFile $tmpDir/ && $Settings::BINARIES{gapc} --tab-all -i cykali --kbacktrace $targetGapFile -o $targetBinary.cc && $Settings::BINARIES{make} -f $targetBinary.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\" && rm -f string.* && cp $targetBinary $outputFile";
 			qx($cmd);
 			Utils::qxDieMessage($cmd, $?);
 			print STDERR " done.\n" if ($VERBOSE);
