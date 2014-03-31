@@ -1,2 +1,6 @@
-&quot;Algebras/alg_mea.gap&quot; is quite similar to <a href="?id=alg_basepairMax.gap">Algebras/alg_basepairMax.gap</a>, since it is used to find the secondary structure with maximal base-pair weight. Here, the weight is not a constant number, but the probability of the base-pair. These probabilities have to be computed in advance (by another Bellman's GAP instance) and can be accessed by the special function <code>getBPprob</code> defined in <a href="?id=mea.hh">Extensions/mea.hh</a>.
-Thus, we can compute in two phases the Maximum Expected Accuracy (MEA) structure.
+<p>
+&quot;Algebras/MEA/alg_mea.gap&quot; is quite similar to <a href="?id=alg_basepairMax.gap">Algebras/alg_basepairMax.gap</a>, since it is used to find the secondary structure with maximal base-pair weight. Here, the weight is not a constant number, but the probability of the base-pair. These probabilities have to be computed in advance (by another Bellman's GAP instance) and can be accessed by the special function <code>getBPprob</code> defined in <a href="?id=mea.hh">Extensions/mea.hh</a>.
+Thus, we can compute in two phases the Maximum Expected Accuracy (MEA) structure.</p>
+<p>
+A MEA structure can also be computed for alignment inputs - actually with minimal changes. For this reason, we outsourced all functions used by single input and alignment input instances into the file <a href="?id=algpart_mea_common.gap">Algebras/MEA/Parts/algpart_mea_common.gap</a>. 
+</p>

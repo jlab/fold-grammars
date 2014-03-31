@@ -94,6 +94,13 @@
 							<file id="algpart_dotBracket_macrostate.gap" ref="Algebras/DotBracket/Parts/algpart_dotBracket_macrostate.gap"/>
 						</dir>
 					</dir>
+					<dir descr="MEA">
+						<file id="alg_mea.gap" ref="Algebras/MEA/alg_mea.gap"/>
+						<file id="alg_ali_mea.gap" ref="Algebras/MEA/alg_ali_mea.gap"/>
+						<dir descr="Parts">
+							<file id="algpart_mea_common.gap" ref="Algebras/MEA/Parts/algpart_mea_common.gap"/>
+						</dir>
+					</dir>
 					<dir descr="MFE">
 						<file id="alg_mfe.gap" ref="Algebras/MFE/alg_mfe.gap"/>
 						<file id="alg_mfe_macrostate.gap" ref="Algebras/MFE/alg_mfe_macrostate.gap"/>
@@ -140,7 +147,6 @@
 						</dir>
 					</dir>
 					<file id="alg_basepairMax.gap" ref="Algebras/alg_basepairMax.gap"/>
-					<file id="alg_mea.gap" ref="Algebras/alg_mea.gap"/>
 					<file id="alg_count_id.gap" ref="Algebras/alg_count_id.gap"/>
 					<file id="alg_ali_consensus.gap" ref="Algebras/alg_ali_consensus.gap"/>
 					<file id="alg_ali_mis.gap" ref="Algebras/alg_ali_mis.gap"/>
