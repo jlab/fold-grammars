@@ -147,7 +147,7 @@ sub doComputation {
 		print STDERR "  ".($taskCount++)." compiling bgap binary for two-track-training ..." if ($VERBOSE);
 		my $trainBinaryFilename = $tmpDir.'/'.$PROGID.'_train_'.$refHash_family->{familyname};
 		my $concatConsensi;
-		foreach my $id (@consensiOrdering) { $concatConsensi .= "'".'(\"'.$id.'\",\"'.$matchConsensi{$id}.'\")'."' "; }
+		foreach my $id (@consensiOrdering) { $concatConsensi .= "'".'("'.$id.'","'.$matchConsensi{$id}.'")'."' "; }
 		my $trainBuildCmd = buildCommand($settings, {header => undef, sequence => $concatConsensi}, 'trainbuild');
 		my $trainGAP = qx($trainBuildCmd); 
 		Utils::qxDieMessage($trainBuildCmd, $?);
