@@ -135,8 +135,8 @@ void append_consensus(rope::Ref<X> &str, const Basic_Subsequence<M_Char, unsigne
 	  for (s=0; s<rows(seq); s++) {
 		freq[(int) column(seq_char(seq,i),s)]++;
 	  }
-	  max = 0;
 	  maxIndex = GAP_BASE;
+	  max = freq[maxIndex];
 	  for (s=0; s < 6; ++s) {
 		if (freq[s] > max) {
 		  max = freq[s];
