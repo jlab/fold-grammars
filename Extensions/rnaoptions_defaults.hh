@@ -60,6 +60,9 @@
 	inline static int getConsensusType() {
 		return gapc::Opts::getOpts()->consensusType;
 	}
+	inline static bool isRiboseScoring() {
+		return gapc::Opts::getOpts()->ribosum_scoring;
+	}
 #else
 	//if compiled with no special options to ask for energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy.
 	inline static int pkinit() { //initialization cost for opening a new pseudoknot. Default is 900.
@@ -111,6 +114,9 @@
 	}
 	inline static int getConsensusType() {
 		return 0;
+	}
+	inline static bool isRiboseScoring() {
+		return false;
 	}
 #endif
 	

@@ -88,6 +88,7 @@ class Opts {
     bool allowLonelyBasepairs;
     const char* dotPlotFilename;
     int consensusType;
+    bool ribosum_scoring;
 
     Opts()
     :
@@ -115,7 +116,8 @@ class Opts {
     				alifold_minscore_basepair(-200),
     				allowLonelyBasepairs(false),
     				dotPlotFilename("\0"),
-    				consensusType(0)
+    				consensusType(0),
+    				ribosum_scoring(false)
     {
     }
 	~Opts()
@@ -210,6 +212,11 @@ class Opts {
 				<< "" << std::endl
 				<< "-m <int-value> fraction of aligned bases in two columns that must be able to actually pair [-200]" << std::endl
 				<< "" << std::endl
+				<< "-R <int-value> for alignment folding: 0 = use hamming distance for covariance" << std::endl
+				<< "   calculation, 1 = use ribosum scoring matrix. The matrix is chosen according" << std::endl
+				<< "   to the minimal and maximal pairwise identities of the sequences in the" << std::endl
+				<< "   alignment. Default is [0]" << std::endl
+				<< "" << std::endl
 				<< "-q <int-value> Set shape abstraction level [5]" << std::endl
 				<< "" << std::endl
 				<< "-u <int-value> 1 = allow lonely base pairs, 0 = don't allow them [0]" << std::endl
@@ -236,7 +243,7 @@ class Opts {
 						"c:e:x:y:z:"
 						"s:l:F:q:u:"
 					    "o:a:"  //output filename for dot plot, consensus type: 0=consensus, 1=mis
-						"n:C:m:" //for alifold parameters nfactor, cfactor and minpscore_basepair
+						"n:C:m:R:" //for alifold parameters nfactor, cfactor and minpscore_basepair, ribosum scoring
 						"hd:r:k:")) != -1) {
 			switch (o) {
 			case 'f':
@@ -339,6 +346,9 @@ class Opts {
 				break;
 			case 'm':
 				alifold_minscore_basepair = std::atoi(optarg);
+				break;
+			case 'R':
+				ribosum_scoring = (std::atoi(optarg) >= 1);
 				break;
 			case 'a':
 				consensusType = std::atoi(optarg);

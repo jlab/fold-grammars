@@ -48,6 +48,7 @@ our $RNAalishapes = {
 	'pairingFraction' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [-200, -300, -150], valueSelection => $VALUE_SELECTION_RANDOM},
 	'cfactor' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [1.1, 1.0, 0.9], valueSelection => $VALUE_SELECTION_RANDOM},
 	'nfactor' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [1.1, 1.0, 0.9], valueSelection => $VALUE_SELECTION_RANDOM},
+	'ribosumscoring' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], values => [0, 1], valueSelection => $VALUE_SELECTION_RANDOM},
 	'bppmThreshold' => {modes => [$Settings::MODE_OUTSIDE], values => [0.1, 0.01, 0.001, 0.00001], valueSelection => $VALUE_SELECTION_RANDOM},
 	'dotplot' => {modes => [$Settings::MODE_OUTSIDE], values => ['dotPlot.ps'], valueSelection => $VALUE_SELECTION_RANDOM},
 	'structureProbs' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], values => [0,1], valueSelection => $VALUE_SELECTION_RANDOM},

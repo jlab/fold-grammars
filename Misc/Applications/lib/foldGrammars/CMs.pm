@@ -72,4 +72,66 @@ sub applyFunctionToStockholmFile {
 	return \@results;
 }
 
+sub writeStockholm {
+	my $SPACER = 31;
+	
+	my ($refHash_family, $nameOfSequences, $blocksize) = @_;
+	$nameOfSequences = 'sequences' if (not defined $nameOfSequences);
+	
+	#find longest ID
+		my $longestID = 0;
+		foreach my $id (keys %{$refHash_family->{originalSequenceOrdering}}) {
+			$longestID = length($id) if ($longestID < length($id));
+		}
+		$SPACER = $longestID+1 if ($SPACER <= $longestID);
+
+	my $OUT = "# STOCKHOLM 1.0\n\n";
+	foreach my $id (keys %{$refHash_family->{GFdescription}}) {
+		my @lines = split(m/\n/, $refHash_family->{GFdescription}->{$id});
+		foreach my $line (@lines) {
+			$OUT .= '#=GF '.$id.'   '.$line."\n";
+		}
+	}
+	$OUT .= "\n";
+	
+	my $position = 0;
+	my $alignmentLength = undef;
+	if (exists $refHash_family->{GCinformation}->{SS_cons}) {
+		$alignmentLength = length($refHash_family->{GCinformation}->{SS_cons});
+	} else {
+		foreach my $tag (keys(%{$refHash_family->{GCinformation}})) {
+			if ($tag =~ m/SS_cons$/) {
+				$alignmentLength = length($refHash_family->{GCinformation}->{$tag});
+				last;
+			}
+		}
+	}
+	$blocksize = $alignmentLength if (not defined $blocksize);
+	my @orderedGCkeys = ();
+	foreach my $id (keys %{$refHash_family->{GCinformation}}) {
+		push @orderedGCkeys, $id if ($id !~ m/SS_cons/);
+	}
+	foreach my $ssID (sort {$refHash_family->{originalSSconsOrdering}->{$a} <=> $refHash_family->{originalSSconsOrdering}->{$b}} keys(%{$refHash_family->{originalSSconsOrdering}})) {
+		push @orderedGCkeys, $ssID
+	}	
+	for (my $position = 0; $position < $alignmentLength; $position += $blocksize) {
+		foreach my $seqID (sort {$refHash_family->{originalSequenceOrdering}->{$a} <=> $refHash_family->{originalSequenceOrdering}->{$b}} keys %{$refHash_family->{originalSequenceOrdering}}) {
+			if (exists $refHash_family->{$nameOfSequences}->{$seqID}) { #maybe some of the alignment sequences have been removed
+				my $id = substr($seqID, 0, $SPACER-1);
+				$OUT .= $id.(" " x ($SPACER - length($id))).substr($refHash_family->{$nameOfSequences}->{$seqID}, $position, $blocksize)."\n";
+			}
+		}
+		foreach my $id (@orderedGCkeys) {
+			my $cutid = substr($id, 0, $SPACER-1);
+			$OUT .= '#=GC '.$cutid.(" " x ($SPACER - length($cutid) - length('#=GC '))).substr($refHash_family->{GCinformation}->{$id}, $position, $blocksize)."\n";
+		}
+		$OUT .= "\n";
+	}
+
+	$OUT .= '//'."\n";
+	
+	return $OUT;
+}
+
+
 1;
