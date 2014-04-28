@@ -11,6 +11,7 @@ type Rope = extern
 type shape_t = extern
 type answer_pknot_mfe = extern
 type pktype = extern
+type KNOT_ANSWER_TYPE = extern
 
 include "Signatures/sig_pknot_foldrna.gap"
 

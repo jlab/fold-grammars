@@ -29,4 +29,6 @@ inline bool iloopSumMax(int size, const Basic_Sequence<alphabet, pos_type> &seq,
 	return ((lr_j-lr_i) + (rr_j-rr_i)) <= unsigned(size);
 }
 
+#define KNOT_ANSWER_TYPE answer_pknot_mfe
+
 #endif

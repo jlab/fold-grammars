@@ -28,6 +28,8 @@ inline bool unpaired(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
 	return true;
 }
 
+#define KNOT_ANSWER_TYPE answer_pknot_mfecovar
+
 #endif
 
 

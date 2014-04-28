@@ -31,18 +31,18 @@
             INNER(CODE);
             int n = size(t_0_seq);
             if (!isEmpty(answers)) {
-			  answer_pknot_mfe mfe = get_pk(i,j,h,k);
-              if (mfe.energy < get_energy(subopt_left, i, j, h, n))
-                set(subopt_left, i, j, h, k, mfe.energy, n);
+			  KNOT_ANSWER_TYPE mfe = get_pk(i,j,h,k);
+              if (getIntScore(mfe) < get_energy(subopt_left, i, j, h, n))
+                set(subopt_left, i, j, h, k, getIntScore(mfe), n);
               int splitPositionLeft = h+(j-h)/2;
-              if ((h <= splitPositionLeft) && (mfe.energy < get_energy(subopt_left_heuristic, i, j, h, n)))
-                set(subopt_left_heuristic, i, j, h, k, mfe.energy, n);
+              if ((h <= splitPositionLeft) && (getIntScore(mfe) < get_energy(subopt_left_heuristic, i, j, h, n)))
+                set(subopt_left_heuristic, i, j, h, k, getIntScore(mfe), n);
 
-              if (mfe.energy < get_energy(subopt_right, i, j, k, n))
-                set(subopt_right, i, j, k, h, mfe.energy, n);
+              if (getIntScore(mfe) < get_energy(subopt_right, i, j, k, n))
+                set(subopt_right, i, j, k, h, getIntScore(mfe), n);
               int splitPositionRight = i+(k-i)/2;
-              if ((k >= splitPositionRight) && (mfe.energy < get_energy(subopt_right_heuristic, i, j, k, n)))
-                set(subopt_right_heuristic, i, j, k, h, mfe.energy, n);
+              if ((k >= splitPositionRight) && (getIntScore(mfe) < get_energy(subopt_right_heuristic, i, j, k, n)))
+                set(subopt_right_heuristic, i, j, k, h, getIntScore(mfe), n);
             }
           }
         }

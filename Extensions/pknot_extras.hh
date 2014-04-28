@@ -12,7 +12,8 @@ static const int pkmlinit = 600; //additional penalty for a pseudoknot inside fr
 /* END: for computation with suboptimals */
 
 /* START: everything for strategy A: finding compatible pseudoknots */
-	inline answer_pknot_mfe get_pk_fn(answer_pknot_mfe candidate) {
+	template<typename ANSWER>
+	inline ANSWER get_pk_fn(ANSWER candidate) {
 		return candidate;
 	}
 	
@@ -55,24 +56,24 @@ static const int pkmlinit = 600; //additional penalty for a pseudoknot inside fr
 	}
 
 //following four functions are dummies, i.e. just to enable compilation of an RNAeval version for pKiss. The results will be crap if we use strategies A to C, but D and P should work fine and that is everything we need. With this trick, it is possible to use the same grammar for singlefold and evalfold
-	template<typename DOTBRACKET>
-	inline answer_pknot_mfe get_pk_fn(List_Ref<std::pair<DOTBRACKET, answer_pknot_mfe> >*) {
-		answer_pknot_mfe dummy;
+	template<typename DOTBRACKET, typename ANSWER>
+	inline ANSWER get_pk_fn(List_Ref<std::pair<DOTBRACKET, ANSWER> >*) {
+		ANSWER dummy;
 		return dummy;
 	}
-	template<typename DOTBRACKET>
-	inline answer_pknot_mfe get_pk_fn(List_Ref<std::pair<DOTBRACKET, answer_pknot_mfe> >) {
-		answer_pknot_mfe dummy;
+	template<typename DOTBRACKET, typename ANSWER>
+	inline ANSWER get_pk_fn(List_Ref<std::pair<DOTBRACKET, ANSWER> >) {
+		ANSWER dummy;
 		return dummy;
 	}
-	template<typename SHAPE, typename DOTBRACKET>
-	inline answer_pknot_mfe get_pk_fn(List_Ref<std::pair<std::pair<DOTBRACKET, answer_pknot_mfe>, SHAPE > >*) {
-		answer_pknot_mfe dummy;
+	template<typename SHAPE, typename DOTBRACKET, typename ANSWER>
+	inline ANSWER get_pk_fn(List_Ref<std::pair<std::pair<DOTBRACKET, ANSWER>, SHAPE > >*) {
+		ANSWER dummy;
 		return dummy;
 	}
-	template<typename SHAPE, typename DOTBRACKET>
-	inline answer_pknot_mfe get_pk_fn(List_Ref<std::pair<std::pair<DOTBRACKET, answer_pknot_mfe>, SHAPE > >) {
-		answer_pknot_mfe dummy;
+	template<typename SHAPE, typename DOTBRACKET, typename ANSWER>
+	inline ANSWER get_pk_fn(List_Ref<std::pair<std::pair<DOTBRACKET, ANSWER>, SHAPE > >) {
+		ANSWER dummy;
 		return dummy;
 	}
 

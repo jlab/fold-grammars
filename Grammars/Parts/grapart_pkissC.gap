@@ -17,9 +17,9 @@
                 continue;
               }
   
-              answer_pknot_mfe optPK = get_pk(h,j,k+2,m);
-              if ((!isEmpty(optPK)) && (optPK.energy < rpk_energy(k+1))) {
-                rpk_set(k, optPK.energy, optPK.betaLeftOuter);
+              KNOT_ANSWER_TYPE optPK = get_pk(h,j,k+2,m);
+              if ((!isEmpty(optPK)) && (getIntScore(optPK) < rpk_energy(k+1))) {
+                rpk_set(k, getIntScore(optPK), optPK.betaLeftOuter);
               } else {
                 rpk_set(k);
               }

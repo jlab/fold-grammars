@@ -99,7 +99,7 @@
       int j = t_0_j;
       if (j-i <= maxPseudoknotSize()) {
         for (int m = i+3*minLengthKissingHairpinStems()+7; m<=j-minLengthKissingHairpinStems()-1; m=m+1) {
-          answer_pknot_mfe leftPK = get_pk_free_hk(i, m);
+          KNOT_ANSWER_TYPE leftPK = get_pk_free_hk(i, m);
           if (isEmpty(leftPK)) {
             continue;
           }
@@ -117,7 +117,7 @@
           if (betamaxlen < 2) {
             continue;
           }
-          answer_pknot_mfe rightPK = get_pk_free_h(h, j, m, k+2);
+          KNOT_ANSWER_TYPE rightPK = get_pk_free_h(h, j, m, k+2);
           if (isEmpty(rightPK)) {
             continue;
           }
@@ -171,7 +171,7 @@
 	  
 	  if (j-i <= maxPseudoknotSize()) {
         for (int h = i+minLengthKissingHairpinStems()+1; h<=j-3*minLengthKissingHairpinStems()-7; h=h+1) {
-          answer_pknot_mfe rightPK = get_pk_free_hk(h, j);
+          KNOT_ANSWER_TYPE rightPK = get_pk_free_hk(h, j);
           if (isEmpty(rightPK)) {
             continue;
           }
@@ -189,7 +189,7 @@
           if (betamaxlen < 2) {
             continue;
           }
-          answer_pknot_mfe leftPK = get_pk_free_k(i, m, h, l-2);
+          KNOT_ANSWER_TYPE leftPK = get_pk_free_k(i, m, h, l-2);
           if (isEmpty(leftPK)) {
             continue;
           }

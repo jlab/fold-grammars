@@ -7,7 +7,7 @@ struct answer_pknot_mfe {
 	int alphaRightOuter;
 	bool empty_;
 	
-	answer_pknot_mfe() : empty_(false) {
+	answer_pknot_mfe() : energy(0), betaLeftOuter(0), alphaRightOuter(0), empty_(false) {
 	}
 	
 	bool operator>(const answer_pknot_mfe& other) const { 
@@ -37,7 +37,7 @@ struct answer_pknot_mfe {
 		return energy == other;
 	}
 
-	answer_pknot_mfe(int i) : energy(i), empty_(false) {
+	answer_pknot_mfe(int i) : energy(i), betaLeftOuter(0), alphaRightOuter(0), empty_(false) {
 	}
 	
 	answer_pknot_mfe operator+(const answer_pknot_mfe &other) const {
@@ -77,18 +77,103 @@ inline bool isEmpty(const answer_pknot_mfe &e) {
 inline uint32_t hashable_value(const answer_pknot_mfe& candidate) {
   return candidate.energy; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
 }
+inline int getIntScore(answer_pknot_mfe &e) {
+	return e.energy;
+}
 
+struct answer_pknot_mfecovar {
+	float mfe;
+	float covar;
+	int betaLeftOuter;
+	int alphaRightOuter;
+	bool empty_;
 
+	answer_pknot_mfecovar() : mfe(0.0), covar(0.0), betaLeftOuter(0), alphaRightOuter(0), empty_(false) {
+	}
+
+	answer_pknot_mfecovar(int i) : mfe(i), covar(0.0), betaLeftOuter(0), alphaRightOuter(0), empty_(false) {
+	}
+
+	answer_pknot_mfecovar& operator+=(const answer_pknot_mfecovar &a) {
+		mfe += a.mfe;
+		covar += a.covar;
+		return *this;
+	}
+
+	answer_pknot_mfecovar& operator-=(const answer_pknot_mfecovar &a) {
+		mfe -= a.mfe;
+		covar -= a.covar;
+		return *this;
+	}
+};
+
+inline uint32_t hashable_value(const answer_pknot_mfecovar& candidate) {
+  return candidate.covar+candidate.mfe; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
+}
+
+inline std::ostream &operator<<(std::ostream &o, const answer_pknot_mfecovar &tuple) {
+	if (tuple.empty_)
+	  o << 'E';
+	else
+	  o << "( " << tuple.mfe + tuple.covar << " = mfe: " << tuple.mfe << " + covar.: " << tuple.covar << " )";
+	return o;
+}
+
+inline bool operator==(const answer_pknot_mfecovar &a, const answer_pknot_mfecovar &b) {
+	return fabs(a.mfe+a.covar-b.mfe-b.covar) <= 0.001;
+}
+inline bool operator!=(const answer_pknot_mfecovar &a, const answer_pknot_mfecovar &b) {
+	return !(a == b);
+}
+inline bool operator>(const answer_pknot_mfecovar &a, const answer_pknot_mfecovar &b) {
+	return (a.mfe+a.covar) > (b.mfe+b.covar);
+}
+inline bool operator<(const answer_pknot_mfecovar &a, const answer_pknot_mfecovar &b) {
+	return (a.mfe+a.covar) < (b.mfe+b.covar);
+}
+inline bool operator>=(const answer_pknot_mfecovar &a, const answer_pknot_mfecovar &b) {
+	return (a.mfe+a.covar) >= (b.mfe+b.covar);
+}
+inline bool operator<=(const answer_pknot_mfecovar &a, const answer_pknot_mfecovar &b) {
+	return (a.mfe+a.covar) <= (b.mfe+b.covar);
+}
+inline answer_pknot_mfecovar operator+(const answer_pknot_mfecovar &a, const answer_pknot_mfecovar &b) {
+	answer_pknot_mfecovar res;
+	res.mfe = a.mfe + b.mfe;
+	res.covar = a.covar + b.covar;
+	return res;
+}
+inline answer_pknot_mfecovar operator-(const answer_pknot_mfecovar &a, const answer_pknot_mfecovar &b) {
+	answer_pknot_mfecovar res;
+	res.mfe = a.mfe - b.mfe;
+	res.covar = a.covar - b.covar;
+	return res;
+}
+
+inline void empty(answer_pknot_mfecovar &e) {
+	e.empty_ = true;
+}
+
+inline bool isEmpty(const answer_pknot_mfecovar &e) {
+	return e.empty_;
+}
+
+inline float getScore(answer_pknot_mfecovar &e) {
+	return e.mfe+e.covar;
+}
+inline int getIntScore(answer_pknot_mfecovar &e) {
+	return (int) getScore(e);
+}
 
 struct mfecovar{
 	bool empty_;
 	float mfe;
 	float covar;
 
-	mfecovar() : empty_(false) {
+	mfecovar() : empty_(false), mfe(0.0), covar(0.0) {
 	}
 
-	mfecovar(int i) : empty_(false) {
+	mfecovar(int i) : empty_(false), mfe(0.0), covar(0.0) {
 	}
 
 	mfecovar& operator+=(const mfecovar &a) {
@@ -115,7 +200,6 @@ inline std::ostream &operator<<(std::ostream &s, const mfecovar &pfa) {
 }
 
 inline bool operator==(const mfecovar &a, const mfecovar &b) {
- //~ std::cerr << "XXX\n";
 	return fabs(a.mfe+a.covar-b.mfe-b.covar) <= 0.001;
 	//~ return fabs(a.mfe-b.mfe) <= 0.001;
 }
@@ -124,6 +208,7 @@ inline bool operator!=(const mfecovar &a, const mfecovar &b) {
 }
 inline bool operator>(const mfecovar &a, const mfecovar &b) {
 	return (a.mfe+a.covar) > (b.mfe+b.covar);
+
 	//~ return (a.mfe) > (b.mfe);
 }
 inline bool operator<(const mfecovar &a, const mfecovar &b) {
@@ -159,7 +244,10 @@ struct mfecovar_macrostate {
   myTUSubsequence firstStem;
   myTUSubsequence lastStem;
   bool empty_;
-  mfecovar_macrostate() : empty_(false) {}
+  mfecovar_macrostate() : mfe(0.0), covar(0.0), empty_(false) {
+	  empty(firstStem);
+	  empty(lastStem);
+  }
 
 };
 
@@ -254,7 +342,7 @@ struct answer_pknot_pfunc {
 	int alphaRightOuter;
 	bool empty_;
 	
-	answer_pknot_pfunc() : empty_(false) {
+	answer_pknot_pfunc() : pfunc(0.0), betaLeftOuter(0), alphaRightOuter(0), empty_(false) {
 	}
 	
 	bool operator>(const answer_pknot_pfunc& other) const { 
@@ -284,7 +372,7 @@ struct answer_pknot_pfunc {
 		return pfunc == other; 
 	}
 
-	answer_pknot_pfunc(int i) : pfunc(i), empty_(false) {
+	answer_pknot_pfunc(int i) : pfunc(i), betaLeftOuter(0), alphaRightOuter(0), empty_(false) {
 	}
 	
 	answer_pknot_pfunc operator+(const answer_pknot_pfunc &other) const {
@@ -375,7 +463,9 @@ struct answer_macrostate_mfe {
 	singleTUSubsequence firstStem;
 	singleTUSubsequence lastStem;
 	bool empty_;
-	answer_macrostate_mfe() : empty_(false) {
+	answer_macrostate_mfe() : energy(0), empty_(false) {
+		empty(firstStem);
+		empty(lastStem);
 	}
 
 	bool operator>(const answer_macrostate_mfe& other) const {

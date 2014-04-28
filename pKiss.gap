@@ -15,6 +15,7 @@ type shape_t = extern
 type answer_pknot_mfe = extern
 type answer_pknot_pfunc = extern
 type pktype = extern
+type KNOT_ANSWER_TYPE = extern
 
 //~ type dotBracket_t = pkshape_t
 //~ type string_t = Rope
