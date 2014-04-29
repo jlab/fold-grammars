@@ -310,12 +310,12 @@ algebra alg_ali_pknot_mfe implements sig_pknot_foldrna(alphabet = M_Char, answer
   }
 }
 
-//~ algebra alg_pknot_mfe_subopt extends alg_pknot_mfe {
-  //~ kscoring choice [int] h([int] i) {
-    //~ return mfeSubopt(i);
-  //~ }
+algebra alg_ali_pknot_mfe_subopt extends alg_ali_pknot_mfe {
+  kscoring choice [mfecovar] h([mfecovar] i) {
+    return mfeSuboptAli(i);
+  }
 
-  //~ kscoring choice [answer_pknot_mfecovar] hKnot([answer_pknot_mfecovar] i) {
-    //~ return mfeSuboptKnot(i);
-  //~ }
-//~ }
+  kscoring choice [answer_pknot_mfecovar] hKnot([answer_pknot_mfecovar] i) {
+    return mfeSuboptKnotAli(i);
+  }
+}

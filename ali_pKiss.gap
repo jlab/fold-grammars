@@ -1,12 +1,12 @@
 import rna
 import "Extensions/typesRNAfolding.hh"
+import "Extensions/alifold.hh"
 import "Extensions/pknot_stems_ali.hh" //precomputation of energetically best non-interrupted stems for all subwords i to j
 import "Extensions/pknot_extras.hh" //special functions for different strategies of pKiss and its index hacking, e.g. 3D-Tables, finding compatible H-type pseudoknots, ... + some energy constants for pseudoknots + minimal stem length
-//~ import "Extensions/pknot_enforce.hh"
-//~ import "Extensions/pknot_shape.hh" //for a smart hashable "string" with chars []{}<>()._
-import "Extensions/alifold.hh"
-//~ import "Extensions/mfesubopt.hh"
-//~ import "Extensions/probabilities.hh"
+import "Extensions/pknot_enforce.hh"
+import "Extensions/pknot_shape.hh" //for a smart hashable "string" with chars []{}<>()._
+import "Extensions/mfesubopt.hh"
+import "Extensions/probabilities.hh"
 
 input rna
 
@@ -15,7 +15,7 @@ type Rope = extern
 type shape_t = extern
 type answer_pknot_mfecovar = extern
 type mfecovar = extern
-//~ type answer_pknot_pfunc = extern
+type answer_pknot_pfunc = extern
 type pktype = extern
 type KNOT_ANSWER_TYPE = extern
 type size_t = extern
@@ -30,9 +30,9 @@ algebra alg_count auto count;
 algebra alg_enum auto enum;
 include "Algebras/DotBracket/alg_ali_pknot_dotBracket.gap"
 include "Algebras/MFE/alg_ali_pknot_mfe.gap"
-//~ include "Algebras/Pfunc/alg_pknot_pfunc.gap"
-//~ include "Algebras/alg_pknot_pktype.gap"
-//~ include "Algebras/Shapes/alg_pknot_shapes.gap"
+include "Algebras/Pfunc/alg_ali_pknot_pfunc.gap"
+include "Algebras/PKtype/alg_ali_pknot_pktype.gap"
+include "Algebras/Shapes/alg_ali_pknot_shapes.gap"
 
 include "Grammars/gra_pknot_microstate.gap"
 

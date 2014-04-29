@@ -34,6 +34,23 @@ static const int pkmlinit = 600; //additional penalty for a pseudoknot inside fr
 		return res;
 	}
 
+	inline answer_pknot_mfecovar get_pk_fn(const List_Ref<answer_pknot_mfecovar> &subopts) {
+		answer_pknot_mfecovar res;
+		empty(res);
+		if (!isEmpty(subopts)) {
+			List_Ref<answer_pknot_mfecovar> candidates = const_cast<List_Ref<answer_pknot_mfecovar>&>(subopts);
+			List_Ref<answer_pknot_mfecovar>::iterator it = candidates.ref().begin();
+			res = (*it);
+			++it;
+			for (; it != candidates.ref().end(); ++it) {
+				if ((*it) < res) {
+					res = (*it);
+				}
+			}
+		}
+		return res;
+	}
+
 	template<typename V, typename I>
 	inline answer_pknot_mfe get_pk_fn(const Hash::Ref<V, I > &t) {
 		//typename Hash::Ref<V, I > hash_h;

@@ -20,6 +20,8 @@ typedef Basic_Subsequence<char, unsigned> TUSubsequence;
 #include <rtlib/subopt.hh>
 #include "rna.hh"
 
+#define KNOT_ANSWER_TYPE answer_pknot_mfe
+
 #ifdef WINDOW_MODE
 #ifdef WITH_RNAOPTIONS
 #include "rnaoptions.hh"

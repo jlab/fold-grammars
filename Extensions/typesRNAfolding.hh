@@ -80,6 +80,9 @@ inline uint32_t hashable_value(const answer_pknot_mfe& candidate) {
 inline int getIntScore(answer_pknot_mfe &e) {
 	return e.energy;
 }
+inline int getIntScore(const answer_pknot_mfe &e) {
+	return e.energy;
+}
 
 struct answer_pknot_mfecovar {
 	float mfe;
@@ -164,6 +167,9 @@ inline float getScore(answer_pknot_mfecovar &e) {
 inline int getIntScore(answer_pknot_mfecovar &e) {
 	return (int) getScore(e);
 }
+inline int getIntScore(const answer_pknot_mfecovar &e) {
+	return (int) e.mfe+e.covar;
+}
 
 struct mfecovar{
 	bool empty_;
@@ -233,6 +239,9 @@ inline mfecovar operator+(const mfecovar &a, const mfecovar &b) {
 inline void empty(mfecovar &e) {e.empty_ = true; }
 inline bool isEmpty(const mfecovar &e) { return e.empty_; }
 
+inline int getIntScore(const mfecovar &e) {
+	return (int) e.covar+e.mfe;
+}
 
 
 
@@ -293,6 +302,9 @@ inline uint32_t hashable_value(const mfecovar_macrostate& candidate) {
   return candidate.covar+candidate.mfe; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
 }
 
+inline int getIntScore(const mfecovar_macrostate &x) {
+	return (int (x.mfe + x.covar));
+}
 
 /*
    With the MacroState grammar there are some ambiguous situations where it is not quite clear how a single unpaired base might dangle. Since we analyse the whole searchspace, we have to account for all candidates. The most complex situation arises for "mladlr", where two unpaired bases X and Y inside of a multiloop might separatly dangle to the closing stem (from inside) or to the first (or last) enclosed stem. Problem is, that we don't know the pairing partner of those enclosed stems, we only know one base of the pair (first 5' base for leftmost stem = F, last 3' base for rightmost stem = T). But the other can be determined by basepairing rules, hindered by additional wobble pairs. Thus we have the four possibilities:
@@ -519,6 +531,9 @@ struct answer_macrostate_mfe {
 	}
 };
 
+inline int getIntScore(const answer_macrostate_mfe &x) {
+	return x.energy;
+}
 inline std::ostream &operator<<(std::ostream &o, const answer_macrostate_mfe &tuple) {
 	o << tuple.energy;
 	return o;

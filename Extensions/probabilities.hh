@@ -22,18 +22,18 @@ inline bool operator==(const std::pair<answer_macrostate_mfe, PFUNC> &a, const s
 }
 
 template<typename SHAPE, typename MFE, typename PFUNC, typename I>
-inline answer_pknot_mfe get_pk_fn(const Hash::Ref<std::pair<SHAPE, std::pair<MFE, PFUNC> >, I> &candidates) {
+inline MFE get_pk_fn(const Hash::Ref<std::pair<SHAPE, std::pair<MFE, PFUNC> >, I> &candidates) {
 	Hash::Ref<std::pair<SHAPE, std::pair<MFE, PFUNC> >, I> &hash = const_cast<Hash::Ref<std::pair<SHAPE, std::pair<MFE, PFUNC> >, I>&>(candidates);
 	typename Hash::Ref<std::pair<SHAPE, std::pair<MFE, PFUNC> >, I>::iterator it = hash.ref().begin();
-	answer_pknot_mfe mfe;
+	MFE mfe;
 	if (it == hash.ref().end()) {
 		empty(mfe);
 	} else {
 		mfe = (*it).second.first;
 		++it;
 		for (; it != hash.ref().end(); ++it) {
-			answer_pknot_mfe cand = (*it).second.first;
-			if (cand.energy < mfe.energy) {
+			MFE cand = (*it).second.first;
+			if (getIntScore(cand) < getIntScore(mfe)) {
 				mfe = cand;
 			}
 		}

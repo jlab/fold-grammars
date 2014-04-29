@@ -23,7 +23,7 @@ algebra alg_enum auto enum;
 include "Algebras/DotBracket/alg_pknot_dotBracket.gap"
 include "Algebras/MFE/alg_pknot_mfe.gap"
 include "Algebras/Pfunc/alg_pknot_pfunc.gap"
-include "Algebras/alg_pknot_pktype.gap"
+include "Algebras/PKtype/alg_pknot_pktype.gap"
 include "Algebras/Shapes/alg_pknot_shapes.gap"
 
 include "Grammars/gra_knotInFrame.gap"

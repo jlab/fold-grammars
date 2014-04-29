@@ -1,4 +1,5 @@
 PREFIX=/usr
+TESTPREFIX=/homes/sjanssen/Desktop/FGpkali/Misc/Test-Suite/StefanStyle/
 
 #programs
 GAPC=gapc
@@ -67,6 +68,15 @@ distclean-suite:
 install-lib:
 	$(MAKE) -C $(BASEDIR)/Misc/Applications/lib/ install
 
+test-suite:
+	if [ ! -d "$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)/bin" ]; then $(INSTALL) -d $(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)/bin; fi;
+	$(MAKE) -C Misc/Applications/Knotinframe install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
+	$(MAKE) -C Misc/Applications/pKiss install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
+	$(MAKE) -C Misc/Applications/RapidShapes install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
+	$(MAKE) -C Misc/Applications/RNAalishapes install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
+	$(MAKE) -C Misc/Applications/RNAshapes install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
+	mv $(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)/bin/* $(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
+	
 compile:
 	if [ ! -f "$(ARCHTRIPLE)/$(PROGRAMPREFIX)$(gapc_binaryname)" ]; then \
 		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \

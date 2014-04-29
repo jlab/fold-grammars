@@ -37,18 +37,38 @@ inline bool operator==(const pktype &a, const pktype &b) {
   return a.isH == b.isH && a.isK == b.isK;
 }
 
-template<typename PKTYPE, typename MFE, typename I>
-inline answer_pknot_mfe get_pk_fn(const Hash::Ref<std::pair<PKTYPE, MFE> , I > &candidate) {
-	Hash::Ref<std::pair<PKTYPE, MFE> , I > &hash = const_cast<Hash::Ref<std::pair<PKTYPE, MFE> , I >&>(candidate);
-	MFE res;
-	typename Hash::Ref<std::pair<PKTYPE, MFE> , I >::iterator it = hash.ref().begin();
+template<typename PKTYPE, typename I>
+inline answer_pknot_mfe get_pk_fn(const Hash::Ref<std::pair<PKTYPE, answer_pknot_mfe> , I > &candidate) {
+	Hash::Ref<std::pair<PKTYPE, answer_pknot_mfe> , I > &hash = const_cast<Hash::Ref<std::pair<PKTYPE, answer_pknot_mfe> , I >&>(candidate);
+	answer_pknot_mfe res;
+	typename Hash::Ref<std::pair<PKTYPE, answer_pknot_mfe> , I >::iterator it = hash.ref().begin();
 	if (it == hash.ref().end()) {
 		empty(res);
 	} else {
 		res = (*it).second;
 		++it;
 		for (; it != hash.ref().end(); ++it) {
-			MFE b = (*it).second;
+			answer_pknot_mfe b = (*it).second;
+			if (b < res) {
+				res = b;
+			}
+		}
+	}
+	return res;
+}
+
+template<typename PKTYPE, typename I>
+inline answer_pknot_mfecovar get_pk_fn(const Hash::Ref<std::pair<PKTYPE, answer_pknot_mfecovar> , I > &candidate) {
+	Hash::Ref<std::pair<PKTYPE, answer_pknot_mfecovar> , I > &hash = const_cast<Hash::Ref<std::pair<PKTYPE, answer_pknot_mfecovar> , I >&>(candidate);
+	answer_pknot_mfecovar res;
+	typename Hash::Ref<std::pair<PKTYPE, answer_pknot_mfecovar> , I >::iterator it = hash.ref().begin();
+	if (it == hash.ref().end()) {
+		empty(res);
+	} else {
+		res = (*it).second;
+		++it;
+		for (; it != hash.ref().end(); ++it) {
+			answer_pknot_mfecovar b = (*it).second;
 			if (b < res) {
 				res = b;
 			}

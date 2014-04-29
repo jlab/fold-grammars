@@ -111,30 +111,27 @@ inline List_Ref<answer_pknot_mfe> mfeSuboptKnot(std::pair<Iterator, Iterator> i)
 	return unique(answers);
 }
 
+// a version for aligned pseudoknot components, i.e. all those answers that must also carry internal stem partners for correct computation of dangling energies
+template <typename Iterator>
+inline List_Ref<answer_pknot_mfecovar> mfeSuboptKnotAli(std::pair<Iterator, Iterator> i) {
+	answer_pknot_mfecovar minValue = minimum(i); //find mfe value
+	List_Ref<answer_pknot_mfecovar> answers; //init list, that should hold all selected candidates
 
-//~ template<typename MFE, typename SHAPE, typename DOTBRACKET>
-//~ inline List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > suboptShapeClasses(List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > candidateList) {
-	//~ if (candidateList.ref().isEmpty()) {
-		//~ return candidateList;
-	//~ } else {
-		//~ List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > > answers = List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >();
-		//~ int mfe = std::numeric_limits<int>::max();
-		//~ for (typename List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >::iterator it = candidateList.ref().begin(); it != candidateList.ref().end(); ++it) {
-			//~ int energy = getEnergy((*it).first.second);
-			//~ if (mfe > energy) {
-				//~ mfe = energy;
-			//~ }
-		//~ }
-		//~ int range = getSuboptRange(mfe);
-		//~ for (typename List_Ref<std::pair<std::pair<SHAPE, MFE>, DOTBRACKET > >::iterator it = candidateList.ref().begin(); it != candidateList.ref().end(); ++it) {
+	if (!isEmpty(minValue)) {
+		int range = getSuboptRange(getIntScore(minValue));
+		for (Iterator it = i.first; it != i.second; ++it) {
+			answer_pknot_mfecovar val = *it;
+			if (getIntScore(val) <= range) {
+				push_back(answers, val);
+			}
+		}
+	}
+	return unique(answers);
+}
 
-			//~ if (getEnergy((*it).first.second) <= range) {
-				//~ answers->push_back(*it);
-			//~ }
-		//~ }
-		//~ return answers;
-	//~ }
-//~ }
+inline int getIntScore(const int x) {
+	return x;
+}
 
 template<typename T>
 struct suboptShapeClasses {
@@ -143,10 +140,10 @@ struct suboptShapeClasses {
 	currMin = INT_MAX/10; //set init MFE to a infinity like value
   }
   void update(const T &src) {
-	if (getEnergy(src.second) < currMin) currMin = getEnergy(src.second);
+	if (getIntScore(src.second) < currMin) currMin = getIntScore(src.second);
   }
   bool ok(const T &x) const {
-	return getEnergy(x.second) <= getSuboptRange(currMin);
+	return getIntScore(x.second) <= getSuboptRange(currMin);
   }
 };
 
