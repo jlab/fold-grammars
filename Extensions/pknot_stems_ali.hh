@@ -446,14 +446,14 @@ template <typename Value>   void  print_backtrack(std::ostream &out, Value& valu
 
 template <typename C, typename U> inline std::pair<int, mfecovar> stacklen(const Basic_Sequence<C> &seq, U a, U b) {
 	static stacklen_ali_window pkStems;
-	static bool compute = true;
+	static std::map<U, std::map<U, bool> > isComputed;
 
-	if (!compute) {
+	if (isComputed[a][b]) {
 		return pkStems.nt_stack(a,b);
 	} else {
 		pkStems.init(seq, getWindowSize(), getWindowIncrement());
 		pkStems.run();
-		compute = false;
+		isComputed[a][b] = true;
 		return pkStems.nt_stack(a,b);
 	}
 }
