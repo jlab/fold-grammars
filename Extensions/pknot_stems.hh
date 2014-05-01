@@ -452,13 +452,14 @@ template <typename Value>   void  print_backtrack(std::ostream &out, Value& valu
 template <typename C, typename U>
 inline std::pair<int, unsigned> stacklen(const Basic_Sequence<C> &seq, U a, U b) {
 	static stacklen_window pkStems;
-	static bool compute = true;
+	static std::map<U, std::map<U, bool> > isComputed;
 
-	if (!compute) {
+	if (isComputed[a][b]) {
 		return pkStems.nt_stack(a,b);
 	} else {
 		pkStems.init(seq, getWindowSize(), getWindowIncrement());
 		pkStems.run();
+		isComputed[a][b] = true;
 		return pkStems.nt_stack(a,b);
 	}
 }
@@ -484,100 +485,381 @@ inline const A &length(const std::pair<A, B> &p) {
 }
 
 #else
+class stacklen_normal {
 
-template <typename T>
-struct TA {
-  typedef Table::Quadratic<T, Table::CYK> array_t;
-  array_t &t;
-  TA(array_t &a) : t(a) {
-  }
+  public:
+Basic_Sequence<char> t_0_seq;
+unsigned int t_0_left_most;
+unsigned int t_0_right_most;
 
-  T &operator()(unsigned i, unsigned j) {
-	  return t.get_tabulated(i, j);
-  }
-  const T &operator()(unsigned i, unsigned j) const {
-	  return t.get_tabulated(i, j);
-  }
-  void operator()(unsigned i, unsigned j, const T &x) {
-	  t.get_tabulated(i, j) = x;
-  }
+std::pair<int, int>  Bint_firstG_int_secondG_E_zero;
+
+class stack_table_t {
+
+private:
+
+unsigned int t_0_left_most;
+unsigned int t_0_right_most;
+std::vector<std::pair<int, int>  > array;
+std::vector<bool> tabulated;
+unsigned int t_0_n;
+std::pair<int, int>  zero;
+unsigned int size()
+{
+  return (1 * ((((t_0_n * (t_0_n + 1)) / 2) + t_0_n) + 1));
+}
+
+
+public:
+
+stack_table_t()
+{
+  empty(zero);
+}
+
+void init(unsigned int t_0_n_, const std::string &tname)
+{
+t_0_n = t_0_n_;
+t_0_left_most = 0;
+t_0_right_most = t_0_n;
+unsigned int newsize = size();
+array.resize(newsize);
+tabulated.clear();
+tabulated.resize(newsize);
+}
+bool is_tabulated(unsigned int t_0_i, unsigned int t_0_j)
+{
+  assert( (t_0_i <= t_0_j));
+  assert( (t_0_j <= t_0_n));
+  return tabulated[(0 + (1 * (((t_0_j * (t_0_j + 1)) / 2) + t_0_i)))];
+}
+
+
+void clear() { tabulated.clear(); }
+std::pair<int, int>  &  get(unsigned int t_0_i, unsigned int t_0_j)
+{
+  assert( (t_0_i <= t_0_j));
+  assert( (t_0_j <= t_0_n));
+  assert( tabulated[(0 + (1 * (((t_0_j * (t_0_j + 1)) / 2) + t_0_i)))]);
+  assert( ((0 + (1 * (((t_0_j * (t_0_j + 1)) / 2) + t_0_i))) < size()));
+  return array[(0 + (1 * (((t_0_j * (t_0_j + 1)) / 2) + t_0_i)))];
+}
+
+
+void set(unsigned int t_0_i, unsigned int t_0_j, const std::pair<int, int> & e)
+{
+  assert( (t_0_i <= t_0_j));
+  assert( (t_0_j <= t_0_n));
+  assert( !is_tabulated(t_0_i, t_0_j));
+  assert( ((0 + (1 * (((t_0_j * (t_0_j + 1)) / 2) + t_0_i))) < size()));
+  array[(0 + (1 * (((t_0_j * (t_0_j + 1)) / 2) + t_0_i)))] = e;
+  tabulated[(0 + (1 * (((t_0_j * (t_0_j + 1)) / 2) + t_0_i)))] = true;
+}
+
+
+};
+stack_table_t stack_table;
+
+template <typename C> void init(const Basic_Sequence<C> &seq) {
+	t_0_seq = seq;
+	t_0_seq.n = seq.n;
+
+	stack_table.init(t_0_seq.size(), "stack_table");
+	empty(Bint_firstG_int_secondG_E_zero);
+	t_0_left_most = 0;
+	t_0_right_most = t_0_seq.size();
+}
+
+//void init(const gapc::Opts &opts)
+//{
+//const std::vector<std::pair<const char *, unsigned> > &inp = opts.inputs;
+//if(inp.size() != 1)
+//  throw gapc::OptException("Number of input sequences does not match.");
+//
+//  t_0_seq.copy(inp[0].first, inp[0].second);
+//char_to_rna(t_0_seq);
+//  stack_table.init( t_0_seq.size(), "stack_table");
+//empty(Bint_firstG_int_secondG_E_zero);
+//
+//t_0_left_most = 0;
+//t_0_right_most = t_0_seq.size();
+//}
+
+  public:
+    std::pair<int, int>  &  nt_stack(unsigned int t_0_i, unsigned int t_0_j){
+    	  if (stack_table.is_tabulated(t_0_i, t_0_j))
+    	    {
+    	      return stack_table.get(t_0_i, t_0_j);
+    	    }
+
+    	  List_Ref<std::pair<int, int> > answers;
+    	  empty(answers);
+    	  empty( answers);
+    	  std::pair<int, int>  ret_0;
+    	  if (((t_0_j - t_0_i) >= 2))
+    	    {
+    	      if (basepairing(t_0_seq, t_0_i, t_0_j))
+    	      {
+    	        TUSubsequence ret_3 = BASE(t_0_seq, (t_0_j - 1), t_0_j);
+    	        TUSubsequence a_2 = ret_3;
+    	        if (is_not_empty(a_2))
+    	        {
+    	          TUSubsequence ret_1 = BASE(t_0_seq, t_0_i, (t_0_i + 1));
+    	          TUSubsequence a_0 = ret_1;
+    	          if (is_not_empty(a_0))
+    	          {
+    	            std::pair<int, int>  ret_2 = nt_stack((t_0_i + 1), (t_0_j - 1));
+    	            std::pair<int, int>  a_1 = ret_2;
+    	            if (is_not_empty(a_1))
+    	              {
+    	                ret_0 = sr(a_0, a_1, a_2);
+    	              }
+
+    	            else
+    	              {
+    	                empty( ret_0);
+    	              }
+
+    	            erase( a_1);
+    	          }
+
+    	          else
+    	            {
+    	              empty( ret_0);
+    	            }
+
+    	          erase( a_0);
+    	        }
+
+    	        else
+    	          {
+    	            empty( ret_0);
+    	          }
+
+    	        erase( a_2);
+    	      }
+
+    	      else
+    	      {
+    	        empty( ret_0);
+    	        empty( ret_0);
+    	      }
+
+    	    }
+
+    	  else
+    	    {
+    	      empty( ret_0);
+    	    }
+
+    	  if (is_not_empty(ret_0))
+    	    {
+    	      push_back_max_other( answers, ret_0);
+    	    }
+
+    	  std::pair<int, int>  ret_4;
+    	  if (((t_0_j - t_0_i) >= 0))
+    	  {
+    	    TUSubsequence ret_5 = REGION0(t_0_seq, t_0_i, t_0_j);
+    	    TUSubsequence a_3 = ret_5;
+    	    if (is_not_empty(a_3))
+    	      {
+    	        ret_4 = end(a_3);
+    	      }
+
+    	    else
+    	      {
+    	        empty( ret_4);
+    	      }
+
+    	    erase( a_3);
+    	  }
+
+    	  else
+    	    {
+    	      empty( ret_4);
+    	    }
+
+    	  if (is_not_empty(ret_4))
+    	    {
+    	      push_back_max_other( answers, ret_4);
+    	    }
+
+    	  std::pair<int, int>  eval = h(answers);
+    	  erase( answers);
+    	  stack_table.set( t_0_i, t_0_j, eval);
+    	  return stack_table.get(t_0_i, t_0_j);
+    	}
+private:
+    std::pair<int, int>  end(const TUSubsequence & p_e){
+    	  TUSubsequence l_0 = p_e;
+    	  TUSubsequence r_0 = p_e;
+    	  int ret_left = end_l(l_0);
+    	  int ret_right = end_r(r_0);
+    	  std::pair<int, int>  ret;
+    	  ret.first = ret_left;
+    	  ret.second = ret_right;
+    	  return ret;
+    	}
+
+    std::pair<int, int>  h(List_Ref<std::pair<int, int> > i){
+    	  std::pair<List<std::pair<int, int> >::iterator, List<std::pair<int, int> >::iterator> range = get_range(i);
+    	  return h(range);
+    	}
+
+template <typename Iterator>
+    std::pair<int, int>  h(std::pair<Iterator, Iterator> i)
+    {
+      std::pair<int, int>  answers;
+      empty( answers);
+      std::pair<Proxy::Iterator<Iterator, select1st<typename Iterator::value_type> >  ,Proxy::Iterator<Iterator, select1st<typename Iterator::value_type> > >  left = splice_left(i);
+      int left_answers = h_l(left);
+      if (isEmpty(left_answers))
+      {
+        std::pair<int, int>  temp;
+        empty( temp);
+        erase( left_answers);
+        return temp;
+      }
+
+      int elem = left_answers;
+      List_Ref<int> right_candidates;
+      empty(right_candidates);
+      empty( right_candidates);
+      for (Iterator tupel = i.first; tupel != i.second; ++tupel) {
+        if (((*tupel).first == elem))
+          {
+            push_back( right_candidates, (*tupel).second);
+          }
+
+      }
+      int right_answers = h_r(right_candidates);
+      int right_elem;
+      right_elem = right_answers;
+      std::pair<int, int>  temp_elem;
+      temp_elem.first = elem;
+      temp_elem.second = right_elem;
+      answers = temp_elem;
+      return answers;
+    }
+
+    std::pair<int, int>  sr(const TUSubsequence & p_l, const std::pair<int, int> & p_x, const TUSubsequence & p_r)
+    {
+      TUSubsequence l_0 = p_l;
+      int l_1 = p_x.first;
+      TUSubsequence l_2 = p_r;
+      TUSubsequence r_0 = p_l;
+      int r_1 = p_x.second;
+      TUSubsequence r_2 = p_r;
+      int ret_left = sr_l(l_0, l_1, l_2);
+      int ret_right = sr_r(r_0, r_1, r_2);
+      std::pair<int, int>  ret;
+      ret.first = ret_left;
+      ret.second = ret_right;
+      return ret;
+    }
+
+    int end_l(const TUSubsequence & e) {
+    	return 0;
+    }
+    int h_l(List_Ref<int> i)
+    {
+      std::pair<List<int>::iterator, List<int>::iterator> range = get_range(i);
+      return h_l(range);
+    }
+
+template <typename Iterator>
+    int h_l(std::pair<Iterator, Iterator> i)
+{
+	  return maximum(i);
+}
+
+    int sr_l(const TUSubsequence & l, int x, const TUSubsequence & r) {
+    	return (1 + x);
+    }
+
+
+    int end_r(const TUSubsequence & e) {
+    	return 0;
+    }
+    int h_r(List_Ref<int> i) {
+    	  std::pair<List<int>::iterator, List<int>::iterator> range = get_range(i);
+    	  return h_r(range);
+    }
+template <typename Iterator>
+    int h_r(std::pair<Iterator, Iterator> i) {
+		return minimum(i);
+	}
+    int sr_r(const TUSubsequence & l, int x, const TUSubsequence & r) {
+    	return (x + sr_energy(l, r));
+    }
+
+
+ public:
+   void cyk();
+
+ public:
+   std::pair<int, int>  &  run()
+{
+  return nt_stack(t_0_left_most, t_0_right_most);
+}
+void print_stats(std::ostream &o)
+{
+#ifdef STATS
+      o << "\n\nN = " << seq.size() << '\n';
+      stack_table.print_stats(o, "stack_table");
+#endif
+}
+
+template <typename Value>   void  print_result(std::ostream &out, Value& res)
+
+{
+if (isEmpty(res))
+  out << "[]\n";
+else
+  out << res << '\n';
+
+}
+template <typename Value>   void  print_backtrack(std::ostream &out, Value& value)
+
+{
+}
+   void  print_subopt(std::ostream &out, int  delta = 0) {}
+
 };
 
-template <typename C, typename U>
-inline
-std::pair<int, unsigned> stacklen(const Basic_Sequence<C> &seq, U a, U b) {
-  typedef Table::Quadratic<std::pair<int, unsigned>, Table::CYK> table_t;
-  static table_t table;
-  static bool compute = true;
-  TA<std::pair<int, unsigned> > array(table);
-  if (compute) {
+template <typename C, typename U> inline std::pair<int, int> stacklen(const Basic_Sequence<C> &seq, U a, U b) {
+	static stacklen_normal pkStems;
+	static bool compute = true;
 
-    table.init(seq, "stacklen");
-    unsigned n = seq.size();
-    for (unsigned j = 2; j<=n; ++j) {
-      for (unsigned is = j-2+1; is > 0; --is) {
-        unsigned i = is-1;
-        if (j-i < 5) {
-          array(i, j).first = 0;
-          array(i, j).second = 0;
-          continue;
-        }
-        if (basepairing(seq, i, j)) {
-          Subsequence s;
-          s.i = i;
-          s.j = j;
-          s.seq = &seq;
-          int nrg = sr_energy(s, s);
-          if (j-i>3) {
-            if (array(i+1, j-1).first + nrg > 0) { //array(i+1, j-1).first) {
-              array(i, j).first = 0;
-              array(i, j).second = 1;
-            } else {
-              array(i, j).first = array(i+1, j-1).first + nrg;
-              array(i, j).second = array(i+1, j-1).second + 1;
-            }
-          } else {
-            array(i, j).first = nrg;
-            array(i, j).second = 1;
-          }
-        } else {
-          array(i, j).first = 0;
-          array(i, j).second = 0;
-        }
-      }
-      array(j, j).first = 0;
-      array(j, j).second = 0;
-      array(j-1, j).first = 0;
-      array(j-1, j).second = 0;
-    }
-    array(0, 0).first = 0;
-    array(0, 0).second = 0;
-    array(0, 1).first = 0;
-    array(0, 1).second = 0;
-
-    compute = false;
-  }
-  return array(a, b);
+	if (!compute) {
+		return pkStems.nt_stack(a,b);
+	} else {
+		pkStems.init(seq);
+		pkStems.run();
+		compute = false;
+		return pkStems.nt_stack(a,b);
+	}
 }
 
 template <typename A, typename B>
 inline A &energy(std::pair<A, B> &p) {
-  return p.first;
+  return p.second;
 }
 
 template <typename A, typename B>
 inline B &length(std::pair<A, B> &p) {
-  return p.second;
-}
-
-template <typename A, typename B>
-inline const A &energy(const std::pair<A, B> &p) {
   return p.first;
 }
 
 template <typename A, typename B>
-inline const B &length(const std::pair<A, B> &p) {
+inline const A &energy(const std::pair<A, B> &p) {
   return p.second;
+}
+
+template <typename A, typename B>
+inline const B &length(const std::pair<A, B> &p) {
+  return p.first;
 }
 
 #endif
