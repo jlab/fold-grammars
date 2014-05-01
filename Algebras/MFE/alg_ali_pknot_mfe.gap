@@ -134,7 +134,7 @@ algebra alg_ali_pknot_mfe implements sig_pknot_foldrna(alphabet = M_Char, answer
     alpha.j = x.alphaRightOuter;
     
 	mfecovar res;
-	res.mfe = x.mfe + ((npp + dl_energy(alpha, alpha)) / float(rows(ld)));
+	res.mfe = x.mfe + npp + (dl_energy(alpha, alpha) / float(rows(ld)));
 	res.covar = x.covar;
     return res;
   }
@@ -146,7 +146,7 @@ algebra alg_ali_pknot_mfe implements sig_pknot_foldrna(alphabet = M_Char, answer
     beta.j = rd.j-1;
     
 	mfecovar res;
-	res.mfe = x.mfe + ((npp + dr_energy(beta, beta)) / float(rows(rd)));
+	res.mfe = x.mfe + npp + (dr_energy(beta, beta) / float(rows(rd)));
 	res.covar = x.covar;
     return res;
   }
@@ -163,7 +163,7 @@ algebra alg_ali_pknot_mfe implements sig_pknot_foldrna(alphabet = M_Char, answer
     beta.j = rd.j-1;
       
 	mfecovar res;
-	res.mfe = x.mfe + ((2*npp + dl_energy(alpha, alpha) + dr_energy(beta, beta)) / float(rows(rd)));
+	res.mfe = x.mfe + 2*npp + ((dl_energy(alpha, alpha) + dr_energy(beta, beta)) / float(rows(rd)));
 	res.covar = x.covar;
     return res;
   }
@@ -183,7 +183,7 @@ algebra alg_ali_pknot_mfe implements sig_pknot_foldrna(alphabet = M_Char, answer
     beta.j = betaRightOuter;
       
 	mfecovar res;
-	res.mfe = x.mfe + ((npp + dl_energy(beta, beta)) / float(rows(ld)));
+	res.mfe = x.mfe + npp + (dl_energy(beta, beta) / float(rows(ld)));
 	res.covar = x.covar;
     return res;
   }
@@ -206,8 +206,8 @@ algebra alg_ali_pknot_mfe implements sig_pknot_foldrna(alphabet = M_Char, answer
 	res.mfe = 0;
 	for (int k = 0; k < int(rows(m)); k=k+1) {
       res.mfe = res.mfe + sr_pk_energy(column(seq_char(m,m.i-1),k), column(seq_char(m,betaRightInner),k), column(seq_char(m,m.i+1),k), column(seq_char(m,alphaLeftInner-1),k));
-    }
-	res.mfe = res.mfe / float(rows(m));
+   }
+	res.mfe = (res.mfe / float(rows(m)))+npp;
 	res.covar = 0;
     return res;
   }
@@ -224,7 +224,7 @@ algebra alg_ali_pknot_mfe implements sig_pknot_foldrna(alphabet = M_Char, answer
     alpha.j = m.j+1;
       
 	mfecovar res;
-	res.mfe = (2*npp + dri_energy(alpha, alpha) + dli_energy(beta, beta)) / float(rows(m));
+	res.mfe = 2*npp + ((dri_energy(alpha, alpha) + dli_energy(beta, beta)) / float(rows(m)));
 	res.covar = 0;
     return res;
   }
@@ -240,7 +240,7 @@ algebra alg_ali_pknot_mfe implements sig_pknot_foldrna(alphabet = M_Char, answer
     beta.j = betaRightInner+1;
 
 	mfecovar res;
-	res.mfe = x.mfe + ((npp + dli_energy(beta, beta)) / float(rows(ld)));
+	res.mfe = x.mfe + npp + (dli_energy(beta, beta) / float(rows(ld)));
 	res.covar = x.covar;
     return res;
   }
@@ -252,7 +252,7 @@ algebra alg_ali_pknot_mfe implements sig_pknot_foldrna(alphabet = M_Char, answer
     alpha.j = rd.j+1;
 
 	mfecovar res;
-	res.mfe = x.mfe + ((npp + dri_energy(alpha, alpha)) / float(rows(rd)));
+	res.mfe = x.mfe + npp + (dri_energy(alpha, alpha) / float(rows(rd)));
 	res.covar = x.covar;
     return res;
   }
@@ -269,7 +269,7 @@ algebra alg_ali_pknot_mfe implements sig_pknot_foldrna(alphabet = M_Char, answer
     alpha.j = rd.j+1;
 
 	mfecovar res;
-	res.mfe = x.mfe + ((2*npp + dli_energy(beta, beta) + dri_energy(alpha, alpha)) / float(rows(rd)));
+	res.mfe = x.mfe + 2*npp + ((dli_energy(beta, beta) + dri_energy(alpha, alpha)) / float(rows(rd)));
 	res.covar = x.covar;
     return res;
   }
@@ -281,7 +281,7 @@ algebra alg_ali_pknot_mfe implements sig_pknot_foldrna(alphabet = M_Char, answer
     alpha.j = rd.j-1;
     
 	mfecovar res;
-	res.mfe = x.mfe + ((npp + dr_energy(alpha, alpha)) / float(rows(rd)));
+	res.mfe = x.mfe + npp + (dr_energy(alpha, alpha) / float(rows(rd)));
 	res.covar = x.covar;
     return res;
   }

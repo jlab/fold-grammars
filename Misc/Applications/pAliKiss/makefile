@@ -10,7 +10,7 @@ all:
 	$(MAKE) all_normal
 	$(MAKE) all_window
 	
-all_normal: mfe subopt enforce local shapes probs eval
+all_normal: mfe subopt enforce local shapes probs eval helper_consensus helper_sci
 	
 all_window: windowmodeflag = --window-mode
 all_window: current_windowmodesuffix = $(WINDOWSUFFIX)
@@ -74,6 +74,25 @@ eval:
 		gapc_file="eval_ali_pKiss.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)" \
 		isEval=1;
+
+helper_consensus: helper_consensus_consensus helper_consensus_mis
+helper_consensus_%:
+	$(MAKE) compile \
+		gapc_product="alg_ali_${*}" \
+		gapc_options="$(windowmodeflag)" \
+		gapc_file="ali_nodangle.gap" \
+		gapc_binaryname="rep_${*}$(current_windowmodesuffix)";
+
+helper_sci: helper_sci_nodangle helper_sci_overdangle helper_sci_microstate helper_sci_macrostate
+helper_sci_%:
+	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
+	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
+	suffix=`echo "$${sOv}$${sMa}"`; \
+	$(MAKE) compile \
+		gapc_product="alg_mfe$${suffix}" \
+		gapc_options="$(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="sci_${*}$(current_windowmodesuffix)";
 
 distclean:
 	rm -rf $(ARCHTRIPLE);
