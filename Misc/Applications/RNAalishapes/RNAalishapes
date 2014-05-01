@@ -24,16 +24,10 @@ use POSIX 'isatty';
 our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_OUTSIDE, $Settings::MODE_MEA);
 @References::ORDER = ('hof:fek:sta:2002','ber:hof:wil:gru:sta:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','was:hof:sta:2004','mcc:1990','voss:2006');
 
-our $CONSENSUS_CONSENSUS = 'consensus';
-our $CONSENSUS_MIS = 'mis';
-
 our $GRAMMAR_NODANGLE = 'nodangle';
 our $GRAMMAR_OVERDANGLE = 'overdangle';
 our $GRAMMAR_MICROSTATE = 'microstate';
 our $GRAMMAR_MACROSTATE = 'macrostate';
-
-our $TASK_REP = 'rep';
-our $TASK_SCI = 'sci';
 
 my %PARAM;
 $PARAM{mode} = {modes => \@ALLMODES, key => 'mode', type => 's', default => $Settings::MODE_SHAPES, info => "Select the computation mode. Available modes are \"".join('", "', @ALLMODES)."\". Omit the ticks on input.\nDefault is \"@(DEFAULT)\"."};
@@ -57,7 +51,7 @@ $PARAM{pairingfraction} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $
 $PARAM{cfactor} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'cfactor', gapc => 'C', type => 'f', default => '1.0', info => "Set the weight of the covariance term in the energy function.\nDefault is @(DEFAULT)."};
 $PARAM{nfactor} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'nfactor', gapc => 'n', type => 'f', default => '1.0', info => "Set the penalty for non-compatible sequences in the covariance term of the energy function.\nDefault is @(DEFAULT)."};
 $PARAM{ribosumscoring} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'ribosumscoring', gapc => 'R', default => 0, type => 'i', info => "Switch between hamming / ribosum distance for covariance calculation.\nBases in two pairing alignment columns are not always identical. According to compensating mutations and the nature of the bases we score replacing one base with another differently. For example, replacing C by U might be more likely than C by A. These 'distances' are expressed in form a distance matrix. By default, this matrix is a simple hamming distance matrix. A more advanced option is to use a 'Ribosum' matrix, according to minimal and maximal pairwise sequence similarity.\nDefault value is @(DEFAULT)."};
-$PARAM{consensus} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'consensus', default => 'consensus', type => 's', info => "The input alignment will be representet in a single line. You can choose between \"$CONSENSUS_CONSENSUS\", for a simple consensus sequence (determined by most frequent character), or \"$CONSENSUS_MIS\" the 'most informative sequence'. For each column of the alignment output the set of nucleotides with frequence greater than average in IUPAC notation.\nDefault is \"@(DEFAULT)\"."};
+$PARAM{consensus} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'consensus', default => 'consensus', type => 's', info => "The input alignment will be representet in a single line. You can choose between \"$IO::CONSENSUS_CONSENSUS\", for a simple consensus sequence (determined by most frequent character), or \"$IO::CONSENSUS_MIS\" the 'most informative sequence'. For each column of the alignment output the set of nucleotides with frequence greater than average in IUPAC notation.\nDefault is \"@(DEFAULT)\"."};
 $PARAM{grammar} = {modes => \@ALLMODES, key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could perform surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"@(DEFAULT)\". See [".References::getNumber('jan:schud:ste:gie:2011')."] for further details."};
 $PARAM{sci} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'sci', default => 0, type => 'i', info => "The structure conservation index (SCI) is a measure for the likelyhood that individual sequences will fold similar to the aligned sequences. It is computed as the aligned MFE divided by the average MFE of the unaligned sequences.\nA SCI close to zero indicates that this structure is not a good consensus structure, whereas a set of perfectly conserved structures has SCI of 1. A SCI > 1 indicates a perfectly conserved secondary structure, which is, in addition, supported by compensatory and/or consistent mutations, which contribute a covariance score to the alignment MFE. For further details see [".References::getNumber('was:hof:sta:2004')."].\nFor the sake of speed, SCI computation is switched off by default."};
 $PARAM{bppmthreshold} = {modes => [$Settings::MODE_OUTSIDE], gapc => 'F', key => 'bppmThreshold', default => 0.00001, type => 'f', info => "Set the threshold for base pair probabilities included in the postscript output.\nDefault is @(DEFAULT)."};
@@ -176,7 +170,7 @@ sub doComputation {
 		$gapInput .= $seq.'#';
 	}
 	
-	$refHash_alignment->{representation} = getAlignmentRepresentation($gapInput, $refHash_alignment, $settings);
+	$refHash_alignment->{representation} = IO::getAlignmentRepresentation($gapInput, $refHash_alignment, $settings, $IO::TASK_REP, \&buildCommand);
 	my $command = buildCommand($settings, $refHash_alignment);
 	my $structureInputFile = undef;
 	my $structureArg = "";
@@ -211,24 +205,6 @@ sub doComputation {
 	return undef;
 }
 
-sub getAlignmentRepresentation {
-	my ($gapInput, $refHash_alignment, $settings) = @_;
-	
-	my $command = buildCommand($settings, $refHash_alignment, $TASK_REP);
-	print "Actual call for alignment representation was: $command \"$gapInput\"\n" if ($settings->{verbose});
-	my $inputFile = Utils::writeInputToTempfile($gapInput);
-	my $result = qx($command -f $inputFile);
-	Utils::qxDieMessage($command, $?);
-	unlink $inputFile if (!$settings->{verbose});
-
-	foreach my $line (split(m/\r?\n/, $result)) {
-		if ($line =~ m/^Answer:\s*$/) {
-		} elsif ($line =~ m/^\s*$/) {
-		} else {
-			return $line;
-		}
-	}
-}
 
 sub buildCommand {
 	my ($settings, $refHash_alignment, $task) = @_;
@@ -245,15 +221,15 @@ sub buildCommand {
 		}
 		$cmd .= '_'.$settings->{'grammar'};
 	} else {
-		if ($task eq $TASK_REP) {
-			$cmd .= $TASK_REP;
+		if ($task eq $IO::TASK_REP) {
+			$cmd .= $IO::TASK_REP;
 			$cmd .= '_'.$settings->{'consensus'};
-		} elsif ($task eq $TASK_SCI) {
-			$cmd .= $TASK_SCI;
+		} elsif ($task eq $IO::TASK_SCI) {
+			$cmd .= $IO::TASK_SCI;
 			$cmd .= '_'.$settings->{'grammar'};
 		}
 	}
-	if ((not defined $task) || ($task eq $TASK_SCI)) {
+	if ((not defined $task) || ($task eq $IO::TASK_SCI)) {
 		if ((not defined $task) && (defined $settings->{'windowsize'})) {
 			$cmd .= "_window";
 			my $windowSize = $settings->{'windowsize'};
@@ -299,7 +275,7 @@ sub checkParameters {
 	$settings->{'grammar'} = lc($settings->{'grammar'});
 	die $diePrefix."there is no grammar \"".$settings->{'grammar'}."\". Please select one of \"$GRAMMAR_NODANGLE\", \"$GRAMMAR_OVERDANGLE\", \"$GRAMMAR_MICROSTATE\" or \"$GRAMMAR_MACROSTATE\".\n" if ($settings->{'grammar'} !~ m/^nodangle|overdangle|microstate|macrostate$/i);
 	$settings->{'consensus'} = lc($settings->{'consensus'});
-	die $diePrefix."there is no consensus representation \"".$settings->{'consensus'}."\". Please select either \"$CONSENSUS_CONSENSUS\" or \"$CONSENSUS_MIS\".\n" if ($settings->{'consensus'} !~ m/^consensus|mis$/i);
+	die $diePrefix."there is no consensus representation \"".$settings->{'consensus'}."\". Please select either \"$IO::CONSENSUS_CONSENSUS\" or \"$IO::CONSENSUS_MIS\".\n" if ($settings->{'consensus'} !~ m/^consensus|mis$/i);
 	die $diePrefix."--".$PARAM{'numsamples'}->{key}." must be a positive integer, otherwise shape frequencies cannot be estimated.\n" if ($settings->{'numsamples'} < 1);
 	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
 	die $diePrefix."--".$PARAM{'showsamples'}->{key}." can either be 0 or 1, to hide or omit sampled structures by stochastic backtrace.\n" if ($settings->{'showsamples'} !~ m/^0|1$/);

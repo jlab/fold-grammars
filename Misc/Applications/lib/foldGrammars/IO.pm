@@ -10,9 +10,17 @@ package IO;
 our $PROG_RNAALISHAPES = 'RNAalishapes';
 our $PROG_RNASHAPES = 'RNAshapes';
 our $PROG_PKISS = 'pKiss';
+our $PROG_PALIKISS = 'pAliKiss';
 
 our $SEPARATOR = "  ";
 our $DATASEPARATOR = "#";
+
+our $TASK_REP = 'rep';
+our $TASK_SCI = 'sci';
+
+our $CONSENSUS_CONSENSUS = 'consensus';
+our $CONSENSUS_MIS = 'mis';
+
 
 our $SUB_BUILDCOMMAND = undef;
 our %ENFORCE_CLASSES = (
@@ -155,10 +163,36 @@ sub parse {
 				$windowPos = $windowStartPos.$DATASEPARATOR.$windowEndPos;
 				$score = $energy;
 			}
+		} elsif ($program eq $PROG_PALIKISS) {
+			if ((($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT)) && ($line =~ m/^\( \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) , (.+?) \)/)) {
+				#( ( -10043 = energy: -10043 + covar.: 0 ) , [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}.. )
+				($energy, $part_energy, $part_covar, $structure) = ($1/100,$2/100,$3/100,$4);
+			} elsif (($settings->{mode} eq $Settings::MODE_SHAPES) && ($line =~ m/^\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \)$/)) {
+				($shape, $energy, $part_energy, $part_covar, $structure) = ($1,$2/100,$3/100,$4/100,$5);
+			} elsif (($settings->{mode} eq $Settings::MODE_PROBS) && ($line =~ m/\( \( (.+?) , \( \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) , (.+?) \) \) , (.+?) \)$/)) {
+				#( ( (()()) , ( 380 , 1.33405e-07 ) ) , ..(((.((....)).((.....))...))).... )
+				($shape, $energy, $part_energy, $part_covar, $pfunc, $structure) = ($1,$2/100,$3/100,$4/100,$5, $6);
+			} elsif ((($settings->{mode} eq $Settings::MODE_EVAL) || ($settings->{mode} eq $Settings::MODE_ABSTRACT)) && ($line =~ m/\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \)$/)) {
+				#( ( (((...))) , 900 ) , () )
+				($structure, $energy, $part_energy, $part_covar, $shape) = ($1,$2/100,$3/100,$4/100,$5);
+			} elsif (($settings->{mode} eq $Settings::MODE_ENFORCE) && ($line =~ m/\( \( (.+?) , \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) \) , (.+?) \)$/)) {
+				#( ( nested structure , ( -2659 = energy: -2659 + covar.: 0 ) ) , ..(((((....))))).....(((((((((.....))))))))). )
+				($shape, $energy, $part_energy, $part_covar, $structure) = ($1,$2/100,$3/100,$4/100,$5);
+			} elsif (($settings->{mode} eq $Settings::MODE_LOCAL) && ($line =~ m/\( \( (.+?) = energy: (.+?) \+ covar.: (.+?) \) , (\d+) (.+?) (\d+) \)/)) {
+				#( -2000 , 1 [[[...((((((......)))))).{{{{.]]]..}}}} 40 )
+				($energy, $part_energy, $part_covar, $structure, $blockPos) = ($1/100,$2/100,$3/100, $5, ($4-1).$DATASEPARATOR.($6-1));
+			}
+			if (defined $energy || defined $part_energy || defined $part_covar || defined $structure || defined $shape) {
+				$fieldLengths{energy} = length(formatEnergy($energy)) if (length(formatEnergy($energy)) > $fieldLengths{energy});
+				$fieldLengths{partEnergy} = length(formatEnergy($part_energy)) if (length(formatEnergy($part_energy)) > $fieldLengths{partEnergy});
+				$fieldLengths{partCovar} = length(formatEnergy($part_covar)) if (length(formatEnergy($part_covar)) > $fieldLengths{partCovar});
+				$windowPos = $windowStartPos.$DATASEPARATOR.$windowEndPos;
+				$score = $energy.$DATASEPARATOR.$part_energy.$DATASEPARATOR.$part_covar.$DATASEPARATOR;
+			}
 		
 	#printing unparsed lines
 		} else {
-			print $line."\n";
+			print "UNPARSED LINE: >".$line."<\n";
 		}
 		
 		if (defined $windowPos || defined $score || defined $structure || defined $shape || defined $pfunc) {
@@ -167,7 +201,7 @@ sub parse {
 			} elsif ($settings->{mode} eq $Settings::MODE_EVAL) {
 				push @{$predictions{$windowPos}->{dummyblock}->{$structure}}, {score => $score, shape => $shape};
 			} elsif ($settings->{mode} eq $Settings::MODE_LOCAL) {
-				$predictions{$windowPos}->{$blockPos}->{$structure}->{score} = $score if ((not exists $predictions{$windowPos}->{$blockPos}->{$structure}->{score}) || ($score < $predictions{$windowPos}->{$blockPos}->{$structure}->{score}));
+				$predictions{$windowPos}->{$blockPos}->{$structure}->{score} = $score if ((not exists $predictions{$windowPos}->{$blockPos}->{$structure}->{score}) || (splitFields($score)->[0] < splitFields($predictions{$windowPos}->{$blockPos}->{$structure}->{score})->[0]));
 			} elsif ($settings->{mode} eq $Settings::MODE_ABSTRACT) {
 				$predictions{shape} = $shape;
 			} elsif ($settings->{mode} eq $Settings::MODE_PFALL) {
@@ -201,8 +235,8 @@ sub parse {
 				print "your input ";
 				print STDERR (exists $input->{length} ? "alignment" : "sequence");
 			} else {
-				if ($program eq $PROG_PKISS) {
-					print STDERR "\"".$PROG_PKISS."\"";
+				if (($program eq $PROG_PKISS) || ($program eq $PROG_PALIKISS)) {
+					print STDERR "\"".$program."\"";
 				} else {
 					print STDERR "grammar \"".$settings->{grammar}."\"";
 				}
@@ -397,12 +431,16 @@ sub output {
 						}
 					}
 					if ($haveClass eq 'false') {
-						$predictions->{$windowPos}->{$blockPos}->{$class} = {shape => $class, score => 0};
+						if ($program eq $PROG_PALIKISS) {
+							$predictions->{$windowPos}->{$blockPos}->{$class} = {shape => $class, score => "0#0#0"};
+						} else {
+							$predictions->{$windowPos}->{$blockPos}->{$class} = {shape => $class, score => 0};
+						}
 					}
 				}
 				@sortedStructures =  sort {$ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$a}->{shape}} <=> $ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$b}->{shape}}} keys(%{$predictions->{$windowPos}->{$blockPos}});
 			}
-			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$a}->{score} <=> $predictions->{$windowPos}->{$blockPos}->{$b}->{score}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_LOCAL));
+			@sortedStructures =  sort {splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]} @sortedStructures if (($settings->{mode} eq $Settings::MODE_LOCAL));
 	
 			#define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
 				my $range = undef;
@@ -496,7 +534,7 @@ sub getBlockMFE {
 	
 	my $mfe = undef;
 	foreach my $structure (keys(%{$refHash_block})) {
-		$mfe = $refHash_block->{$structure}->{score} if ((not defined $mfe) || ($mfe > $refHash_block->{$structure}->{score}));
+		$mfe = splitFields($refHash_block->{$structure}->{score})->[0] if ((not defined $mfe) || ($mfe > splitFields($refHash_block->{$structure}->{score})->[0]));
 	}
 	
 	return $mfe;
@@ -551,7 +589,7 @@ sub splitFields {
 
 sub getScoreFormatString {
 	my ($program, $fieldLengths) = @_;
-	if ($program eq $PROG_RNAALISHAPES) {
+	if (($program eq $PROG_RNAALISHAPES)){# || ($program eq $PROG_PALIKISS)) {
 		return "(%$fieldLengths->{energy}.2f = %$fieldLengths->{partEnergy}.2f + %$fieldLengths->{partCovar}.2f)";
 	} else {
 		return "%$fieldLengths->{energy}.2f";
@@ -565,6 +603,25 @@ sub getDotplotFilename {
 	$result .= '_seq_'.$inputIndex if ($inputIndex > 1);
 
 	return $result;
+}
+
+sub getAlignmentRepresentation {
+	my ($gapInput, $refHash_alignment, $settings, $TASK_REP, $refsub_buildcommand) = @_;
+	
+	my $command = &{$refsub_buildcommand}($settings, $refHash_alignment, $TASK_REP);
+	print "Actual call for alignment representation was: $command \"$gapInput\"\n" if ($settings->{verbose});
+	my $inputFile = Utils::writeInputToTempfile($gapInput);
+	my $result = qx($command -f $inputFile);
+	Utils::qxDieMessage($command, $?);
+	unlink $inputFile if (!$settings->{verbose});
+
+	foreach my $line (split(m/\r?\n/, $result)) {
+		if ($line =~ m/^Answer:\s*$/) {
+		} elsif ($line =~ m/^\s*$/) {
+		} else {
+			return $line;
+		}
+	}
 }
 
 1;
