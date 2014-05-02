@@ -36,6 +36,7 @@ checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
 checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
 checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
 checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
+checkProgram($TMPDIR, "palikiss.run.out", "../../Applications/pAliKiss/","pAliKiss");
 checkProgram($TMPDIR, "knotinframe.run.out", "../../Applications/Knotinframe/","Knotinframe");
 
 #add your tests above this line!
@@ -66,6 +67,8 @@ sub checkProgram {
 		@calls = @{Testing::addRandomParameters($Testing::RNAalishapes, Testing::permutate($Testing::RNAalishapes, [{call => ""}]))};
 	} elsif ($programName eq 'pKiss') {
 		@calls = @{Testing::addRandomParameters($Testing::pKiss, Testing::permutate($Testing::pKiss, [{call => ""}]))};
+	} elsif ($programName eq 'pAliKiss') {
+		@calls = @{Testing::addRandomParameters($Testing::pAliKiss, Testing::permutate($Testing::pAliKiss, [{call => ""}]))};
 	} elsif ($programName eq 'RNAshapes') {
 		@calls = @{Testing::addRandomParameters($Testing::RNAshapes, Testing::permutate($Testing::RNAshapes, [{call => ""}]))};
 	} elsif ($programName eq 'Knotinframe') {

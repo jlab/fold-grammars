@@ -20,6 +20,39 @@ our @RNAalishapes_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Sett
 our @RNAshapes_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_OUTSIDE);
 our @pKiss_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT);
 our @knotinframe_ALLMODES = ($Settings::MODE_KIF);
+our @pAliKiss_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS);
+
+our $pAliKiss = {
+	' ' => {	values => [$inputFileDir.'t-box.aln',$inputFileDir.'tRNA_example_ungap.aln',$inputFileDir.'trp_attenuator.aln'], 
+					secondValues => ["'.........................................(((...)))((((.....................................))))..........................................................................'","'(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).'","'.((....(((.((((.....)))).))).......))...............'"], 
+					valueSelection => $VALUE_SELECTION_RANDOM,
+					modes => \@pAliKiss_ALLMODES},
+
+	'mode' => {modes => \@pAliKiss_ALLMODES, values => \@pAliKiss_ALLMODES, valueSelection => $VALUE_SELECTION_ALL},
+	'allowLP' => {modes => \@pAliKiss_ALLMODES, values => [0,1], valueSelection => $VALUE_SELECTION_ALL},
+	'windowSize' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS], values => [undef, undef, 40, 100], valueSelection => $VALUE_SELECTION_ALL},
+
+	'sci' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL], values => [0,1], valueSelection => $VALUE_SELECTION_RANDOM},
+	'consensus' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL], values => ['consensus','mis'], valueSelection => $VALUE_SELECTION_RANDOM},
+	'param' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL], values => [$energyParameterDir.'rna_turner1999.par',$energyParameterDir.'rna_turner2004.par'], valueSelection => $VALUE_SELECTION_RANDOM},
+	'shapeLevel' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT], values => [1,2,3,4,5], valueSelection => $VALUE_SELECTION_RANDOM},
+	'windowIncrement' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS], values => [10, 20, 30], valueSelection => $VALUE_SELECTION_RANDOM},
+	'temperature' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL], values => [17, 25.9, 37], valueSelection => $VALUE_SELECTION_RANDOM},
+	'absoluteDeviation' => {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES], values => [undef, undef, undef, 1,2,5], valueSelection => $VALUE_SELECTION_RANDOM},
+	'relativeDeviation' => {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES], values => [undef, undef, undef, 1,3,7], valueSelection => $VALUE_SELECTION_RANDOM},
+	'lowProbFilter' => {modes => [$Settings::MODE_PROBS], values => [0.000001, 0.0001, 0.01], valueSelection => $VALUE_SELECTION_RANDOM},
+	'outputLowProbFilter' => {modes => [$Settings::MODE_PROBS], values => [0, 0.0001, 0.1], valueSelection => $VALUE_SELECTION_RANDOM},
+	'probDecimals' => {modes => [$Settings::MODE_PROBS], values => [2, 7], valueSelection => $VALUE_SELECTION_RANDOM},
+	'pairingFraction' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL], values => [-200, -300, -150], valueSelection => $VALUE_SELECTION_RANDOM},
+	'cfactor' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL], values => [1.1, 1.0, 0.9], valueSelection => $VALUE_SELECTION_RANDOM},
+	'nfactor' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL], values => [1.1, 1.0, 0.9], valueSelection => $VALUE_SELECTION_RANDOM},
+	'ribosumscoring' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL], values => [0, 1], valueSelection => $VALUE_SELECTION_RANDOM},
+	'strategy' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS], values => ['A','B','C','D','P'], valueSelection => $VALUE_SELECTION_RANDOM},
+	'minHairpinLength' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT], values => [2, 4, 6], valueSelection => $VALUE_SELECTION_RANDOM},
+	'maxKnotSize' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS], values => [undef, 40], valueSelection => $VALUE_SELECTION_RANDOM},
+	'Hpenalty' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL], values => [-9, -12, -15], valueSelection => $VALUE_SELECTION_RANDOM},
+	'Kpenalty' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL], values => [-12, -15, -20], valueSelection => $VALUE_SELECTION_RANDOM},
+};
 
 our $RNAalishapes = {
 	' ' => {	values => [$inputFileDir.'t-box.aln',$inputFileDir.'tRNA_example_ungap.aln',$inputFileDir.'trp_attenuator.aln'], 
