@@ -45,6 +45,7 @@ dummy:
 
 build-suite:
 	$(MAKE) -C Misc/Applications/pKiss all
+	$(MAKE) -C Misc/Applications/pAliKiss all
 	$(MAKE) -C Misc/Applications/RNAshapes all
 	$(MAKE) -C Misc/Applications/RNAalishapes all
 	$(MAKE) -C Misc/Applications/Knotinframe all
@@ -54,6 +55,7 @@ install-suite:
 	$(MAKE) -C Misc/Applications/lib install
 	$(MAKE) -C Misc/Applications/Knotinframe install-program
 	$(MAKE) -C Misc/Applications/pKiss install-program
+	$(MAKE) -C Misc/Applications/pAliKiss install-program
 	$(MAKE) -C Misc/Applications/RapidShapes install-program
 	$(MAKE) -C Misc/Applications/RNAalishapes install-program
 	$(MAKE) -C Misc/Applications/RNAshapes install-program
@@ -61,6 +63,7 @@ install-suite:
 distclean-suite:
 	$(MAKE) -C Misc/Applications/Knotinframe distclean
 	$(MAKE) -C Misc/Applications/pKiss distclean
+	$(MAKE) -C Misc/Applications/pAliKiss distclean
 	$(MAKE) -C Misc/Applications/RapidShapes distclean
 	$(MAKE) -C Misc/Applications/RNAalishapes distclean
 	$(MAKE) -C Misc/Applications/RNAshapes distclean
@@ -72,6 +75,7 @@ test-suite:
 	if [ ! -d "$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)/bin" ]; then $(INSTALL) -d $(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)/bin; fi;
 	$(MAKE) -C Misc/Applications/Knotinframe install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
 	$(MAKE) -C Misc/Applications/pKiss install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
+	$(MAKE) -C Misc/Applications/pAliKiss install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
 	$(MAKE) -C Misc/Applications/RapidShapes install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
 	$(MAKE) -C Misc/Applications/RNAalishapes install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
 	$(MAKE) -C Misc/Applications/RNAshapes install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
