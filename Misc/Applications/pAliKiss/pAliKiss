@@ -20,6 +20,7 @@ use foldGrammars::Utils;
 use foldGrammars::IO;
 use foldGrammars::Structure;
 use POSIX 'isatty';
+$IO::SUB_BUILDCOMMAND = \&buildCommand;
 
 our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT);
 @References::ORDER = ('hof:fek:sta:2002','ber:hof:wil:gru:sta:2008','jan:schud:ste:gie:2011','the:ree:gie:2008','jan:gie:2010','voss:gie:reh:2006','mat:dis:chi:schroe:zuk:tur:2004','was:hof:sta:2004','tur:mat:2009','ree:gie:2005','the:jan:gie:2010');
@@ -232,21 +233,21 @@ sub buildCommand {
 		$cmd .= " -".$PARAM{temperature}->{gapc}." ".$settings->{'temperature'} if ($settings->{'temperature'} != $PARAM{temperature}->{default});
 		$cmd .= " -".$PARAM{param}->{gapc}." ".$settings->{'param'} if (defined $settings->{'param'});
 		$cmd .= " -".$PARAM{allowlp}->{gapc}." ".$settings->{'allowlp'} if ($settings->{'allowlp'} != $PARAM{allowlp}->{default});
-	}
-	if (not defined $task) {
 		$cmd .= " -".$PARAM{minhairpinlength}->{gapc}." ".$settings->{'minhairpinlength'} if ($settings->{'minhairpinlength'} != $PARAM{minhairpinlength}->{default});
 		$cmd .= " -".$PARAM{strategy}->{gapc}." ".$settings->{'strategy'} if (uc($settings->{'strategy'}) ne uc($PARAM{strategy}->{default}));
 		$cmd .= " -".$PARAM{maxknotsize}->{gapc}." ".$settings->{'maxknotsize'} if (defined $settings->{'maxknotsize'});
 		$cmd .= " -".$PARAM{hpenalty}->{gapc}." ".$settings->{'hpenalty'} if ($settings->{'hpenalty'} != $PARAM{hpenalty}->{default});
 		$cmd .= " -".$PARAM{kpenalty}->{gapc}." ".$settings->{'kpenalty'} if ($settings->{'kpenalty'} != $PARAM{kpenalty}->{default});
-		$cmd .= " -".$PARAM{relativedeviation}->{gapc}." ".$settings->{'relativedeviation'} if ($settings->{'relativedeviation'} != $PARAM{relativedeviation}->{default});
-		$cmd .= " -".$PARAM{absolutedeviation}->{gapc}." ".$settings->{'absolutedeviation'} if (defined $settings->{'absolutedeviation'});
-		$cmd .= " -".$PARAM{shapelevel}->{gapc}." ".$settings->{'shapelevel'} if ($settings->{'shapelevel'} != $PARAM{shapelevel}->{default});
-		$cmd .= " -".$PARAM{lowprobfilter}->{gapc}." ".$settings->{'lowprobfilter'} if ($settings->{'lowprobfilter'} != $PARAM{lowprobfilter}->{default});
 		$cmd .= " -".$PARAM{pairingfraction}->{gapc}." ".$settings->{'pairingfraction'} if ($settings->{'pairingfraction'} != $PARAM{pairingfraction}->{default});
 		$cmd .= " -".$PARAM{cfactor}->{gapc}." ".$settings->{'cfactor'} if ($settings->{'cfactor'} != $PARAM{cfactor}->{default});
 		$cmd .= " -".$PARAM{nfactor}->{gapc}." ".$settings->{'nfactor'} if ($settings->{'nfactor'} != $PARAM{nfactor}->{default});
 		$cmd .= " -".$PARAM{ribosumscoring}->{gapc}." ".$settings->{'ribosumscoring'} if ($settings->{'ribosumscoring'} != $PARAM{ribosumscoring}->{default});
+	}
+	if (not defined $task) {
+		$cmd .= " -".$PARAM{relativedeviation}->{gapc}." ".$settings->{'relativedeviation'} if ($settings->{'relativedeviation'} != $PARAM{relativedeviation}->{default});
+		$cmd .= " -".$PARAM{absolutedeviation}->{gapc}." ".$settings->{'absolutedeviation'} if (defined $settings->{'absolutedeviation'});
+		$cmd .= " -".$PARAM{shapelevel}->{gapc}." ".$settings->{'shapelevel'} if ($settings->{'shapelevel'} != $PARAM{shapelevel}->{default});
+		$cmd .= " -".$PARAM{lowprobfilter}->{gapc}." ".$settings->{'lowprobfilter'} if ($settings->{'lowprobfilter'} != $PARAM{lowprobfilter}->{default});
 	}
 	
 	return $cmd;
@@ -259,6 +260,7 @@ sub checkParameters {
 	
 	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
 	Utils::checkBinaryPresents($settings, $diePrefix, [], [], $refHash_params);
+	Utils::checkBinaryPresents($settings, $diePrefix, [], ['rep_'.$settings->{'consensus'}, 'sci'], $refHash_params);
 	
 	die $diePrefix."--".$PARAM{'windowsize'}->{key}." must be a positive integer!\n" if ((defined $settings->{'windowsize'}) && ($settings->{'windowsize'} < 1));
 	die $diePrefix."--".$PARAM{'windowsize'}->{key}." is smaller than --".$PARAM{'windowincrement'}->{key}." !\n" if ((defined $settings->{'windowsize'}) && ($settings->{'windowsize'} < $settings->{'windowincrement'}));
@@ -272,9 +274,13 @@ sub checkParameters {
 	die $diePrefix."--".$PARAM{'lowprobfilteroutput'}->{key}." must be a non-negative floating point number below 1.\n" if (($settings->{'lowprobfilteroutput'} >= 1) || ($settings->{'lowprobfilteroutput'} < 0));
 	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." and --".$PARAM{'relativedeviation'}->{key}." cannot be set at the same time!\n" if ((defined $settings->{'absolutedeviation'}) && ($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}));
 	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a positive integer number!\n" if ($settings->{'probdecimals'} < 0);
+	die $diePrefix."--".$PARAM{'sci'}->{key}." can either be 0 or 1. Only for 1, SCI computation will be performed.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
+	$settings->{'consensus'} = lc($settings->{'consensus'});
+	die $diePrefix."there is no consensus representation \"".$settings->{'consensus'}."\". Please select either \"$IO::CONSENSUS_CONSENSUS\" or \"$IO::CONSENSUS_MIS\".\n" if ($settings->{'consensus'} !~ m/^consensus|mis$/i);
+	die $diePrefix."--".$PARAM{'sci'}->{key}." can either be 0 or 1. Only for 1, SCI computation will be performed.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
+	die $diePrefix."--".$PARAM{'ribosumscoring'}->{key}." can either be 0 or 1.\n" if ($settings->{'ribosumscoring'} !~ m/^0|1$/);
 	
 	$settings->{'strategy'} = 'D' if (($settings->{'mode'} eq $Settings::MODE_EVAL) || ($settings->{'mode'} eq $Settings::MODE_ABSTRACT)); #must be set to D, to allow for all pseudoknots that can be computed by pKiss.
-	
 }
 
 

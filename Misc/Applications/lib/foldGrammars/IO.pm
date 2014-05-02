@@ -566,6 +566,8 @@ sub getAvgSingleMFEs {
 		foreach my $line (split(m/\n/, $result)) {
 			if ($line =~ m/Answer/) {
 			} elsif ($line =~ m/^\s*$/) {
+			} elsif ($line =~ m/^\( (.+?) = energy: .+? \+ covar\.: .+? \)$/) {
+				$mfeSum += $1;
 			} else {
 				chomp $line;
 				$mfeSum += $line;
@@ -589,7 +591,7 @@ sub splitFields {
 
 sub getScoreFormatString {
 	my ($program, $fieldLengths) = @_;
-	if (($program eq $PROG_RNAALISHAPES)){# || ($program eq $PROG_PALIKISS)) {
+	if (($program eq $PROG_RNAALISHAPES) || ($program eq $PROG_PALIKISS)) {
 		return "(%$fieldLengths->{energy}.2f = %$fieldLengths->{partEnergy}.2f + %$fieldLengths->{partCovar}.2f)";
 	} else {
 		return "%$fieldLengths->{energy}.2f";

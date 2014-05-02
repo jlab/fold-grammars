@@ -21,7 +21,7 @@ install: install-lib install-program
 install-program:
 	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
 	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
-	$(INSTALL) -m 755 pKiss $(PREFIX)/bin
+	$(INSTALL) -m 755 pAliKiss $(PREFIX)/bin
 	
 mfe:
 	$(MAKE) compile \
@@ -83,16 +83,12 @@ helper_consensus_%:
 		gapc_file="ali_nodangle.gap" \
 		gapc_binaryname="rep_${*}$(current_windowmodesuffix)";
 
-helper_sci: helper_sci_nodangle helper_sci_overdangle helper_sci_microstate helper_sci_macrostate
-helper_sci_%:
-	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
-	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sOv}$${sMa}"`; \
+helper_sci:
 	$(MAKE) compile \
-		gapc_product="alg_mfe$${suffix}" \
-		gapc_options="$(windowmodeflag)" \
-		gapc_file="${*}.gap" \
-		gapc_binaryname="sci_${*}$(current_windowmodesuffix)";
+		gapc_product="alg_ali_pknot_mfe" \
+		gapc_options="--tab-all $(windowmodeflag)" \
+		gapc_file="ali_pKiss.gap" \
+		gapc_binaryname="sci$(current_windowmodesuffix)";
 
 distclean:
 	rm -rf $(ARCHTRIPLE);
