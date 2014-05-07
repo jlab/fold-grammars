@@ -1,3 +1,38 @@
+rnashapes (3.2.1-0ubuntu1~trusty1) trusty; urgency=low
+
+  * added pAliKiss to the fold-grammars suite, Ribosum scoring for
+    aligned inputs, adopted consensus computation to RNAalifold kind
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 07 May 2014 17:45:59 +0200
+
+rnashapes (3.2.1-0ubuntu1~saucy1) saucy; urgency=low
+
+  * added pAliKiss to the fold-grammars suite, Ribosum scoring for
+    aligned inputs, adopted consensus computation to RNAalifold kind
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 07 May 2014 17:45:49 +0200
+
+rnashapes (3.2.1-0ubuntu1~quantal1) quantal; urgency=low
+
+  * added pAliKiss to the fold-grammars suite, Ribosum scoring for
+    aligned inputs, adopted consensus computation to RNAalifold kind
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 07 May 2014 17:45:41 +0200
+
+rnashapes (3.2.1-0ubuntu1~precise1) precise; urgency=low
+
+  * added pAliKiss to the fold-grammars suite, Ribosum scoring for
+    aligned inputs, adopted consensus computation to RNAalifold kind
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 07 May 2014 17:45:32 +0200
+
+rnashapes (3.2.1-0ubuntu1~lucid1) lucid; urgency=low
+
+  * added pAliKiss to the fold-grammars suite, Ribosum scoring for
+    aligned inputs, adopted consensus computation to RNAalifold kind
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Wed, 07 May 2014 17:45:18 +0200
+
 rnashapes (3.2.0-0ubuntu1~saucy1) saucy; urgency=low
 
   * fixed MEA mode
