@@ -1,12 +1,14 @@
-Source: rnaalishapes
+Source: palikiss
 Section: devel
 Priority: extra
 Maintainer: Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>
 Build-Depends: debhelper (>= 7), make (>= 3.81), bellmansgapc (>= 2014.04.10), perl (>= 5.10.1), g++ (>= 4:4.3.1), libfoldgrammars (>= 1.1.2)
 Standards-Version: 3.9.1
-Homepage: http://bibiserv.cebitec.uni-bielefeld.de/rnaalishapes
+Homepage: http://bibiserv.cebitec.uni-bielefeld.de/palikiss
 
-Package: rnaalishapes
+Package: palikiss
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, bellmansgapc-librna (>= 2014.04.10) | bellmansgapc (>= 2014.04.10), libgsl0-dev, libgmp3-dev, libgsl0-dev (>= 1.13), libgsl0ldbl (>= 1.13), libfoldgrammars (>= 1.1.2)
-Description: RNAalishapes is a tool for secondary structure prediction, using shape abstraction. Input is a multiple sequence alignment. Pseudoknots are not considered at all.
+Description: palikiss: RNA secondary structure prediction, including kissing hairpins for aligned RNAs
+ pAliKiss is the extension of pKiss to handle complete RNA alignments, instead of a single sequence.
+ Scoring is identical to Viennas RNAalifold.

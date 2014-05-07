@@ -2,11 +2,11 @@ Source: knotinframe
 Section: devel
 Priority: extra
 Maintainer: Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>
-Build-Depends: debhelper (>= 7), make (>= 3.81), bellmansgapc (>= 2013.04.12), perl (>= 5.10.1), g++ (>= 4:4.3.1), libfoldgrammars (>= 1.0.10)
+Build-Depends: debhelper (>= 7), make (>= 3.81), bellmansgapc (>= 2014.04.10), perl (>= 5.10.1), g++ (>= 4:4.3.1), libfoldgrammars (>= 1.1.2)
 Standards-Version: 3.9.1
 Homepage: http://bibiserv.cebitec.uni-bielefeld.de/knotinframe
 
 Package: knotinframe
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, bellmansgapc-librna (>= 2013.04.12) | bellmansgapc (>= 2013.04.12), libgsl0-dev, libgmp3-dev, libgsl0-dev (>= 1.13), libgsl0ldbl (>= 1.13), libfoldgrammars (>= 1.0.10)
+Depends: ${shlibs:Depends}, ${misc:Depends}, bellmansgapc-librna (>= 2014.04.10) | bellmansgapc (>= 2014.04.10), libgsl0-dev, libgmp3-dev, libgsl0-dev (>= 1.13), libgsl0ldbl (>= 1.13), libfoldgrammars (>= 1.1.2)
 Description: knotinframe is a pipeline to predict ribosomal -1 frameshift sites with a simple pseudoknot as secondary structure in DNA and RNA sequences. The prediction is based on a comparison between the minimal free energy (mfe) structure calculated by an RNAfold [Lorenz et al. 2011] like program and the mfe-structure computed by a modified version of pKiss, called pknotsRG-frameshift [Theis et al. 2010]
