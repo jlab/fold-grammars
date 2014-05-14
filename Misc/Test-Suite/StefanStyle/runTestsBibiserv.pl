@@ -25,6 +25,7 @@ qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes", $bibiservURL);
 checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes", $bibiservURL);
 checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss", $bibiservURL);
+checkProgram($TMPDIR, "palikiss.run.out", "../../Applications/pAliKiss/","pAliKiss", $bibiservURL);
 
 #add your tests above this line!
 Testing::printStatistics($testIndex, \@failedTests);
