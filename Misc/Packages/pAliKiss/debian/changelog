@@ -1,3 +1,75 @@
+palikiss (1.0.4-0ubuntu1~trusty1) trusty; urgency=low
+
+  * bugfix: abstract mode now reads input from file
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 14:21:45 +0200
+
+palikiss (1.0.4-0ubuntu1~saucy1) saucy; urgency=low
+
+  * bugfix: abstract mode now reads input from file
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 14:21:32 +0200
+
+palikiss (1.0.4-0ubuntu1~quantal1) quantal; urgency=low
+
+  * bugfix: abstract mode now reads input from file
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 14:21:24 +0200
+
+palikiss (1.0.4-0ubuntu1~precise1) precise; urgency=low
+
+  * bugfix: abstract mode now reads input from file
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 14:21:15 +0200
+
+palikiss (1.0.4-0ubuntu1~lucid1) lucid; urgency=low
+
+  * bugfix: abstract mode now reads input from file
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 14:21:01 +0200
+
+palikiss (1.0.3-0ubuntu1~lucid1) lucid; urgency=low
+
+  * retry: upload
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 12:23:01 +0200
+
+palikiss (1.0.2-0ubuntu1~trusty1) trusty; urgency=low
+
+  * bugfix: abstract mode now reads input from file
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 10:31:47 +0200
+
+palikiss (1.0.2-0ubuntu1~saucy1) saucy; urgency=low
+
+  * bugfix: abstract mode now reads input from file
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 10:31:19 +0200
+
+palikiss (1.0.2-0ubuntu1~quantal1) quantal; urgency=low
+
+  * bugfix: abstract mode now reads input from file
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 10:31:10 +0200
+
+palikiss (1.0.2-0ubuntu1~precise1) precise; urgency=low
+
+  * bugfix: abstract mode now reads input from file
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 10:31:02 +0200
+
+palikiss (1.0.2-0ubuntu1~lucid1) lucid; urgency=low
+
+  * bugfix: abstract mode now reads input from file
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 10:30:48 +0200
+
+palikiss (1.0.2-0ubuntu1~lucid1) lucid; urgency=low
+
+  * bugfix: abstract mode now reads input from file
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Fri, 16 May 2014 10:30:39 +0200
+
 palikiss (1.0.1-0ubuntu1~trusty1) trusty; urgency=low
 
   * added pAliKiss to the fold-grammars suite, Ribosum scoring for
