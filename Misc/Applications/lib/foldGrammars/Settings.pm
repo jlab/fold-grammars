@@ -21,9 +21,9 @@ our %PROGINFOS = (
 );
 
 
-our $rootDir = '/home/sjanssen/Desktop/fold-grammars/'; #must point to the root directory of the fold-grammars repository!
+our $rootDir = '/vol/fold-grammars/src/'; #must point to the root directory of the fold-grammars repository!
 our $prototypeDirectory = $rootDir; #for RapidShapes: directory where to find bgap sources, i.e. the fold-grammars repository somewhere in the file system
-our $bgapDir = '/stefan/'; #must point to the directory containing "bin" "include" "share" and "lib" sub-directories of Bellman's Gap Compiler
+our $bgapDir = '/vol/gapc/'; #must point to the directory containing "bin" "include" "share" and "lib" sub-directories of Bellman's Gap Compiler
 
 our $tmpdir = '/tmp/'; #temporary directory
 our $fileseparater = '/'; #character that separates directories in a path, / in unix but \ in windows
@@ -62,7 +62,8 @@ our %BINARIES = (
 	'wc', 'wc',
 	'gcc','gcc',
 	'ls','ls',
-	'ghc','ghc',
+	'ghc','/vol/ghc-7.6/bin/ghc',
+	'time','time',
 );
 
 our %TDMfiles = (

@@ -41,6 +41,8 @@ sub checkProgram {
 		@calls = @{Testing::addRandomParameters($Testing::RNAalishapes, Testing::permutate($Testing::RNAalishapes, [{call => ""}]))};
 	} elsif ($programName eq 'pKiss') {
 		@calls = @{Testing::addRandomParameters($Testing::pKiss, Testing::permutate($Testing::pKiss, [{call => ""}]))};
+	} elsif ($programName eq 'pAliKiss') {
+		@calls = @{Testing::addRandomParameters($Testing::pAliKiss, Testing::permutate($Testing::pAliKiss, [{call => ""}]))};
 	} elsif ($programName eq 'RNAshapes') {
 		@calls = @{Testing::addRandomParameters($Testing::RNAshapes, Testing::permutate($Testing::RNAshapes, [{call => ""}]))};
 	}
@@ -85,7 +87,7 @@ sub checkProgram {
 					} elsif (($mode eq $Settings::MODE_EVAL) && (lc($programName) ne 'rnaalishapes')) {
 						$inputs{sequence} = '"'.lc($programName).'_input_rna_sequence":">unnamed sequence\r\n'.$arg.'"';
 					} else {
-						if (lc($programName) eq 'rnaalishapes') {
+						if ((lc($programName) eq 'rnaalishapes') || (lc($programName) eq 'palikiss')) {
 							my $alignment = qx(cat $arg | grep -v "\*"); chomp $alignment;
 							$alignment =~ s/\n/\\r\\n/g;
 							$inputs{'sequence_alignment'} = '"'.lc($programName).'_input_rna_sequence_alignment":"'.$alignment.'"';

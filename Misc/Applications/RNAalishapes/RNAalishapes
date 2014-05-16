@@ -93,7 +93,7 @@ if (@ARGV == 0) {
 		} elsif ($settings->{mode} eq $Settings::MODE_ABSTRACT) {
 			print "You are in \"".$settings->{mode}."\" mode. Please give me your Vienna-Dot-Bracket string, that shell be converted into a shape string:\n";
 			my $inputStructure = <STDIN>; chomp $inputStructure;
-			processInput($inputStructure, $settings);
+			processInput($inputStructure, undef, $settings);
 		} else {
 			#expecting a filename
 			print "You are in \"".$settings->{mode}."\" mode. Please give me a clustal W file name, containing your alignment:\n";
@@ -134,7 +134,7 @@ sub processInput {
 		if ($refHash_settings->{mode} eq $Settings::MODE_ABSTRACT) {
 			my $structure = $input;
 			if (-e $input) {
-				my $structure = qx($Settings::BINARIES{cat} $input); chomp $structure;
+				$structure = qx($Settings::BINARIES{cat} $input); chomp $structure;
 				Utils::qxDieMessage("$Settings::BINARIES{cat} $input", $?);
 			}
 			my $command = buildCommand($settings, undef);
