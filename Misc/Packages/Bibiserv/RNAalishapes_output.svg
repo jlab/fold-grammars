@@ -52,7 +52,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -356,7 +356,7 @@
          x="-11.42857"
          y="298.42102"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeMono;-inkscape-font-specification:FreeMono Bold"
-         id="tspan3437"></tspan><tspan
+         id="tspan3437" /><tspan
          sodipodi:role="line"
          x="-11.42857"
          y="310.06747"
@@ -391,7 +391,7 @@
          x="-11.42857"
          y="379.94604"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeMono;-inkscape-font-specification:FreeMono Bold"
-         id="tspan3451"></tspan><tspan
+         id="tspan3451" /><tspan
          sodipodi:role="line"
          x="-11.42857"
          y="391.5925"
@@ -475,14 +475,14 @@
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="46.42857"
-       y="168.07648"
+       x="-20.039465"
+       y="222.5237"
        id="text4035"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4037"
-         x="46.42857"
-         y="168.07648">RNAalishapes --mode probs --shape 5 --sci 1 --windowSi 50 --windowInc 14 --con mis --str=1 &lt; tRNA_example_ungap.aln</tspan></text>
+         x="-20.039465"
+         y="222.5237">RNAalishapes --mode probs --shape 5 --sci 1 --windowSi 50 --windowInc 14 --con mis --str=1 &lt; tRNA_example_ungap.aln</tspan></text>
     <rect
        style="fill:#00ff00;fill-opacity:0.11417326;stroke:none"
        id="rect3035-2-54"

@@ -13,6 +13,7 @@ export PATH=/media/Daten/BIBI/jdk1.7.0_10/bin:$PATH
 localhost:8080/wizard
 
 in /media/Daten/BIBI/base:
+	export TMP_DIR=/homes/sjanssen/Desktop
 	ant -Dxml=/home/sjanssen/Desktop/fold-grammars/Bibiserv/pkiss.bs2 -Dwithout_ws=true -Dwithout_sswap=true -Dwithout_moby=true -Dwithout_vb=true
 
 in /tmp/pkiss_ID:
