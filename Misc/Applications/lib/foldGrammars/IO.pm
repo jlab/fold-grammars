@@ -38,7 +38,7 @@ my $firstSequenceReady = 'false';
 	my $firstSubSequence = undef;
 	my $firstStructure = undef;
 	my $firstTitle = undef;
-	our $tableStart = '<table cellspacing="0" cellpadding="0" style="font-family:monospace; font-size: 8pt !important;" border="1">';
+	our $tableStart = '<table cellspacing="0" cellpadding="0" style="font-family:monospace; font-size: 8pt !important;" border="0">';
 	
 use Data::Dumper;
 
