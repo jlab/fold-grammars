@@ -53,6 +53,7 @@ $PARAM{cfactor} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Setti
 $PARAM{nfactor} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'nfactor', gapc => 'n', type => 'f', default => '1.0', info => "Set the penalty for non-compatible sequences in the covariance term of the energy function.\nDefault is @(DEFAULT)."};
 $PARAM{ribosumscoring} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'ribosumscoring', gapc => 'R', default => 0, type => 'i', info => "Switch between hamming / ribosum distance for covariance calculation.\nBases in two pairing alignment columns are not always identical. According to compensating mutations and the nature of the bases we score replacing one base with another differently. For example, replacing C by U might be more likely than C by A. These 'distances' are expressed in form a distance matrix. By default, this matrix is a simple hamming distance matrix. A more advanced option is to use a 'Ribosum' matrix, according to minimal and maximal pairwise sequence similarity.\nDefault value is @(DEFAULT)."};
 $PARAM{sci} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'sci', default => 0, type => 'i', info => "The structure conservation index (SCI) is a measure for the likelyhood that individual sequences will fold similar to the aligned sequences. It is computed as the aligned MFE divided by the average MFE of the unaligned sequences.\nA SCI close to zero indicates that this structure is not a good consensus structure, whereas a set of perfectly conserved structures has SCI of 1. A SCI > 1 indicates a perfectly conserved secondary structure, which is, in addition, supported by compensatory and/or consistent mutations, which contribute a covariance score to the alignment MFE. For further details see [".References::getNumber('was:hof:sta:2004')."].\nFor the sake of speed, SCI computation is switched off by default."};
+$PARAM{varnaoutput} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL], key => 'varna', default => undef, type => 's', info => "Provide a file name to which a HTML formatted version of the output should be saved in."};
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
@@ -150,6 +151,8 @@ sub processInput {
 			Utils::applyFunctionToClustalFile($input, \&doComputation, $refHash_settings, $inputStructure);
 		}
 	}
+
+	IO::writeVarna($refHash_settings);
 }
 
 sub doComputation {
@@ -314,7 +317,7 @@ EOF
 	push @paramGroups, {name => 'ALIGNMENT OPTIONS', elements => ['sci','consensus','ribosumscoring','pairingfraction','cfactor','nfactor']};
 	push @paramGroups, {name => "PSEUDOKNOT OPTIONS", elements => ['strategy', 'minhairpinlength', 'maxknotsize', 'hpenalty', 'kpenalty']};
 	push @paramGroups, {name => "FOLDING OPTIONS", elements => ['allowlp', 'temperature', 'param']};
-	push @paramGroups, {name => "SYSTEM OPTIONS", elements => ['binarypath', 'binaryprefix', 'probdecimals', 'help', 'verbose']};
+	push @paramGroups, {name => "SYSTEM OPTIONS", elements => ['binarypath', 'binaryprefix', 'probdecimals', 'help', 'verbose','varnaoutput']};
 	foreach my $refHash_group (@paramGroups) {
 		$HELP .= $refHash_group->{name}.":\n";
 		for my $par (@{$refHash_group->{elements}}) {

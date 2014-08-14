@@ -59,6 +59,7 @@ $PARAM{dotplotfilename} = {modes => [$Settings::MODE_OUTSIDE], gapc => 'o', key 
 $PARAM{dotplotpng} = {modes => [$Settings::MODE_OUTSIDE], key => 'png', default => 0, type => 'i', info => "Activate this option to also produce a png file of the \"dot plot\". This is deactivated by default and requires an installation of the program \"GhostScript\"."};
 $PARAM{structureprobabilities} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'structureProbs', default => 0, type => 'i', info => "If activated, in addition to free energy also the probability of structures will be computed. To speed up computation, this calculation is switched off by default."};
 $PARAM{verbose} = {modes => \@ALLMODES, key => 'verbose', default => 0, type => 'i', info => "Prints the actual command for Bellman's GAP binary."};
+$PARAM{varnaoutput} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_MEA], key => 'varna', default => undef, type => 's', info => "Provide a file name to which a HTML formatted version of the output should be saved in."};
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
@@ -154,6 +155,8 @@ sub processInput {
 			Utils::applyFunctionToClustalFile($input, \&doComputation, $refHash_settings, $inputStructure);
 		}
 	}
+	
+	IO::writeVarna($refHash_settings);
 }
 
 sub doComputation {
@@ -321,7 +324,7 @@ EOF
 	push @paramGroups, {name => 'ALIGNMENT OPTIONS', elements => ['sci','consensus','ribosumscoring','pairingfraction','cfactor','nfactor']};
 	push @paramGroups, {name => 'FOLDING OPTIONS', elements => ['grammar','temperature','param','allowlp']};
 	push @paramGroups, {name => 'OUTSIDE OPTIONS', elements => ['bppmthreshold','dotplotfilename','dotplotpng']};
-	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','probdecimals','help','verbose']};
+	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','probdecimals','help','verbose','varnaoutput']};
 	foreach my $refHash_group (@paramGroups) {
 		$HELP .= $refHash_group->{name}.":\n";
 		for my $par (@{$refHash_group->{elements}}) {

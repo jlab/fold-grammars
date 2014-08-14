@@ -34,11 +34,11 @@ my $firstSequenceReady = 'false';
 
 #used for VARNA visualization
 	our $varnaoutput = "";
-	my $hasVarnaHeader = 'false';
+	our $hasVarnaHeader = 'false';
 	my $firstSubSequence = undef;
 	my $firstStructure = undef;
 	my $firstTitle = undef;
-	our $tableStart = '<table cellspacing="0" cellpadding="0" style="font-family:monospace; font-size: 8pt !important;" border="0">';
+	our $tableStart = '<table cellspacing="0" cellpadding="0" style="font-family:monospace; font-size: 8pt !important;" border="1">';
 	
 use Data::Dumper;
 
@@ -261,7 +261,11 @@ sub parse {
 	}
 	
 	return \%pfAll if ($settings->{mode} eq $Settings::MODE_PFALL);
-	outputVARNA(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll) if ($settings->{varnaoutput});
+	if ($settings->{varnaoutput}) {
+		if (($settings->{mode} ne $Settings::MODE_ABSTRACT) && ($settings->{mode} ne $Settings::MODE_OUTSIDE)) {
+			outputVARNA(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll);
+		}
+	}
 	output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll);
 }
 
@@ -576,14 +580,14 @@ sub outputVARNA {
 	#ID LINE
 		if ($settings->{mode} eq $Settings::MODE_OUTSIDE) {
 			my $dotplotfilename = IO::getDotplotFilename($settings, $inputIndex);
-			$varnaoutput .= "Saved \"dot plot\" for sequence '".$input->{header}."' in file '".$dotplotfilename."'.\n";
+			$varnaoutput .= "\t\t\t<tr><td>Saved \"dot plot\" for sequence '".$input->{header}."' in file '".$dotplotfilename."'.</td></tr>\n";
 			if ($settings->{dotplotpng} == 1) {
 				my $dotplotPNGfilename = $dotplotfilename;
 				$dotplotPNGfilename =~ s/\.\w+/\.png/g;
 				my $command = "$Settings::BINARIES{gs} -dBATCH -dNOPAUSE -sDEVICE=pnggray -sOutputFile=$dotplotPNGfilename -r200 $dotplotfilename";
 				qx($command);
 				Utils::qxDieMessage($command, $?);
-				$varnaoutput .= "Also converted the \"dot plot\" into PNG file '$dotplotPNGfilename'.\n";
+				$varnaoutput .= "\t\t\t<tr><td>Also converted the \"dot plot\" into PNG file '$dotplotPNGfilename'.</td></tr>\n";
 			}
 		} else {
 			$varnaoutput .= "\t\t\t<tr><td colspan='3'>&gt;".$input->{header}."</td></tr>\n" if (exists $input->{sequence}); #input is a fasta sequence
@@ -624,25 +628,26 @@ sub outputVARNA {
 				
 			#evtl. samples
 				if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($settings->{showsamples})) {
-					$varnaoutput .= "\t\t\t<tr><td>".$settings->{numsamples}." samples, drawn by stochastic backtrace to estimate shape frequencies:</td></tr>";
+					$varnaoutput .= "\t\t\t<tr><td colspan='3'>".$settings->{numsamples}." samples, drawn by stochastic backtrace to estimate shape frequencies:</td></tr>";
 					my @allSamples = ();
 					foreach my $shape (keys(%{$samples->{$windowPos}})) {
 						push @allSamples, @{$samples->{$windowPos}->{$shape}};
 					}
 					foreach my $refHash_sample (sort {$a->{position} <=> $b->{position}} @allSamples) {
-						$varnaoutput .= "\t\t\t<tr><td>".sprintf($scoreFormat, @{splitFields($refHash_sample->{score})})."</td>";
+						my $energyResult = sprintf($scoreFormat, @{splitFields($refHash_sample->{score})});
+						$energyResult =~ s/ /&#160;/g;
+						$varnaoutput .= "\t\t\t<tr class='result'><td style='text-align: right;'>".$energyResult."</td>";
 						if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
 							$varnaoutput .= "<td>".sprintf("%1.$settings->{'probdecimals'}f", $refHash_sample->{structureProb}/$refHash_pfall->{$windowPos})."</td>";
 						}
-						$varnaoutput .= "<td>".$refHash_sample->{structure}."</td>";
+						$varnaoutput .= "<td><a href='javascript:void(0);' class='structure' onClick='setStructSmooth(\"".$subString."\",\"".$refHash_sample->{structure}."\",\"".(exists $input->{sequence} ? $input->{header} : "")."\");'>".$refHash_sample->{structure}."</a></td>";
 						if ((exists $settings->{'sci'}) && ($settings->{'sci'})) {
 							$varnaoutput .= "<td>".printSCI(splitFields($refHash_sample->{score})->[0], $avgSglMfe)."</td>";
 						}
 						$varnaoutput .= "<td>".$refHash_sample->{shape}."</td>";
 						$varnaoutput .= "</tr>\n";
 					}
-					$varnaoutput .= "\t\t\t<tr><td>Sampling results:</td></tr>\n";
-					$varnaoutput .= $separatorLine;
+					$varnaoutput .= $separatorLine."\t\t\t<tr><td colspan='3'>Sampling results:</td></tr>\n".$separatorLine;
 				}
 			
 			my @sortedStructures = keys(%{$predictions->{$windowPos}->{$blockPos}});
@@ -698,6 +703,7 @@ sub outputVARNA {
 						$energy = formatEnergy($part_energy) + formatEnergy($part_covar) if (exists $input->{length}); #necessary to avoid rounding errors on output :-(
 						my $energyResult = sprintf($scoreFormat, $energy, $part_energy, $part_covar);
 						$energyResult = (" " x $lengthScoreField) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
+						$energyResult =~ s/ /&#160;/g;
 						$varnaoutput .= "<td style='text-align: right;'>".$energyResult."</td>";
 						
 					#structure probability if switched on
@@ -797,7 +803,11 @@ sub getVARNAheader {
 }
 
 sub getVARNAfooter {
-	return '		<div style="position:fixed; right: 10px; top: 10px; height: 420px; width: 400px; ">
+	$firstSubSequence = "" if (not defined $firstSubSequence);
+	$firstStructure = "" if (not defined $firstStructure);
+	$firstTitle = "" if (not defined $firstTitle);
+	
+	return '		<div style="position:fixed; right: 10px; top: 10px; height: 420px; width: 400px; background-color: #ffffff;">
 			
 			<table cellspacing="0" cellpadding="0">
 				<tr>
@@ -830,26 +840,19 @@ sub getVARNAfooter {
 ';
 }
 
-#~ sub getVARNAfooter {
-	#~ return '		<div style="position:fixed; right: 10px; top: 10px; height: 420px; width: 400px; ">
-			
-			#~ <table cellspacing="0" cellpadding="0">
-				#~ <tr>
-					#~ <td style="font-size: 10pt;">Click on any Vienna-Dot-Bracket string to &quot;see&quot its structure here.</td>
-				#~ </tr>
-				#~ <tr>
-					#~ <td>
-					#~ </td>
-				#~ </tr>
-				#~ <tr>
-					#~ <td style="text-align: center; font-size: 8pt;">Visualization powered by <a href="http://varna.lri.fr/">http://varna.lri.fr/</a></td>
-				#~ </tr>
-			#~ </table>
-		#~ </div>
-	#~ </body>
-#~ </html>
-#~ ';
-#~ }
+sub writeVarna {
+	my ($refHash_settings) = @_;
+	
+	if (($refHash_settings->{mode} ne $Settings::MODE_ABSTRACT) && ($refHash_settings->{mode} ne $Settings::MODE_OUTSIDE)) {
+		if ((exists $refHash_settings->{varnaoutput}) && (defined $refHash_settings->{varnaoutput})) {
+			open (VARNA, "> ".$refHash_settings->{varnaoutput}) || die 'cannot write HTML output to file "'.$refHash_settings->{varnaoutput}."\": $!\n";
+				print VARNA $IO::varnaoutput."\n";
+				print VARNA IO::getVARNAfooter()."\n";
+			close (VARNA);
+			print STDERR "\nWrote HTML formatted output to '".$refHash_settings->{varnaoutput}."'.\n";
+		}
+	}
+}
 
 sub getBlockMFE {
 	my ($refHash_block) = @_;
