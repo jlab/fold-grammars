@@ -40,8 +40,22 @@ sub cast_doComputation {
 	#print results
 		my $shapeNr = 0;
 		foreach my $shape (sort {$commonShapes_infos{$a}->{score} <=> $commonShapes_infos{$b}->{score}} keys(%commonShapes_infos)) { 
+			$IO::varnaoutput .= "\t\t".$IO::tableStart."\n\t\t\t<tr><td>".(++$shapeNr).")</td><td>Shape: ".$shape."</td><td>Score: ".sprintf("%.2f", $commonShapes_infos{$shape}->{score}/100)."</td><td>Ratio of MFE: ".sprintf("%1.2f", $commonShapes_infos{$shape}->{score}/$maxMFE)."</td></tr>\n\t\t</table>\n" if ((exists $settings->{varnaoutput}) && (defined $settings->{varnaoutput}));
 			print "".(++$shapeNr).")".$IO::SEPARATOR."Shape: ".$shape.$IO::SEPARATOR."Score: ".sprintf("%.2f", $commonShapes_infos{$shape}->{score}/100).$IO::SEPARATOR."Ratio of MFE: ".sprintf("%1.2f", $commonShapes_infos{$shape}->{score}/$maxMFE)."\n";
 			foreach my $refHash_sequence (@orderedSeqs) {
+				if ((exists $settings->{varnaoutput}) && (defined $settings->{varnaoutput})) {
+					IO::outputVARNA(
+						{'0'.$IO::DATASEPARATOR.length($refHash_sequence->{sequence}) => {dummyblock => {$commonShapes{$shape}->{$refHash_sequence->{header}}->{structure} => {score => $commonShapes{$shape}->{$refHash_sequence->{header}}->{energy}/100, structureProb => $commonShapes{$shape}->{$refHash_sequence->{header}}->{structureProb}, shape => $shape, rank => $commonShapes{$shape}->{$refHash_sequence->{header}}->{rank}}}}}, 
+						$refHash_sequence, 
+						$IO::PROG_RNASHAPES, 
+						$settings, 
+						{energy => $maxEnergyLen, windowStartPos => 1}, 
+						undef, 
+						undef, 
+						undef,
+						$commonShapes{$shape}->{$refHash_sequence->{header}}->{pfAll}
+					); # $predictions{$windowPos}->{$structure}); # my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples) = @_;
+				}
 				print IO::output(
 					{'0'.$IO::DATASEPARATOR.length($refHash_sequence->{sequence}) => {dummyblock => {$commonShapes{$shape}->{$refHash_sequence->{header}}->{structure} => {score => $commonShapes{$shape}->{$refHash_sequence->{header}}->{energy}/100, structureProb => $commonShapes{$shape}->{$refHash_sequence->{header}}->{structureProb}, shape => $shape, rank => $commonShapes{$shape}->{$refHash_sequence->{header}}->{rank}}}}}, 
 					$refHash_sequence, 

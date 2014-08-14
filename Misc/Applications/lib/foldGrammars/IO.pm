@@ -32,6 +32,14 @@ our %ENFORCE_CLASSES = (
 
 my $firstSequenceReady = 'false';
 
+#used for VARNA visualization
+	our $varnaoutput = "";
+	my $hasVarnaHeader = 'false';
+	my $firstSubSequence = undef;
+	my $firstStructure = undef;
+	my $firstTitle = undef;
+	our $tableStart = '<table cellspacing="0" cellpadding="0" style="font-family:monospace; font-size: 8pt !important;" border="0">';
+	
 use Data::Dumper;
 
 sub parse {
@@ -253,6 +261,7 @@ sub parse {
 	}
 	
 	return \%pfAll if ($settings->{mode} eq $Settings::MODE_PFALL);
+	outputVARNA(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll) if ($settings->{varnaoutput});
 	output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll);
 }
 
@@ -526,8 +535,321 @@ sub output {
 		}
 		print "\n" if ($windowPos ne $windowPositions[$#windowPositions]);
 	}
-	
 }
+
+sub outputVARNA {	
+	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex, $refHash_pfall) = @_;
+
+	if ($hasVarnaHeader eq 'false') {
+		$varnaoutput .= getVARNAheader();
+		$hasVarnaHeader = 'true';
+	}
+
+	$varnaoutput .= "\t\t".$tableStart."\n";
+
+	my $separatorLine = "\t\t\t<tr><td>&#160;</td></tr>\n";
+
+	if ($firstSequenceReady eq 'false') {
+		$firstSequenceReady = 'true';
+	} else {
+		$varnaoutput .= $separatorLine if ($settings->{mode} ne $Settings::MODE_CAST && $settings->{mode} ne $Settings::MODE_OUTSIDE);
+	}
+	
+	my $scoreFormat = getScoreFormatString($program, $fieldLengths);
+	my $lengthScoreField = length(sprintf($scoreFormat, 0, 0, 0));
+	
+	my $leftSpacerDueToWindowStartPos = $fieldLengths->{windowStartPos} - $lengthScoreField;
+	$leftSpacerDueToWindowStartPos = 0 if ($leftSpacerDueToWindowStartPos < 0);
+	
+	my $ENFORCE_NOTAVAIL = "no structure available";
+	
+	if ($settings->{mode} eq $Settings::MODE_ABSTRACT) {
+		if (not exists $predictions->{shape}) {
+			$varnaoutput .= "Your structure '".$input->{structure}.'" is not a member of the folding space of '.$settings->{grammar}."'.\n";
+			exit 1;
+		} else {
+			$varnaoutput .= $predictions->{shape}."\n";
+		}
+		return;
+	}
+	
+	#ID LINE
+		if ($settings->{mode} eq $Settings::MODE_OUTSIDE) {
+			my $dotplotfilename = IO::getDotplotFilename($settings, $inputIndex);
+			$varnaoutput .= "Saved \"dot plot\" for sequence '".$input->{header}."' in file '".$dotplotfilename."'.\n";
+			if ($settings->{dotplotpng} == 1) {
+				my $dotplotPNGfilename = $dotplotfilename;
+				$dotplotPNGfilename =~ s/\.\w+/\.png/g;
+				my $command = "$Settings::BINARIES{gs} -dBATCH -dNOPAUSE -sDEVICE=pnggray -sOutputFile=$dotplotPNGfilename -r200 $dotplotfilename";
+				qx($command);
+				Utils::qxDieMessage($command, $?);
+				$varnaoutput .= "Also converted the \"dot plot\" into PNG file '$dotplotPNGfilename'.\n";
+			}
+		} else {
+			$varnaoutput .= "\t\t\t<tr><td colspan='3'>&gt;".$input->{header}."</td></tr>\n" if (exists $input->{sequence}); #input is a fasta sequence
+		}
+	
+	my @windowPositions = sort {splitFields($a)->[0] <=> splitFields($b)->[0]} keys(%{$predictions});
+	foreach my $windowPos (@windowPositions) {
+		my ($startPos, $endPos) = @{splitFields($windowPos)};
+		my @blockPositions = ('dummyblock');
+		if ($settings->{mode} eq $Settings::MODE_LOCAL) {
+			@blockPositions = sort {
+													(getBlockMFE($predictions->{$windowPos}->{$a}) <=> getBlockMFE($predictions->{$windowPos}->{$b})) ||
+													(splitFields($a)->[0] <=> splitFields($b)->[0]) ||
+													(splitFields($a)->[1] <=> splitFields($b)->[1])
+												} keys(%{$predictions->{$windowPos}});
+			$varnaoutput .= "\t\t\t<tr><td colspan='3'>"."=== window: ".($startPos+1)." to ".$endPos.": ===</td><tr>\n";
+		}
+		foreach my $blockPos (@blockPositions) {
+			($startPos, $endPos) = @{splitFields($blockPos)} if ($settings->{mode} eq $Settings::MODE_LOCAL);
+			my $avgSglMfe = getAvgSingleMFEs($input, $settings, $startPos, $endPos) if ($settings->{'sci'});
+			
+			#WINDOW INFO LINE
+				$varnaoutput .= "\t\t\t<tr>";
+				if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
+					$varnaoutput .= "<td>&#160;</td>"
+				}
+				
+				$varnaoutput .= "<td style='text-align: right;'>".($startPos+1)."</td>";
+				
+				my $inputRepresentant = undef;
+				$inputRepresentant = $input->{sequence} if (exists $input->{sequence});
+				$inputRepresentant = $input->{representation} if (exists $input->{representation});
+				my $subString = substr($inputRepresentant, $startPos, $endPos-$startPos);
+				$varnaoutput .= "<td>".$subString."</td>";
+				
+				$varnaoutput .= "<td>".$endPos."</td>";
+				$varnaoutput .= "</tr>\n";
+				
+			#evtl. samples
+				if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($settings->{showsamples})) {
+					$varnaoutput .= "\t\t\t<tr><td>".$settings->{numsamples}." samples, drawn by stochastic backtrace to estimate shape frequencies:</td></tr>";
+					my @allSamples = ();
+					foreach my $shape (keys(%{$samples->{$windowPos}})) {
+						push @allSamples, @{$samples->{$windowPos}->{$shape}};
+					}
+					foreach my $refHash_sample (sort {$a->{position} <=> $b->{position}} @allSamples) {
+						$varnaoutput .= "\t\t\t<tr><td>".sprintf($scoreFormat, @{splitFields($refHash_sample->{score})})."</td>";
+						if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
+							$varnaoutput .= "<td>".sprintf("%1.$settings->{'probdecimals'}f", $refHash_sample->{structureProb}/$refHash_pfall->{$windowPos})."</td>";
+						}
+						$varnaoutput .= "<td>".$refHash_sample->{structure}."</td>";
+						if ((exists $settings->{'sci'}) && ($settings->{'sci'})) {
+							$varnaoutput .= "<td>".printSCI(splitFields($refHash_sample->{score})->[0], $avgSglMfe)."</td>";
+						}
+						$varnaoutput .= "<td>".$refHash_sample->{shape}."</td>";
+						$varnaoutput .= "</tr>\n";
+					}
+					$varnaoutput .= "\t\t\t<tr><td>Sampling results:</td></tr>\n";
+					$varnaoutput .= $separatorLine;
+				}
+			
+			my @sortedStructures = keys(%{$predictions->{$windowPos}->{$blockPos}});
+			@sortedStructures =  sort {splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]} @sortedStructures if (($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT) || ($settings->{mode} eq $Settings::MODE_SHAPES));
+			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$b}->{pfunc} <=> $predictions->{$windowPos}->{$blockPos}->{$a}->{pfunc}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_PROBS));
+			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$b}->{samples} <=> $predictions->{$windowPos}->{$blockPos}->{$a}->{samples}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_SAMPLE));
+			if ($settings->{mode} eq $Settings::MODE_ENFORCE) {
+				foreach my $class (keys(%ENFORCE_CLASSES)) {
+					my $haveClass = 'false';
+					foreach my $structure (keys(%{$predictions->{$windowPos}->{$blockPos}})) {
+						if ($predictions->{$windowPos}->{$blockPos}->{$structure}->{shape} eq $class) {
+							$haveClass = 'true';
+							last;
+						}
+					}
+					if ($haveClass eq 'false') {
+						if ($program eq $PROG_PALIKISS) {
+							$predictions->{$windowPos}->{$blockPos}->{$class} = {shape => $class, score => "0#0#0"};
+						} else {
+							$predictions->{$windowPos}->{$blockPos}->{$class} = {shape => $class, score => 0};
+						}
+					}
+				}
+				@sortedStructures =  sort {$ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$a}->{shape}} <=> $ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$b}->{shape}}} keys(%{$predictions->{$windowPos}->{$blockPos}});
+			}
+			@sortedStructures =  sort {splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]} @sortedStructures if (($settings->{mode} eq $Settings::MODE_LOCAL));
+	
+			#define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
+				my $range = undef;
+				if (($settings->{mode} eq $Settings::MODE_SHAPES) || ($settings->{mode} eq $Settings::MODE_SUBOPT) || ($settings->{mode} eq $Settings::MODE_CAST) || ($settings->{mode} eq $Settings::MODE_LOCAL)) {
+					my $bestscore = splitFields($predictions->{$windowPos}->{$blockPos}->{$sortedStructures[0]}->{score})->[0];
+					if (not defined $settings->{absolutedeviation}) {
+						$range = $bestscore * (100 - $settings->{relativedeviation} * ($bestscore < 0 ? 1 : -1)) / 100;
+					} else {
+						$range = $bestscore + $settings->{absolutedeviation};
+					}
+				}
+			#END: define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
+			foreach my $structure (@sortedStructures) {
+				last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{pfunc}/$sumPfunc->{$windowPos} < $settings->{lowprobfilteroutput}));
+				last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
+				last if (($settings->{mode} eq $Settings::MODE_SHAPES) && (splitFields($predictions->{$windowPos}->{$blockPos}->{$structure}->{score})->[0] > $range));
+				
+				my @results = ($predictions->{$windowPos}->{$blockPos}->{$structure});
+				@results = sort {splitFields($a->{score})->[0] <=> splitFields($b->{score})->[0]} @{$predictions->{$windowPos}->{$blockPos}->{$structure}} if ($settings->{mode} eq $Settings::MODE_EVAL);
+				foreach my $result (@results) {
+					$varnaoutput .= "\t\t\t<tr class='result'>";
+					
+					#RESULT LINE
+					my ($energy, $part_energy, $part_covar) = @{splitFields($result->{score})};
+					
+					#score = energy
+						$energy = formatEnergy($part_energy) + formatEnergy($part_covar) if (exists $input->{length}); #necessary to avoid rounding errors on output :-(
+						my $energyResult = sprintf($scoreFormat, $energy, $part_energy, $part_covar);
+						$energyResult = (" " x $lengthScoreField) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
+						$varnaoutput .= "<td style='text-align: right;'>".$energyResult."</td>";
+						
+					#structure probability if switched on
+						if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
+							my $probability = 0;
+							my $decimals = $settings->{'probdecimals'};
+							if ($settings->{'mode'} eq $Settings::MODE_MEA) {
+								$probability = $result->{structureProb};
+								$decimals -= int(log($probability)/log(10));
+							} else {
+								$probability = $result->{structureProb}/$refHash_pfall->{$windowPos};
+							}
+							$varnaoutput .= "<td>".sprintf("%1.${decimals}f", $probability)."</td>";
+						}
+					
+					#dot bracket structure
+						my $structureResult = $structure;
+						$structureResult = $ENFORCE_NOTAVAIL.(" " x (($endPos-$startPos) - length($ENFORCE_NOTAVAIL))) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
+						$varnaoutput .= "<td><a href='javascript:void(0);' class='structure' onClick='setStructSmooth(\"".$subString."\",\"".$structureResult."\",\"".(exists $input->{sequence} ? $input->{header} : "")."\");'>".$structureResult."</a></td>";
+						if (not defined $firstSubSequence) {
+							$firstSubSequence = $subString;
+							$firstStructure = $structureResult;
+							$firstTitle = (exists $input->{sequence} ? $input->{header} : "");
+						}
+					
+					#SCI if available
+						if ((exists $settings->{'sci'}) && ($settings->{'sci'})) {
+							$varnaoutput .= "<td>".printSCI($energy, $avgSglMfe)."</td>";
+						}
+						
+					#shape probability if available and mode is right
+						if (($settings->{mode} eq $Settings::MODE_PROBS) || ($settings->{mode} eq $Settings::MODE_SAMPLE)) {
+							my $probability = 0;
+							$probability = $result->{pfunc}/$sumPfunc->{$windowPos} if ($settings->{mode} eq $Settings::MODE_PROBS);
+							$probability = $result->{samples} / $settings->{numsamples} if ($settings->{mode} eq $Settings::MODE_SAMPLE);
+							$varnaoutput .= "<td>".sprintf("%1.$settings->{'probdecimals'}f", $probability)."</td>";
+						}
+						
+					#rank, if in RNAcast mode
+						if ($settings->{mode} eq $Settings::MODE_CAST) {
+							$varnaoutput .= "<td>R: ".$result->{rank}."</td>";
+						}
+						
+					#shape class if available
+						if (exists $result->{shape} && defined $result->{shape}) {
+							my $shapeResult = $result->{shape};
+							$shapeResult = "best '".$shapeResult."'" if ($settings->{mode} eq $Settings::MODE_ENFORCE);
+							$varnaoutput .= "<td>".$shapeResult."</td>";
+						}
+						
+					
+					$varnaoutput .= "</tr>\n";
+				}
+			}
+			$varnaoutput .= $separatorLine if ($blockPos ne $blockPositions[$#blockPositions]);
+		}
+		$varnaoutput .= $separatorLine if ($windowPos ne $windowPositions[$#windowPositions]);
+	}
+	$varnaoutput .= "\t\t</table>\n";
+}
+
+sub getVARNAheader {
+	return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+		<meta content="utf-8" http-equiv="encoding">
+		<style type="text/css">
+			a.structure {
+				text-decoration: none;
+				color: black;
+			}
+			a.structure:focus {
+				background-color: #eeeeee;
+			}
+			tr.result:hover {
+				font-weight: bold;
+			}
+			td {
+				padding-right: 20px;
+			}
+		</style>
+		<script type="text/javascript">
+			function setStructSmooth(nseq,nstr,ntitle) {
+				var applet = document.getElementById("VA");
+				var script = "setTitle(\""+ntitle+"\")";
+				applet.runScript(script);
+				var script = "setSeq(\""+nseq+"\")";
+				applet.runScript(script);
+				var script = "setStruct(\""+nstr+"\")";
+				applet.runScript(script);
+			};
+		</script>
+	</head>
+	<body>
+';
+}
+
+sub getVARNAfooter {
+	return '		<div style="position:fixed; right: 10px; top: 10px; height: 420px; width: 400px; ">
+			
+			<table cellspacing="0" cellpadding="0">
+				<tr>
+					<td style="font-size: 10pt;">Click on any Vienna-Dot-Bracket string to &quot;see&quot its structure here.</td>
+				</tr>
+				<tr>
+					<td>
+						<applet ID="VA"  
+							code="VARNA.class"
+							codebase="http://varna.lri.fr/bin"
+							archive="VARNA.jar"
+							width="400" 
+							height="400">
+							<param name="java_version" value="1.5+">
+							<!--<param name="sequenceDBN"  value="'.$firstSubSequence.'" />
+							<param name="structureDBN" value="'.$firstStructure.'" />
+							<param name="title" value="'.$firstTitle.'" />-->
+							<param name="flat" value="true" />
+							<param name="background" value="#eeeeee" />
+						</applet>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center; font-size: 8pt;">Visualization powered by <a href="http://varna.lri.fr/">http://varna.lri.fr/</a></td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
+';
+}
+
+#~ sub getVARNAfooter {
+	#~ return '		<div style="position:fixed; right: 10px; top: 10px; height: 420px; width: 400px; ">
+			
+			#~ <table cellspacing="0" cellpadding="0">
+				#~ <tr>
+					#~ <td style="font-size: 10pt;">Click on any Vienna-Dot-Bracket string to &quot;see&quot its structure here.</td>
+				#~ </tr>
+				#~ <tr>
+					#~ <td>
+					#~ </td>
+				#~ </tr>
+				#~ <tr>
+					#~ <td style="text-align: center; font-size: 8pt;">Visualization powered by <a href="http://varna.lri.fr/">http://varna.lri.fr/</a></td>
+				#~ </tr>
+			#~ </table>
+		#~ </div>
+	#~ </body>
+#~ </html>
+#~ ';
+#~ }
 
 sub getBlockMFE {
 	my ($refHash_block) = @_;

@@ -47,6 +47,7 @@ $PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', defaul
 $PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => $Settings::PROGINFOS{$PROGID}->{name}.'_', info => $Settings::PROGINFOS{$PROGID}->{name}." expects a special naming schema for the according Bellman's GAP compiled binaries. On default, each binary is named \"@(DEFAULT)\", followed by the mode, followed by \"_window\" for the window mode version. Thus, for non-window mode \"$Settings::MODE_SUBOPT\" the name would be \"@(DEFAULT)$Settings::MODE_SUBOPT\". With --@(binaryprefix) you can change the prefix into some arbitary one."};
 $PARAM{probdecimals} = {modes => [$Settings::MODE_PROBS], key => 'probDecimals', type => 'i', default => 7, info => "Sets the number of digits used for printing shape probabilities.\n<int> must be a positive integer number.\nDefault is @(DEFAULT)."};
 $PARAM{verbose} = {modes => \@ALLMODES, key => 'verbose', default => 0, type => 'i', info => "Prints the actual command for Bellman's GAP binary."};
+$PARAM{varnaoutput} = {modes => \@ALLMODES, key => 'varna', default => undef, type => 's', info => "Provide a file name to which a HTML formatted version of the output should be saved in."};
 
 my $settings = {};
 foreach my $param (keys %PARAM) {
@@ -159,6 +160,14 @@ sub processInput {
 		} else {
 			Utils::applyFunctionToFastaFile($input, \&doComputation, $refHash_settings);
 		}
+	}
+	
+	if ((exists $refHash_settings->{varnaoutput}) && (defined $refHash_settings->{varnaoutput})) {
+		open (VARNA, "> ".$refHash_settings->{varnaoutput}) || die 'cannot write HTML output to file "'.$refHash_settings->{varnaoutput}."\": $!\n";
+			print VARNA $IO::varnaoutput."\n";
+			print VARNA IO::getVARNAfooter()."\n";
+		close (VARNA);
+		print STDERR "\nWrote HTML formatted output to '".$refHash_settings->{varnaoutput}."'.\n";
 	}
 }
 
@@ -300,7 +309,7 @@ EOF
 	push @paramGroups, {name => "GENERAL OPTIONS", elements => ['mode', 'absolutedeviation', 'relativedeviation', 'shapelevel', 'lowprobfilter', 'lowprobfilteroutput', 'windowsize', 'windowincrement']};
 	push @paramGroups, {name => "PSEUDOKNOT OPTIONS", elements => ['strategy', 'minhairpinlength', 'maxknotsize', 'hpenalty', 'kpenalty']};
 	push @paramGroups, {name => "FOLDING OPTIONS", elements => ['allowlp', 'temperature', 'param']};
-	push @paramGroups, {name => "SYSTEM OPTIONS", elements => ['binarypath', 'binaryprefix', 'probdecimals', 'help', 'verbose']};
+	push @paramGroups, {name => "SYSTEM OPTIONS", elements => ['binarypath', 'binaryprefix', 'probdecimals', 'help', 'verbose','varnaoutput']};
 	foreach my $refHash_group (@paramGroups) {
 		$HELP .= $refHash_group->{name}.":\n";
 		for my $par (@{$refHash_group->{elements}}) {

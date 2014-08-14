@@ -547,6 +547,17 @@ sub automatedParameterChecks {
 			die $diePrefix."--".$refHash_params->{$option}->{key}." cannot be used in mode '".$refHash_settings->{'mode'}."'! It is only available in mode".(@{$refHash_params->{$option}->{modes}} == 1 ? '' : 's').": \"".join('", "', @{$refHash_params->{$option}->{modes}})."\".";
 		}
 	}
+	if ((exists $refHash_settings->{varnaoutput}) && (defined $refHash_settings->{varnaoutput})) {
+		$refHash_settings->{varnaoutput} = Utils::absFilename($refHash_settings->{varnaoutput});
+		if (not (-e $refHash_settings->{varnaoutput})) {
+			open (VARNA, "> ".$refHash_settings->{varnaoutput}) || die $diePrefix."--".$refHash_params->{varnaoutput}->{key}.' cannot create HTML output file "'.$refHash_settings->{varnaoutput}."\": $!\n";
+			close (VARNA);
+		} else {
+			if (not (-w $refHash_settings->{varnaoutput})) {
+				die $diePrefix."--".$refHash_params->{varnaoutput}->{key}." cannot write to output file '".$refHash_settings->{varnaoutput}."': $!";
+			}
+		}
+	}
 }
 
 sub checkBinaryPresents {
