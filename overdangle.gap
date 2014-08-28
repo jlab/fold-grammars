@@ -4,6 +4,7 @@ import "Extensions/mfesubopt.hh"
 import "Extensions/probabilities.hh"
 import "Extensions/shapes.hh"
 import "Extensions/mea.hh"
+import "Extensions/probing.hh"
 
 input rna
 
@@ -32,8 +33,14 @@ algebra alg_mfe_subopt_overdangle extends alg_mfe_overdangle {
     return mfeSubopt(i);
   }
 }
+algebra alg_mfe_id_overdangle extends alg_mfe_overdangle {
+  choice [int] h([int] i) {
+    return i;
+  }
+}
 
 include "Algebras/MEA/alg_mea.gap"
+include "Algebras/alg_expSHAPE.gap"
 
 include "Algebras/Pfunc/alg_pfunc.gap"
 algebra alg_pfunc_overdangle extends alg_pfunc {
