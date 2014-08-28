@@ -693,4 +693,38 @@ sub hsl2rgb {
 	return [sprintf("%i",($Rprime+$m)*255), sprintf("%i",($Gprime+$m)*255), sprintf("%i",($Bprime+$m)*255)];
 }
 
+sub hsv2rgb {
+	use POSIX "fmod";
+	use POSIX qw/floor/;
+	
+	#http://de.wikipedia.org/wiki/HSV-Farbraum#Umrechnung_HSV_in_RGB
+	my ($h, $s, $v) = @_;
+	
+	die "Utils::hsl2rgb: 0 <= \$h < 360 not satisfied\n" if ($h < 0 || $h >= 360);
+	die "Utils::hsl2rgb: 0 <= \$s <= 1 not satisfied\n" if ($s < 0 || $s > 1);
+	die "Utils::hsl2rgb: 0 <= \$v <= 1 not satisfied\n" if ($v < 0 || $v > 1);
+
+	my $hi = floor($h / 60);
+	my $f = ($h / 60) - $hi;
+	my $p = $v*(1-$s);
+	my $q = $v*(1-$s*$f);
+	my $t = $v*(1-$s*(1-$f));
+	my ($Rprime, $Gprime, $Bprime) = (undef,undef,undef);
+	if ((0 == $hi) || ($hi == 6)) {
+		($Rprime, $Gprime, $Bprime) = ($v,$t,$p);
+	} elsif ($hi == 1) {
+		($Rprime, $Gprime, $Bprime) = ($q,$v,$p);
+	} elsif ($hi == 2) {
+		($Rprime, $Gprime, $Bprime) = ($p,$v,$t);
+	} elsif ($hi == 3) {
+		($Rprime, $Gprime, $Bprime) = ($p,$q,$v);
+	} elsif ($hi == 4) {
+		($Rprime, $Gprime, $Bprime) = ($t,$p,$v);
+	} elsif ($hi == 5) {
+		($Rprime, $Gprime, $Bprime) = ($v,$p,$q);
+	}
+	
+	return [sprintf("%i",($Rprime)*255), sprintf("%i",($Gprime)*255), sprintf("%i",($Bprime)*255)];
+}
+
 1;
