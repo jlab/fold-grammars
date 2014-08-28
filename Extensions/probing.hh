@@ -88,17 +88,19 @@ inline List_Ref<std::pair<int, double> >& paretoFilter(List_Ref<std::pair<int, d
 	return *newList;
 }
 
-
-inline List_Ref<std::pair<std::pair<int, double>, String > >& paretoFilterSmooth(List_Ref<std::pair<std::pair<int, double>, String > >& in)
+template<typename RHS> //when applying pareto mind the order of setting parentheses! (A * B) * (X * Y * Z) suchthat paretoFilterSmooth, means that A and B build the pareto product and for all surviving candidates (X * Y * Z) will be computed
+inline List_Ref<std::pair<std::pair<int, double>, RHS > >& paretoFilterSmooth(List_Ref<std::pair<std::pair<int, double>, RHS > >& in)
 {
-	std::list <std::pair<std::pair<int, double>, String > > newListIn;
+	std::list <std::pair<std::pair<int, double>, RHS > > newListIn;
 	// Computation of the Pareto front.
 
-	for(List_Ref<std::pair<std::pair<int, double>, String > >::iterator i = in->begin(); i != in->end(); ++i) {
+	typename List_Ref<std::pair<std::pair<int, double>, RHS > >::iterator i = in->begin();
+	for(; i != in->end(); ++i) {
 		if(newListIn.empty()) {
 			newListIn.push_back(*i);
 		} else {
-			for(std::list<std::pair<std::pair<int, double>, String > >::iterator j = newListIn.begin(); j != newListIn.end(); j++)
+			typename std::list<std::pair<std::pair<int, double>, RHS > >::iterator j = newListIn.begin();
+			for(; j != newListIn.end(); j++)
 			{
 				if( (*i).first.first > (*j).first.first && (*i).first.second <= (*j).first.second )
 				{
@@ -118,7 +120,7 @@ inline List_Ref<std::pair<std::pair<int, double>, String > >& paretoFilterSmooth
 						{
 							// i and j co-dominate. We insert i after j so we do nothing. Test for insertion in case of end of the list.
 
-							std::list<std::pair<std::pair<int, double>, String > >::iterator it_test = j;
+							typename std::list<std::pair<std::pair<int, double>, RHS > >::iterator it_test = j;
 							it_test++;
 							if( it_test == newListIn.end() )
 							{
@@ -141,7 +143,7 @@ inline List_Ref<std::pair<std::pair<int, double>, String > >& paretoFilterSmooth
 									newListIn.insert(j, std::make_pair(std::make_pair((*i).first.first,(*i).first.second), (*i).second));
 
 									// We prune the list.
-									std::list<std::pair<std::pair<int, double>, String > >::iterator it_del = j;
+									typename std::list<std::pair<std::pair<int, double>, RHS > >::iterator it_del = j;
 
 									bool loopOn = true;
 									while( loopOn )
@@ -182,9 +184,10 @@ inline List_Ref<std::pair<std::pair<int, double>, String > >& paretoFilterSmooth
 	}
 
 	// Copy the solution Vector in List_Ref list
-	List_Ref<std::pair<std::pair<int, double>, String > > *newList = new List_Ref<std::pair<std::pair<int, double>, String > >();
+	List_Ref<std::pair<std::pair<int, double>, RHS > > *newList = new List_Ref<std::pair<std::pair<int, double>, RHS > >();
 
-	for(std::list<std::pair<std::pair<int, double>, String > >::iterator i = newListIn.begin(); i != newListIn.end(); ++i) { (*newList)->push_back(*i); }
+	typename std::list<std::pair<std::pair<int, double>, RHS > >::iterator k = newListIn.begin();
+	for(; k != newListIn.end(); ++k) { (*newList)->push_back(*k); }
 
 	return *newList;
 }
