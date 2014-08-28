@@ -57,6 +57,9 @@
 	inline static const char* getDotplotFilename() {
 		return gapc::Opts::getOpts()->dotPlotFilename;
 	}
+	inline static const char* getProbingDataFilename() {
+		return gapc::Opts::getOpts()->probingDataFilename;
+	}
 	inline static int getConsensusType() {
 		return gapc::Opts::getOpts()->consensusType;
 	}
@@ -111,6 +114,9 @@
 	}
 	inline static const char* getDotplotFilename() {
 		return "./dotPlot.ps";
+	}
+	inline static const char* getProbingDataFilename() {
+		return "\0";
 	}
 	inline static int getConsensusType() {
 		return 0;

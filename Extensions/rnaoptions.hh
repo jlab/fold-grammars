@@ -43,6 +43,7 @@
 #include "rna.hh"
 #include <stdio.h>
 #include <ctype.h>
+ #include <sys/stat.h>
 
 namespace gapc {
 
@@ -87,6 +88,7 @@ class Opts {
     int alifold_minscore_basepair;
     bool allowLonelyBasepairs;
     const char* dotPlotFilename;
+    const char* probingDataFilename;
     int consensusType;
     bool ribosum_scoring;
 
@@ -116,6 +118,7 @@ class Opts {
     				alifold_minscore_basepair(-200),
     				allowLonelyBasepairs(false),
     				dotPlotFilename("\0"),
+    				probingDataFilename("\0"),
     				consensusType(0),
     				ribosum_scoring(false)
     {
@@ -226,6 +229,9 @@ class Opts {
 				<< "-a <int-value> select alignment consensus representation for dot plots, aka. outside computation." << std::endl
 				<< "   0 = consensus, 1 = most informative sequence" << std::endl
 				<< "" << std::endl
+				<< "-S <file> EXPERIMENTAL: reads chemical probing results to 'constrain' the prediction." << std::endl
+				<< "   Format of the file has to be defined in the future." << std::endl
+				<< "" << std::endl
 				<< "-h Print this help." << std::endl
 				<< "" << std::endl
 				<< " (-[drk] [0-9]+)*\n";
@@ -244,6 +250,7 @@ class Opts {
 						"s:l:F:q:u:"
 					    "o:a:"  //output filename for dot plot, consensus type: 0=consensus, 1=mis
 						"n:C:m:R:" //for alifold parameters nfactor, cfactor and minpscore_basepair, ribosum scoring
+						"S:" //reads additional probing data from file "S"
 						"hd:r:k:")) != -1) {
 			switch (o) {
 			case 'f':
@@ -292,6 +299,9 @@ class Opts {
 				break;
 			case 'o':
 				dotPlotFilename = optarg;
+				break;
+			case 'S':
+				probingDataFilename = optarg;
 				break;
 			case 'c':
 				energydeviation_relative = std::atof(optarg);
@@ -407,6 +417,15 @@ class Opts {
 		}
 		if (strcmp(dotPlotFilename, "\0") == 0) {
 			dotPlotFilename = "./dotPlot.ps";
+		}
+		if (strcmp(probingDataFilename, "\0") != 0) {
+			struct stat buffer;
+			if (stat(probingDataFilename, &buffer) != 0) {
+				std::string message = "Expected file with chemical probing data (-S '";
+				message.append(probingDataFilename);
+				message.append("') does not exist!");
+				throw OptException(message);
+			}
 		}
 		}
 
