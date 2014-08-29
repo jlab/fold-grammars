@@ -24,6 +24,24 @@ inline double getSHAPEscore(const TUSubsequence &leftBase) {
 		if (probingData.size() > (leftBase.seq->n)) {
 			std::cerr << "Warning: chemical probing data file '" << getProbingDataFilename() << "' contains " << (probingData.size()-leftBase.seq->n) << " more row(s) " << std::endl << "         than there are nucleotides in your input sequence." << std::endl << "         Exceeding data lines will be ignored!" << std::endl;
 		}
+		
+		//normalize shape data to probabilities: x < 0 ==> x = 0
+			double max = 0;
+			for(std::vector<double>::iterator it = probingData.begin(); it != probingData.end(); it++) {
+				if (max < *it) max = *it;
+				if (*it < 0) *it = 0;
+			}
+			if (max > 0) {
+				for(std::vector<double>::iterator it = probingData.begin(); it != probingData.end(); it++) {
+					*it = *it / max;
+				}
+			}
+
+		//convert values with Mathews formula: deltaG_shape(i) = 2.6 * ln(value(i) + 1) + -0.8
+			for(std::vector<double>::iterator it = probingData.begin(); it != probingData.end(); it++) {
+				if (*it < 0.0) *it = 0.0;
+				*it = 2.6 * log(*it + 1) -0.8;
+			}
 
 		isLoaded = true;
 	}
@@ -36,36 +54,51 @@ inline double getSHAPEscore(const TUSubsequence &leftBase) {
 	return score;
 }
 
-inline List_Ref<std::pair<int, double> >& paretoFilter(List_Ref<std::pair<int, double> >& in)
-{
-	std::list <std::pair<int, double> > newListIn;
+template<typename SORT_A, typename SORT_B>
+inline SORT_A getFirstDimension(std::pair<SORT_A, SORT_B> &candidate) {
+	return candidate.first;
+}
+template<typename SORT_A, typename SORT_B, typename RHS>
+inline SORT_A getFirstDimension(std::pair<std::pair<SORT_A, SORT_B>, RHS> &candidate) {
+	return getFirstDimension(candidate.first);
+}
+template<typename SORT_A, typename SORT_B>
+inline SORT_B getSecondDimension(std::pair<SORT_A, SORT_B> &candidate) {
+	return candidate.second;
+}
+template<typename SORT_A, typename SORT_B, typename RHS>
+inline SORT_B getSecondDimension(std::pair<std::pair<SORT_A, SORT_B>, RHS> &candidate) {
+	return getSecondDimension(candidate.first);
+}
+
+template<typename ANSWER> //when applying pareto mind the order of setting parentheses! (A * B) * (X * Y * Z) suchthat paretoFilterSmooth, means that A and B build the pareto product and for all surviving candidates (X * Y * Z) will be computed
+inline List_Ref<ANSWER >& pareto(List_Ref<ANSWER >& inCandidateList) {
+	std::list <ANSWER > workingCandidateList;
 
 	// Computation of the Pareto front.
-	for(List_Ref<std::pair<int, double> >::iterator i = in->begin(); i != in->end(); ++i) {
-
+	for(typename List_Ref< ANSWER >::iterator i = inCandidateList->begin(); i != inCandidateList->end(); ++i) {
 		bool iDominate = false;
-		std::list <std::list<std::pair<int, double> >::iterator > toDelete;
 
-		if(newListIn.empty()) {
+		typename std::list <typename std::list<ANSWER >::iterator > toDelete;
+		if(workingCandidateList.empty()) {
 			iDominate = true;
 		} else {
-			for(std::list<std::pair<int, double> >::iterator j = newListIn.begin(); j != newListIn.end(); ++j) {
+			for(typename std::list<ANSWER >::iterator j = workingCandidateList.begin(); j != workingCandidateList.end(); ++j) {
 				// i dominate j.
-				if( ( (*i).first == (*j).first && (*i).second == (*j).second ) ||
-				    ( (*i).first < (*j).first && (*i).second > (*j).second ) ||
-				    ( (*i).first < (*j).first && (*i).second == (*j).second ) ||
-				    ( (*i).first == (*j).first && (*i).second > (*j).second )) {
+				if( ( getFirstDimension((*i)) == getFirstDimension((*j)) && getSecondDimension((*i)) == getSecondDimension((*j)) ) ||
+				    ( getFirstDimension((*i)) <  getFirstDimension((*j)) && getSecondDimension((*i)) >  getSecondDimension((*j)) ) ||
+				    ( getFirstDimension((*i)) <  getFirstDimension((*j)) && getSecondDimension((*i)) == getSecondDimension((*j)) ) ||
+				    ( getFirstDimension((*i)) == getFirstDimension((*j)) && getSecondDimension((*i)) >  getSecondDimension((*j)) )) {
 					iDominate = true;
 
 					// Delete j from the List.
 					toDelete.push_back(j);
 				} else {
 					// i and j co-dominate.
-					if( ( (*i).first < (*j).first && (*i).second < (*j).second ) ||
-					    ( (*i).first > (*j).first && (*i).second > (*j).second ) ) {
+					if( ( getFirstDimension((*i)) < getFirstDimension((*j)) && getSecondDimension((*i)) < getSecondDimension((*j)) ) ||
+					    ( getFirstDimension((*i)) > getFirstDimension((*j)) && getSecondDimension((*i)) > getSecondDimension((*j)) ) ) {
 						iDominate = true;
-					} else // j dominate i.
-					{
+					} else {// j dominate i.
 						iDominate = false;
 						break;
 					}
@@ -74,122 +107,23 @@ inline List_Ref<std::pair<int, double> >& paretoFilter(List_Ref<std::pair<int, d
 		}
 
 		// Add the solution i to the list.
-		if(iDominate) {	newListIn.push_back(std::make_pair((*i).first,(*i).second)); }
+		if(iDominate) {
+			workingCandidateList.push_back((*i));
+		}
 
 		// Prune the newListIn of all deleted objects.
-		for(std::list <std::list<std::pair<int, double> >::iterator >::iterator it = toDelete.begin(); it != toDelete.end(); ++it) { newListIn.erase((*it)); }
-	}
-
-	// Copy the solution Vector in List_Ref list
-	List_Ref<std::pair<int, double> > *newList = new List_Ref<std::pair<int, double> >();
-
-	for(std::list<std::pair<int, double> >::iterator i = newListIn.begin(); i != newListIn.end(); ++i) { (*newList)->push_back(*i); }
-
-	return *newList;
-}
-
-template<typename RHS> //when applying pareto mind the order of setting parentheses! (A * B) * (X * Y * Z) suchthat paretoFilterSmooth, means that A and B build the pareto product and for all surviving candidates (X * Y * Z) will be computed
-inline List_Ref<std::pair<std::pair<int, double>, RHS > >& paretoFilterSmooth(List_Ref<std::pair<std::pair<int, double>, RHS > >& in)
-{
-	std::list <std::pair<std::pair<int, double>, RHS > > newListIn;
-	// Computation of the Pareto front.
-
-	typename List_Ref<std::pair<std::pair<int, double>, RHS > >::iterator i = in->begin();
-	for(; i != in->end(); ++i) {
-		if(newListIn.empty()) {
-			newListIn.push_back(*i);
-		} else {
-			typename std::list<std::pair<std::pair<int, double>, RHS > >::iterator j = newListIn.begin();
-			for(; j != newListIn.end(); j++)
-			{
-				if( (*i).first.first > (*j).first.first && (*i).first.second <= (*j).first.second )
-				{
-					// i is dominated by j.
-					break;
-				}
-				else
-				{
-					if( (*i).first.first == (*j).first.first && (*i).first.second <= (*j).first.second )
-					{
-						// i is dominated by j.
-						break;
-					}
-					else
-					{
-						if( (*i).first.first > (*j).first.first && (*i).first.second > (*j).first.second )
-						{
-							// i and j co-dominate. We insert i after j so we do nothing. Test for insertion in case of end of the list.
-
-							typename std::list<std::pair<std::pair<int, double>, RHS > >::iterator it_test = j;
-							it_test++;
-							if( it_test == newListIn.end() )
-							{
-								newListIn.push_back(std::make_pair(std::make_pair((*i).first.first,(*i).first.second), (*i).second));
-								break;
-							}
-						}
-						else
-						{
-							if( (*i).first.first < (*j).first.first && (*i).first.second < (*j).first.second )
-							{
-								// i and j co-dominate. We insert i on the list before j.
-								newListIn.insert(j, std::make_pair(std::make_pair((*i).first.first,(*i).first.second), (*i).second));
-							}
-							else
-							{
-								if(  ( (*i).first.first < (*j).first.first && (*i).first.second >= (*j).first.second ) || ( (*i).first.first == (*j).first.first && (*i).first.second > (*j).first.second ) )
-								{
-									// i dominate j. We place i before j and we prune the tree.
-									newListIn.insert(j, std::make_pair(std::make_pair((*i).first.first,(*i).first.second), (*i).second));
-
-									// We prune the list.
-									typename std::list<std::pair<std::pair<int, double>, RHS > >::iterator it_del = j;
-
-									bool loopOn = true;
-									while( loopOn )
-									{
-										if( it_del != newListIn.end() )
-										{
-											if( (*it_del).first.first > (*i).first.first && (*it_del).first.second <= (*i).first.second )
-											{
-												it_del = newListIn.erase(it_del);
-											}
-											else
-											{
-												loopOn = false;
-											}
-										}
-										else
-										{
-											loopOn = false;
-										}
-									}
-									if(!loopOn)
-									{
-										break;
-									}
-								}
-								else
-								{
-									// End of the List case.
-									std::cerr<<"Error !!!!!!!!!!"<<std::endl;
-									exit(0);
-								}
-							}
-						}
-					}
-				}
-			}
+		for(typename std::list <typename std::list<ANSWER >::iterator >::iterator it = toDelete.begin(); it != toDelete.end(); ++it) {
+			workingCandidateList.erase(*it);
 		}
 	}
 
 	// Copy the solution Vector in List_Ref list
-	List_Ref<std::pair<std::pair<int, double>, RHS > > *newList = new List_Ref<std::pair<std::pair<int, double>, RHS > >();
+	List_Ref<ANSWER > *outCandidateList = new List_Ref<ANSWER >();
+	for(typename std::list<ANSWER >::iterator i = workingCandidateList.begin(); i != workingCandidateList.end(); ++i) {
+		(*outCandidateList)->push_back(*i);
+	}
 
-	typename std::list<std::pair<std::pair<int, double>, RHS > >::iterator k = newListIn.begin();
-	for(; k != newListIn.end(); ++k) { (*newList)->push_back(*k); }
-
-	return *newList;
+	return *outCandidateList;
 }
 
 #endif
