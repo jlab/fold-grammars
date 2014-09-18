@@ -2,7 +2,59 @@
 
 > import Data.List
 
+> -- data structure for a G5-Tree, consisting of _E_nd of structures, _O_pen aka unpaired bases and _P_aired bases
 > data Tree a = E a | O a (Tree a) | P a (Tree a) (Tree a) deriving (Eq, Show)
+
+> -- data structure for G5-Tree-Lists. This is neccessary if two or more G5-Tree shall be merged into one combined tree. Used for alternative Sub-Structures for RNA families.
+> data TreeList a = El a | Ol a [TreeList a] | Pl a [TreeList a] [TreeList a] deriving (Eq, Show, Read)
+
+
+> -- Function to fuse a potentially empty list of G5-Tree-Lists (ts) with one more G5-Tree (tree).
+> -- If tree is already included in ts then ts can be returned unchanged, otherwise we simultaniously traverse ts and tree until they begin to differ in their indexed topology.
+> -- ts is partitioned into those G5-Tree-Lists that start with the same indexed root node as tree (which by construction can one at most) = sametype and all other nodes. The first case is the lucky one, because that does not increase the G5-Tree-List at a close to the root node.
+> fuseTreelists :: (Eq a) => [TreeList a] -> Tree a -> [TreeList a]
+> fuseTreelists ts tree = if (elemTree ts tree) then ts else difftype ++ rest
+>          where rest   = case (sametype,      tree   ) of
+>                              ([],            tree   ) -> tree2treelist tree
+>                              ([El i'],       E _    ) -> [El i']
+>                              ([Ol i' x'],    O _ x  ) -> [Ol i' (fuseTreelists x' x)]
+>                              ([Pl i' x' y'], P _ x y) -> [Pl i' (fuseTreelists x' x) (fuseTreelists y' y)]
+>                (sametype, difftype) = partition (\x -> isIDroot x tree) ts
+
+
+> -- Checks if a G5-Tree-Lists already containes the given G5-Tree.
+> -- Recursion is two-fold. One direction is down the first tree of the list if the type and index of the root node is identical to the tree
+> elemTree :: (Eq a) => [TreeList a] -> Tree a -> Bool
+> elemTree [] _         = False
+> elemTree (t:ts) tree  = ((isIDroot t tree) && (haveSameChildren)) || elemTree ts tree 
+>           where haveSameChildren = case (t,          tree   ) of
+>                                         (El _,       E _    ) -> True
+>                                         (Ol _ xs,    O _ x  ) -> elemTree xs x
+>                                         (Pl _ xs ys, P _ x y) -> elemTree xs x && elemTree ys y
+
+
+> -- converts a Tree into a TreeList
+> tree2treelist :: Tree a -> [TreeList a]
+> tree2treelist (E i)     = [El i]
+> tree2treelist (O i x)   = [Ol i (tree2treelist x)]
+> tree2treelist (P i x y) = [Pl i (tree2treelist x) (tree2treelist y)]
+
+
+> -- returns true if the root Node type of a Tree and a TreeList as well as their labels are equal
+> isIDroot :: (Eq a) => TreeList a -> Tree a -> Bool
+> isIDroot (El i')     (E i)     = (i == i')
+> isIDroot (Ol i' _)   (O i _)   = (i == i')
+> isIDroot (Pl i' _ _) (P i _ _) = (i == i')
+> isIDroot _           _         = False
+
+
+
+
+
+
+
+
+
 
 > -- concatenate two trees, neccessary if a pair is deleted
 > (+:+) :: Tree a -> Tree a -> Tree a
@@ -23,7 +75,6 @@
 
 
 
-> data TreeList a = El a | Ol a [TreeList a] | Pl a [TreeList a] [TreeList a] deriving (Eq, Show, Read)
 
 > -- applies depth first numbers to all nodes, i.e. nodes from the tree structure and alternatives
 > indexTreeList :: [TreeList a] -> Int -> [TreeList (a,Int)]
@@ -54,43 +105,9 @@
 > getTreeListLastIndex (Ol _ (x:xs)) = getTreeListLastIndex x
 > getTreeListLastIndex (Pl _ _ (y:ys)) = getTreeListLastIndex y
 
-> -- converts a Tree into a TreeList
-> tree2treelist :: Tree a -> [TreeList a]
-> tree2treelist (E i)     = [El i]
-> tree2treelist (O i x)   = [Ol i (tree2treelist x)]
-> tree2treelist (P i x y) = [Pl i (tree2treelist x) (tree2treelist y)]
 
-> -- checks if a Tree is contained inside of a TreeList
-> elemTree :: (Eq a) => Tree a -> [TreeList a] -> Bool
-> elemTree _         []               = False
-> elemTree (E i)     (El i':ts)       = (i == i') || elemTree (E i) ts
-> elemTree (E i)     (_    :ts)       = elemTree (E i) ts
-> elemTree (O i x)   (Ol i' x':ts)    = ((i == i') && (elemTree x x')) || elemTree (O i x) ts
-> elemTree (O i x)   (_       :ts)    = elemTree (O i x) ts
-> elemTree (P i x y) (Pl i' x' y':ts) = ((i == i') && (elemTree x x') && (elemTree y y')) || elemTree (P i x y) ts
-> elemTree (P i x y) (_          :ts) = elemTree (P i x y) ts
 
-> -- returns true if a root Node of a TreeList is of type a and has index i
-> isNodeNr :: (Eq a) => Char -> a -> TreeList a -> Bool
-> isNodeNr 'E' i (El a) = (i == a)
-> isNodeNr 'O' i (Ol a _) = (i == a)
-> isNodeNr 'P' i (Pl a _ _) = (i == a)
-> isNodeNr _ _ _ = False
 
-> fuseTreelists :: (Eq a) => [TreeList a] -> Tree a -> [TreeList a]
-> fuseTreelists ts (E i)     = if (elemTree (E i) ts) then ts else ts ++ [El i]
-> fuseTreelists [] (O i x)   = tree2treelist (O i x)
-> fuseTreelists ts (O i x)   = if (elemTree (O i x) ts) then ts else nonos ++ rest
->          where rest        = case os of
->                                   [] -> fuseTreelists [] (O i x)
->                                   [Ol i' x'] -> [Ol i (fuseTreelists x' x)]
->                (os, nonos) = partition (\x -> isNodeNr 'O' i x) ts
-> fuseTreelists [] (P i x y) = tree2treelist (P i x y)
-> fuseTreelists ts (P i x y) = if (elemTree (P i x y) ts) then ts else nonps ++ rest
->          where rest        = case ps of
->                                   [] -> fuseTreelists [] (P i x y)
->                                   [Pl i' x' y'] -> [Pl i (fuseTreelists x' x) (fuseTreelists y' y)]
->                (ps, nonps) = partition (\x -> isNodeNr 'P' i x) ts
 
 
 > type Consensus = (String, String)

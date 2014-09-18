@@ -150,6 +150,40 @@ sub doComputation {
 		foreach my $id (@consensiOrdering) { $concatConsensi .= "'".'("'.$id.'","'.$matchConsensi{$id}.'")'."' "; }
 		my $trainBuildCmd = buildCommand($settings, {header => undef, sequence => $concatConsensi}, 'trainbuild');
 		my $trainGAP = qx($trainBuildCmd); 
+
+#~ my $startSingle = 'false';
+#~ my $isUni = 'false';
+#~ my @singles = ();
+#~ my $uni = undef;
+#~ foreach my $line (split(m/\n/, $trainGAP)) {
+	#~ if (($startSingle eq 'false') && ($line =~ m/\(multiple\) covariance model for the following (\d+) consensus structure\(s\):/)) {
+		#~ $startSingle = 'true';
+		#~ next;
+	#~ } elsif ($startSingle eq 'true') {
+		#~ if ($line =~ m/^\s+(.+?):\s+([\<|\>|\-|\*|]+)\s+\(as tree: .(.+?).\)\s*$/) {
+			#~ push @singles, {name => $1, structure => $2, tree => $3};
+			#~ next;
+		#~ } elsif ($line =~ m/forming the unifying tree:/) {
+			#~ $startSingle = 'false';
+			#~ $isUni = 'true';
+			#~ next;
+		#~ }
+	#~ }
+	#~ if ($isUni eq 'true') {
+		#~ ($uni) = ($line =~ m/^\s+(.+?)\s*$/);
+		#~ last;
+	#~ }
+#~ }
+#~ print $uni."\n";
+#~ foreach my $con (@singles) {
+	#~ print $con->{name}."\t".$con->{structure}."\t".$con->{tree}."\n";
+#~ }
+#~ die;
+#~ print Dumper \@singles, $uni; die;
+
+#~ print  $trainGAP; 
+#~ print Dumper $trainGAP;
+#~ die;		
 		Utils::qxDieMessage($trainBuildCmd, $?);
 		my %nodeLists = ();
 		my %trees = ();
@@ -166,7 +200,7 @@ sub doComputation {
 			open (OUT, "> ".$gapfilename) || die "cannot write gap source code to '$gapfilename': $!";
 				print OUT $trainGAP;
 			close (OUT);
-			my $cmd = "cd $tmpDir && $Settings::BINARIES{gapc} --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc && $Settings::BINARIES{make} -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/\" && rm -f string.*";
+			my $cmd = "cd $tmpDir && ln -s ".Utils::absFilename(getPath($0))."/Include/isntimes.hh . && $Settings::BINARIES{gapc} --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc && $Settings::BINARIES{make} -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/\" && rm -f string.*";
 			qx($cmd);
 			Utils::qxDieMessage($cmd, $?);
 			print STDERR " done.\n" if ($VERBOSE);
@@ -262,6 +296,7 @@ sub doComputation {
 			my $cmd = "$buildBinary $concatConsensi";
 			my $buildGAP = qx($cmd);
 			Utils::qxDieMessage($cmd, $?);
+#~ print Dumper $buildGAP; die;			
 			my $targetGapFile = $outputFile.'.gap';
 			open (OUT, "> ".$targetGapFile) || die "cannot write gap source code to '".$targetGapFile."': $!";
 				print OUT $buildGAP;
