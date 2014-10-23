@@ -117,3 +117,5 @@ instance testdbshape5mfe   = gra_overdangle(alg_dotBracket * alg_shapeX * alg_mf
 instance testshape4mfepfdb   = gra_overdangle(alg_shapeX * (alg_mfe_overdangle % alg_pfunc_overdangle) * alg_dotBracket);
 instance testsampleshape2mfedb   = gra_overdangle( ( (alg_pfunc_overdangle | alg_pfunc_id_overdangle ) * (alg_shapeX * alg_mfe_overdangle * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
 //stop: instances for unit tests
+
+instance mfeExp = gra_overdangle(((alg_mfe_id_overdangle * alg_expSHAPE_id) * (alg_dotBracket * alg_shapeX)) suchthat pareto);
