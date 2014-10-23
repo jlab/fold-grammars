@@ -94,6 +94,11 @@ $REFERENCES{'mcc:1990'} = {
 	authors => "John S McCaskill.",
 	title => "The Equilibrium Partition Function and Base Pair Binding Probabilities for RNA Secondary Structure.",
 	journal => "Biopolymers, 1990."};
+$REFERENCES{'jan:gie:2014'} = {
+	authors => "Stefan Janssen, Robert Giegerich.",
+	title => "The RNA shapes studio.",
+	journal => "Bioinformatics 2014.",
+	doi => "10.1093/bioinformatics/btu649"};
 
 
 our @ORDER = ();

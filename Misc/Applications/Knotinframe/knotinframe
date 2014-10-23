@@ -22,7 +22,7 @@ use foldGrammars::IO;
 use POSIX 'isatty';
 
 our @ALLMODES = ($Settings::MODE_KIF);
-@References::ORDER = ('lor:ber:sie:taf:fla:sta:hof:2011','the:jan:gie:2010','tur:mat:2009','mat:dis:chi:schroe:zuk:tur:2004','the:ree:gie:2008');
+@References::ORDER = ('lor:ber:sie:taf:fla:sta:hof:2011','the:jan:gie:2010','tur:mat:2009','mat:dis:chi:schroe:zuk:tur:2004','the:ree:gie:2008','jan:gie:2014');
 
 my %PARAM;
 
@@ -439,12 +439,12 @@ EOF
 	}
 	
 	$HELP .= "REFERENCES:\n";
-	foreach my $refID (@References::ORDER) {
+	foreach my $refID ('lor:ber:sie:taf:fla:sta:hof:2011','the:jan:gie:2010','tur:mat:2009','mat:dis:chi:schroe:zuk:tur:2004','the:ree:gie:2008') {
 		last if ($refID eq $References::ORDER[$#References::ORDER]);
 		$HELP .= References::printReference($refID);
 	}
 	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
-	foreach my $refID ('the:ree:gie:2008') {
+	foreach my $refID ('jan:gie:2014') {
 		$HELP .= References::printReference($refID);
 	}
 

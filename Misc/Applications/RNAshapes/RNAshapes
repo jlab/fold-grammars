@@ -22,7 +22,7 @@ use foldGrammars::IO;
 use POSIX 'isatty';
 
 our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_OUTSIDE, $Settings::MODE_MEA);
-@References::ORDER = ('lor:ber:sie:taf:fla:sta:hof:2011','gru:lor:ber:neu:hof:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','ree:gie:2005','ste:voss:reh:ree:gie:2006','mcc:1990','gie:voss:reh:2004');
+@References::ORDER = ('lor:ber:sie:taf:fla:sta:hof:2011','gru:lor:ber:neu:hof:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','ree:gie:2005','ste:voss:reh:ree:gie:2006','mcc:1990','gie:voss:reh:2004','jan:gie:2014');
 
 our $GRAMMAR_NODANGLE = 'nodangle';
 our $GRAMMAR_OVERDANGLE = 'overdangle';
@@ -328,11 +328,11 @@ EOF
 	}
 	
 	$HELP .= "REFERENCES:\n";
-	foreach my $refID ('lor:ber:sie:taf:fla:sta:hof:2011','gru:lor:ber:neu:hof:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','ree:gie:2005','ste:voss:reh:ree:gie:2006','mcc:1990') {
+	foreach my $refID ('lor:ber:sie:taf:fla:sta:hof:2011','gru:lor:ber:neu:hof:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','ree:gie:2005','ste:voss:reh:ree:gie:2006','mcc:1990','gie:voss:reh:2004') {
 		$HELP .= References::printReference($refID);
 	}
 	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
-	foreach my $refID ('gie:voss:reh:2004') {
+	foreach my $refID ('jan:gie:2014') {
 		$HELP .= References::printReference($refID);
 	}
 

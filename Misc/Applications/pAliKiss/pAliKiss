@@ -23,7 +23,7 @@ use POSIX 'isatty';
 $IO::SUB_BUILDCOMMAND = \&buildCommand;
 
 our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT);
-@References::ORDER = ('hof:fek:sta:2002','ber:hof:wil:gru:sta:2008','jan:schud:ste:gie:2011','the:ree:gie:2008','jan:gie:2010','voss:gie:reh:2006','mat:dis:chi:schroe:zuk:tur:2004','was:hof:sta:2004','tur:mat:2009','ree:gie:2005','the:jan:gie:2010');
+@References::ORDER = ('hof:fek:sta:2002','ber:hof:wil:gru:sta:2008','jan:schud:ste:gie:2011','the:ree:gie:2008','jan:gie:2010','voss:gie:reh:2006','mat:dis:chi:schroe:zuk:tur:2004','was:hof:sta:2004','tur:mat:2009','ree:gie:2005','the:jan:gie:2010','jan:gie:2014');
 
 my %PARAM;
 $PARAM{mode} = {modes => \@ALLMODES, key => 'mode', type => 's', default => $Settings::MODE_SUBOPT, info => "Select the computation mode. Available modes are \"".join('", "', @ALLMODES)."\". Omit the ticks on input.\nDefault is \"@(DEFAULT)\"."};
@@ -326,11 +326,11 @@ EOF
 	}
 
 	$HELP .= "REFERENCES:\n";
-	foreach my $refID ('jan:schud:ste:gie:2011','the:ree:gie:2008','jan:gie:2010','voss:gie:reh:2006','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','ree:gie:2005') {
+	foreach my $refID ('jan:schud:ste:gie:2011','the:ree:gie:2008','jan:gie:2010','voss:gie:reh:2006','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','ree:gie:2005','the:jan:gie:2010') {
 		$HELP .= References::printReference($refID);
 	}
 	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
-	foreach my $refID ('the:jan:gie:2010') {
+	foreach my $refID ('jan:gie:2014') {
 		$HELP .= References::printReference($refID);
 	}
 

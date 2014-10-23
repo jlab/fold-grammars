@@ -6,17 +6,17 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'rnashapes', 				{date => '07.05.2014', version => '3.2.1', name => 'RNAshapes', packageDir => 'RNAshapes/'},
-	'rnaalishapes', 		{date => '16.05.2014', version => '2.4.3', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
-	'pkiss', 						{date => '07.05.2014', version => '2.2.9', name => 'pKiss', packageDir => 'pKiss/'},
-	'palikiss',					{date => '16.05.2014', version => '1.0.4', name => 'pAliKiss', packageDir => 'pAliKiss/'},
-	'libfoldgrammars', 	{date => '07.05.2014', version => '1.1.3', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
+	'rnashapes', 				{date => '23.10.2014', version => '3.2.2', name => 'RNAshapes', packageDir => 'RNAshapes/'},
+	'rnaalishapes', 			{date => '23.10.2014', version => '2.4.4', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
+	'pkiss', 						{date => '23.10.2014', version => '2.2.10', name => 'pKiss', packageDir => 'pKiss/'},
+	'palikiss',					{date => '23.10.2014', version => '1.0.5', name => 'pAliKiss', packageDir => 'pAliKiss/'},
+	'libfoldgrammars', 	{date => '23.10.2014', version => '1.1.4', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
 	'rapidshapes', 			{date => '07.05.2014', version => '2.0.8', name => 'RapidShapes', packageDir => 'RapidShapes/'},
-	'knotinframe', 			{date => '07.05.2014', version => '2.0.5', name => 'knotinframe', packageDir => 'Knotinframe/'},
+	'knotinframe', 			{date => '23.10.2014', version => '2.0.6', name => 'knotinframe', packageDir => 'Knotinframe/'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
 	'getoutsidetruth', 	{date => '19.04.2013', version => '1.0.0', name => 'getOutsideTruth'},
-	'acms',						{date => '07.05.2014', version => '1.0.4', name => 'acms', packageDir => 'aCMs/'},
-	'acmbuild', 				{date => '28.03.2014', version => '1.0.3', name => 'acmbuild'},
+	'acms',							{date => '07.05.2014', version => '1.0.4', name => 'acms', packageDir => 'aCMs/'},
+	'acmbuild', 					{date => '28.03.2014', version => '1.0.3', name => 'acmbuild'},
 	'acmsearch', 				{date => '28.03.2014', version => '1.0.3', name => 'acmsearch'},
 );
 
