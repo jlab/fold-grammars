@@ -3,7 +3,7 @@ Section: devel
 Priority: extra
 Maintainer: Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>
 Build-Depends: debhelper (>= 7), make (>= 3.81), bellmansgapc (>= 2014.04.10), perl (>= 5.10.1), g++ (>= 4:4.3.1), libfoldgrammars (>= 1.1.2)
-Standards-Version: 3.9.1
+Standards-Version: 3.9.5
 Homepage: http://bibiserv.cebitec.uni-bielefeld.de/palikiss
 
 Package: palikiss

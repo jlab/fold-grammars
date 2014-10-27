@@ -1,3 +1,27 @@
+palikiss (1.0.5-0ubuntu1~utopic1) utopic; urgency=medium
+
+  * Updated the default reference for citation.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 27 Oct 2014 12:19:29 +0100
+
+palikiss (1.0.5-0ubuntu1~trusty1) trusty; urgency=medium
+
+  * Updated the default reference for citation.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 27 Oct 2014 12:19:22 +0100
+
+palikiss (1.0.5-0ubuntu1~precise1) precise; urgency=medium
+
+  * Updated the default reference for citation.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 27 Oct 2014 12:19:16 +0100
+
+palikiss (1.0.5-0ubuntu1~lucid1) lucid; urgency=medium
+
+  * Updated the default reference for citation.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Mon, 27 Oct 2014 12:19:00 +0100
+
 palikiss (1.0.4-0ubuntu1~trusty1) trusty; urgency=low
 
   * bugfix: abstract mode now reads input from file
