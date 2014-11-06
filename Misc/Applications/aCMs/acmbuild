@@ -149,7 +149,7 @@ sub doComputation {
 		my $concatConsensi;
 		foreach my $id (@consensiOrdering) { $concatConsensi .= "'".'("'.$id.'","'.$matchConsensi{$id}.'")'."' "; }
 		my $trainBuildCmd = buildCommand($settings, {header => undef, sequence => $concatConsensi}, 'trainbuild');
-		my $trainGAP = qx($trainBuildCmd); 
+		my $trainGAP = qx($trainBuildCmd 2>&1); 
 
 #~ my $startSingle = 'false';
 #~ my $isUni = 'false';
@@ -183,7 +183,11 @@ sub doComputation {
 
 #~ print  $trainGAP; 
 #~ print Dumper $trainGAP;
-#~ die;		
+#~ die;
+		if ($trainGAP =~ m/(Structurs '.+?' and '.+?', which you provided in the input alignment file, are incompatible to each other. Please correct them and try again.)/) {
+			print STDERR "\n$1\n";
+			exit 1;
+		}
 		Utils::qxDieMessage($trainBuildCmd, $?);
 		my %nodeLists = ();
 		my %trees = ();
@@ -296,7 +300,6 @@ sub doComputation {
 			my $cmd = "$buildBinary $concatConsensi";
 			my $buildGAP = qx($cmd);
 			Utils::qxDieMessage($cmd, $?);
-#~ print Dumper $buildGAP; die;			
 			my $targetGapFile = $outputFile.'.gap';
 			open (OUT, "> ".$targetGapFile) || die "cannot write gap source code to '".$targetGapFile."': $!";
 				print OUT $buildGAP;

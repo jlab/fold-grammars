@@ -182,3 +182,21 @@ Bind input:
 > empti  (i,j) =  [i | i == j]
 > charp'           ::  Eq a => Array Int a -> a -> Parser Int
 > charp' z c (i,j) =  [j | i+1 == j, z!j == c]
+
+> -- given a list of n elements, the function getPairs returns a list of all (n over 2) pairs of elements
+> getPairs :: [a] -> [(a,a)]
+> getPairs [] = []
+> getPairs [x] = []
+> getPairs (x:xs) = [(x,y) | y <- xs] ++ getPairs xs
+
+
+
+> checkCompatibility structures = warning
+>    where warning = if (length namesIncPairs > 0) then
+>                       error ("Structurs '"++(fst (head namesIncPairs))++"' and '"++(snd (head namesIncPairs))++"', which you provided in the input alignment file, are incompatible to each other. Please correct them and try again.")
+>                    else
+>                       ""
+>          namesIncPairs = map (\(((a,_),(b,_)),_) -> (a,b)) incompatiblePairs     -- reduce information of an invalid pair to the pair of its structure names
+>          incompatiblePairs = filter (\(_,c) -> c == []) (zip pairs checkResults) -- filter out all pairs of structures, where the parsing results in no valid candidates
+>          checkResults = map (grammar count) pairs                                -- check if a pair of structures is compatible as the result of parsing both structures with "grammar" and count the number of valid candidates. Do this for all pairs via map.
+>          pairs = getPairs structures                                             -- create all n over 2 possible pairs of structures
