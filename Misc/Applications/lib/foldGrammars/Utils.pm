@@ -727,4 +727,43 @@ sub hsv2rgb {
 	return [sprintf("%i",($Rprime)*255), sprintf("%i",($Gprime)*255), sprintf("%i",($Bprime)*255)];
 }
 
+sub rgb2hsv {
+	use POSIX "fmod";
+	use POSIX qw/floor/;
+	use List::Util qw[min max];
+	
+	#http://de.wikipedia.org/wiki/HSV-Farbraum#Umrechnung_HSV_in_RGB
+	my ($r, $g, $b) = @_;
+	
+	die "Utils::rgb2hsv: 0 <= \$r <= 1 not satisfied\n" if ($r < 0 || $r > 1);
+	die "Utils::rgb2hsv: 0 <= \$g <= 1 not satisfied\n" if ($g < 0 || $g > 1);
+	die "Utils::rgb2hsv: 0 <= \$b <= 1 not satisfied\n" if ($b < 0 || $b > 1);
+	
+	my $max = max($r, $g, $b);
+	my $min = min($r, $g, $b);
+	
+	my $H = undef;
+	if (($max == $min) || (($r == $g) && ($g == $b))) {
+		$H = 0;
+	} elsif ($max == $r) {
+		$H = 60 * (0 + ($g-$b)/($max-$min));
+	} elsif ($max == $g) {
+		$H = 60 * (2 + ($b-$r)/($max-$min));
+	} elsif ($max == $b) {
+		$H = 60 * (4 + ($r-$g)/($max-$min));
+	}
+	$H = $H + 360 if ($H < 0);
+	
+	my $S = undef;
+	if (($max == 0) || (($r == $g) && ($g == $b) && ($b == 0))) {
+		$S = 0;
+	} else {
+		$S = ($max-$min)/$max;
+	}
+	
+	my $V = $max;
+	
+	return [sprintf("%i",$H), $S, $V];
+}
+
 1;
