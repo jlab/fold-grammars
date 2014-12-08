@@ -5,6 +5,7 @@ import "Extensions/probabilities.hh"
 import "Extensions/typesRNAfolding.hh"
 import "Extensions/shapes.hh"
 import "Extensions/mea.hh"
+import "Extensions/probing.hh"
 
 input rna
 
@@ -44,7 +45,21 @@ algebra alg_ali_mfe_subopt_overdangle extends alg_ali_mfe_overdangle {
     return mfeSuboptAli(i);
   }
 }
-
+include "Algebras/MFE/alg_ali_puremfe.gap"
+algebra alg_ali_puremfe_overdangle extends alg_ali_puremfe {
+  int drem(Subsequence lb, int x, Subsequence rb) {
+	return x + ((termau_energy(lb, rb) + ext_mismatch_energy(lb, rb)) / float(rows(lb)));
+  }
+  int ml(Subsequence lb, int x, Subsequence rb) {
+	return x + ml_energy() + ul_energy() + ((termau_energy(lb, rb) + ml_mismatch_energy(lb, rb)) / float(rows(lb)));
+  }
+}
+algebra alg_ali_puremfe_id_overdangle extends alg_ali_puremfe_overdangle {
+  choice [int] h([int] i) {
+    return i;
+  }
+}
+include "Algebras/MFE/alg_ali_purecovar.gap"
 
 include "Algebras/Pfunc/alg_ali_pfunc.gap"
 algebra alg_ali_pfunc_overdangle extends alg_ali_pfunc {
