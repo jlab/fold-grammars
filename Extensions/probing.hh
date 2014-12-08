@@ -166,9 +166,9 @@ inline double getSHAPEscore(const TUSubsequence &leftBase) {
 		    	double reactivity = atof(strtok(NULL, " \t"));
 
 		    //START as done in RNAstructure
-		    	std::cerr << reactivity << " -> ";
+		    	//~ std::cerr << reactivity << " -> ";
 		    	reactivity = CalculatePseudoEnergy(reactivity,modifier,slope,intercept);
-		    	std::cerr << reactivity << "\n";
+		    	//~ std::cerr << reactivity << "\n";
 		    	probingData.push_back(reactivity);
 			//END as done in RNAstructure
 		    }
@@ -181,23 +181,44 @@ inline double getSHAPEscore(const TUSubsequence &leftBase) {
 			std::cerr << "Warning: chemical probing data file '" << getProbingDataFilename() << "' contains " << (probingData.size()-leftBase.seq->n) << " more row(s) " << std::endl << "         than there are nucleotides in your input sequence." << std::endl << "         Exceeding data lines will be ignored!" << std::endl;
 		}
 
-		//normalize shape data to probabilities: x < 0 ==> x = 0
-			//~ double max = 0;
-			//~ for(std::vector<double>::iterator it = probingData.begin(); it != probingData.end(); it++) {
-				//~ if (max < *it) max = *it;
-				//~ if (*it < 0) *it = 0;
-			//~ }
-			//~ if (max > 0) {
-				//~ for(std::vector<double>::iterator it = probingData.begin(); it != probingData.end(); it++) {
-					//~ *it = *it / max;
-				//~ }
-			//~ }
+		isLoaded = true;
+	}
 
-		//convert values with Mathews formula: deltaG_shape(i) = 2.6 * ln(value(i) + 1) + -0.8
-			//~ for(std::vector<double>::iterator it = probingData.begin(); it != probingData.end(); it++) {
-				//~ if (*it < 0.0) *it = 0.0;
-				//~ *it = 2.6 * log(*it + 1) -0.8;
-			//~ }
+	double score = 0.0;
+	for (unsigned int i = leftBase.i; i < leftBase.j && i < probingData.size(); i++) {
+		score += probingData.at(i);
+	}
+
+	return score;
+}
+
+inline double getSHAPEscore_plain(const TUSubsequence &leftBase) {
+	static bool isLoaded = false;
+	static std::vector<double> probingData;
+
+	if (!isLoaded) {
+		std::string line;
+		std::ifstream infile (getProbingDataFilename());
+		if (infile.is_open()) {
+		    while (getline (infile,line)) {
+				char *thisLine = strdup(line.c_str());
+			//we expect each line to hold the base position (starting with 1) and the reactivity.
+		    	strtok(thisLine, " \t");
+		    	double reactivity = atof(strtok(NULL, " \t"));
+				if (reactivity+1.0 < 0) {
+					probingData.push_back(0.0);
+				} else {
+					probingData.push_back(log(reactivity+1.0));
+				}
+		    }
+		    infile.close();
+		}
+		if (probingData.size() < (leftBase.seq->n)) {
+			std::cerr << "Warning: chemical probing data file '" << getProbingDataFilename() << "' misses " << (leftBase.seq->n - probingData.size()) << " data-row(s) " << std::endl << "         compared to the number of nucleotides in your input sequence." << std::endl << "         Missing values will be set to 0.0!" << std::endl;
+		}
+		if (probingData.size() > (leftBase.seq->n)) {
+			std::cerr << "Warning: chemical probing data file '" << getProbingDataFilename() << "' contains " << (probingData.size()-leftBase.seq->n) << " more row(s) " << std::endl << "         than there are nucleotides in your input sequence." << std::endl << "         Exceeding data lines will be ignored!" << std::endl;
+		}
 
 		isLoaded = true;
 	}
@@ -209,6 +230,53 @@ inline double getSHAPEscore(const TUSubsequence &leftBase) {
 
 	return score;
 }
+
+inline double getSHAPEscore_normalized(const TUSubsequence &leftBase) {
+	static bool isLoaded = false;
+	static std::vector<double> probingData;
+
+	if (!isLoaded) {
+		std::string line;
+		std::ifstream infile (getProbingDataFilename());
+		if (infile.is_open()) {
+		    while (getline (infile,line)) {
+				char *thisLine = strdup(line.c_str());
+			//we expect each line to hold the base position (starting with 1) and the reactivity.
+		    	strtok(thisLine, " \t");
+		    	double reactivity = atof(strtok(NULL, " \t"));
+				probingData.push_back(reactivity);
+		    }
+		    infile.close();
+		}
+		if (probingData.size() < (leftBase.seq->n)) {
+			std::cerr << "Warning: chemical probing data file '" << getProbingDataFilename() << "' misses " << (leftBase.seq->n - probingData.size()) << " data-row(s) " << std::endl << "         compared to the number of nucleotides in your input sequence." << std::endl << "         Missing values will be set to 0.0!" << std::endl;
+		}
+		if (probingData.size() > (leftBase.seq->n)) {
+			std::cerr << "Warning: chemical probing data file '" << getProbingDataFilename() << "' contains " << (probingData.size()-leftBase.seq->n) << " more row(s) " << std::endl << "         than there are nucleotides in your input sequence." << std::endl << "         Exceeding data lines will be ignored!" << std::endl;
+		}
+
+		double max = 0;
+		for(std::vector<double>::iterator it = probingData.begin(); it != probingData.end(); it++) {
+			if (max < *it) max = *it;
+			if (*it < 0) *it = 0;
+		}
+		if (max > 0) {
+			for(std::vector<double>::iterator it = probingData.begin(); it != probingData.end(); it++) {
+				*it = ((int) ((*it / max) * 10)) / 10.0;
+			}
+		}
+
+		isLoaded = true;
+	}
+
+	double score = 0.0;
+	for (unsigned int i = leftBase.i; i < leftBase.j && i < probingData.size(); i++) {
+		score += probingData.at(i);
+	}
+
+	return score;
+}
+
 
 template<typename SORT_A, typename SORT_B>
 inline SORT_A getFirstDimension(std::pair<SORT_A, SORT_B> &candidate) {

@@ -1,54 +1,54 @@
 algebra alg_expSHAPE implements sig_foldrna(alphabet = char, answer = double) {
   double sadd(Subsequence lb, double x) {
-    return x + getSHAPEscore(lb);
+    return x + getSHAPEscore_normalized(lb);
   }
   double cadd(double x, double y) {
     return x + y;
   }
   double edl(Subsequence ldangle, double x, Subsequence rb) {
-    return x + getSHAPEscore(ldangle);
+    return x + getSHAPEscore_normalized(ldangle);
   }
   double edr(Subsequence lb, double x, Subsequence rdangle) {
-    return x + getSHAPEscore(rdangle);
+    return x + getSHAPEscore_normalized(rdangle);
   }
   double edlr(Subsequence ldangle, double x, Subsequence rdangle) {
-    return x + getSHAPEscore(ldangle) + getSHAPEscore(rdangle);
+    return x + getSHAPEscore_normalized(ldangle) + getSHAPEscore_normalized(rdangle);
   }
   double drem(Subsequence lb, double x, Subsequence rb) {
     return x;
   }
   double sr(Subsequence lb, double x, Subsequence rb) {
-    return x - getSHAPEscore(lb) - getSHAPEscore(rb);// + getBPprob(lb,rb);
+    return x - getSHAPEscore_normalized(lb) - getSHAPEscore_normalized(rb);
   }
   double hl(Subsequence lb, Subsequence r, Subsequence rb) {
-    return 0 - getSHAPEscore(lb) + getSHAPEscore(r) - getSHAPEscore(rb); //getBPprob(lb,rb);
+    return 0 - getSHAPEscore_normalized(lb) + getSHAPEscore_normalized(r) - getSHAPEscore_normalized(rb);
   }
   double bl(Subsequence lb, Subsequence lr, double x, Subsequence rb) {
-    return x - getSHAPEscore(lb) + getSHAPEscore(lr) - getSHAPEscore(rb); // + getBPprob(lb,rb);
+    return x - getSHAPEscore_normalized(lb) + getSHAPEscore_normalized(lr) - getSHAPEscore_normalized(rb);
   }
   double br(Subsequence lb, double x, Subsequence rr, Subsequence rb) {
-    return x - getSHAPEscore(lb) + getSHAPEscore(rr) - getSHAPEscore(rb); // + getBPprob(lb,rb);
+    return x - getSHAPEscore_normalized(lb) + getSHAPEscore_normalized(rr) - getSHAPEscore_normalized(rb);
   }
   double il(Subsequence lb, Subsequence lr, double x, Subsequence rr, Subsequence rb) {
-    return x - getSHAPEscore(lb) + getSHAPEscore(lr) + getSHAPEscore(rr) - getSHAPEscore(rb); // + getBPprob(lb,rb);
+    return x - getSHAPEscore_normalized(lb) + getSHAPEscore_normalized(lr) + getSHAPEscore_normalized(rr) - getSHAPEscore_normalized(rb);
   }
   double mldl(Subsequence lb, Subsequence dl, double x, Subsequence rb) {
-    return x - getSHAPEscore(lb) + getSHAPEscore(dl) - getSHAPEscore(rb); // + getBPprob(lb,rb);
+    return x - getSHAPEscore_normalized(lb) + getSHAPEscore_normalized(dl) - getSHAPEscore_normalized(rb);
   }
   double mldr(Subsequence lb, double x, Subsequence dr, Subsequence rb) {
-    return x - getSHAPEscore(lb) + getSHAPEscore(dr) - getSHAPEscore(rb); // + getBPprob(lb,rb);
+    return x - getSHAPEscore_normalized(lb) + getSHAPEscore_normalized(dr) - getSHAPEscore_normalized(rb);
   }
   double mldlr(Subsequence lb, Subsequence dl, double x, Subsequence dr, Subsequence rb) {
-	return x - getSHAPEscore(lb) + getSHAPEscore(dl) + getSHAPEscore(dr) - getSHAPEscore(rb); // + getBPprob(lb,rb);
+	return x - getSHAPEscore_normalized(lb) + getSHAPEscore_normalized(dl) + getSHAPEscore_normalized(dr) - getSHAPEscore_normalized(rb);
   }
   double ml(Subsequence lb, double x, Subsequence rb) {
-    return x - getSHAPEscore(lb) - getSHAPEscore(rb); // + getBPprob(lb,rb);
+    return x - getSHAPEscore_normalized(lb) - getSHAPEscore_normalized(rb);
   }
   double incl(double x) {
     return x;
   }
   double addss(double x, Subsequence r) {
-    return x + getSHAPEscore(r);
+    return x + getSHAPEscore_normalized(r);
   }
   double nil(Subsequence n) {
     return 0.0;

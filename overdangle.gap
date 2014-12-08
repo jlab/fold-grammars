@@ -38,8 +38,23 @@ algebra alg_mfe_id_overdangle extends alg_mfe_overdangle {
     return i;
   }
 }
+include "Algebras/MFE/alg_mfe_SHAPE.gap"
+algebra alg_mfe_SHAPE_overdangle extends alg_mfe_SHAPE {
+  int drem(Subsequence lb, int x, Subsequence rb) {
+    return x + termau_energy(lb, rb) + ext_mismatch_energy(lb, rb);
+  }
+  int ml(Subsequence lb, int x, Subsequence rb) {
+    return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
+  }
+}
+algebra alg_mfe_SHAPE_subopt_overdangle extends alg_mfe_SHAPE_overdangle {
+  kscoring choice [int] h([int] i) {
+    return mfeSubopt(i);
+  }
+}
 
 include "Algebras/MEA/alg_mea.gap"
+include "Algebras/alg_SHAPE.gap"
 include "Algebras/alg_expSHAPE.gap"
 
 include "Algebras/Pfunc/alg_pfunc.gap"
@@ -118,4 +133,3 @@ instance testshape4mfepfdb   = gra_overdangle(alg_shapeX * (alg_mfe_overdangle %
 instance testsampleshape2mfedb   = gra_overdangle( ( (alg_pfunc_overdangle | alg_pfunc_id_overdangle ) * (alg_shapeX * alg_mfe_overdangle * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
 //stop: instances for unit tests
 
-instance mfeExp = gra_overdangle(((alg_mfe_id_overdangle * alg_expSHAPE_id) * (alg_dotBracket * alg_shapeX)) suchthat pareto);

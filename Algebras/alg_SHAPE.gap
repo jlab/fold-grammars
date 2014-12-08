@@ -85,3 +85,15 @@ algebra alg_SHAPE_id extends alg_SHAPE {
     return i;
   }
 }
+
+algebra alg_SHAPEplain_id extends alg_SHAPE_id {
+  double sr(Subsequence lb, double x, Subsequence rb) {
+	Subsequence innerlb = lb;
+	innerlb.i = lb.i+1;
+	innerlb.j = lb.j+1;
+	Subsequence innerrb = rb;
+	innerrb.i = rb.i-1;
+	innerrb.j = rb.j-1;
+    return x + getSHAPEscore_plain(lb) + getSHAPEscore_plain(rb) + getSHAPEscore_plain(innerlb) + getSHAPEscore_plain(innerrb);
+  }	
+}
