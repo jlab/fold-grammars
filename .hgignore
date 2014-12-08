@@ -21,3 +21,4 @@ Misc/Analyses/Outside/OLD/*
 Misc/Analyses/Outside/bin/*
 Misc/Analyses/Testinputs/Outside/Runtime/*
 Misc/Analyses/Testinputs/Outside/Correctness/*
+Misc/Analyses/Pareto/stefansRMDBextract.fasta_CLUSTER/*
