@@ -59,7 +59,7 @@ algebra alg_ali_puremfe_id_overdangle extends alg_ali_puremfe_overdangle {
     return i;
   }
 }
-include "Algebras/MFE/alg_ali_purecovar.gap"
+include "Algebras/alg_ali_purecovar.gap"
 
 include "Algebras/Pfunc/alg_ali_pfunc.gap"
 algebra alg_ali_pfunc_overdangle extends alg_ali_pfunc {
