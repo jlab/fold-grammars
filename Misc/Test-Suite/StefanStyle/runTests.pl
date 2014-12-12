@@ -94,7 +94,7 @@ sub checkProgram {
 	}
 	
 	print " done.\n";
-	Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
+	$testIndex = Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
 }
 
 sub checkBasicFunctions {
@@ -131,7 +131,7 @@ sub checkBasicFunctions {
 	}
 	
 	print " done.\n";
-	Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
+	$testIndex = Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
 }
 
 sub checkParameters {
@@ -173,7 +173,7 @@ sub checkParameters {
 	}
 	print " done.\n";
 	
-	Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
+	$testIndex = Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
 }
 
 sub checkPseudoknotMFEPP {
@@ -188,7 +188,7 @@ sub checkPseudoknotMFEPP {
 	close (OUT);
 	print " done.\n";
 
-	Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
+	$testIndex = Testing::evaluateTest($testname, $truth, $TMPDIR, $testIndex, \@failedTests);
 }
 
 sub runProg {

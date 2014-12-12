@@ -259,6 +259,8 @@ sub evaluateTest {
 	}
 	
 	$testIndex++;
+	
+	return $testIndex;
 }
 
 sub printStatistics {
