@@ -6,8 +6,8 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'rnashapes', 				{date => '23.10.2014', version => '3.2.2', name => 'RNAshapes', packageDir => 'RNAshapes/'},
-	'rnaalishapes', 			{date => '23.10.2014', version => '2.4.4', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
+	'rnashapes', 				{date => '16.12.2014', version => '3.2.3', name => 'RNAshapes', packageDir => 'RNAshapes/'},
+	'rnaalishapes', 			{date => '16.12.2014', version => '2.4.5', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
 	'pkiss', 						{date => '23.10.2014', version => '2.2.10', name => 'pKiss', packageDir => 'pKiss/'},
 	'palikiss',					{date => '23.10.2014', version => '1.0.5', name => 'pAliKiss', packageDir => 'pAliKiss/'},
 	'libfoldgrammars', 	{date => '23.10.2014', version => '1.1.4', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
