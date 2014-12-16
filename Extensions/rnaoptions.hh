@@ -281,7 +281,8 @@ class Opts {
 					else
 						break;
 				}
-				delete[] input;
+				file.close();
+				*input = 0;
 			}
 				break;
 			case 'w':
@@ -427,8 +428,7 @@ class Opts {
 				throw OptException(message);
 			}
 		}
-		}
-
+	}
 
      //inline static Opts* getOpts();
      inline static Opts* getOpts() {
