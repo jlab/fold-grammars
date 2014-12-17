@@ -36,7 +36,7 @@ KSH="ksh"
 if [ -e $BASE/share/gapc/config$OSSUFFIX.mf ]; then
   CONFIG_MF=$BASE/share/gapc/config$OSSUFFIX.mf
 else
-  CONFIG_MF=$BASE/config/generic.mf
+  CONFIG_MF=$BASE/config.mf
 fi
 
 err_count=0
