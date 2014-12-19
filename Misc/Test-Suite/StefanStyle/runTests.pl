@@ -25,6 +25,9 @@ qx(mkdir $TMPDIR) unless (-d $TMPDIR);
 our $testIndex = 1;
 our @failedTests = ();
 
+my ($numCPUs) = @ARGV;
+$numCPUs = 1 if (not defined $numCPUs);
+
 #add your testest below this line!
 checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp pknotsRG",   "-s P -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pknotsRG.out");
 checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy A", "-s A -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissA.out");
@@ -50,7 +53,7 @@ sub compile {
 	qx(cp $sourcedir/makefile $TMPDIR);
 	$programName =~ s/Knotinframe/knotinframe/;
 	qx(cp $sourcedir/$programName $TMPDIR);
-	print qx(make -C $TMPDIR all BASEDIR=../../../../);
+	print qx(make -C $TMPDIR -j $numCPUs all BASEDIR=../../../../);
 }
 
 sub checkProgram {
@@ -216,7 +219,7 @@ sub compileMFE {
 			$makeWindowMode = 'window="yes" ';
 		}
 
-		qx(cd $TMPDIR && $Settings::BINARIES{make} $program $makeWindowMode BASEDIR=../../../../);
+		qx(cd $TMPDIR && $Settings::BINARIES{make} $program -j $numCPUs $makeWindowMode BASEDIR=../../../../);
 		print " done.\n";
 	}
 }
