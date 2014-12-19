@@ -11,15 +11,15 @@
 (-45.23 = -36.51 + -8.72)  (((((((................[[.....{{{{]].....}}}}[[....{{{{{]].....}}}}}))))))).  (sci:  0.595)
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=mfe --allowLP=1 --strategy=A --minHairpinLength=6 --cfactor=1 --sci=1 --maxKnotSize=40 --nfactor=0.9 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --consensus=consensus --ribosumscoring=1 --pairingFraction=-200 --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
-                         1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                        1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
 (-95.04 = -84.24 + -10.80)  ..............[[[[..{{{]]]]...}}}..[[.{{{{..]]...}}}}[[.......{{{{.]]..}}}}..................[[..{{]].....}}.............................................................  (sci:  0.532)
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=mfe --windowSize=40 --allowLP=0 --strategy=A --minHairpinLength=6 --cfactor=0.9 --sci=0 --nfactor=1 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --consensus=consensus --ribosumscoring=1 --pairingFraction=-200 --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
-                         1  uggugguggcccgcucaaccggcggccca______cugau  40
+                        1  uggugguggcccgcucaaccggcggccca______cugau  40
 (-42.60 = -31.84 + -10.76)  .[[[[[.{{{{{{{]]]]]..}}}}}}}............
 
-                        31  _____cugauugcgccuuuuug  52
-(  0.00 =   0.00 +   0.00)  ......................
+                       31  _____cugauugcgccuuuuug  52
+( 0.00 =   0.00 +   0.00)  ......................
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=mfe --windowSize=40 --allowLP=1 --strategy=B --minHairpinLength=2 --cfactor=1.1 --sci=0 --nfactor=1 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --consensus=mis --ribosumscoring=0 --pairingFraction=-150 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
                      1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGC  40
@@ -91,7 +91,7 @@
 (-20.45 = -18.46 +  -1.99)  ...[[..{{]].....}}.............................................................
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=subopt --allowLP=0 --strategy=B --minHairpinLength=4 --cfactor=0.9 --sci=0 --nfactor=1 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --consensus=mis --ribosumscoring=1 --pairingFraction=-200 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
-                         1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
+                        1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 (-57.12 = -45.32 + -11.80)  .[[.{{.[[[[[[[.....{{]]]]]]]........}}.]]...}}......
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=subopt --allowLP=1 --strategy=A --minHairpinLength=2 --cfactor=1.1 --sci=1 --nfactor=1.1 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --consensus=consensus --ribosumscoring=0 --pairingFraction=-150 --Kpenalty=-20 --Hpenalty=-12 --shapeLevel=5
@@ -149,7 +149,7 @@ Underlying Bellman's gapc binary call 'i386-pc-solaris2.10/i386-pc-solaris2.10/p
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=subopt --windowSize=100 --allowLP=0 --strategy=D --minHairpinLength=6 --cfactor=1 --sci=0 --maxKnotSize=40 --nfactor=0.9 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --consensus=consensus --ribosumscoring=0 --pairingFraction=-200 --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
                        1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
-(-27.30 = -27.52 + 0.22)  ...................................[[.....{{]]...}}.................................................
+(-27.29 = -27.52 + 0.23)  ...................................[[.....{{]]...}}.................................................
 (-27.26 = -27.48 + 0.22)  ...................................[[.....{{]]...}}.(((.....................................))).....
 (-27.19 = -27.47 + 0.28)  ...................................[[.....{{]]...}}((((.....................................))))....
 (-26.81 = -27.15 + 0.34)  ...................................[[....{{.]]...}}((((.....................................))))....
@@ -157,7 +157,7 @@ Underlying Bellman's gapc binary call 'i386-pc-solaris2.10/i386-pc-solaris2.10/p
 (-26.75 = -27.03 + 0.28)  ...................................[[....{{.]]...}}.(((.....................................))).....
 
                       21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg____________  120
-(-27.30 = -27.52 + 0.22)  ...............[[.....{{]]...}}.....................................................................
+(-27.29 = -27.52 + 0.23)  ...............[[.....{{]]...}}.....................................................................
 (-27.26 = -27.48 + 0.22)  ...............[[.....{{]]...}}.(((.....................................))).........................
 (-27.19 = -27.47 + 0.28)  ...............[[.....{{]]...}}((((.....................................))))........................
 (-26.81 = -27.15 + 0.34)  ...............[[....{{.]]...}}((((.....................................))))........................
@@ -196,7 +196,7 @@ Underlying Bellman's gapc binary call 'i386-pc-solaris2.10/i386-pc-solaris2.10/p
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=enforce --allowLP=0 --strategy=A --minHairpinLength=6 --cfactor=1.1 --sci=0 --maxKnotSize=40 --nfactor=0.9 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --consensus=mis --ribosumscoring=0 --pairingFraction=-300 --Kpenalty=-15 --Hpenalty=-12
                         1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 (-12.88 = -13.02 +  0.14)  .......(((.((((.....)))).)))........................  best 'nested structure'
-(-43.22 = -42.90 + -0.32)  .[[[[[.....{{{]]]]]..}}}[[..........{{...]].......}}  best 'H-type pseudoknot'
+(-43.23 = -42.91 + -0.32)  .[[[[[.....{{{]]]]]..}}}[[..........{{...]].......}}  best 'H-type pseudoknot'
                            no structure available                                best 'K-type pseudoknot'
                            no structure available                                best 'H- and K-type pseudoknot'
 
@@ -222,13 +222,13 @@ Underlying Bellman's gapc binary call 'i386-pc-solaris2.10/i386-pc-solaris2.10/p
 
                       21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu_  60
 ( -2.90 =  -3.07 + 0.17)  .....................((......)).........  (sci:  0.063)  best 'nested structure'
-(-20.84 = -21.06 + 0.22)  ...............[[.....{{]]...}}.........  (sci:  0.451)  best 'H-type pseudoknot'
+(-20.83 = -21.06 + 0.23)  ...............[[.....{{]]...}}.........  (sci:  0.451)  best 'H-type pseudoknot'
                           no structure available                    (sci: -0.000)  best 'K-type pseudoknot'
                           no structure available                    (sci: -0.000)  best 'H- and K-type pseudoknot'
 
                       31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg  70
 ( -2.90 =  -3.07 + 0.17)  ...........((......))...................  (sci:  0.060)  best 'nested structure'
-(-20.84 = -21.06 + 0.22)  .....[[.....{{]]...}}...................  (sci:  0.432)  best 'H-type pseudoknot'
+(-20.83 = -21.06 + 0.23)  .....[[.....{{]]...}}...................  (sci:  0.432)  best 'H-type pseudoknot'
                           no structure available                    (sci: -0.000)  best 'K-type pseudoknot'
                           no structure available                    (sci: -0.000)  best 'H- and K-type pseudoknot'
 
@@ -378,7 +378,7 @@ Underlying Bellman's gapc binary call 'i386-pc-solaris2.10/i386-pc-solaris2.10/p
 (-22.32 = -17.75 +  -4.57)  [[.{{.]]................}}  (sci:  0.884)
 
                         21  ggcggccca______cugauugcgc  45
-(-21.98 = -18.08 +  -3.90)  [[.{{{]]..............}}}  (sci:  0.901)
+(-21.99 = -18.09 +  -3.90)  [[.{{{]]..............}}}  (sci:  0.901)
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=local --windowSize=40 --allowLP=1 --strategy=C --minHairpinLength=6 --cfactor=1 --sci=1 --nfactor=1 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --consensus=consensus --ribosumscoring=0 --pairingFraction=-150 --Kpenalty=-20 --Hpenalty=-12
 === window: 1 to 40: ===
@@ -407,7 +407,7 @@ Underlying Bellman's gapc binary call 'i386-pc-solaris2.10/i386-pc-solaris2.10/p
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=local --windowSize=100 --allowLP=1 --strategy=A --minHairpinLength=4 --cfactor=1.1 --sci=0 --nfactor=1.1 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --consensus=consensus --ribosumscoring=1 --pairingFraction=-300 --Kpenalty=-20 --Hpenalty=-9
 === window: 1 to 52: ===
                          2  ggugguggcccgcucaaccggcggccca______cugauugcgcc  46
-(-51.73 = -37.54 + -14.19)  [[.{{.[[[[[[[.....{{]]]]]]]........}}.]]...}}
+(-51.74 = -37.55 + -14.19)  [[.{{.[[[[[[[.....{{]]]]]]]........}}.]]...}}
 (-51.63 = -37.00 + -14.63)  [[.{{.[[[[[[[.{{....]]]]]]]........}}.]]...}}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=shapes --allowLP=0 --strategy=P --minHairpinLength=4 --cfactor=1 --sci=0 --nfactor=1.1 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --consensus=mis --ribosumscoring=0 --pairingFraction=-150 --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
@@ -423,7 +423,7 @@ Underlying Bellman's gapc binary call 'i386-pc-solaris2.10/i386-pc-solaris2.10/p
 (-39.70 = -40.04 + 0.34)  ...................................[[.....{{]]...}}[[[.{{....................................]]]...}}....................................................................  (sci:  0.209)  [{]}[{]}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=shapes --allowLP=1 --strategy=A --minHairpinLength=2 --cfactor=1 --sci=0 --nfactor=0.9 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --consensus=consensus --ribosumscoring=1 --pairingFraction=-200 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                        1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
 (-87.80 = -67.97 + -19.83)  [[....{{.]]...}}...[[..{{.]]..<<<<}}.....>>>>......[[[[[..{{...]]]]]....}}..  [{]}[{]<}>[{]}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=shapes --windowSize=40 --allowLP=0 --strategy=A --minHairpinLength=6 --cfactor=0.9 --sci=0 --maxKnotSize=40 --nfactor=1.1 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --consensus=consensus --ribosumscoring=1 --pairingFraction=-300 --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
@@ -502,27 +502,27 @@ Underlying Bellman's gapc binary call 'i386-pc-solaris2.10/i386-pc-solaris2.10/p
 (-61.47 = -48.14 + -13.33)  .[[.{{.[[[[[[[.....{{]]]]]]]........}}.]]...}}......  1.00  [{[{]}]}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=probs --windowSize=40 --allowLP=0 --strategy=B --minHairpinLength=2 --probDecimals=2 --cfactor=0.9 --sci=1 --nfactor=0.9 --lowProbFilter=0.01 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --outputLowProbFilter=0 --temperature=37 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --consensus=mis --ribosumscoring=1 --pairingFraction=-300 --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
-                         1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSR  40
-(-42.01 = -35.54 +  -6.47)  [[.{{.[[.{{{{.]]..<<....}}}}..>>]]..}}..  (sci:  0.847)  0.54  [{[{]<}>]}
-(-41.79 = -37.46 +  -4.33)  [[....{{.]]...}}...[[..{{.]]......}}....  (sci:  0.843)  0.46  [{]}[{]}
+                        1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSR  40
+(-42.01 = -35.54 + -6.47)  [[.{{.[[.{{{{.]]..<<....}}}}..>>]]..}}..  (sci:  0.847)  0.54  [{[{]<}>]}
+(-41.79 = -37.46 + -4.33)  [[....{{.]]...}}...[[..{{.]]......}}....  (sci:  0.843)  0.46  [{]}[{]}
 
-                        11  YYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKu  50
-(-51.74 = -43.15 +  -8.59)  [[..{{..]]......}}..[[[[..{{...]]]]..}}.  (sci:  0.970)  1.00  [{]}[{]}
+                       11  YYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKu  50
+(-51.74 = -43.15 + -8.59)  [[..{{..]]......}}..[[[[..{{...]]]]..}}.  (sci:  0.970)  1.00  [{]}[{]}
 
-                        21  Y--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCG  60
-(-45.27 = -39.49 +  -5.78)  ...[[......{{{]].....}}}[[.{{]].....}}..  (sci:  0.864)  1.00  [{]}[{]}
+                       21  Y--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCG  60
+(-45.27 = -39.49 + -5.78)  ...[[......{{{]].....}}}[[.{{]].....}}..  (sci:  0.864)  1.00  [{]}[{]}
 
-                        31  CWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCG  70
+                       31  CWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCG  70
 (-60.51 = -47.61 + -12.90)  [[[[..{{...]]]]..}}[[.{{{{...]]..}}}}...  (sci:  1.103)  1.00  [{]}[{]}
 
-                        41  MSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
-(-39.86 = -33.72 +  -6.14)  ...[[....[[..{{{...]]..}}}{{]]...}}.  (sci:  0.882)  0.95  [[{]}{]}
-(-38.54 = -30.24 +  -8.30)  ...[[[[....{{{{{]]]]...}}}}}........  (sci:  0.853)  0.03  [{]}
-(-37.05 = -35.11 +  -1.94)  .[[......{{...]]...}}.[[..{{.]]..}}.  (sci:  0.820)  0.02  [{]}[{]}
+                       41  MSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
+(-39.86 = -33.72 + -6.14)  ...[[....[[..{{{...]]..}}}{{]]...}}.  (sci:  0.882)  0.95  [[{]}{]}
+(-38.54 = -30.24 + -8.30)  ...[[[[....{{{{{]]]]...}}}}}........  (sci:  0.853)  0.03  [{]}
+(-37.05 = -35.11 + -1.94)  .[[......{{...]]...}}.[[..{{.]]..}}.  (sci:  0.820)  0.02  [{]}[{]}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pAliKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=probs --windowSize=40 --allowLP=1 --strategy=P --minHairpinLength=6 --probDecimals=7 --cfactor=1 --sci=0 --maxKnotSize=40 --nfactor=1.1 --lowProbFilter=0.01 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --outputLowProbFilter=0.1 --temperature=37 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --consensus=consensus --ribosumscoring=0 --pairingFraction=-300 --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
                         1  uggugguggcccgcucaaccggcggccca______cugau  40
-(-27.67 = -28.11 +  0.44)  .[[.{{[[[..{{{]]]....}}}..]].......}}...  0.9657668  [{[{]}]}
+(-27.68 = -28.12 +  0.44)  .[[.{{[[[..{{{]]]....}}}..]].......}}...  0.9657668  [{[{]}]}
 
                        21  ggcggccca______cugauugcgccuuuuug  52
 (-12.05 = -12.00 + -0.05)  [[..{{.........]]....}}.........  1.0000000  [{]}

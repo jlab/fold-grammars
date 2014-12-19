@@ -10,7 +10,7 @@
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=mfe --allowLP=0 --strategy=D --minHairpinLength=4 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
-     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+    1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -52.50  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=mfe --allowLP=1 --strategy=B --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
@@ -42,7 +42,7 @@
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=mfe --windowSize=100 --allowLP=0 --strategy=B --minHairpinLength=2 --maxKnotSize=40 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -61.80  [[.[[[.{{{]]]...}}}{{.]]....}}[[[.{{.....]]]..}}..
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=mfe --windowSize=100 --allowLP=1 --strategy=D --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
@@ -79,7 +79,7 @@
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=subopt --allowLP=1 --strategy=C --minHairpinLength=2 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -81.00  [[[.[[.[[.{{]]..}}{{]]..}}{{{.]]]..}}}[[..{{]]..}}
 -81.00  [[[.[[.[[.{{]]..}}{{]]..}}{{{.]]]..}}}[[.{{.]]..}}
 -80.80  [[[.[[.[[.{{]]..}}{{]]..}}.{{.]]]..}}.[[..{{]]..}}
@@ -98,11 +98,11 @@
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=subopt --windowSize=40 --allowLP=1 --strategy=P --minHairpinLength=4 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
-     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGG  40
+    1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGG  40
 -38.10  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}.
 -37.60  [[.{{{{{]].[[..{{{....]]....}}}...}}}}}.
 
-    31  GUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+   31  GUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -40.30  .[[[....{{{]]]....}}}[[[.{{{.]]]..}}}..
 -39.50  .[[[....{{{]]]....}}}[[[..{{.]]]..}}...
 -39.40  .[[[....{{{]]]....}}}.[[.{{{.]]...}}}..
@@ -132,15 +132,15 @@
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=enforce --allowLP=1 --strategy=P --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-15 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
-     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+    1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -28.50  .((((((((((((................))))))))))))........(((((((...)))))))...  best 'nested structure'
 -90.90  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].....}}.[[[.{{{.]]]..}}}..  best 'H-type pseudoknot'
-        no structure available                                                 best 'K-type pseudoknot'
-        no structure available                                                 best 'H- and K-type pseudoknot'
+       no structure available                                                 best 'K-type pseudoknot'
+       no structure available                                                 best 'H- and K-type pseudoknot'
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=enforce --allowLP=0 --strategy=D --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -24.10  (((((.((((((......)))))).....((((........)))))))))  best 'nested structure'
 -70.80  [[.[[[.{{{]]]...}}}{{.]]....}}[[[.{{.....]]]..}}..  best 'H-type pseudoknot'
 -52.90  ....[[[[[[[.{{{{{..]]]]]]]...<<<<.}}}}}..>>>>.....  best 'K-type pseudoknot'
@@ -180,7 +180,7 @@
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=enforce --allowLP=1 --strategy=D --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
-     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+    1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -19.90  ..(((((....))))).....(((((((((.....))))))))).  best 'nested structure'
 -53.40  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  best 'H-type pseudoknot'
 -48.00  ..[[[[[..{{]]]]].....<<<<<<<<<..}}.>>>>>>>>>.  best 'K-type pseudoknot'
@@ -189,7 +189,7 @@
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=local --allowLP=0 --strategy=C --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 50: ===
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
 -76.10  [[.[[[.{{{]]]...}}}{{.]].[[[[.{{{..]]]]..}}}..}}
 -75.40  [[.[[[.{{{]]]...}}}{{.]].[[[[[.{{.]]]]]..}}...}}
 -75.20  [[.[[[.{{{]]]...}}}..{{]][[[[.{{{..]]]]..}}}..}}
@@ -225,7 +225,7 @@
 -69.00  [[.[[[.{{.]]]..}}{{...]]..[[[.{{{..]]]...}}}..}}
 -68.60  [[..[[.{{.]]...}}{{...]].[[[[[.{{.]]]]]..}}...}}
 
-     3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
+    3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -73.80  [[.{{]][[[..{{]]]...}}.[[[[.{{{..]]]]..}}}...}}
 -72.70  [[.{{]][[[..{{]]]...}}.[[[[[.{{.]]]]]...}}...}}
 -72.10  [[.{{]][[[..{{]]]...}}.[[[.{{{{...]]]..}}}}..}}
@@ -254,7 +254,7 @@
 -68.60  [[..{{{]]..[[[[.[[.{{.]]..}}{{{.]]]]...}}}..}}}
 -68.50  [[..{{{]].[[[[[.[[.{{.]]..}}.{{.]]]]]...}}..}}}
 
-     3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -72.50  [[.{{{{]].[[[[[.[[.{{.]]..}}{{{.]]]]]..}}}..}}}}
 -71.80  [[.{{]][[[..{{]]]...}}.[[[[.{{{..]]]]..}}}....}}
 -70.90  [[.{{]][[[..{{]]]...}}.[[..{{{{.]].....}}}}...}}
@@ -292,7 +292,7 @@
 -68.50  [[.{{{{[[[..{{]]]...}}.]].[[.{{.]].....}}...}}}}
 -68.50  [[.{{{{]].[[[..{{.]]]..}}[[[.{{.]]]....}}...}}}}
 
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -71.70  [[[[.{{{{[[.{{.]]..}}]]]][[[[.{{{..]]]]..}}}..}}}}
 -71.00  [[[[.{{{{[[.{{.]]..}}]]]][[[[[.{{.]]]]]..}}...}}}}
 -70.90  [[...{{{{[[..{{]]...}}]].[[[[.{{{..]]]]..}}}..}}}}
@@ -307,13 +307,13 @@
 -68.70  [[...{{{{[[..{{]]...}}]]..[[[.{{{..]]]...}}}..}}}}
 -68.70  [[...{{{{.[[.{{.]]..}}]].[[[[[.{{.]]]]]..}}...}}}}
 
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
 -71.60  [[.{{[[[.[[[..{{]]]...}}.{{{{.]]]..}}}}]]....}}
 -70.20  [[.{{.[[.[[[..{{]]]...}}.{{{{{]]..}}}}}]]....}}
 -69.70  [[.{{[[[.[[.{{{]]...}}}..{{{{.]]]..}}}}]]....}}
 -69.40  [[.{{[[[.[[[..{{]]]...}}..{{{.]]]..}}}.]]....}}
 
-     2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
+    2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
 -71.60  [[.[[.{{{]]....}}}..{{]][[[[.{{{..]]]]..}}}..}}
 -71.40  [[[...[[.{{]]..}}.{{]]].[[[[.{{{..]]]]..}}}..}}
 -70.90  [[.[[.{{{]]....}}}..{{]][[[[[.{{.]]]]]..}}...}}
@@ -326,7 +326,7 @@
 -68.90  [[.[[.{{{]]......}}}{{]][[[[[.{{.]]]]]..}}...}}
 -68.50  [[.[[.{{{]]......}}}{{]][[[[[.{{.]]]]]...}}..}}
 
-     2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -71.20  [[[.{{{{[[.{{.]]..}}]]].[[[[.{{{..]]]]..}}}..}}}}
 -70.50  [[[.{{{{[[.{{.]]..}}]]].[[[[[.{{.]]]]]..}}...}}}}
 -70.20  [[..{{{{[[.{{{]]...}}}]][[[[.{{{..]]]]..}}}..}}}}
@@ -336,11 +336,11 @@
 -69.00  [[[.{{{{[[.{{.]]..}}]]]..[[[.{{{..]]]...}}}..}}}}
 -68.50  [[..{{{{[[.{{{]]...}}}]].[[[.{{{..]]]...}}}..}}}}
 
-     4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
+    4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
 -70.40  [[.[[.[[[..{{]]]...}}.{{{{{]]..}}}}}{{]]..}}
 -68.50  [[.[[.[[.{{{]]...}}}..{{{{{]]..}}}}}{{]]..}}
 
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -70.00  [[[[..{{{[[.{{.]]..}}]]]][[[[.{{{..]]]]..}}}..}}}
 -69.30  [[[[..{{{[[.{{.]]..}}]]]][[[[[.{{.]]]]]..}}...}}}
 -69.20  [[[[.{{[[.{{]]....}}.]]]][[[[.{{{..]]]]..}}}...}}
@@ -350,19 +350,19 @@
 -68.80  [[[[.{{[[.{{]]..}}...]]]][[[[.{{{..]]]]..}}}...}}
 -68.70  [[...{{.[[[..{{]]]..}}]].[[[[.{{{..]]]]..}}}...}}
 
-     3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
+    3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
 -69.70  [[[[.{{.]]]][[[.[[.{{.]]..}}{{{.]]]....}}}..}}
 -69.30  [[[[.{{.]]]].[[..{{]]..}}[[.{{{..]]....}}}..}}
 -69.10  [[[[.{{.]]]].[[.[[.{{.]]..}}{{{.]].....}}}..}}
 -68.70  [[...{{]].[[[[[.[[.{{.]]..}}{{{.]]]]]..}}}..}}
 -68.60  [[[[.{{.]]]].[[..{{]]..}}[[[.{{.]]]....}}...}}
 
-     2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
+    2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -69.50  [[[..{{{[[.{{.]]..}}]]].[[[[.{{{..]]]]..}}}..}}}
 -68.80  [[[..{{{[[.{{.]]..}}]]].[[[[[.{{.]]]]]..}}...}}}
 -68.70  [[[.{{[[.{{]]....}}.]]].[[[[.{{{..]]]]..}}}...}}
 
-     4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
+    4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
 -68.60  [[[.{{.]]][[[[.[[.{{.]]..}}{{{.]]]]...}}}..}}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=local --allowLP=1 --strategy=A --minHairpinLength=6 --maxKnotSize=40 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-12 --shapeLevel=5
@@ -1803,14 +1803,14 @@
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=local --allowLP=0 --strategy=B --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-20 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 45: ===
-     3  GGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUG  44
+    3  GGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUG  44
 -60.70  [[[[[.{{{]]]]][[.{{]]..}}[[.{{.]]..}}..}}}
 -56.00  [[..[[.{{{]]..[[.{{]]..}}....}}}{{]]....}}
 -54.80  [[.[[.{{.]]...}}.[[.{{.]].....}}{{]]....}}
 -54.80  [[.[[.{{.]]...[[.{{]]..}}...}}..{{]]....}}
 -54.80  [[.[[..{{]]...[[.{{]]..}}.....}}{{]]....}}
 
-     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+    1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -60.60  [[.[[[[..{{]]]].[[.{{]]..}}.....}}.{{..]]..}}
 -59.50  [[.[[[[.{{.]]]].[[.{{]]..}}...}}...{{..]]..}}
 -58.30  [[.[[[....{{]]].[[.{{]]..}}....}}..{{..]]..}}
@@ -1826,10 +1826,10 @@
 -54.80  [[.[[[[.{{.]]]]......}}..{{[[.{{.]]..}}]]..}}
 -54.80  [[..{{[[..{{]]...}}[[[[...{{{.]]]]..}}}]]..}}
 
-     3  GGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAU  43
+    3  GGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAU  43
 -59.00  [[[[[..{{]]]]][[.{{]]..}}[[.{{.]]..}}..}}
 
-     2  AGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUG  44
+    2  AGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUG  44
 -58.70  [[.[[[.{{.]]]..[[.{{]]..}}...}}..{{]]....}}
 -58.70  [[.[[[..{{]]]..[[.{{]]..}}.....}}{{]]....}}
 -57.90  [[.[[[.{{.]]]..}}.[[.{{.]].....}}{{]]....}}
@@ -1842,7 +1842,7 @@
 -54.90  [[..[[..{{]]...[[.{{]]..}}.....}}{{]]....}}
 -54.90  [[..[[.{{.]]...[[.{{]]..}}...}}..{{]]....}}
 
-     2  AGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUA  42
+    2  AGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUA  42
 -58.40  [[.[[[..{{]]]..[[.{{]]..}}.....}}{{]]..}}
 -58.40  [[.[[[.{{.]]]..[[.{{]]..}}...}}..{{]]..}}
 -57.60  [[.[[[.{{.]]]..}}.[[.{{.]].....}}{{]]..}}
@@ -1853,7 +1853,7 @@
 -55.20  [[.[[.[[[.{{...]]]..}}{{]]...}}..{{]]..}}
 -54.80  [[.[[.{{]].....[[.{{]]..}}....}}.{{]]..}}
 
-     2  AGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+    2  AGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -58.30  [[.[[[.{{.]]]..[[.{{]]..}}...}}{{..]].....}}
 -57.20  [[.[[[..{{]]]..[[.{{]]..}}.....}}.{{..]]..}}
 -56.60  [[.[[[.{{.]]]..}}.[[..{{]]...}}{{..]].....}}
@@ -1864,42 +1864,42 @@
 -54.80  [[.[[[.{{.]]]..[[.{{]]..}}...}}{{.....]]..}}
 -54.70  [[.{{...[[[[...[[.{{]]..}}{{.]]]]..}}.]]..}}
 
-     4  GGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUG  44
+    4  GGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUG  44
 -58.10  [[[[.{{{]]]].[[.{{]]..}}[[.{{.]]..}}..}}}
 -54.90  [[.[[.{{{]]..[[.{{]]..}}....}}}{{]]....}}
 
-     3  GGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+    3  GGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -57.50  [[[[[..{{]]]]][[.{{]]..}}[[..{{]]....}}..}}
 -56.40  [[[[[..{{]]]]][[.{{]]..}}.[[.{{..]]..}}..}}
 
-     4  GGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUA  42
+    4  GGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUA  42
 -57.20  [[[[..{{]]]].[[.{{]]..}}...<<<<.}}.>>>>
 
-     4  GGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAU  43
+    4  GGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAU  43
 -56.40  [[[[..{{]]]].[[.{{]]..}}[[.{{.]]..}}..}}
 
-     3  GGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUA  42
+    3  GGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUA  42
 -55.70  [[..[[.{{{]]..[[.{{]]..}}....}}}{{]]..}}
 
-     5  GCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUG  44
+    5  GCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUG  44
 -55.00  [[[.{{{]]]..[[.{{]]..}}[[.{{.]]..}}..}}}
 
-     2  AGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAU  43
+    2  AGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAU  43
 -54.90  [[.[[[.{{.]]]..}}.{{...[[.{{]]..}}.]]...}}
 
-     4  GGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+    4  GGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -54.90  [[[[..{{]]]].[[.{{]]..}}[[..{{]]....}}..}}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=local --allowLP=1 --strategy=D --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 50: ===
-     3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
+    3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -61.00  [[.{{]]..[[[[..{{.]]]].....<<<<.}}.....>>>>..}}
 -57.30  [[.{{..]][[[[..{{.]]]].....<<<<.}}.....>>>>..}}
 -57.00  [[[[..{{]]]].[[..{{]].....}}...<<<<...}}...>>>>
 -56.60  [[[[..{{]]]].[[..{{]]..}}......<<<<...}}...>>>>
 
-     4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
+    4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
 -60.40  [[..[[[[[..{{]]]]]....<<<<<}}..>>>>>{{]]..}}
 -60.00  [[..[[[[[.{{{]]]]]....<<<<..}}}.>>>>{{]]..}}
 -59.90  [[..[[[[[..{{]]]]]....<<<<<.}}.>>>>>{{]]..}}
@@ -1914,10 +1914,10 @@
 -56.20  [[..[[[[[..{{..]]]]]..<<<<<.}}.>>>>>{{]]..}}
 -56.00  [[[.[[[[[..{{..]]]]]...<<<<}}..>>>>{{]]]..}}
 
-     3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGA  45
+    3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGA  45
 -60.30  [[[[.{{.]]]].[[..{{]]..}}..<<<<.}}.....>>>>
 
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
 -60.20  [[.{{..[[[[[..{{]]]]]....<<<<<}}..>>>>>]]....}}
 -59.80  [[.{{..[[[[[.{{{]]]]]....<<<<..}}}.>>>>]]....}}
 -59.70  [[.{{..[[[[[..{{]]]]]....<<<<<.}}.>>>>>]]....}}
@@ -1933,24 +1933,24 @@
 -56.10  [[.{{..[[[[[.{{{..]]]]]..<<<<..}}}.>>>>]]....}}
 -56.00  [[.{{..[[[[[..{{..]]]]]..<<<<<.}}.>>>>>]]....}}
 
-     5  CGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGA  45
+    5  CGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGA  45
 -60.00  [[[[[[[.{{{{{..]]]]]]]...<<<<.}}}}}..>>>>
 -59.90  [[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>
 -59.10  [[[[[[[[..{{{.]]]]]]]]...<<<<.}}}....>>>>
 -57.60  [[[[[[[[...{{.]]]]]]]]...<<<<.}}.....>>>>
 -55.60  [[[[[[.{{{{{{...]]]]]]...<<<<.}}}}}}.>>>>
 
-     3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -59.80  [[.{{]]..[[[[..{{.]]]].....<<<<.}}.....>>>>...}}
 -57.80  [[..{{.]][[[[..{{.]]]].....<<<<.}}.....>>>>...}}
 
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGA  45
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGA  45
 -59.20  [[[[...[[.{{]]..}}.{{]]]]....<<<<.}}.....>>>>
 -56.90  [[[[..{{{[[.{{.]]..}}]]]]....<<<<.}}}....>>>>
 -55.20  [[[[...{{[[.{{.]]..}}]]]]....<<<<.}}.....>>>>
 -55.00  [[[[.{{[[.{{]]....}}.]]]]....<<<<..}}....>>>>
 
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
 -58.10  [[.[[[.{{{]]]...}}}{{.]].[[[[.{{{..]]]]..}}}..}}
 -57.40  [[.[[[.{{{]]]...}}}{{.]].[[[[[.{{.]]]]]..}}...}}
 -57.20  [[.[[[.{{{]]]...}}}..{{]][[[[.{{{..]]]]..}}}..}}
@@ -1963,58 +1963,58 @@
 -55.50  [[.[[[.{{{]]]...}}}..{{]].[[[.{{{..]]]...}}}..}}
 -55.20  [[.[[[.{{{]]].....}}}{{]][[[[.{{{..]]]]..}}}..}}
 
-     6  GGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGA  45
+    6  GGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGA  45
 -58.10  [[[[[[.{{{{{..]]]]]]....<<<<.}}}}}..>>>>
 -58.00  [[[[[[[.{{{{.]]]]]]]....<<<<.}}}}...>>>>
 -57.20  [[[[[[[..{{{.]]]]]]]....<<<<.}}}....>>>>
 -55.70  [[[[[[[...{{.]]]]]]]....<<<<.}}.....>>>>
 
-     5  CGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
+    5  CGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
 -57.60  [[.[[[[[..{{]]]]].....<<<<}}..>>>>{{]]...}}
 -57.10  [[.[[[[[..{{]]]]].....<<<<.}}.>>>>{{]]...}}
 
-     5  CGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAG  46
+    5  CGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAG  46
 -57.40  [[.[[[[[..{{]]]]].....<<<<}}..>>>>{{]]..}}
 -56.90  [[.[[[[[..{{]]]]].....<<<<.}}.>>>>{{]]..}}
 
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGG  44
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGG  44
 -57.20  [[.{{.[[[[[[..{{..]]]]]]..<<<<}}..>>>>]]..}}
 -57.00  [[.{{..[[[[[..{{]]]]].....<<<<}}..>>>>]]..}}
 -56.70  [[.{{.[[[[[[..{{..]]]]]]..<<<<.}}.>>>>]]..}}
 -56.50  [[.{{..[[[[[..{{]]]]].....<<<<.}}.>>>>]]..}}
 
-     7  GGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGA  45
+    7  GGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGA  45
 -56.90  [[[[[.{{{{{..]]]]].....<<<<.}}}}}..>>>>
 -56.80  [[[[[[.{{{{.]]]]]].....<<<<.}}}}...>>>>
 -56.00  [[[[[[..{{{.]]]]]].....<<<<.}}}....>>>>
 
-     2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
+    2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -56.70  [[..{{[[[[[..{{]]]]]....<<<<<}}..>>>>>]]......}}
 -56.30  [[..{{[[[[[.{{{]]]]]....<<<<..}}}.>>>>]]......}}
 -56.20  [[..{{[[[[[..{{]]]]]....<<<<<.}}.>>>>>]]......}}
 
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -56.60  [[[..{{[[[[[..{{]]]]].....<<<<}}..>>>>]]]......}}
 -56.10  [[[..{{[[[[[..{{]]]]].....<<<<.}}.>>>>]]]......}}
 -55.70  [[[[...[[.{{]]..}}{{.]]]]........<<<<...}}...>>>>
 -55.10  [[[[...[[.{{]]..}}.{{]]]]..<<<<...}}.........>>>>
 
-     4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -55.50  [[.{{[[[[..{{]]]].....<<<<<}}..>>>>>..]].....}}
 -55.10  [[.{{[[[[.{{{]]]].....<<<<..}}}.>>>>..]].....}}
 -55.00  [[.{{[[[[..{{]]]].....<<<<<.}}.>>>>>..]].....}}
 -55.00  [[.{{[[[[..{{]]]].....<<<<<}}..>>>>>...]]....}}
 
-     3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
+    3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
 -55.10  [[[[.{{.]]]].......<<<<}}[[[.{{.]]]....}}.>>>>
 
-     8  GCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
+    8  GCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
 -54.90  [[[[..{{]]]]..<<<<.}}[[.{{.]].....}}.>>>>
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=local --allowLP=0 --strategy=A --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
 === window: 1 to 50: ===
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
 -58.10  [[.[[[.{{{]]]...}}}{{.]].[[[[.{{{..]]]]..}}}..}}
 -57.40  [[.[[[.{{{]]]...}}}{{.]].[[[[[.{{.]]]]]..}}...}}
 -57.20  [[.[[[.{{{]]]...}}}..{{]][[[[.{{{..]]]]..}}}..}}
@@ -2035,7 +2035,7 @@
 -52.80  [[[[...[[.{{]]..}}.{{]]]][[[[[.{{.]]]]]...}}..}}
 -52.50  [[.[[[.{{.]]]..}}{{...]].[[[[[.{{.]]]]]..}}...}}
 
-     3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
+    3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -55.80  [[.{{]][[[..{{]]]...}}.[[[[.{{{..]]]]..}}}...}}
 -54.70  [[.{{]][[[..{{]]]...}}.[[[[[.{{.]]]]]...}}...}}
 -54.10  [[.{{]][[[..{{]]]...}}.[[[.{{{{...]]]..}}}}..}}
@@ -2047,7 +2047,7 @@
 -52.80  [[..{{{]].[[[[[.[[.{{.]]..}}{{{.]]]]]..}}}..}}}
 -52.60  [[.{{]].[[..{{]]....}}.[[[[.{{{..]]]]..}}}...}}
 
-     3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    3  GCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -54.50  [[.{{{{]].[[[[[.[[.{{.]]..}}{{{.]]]]]..}}}..}}}}
 -53.80  [[.{{]][[[..{{]]]...}}.[[[[.{{{..]]]]..}}}....}}
 -52.90  [[.{{]][[[..{{]]]...}}.[[..{{{{.]].....}}}}...}}
@@ -2057,16 +2057,16 @@
 -52.50  [[.{{{{]].[[.{{]]..}}..[[[[.{{{..]]]]..}}}..}}}}
 -52.30  [[.{{{{]]..[[[[.[[.{{.]]..}}{{{.]]]]...}}}..}}}}
 
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -53.70  [[[[.{{{{[[.{{.]]..}}]]]][[[[.{{{..]]]]..}}}..}}}}
 -53.00  [[[[.{{{{[[.{{.]]..}}]]]][[[[[.{{.]]]]]..}}...}}}}
 -52.90  [[...{{{{[[..{{]]...}}]].[[[[.{{{..]]]]..}}}..}}}}
 -52.60  [[[[.{{{{[[.{{.]]..}}]]]][[[[[.{{.]]]]]...}}..}}}}
 
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
 -53.60  [[.{{[[[.[[[..{{]]]...}}.{{{{.]]]..}}}}]]....}}
 
-     2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
+    2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
 -53.60  [[.[[.{{{]]....}}}..{{]][[[[.{{{..]]]]..}}}..}}
 -53.40  [[[...[[.{{]]..}}.{{]]].[[[[.{{{..]]]]..}}}..}}
 -52.90  [[.[[.{{{]]....}}}..{{]][[[[[.{{.]]]]]..}}...}}
@@ -2074,17 +2074,17 @@
 -52.50  [[.[[.{{{]]....}}}..{{]][[[[[.{{.]]]]]...}}..}}
 -52.30  [[[...[[.{{]]..}}.{{]]].[[[[[.{{.]]]]]...}}..}}
 
-     2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -53.20  [[[.{{{{[[.{{.]]..}}]]].[[[[.{{{..]]]]..}}}..}}}}
 -52.50  [[[.{{{{[[.{{.]]..}}]]].[[[[[.{{.]]]]]..}}...}}}}
 
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -53.10  [[[.[[[[[[[[..{{{.]]]]]]]]..}}}..{{{{.]]]....}}}}
 
-     4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
+    4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
 -52.40  [[.[[.[[[..{{]]]...}}.{{{{{]]..}}}}}{{]]..}}
 
-     6  GGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
+    6  GGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -52.30  [[[[[[[..{{{.]]]]]]][[[[.{{{..]]]]..}}}..}}}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=local --allowLP=1 --strategy=P --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
@@ -2156,18 +2156,18 @@
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=shapes --allowLP=1 --strategy=P --minHairpinLength=6 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --absoluteDeviation=1 --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
-     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+    1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -53.40  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=shapes --allowLP=0 --strategy=B --minHairpinLength=2 --windowIncrement=10 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -70.80  [[.[[[.{{{]]]...}}}{{.]]....}}[[[.{{.....]]]..}}..  [[{]}{]}[{]}
 -69.90  ..[[[[..{{]]]]..}}[[.{{.]]..}}[[[.{{.....]]]..}}..  [{]}[{]}[{]}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=shapes --allowLP=1 --strategy=D --minHairpinLength=4 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --absoluteDeviation=1 --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
-     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+    1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -70.50  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=shapes --windowSize=40 --allowLP=0 --strategy=B --minHairpinLength=2 --maxKnotSize=40 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=25.9 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
@@ -2183,10 +2183,10 @@
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=shapes --windowSize=40 --allowLP=1 --strategy=D --minHairpinLength=6 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACU  40
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACU  40
 -54.80  [[[.[[.[[.{{]]..}}{{]]..}}.{{{]]]....}}}  [[[{]}{]}{]}
 
-    31  CCCAGCUACUCGGGAGGCUC  50
+   31  CCCAGCUACUCGGGAGGCUC  50
 -25.50  [[[.{{.....]]]..}}..  [{]}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=shapes --windowSize=100 --allowLP=0 --strategy=D --minHairpinLength=2 --maxKnotSize=40 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --temperature=17 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --absoluteDeviation=1 --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
@@ -2218,34 +2218,34 @@
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=probs --allowLP=1 --strategy=D --minHairpinLength=6 --probDecimals=2 --maxKnotSize=40 --lowProbFilter=0.01 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --outputLowProbFilter=0 --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-20 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
-     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+    1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -68.00  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].....}}.[[[.{{{.]]]..}}}..  0.98  [{]}[[{]}{]}[{]}
 -67.20  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}..  0.02  [{][{]}}[{]}[{]}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=probs --windowSize=40 --allowLP=0 --strategy=D --minHairpinLength=4 --probDecimals=2 --maxKnotSize=40 --lowProbFilter=0.01 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --outputLowProbFilter=0.0001 --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
-     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGU  40
+    1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGU  40
 -46.70  ....[[[.{{.]]]..}}.[[[[..{{{{.]]]]..}}}}  0.84  [{]}[{]}
 -46.10  ..[[.{{]]..}}...[[.{{]]..}}[[.{{.]]..}}.  0.16  [{]}[{]}[{]}
 
-    31  UGACUACUGUUAUGU  45
+   31  UGACUACUGUUAUGU  45
 -16.50  .[[[.{{.]]]..}}  1.00  [{]}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=probs --windowSize=40 --allowLP=1 --strategy=P --minHairpinLength=4 --probDecimals=7 --lowProbFilter=0.01 --windowIncrement=20 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --outputLowProbFilter=0.1 --temperature=37 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Kpenalty=-12 --Hpenalty=-9 --shapeLevel=5
 >unnamed sequence
-     1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGG  40
+    1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGG  40
 -38.10  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}.  1.0000000  [{][{]}}
 
-    21  CCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGG  60
+   21  CCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGG  60
 -40.10  [[.....{{]]....}}.[[[[..{{{.]]]]..}}}...  1.0000000  [{]}[{]}
 
-    41  GGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
+   41  GGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -26.10  [[....{{]][[....{{]]...}}..}}  0.7948369  [{][{]}}
 -24.80  ....[[[..{{{{{]]]....}}}}}...  0.2051631  [{]}
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=probs --windowSize=100 --allowLP=0 --strategy=P --minHairpinLength=4 --probDecimals=2 --maxKnotSize=40 --lowProbFilter=0.01 --windowIncrement=30 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --outputLowProbFilter=0 --temperature=37 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Kpenalty=-15 --Hpenalty=-12 --shapeLevel=5
 >unnamed sequence
-     1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
+    1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -61.50  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  0.84  [{][{]}}[{]}
 -60.00  ....[[[.{{.]]]..}}.[[..{{]]...}}[[.{{.]]...}}  0.16  [{]}[{]}[{]}
 -43.80  (([[.{{]]..}}...[[.{{]]..}}..))[[[.{{.]]]..}}  0.00  ([{]}[{]})[{]}
@@ -2611,7 +2611,7 @@
 
 #CMD: perl -I ../../Applications/lib/ i386-pc-solaris2.10/pKiss  --binPath='i386-pc-solaris2.10/i386-pc-solaris2.10/'  --mode=eval --allowLP=0 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Kpenalty=-12 --Hpenalty=-15 --shapeLevel=5
 >unnamed sequence
-     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
+    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -52.90  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 -52.80  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 -52.70  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
