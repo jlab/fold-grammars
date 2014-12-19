@@ -32,12 +32,7 @@ RUN_CPP_FLAGS=""
 
 KSH="ksh"
 
-
-if [ -e $BASE/share/gapc/config$OSSUFFIX.mf ]; then
-  CONFIG_MF=$BASE/share/gapc/config$OSSUFFIX.mf
-else
-  CONFIG_MF=$BASE/config.mf
-fi
+CONFIG_MF=`find $BASE/share/gapc/config*.mf | head -n 1`;
 
 err_count=0
 succ_count=0
