@@ -164,7 +164,7 @@ sub permutate {
 	my ($refHash_parameter, $refList_permutations) = @_;
 	
 	my @availParameters = ();
-	foreach my $param (keys(%{$refHash_parameter})) {
+	foreach my $param (sort {$a cmp $b} keys(%{$refHash_parameter})) {
 		push @availParameters, $param if ($refHash_parameter->{$param}->{valueSelection} eq $VALUE_SELECTION_ALL);
 	}
 	
@@ -195,7 +195,7 @@ sub addRandomParameters {
 	my ($refHash_parameter, $refList_permutations) = @_;
 
 	foreach my $refHash_call (@{$refList_permutations}) {
-		foreach my $parameter (keys(%{$refHash_parameter})) {
+		foreach my $parameter (sort {$a cmp $b} keys(%{$refHash_parameter})) {
 			if (Utils::contains($refHash_parameter->{$parameter}->{modes}, $refHash_call->{mode})) {
 				next if ((($parameter eq 'absoluteDeviation') && ($refHash_call->{call} =~ m/relativeDeviation/)) || (($parameter eq 'relativeDeviation') && ($refHash_call->{call} =~ m/absoluteDeviation/)));
 				my @values = @{$refHash_parameter->{$parameter}->{values}};
