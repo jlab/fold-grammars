@@ -412,7 +412,7 @@ sub output {
 						push @allSamples, @{$samples->{$windowPos}->{$shape}};
 					}
 					foreach my $refHash_sample (sort {$a->{position} <=> $b->{position}} @allSamples) {
-						print sprintf($scoreFormat, @{splitFields($refHash_sample->{score})});
+						print sprintf($scoreFormat, map {roundFloat($_, 2)} @{splitFields($refHash_sample->{score})});
 						print $SEPARATOR;
 						if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
 							print sprintf("%1.$settings->{'probdecimals'}f", $refHash_sample->{structureProb}/$refHash_pfall->{$windowPos});
@@ -479,7 +479,13 @@ sub output {
 						print "".(" " x $leftSpacerDueToWindowStartPos);
 					
 					#score = energy
-						$energy = formatEnergy($part_energy) + formatEnergy($part_covar) if (exists $input->{length}); #necessary to avoid rounding errors on output :-(
+						if (defined $part_energy && defined $part_covar) {
+							$part_energy = roundFloat($part_energy, 2);
+							$part_covar = roundFloat($part_covar, 2);
+							$energy = $part_energy+$part_covar;
+						} else {
+							$energy = roundFloat($energy, 2);
+						}
 						my $energyResult = sprintf($scoreFormat, $energy, $part_energy, $part_covar);
 						$energyResult = (" " x $lengthScoreField) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
 						print $energyResult;
@@ -634,7 +640,7 @@ sub outputVARNA {
 						push @allSamples, @{$samples->{$windowPos}->{$shape}};
 					}
 					foreach my $refHash_sample (sort {$a->{position} <=> $b->{position}} @allSamples) {
-						my $energyResult = sprintf($scoreFormat, @{splitFields($refHash_sample->{score})});
+						my $energyResult = sprintf($scoreFormat, map {roundFloat($_, 2)} @{splitFields($refHash_sample->{score})});
 						$energyResult =~ s/ /&#160;/g;
 						$varnaoutput .= "\t\t\t<tr class='result'><td style='text-align: right;'>".$energyResult."</td>";
 						if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
@@ -700,7 +706,13 @@ sub outputVARNA {
 					my ($energy, $part_energy, $part_covar) = @{splitFields($result->{score})};
 					
 					#score = energy
-						$energy = formatEnergy($part_energy) + formatEnergy($part_covar) if (exists $input->{length}); #necessary to avoid rounding errors on output :-(
+						if (defined $part_energy && defined $part_covar) {
+							$part_energy = roundFloat($part_energy, 2);
+							$part_covar = roundFloat($part_covar, 2);
+							$energy = $part_energy+$part_covar;
+						} else {
+							$energy = roundFloat($energy, 2);
+						}
 						my $energyResult = sprintf($scoreFormat, $energy, $part_energy, $part_covar);
 						$energyResult = (" " x $lengthScoreField) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
 						$energyResult =~ s/ /&#160;/g;
@@ -906,7 +918,7 @@ sub getAvgSingleMFEs {
 
 sub formatEnergy {
 	my ($energy) = @_;
-	return sprintf("%.2f", $energy*1); #*1 because bgap programs sometimes output -0
+	return roundFloat($energy, 2);
 }
 sub splitFields {
 	my ($field) = @_;
@@ -949,6 +961,14 @@ sub getAlignmentRepresentation {
 			return $line;
 		}
 	}
+}
+
+sub roundFloat {
+	use Math::Round;
+	
+	my ($value, $digits) = @_;
+	
+	return (round($value * (10**$digits))/(10**$digits));
 }
 
 1;
