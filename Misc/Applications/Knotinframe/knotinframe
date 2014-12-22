@@ -250,7 +250,7 @@ sub output {
 						push @infos, {'Slippery sequence' => $candidate->{slippery}->{site}};
 						push @infos, {'Slippery position' => ($candidate->{slippery}->{position}+1)};
 						push @infos, {'Substring length' => length($candidate->{foldings}->{knotted}->{structure})};
-						push @infos, {'Deltarel' => sprintf("%.3f", $lenNormEnergy)};
+						push @infos, {'Deltarel' => sprintf("%.3f", IO::roundFloat($lenNormEnergy,3))};
 						
 						my $maxLen = 0;
 						foreach my $refHash_info (@infos) {
