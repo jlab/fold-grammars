@@ -465,7 +465,7 @@ sub output {
 				}
 				@sortedStructures =  sort {$ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$a}->{shape}} <=> $ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$b}->{shape}}} keys(%{$predictions->{$windowPos}->{$blockPos}});
 			}
-			@sortedStructures =  sort {splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]} @sortedStructures if (($settings->{mode} eq $Settings::MODE_LOCAL));
+			@sortedStructures =  sort {(splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]) || ($a cmp $b)} @sortedStructures if (($settings->{mode} eq $Settings::MODE_LOCAL));
 	
 			#define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
 				my $range = undef;
@@ -703,7 +703,7 @@ sub outputVARNA {
 				}
 				@sortedStructures =  sort {$ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$a}->{shape}} <=> $ENFORCE_CLASSES{$predictions->{$windowPos}->{$blockPos}->{$b}->{shape}}} keys(%{$predictions->{$windowPos}->{$blockPos}});
 			}
-			@sortedStructures =  sort {splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]} @sortedStructures if (($settings->{mode} eq $Settings::MODE_LOCAL));
+			@sortedStructures =  sort {(splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]) || ($a cmp $b)} @sortedStructures if (($settings->{mode} eq $Settings::MODE_LOCAL));
 	
 			#define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
 				my $range = undef;
@@ -988,11 +988,14 @@ sub getAlignmentRepresentation {
 }
 
 sub roundFloat {
-	use Math::Round;
+	use Math::BigFloat;
 	
 	my ($value, $digits) = @_;
 	
-	return (round($value * (10**$digits))/(10**$digits));
+	my $n = Math::BigFloat->new($value);
+	my $f1 = $n->round('','-'.$digits,'common');
+	
+	return $f1;
 }
 
 1;
