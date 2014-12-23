@@ -4,14 +4,15 @@ use strict;
 use warnings;
 use foldGrammars::Utils;
 use foldGrammars::IO;
+use foldGrammars::Settings;
 
 package Testing;
 
 use Data::Dumper;
 
-my $inputFileDir = "/vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/";
-my $energyParameterDir = "/vol/gapc/share/gapc/librna/";
-my $program = "/home/sjanssen/Desktop/fold-grammars/Misc/Applications/RNAalishapes/RNAalishapes";
+my $inputFileDir = $Settings::rootDir."/Misc/Test-Suite/StefanStyle/";
+my $energyParameterDir = $Settings::bgapDir."/share/gapc/librna/";
+#~ my $program = "/home/sjanssen/Desktop/fold-grammars/Misc/Applications/RNAalishapes/RNAalishapes";
 
 my $VALUE_SELECTION_ALL = 'all';
 my $VALUE_SELECTION_RANDOM = 'random';
