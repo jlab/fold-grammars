@@ -1,3 +1,31 @@
+knotinframe (2.0.7-0ubuntu1~utopic1) utopic; urgency=medium
+
+  * minor changes in output to be stable regarding rounding values over
+    different operating systems like Linux / Solaris.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 23 Dec 2014 15:05:36 +0100
+
+knotinframe (2.0.7-0ubuntu1~trusty1) trusty; urgency=medium
+
+  * minor changes in output to be stable regarding rounding values over
+    different operating systems like Linux / Solaris.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 23 Dec 2014 15:05:30 +0100
+
+knotinframe (2.0.7-0ubuntu1~precise1) precise; urgency=medium
+
+  * minor changes in output to be stable regarding rounding values over
+    different operating systems like Linux / Solaris.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 23 Dec 2014 15:05:23 +0100
+
+knotinframe (2.0.7-0ubuntu1~lucid1) lucid; urgency=medium
+
+  * minor changes in output to be stable regarding rounding values over
+    different operating systems like Linux / Solaris.
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Tue, 23 Dec 2014 14:51:21 +0100
+
 knotinframe (2.0.6-0ubuntu1~utopic1) utopic; urgency=medium
 
   * Updated the default reference for citation.
