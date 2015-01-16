@@ -59,6 +59,7 @@ install-suite:
 	$(MAKE) -C Misc/Applications/RapidShapes install-program
 	$(MAKE) -C Misc/Applications/RNAalishapes install-program
 	$(MAKE) -C Misc/Applications/RNAshapes install-program
+	$(MAKE) -C Misc/Applications/Locomotif_wrapper install-program
 	
 distclean-suite:
 	$(MAKE) -C Misc/Applications/Knotinframe distclean
