@@ -5,6 +5,7 @@ import "Extensions/probabilities.hh"
 import "Extensions/shapes.hh"
 import "Extensions/mea.hh"
 import "Extensions/probing.hh"
+import "Extensions/pareto.hh"
 
 input rna
 

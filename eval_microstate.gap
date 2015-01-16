@@ -1,7 +1,6 @@
 import rna
 import "Extensions/evalfold.hh" 
 import "Extensions/shapes.hh"
-import "Extensions/probing.hh"
 
 input rna
 type shape_t = shape
@@ -11,7 +10,6 @@ include "Signatures/sig_foldrna.gap"
 include "Algebras/DotBracket/alg_dotBracket.gap"
 include "Algebras/Shapes/alg_shapes.gap"
 include "Algebras/MFE/alg_mfe.gap"
-include "Algebras/MFE/alg_mfe_SHAPE.gap"
 algebra alg_dotBracket_id extends alg_dotBracket {
   choice [string] h([string] i) {
     return i;

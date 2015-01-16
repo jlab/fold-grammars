@@ -4,7 +4,6 @@ import "Extensions/mfesubopt.hh"
 import "Extensions/probabilities.hh"
 import "Extensions/shapes.hh"
 import "Extensions/mea.hh"
-import "Extensions/probing.hh"
 
 input rna
 
@@ -20,8 +19,6 @@ algebra alg_count auto count;
 algebra alg_enum auto enum;
 
 include "Algebras/MFE/alg_mfe.gap"
-include "Algebras/MFE/alg_mfe_SHAPE.gap"
-include "Algebras/alg_SHAPE.gap"
 include "Algebras/MEA/alg_mea.gap"
 include "Algebras/Pfunc/alg_pfunc.gap"
 
