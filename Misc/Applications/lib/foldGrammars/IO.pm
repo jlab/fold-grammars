@@ -11,6 +11,7 @@ our $PROG_RNAALISHAPES = 'RNAalishapes';
 our $PROG_RNASHAPES = 'RNAshapes';
 our $PROG_PKISS = 'pKiss';
 our $PROG_PALIKISS = 'pAliKiss';
+our $PROG_LOCOMOTIF = 'Locomotif_wrapper';
 
 our $SEPARATOR = "  ";
 our $DATASEPARATOR = "#";
@@ -197,7 +198,17 @@ sub parse {
 				$windowPos = $windowStartPos.$DATASEPARATOR.$windowEndPos;
 				$score = $energy.$DATASEPARATOR.$part_energy.$DATASEPARATOR.$part_covar.$DATASEPARATOR;
 			}
-		
+		} elsif ($program eq $PROG_LOCOMOTIF) {
+			if (($settings->{mode} eq $Settings::MODE_LOCOMOTIF) && ($line =~ m/^\( (.+?) , (.+?) \)$/)) {
+				#( -1440 , ....[[[..{{{{{{{.......]]]..}}}}}}}.............(((((((.......))))))).................. )
+				($energy, $structure) = ($1/100,$2);
+			}
+			if (defined $energy || defined $structure) {
+				$fieldLengths{energy} = length(formatEnergy($energy)) if (length(formatEnergy($energy)) > $fieldLengths{energy});
+				$windowPos = $windowStartPos.$DATASEPARATOR.$windowEndPos;
+				$score = $energy;
+			}
+			
 	#printing unparsed lines
 		} else {
 			print "UNPARSED LINE: >".$line."<\n";
@@ -266,6 +277,7 @@ sub parse {
 			outputVARNA(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll);
 		}
 	}
+
 	output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll);
 }
 
@@ -330,6 +342,8 @@ sub parse_acm {
 sub output {
 	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex, $refHash_pfall) = @_;
 
+	print "  sequence does not satisfy the matchers motif.\n" if (($settings->{mode} eq $Settings::MODE_LOCOMOTIF) && (scalar(keys(%{$predictions})) < 1));
+	
 	if ($firstSequenceReady eq 'false') {
 		$firstSequenceReady = 'true';
 	} else {
@@ -610,6 +624,10 @@ sub outputVARNA {
 		} else {
 			$varnaoutput .= "\t\t\t<tr><td colspan='3'>&gt;".$input->{header}."</td></tr>\n" if (exists $input->{sequence}); #input is a fasta sequence
 		}
+	
+	if (($settings->{mode} eq $Settings::MODE_LOCOMOTIF) && (scalar(keys(%{$predictions})) < 1)) {
+		$varnaoutput .= "\t\t\t<tr><td colspan='3'>&nbsp;&nbsp;sequence does not satisfy the matchers motif.</td><tr>\n";
+	}
 	
 	my @windowPositions = sort {splitFields($a)->[0] <=> splitFields($b)->[0]} keys(%{$predictions});
 	foreach my $windowPos (@windowPositions) {

@@ -18,6 +18,7 @@ our %PROGINFOS = (
 	'acms',							{date => '21.11.2014', version => '1.1.1', name => 'acms', packageDir => 'aCMs/'},
 	'acmbuild', 					{date => '21.11.2014', version => '1.1.1', name => 'acmbuild'},
 	'acmsearch', 				{date => '21.11.2014', version => '1.1.1', name => 'acmsearch'},
+	'locomotif_wrapper', {date => '16.01.2015', version => '1.0.0', name => 'Locomotif_wrapper'},
 );
 
 
@@ -99,6 +100,8 @@ our $MODE_MEA = 'mea';
 our $MODE_KIF = 'kif'; #single and thus default mode for KnotInFrame
 
 our $MODE_ACM = 'acm'; #single and thus default mode for ACMs
+
+our $MODE_LOCOMOTIF = 'locomotif'; #single and thus default mode for the perl wrapper for locomotif, to present matcher results with my standard format
 
 our $ARCHTRIPLE = qx($BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
 our $RNAPARAM1999 =  $Settings::bgapDir.'share/gapc/librna/rna_turner1999.par';

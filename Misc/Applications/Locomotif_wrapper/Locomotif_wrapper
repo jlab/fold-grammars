@@ -1,0 +1,215 @@
+#!/usr/bin/env perl
+
+my $PROGID = 'locomotif_wrapper';
+
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+
+use lib getPath($0)."../lib/";
+
+use strict;
+use warnings;
+use Data::Dumper;
+use Getopt::Long;
+use foldGrammars::Utils;
+use foldGrammars::RNAcast;
+use foldGrammars::IO;
+use POSIX 'isatty';
+
+our @ALLMODES = ($Settings::MODE_LOCOMOTIF);
+@References::ORDER = ('mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','ree:gie:2006','ree:ree:gie:2007');
+
+my %PARAM;
+$PARAM{mode} = {modes => \@ALLMODES, key => 'mode', type => 's', default => $Settings::MODE_LOCOMOTIF, info => "Select the computation mode. Available modes are \"".join('", "', @ALLMODES)."\". Omit the ticks on input.\nDefault is \"@(DEFAULT)\"."};
+$PARAM{temperature} = {modes => \@ALLMODES, key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
+$PARAM{param} = {modes => \@ALLMODES, key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [".References::getNumber('mat:dis:chi:schroe:zuk:tur:2004')."] and [".References::getNumber('tur:mat:2009')."])."};
+$PARAM{allowlp} = {modes => \@ALLMODES, key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
+$PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
+$PARAM{matcher} = {modes => \@ALLMODES, key => 'matcher', type => 's', default => undef, info => "A full file name to the binary of the TDM."};
+$PARAM{verbose} = {modes => \@ALLMODES, key => 'verbose', default => 0, type => 'i', info => "Prints the actual command for Bellman's GAP binary."};
+$PARAM{varnaoutput} = {modes => \@ALLMODES, key => 'varna', default => undef, type => 's', info => "Provide a file name to which a HTML formatted version of the output should be saved in."};
+#$PARAM{windowsize} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_MEA], key => 'windowSize', type => 'i', gapc => 'w', default => undef, info => "Activates window mode and computes substrings of size <int> for the input. After computation for the first <int> bases is done, the window is pushed <y> bases to the right and the next computation is startet. <y> is set by --@(windowincrement).\n<int> must be a non-zero positive integer, smaller than the input length."};
+#$PARAM{windowincrement} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_MEA], key => 'windowIncrement', gapc => 'i', type => 'i', default => 1, info => "If --@(windowsize) is given, this parameter sets the offset for the next window to <int> bases.\n<int> must be a non-zero positive integer, smaller than --@(windowsize).\nDefault is @(DEFAULT)."};
+#$PARAM{absolutedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_CAST], key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation)."};
+#$PARAM{relativedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_CAST], key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation)."};
+#$PARAM{shapelevel} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_MEA], key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see [".References::getNumber('jan:gie:2010')."] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
+#$PARAM{lowprobfilter} = {modes => [$Settings::MODE_PROBS], key => 'lowProbFilter', gapc => 'F', type => 'f', default => 0.000001, info => "This option sets a barrier for filtering out results with very low probabilities during calculation. The default value here is @(DEFAULT), which gives a significant speedup compared to a disabled filter. (See [".References::getNumber('voss:gie:reh:2006')."] for details.) Note that this filter can have a slight influence on the overall results. To disable this filter, use option --@(lowprobfilter) 0. \n<float> must be a positive floating point number smaller than 1."};
+#$PARAM{lowprobfilteroutput} = {modes => [$Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'outputLowProbFilter', gapc => undef, type => 'f', default => 0.000001, info => "This option sets a filter for omitting low probability results during output. It is just for reporting convenience. Unlike probability cutoff filter, this option does not have any influence on runtime or probabilities beyond this value. To disable this filter, use option --@(lowprobfilteroutput) 0. \n<float> must be a positive floating point number smaller than 1."};
+#$PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => $Settings::PROGINFOS{$PROGID}->{name}." expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
+#$PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => $Settings::PROGINFOS{$PROGID}->{name}.'_', info => $Settings::PROGINFOS{$PROGID}->{name}." expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"$Settings::MODE_SUBOPT\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)".$Settings::MODE_SUBOPT."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
+#$PARAM{probdecimals} = {modes => [$Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_MEA], key => 'probDecimals', type => 'i', default => 7, info => "Sets the number of digits used for printing shape probabilities.\n<int> must be a positive integer number.\nDefault is @(DEFAULT)."};
+#$PARAM{numsamples} = {modes => [$Settings::MODE_SAMPLE], key => 'numSamples', type => 'i', gapc => 'r', default => 1000, info => "Sets the number of samples that are drawn to estimate shape probabilities.\nIn our experience, 1000 iterations are sufficient to achieve reasonable results for shapes with high probability. Thus, default is @(DEFAULT)."};
+#$PARAM{showsamples} = {modes => [$Settings::MODE_SAMPLE], key => 'showSamples', type => 'i', gapc => undef, default => 0, info => "You can inspect the samples drawn by stochastic backtrace if you turn --@(showsamples) on by setting it to 1.\nDefault is @(DEFAULT) = off."};
+#$PARAM{grammar} = {modes => \@ALLMODES, key => 'grammar', default => $GRAMMAR_MACROSTATE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could perform surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"@(DEFAULT)\". See [".References::getNumber('jan:schud:ste:gie:2011')."] for further details."};
+#$PARAM{bppmthreshold} = {modes => [$Settings::MODE_OUTSIDE], gapc => 'F', key => 'bppmThreshold', default => 0.00001, type => 'f', info => "Set the threshold for base pair probabilities included in the postscript output.\nDefault is @(DEFAULT)."};
+#$PARAM{dotplotfilename} = {modes => [$Settings::MODE_OUTSIDE], gapc => 'o', key => 'dotplot', default => 'dotPlot.ps', type => 's', info => "Sets the filename for the probability dot plot, produced in \"$Settings::MODE_OUTSIDE\" mode.\nDefault is \"@(DEFAULT)\"."};
+#$PARAM{dotplotpng} = {modes => [$Settings::MODE_OUTSIDE], key => 'png', default => 0, type => 'i', info => "Activate this option to also produce a png file of the \"dot plot\". This is deactivated by default and requires an installation of the program \"GhostScript\"."};
+#$PARAM{structureprobabilities} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_MEA], key => 'structureProbs', default => 0, type => 'i', info => "If activated, in addition to free energy also the probability of structures will be computed. To speed up computation, this calculation is switched off by default."};
+
+my $settings = {};
+foreach my $param (keys %PARAM) {
+	$settings->{$param} = $PARAM{$param}->{default};
+}
+my %help = ();
+foreach my $param (keys %PARAM) {
+	my $optionSec = $PARAM{$param}->{key};
+	$optionSec .= "=".$PARAM{$param}->{type} if (exists $PARAM{$param}->{type});
+	$help{$optionSec} = \$settings->{$param};
+}
+&GetOptions( 	
+	%help
+);
+
+usage() if (defined $settings->{'help'}); #user asks for help --> print usage and die
+checkParameters($settings, \%PARAM);
+
+our $inputIndex = 0;
+if (@ARGV == 0) {
+	#input not given via command line parameter
+	if (isatty(*STDIN)) {
+		#we are somehow in an interactive mode
+		#expecting a sequence or a filename
+		print "Please give me either your RNA sequence, or a (multiple) FASTA file, containing your sequences:\n";
+		my $input = <STDIN>; chomp $input;
+		if (-e $input) {
+			#since there is a file, having the name of the user input it is very likely that we really should read from a file
+			processInput($input, $settings);
+		} else {
+			#otherwise, we assume it is a single, plain RNA sequence
+			processInput({sequence => $input, header => "unnamed sequence"}, $settings);
+		}
+	} else {
+		#input must be delivered via pipe
+		processInput(\*STDIN, $settings);
+	}
+} elsif (@ARGV == 1) {
+	#rna sequence, secondary structure or filename, given as command line parameter
+	if (-e $ARGV[0]) {
+		#since there is a file, having the name of the user input it is very likely that we really should read from a file
+		processInput($ARGV[0], $settings);
+	} else {
+		#otherwise, we assume it is a single, plain RNA sequence or a 2D structure
+		processInput({sequence => $ARGV[0], header => "unnamed sequence"}, $settings);
+	}
+} else {
+	print STDERR "You gave me too many inputs. Please ask for help, via \"".$Settings::PROGINFOS{$PROGID}->{name}." --".$PARAM{help}->{key}."\".\n";
+	exit(1);
+}
+
+sub processInput {
+	my ($input, $refHash_settings) = @_;
+	
+	if (ref($input) =~ m/HASH/) {
+		#input is a sequence
+		doComputation($input, $refHash_settings);
+	} elsif (ref($input) =~ m/GLOB/) {
+		#input is STDIN
+		Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $refHash_settings);
+	} else {
+		#input is a filename
+		die "The file '$input' does not exist!\n" if (not -e $input);
+		Utils::applyFunctionToFastaFile($input, \&doComputation, $refHash_settings);
+	}
+	
+	IO::writeVarna($refHash_settings);
+}
+
+sub doComputation {
+	my ($refHash_sequence, $settings) = @_;
+
+	$inputIndex++;
+	if ($refHash_sequence->{sequence} !~ m/^\s*((A|C|G|U|T)+)\s*$/i) {
+		print STDERR "sequence '".$refHash_sequence->{header}."' has been skipped, due to non RNA letter. Only A,C,G,U,T,a,c,g,u,t are allowed.";
+	}
+	my $seq = $refHash_sequence->{sequence};
+	$seq =~ s/t/u/gi;
+	$seq = $seq.'+'.$seq if ($settings->{mode} eq $Settings::MODE_OUTSIDE);
+
+	my $command = buildCommand($settings, $refHash_sequence);
+
+	my $inputFile = Utils::writeInputToTempfile($seq);
+	print "Actual call was: $command -f $inputFile\n" if ($settings->{verbose});
+
+	my $result = qx($command -f $inputFile 2>&1);
+	Utils::qxDieMessage($command, $?);
+	unlink $inputFile if (!$settings->{verbose});
+	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, undef);
+	
+	return undef;
+}
+
+sub buildCommand {
+	my ($settings, $refHash_sequence, $task) = @_;
+
+	my $cmd = $settings->{'matcher'};
+	$cmd .= " -".$PARAM{temperature}->{gapc}." ".$settings->{'temperature'} if ($settings->{'temperature'} != $PARAM{temperature}->{default});
+	$cmd .= " -".$PARAM{param}->{gapc}." ".$settings->{'param'} if (defined $settings->{'param'});
+	$cmd .= " -".$PARAM{allowlp}->{gapc}." ".$settings->{'allowlp'} if ($settings->{'allowlp'} != $PARAM{allowlp}->{default});
+	
+	return $cmd;
+}
+
+sub checkParameters {
+	my ($settings, $refHash_params) = @_;
+	
+	my $diePrefix = "wrong command line parameter:\n  ";
+	
+	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
+	die $diePrefix."You have to provide a matcher filename via parameter '--".$PARAM{'matcher'}->{key}."'\n" if (!defined $settings->{'matcher'});
+	if (! -e $settings->{'matcher'}) {
+		die $diePrefix."The matcher filename you provided via the '--".$PARAM{'matcher'}->{key}."' parameter does not exist.\n" 
+	}
+	if (! -x $settings->{'matcher'}) {
+		die $diePrefix."The matcher filename you provided via the '--".$PARAM{'matcher'}->{key}."' parameter is not executable.\n" 
+	}
+	
+	die $diePrefix."the parameter file you specified could not be found.\n" if ((defined $settings->{'param'}) && (not -e $settings->{'param'}));
+	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
+}
+
+sub usage {
+	my ($settings) = @_;
+
+my $HELP = <<EOF;
+# $Settings::PROGINFOS{$PROGID}->{name}: Provides neat Locomotif results
+#            version $Settings::PROGINFOS{$PROGID}->{version} ($Settings::PROGINFOS{$PROGID}->{date})
+#            Stefan Janssen (bibi-help\@techfak.uni-bielefeld.de)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+USAGE: 
+perl $Settings::PROGINFOS{$PROGID}->{name} --matcher [-options] <fasta file name or RNA sequence>
+
+EOF
+;
+	$HELP .= Utils::printIdent("", Utils::usage_convertInfoText("The program '".$Settings::PROGINFOS{$PROGID}->{name}."' reads a (multiple) fasta file and applies a thermodynamic matcher (TDM) to all contained sequences. The TDM must be provided via the parameter '--".$PARAM{matcher}->{key}."'. The sequences can be given via Unix pipe, as a command line argument or by interactive input. Usually, the TDM has been designed by the Locomotif editor.", \%PARAM));
+	$HELP .= "\n";
+	
+	my @paramGroups = ();
+	push @paramGroups, {name => 'GENERAL OPTIONS', elements => ['matcher']};
+	push @paramGroups, {name => 'FOLDING OPTIONS', elements => ['temperature','param','allowlp']};
+	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['help','verbose','varnaoutput']};
+	foreach my $refHash_group (@paramGroups) {
+		$HELP .= $refHash_group->{name}.":\n";
+		for my $par (@{$refHash_group->{elements}}) {
+			$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
+		}
+	}
+
+	$HELP .= "REFERENCES:\n";
+	foreach my $refID ('mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','ree:gie:2006') {
+		$HELP .= References::printReference($refID);
+	}
+	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
+	foreach my $refID ('ree:ree:gie:2007') {
+		$HELP .= References::printReference($refID);
+	}
+
+	print $HELP;
+	exit(0);
+}
+

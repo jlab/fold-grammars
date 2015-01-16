@@ -99,6 +99,17 @@ $REFERENCES{'jan:gie:2014'} = {
 	title => "The RNA shapes studio.",
 	journal => "Bioinformatics 2014.",
 	doi => "10.1093/bioinformatics/btu649"};
+$REFERENCES{'ree:gie:2006'} = {
+	authors => "Janina Reeder, Robert Giegerich.",
+	title => "A Graphical Programming System for Molecular Motif Search.",
+	journal => "Proceedings of the 5th International Conference on Generative Programming and Component Engineering 2006.",
+	doi => "10.1145/1173706.1173727"};
+$REFERENCES{'ree:ree:gie:2007'} = {
+	authors => "Janina Reeder, Jens Reeder, Robert Giegerich.",
+	title => "Locomotif: from graphical motif description to RNA motif search.",
+	journal => "Bioinformatics 2007.",
+	doi => "10.1093/bioinformatics/btm179"};
+
 
 
 our @ORDER = ();
