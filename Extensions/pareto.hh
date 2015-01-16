@@ -1,5 +1,5 @@
-#ifndef PROBING_HH
-#define PROBING_HH
+#ifndef PARETO_HH
+#define PARETO_HH
 template<typename SORT_A, typename SORT_B>
 inline SORT_A getFirstDimension(std::pair<SORT_A, SORT_B> &candidate) {
 	return candidate.first;
