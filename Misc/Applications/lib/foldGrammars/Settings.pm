@@ -65,6 +65,7 @@ our %BINARIES = (
 	'ls','ls',
 	'ghc','/vol/ghc-7.6/bin/ghc',
 	'time','time',
+	'dirname','dirname',
 );
 
 our %TDMfiles = (
@@ -106,5 +107,13 @@ our $MODE_LOCOMOTIF = 'locomotif'; #single and thus default mode for the perl wr
 our $ARCHTRIPLE = qx($BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
 our $RNAPARAM1999 =  $Settings::bgapDir.'share/gapc/librna/rna_turner1999.par';
 our $RNAPARAM2004 = $Settings::bgapDir.'share/gapc/librna/rna_turner2004.par';
+
+#settings for RapidShapes on BiBiServ
+our %RAPIDSHAPES_BIBISERV = (
+	#~ 'clusterwide_tempdir', '/vol/tmp/',
+	'clusterwide_tempdir', '/tmp/',
+	'tdmwrapper_binary', '/home/sjanssen/Desktop/fold-grammars/Misc/Applications/RapidShapes/tdmwrapper',
+	'qsub', 'qsub -l virtual_free=6GB -l h_vmem=6GB -cwd ',
+);
 
 1;
