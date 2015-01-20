@@ -5,6 +5,7 @@ use foldGrammars::References;
 use foldGrammars::Structure;
 use strict;
 use warnings;
+use Time::HiRes qw( time );
 
 package Utils;
 
@@ -13,7 +14,7 @@ use Data::Dumper;
 sub compileAndrunTDM {
 	my $diePrefix = "TDM generation (Utils::compileAndrunTDM): ";
 	
-	my ($shapestring, $refHash_settings, $refHash_sequence) = @_;
+	my ($shapestring, $refHash_settings, $refHash_sequence, $verbose) = @_;
 	
 	my $tdmCall = "";
 	$tdmCall .= " -T ".$refHash_settings->{temperature}." " if ($refHash_settings->{temperature} != 37);
@@ -21,7 +22,7 @@ sub compileAndrunTDM {
 	$tdmCall .= " -u ".$refHash_settings->{allowlp}." ";
 
 	my $grammar = lc($refHash_settings->{grammar});
-	my $bintdm = absFilename($refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.'tdm_'.$grammar.'_'.$refHash_settings->{shapelevel});
+	my $bintdm = absFilename($refHash_settings->{binarypath}.'/'.$refHash_settings->{binaryprefix}.'tdm_'.$grammar.'_'.$refHash_settings->{shapelevel});
 	my $tdmGrammar = qx($bintdm "$shapestring" 2>&1); $tdmGrammar =~ s/Answer://;
 	die $diePrefix."failed to generate TDM grammar $tdmGrammar\n" if ($? != 0);
 	
@@ -46,13 +47,19 @@ sub compileAndrunTDM {
 	die $diePrefix."gapc execution failed: $gapc" if ($? != 0);
 	my $perl = qx($Settings::BINARIES{perl} $Settings::prototypeDirectory/Misc/Applications/addRNAoptions.pl $tmpDir/out.mf 0 2>&1);
 	die $diePrefix."perl addRNAoptions.pl execution failed: $perl" if ($? != 0);
+	print STDERR "compiling ... " if ($verbose);
+	my $start_make = Time::HiRes::gettimeofday();
 	my $make = qx($Settings::BINARIES{make} -f out.mf CPPFLAGS_EXTRA="-I $Settings::prototypeDirectory -ffast-math" LDLIBS="-lrnafast" 2>&1);
 	die $diePrefix."make execution failed: $make" if ($? != 0);
-
+	print STDERR " done in ".sprintf("%.2f seconds.\n", Time::HiRes::gettimeofday() - $start_make) if ($verbose);
+	
 	my $seq = $refHash_sequence->{sequence};
 	$seq =~ s/t/u/gi;
+	print STDERR "running ..." if ($verbose);
+	my $start_run = Time::HiRes::gettimeofday();
 	my $tdmResult = qx(./out $tdmCall "$seq" 2>&1); 
 	die $diePrefix."TDM execution failed: $tdmResult" if ($? != 0);
+	print STDERR " done in ".sprintf("%.2f seconds.\n", Time::HiRes::gettimeofday() - $start_run) if ($verbose);
 	
 	$tdmResult =~ s/Answer://;
 	chomp $tdmResult;
