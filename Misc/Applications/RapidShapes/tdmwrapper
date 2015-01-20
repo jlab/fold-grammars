@@ -1,0 +1,154 @@
+#!/usr/bin/env perl
+
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+
+use lib getPath($0)."../lib/";
+
+use strict;
+use warnings;
+use Data::Dumper;
+use foldGrammars::Settings;
+use foldGrammars::Utils;
+use foldGrammars::References;
+use Getopt::Long;
+use POSIX 'isatty';
+use File::Temp qw/ tempfile tempdir /;
+
+our $GRAMMAR_NODANGLE = 'nodangle';
+our $GRAMMAR_OVERDANGLE = 'overdangle';
+our $GRAMMAR_MICROSTATE = 'microstate';
+our $GRAMMAR_MACROSTATE = 'macrostate';
+
+our @ALLMODES = ('DEFAULT');
+@References::ORDER = ('mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010');
+
+my %PARAM;
+$PARAM{temperature} = {modes => \@ALLMODES, key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
+$PARAM{param} = {modes => \@ALLMODES, key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [".References::getNumber('mat:dis:chi:schroe:zuk:tur:2004')."] and [".References::getNumber('tur:mat:2009')."])."};
+$PARAM{allowlp} = {modes => \@ALLMODES, key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
+$PARAM{shapelevel} = {modes => \@ALLMODES, key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels, where 5 is the most abstract and 1 the most concrete one.\nLevel 1 abstracts from all lengths (unpaired regions and stacks) and is the most concrete level. In Level 2 unpaired regions between components (e.g. between two hairpins) are not recognized. Level 3 does not differentiate between different types of helix interruptions like intern loops or bulges. Level 4 does only recognize internal loops as helix interrutions and finally in level 5 all interruptions are ignored, thus only ordering and nesting of hairpins and multiloops are shown. (see ".References::getNumber('jan:gie:2010')."] for more formal shape level definitions)\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
+$PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => "We expect that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
+$PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => 'RapidShapes_', info => "We expect a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)"."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
+$PARAM{grammar} = {modes => \@ALLMODES, key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could perform surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"$GRAMMAR_OVERDANGLE\". See [".References::getNumber('jan:schud:ste:gie:2011')."] for further details."};
+$PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
+
+my $settings = {mode => 'DEFAULT'};
+foreach my $param (keys %PARAM) {
+	$settings->{$param} = $PARAM{$param}->{default};
+}
+my %help = ();
+foreach my $param (keys %PARAM) {
+	my $optionSec = $PARAM{$param}->{key};
+	$optionSec .= "=".$PARAM{$param}->{type} if (exists $PARAM{$param}->{type});
+	$help{$optionSec} = \$settings->{$param};
+}
+&GetOptions( 	
+	%help
+);
+
+checkParameters($settings, \%PARAM);
+
+#this is a perl wrapper to compile a TDM and run it with an RNA sequence, thus input is the shape string and the sequence
+my ($shapeString, $sequence) = @ARGV;
+usage() if (@ARGV != 2);
+doComputation($shapeString, {header => 'unnamed sequence', sequence => $sequence}, $settings);
+
+sub checkParameters {
+	my ($settings, $refHash_params) = @_;
+	
+	my $diePrefix = "wrong command line parameter:\n  ";
+	
+	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
+	my @additionalBins = ();
+	foreach my $grammar (keys (%Settings::TDMfiles)) {
+		foreach my $level (5,4,3,2,1) {
+			push @additionalBins, 'tdm_'.$grammar.'_'.$level;
+		}
+	}
+	Utils::checkBinaryPresents($settings, $diePrefix, ['DEFAULT'], \@additionalBins, $refHash_params);
+
+	die $diePrefix."the parameter file you specified could not be found.\n" if ((defined $settings->{'param'}) && (not -e $settings->{'param'}));
+	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
+	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
+	$settings->{'grammar'} = lc($settings->{'grammar'});
+	die $diePrefix."there is no grammar \"".$settings->{'grammar'}."\". Please select one of \"$GRAMMAR_NODANGLE\", \"$GRAMMAR_OVERDANGLE\", \"$GRAMMAR_MICROSTATE\" or \"$GRAMMAR_MACROSTATE\".\n" if ($settings->{'grammar'} !~ m/^nodangle|overdangle|microstate|macrostate$/i);
+
+	my ($programPath, $programName) = @{Utils::separateDirAndFile($0)};
+	$programPath = "./" if (not defined $programPath);
+	$settings->{'binarypath'} = $programPath if (not defined $settings->{'binarypath'});
+}
+
+sub doComputation {
+	my ($shapestring, $refHash_sequence, $settings) = @_;
+	
+	if ($refHash_sequence->{sequence} !~ m/^\s*((A|C|G|U|T)+)\s*$/i) {
+		print STDERR "sequence '".$refHash_sequence->{header}."' has been skipped, due to non RNA letter. Only A,C,G,U,T,a,c,g,u,t are allowed.";
+	}
+	my $seq = $refHash_sequence->{sequence};
+	$seq =~ s/t/u/gi;
+
+	my $tmpdir = tempdir(CLEANUP => 1);
+	#3) compile TDM generator if not available
+		print STDERR "TDM for '".$shapestring."' in level ".$settings->{shapelevel}." of grammar '".$settings->{grammar}."':\n";
+		my $bin_tdmGenerator = getCompilerBinary($settings);
+		my $ljshape = $shapestring;
+		$ljshape =~ s/\[/L/g;
+		$ljshape =~ s/\]/J/g;
+		my $alg_pfunc = "alg_pfunc";
+		if ($settings->{grammar} eq 'macrostate') {
+			$alg_pfunc = "alg_pfunc_macrostate";
+		} elsif ($settings->{grammar} eq 'overdangle') {
+			$alg_pfunc = "alg_pfunc_overdangle";
+		}
+		my $pfShape = Utils::compileAndrunTDM($shapestring, $settings, {header => 'unnamed sequence', sequence => $sequence}, "print times");		
+		print STDERR "\n";
+	print $pfShape;
+}
+
+sub getCompilerBinary {
+	my ($refHash_settings) = @_;
+	return Utils::absFilename($refHash_settings->{binarypath}.'/'.$refHash_settings->{binaryprefix}.'tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapelevel});
+}
+
+sub usage {
+	my ($settings) = @_;
+
+my $HELP = <<EOF;
+# tdmclient: a wrapper to compile and run one TDM with one RNA sequence
+#        Stefan Janssen (bibi-help\@techfak.uni-bielefeld.de)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+USAGE:
+perl tdmclient [-options] <shapeString> <fasta file name or RNA sequence>
+
+EOF
+;
+
+	$HELP .= Utils::printIdent(" ", "This is a stand alone wrapper script to compile one TDM (thermodynamic matcher) for a given shape string and run it with exactly one RNA sequence. Usually, this is used for a parallel version of RapidShapes running with a grid engine.")."\n";
+	$HELP .= "GENERAL OPTIONS:\n";
+	for my $par ('shapelevel','grammar','allowlp','temperature','param') {
+		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
+	}
+	$HELP .= "MISC OPTIONS:\n";
+	for my $par ('help','binarypath','binaryprefix') {
+		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
+	}
+
+	$HELP .= "REFERENCES:\n";
+	foreach my $refID ('mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011') {
+		$HELP .= References::printReference($refID);
+	}
+	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
+	foreach my $refID ('jan:gie:2010') {
+		$HELP .= References::printReference($refID);
+	}
+
+	print $HELP;
+	exit(0);
+}
