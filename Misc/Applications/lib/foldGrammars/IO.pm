@@ -342,8 +342,6 @@ sub parse_acm {
 sub output {
 	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex, $refHash_pfall) = @_;
 
-	print "  sequence does not satisfy the matchers motif.\n" if (($settings->{mode} eq $Settings::MODE_LOCOMOTIF) && (scalar(keys(%{$predictions})) < 1));
-	
 	if ($firstSequenceReady eq 'false') {
 		$firstSequenceReady = 'true';
 	} else {
@@ -382,6 +380,7 @@ sub output {
 			}
 		} else {
 			print ">".$input->{header}."\n" if (exists $input->{sequence}); #input is a fasta sequence
+			print "  sequence does not satisfy the matchers motif.\n" if (($settings->{mode} eq $Settings::MODE_LOCOMOTIF) && (scalar(keys(%{$predictions})) < 1));	
 		}
 	
 	my @windowPositions = sort {splitFields($a)->[0] <=> splitFields($b)->[0]} keys(%{$predictions});
