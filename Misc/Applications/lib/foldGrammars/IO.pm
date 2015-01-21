@@ -202,6 +202,8 @@ sub parse {
 			if (($settings->{mode} eq $Settings::MODE_LOCOMOTIF) && ($line =~ m/^\( (.+?) , (.+?) \)$/)) {
 				#( -1440 , ....[[[..{{{{{{{.......]]]..}}}}}}}.............(((((((.......))))))).................. )
 				($energy, $structure) = ($1/100,$2);
+			} elsif ($line =~ m/^\[\]$/) {
+				#sequence does not fit the matcher
 			}
 			if (defined $energy || defined $structure) {
 				$fieldLengths{energy} = length(formatEnergy($energy)) if (length(formatEnergy($energy)) > $fieldLengths{energy});
