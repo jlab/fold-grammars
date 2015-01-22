@@ -1,8 +1,5 @@
 #!/usr/bin/env perl
 
-our $PROGID = 'rapidshapes';
-
-
 sub getPath {
 	my ($url) = @_;
 	my @parts = split(m|/|, $url);
@@ -19,62 +16,32 @@ use Data::Dumper;
 use foldGrammars::Settings;
 use foldGrammars::Utils;
 use foldGrammars::References;
+use foldGrammars::RapidShapes;
 use Getopt::Long;
 use POSIX 'isatty';
 
-our $GRAMMAR_NODANGLE = 'nodangle';
-our $GRAMMAR_OVERDANGLE = 'overdangle';
-our $GRAMMAR_MICROSTATE = 'microstate';
-our $GRAMMAR_MACROSTATE = 'macrostate';
-
-our $TASK_PFALL = 'pfall';
-our $TASK_TDMRUN = 'tdmrun';
-
-our @ALLMODES = ($Settings::MODE_SAMPLE, $Settings::MODE_KBEST, $Settings::MODE_LIST, $Settings::MODE_SUBOPT);
-@References::ORDER = ('mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','voss:gie:reh:2006','jan:gie:2010');
-
-my %PARAM;
-$PARAM{mode} = {modes => \@ALLMODES, key => 'mode', gapc => undef, type => 's', default => $Settings::MODE_SAMPLE, info => "Set the \"guess\" mode as one of the strings \"$Settings::MODE_SAMPLE\" (which is default), \"$Settings::MODE_KBEST\" \"$Settings::MODE_SUBOPT\" or \"$Settings::MODE_LIST\"."};
-$PARAM{temperature} = {modes => \@ALLMODES, key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
-$PARAM{param} = {modes => \@ALLMODES, key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [".References::getNumber('mat:dis:chi:schroe:zuk:tur:2004')."] and [".References::getNumber('tur:mat:2009')."])."};
-$PARAM{allowlp} = {modes => \@ALLMODES, key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
-$PARAM{absolutedeviation} = {modes => [$Settings::MODE_SUBOPT], key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation)."};
-$PARAM{relativedeviation} = {modes => [$Settings::MODE_SUBOPT], key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation)."};
-$PARAM{shapelevel} = {modes => \@ALLMODES, key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels, where 5 is the most abstract and 1 the most concrete one.\nLevel 1 abstracts from all lengths (unpaired regions and stacks) and is the most concrete level. In Level 2 unpaired regions between components (e.g. between two hairpins) are not recognized. Level 3 does not differentiate between different types of helix interruptions like intern loops or bulges. Level 4 does only recognize internal loops as helix interrutions and finally in level 5 all interruptions are ignored, thus only ordering and nesting of hairpins and multiloops are shown. (see ".References::getNumber('jan:gie:2010')."] for more formal shape level definitions)\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
-$PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
-$PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => $Settings::PROGINFOS{$PROGID}->{name}." expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
-$PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => 'RapidShapes_', info => $Settings::PROGINFOS{$PROGID}->{name}." expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)"."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
-$PARAM{probdecimals} = {modes => \@ALLMODES, key => 'probDecimals', type => 'i', default => 7, info => "Sets the number of digits used for printing shape probabilities.\n<int> must be a positive integer number.\nDefault is @(DEFAULT)."};
-$PARAM{numsamples} = {modes => [$Settings::MODE_SAMPLE], key => 'numSamples', type => 'i', gapc => 'r', default => 1000, info => "Sets the number of samples that are drawn to estimate shape probabilities.\nIn our experience, 1000 iterations are sufficient to achieve reasonable results for shapes with high probability. Thus, default is @(DEFAULT)."};
-$PARAM{grammar} = {modes => \@ALLMODES, key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could perform surprisingly well.\n \n\"$GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"$GRAMMAR_OVERDANGLE\". See [".References::getNumber('jan:schud:ste:gie:2011')."] for further details."};
-$PARAM{alpha} = {modes => \@ALLMODES, key => 'alpha', gapc => undef, type => 'f', default => 0.9, info =>, $Settings::PROGINFOS{$PROGID}->{name}." computes individual shape class probabilities until either alpha percent of the folding space is explored or nor more guessed shape classes are uncomputed. We suggest an alpha of 90% or less."};
-$PARAM{name} = {modes => \@ALLMODES, key => 'name', gapc => undef, type => 's', default => "unknown sequence", info =>, "set a name for the input sequence, i.e. the header for a fasta like output."};
-$PARAM{cluster} = {modes => \@ALLMODES, key => 'cluster', gapc => undef, type => 's', default => undef, info =>, "You might want to compute probabilities for a multipe fasta file. If you have a Oracle Grid Engin at your fingertips, you can prepare an array job for fasta file by providing it here to the parameter --@(cluster)."};
-$PARAM{kbest} = {modes => [$Settings::MODE_KBEST], key => 'kbest', gapc => 'k', type => 'i', default => '5', info => $Settings::PROGINFOS{$PROGID}->{name}." will first perform a simple shape analysis for the best 'kbest' shapes. Choice of an appropriate value for --@(kbest) is not easy, since it depends on sequence length and base composition.\nDefault is @(DEFAULT), which is definitively wrong!"};
-$PARAM{list} = {modes => [$Settings::MODE_LIST], key => 'list', gapc => undef, type => 's', default => undef, info => "You might want to manually provide a list of shape classes that should be checked via TDMs. Individual shapes are separated by whitespaces, commas or semicolons."};
-
 my $settings = {};
-foreach my $param (keys %PARAM) {
-	$settings->{$param} = $PARAM{$param}->{default};
+foreach my $param (keys %RapidShapes::PARAM) {
+	$settings->{$param} = $RapidShapes::PARAM{$param}->{default};
 }
 my %help = ();
-foreach my $param (keys %PARAM) {
-	my $optionSec = $PARAM{$param}->{key};
-	$optionSec .= "=".$PARAM{$param}->{type} if (exists $PARAM{$param}->{type});
+foreach my $param (keys %RapidShapes::PARAM) {
+	my $optionSec = $RapidShapes::PARAM{$param}->{key};
+	$optionSec .= "=".$RapidShapes::PARAM{$param}->{type} if (exists $RapidShapes::PARAM{$param}->{type});
 	$help{$optionSec} = \$settings->{$param};
 }
 &GetOptions( 	
 	%help
 );
 
-checkParameters($settings, \%PARAM);
+RapidShapes::checkParameters($settings, \%RapidShapes::PARAM);
 
 if (defined $settings->{'cluster'}) {
 	Utils::applyFunctionToFastaFile($settings->{'cluster'}, \&doComputation, $settings);
 } else {
 	if (@ARGV == 0) {
 		if (defined $settings->{'help'}) {
-			usage();
+			RapidShapes::usage();
 		} else {
 			if (isatty(*STDIN)) {
 				print "waiting for your plain RNA sequence or fasta filename.\n";
@@ -90,7 +57,7 @@ if (defined $settings->{'cluster'}) {
 			}
 		}
 	} else {
-		usage() if ((defined $settings->{'help'}) || (@ARGV > 1));
+		RapidShapes::usage() if ((defined $settings->{'help'}) || (@ARGV > 1));
 		my ($input) = @ARGV;
 		if (-e $input) {
 			Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
@@ -98,49 +65,6 @@ if (defined $settings->{'cluster'}) {
 			my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
 			doComputation(\%sequence, $settings);
 		}
-	}
-}
-
-sub checkParameters {
-	my ($settings, $refHash_params) = @_;
-	
-	my $diePrefix = "wrong command line parameter:\n  ";
-	
-	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
-	my @additionalBins = ();
-	foreach my $grammar (keys (%Settings::TDMfiles)) {
-		push @additionalBins, 'pfall_'.$grammar;
-		foreach my $level (5,4,3,2,1) {
-			push @additionalBins, 'tdm_'.$grammar.'_'.$level;
-		}
-	}
-	Utils::checkBinaryPresents($settings, $diePrefix, [$Settings::MODE_CAST], \@additionalBins, $refHash_params);
-
-	die $diePrefix."the parameter file you specified could not be found.\n" if ((defined $settings->{'param'}) && (not -e $settings->{'param'}));
-	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
-	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
-	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." and --".$PARAM{'relativedeviation'}->{key}." cannot be set at the same time!\n" if ((defined $settings->{'absolutedeviation'}) && ($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}));
-	$settings->{'grammar'} = lc($settings->{'grammar'});
-	die $diePrefix."there is no grammar \"".$settings->{'grammar'}."\". Please select one of \"$GRAMMAR_NODANGLE\", \"$GRAMMAR_OVERDANGLE\", \"$GRAMMAR_MICROSTATE\" or \"$GRAMMAR_MACROSTATE\".\n" if ($settings->{'grammar'} !~ m/^nodangle|overdangle|microstate|macrostate$/i);
-	die $diePrefix."--".$PARAM{'numsamples'}->{key}." must be a positive integer, otherwise shape frequencies cannot be estimated.\n" if ($settings->{'numsamples'} < 1);
-	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a positive integer number!\n" if ($settings->{'probdecimals'} < 0);
-	die $diePrefix."cannot read provided fasta file '".$settings->{cluster}."' for cluster job preparation.\n" if ((defined $settings->{cluster}) && (not -e $settings->{cluster}));
-
-	my ($programPath, $programName) = @{Utils::separateDirAndFile($0)};
-	$programPath = "./" if (not defined $programPath);
-	$settings->{'binarypath'} = $programPath if (not defined $settings->{'binarypath'});
-	
-	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a positive integer number!\n" if ($settings->{'probdecimals'} < 0);
-	
-	if ($settings->{'mode'} eq $Settings::MODE_LIST) {
-		my @shapes = ();
-		foreach my $s (split(m/\s+|,|;/, $settings->{list})) {
-			die $diePrefix."your list of shapes contains at least one invalid shape class string: \"".$s."\"!\n" if ($s !~ m/^(\[|\]|\_)+$/);
-			#maybe one wants to check here for invalid shape strings, composed by the correct alphabet ?!
-			push @shapes, {shapestring => $s};
-		}
-		die $diePrefix."please specify at least one shape class via parameter --".$PARAM{'list'}->{key}.".\n" if (@shapes <= 0);
-		$settings->{list} = \@shapes;
 	}
 }
 
@@ -186,7 +110,7 @@ sub doComputation {
 			my $command = "";
 			foreach my $param (keys %{$settings}) {
 				next if (($param eq 'name') || ($param eq 'cluster') || ($param eq 'binPath'));
-				$command .= " --".$PARAM{$param}->{key}.'="'.$settings->{$param}.'"' if (defined $settings->{$param});
+				$command .= " --".$RapidShapes::PARAM{$param}->{key}.'="'.$settings->{$param}.'"' if (defined $settings->{$param});
 			}
 			$command .= ' --binPath="'.$workingDirectory.'/'.$fastaFile.'.cluster/"';
 			$command .= ' --name="$header"';
@@ -203,18 +127,18 @@ sub doComputation {
 		#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
 			my @shapes = ();
 			if ($settings->{mode} eq $Settings::MODE_KBEST) {
-				@shapes = @{guessShapesKbest($seq, $settings, $workingDirectory)};
+				@shapes = @{RapidShapes::guessShapesKbest($seq, $settings)};
 			} elsif ($settings->{mode} eq $Settings::MODE_SUBOPT) {
-				@shapes = @{guessShapesSubopt($seq, $settings, $workingDirectory)};
+				@shapes = @{RapidShapes::guessShapesSubopt($seq, $settings)};
 			} elsif ($settings->{mode} eq $Settings::MODE_LIST) {
 				@shapes = @{$settings->{list}};
 				print STDERR "step 1: using a provided list of ".@shapes." shapes.\n";		
 			} else {
-				@shapes = @{guessShapesSampling($seq, $settings, $workingDirectory)};
+				@shapes = @{RapidShapes::guessShapesSampling($seq, $settings)};
 			}
 
 		#2) determining partition function value for complete search space	
-			my $pfAll = getPFall($seq, $settings, $workingDirectory);
+			my $pfAll = RapidShapes::getPFall($seq, $settings);
 			
 		#3) compile TDM generator if not available
 			print STDERR "step 3: compute exact probabilities for guessed shapes:\n";
@@ -258,156 +182,27 @@ sub doComputation {
 	}	
 }
 
-sub buildCommand {
-	my ($settings, $task) = @_;
-	#~ $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$Settings::MODE_SAMPLE.'_'.$refHash_settings->{grammar}
-	my $cmd = "";
-	$cmd .= $settings->{'binarypath'};
-	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
-	$cmd .= $settings->{'binaryprefix'};
-	if (defined $task) {
-		if ($task eq $TASK_PFALL) {
-			$cmd .= $task.'_';
-			$cmd .= $settings->{'grammar'};
-		} elsif ($task eq $TASK_TDMRUN) {
-			$cmd = 'out';
-		}
-	} else {
-		my $modename = $settings->{'mode'};
-		$cmd .= $settings->{'mode'}.'_';
-		$cmd .= $settings->{'grammar'};
-	}
-	
-	$cmd .= " -".$PARAM{temperature}->{gapc}." ".$settings->{'temperature'} if ($settings->{'temperature'} != $PARAM{temperature}->{default});
-	$cmd .= " -".$PARAM{param}->{gapc}." ".$settings->{'param'} if (defined $settings->{'param'});
-	$cmd .= " -".$PARAM{allowlp}->{gapc}." ".$settings->{'allowlp'} if ($settings->{'allowlp'} != $PARAM{allowlp}->{default});
-	if (not defined $task) {
-		$cmd .= " -".$PARAM{shapelevel}->{gapc}." ".$settings->{'shapelevel'} if ($settings->{'shapelevel'} != $PARAM{shapelevel}->{default});
-		if ($settings->{'mode'} eq $Settings::MODE_SAMPLE) {
-			$cmd .= " -".$PARAM{numsamples}->{gapc}." ".$settings->{'numsamples'};
-		} elsif ($settings->{'mode'} eq $Settings::MODE_KBEST) {
-			$cmd .= " -".$PARAM{kbest}->{gapc}." ".$settings->{'kbest'};
-		} elsif ($settings->{'mode'} eq $Settings::MODE_SUBOPT) {
-			$cmd .= " -".$PARAM{relativedeviation}->{gapc}." ".$settings->{'relativedeviation'} if ($settings->{'relativedeviation'} != $PARAM{relativedeviation}->{default});
-			$cmd .= " -".$PARAM{absolutedeviation}->{gapc}." ".$settings->{'absolutedeviation'} if (defined $settings->{'absolutedeviation'});
-		}
-		
-		
-	}
-
-	return $cmd;
-}
 
 
 
-sub getPFall {
-	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
-	
-	print STDERR "step 2: computing partition function value for complete folding space ... ";
-	my $command = buildCommand($refHash_settings, $TASK_PFALL);
-	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	my $pfAll = parsePFanswer(qx($command -f $inputFile));
-	unlink $inputFile;
-	print STDERR $pfAll.".\n";
-	
-	return $pfAll;
-}
 
 sub getCompilerBinary {
 	my ($refHash_settings) = @_;
 	return Utils::absFilename($refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.'tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapelevel});
 }
 
-sub guessShapesSampling {
-	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
-	
-	print STDERR "step 1: guess shapes, via sampling, to be further analyzed via TDMs ... ";
-	my %sampledShapes = ();
-	my $command = buildCommand($refHash_settings);
-	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	foreach my $line (split(m/\r?\n/, qx($command -f $inputFile))) {
-		#( 0.0135213 , ( ( ( [] , -20 ) , ...((......))...... ) , 0.0047145 ) )
-		if ($line =~ m/\( .+? , \( \( \( (.+?) , .+? \) , .+? \) , .+? \) \)/) {
-			$sampledShapes{$1}++;
-		}
-	}
-	unlink $inputFile;
-	my @shapes = ();
-	foreach my $shape (sort {$sampledShapes{$b} <=> $sampledShapes{$a}} keys(%sampledShapes)) {
-		push @shapes, {shapestring => $shape, frequency => $sampledShapes{$shape}/$refHash_settings->{numsamples}};
-	}
-	print STDERR "found ".scalar(@shapes)." promising shapes.\n";
 
-	return \@shapes;
-}
+	
 
-sub guessShapesKbest {
-	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
 	
-	print STDERR "step 1: guess shapes, via simple shape analysis, to be further analyzed via TDMs ... ";
-	my %kbestShapes = ();
-	my $command = buildCommand($refHash_settings);
-	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	foreach my $line (split(m/\r?\n/, qx($command -f $inputFile))) {
-		if ($line =~ m/\(\s+(\S+)\s+,\s+(.+?)\s+\)/) { #( [_[_[[]_]_]] , 70 )
-			$kbestShapes{$1} = $2;
-		}
-	}
-	unlink $inputFile;
-	my @shapes = ();
-	foreach my $shape (sort {$kbestShapes{$a} <=> $kbestShapes{$b}} keys(%kbestShapes)) {
-		push @shapes, {shapestring => $shape, mfe => $kbestShapes{$shape}/100};
-	}
-	print STDERR "found ".scalar(@shapes)." promising shapes.\n";
-	
-	return \@shapes;
-}
-	
-sub guessShapesSubopt {
-	my ($inputSequence, $refHash_settings, $workingDirectory) = @_;
-	
-	print STDERR "step 1: guess shapes, via suboptimal shape analysis, to be further analyzed via TDMs ... ";
-	my %energyShapes = ();
-	my $command = buildCommand($refHash_settings);
-	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	foreach my $line (split(m/\r?\n/, qx($command $inputFile))) {
-		if ($line =~ m/\( (.+?) , \( \( \S+ , (\S+) \) , .+? \) \)/) { #( -120 , ( ( ...((((....))))...... , [] ) , 0.0131327 ) )
-			$energyShapes{$2} = $1;
-		}
-	}
-	unlink $inputFile;
-	my @shapes = ();
-	foreach my $shape (sort {$energyShapes{$a} <=> $energyShapes{$b}} keys(%energyShapes)) {
-		push @shapes, {shapestring => $shape, mfe => $energyShapes{$shape}/100};
-	}
-	print STDERR "found ".scalar(@shapes)." promising shapes.\n";
 
-	return \@shapes;
-}
-	
-sub parsePFanswer {
-	my @inputrows = @_;
-	
-	foreach my $line (split(m/\r?\n/, join("\n", @inputrows))) {
-		if (($line !~ m/^\s*$/) && ($line !~ m/Answer/)) {
-			if ($line =~ m/\[\]/) {
-				return 0; #it might happen that the input sequence does not fit a shape class at all. Thus, GAP answer is the empty list [] which should be interpreted as 0.
-			} else {
-				return $line;
-			}
-		}
-	}
-	
-	return undef;
-}
-	
 
 sub runTDM {
 	my ($tmpDir, $refHash_settings, $inputSequence) = @_;
 	print STDERR "done.\texecuting ... "; 
-	my $command = buildCommand($refHash_settings, $TASK_TDMRUN);
+	my $command = RapidShapes::buildCommand($refHash_settings, $RapidShapes::TASK_TDMRUN);
 	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	my $pfShape = parsePFanswer(qx($tmpDir/$command -f $inputFile));
+	my $pfShape = RapidShapes::parsePFanswer(qx($tmpDir/$command -f $inputFile));
 	unlink $inputFile;
 	return $pfShape;
 }
@@ -426,49 +221,3 @@ sub reformatFasta {
 
 
 
-sub usage {
-	my ($settings) = @_;
-
-my $HELP = <<EOF;
-# $Settings::PROGINFOS{$PROGID}->{name}: rapidly compute RNA abstract shape probabilties.
-#        version $Settings::PROGINFOS{$PROGID}->{version} ($Settings::PROGINFOS{$PROGID}->{date})
-#        Stefan Janssen (bibi-help\@techfak.uni-bielefeld.de)
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-USAGE:
-perl $Settings::PROGINFOS{$PROGID}->{name} [-options] <fasta file name or RNA sequence>
-
-EOF
-;
-
-	$HELP .= Utils::printIdent(" ", "First step of ".$Settings::PROGINFOS{$PROGID}->{name}." is to somehow guess promising shape classes, whoes probability is exactly computed via thermodynamic matchers later on.\n".$Settings::PROGINFOS{$PROGID}->{name}." provides four different ways of \"guessing\" these shape classes:")."\n";
-	$HELP .= Utils::printIdent("  ".$Settings::MODE_SAMPLE." : ", Utils::usage_convertInfoText("estimate shape frequencies via sampling a specific number of secondary structure from the folding-space, via stochastical backtracing. See options --@(numsamples).\n(default in ".$Settings::PROGINFOS{$PROGID}->{name}.")", \%PARAM))."\n";	
-	$HELP .= Utils::printIdent("  ".$Settings::MODE_KBEST."  : ", Utils::usage_convertInfoText("a simple shape class analysis is performed and the kbest energetically ordered shape classes are selected. See option --@(kbest).", \%PARAM))."\n";	
-	$HELP .= Utils::printIdent("  ".$Settings::MODE_SUBOPT." : ", Utils::usage_convertInfoText("similar to \"$Settings::MODE_KBEST\". Instead of the kbest energetically shape classes, those shape classes are used whoes energy deviates up to a certain threshlold from minimal free energy for the input sequence. See options --@(absolutedeviation) and --@(relativedeviation).", \%PARAM))."\n";	
-	$HELP .= Utils::printIdent("  ".$Settings::MODE_LIST."   : ", Utils::usage_convertInfoText("If you have an alternative method of guessing shapes, you can also provide a list of these shape classes. Take care, that your input sequence can fold into these shapes at all! See option --@(list).", \%PARAM))."\n";	
-
-	$HELP .= "GUESS MODE SPECIFIC OPTIONS:\n";
-	for my $par ('mode', 'numsamples','kbest','absolutedeviation','relativedeviation','list') {
-		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
-	}
-	$HELP .= "GENERAL OPTIONS:\n";
-	for my $par ('alpha','shapelevel','grammar','allowlp','temperature','param') {
-		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
-	}
-	$HELP .= "MISC OPTIONS:\n";
-	for my $par ('help','name','cluster','probdecimals','binarypath','binaryprefix') {
-		$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
-	}
-
-	$HELP .= "REFERENCES:\n";
-	foreach my $refID ('mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','voss:gie:reh:2006') {
-		$HELP .= References::printReference($refID);
-	}
-	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
-	foreach my $refID ('jan:gie:2010') {
-		$HELP .= References::printReference($refID);
-	}
-
-	print $HELP;
-	exit(0);
-}
