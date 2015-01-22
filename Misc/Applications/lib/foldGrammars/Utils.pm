@@ -32,7 +32,7 @@ sub compileAndrunTDM {
 	
 	my $tmpDir = createUniqueTempDir($Settings::tmpdir, "tdmrun");
 	#~ my $tmpDir = '/tmp/HELP/'; qx($Settings::BINARIES{rm} -rf $tmpDir && $Settings::BINARIES{mkdir} $tmpDir -p); chdir($tmpDir);
-	
+
 	my $mkdir = qx($Settings::BINARIES{mkdir} $tmpDir/Grammars -p 2>&1);
 	die $diePrefix."cannot mkdir subdirectory Grammars in '$tmpDir' dir: $mkdir" if ($? != 0);
 	my $ln = qx($Settings::BINARIES{ln} -s $Settings::prototypeDirectory/$grammar.gap $tmpDir/ 2>&1);
@@ -47,7 +47,7 @@ sub compileAndrunTDM {
 	die $diePrefix."gapc execution failed: $gapc" if ($? != 0);
 	my $perl = qx($Settings::BINARIES{perl} $Settings::prototypeDirectory/Misc/Applications/addRNAoptions.pl $tmpDir/out.mf 0 2>&1);
 	die $diePrefix."perl addRNAoptions.pl execution failed: $perl" if ($? != 0);
-	print STDERR "compiling ... " if ($verbose);
+	print STDERR "compiling ..." if ($verbose);
 	my $start_make = Time::HiRes::gettimeofday();
 	my $make = qx($Settings::BINARIES{make} -f out.mf CPPFLAGS_EXTRA="-I $Settings::prototypeDirectory -ffast-math" LDLIBS="-lrnafast" 2>&1);
 	die $diePrefix."make execution failed: $make" if ($? != 0);
@@ -67,7 +67,8 @@ sub compileAndrunTDM {
 	chdir($pwd);
 	my $remove = qx($Settings::BINARIES{rm} -rf $tmpDir 2>&1);
 	die $diePrefix."removing temporary directory '$tmpDir' failed: $remove" if ($? != 0);
-	
+	print STDERR "finished.\n" if ($verbose);
+
 	return $tdmResult;
 }
 
