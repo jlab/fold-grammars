@@ -16,6 +16,8 @@ install-program:
 	if [ ! -d "$(PREFIX)/bin" ]; then $(INSTALL) -d $(PREFIX)/bin; fi;
 	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
 	$(INSTALL) -m 755 RapidShapes $(PREFIX)/bin
+	$(INSTALL) -m 755 RapidShapes_bibiserv $(PREFIX)/bin
+	$(INSTALL) -m 755 tdmwrapper $(PREFIX)/bin
 	if [ ! -d "$(PREFIX)/share/fold-grammars" ]; then $(INSTALL) -d $(PREFIX)/share/fold-grammars; fi;
 	if [ ! -d "$(PREFIX)/share/fold-grammars/Misc/Applications" ]; then $(INSTALL) -d $(PREFIX)/share/fold-grammars/Misc/Applications; fi;
 	$(RSYNC) -av $(foldgrammarsfilelist) $(PREFIX)/share/fold-grammars/
