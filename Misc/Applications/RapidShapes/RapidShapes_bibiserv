@@ -267,10 +267,11 @@ sub doComputation {
 	$seq =~ s/t/u/gi;
 
 	my $workingDirectory = qx(pwd); chomp $workingDirectory;
-	my $oldTMPDir = $ENV{TMPDIR};
+	my $oldTMPDir = undef;
+	$oldTMPDir = $ENV{TMPDIR} if (exists $ENV{TMPDIR});
 	$ENV{TMPDIR} = $Settings::RAPIDSHAPES_BIBISERV{clusterwide_tempdir};
 	my $tmpdir = tempdir(CLEANUP => 1);
-	$ENV{TMPDIR} = $oldTMPDir;
+	$ENV{TMPDIR} = $oldTMPDir if (defined $oldTMPDir);
 
 	#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
 	my @shapes = ();
@@ -308,6 +309,7 @@ sub doComputation {
 
 	#3) compile TDM generator if not available
 		print STDERR "step 3: compute exact probabilities for guessed shapes via grid engine ...\n";
+		print STDERR "\ttemporary grid wide directory is '".$tmpdir."'.\n";
 		my $errDir = $tmpdir.'/ERR';
 		my $outDir = $tmpdir.'/OUT';
 		my $arrayJob =  $tmpdir.'/array.sh';
@@ -329,8 +331,8 @@ sub doComputation {
 			print ARRAY '#$ -e '.$errDir."\n";
 			print ARRAY '#$ -o '.$outDir."\n";
 			print ARRAY ''."\n";
-			print ARRAY 'header='.$refHash_sequence->{header}."\n";
-			print ARRAY 'sequence='.$refHash_sequence->{sequence}."\n";
+			print ARRAY 'header="'.$refHash_sequence->{header}."\"\n";
+			print ARRAY 'sequence="'.$refHash_sequence->{sequence}."\"\n";
 			print ARRAY 'shapestring=`'.$Settings::BINARIES{'head'}.' -n $SGE_TASK_ID '.$shapeListFile.' | '.$Settings::BINARIES{'tail'}.' -n 1`'."\n";
 			print ARRAY $Settings::BINARIES{'uname'}.' -a 1>&2'."\n";
 			my $command = "";
@@ -353,6 +355,7 @@ sub doComputation {
 		close (ARRAY);
 		my $qsubResult = qx($Settings::RAPIDSHAPES_BIBISERV{qsub} $arrayJob);
 		($gridID) = ($qsubResult =~ m/Your job-array (\d+)/);
+		print STDERR "\tsubmitted job $gridID to the grid.\n";
 		
 		my $sleepTime = $Settings::RAPIDSHAPES_BIBISERV{'sleepTimeInit'};
 		my $pfSum = 0;
