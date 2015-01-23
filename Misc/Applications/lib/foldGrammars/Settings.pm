@@ -52,6 +52,7 @@ our %BINARIES = (
 	'gs', 'gs',
 	'RNAsubopt', 'RNAsubopt-2.1.3',
 	'RNAfold', 'RNAfold-2.1.3',
+	'RNAalifold', 'RNAalifold-2.1.3',
 	'date', 'date',
 	'ln', 'ln',
 	'hybrid-ss-min', 'hybrid-ss-min-3.8',
@@ -66,6 +67,8 @@ our %BINARIES = (
 	'ghc','/vol/ghc-7.6/bin/ghc',
 	'time','time',
 	'dirname','dirname',
+	'qstat','qstat',
+	'qdel','qdel',
 );
 
 our %TDMfiles = (
@@ -110,10 +113,14 @@ our $RNAPARAM2004 = $Settings::bgapDir.'share/gapc/librna/rna_turner2004.par';
 
 #settings for RapidShapes on BiBiServ
 our %RAPIDSHAPES_BIBISERV = (
-	#~ 'clusterwide_tempdir', '/vol/tmp/',
-	'clusterwide_tempdir', '/tmp/',
-	'tdmwrapper_binary', '/home/sjanssen/Desktop/fold-grammars/Misc/Applications/RapidShapes/tdmwrapper',
-	'qsub', 'qsub -l virtual_free=6GB -l h_vmem=6GB -cwd ',
+	'clusterwide_tempdir', '/vol/tmp/',
+	'tdmwrapper_binary', '/vol/fold-grammars/src/Misc/Applications/RapidShapes/tdmwrapper',
+	'qsub', 'qsub -l virtual_free=6GB -l h_vmem=6GB -cwd -tc 10 ', #-tc controls the number of maximal parallel jobs for an array-job
+	'gridSH', '/usr/bin/sh',
+	'sleepTimeInit', '1', #initial number of seconds between two qstat requests
+	'sleepTimeMax', '60', #maximal number of seconds between two qstat requests
+	'wrapInputSequenceAfterChars', '70',
+	'htmlStatusFilename', 'status.html', #sets the filename to which the status reports should be written
 );
 
 1;
