@@ -40,6 +40,7 @@ $PARAM{name} = {modes => \@RapidShapes::ALLMODES, key => 'name', gapc => undef, 
 $PARAM{cluster} = {modes => \@RapidShapes::ALLMODES, key => 'cluster', gapc => undef, type => 's', default => undef, info =>, "You might want to compute probabilities for a multipe fasta file. If you have a Oracle Grid Engin at your fingertips, you can prepare an array job for fasta file by providing it here to the parameter --@(cluster)."};
 $PARAM{kbest} = {modes => [$Settings::MODE_KBEST], key => 'kbest', gapc => 'k', type => 'i', default => '5', info => $Settings::PROGINFOS{$PROGID}->{name}." will first perform a simple shape analysis for the best 'kbest' shapes. Choice of an appropriate value for --@(kbest) is not easy, since it depends on sequence length and base composition.\nDefault is @(DEFAULT), which is definitively wrong!"};
 $PARAM{list} = {modes => [$Settings::MODE_LIST], key => 'list', gapc => undef, type => 's', default => undef, info => "You might want to manually provide a list of shape classes that should be checked via TDMs. Individual shapes are separated by whitespaces, commas or semicolons."};
+$PARAM{varnaoutput} = {modes => \@RapidShapes::ALLMODES, key => 'varna', default => undef, type => 's', info => "Provide a file name to which a HTML formatted version of the output should be saved in."};
 
 
 sub parsePFanswer {
@@ -65,7 +66,9 @@ sub guessShapesSampling {
 	my %sampledShapes = ();
 	my $command = buildCommand($refHash_settings);
 	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	foreach my $line (split(m/\r?\n/, qx($command -f $inputFile))) {
+	my $result = qx($command -f $inputFile 2>&1);
+	Utils::qxDieMessage($command, $?);
+	foreach my $line (split(m/\r?\n/, $result)) {
 		#( 0.0135213 , ( ( ( [] , -20 ) , ...((......))...... ) , 0.0047145 ) )
 		if ($line =~ m/\( .+? , \( \( \( (.+?) , .+? \) , .+? \) , .+? \) \)/) {
 			$sampledShapes{$1}++;
@@ -88,7 +91,9 @@ sub guessShapesKbest {
 	my %kbestShapes = ();
 	my $command = buildCommand($refHash_settings);
 	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	foreach my $line (split(m/\r?\n/, qx($command -f $inputFile))) {
+	my $result = qx($command -f $inputFile 2>&1);
+	Utils::qxDieMessage($command, $?);
+	foreach my $line (split(m/\r?\n/, $result)) {
 		if ($line =~ m/\(\s+(\S+)\s+,\s+(.+?)\s+\)/) { #( [_[_[[]_]_]] , 70 )
 			$kbestShapes{$1} = $2;
 		}
@@ -110,7 +115,9 @@ sub guessShapesSubopt {
 	my %energyShapes = ();
 	my $command = buildCommand($refHash_settings);
 	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	foreach my $line (split(m/\r?\n/, qx($command $inputFile))) {
+	my $result = qx($command -f $inputFile 2>&1);
+	Utils::qxDieMessage($command, $?);
+	foreach my $line (split(m/\r?\n/, $result)) {
 		if ($line =~ m/\( (.+?) , \( \( \S+ , (\S+) \) , .+? \) \)/) { #( -120 , ( ( ...((((....))))...... , [] ) , 0.0131327 ) )
 			$energyShapes{$2} = $1;
 		}
@@ -135,6 +142,7 @@ sub getPFall {
 	my $command = buildCommand($refHash_settings, $TASK_PFALL);
 	my $inputFile = Utils::writeInputToTempfile($inputSequence);
 	my $pfAll = RapidShapes::parsePFanswer(qx($command -f $inputFile));
+	Utils::qxDieMessage($command, $?);	
 	unlink $inputFile;
 	print STDERR $pfAll.".\n";
 	
@@ -154,7 +162,7 @@ sub checkParameters {
 			push @additionalBins, 'tdm_'.$grammar.'_'.$level;
 		}
 	}
-	Utils::checkBinaryPresents($settings, $diePrefix, [$Settings::MODE_CAST], \@additionalBins, $refHash_params);
+	Utils::checkBinaryPresents($settings, $diePrefix, [$Settings::MODE_LIST], \@additionalBins, $refHash_params);
 
 	die $diePrefix."the parameter file you specified could not be found.\n" if ((defined $settings->{'param'}) && (not -e $settings->{'param'}));
 	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
@@ -252,7 +260,7 @@ EOF
 		$HELP .= Utils::printParamUsage($RapidShapes::PARAM{$par}, \%RapidShapes::PARAM, \@RapidShapes::ALLMODES)."\n";
 	}
 	$HELP .= "MISC OPTIONS:\n";
-	for my $par ('help','name','cluster','probdecimals','binarypath','binaryprefix') {
+	for my $par ('help','name','cluster','probdecimals','binarypath','binaryprefix','varnaoutput') {
 		$HELP .= Utils::printParamUsage($RapidShapes::PARAM{$par}, \%RapidShapes::PARAM, \@RapidShapes::ALLMODES)."\n";
 	}
 
@@ -267,6 +275,36 @@ EOF
 
 	print $HELP;
 	exit(0);
+}
+
+sub commandlineOutput {
+	my ($refHash_sequence, $settings, $refHash_waitlist, $pfAll) = @_;
+	
+	my %waitList = %{$refHash_waitlist};
+	my %predictions = ();
+	my $dummyKey = '0#'.length($refHash_sequence->{sequence});
+	my %fieldLengths = (
+		'energy', 0,
+		'partEnergy', 0,
+		'partCovar', 0,
+		'windowStartPos', 1,
+	);
+	foreach my $shapestring (keys(%waitList)) {
+		next if (not exists $waitList{$shapestring}->{answer});
+		$fieldLengths{energy} = length(IO::formatEnergy($waitList{$shapestring}->{answer}->{energy})) if (length(IO::formatEnergy($waitList{$shapestring}->{answer}->{energy})) > $fieldLengths{energy});
+
+		$predictions{$dummyKey}->{dummyblock}->{$waitList{$shapestring}->{answer}->{structure}} = {
+			pfunc => $waitList{$shapestring}->{answer}->{pfValue},
+			structureProb => $waitList{$shapestring}->{answer}->{pfStructure} / $pfAll,
+			shape => $shapestring,
+			score => $waitList{$shapestring}->{answer}->{energy},
+		};
+	}
+	if ($settings->{varnaoutput}) {
+		IO::outputVARNA(\%predictions, $refHash_sequence, 'RapidShapes', $settings, \%fieldLengths, {$dummyKey => $pfAll}, {}, 1, {});
+		IO::writeVarna($settings);
+	}
+	IO::output(\%predictions, $refHash_sequence, 'RapidShapes', $settings, \%fieldLengths, {$dummyKey => $pfAll}, {}, 1, {});
 }
 
 1;
