@@ -12,6 +12,7 @@ our $PROG_RNASHAPES = 'RNAshapes';
 our $PROG_PKISS = 'pKiss';
 our $PROG_PALIKISS = 'pAliKiss';
 our $PROG_LOCOMOTIF = 'Locomotif_wrapper';
+our $PROG_RAPIDSHAPES = 'RapidShapes';
 
 our $SEPARATOR = "  ";
 our $DATASEPARATOR = "#";
@@ -453,8 +454,8 @@ sub output {
 					@sortedStructures =  sort {(splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]) || ($predictions->{$windowPos}->{$blockPos}->{$a}->{shape} cmp $predictions->{$windowPos}->{$blockPos}->{$b}->{shape}) || ($a cmp $b)} @sortedStructures;
 				}
 			}
-			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$b}->{pfunc} <=> $predictions->{$windowPos}->{$blockPos}->{$a}->{pfunc}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_PROBS));
-			if (($settings->{mode} eq $Settings::MODE_SAMPLE)) {
+			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$b}->{pfunc} <=> $predictions->{$windowPos}->{$blockPos}->{$a}->{pfunc}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_PROBS) || ($program eq $PROG_RAPIDSHAPES));
+			if (($program ne $PROG_RAPIDSHAPES) && ($settings->{mode} eq $Settings::MODE_SAMPLE)) {
 				if (($program eq $PROG_PKISS) || ($program eq $PROG_PALIKISS)) {
 					@sortedStructures =  sort {($predictions->{$windowPos}->{$blockPos}->{$b}->{samples} <=> $predictions->{$windowPos}->{$blockPos}->{$a}->{samples}) || ($a cmp $b)} @sortedStructures;
 				} else {
@@ -495,7 +496,7 @@ sub output {
 			#END: define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
 			foreach my $structure (@sortedStructures) {
 				last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{pfunc}/$sumPfunc->{$windowPos} < $settings->{lowprobfilteroutput}));
-				last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
+				last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($program ne $PROG_RAPIDSHAPES) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
 				last if (($settings->{mode} eq $Settings::MODE_SHAPES) && (splitFields($predictions->{$windowPos}->{$blockPos}->{$structure}->{score})->[0] > $range));
 				
 				my @results = ($predictions->{$windowPos}->{$blockPos}->{$structure});
@@ -544,11 +545,11 @@ sub output {
 						}
 						
 					#shape probability if available and mode is right
-						if (($settings->{mode} eq $Settings::MODE_PROBS) || ($settings->{mode} eq $Settings::MODE_SAMPLE)) {
+						if (($settings->{mode} eq $Settings::MODE_PROBS) || ($settings->{mode} eq $Settings::MODE_SAMPLE) || ($program eq $PROG_RAPIDSHAPES)) {
 							print $SEPARATOR;
 							my $probability = 0;
-							$probability = $result->{pfunc}/$sumPfunc->{$windowPos} if ($settings->{mode} eq $Settings::MODE_PROBS);
-							$probability = $result->{samples} / $settings->{numsamples} if ($settings->{mode} eq $Settings::MODE_SAMPLE);
+							$probability = $result->{pfunc}/$sumPfunc->{$windowPos} if (($settings->{mode} eq $Settings::MODE_PROBS) || ($program eq $PROG_RAPIDSHAPES));
+							$probability = $result->{samples} / $settings->{numsamples} if (($program ne $PROG_RAPIDSHAPES) && ($settings->{mode} eq $Settings::MODE_SAMPLE));
 							print sprintf("%1.$settings->{'probdecimals'}f", $probability);
 						}
 						
@@ -695,8 +696,8 @@ sub outputVARNA {
 					@sortedStructures =  sort {(splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]) || ($predictions->{$windowPos}->{$blockPos}->{$a}->{shape} cmp $predictions->{$windowPos}->{$blockPos}->{$b}->{shape}) || ($a cmp $b)} @sortedStructures;
 				}
 			}
-			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$b}->{pfunc} <=> $predictions->{$windowPos}->{$blockPos}->{$a}->{pfunc}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_PROBS));
-			if (($settings->{mode} eq $Settings::MODE_SAMPLE)) {
+			@sortedStructures =  sort {$predictions->{$windowPos}->{$blockPos}->{$b}->{pfunc} <=> $predictions->{$windowPos}->{$blockPos}->{$a}->{pfunc}} @sortedStructures if (($settings->{mode} eq $Settings::MODE_PROBS) || ($program eq $PROG_RAPIDSHAPES));
+			if (($program ne $PROG_RAPIDSHAPES) && ($settings->{mode} eq $Settings::MODE_SAMPLE)) {
 				if (($program eq $PROG_PKISS) || ($program eq $PROG_PALIKISS)) {
 					@sortedStructures =  sort {($predictions->{$windowPos}->{$blockPos}->{$b}->{samples} <=> $predictions->{$windowPos}->{$blockPos}->{$a}->{samples}) || ($a cmp $b)} @sortedStructures;
 				} else {
@@ -737,7 +738,7 @@ sub outputVARNA {
 			#END: define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
 			foreach my $structure (@sortedStructures) {
 				last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{pfunc}/$sumPfunc->{$windowPos} < $settings->{lowprobfilteroutput}));
-				last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
+				last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($program ne $PROG_RAPIDSHAPES) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
 				last if (($settings->{mode} eq $Settings::MODE_SHAPES) && (splitFields($predictions->{$windowPos}->{$blockPos}->{$structure}->{score})->[0] > $range));
 				
 				my @results = ($predictions->{$windowPos}->{$blockPos}->{$structure});
@@ -790,10 +791,10 @@ sub outputVARNA {
 						}
 						
 					#shape probability if available and mode is right
-						if (($settings->{mode} eq $Settings::MODE_PROBS) || ($settings->{mode} eq $Settings::MODE_SAMPLE)) {
+						if (($settings->{mode} eq $Settings::MODE_PROBS) || ($settings->{mode} eq $Settings::MODE_SAMPLE) || ($program eq $PROG_RAPIDSHAPES)) {
 							my $probability = 0;
-							$probability = $result->{pfunc}/$sumPfunc->{$windowPos} if ($settings->{mode} eq $Settings::MODE_PROBS);
-							$probability = $result->{samples} / $settings->{numsamples} if ($settings->{mode} eq $Settings::MODE_SAMPLE);
+							$probability = $result->{pfunc}/$sumPfunc->{$windowPos} if (($settings->{mode} eq $Settings::MODE_PROBS) || ($program eq $PROG_RAPIDSHAPES));
+							$probability = $result->{samples} / $settings->{numsamples} if (($program ne $PROG_RAPIDSHAPES) && ($settings->{mode} eq $Settings::MODE_SAMPLE));
 							$varnaoutput .= "<td>".sprintf("%1.$settings->{'probdecimals'}f", $probability)."</td>";
 						}
 						
