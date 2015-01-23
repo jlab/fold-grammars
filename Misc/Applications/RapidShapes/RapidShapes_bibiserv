@@ -17,6 +17,7 @@ use foldGrammars::Settings;
 use foldGrammars::Utils;
 use foldGrammars::References;
 use foldGrammars::RapidShapes;
+use foldGrammars::IO;
 use Getopt::Long;
 use POSIX 'isatty';
 use File::Temp qw/ tempfile tempdir /;
@@ -113,8 +114,8 @@ sub generateHTMLstatuspage {
 	my $exploredTDMs = 0;
 	my $exploredPart = 0;
 	foreach my $shape (sort (keys(%{$refHash_shapes}))) {
-		if (exists $refHash_shapes->{$shape}->{pfAnswer}) {
-			$exploredPF += $refHash_shapes->{$shape}->{pfAnswer};
+		if (exists $refHash_shapes->{$shape}->{answer}) {
+			$exploredPF += $refHash_shapes->{$shape}->{answer}->{pfValue};
 			$exploredTDMs++;
 		}
 	}
@@ -123,7 +124,7 @@ sub generateHTMLstatuspage {
 		$status_overall{label} = "phase 3) compiling and executing TDMs ...";
 		$status_overall{style} = "running";
 	}
-	if ($exploredPart >= $settings->{alpha}) {
+	if (($exploredPart >= $settings->{alpha}) || ($exploredTDMs == scalar(keys(%{$refHash_shapes})))) {
 		$status_overall{label} = "finished.";
 		$status_overall{style} = "finish";
 	}
@@ -131,7 +132,7 @@ sub generateHTMLstatuspage {
 	$status_tdms{label} = sprintf("%.".$settings->{probdecimals}."f", $exploredPart)." %";
 	$status_tdms{style} = 'pending';
 	$status_tdms{style} = 'running' if (scalar(keys(%{$refHash_shapes})) > 0);
-	$status_tdms{style} = 'finish' if ($exploredPart >= $settings->{alpha});
+	$status_tdms{style} = 'finish' if (($exploredPart >= $settings->{alpha}) || ($exploredTDMs == scalar(keys(%{$refHash_shapes}))));
 	
 	my $HTML = "<html><head><link rel='stylesheet' type='text/css' href='status.css' /> </head><body>";
 	
@@ -163,7 +164,25 @@ sub generateHTMLstatuspage {
 		chomp $paramName;
 	}
 	$HTML .= "<tr><th>parameter</th><td>".$paramName."</td></tr>";
-	$HTML .= "<tr><th>Guessing method</th><td>".$guessMethod."</td></tr>";
+	$HTML .= "<tr><th>Guessing method</th><td>&quot;".$guessMethod."&quot; ";
+	if ($settings->{mode} eq $Settings::MODE_SAMPLE) {
+		$HTML .= "with ".$settings->{numsamples}." sampled structures";
+	} elsif ($settings->{mode} eq $Settings::MODE_KBEST) {
+		$HTML .= "with k=".$settings->{kbest};
+	} elsif ($settings->{mode} eq $Settings::MODE_SUBOPT) {
+		if (defined $settings->{'absolutedeviation'}) {
+			$HTML .= "with an absolute deviation of ".$settings->{'absolutedeviation'}." kcal/mol";
+		} else {
+			$HTML .= "with a relative deviation of ".$settings->{'relativedeviation'}." %"
+		}
+	} elsif ($settings->{mode} eq $Settings::MODE_LIST) {
+		$HTML .= "with shape classes ";
+		for (my $i = 0; $i < @{$settings->{list}}; $i++) {
+			$HTML .= $settings->{list}->[$i]->{shapestring};
+			$HTML .= ", " if ($i+1 < @{$settings->{list}});
+		}
+	}
+	$HTML .= "</td></tr>";
 	$HTML .= "</table>";
 	
 	$HTML .= "<table border='1'>";
@@ -205,26 +224,26 @@ sub generateHTMLstatuspage {
 		if ($settings->{mode} eq $Settings::MODE_SAMPLE) {
 			$cell = sprintf("%.".$settings->{probdecimals}."f", $refHash_shapes->{$shape}->{frequency})." %";
 		} elsif ($settings->{mode} eq $Settings::MODE_KBEST) {
-			$cell = $refHash_shapes->{$shape}->{mfe};
+			$cell = IO::formatEnergy($refHash_shapes->{$shape}->{mfe});
 		} elsif ($settings->{mode} eq $Settings::MODE_LIST) {
 			$cell = $refHash_shapes->{$shape}->{position};
 		} elsif ($settings->{mode} eq $Settings::MODE_SUBOPT) {
-			$cell = $refHash_shapes->{$shape}->{mfe};
+			$cell = IO::formatEnergy($refHash_shapes->{$shape}->{mfe});
 		}
 		$HTML .= "<tr ".($refHash_shapes->{$shape}->{status} eq 'queued' ? "class='pending'" : "").">";
 		$HTML .= "<td class='shapestring'>".$shape."</td>";
 		$HTML .= "<td class='generation'>".printStatus(\%status_generation)."</td>";
 		$HTML .= "<td class='execution'>".printStatus(\%status_execution)."</td>";
-		$HTML .= "<td class='probability'>".(exists $refHash_shapes->{$shape}->{pfAnswer} ? sprintf("%.".$settings->{probdecimals}."f", $refHash_shapes->{$shape}->{pfAnswer}/$pfAll) : '?')." %</td>";
+		$HTML .= "<td class='probability'>".(exists $refHash_shapes->{$shape}->{answer} ? sprintf("%.".$settings->{probdecimals}."f", $refHash_shapes->{$shape}->{answer}->{pfValue}/$pfAll) : '?')." %</td>";
 		$HTML .= "<td class='score'>".$cell."</td>";
-		$HTML .= "<td class='pfvalue'>".(exists $refHash_shapes->{$shape}->{pfAnswer} ? $refHash_shapes->{$shape}->{pfAnswer} : '?')."</td>";
+		$HTML .= "<td class='pfvalue'>".(exists $refHash_shapes->{$shape}->{answer} ? $refHash_shapes->{$shape}->{answer}->{pfValue} : '?')."</td>";
 		$HTML .= "</tr>";
 	}
 	$HTML .= "</table>";
 	
 	$HTML .= "</body></html>";
 	
-	open (OUT, "> status.html");
+	open (OUT, "> ".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}) || die "can't write HTML status file to '".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}."': $!\n";
 		print OUT $HTML;
 	close (OUT);
 	#~ die;
@@ -264,8 +283,10 @@ sub doComputation {
 	} elsif ($settings->{mode} eq $Settings::MODE_SUBOPT) {
 		@shapes = @{RapidShapes::guessShapesSubopt($seq, $settings)};
 	} elsif ($settings->{mode} eq $Settings::MODE_LIST) {
-		@shapes = @{$settings->{list}};
-		print STDERR "step 1: using a provided list of ".@shapes." shapes.\n";		
+		foreach my $shape (@{$settings->{list}}) {
+			push @shapes, {shapestring => $shape->{shapestring}};
+		}
+		print STDERR "step 2: using a provided list of ".@shapes." shapes.\n";		
 	} else {
 		@shapes = @{RapidShapes::guessShapesSampling($seq, $settings)};
 	}
@@ -335,11 +356,13 @@ sub doComputation {
 		
 		my $sleepTime = $Settings::RAPIDSHAPES_BIBISERV{'sleepTimeInit'};
 		my $pfSum = 0;
-		while ($pfSum / $pfAll < $settings->{alpha}) {
+		my $noMoreOpenTDMs = 'false';
+		while (($pfSum / $pfAll < $settings->{alpha}) && ($noMoreOpenTDMs eq 'false')) {
 			$pfSum = 0;
+			$noMoreOpenTDMs = 'true';
 			foreach my $shapestring (keys(%waitList)) {
 				if ($waitList{$shapestring}->{status} eq 'gotResult') {
-					$pfSum += $waitList{$shapestring}->{pfAnswer};
+					$pfSum += $waitList{$shapestring}->{answer}->{pfValue};
 					next;
 				} else {
 					my $errFile = $errDir."/RapidShapes.e".$gridID.".".$waitList{$shapestring}->{position};
@@ -361,17 +384,24 @@ sub doComputation {
 					}
 					if ((-e $outFile) && ($waitList{$shapestring}->{status} eq 'finish')) {
 						my $pfAnswer = qx($Settings::BINARIES{cat} $outFile | $Settings::BINARIES{tail} -n 1); chomp $pfAnswer;
-						$waitList{$shapestring}->{pfAnswer} = $pfAnswer;
-						$waitList{$shapestring}->{status} = 'gotResult';
-						$pfSum += $waitList{$shapestring}->{pfAnswer};
+						foreach my $line (split(m/\n/, $pfAnswer)) {
+							if ($line =~ m/\( \( (.+?) , \( (.+?) , (.+?) \) \) , \( (.+?) , (.+?) \) \)$/) {
+								#( ( [] , ( -2340 , 2.62995e+11 ) ) , ( (((((((..........((((........))))..))))))).... , 3.2736e+10 ) )
+								$waitList{$shapestring}->{answer} = {energy => $2/100, pfValue => $3, structure => $4, pfStructure => $5};
+								$waitList{$shapestring}->{status} = 'gotResult';
+								$pfSum += $waitList{$shapestring}->{answer}->{pfValue};
+								last;
+							}
+						}
 					}
+					$noMoreOpenTDMs = 'false';
 				}
 			}
 			if ($pfSum / $pfAll >= $settings->{alpha}) {
 				my $resDelGrid = qx($Settings::BINARIES{qdel} $gridID);
 				print STDERR "abort grid job, because sufficient foldingspace has been explored.\n";
 				foreach my $shape (keys(%waitList)) {
-					$waitList{$shape}->{status} = 'stopped' if (not exists $waitList{$shape}->{pfAnswer});
+					$waitList{$shape}->{status} = 'stopped' if (not exists $waitList{$shape}->{answer});
 				}
 				last;
 			}
@@ -382,22 +412,7 @@ sub doComputation {
 			sleep $sleepTime;
 		}
 		generateHTMLstatuspage($refHash_sequence, $settings, \%waitList, $pfAll);
-
-		#output on console
-			#Output Results the same way RNAshapes does
-			print ">".$refHash_sequence->{header}."\n";
-			print $refHash_sequence->{sequence}."\n";
-			my $pfShapeSum = 0;
-			foreach my $shapestring (keys(%waitList)) {
-				delete $waitList{$shapestring} if (not exists $waitList{$shapestring}->{pfAnswer});
-			}
-			foreach my $shapestring (sort {$waitList{$b}->{pfAnswer} <=> $waitList{$a}->{pfAnswer}} (keys(%waitList))) {
-				my $prob = 0;
-				$prob = $waitList{$shapestring}->{pfAnswer} / $pfAll if ($pfAll != 0);
-				print sprintf("%.$settings->{probdecimals}f", $prob)."  ".$shapestring."\n" if ($waitList{$shapestring}->{pfAnswer} != 0);
-				$pfShapeSum += $prob;
-			}
-			#plus overall stop probability
-			print "\n".sprintf("%.$settings->{probdecimals}f", $pfShapeSum / $pfAll)."  sum\n";
-			print "\n";
+	
+		RapidShapes::commandlineOutput($refHash_sequence, $settings, \%waitList, $pfAll);
 }
+

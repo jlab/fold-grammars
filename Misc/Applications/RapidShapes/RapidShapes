@@ -17,6 +17,7 @@ use foldGrammars::Settings;
 use foldGrammars::Utils;
 use foldGrammars::References;
 use foldGrammars::RapidShapes;
+use foldGrammars::IO;
 use Getopt::Long;
 use POSIX 'isatty';
 
@@ -144,26 +145,27 @@ sub doComputation {
 			print STDERR "step 3: compute exact probabilities for guessed shapes:\n";
 			my $bin_tdmGenerator = getCompilerBinary($settings);
 			my $pfShapeSum = 0;
+			my %waitList = ();
 			foreach my $shape (@shapes) {
 				my $ljshape = $shape->{shapestring};
 				$ljshape =~ s/\[/L/g;
 				$ljshape =~ s/\]/J/g;
 				print STDERR "\t".$shape->{shapestring}."\tcompiling ... ";
-				my $alg_pfunc = "alg_pfunc";
-				if ($settings->{grammar} eq 'macrostate') {
-					$alg_pfunc = "alg_pfunc_macrostate";
-				} elsif ($settings->{grammar} eq 'overdangle') {
-					$alg_pfunc = "alg_pfunc_overdangle";
+				my $pfShape = Utils::compileAndrunTDM($shape->{shapestring}, $settings, $refHash_sequence, undef);
+				foreach my $line (split(m/\n/, $pfShape)) {
+					if ($line =~ m/\( \( (.+?) , \( (.+?) , (.+?) \) \) , \( (.+?) , (.+?) \) \)$/) {
+						#( ( [] , ( -2340 , 2.62995e+11 ) ) , ( (((((((..........((((........))))..))))))).... , 3.2736e+10 ) )
+						$shape->{answer} = {energy => $2/100, pfValue => $3, structure => $4, pfStructure => $5, probability => $3/$pfAll};
+						$pfShapeSum += $shape->{answer}->{pfValue};
+						$waitList{$shape->{shapestring}}->{answer} = {energy => $2/100, pfValue => $3, structure => $4, pfStructure => $5};
+						print STDERR sprintf("%8.4f", $shape->{answer}->{probability}*100)." %.\n";
+						last;
+					}
 				}
-				my $pfShape = Utils::compileAndrunTDM($shape->{shapestring}, $settings, $refHash_sequence);		
-				#~ my $pfShape = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "'.$alg_pfunc.'"', "-t", 'CXXFLAGS_EXTRA="-ffast-math" LDLIBS="-lrnafast"', $workingDirectory, [\&Utils::generateGrammar, $bin_tdmGenerator, $shape->{shapestring}, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $seq], "pf".$settings->{shapelevel}."__".$ljshape, 'addRNAoptions');
-				$pfShapeSum += $pfShape;
-				$shape->{probability} = $pfShape/$pfAll;
-				print STDERR sprintf("%8.4f", $shape->{probability}*100)." %.\n";
 				if ($pfShapeSum / $pfAll >= $settings->{alpha}) {
 					print STDERR "discovered more than the required ".sprintf("%.2f", $settings->{alpha}*100)." % of the folding space. Skip remaining shapes.\n";
 					foreach my $skippedShape (@shapes) {
-						$skippedShape->{probability} = 0 if (not exists $skippedShape->{probability});
+						$skippedShape->{answer}->{probability} = 0 if (not exists $skippedShape->{answer}->{probability});
 					}
 					last;
 				}
@@ -171,14 +173,7 @@ sub doComputation {
 			print STDERR "\n";
 			
 		#Output Results the same way RNAshapes does
-			print ">".$refHash_sequence->{header}."\n";
-			print $refHash_sequence->{sequence}."\n";
-			foreach my $shape (sort {$b->{probability} <=> $a->{probability}} @shapes) {
-				print sprintf("%.$settings->{probdecimals}f", $shape->{probability})."  ".$shape->{shapestring}."\n" if ($shape->{probability} != 0);
-			}
-			#plus overall stop probability
-			print "\n".sprintf("%.$settings->{probdecimals}f", $pfShapeSum / $pfAll)."  sum\n";
-			print "\n";
+			RapidShapes::commandlineOutput($refHash_sequence, $settings, \%waitList, $pfAll);
 	}	
 }
 
