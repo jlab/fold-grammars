@@ -134,16 +134,31 @@ sub generateHTMLstatuspage {
 	$status_tdms{style} = 'running' if (scalar(keys(%{$refHash_shapes})) > 0);
 	$status_tdms{style} = 'finish' if (($exploredPart >= $settings->{alpha}) || ($exploredTDMs == scalar(keys(%{$refHash_shapes}))));
 	
-	my $HTML = "<html><head><link rel='stylesheet' type='text/css' href='status.css' /> </head><body>";
+	my $HTML = "<html>\n";
+	$HTML .= "\t<head>\n";
+	$HTML .= "\t\t<link rel='stylesheet' type='text/css' href='status.css' />\n";
+	$HTML .= "\t</head>\n";
+	$HTML .= "\t<body>\n";
 	
-	$HTML .= "<table border='0'>";
-	$HTML .= "<tr><th colspan='3'>Overall status: ".printStatus(\%status_overall)."</th></tr>";
-	$HTML .= "<tr><td>1) guessing shapes: ".printStatus(\%status_guessing)."</td><td>2) PF all: ".printStatus(\%status_pfall)."</td><td>3) analyzed ".$exploredTDMs." / ".scalar(keys(%{$refHash_shapes}))." TDMs = ".printStatus(\%status_tdms)." foldingspace</td></tr>";
-	$HTML .= "</table>";
+	$HTML .= "\t\t<table border='0'>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th colspan='3'>Overall status: ".printStatus(\%status_overall)."</th>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<td>1) guessing shapes: ".printStatus(\%status_guessing)."</td>\n";
+	$HTML .= "\t\t\t\t<td>2) PF all: ".printStatus(\%status_pfall)."</td>\n";
+	$HTML .= "\t\t\t\t<td>3) analyzed ".$exploredTDMs." / ".scalar(keys(%{$refHash_shapes}))." TDMs = ".printStatus(\%status_tdms)." foldingspace</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t</table>\n";
 	
-	$HTML .= "<table border='1' class='metainfo'>";
-	$HTML .= "<tr><th>Header</th><td>".$refHash_sequence->{header}."</td></tr>";
-	$HTML .= "<tr><th>Sequence</th><td>";
+	$HTML .= "\t\t<table border='1' class='metainfo'>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Header</th>\n";
+	$HTML .= "\t\t\t\t<td>".$refHash_sequence->{header}."</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Sequence</th>\n";
+	$HTML .= "\t\t\t\t<td>";
 	my $seq = $refHash_sequence->{sequence};
 	my $wrapAtChar = $Settings::RAPIDSHAPES_BIBISERV{wrapInputSequenceAfterChars};
 	while (length($seq) > $wrapAtChar) {
@@ -151,20 +166,43 @@ sub generateHTMLstatuspage {
 		$seq = substr($seq, $wrapAtChar);
 	}
 	$HTML .= $seq;
-	$HTML .= "</td></tr>";
-	$HTML .= "<tr><th>Sequence length</th><td>".length($refHash_sequence->{sequence})." nucleotides</td></tr>";
-	$HTML .= "<tr><th>alpha threshold</th><td>".($settings->{alpha}*100)." %</td></tr>";
-	$HTML .= "<tr><th>Shape level</th><td>".$settings->{shapelevel}."</td></tr>";
-	$HTML .= "<tr><th>Grammar</th><td>".$settings->{grammar}."</td></tr>";
-	$HTML .= "<tr><th>lonely pairs</th><td>".($settings->{allowlp} == 0 ? "not allowed" : "allowed")."</td></tr>";
-	$HTML .= "<tr><th>temperature</th><td>".$settings->{temperature}." &deg;C</td></tr>";
+	$HTML .= "</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Sequence length</th>\n";
+	$HTML .= "\t\t\t\t<td>".length($refHash_sequence->{sequence})." nucleotides</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>alpha threshold</th>\n";
+	$HTML .= "\t\t\t\t<td>".($settings->{alpha}*100)." %</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Shape level</th>\n";
+	$HTML .= "\t\t\t\t<td>".$settings->{shapelevel}."</td></tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Grammar</th>\n";
+	$HTML .= "\t\t\t\t<td>".$settings->{grammar}."</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>lonely pairs</th>\n";
+	$HTML .= "\t\t\t\t<td>".($settings->{allowlp} == 0 ? "not allowed" : "allowed")."</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>temperature</th>\n";
+	$HTML .= "\t\t\t\t<td>".$settings->{temperature}." &deg;C</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
 	my $paramName = "rna_turner2004.par";
 	if (defined $settings->{param}) {
 		$paramName = qx($Settings::BINARIES{basename} $settings->{param});
 		chomp $paramName;
 	}
-	$HTML .= "<tr><th>parameter</th><td>".$paramName."</td></tr>";
-	$HTML .= "<tr><th>Guessing method</th><td>&quot;".$guessMethod."&quot; ";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>parameter</th>\n";
+	$HTML .= "\t\t\t\t<td>".$paramName."</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Guessing method</th>\n";
+	$HTML .= "\t\t\t\t<td>&quot;".$guessMethod."&quot; ";
 	if ($settings->{mode} eq $Settings::MODE_SAMPLE) {
 		$HTML .= "with ".$settings->{numsamples}." sampled structures";
 	} elsif ($settings->{mode} eq $Settings::MODE_KBEST) {
@@ -182,11 +220,19 @@ sub generateHTMLstatuspage {
 			$HTML .= ", " if ($i+1 < @{$settings->{list}});
 		}
 	}
-	$HTML .= "</td></tr>";
-	$HTML .= "</table>";
+	$HTML .= "</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t</table>\n";
 	
-	$HTML .= "<table border='1'>";
-	$HTML .= "<tr><th>Shape</th><th>TDM generation</th><th>TDM execution</th><th>Shape probability</th><th>".$methodHeader."</th><th>Partition function value</th></tr>";
+	$HTML .= "\t\t<table border='1'>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Shape</th>\n";
+	$HTML .= "\t\t\t\t<th>TDM generation</th>\n";
+	$HTML .= "\t\t\t\t<th>TDM execution</th>\n";
+	$HTML .= "\t\t\t\t<th>Shape probability</th>\n";
+	$HTML .= "\t\t\t\t<th>".$methodHeader."</th>\n";
+	$HTML .= "\t\t\t\t<th>Partition function value</th>\n";
+	$HTML .= "\t\t\t</tr>";
 	foreach my $shape (sort {$refHash_shapes->{$a}->{position} <=> $refHash_shapes->{$b}->{position}} (keys(%{$refHash_shapes}))) {
 		my %status_generation = ();
 		$status_generation{label} = 'pending';
@@ -230,18 +276,19 @@ sub generateHTMLstatuspage {
 		} elsif ($settings->{mode} eq $Settings::MODE_SUBOPT) {
 			$cell = IO::formatEnergy($refHash_shapes->{$shape}->{mfe});
 		}
-		$HTML .= "<tr ".($refHash_shapes->{$shape}->{status} eq 'queued' ? "class='pending'" : "").">";
-		$HTML .= "<td class='shapestring'>".$shape."</td>";
-		$HTML .= "<td class='generation'>".printStatus(\%status_generation)."</td>";
-		$HTML .= "<td class='execution'>".printStatus(\%status_execution)."</td>";
-		$HTML .= "<td class='probability'>".(exists $refHash_shapes->{$shape}->{answer} ? sprintf("%.".$settings->{probdecimals}."f", $refHash_shapes->{$shape}->{answer}->{pfValue}/$pfAll) : '?')." %</td>";
-		$HTML .= "<td class='score'>".$cell."</td>";
-		$HTML .= "<td class='pfvalue'>".(exists $refHash_shapes->{$shape}->{answer} ? $refHash_shapes->{$shape}->{answer}->{pfValue} : '?')."</td>";
-		$HTML .= "</tr>";
+		$HTML .= "\t\t\t<tr ".($refHash_shapes->{$shape}->{status} eq 'queued' ? "class='pending'" : "").">\n";
+		$HTML .= "\t\t\t\t<td class='shapestring'>".$shape."</td>\n";
+		$HTML .= "\t\t\t\t<td class='generation'>".printStatus(\%status_generation)."</td>\n";
+		$HTML .= "\t\t\t\t<td class='execution'>".printStatus(\%status_execution)."</td>\n";
+		$HTML .= "\t\t\t\t<td class='probability'>".(exists $refHash_shapes->{$shape}->{answer} ? sprintf("%.".$settings->{probdecimals}."f", $refHash_shapes->{$shape}->{answer}->{pfValue}/$pfAll) : '?')." %</td>\n";
+		$HTML .= "\t\t\t\t<td class='score'>".$cell."</td>\n";
+		$HTML .= "\t\t\t\t<td class='pfvalue'>".(exists $refHash_shapes->{$shape}->{answer} ? $refHash_shapes->{$shape}->{answer}->{pfValue} : '?')."</td>\n";
+		$HTML .= "\t\t\t</tr>\n";
 	}
-	$HTML .= "</table>";
+	$HTML .= "\t\t</table>\n";
 	
-	$HTML .= "</body></html>";
+	$HTML .= "\t</body>\n";
+	$HTML .= "</html>\n";
 	
 	open (OUT, "> ".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}) || die "can't write HTML status file to '".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}."': $!\n";
 		print OUT $HTML;
