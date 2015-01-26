@@ -271,7 +271,6 @@ sub doComputation {
 	$oldTMPDir = $ENV{TMPDIR} if (exists $ENV{TMPDIR});
 	$ENV{TMPDIR} = $Settings::RAPIDSHAPES_BIBISERV{clusterwide_tempdir};
 	my $tmpdir = tempdir(CLEANUP => 1);
-	$ENV{TMPDIR} = $oldTMPDir if (defined $oldTMPDir);
 
 	#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
 	my @shapes = ();
@@ -417,5 +416,6 @@ sub doComputation {
 		generateHTMLstatuspage($refHash_sequence, $settings, \%waitList, $pfAll);
 	
 		RapidShapes::commandlineOutput($refHash_sequence, $settings, \%waitList, $pfAll);
+		$ENV{TMPDIR} = $oldTMPDir if (defined $oldTMPDir);
 }
 
