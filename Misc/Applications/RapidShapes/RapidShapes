@@ -20,6 +20,19 @@ use foldGrammars::RapidShapes;
 use foldGrammars::IO;
 use Getopt::Long;
 use POSIX 'isatty';
+use File::Temp qw/ tempfile tempdir /;
+
+my $gridID = undef;
+
+
+#if we catch a SIGINT, we eventually delete running cluster jobs.
+$SIG{INT} = sub {
+	if (defined $gridID) {
+		system $Settings::BINARIES{qdel}." ".$gridID;
+	}
+	print STDERR "Program terminated.\n";
+	exit 1;
+};
 
 my $settings = {};
 foreach my $param (keys %RapidShapes::PARAM) {
@@ -37,37 +50,299 @@ foreach my $param (keys %RapidShapes::PARAM) {
 
 RapidShapes::checkParameters($settings, \%RapidShapes::PARAM);
 
-if (defined $settings->{'cluster'}) {
-	Utils::applyFunctionToFastaFile($settings->{'cluster'}, \&doComputation, $settings);
-} else {
-	if (@ARGV == 0) {
-		if (defined $settings->{'help'}) {
-			RapidShapes::usage();
-		} else {
-			if (isatty(*STDIN)) {
-				print "waiting for your plain RNA sequence or fasta filename.\n";
-				my $input = <STDIN>; chomp $input;
-				if (-e $input) {
-					Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
-				} else {
-					my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
-					doComputation(\%sequence, $settings);
-				}
-			} else {
-				Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings);
-			}
-		}
+#For BiBiServ the input comes as a file path name
+#~ my ($input) = @ARGV;
+#~ if (defined $settings->{'help'}) {
+	#~ RapidShapes::usage();
+#~ }
+#~ if (-e $input) {
+	#~ Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+#~ } else {
+	#~ RapidShapes::usage();
+#~ }
+if (@ARGV == 0) {
+	if (defined $settings->{'help'}) {
+		RapidShapes::usage();
 	} else {
-		RapidShapes::usage() if ((defined $settings->{'help'}) || (@ARGV > 1));
-		my ($input) = @ARGV;
-		if (-e $input) {
-			Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+		if (isatty(*STDIN)) {
+			print "waiting for your plain RNA sequence or fasta filename.\n";
+			my $input = <STDIN>; chomp $input;
+			if (-e $input) {
+				Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+			} else {
+				my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
+				doComputation(\%sequence, $settings);
+			}
 		} else {
-			my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
-			doComputation(\%sequence, $settings);
+			Utils::applyFunctionToFastaFile(\*STDIN, \&doComputation, $settings);
 		}
 	}
+} else {
+	RapidShapes::usage() if ((defined $settings->{'help'}) || (@ARGV > 1));
+	my ($input) = @ARGV;
+	if (-e $input) {
+		Utils::applyFunctionToFastaFile($input, \&doComputation, $settings);
+	} else {
+		my %sequence = ("header", "unnamed sequence 1", "sequence", $input);
+		doComputation(\%sequence, $settings);
+	}
 }
+
+sub generateHTMLstatuspage {
+	my ($refHash_sequence, $settings, $refHash_shapes, $pfAll) = @_;
+
+	my $guessMethod = "";
+	my $methodHeader = "";
+	if ($settings->{mode} eq $Settings::MODE_SAMPLE) {
+		$guessMethod = "sampling";
+		$methodHeader = "frequency";
+	} elsif ($settings->{mode} eq $Settings::MODE_KBEST) {
+		$guessMethod = "k-best";
+		$methodHeader = "free energy";
+	} elsif ($settings->{mode} eq $Settings::MODE_LIST) {
+		$guessMethod = "manual list";
+		$methodHeader = "list position";
+	} elsif ($settings->{mode} eq $Settings::MODE_SUBOPT) {
+		$guessMethod = "suboptimals";
+		$methodHeader = "free energy";
+	}
+
+	my %status_overall = ();
+	$status_overall{label} = "start computation.";
+	$status_overall{style} = "running";
+	my %status_guessing = ();
+	$status_guessing{label} = 'running';
+	$status_guessing{style} = 'running';
+	if (scalar(keys(%{$refHash_shapes})) > 0) {
+		$status_guessing{label} = scalar(keys(%{$refHash_shapes}))." shapes";
+		$status_guessing{style} = 'finish';
+	}
+	
+	if ($status_guessing{style} eq 'running') {
+		$status_overall{label} = "phase 1) guessing shapes ...";
+		$status_overall{style} = "running";
+	}
+
+	my %status_pfall = ();
+	$status_pfall{label} = 'pending';
+	$status_pfall{style} = 'pending';
+	if ((scalar(keys(%{$refHash_shapes})) > 0) && (not (defined $pfAll))) {
+		$status_pfall{label} = 'running';
+		$status_pfall{style} = 'running';
+		$status_overall{label} = "phase 2) computing overall partition function ...";
+		$status_overall{style} = "running";
+	}
+	if (defined $pfAll) {
+		$status_pfall{label} = $pfAll;
+		$status_pfall{style} = 'finish';
+	}
+	
+	my $exploredPF = 0;
+	my $exploredTDMs = 0;
+	my $exploredPart = 0;
+	foreach my $shape (sort (keys(%{$refHash_shapes}))) {
+		if (exists $refHash_shapes->{$shape}->{answer}) {
+			$exploredPF += $refHash_shapes->{$shape}->{answer}->{pfValue};
+			$exploredTDMs++;
+		}
+	}
+	$exploredPart = $exploredPF / $pfAll if (defined $pfAll && $pfAll > 0);
+	if (($exploredPart >= 0) && (scalar(keys(%{$refHash_shapes})) > 0)) {
+		$status_overall{label} = "phase 3) compiling and executing TDMs ...";
+		$status_overall{style} = "running";
+	}
+	if (($exploredPart >= $settings->{alpha}) || ($exploredTDMs == scalar(keys(%{$refHash_shapes})))) {
+		$status_overall{label} = "finished.";
+		$status_overall{style} = "finish";
+	}
+	my %status_tdms = ();
+	$status_tdms{label} = sprintf("%.".$settings->{probdecimals}."f", $exploredPart)." %";
+	$status_tdms{style} = 'pending';
+	$status_tdms{style} = 'running' if (scalar(keys(%{$refHash_shapes})) > 0);
+	$status_tdms{style} = 'finish' if (($exploredPart >= $settings->{alpha}) || ($exploredTDMs == scalar(keys(%{$refHash_shapes}))));
+	
+	my $HTML = "<html>\n";
+	$HTML .= "\t<head>\n";
+	$HTML .= "\t\t<link rel='stylesheet' type='text/css' href='status.css' />\n";
+	$HTML .= "\t</head>\n";
+	$HTML .= "\t<body>\n";
+	
+	$HTML .= "\t\t<table border='0'>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th colspan='3'>Overall status: ".printStatus(\%status_overall)."</th>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<td>1) guessing shapes: ".printStatus(\%status_guessing)."</td>\n";
+	$HTML .= "\t\t\t\t<td>2) PF all: ".printStatus(\%status_pfall)."</td>\n";
+	$HTML .= "\t\t\t\t<td>3) analyzed ".$exploredTDMs." / ".scalar(keys(%{$refHash_shapes}))." TDMs = ".printStatus(\%status_tdms)." foldingspace</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t</table>\n";
+	
+	$HTML .= "\t\t<table border='1' class='metainfo'>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Header</th>\n";
+	$HTML .= "\t\t\t\t<td>".$refHash_sequence->{header}."</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Sequence</th>\n";
+	$HTML .= "\t\t\t\t<td>";
+	my $seq = $refHash_sequence->{sequence};
+	my $wrapAtChar = $Settings::RAPIDSHAPES_BIBISERV{wrapInputSequenceAfterChars};
+	while (length($seq) > $wrapAtChar) {
+		$HTML .= substr($seq, 0, $wrapAtChar)."<br/>";
+		$seq = substr($seq, $wrapAtChar);
+	}
+	$HTML .= $seq;
+	$HTML .= "</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Sequence length</th>\n";
+	$HTML .= "\t\t\t\t<td>".length($refHash_sequence->{sequence})." nucleotides</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>alpha threshold</th>\n";
+	$HTML .= "\t\t\t\t<td>".($settings->{alpha}*100)." %</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Shape level</th>\n";
+	$HTML .= "\t\t\t\t<td>".$settings->{shapelevel}."</td></tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Grammar</th>\n";
+	$HTML .= "\t\t\t\t<td>".$settings->{grammar}."</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>lonely pairs</th>\n";
+	$HTML .= "\t\t\t\t<td>".($settings->{allowlp} == 0 ? "not allowed" : "allowed")."</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>temperature</th>\n";
+	$HTML .= "\t\t\t\t<td>".$settings->{temperature}." &deg;C</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	my $paramName = "rna_turner2004.par";
+	if (defined $settings->{param}) {
+		$paramName = qx($Settings::BINARIES{basename} $settings->{param});
+		chomp $paramName;
+	}
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>parameter</th>\n";
+	$HTML .= "\t\t\t\t<td>".$paramName."</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Guessing method</th>\n";
+	$HTML .= "\t\t\t\t<td>&quot;".$guessMethod."&quot; ";
+	if ($settings->{mode} eq $Settings::MODE_SAMPLE) {
+		$HTML .= "with ".$settings->{numsamples}." sampled structures";
+	} elsif ($settings->{mode} eq $Settings::MODE_KBEST) {
+		$HTML .= "with k=".$settings->{kbest};
+	} elsif ($settings->{mode} eq $Settings::MODE_SUBOPT) {
+		if (defined $settings->{'absolutedeviation'}) {
+			$HTML .= "with an absolute deviation of ".$settings->{'absolutedeviation'}." kcal/mol";
+		} else {
+			$HTML .= "with a relative deviation of ".$settings->{'relativedeviation'}." %"
+		}
+	} elsif ($settings->{mode} eq $Settings::MODE_LIST) {
+		$HTML .= "with shape classes ";
+		for (my $i = 0; $i < @{$settings->{list}}; $i++) {
+			$HTML .= $settings->{list}->[$i]->{shapestring};
+			$HTML .= ", " if ($i+1 < @{$settings->{list}});
+		}
+	}
+	$HTML .= "</td>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	$HTML .= "\t\t</table>\n";
+	
+	$HTML .= "\t\t<table border='1'>\n";
+	$HTML .= "\t\t\t<tr>\n";
+	$HTML .= "\t\t\t\t<th>Shape</th>\n";
+	$HTML .= "\t\t\t\t<th>TDM generation</th>\n";
+	$HTML .= "\t\t\t\t<th>TDM execution</th>\n";
+	$HTML .= "\t\t\t\t<th>Shape probability</th>\n";
+	$HTML .= "\t\t\t\t<th>".$methodHeader."</th>\n";
+	$HTML .= "\t\t\t\t<th>Partition function value</th>\n";
+	$HTML .= "\t\t\t</tr>\n";
+	foreach my $shape (sort {$refHash_shapes->{$a}->{position} <=> $refHash_shapes->{$b}->{position}} (keys(%{$refHash_shapes}))) {
+		my %status_generation = ();
+		$status_generation{label} = 'pending';
+		$status_generation{style} = 'pending';
+		if ($refHash_shapes->{$shape}->{status} eq 'compiling') {
+			$status_generation{label} = 'running';
+			$status_generation{style} = 'running';
+		}
+		if (exists $refHash_shapes->{$shape}->{compiletime}) {
+			$status_generation{label} = "finished (".sprintf("%.1f",$refHash_shapes->{$shape}->{compiletime})."s)";
+			$status_generation{style} = 'finish';
+		}
+		if ($refHash_shapes->{$shape}->{status} eq 'stopped') {
+			$status_generation{label} = "stopped";
+			$status_generation{style} = 'stopped';
+		}
+		if ($refHash_shapes->{$shape}->{status} eq 'error') {
+			$status_generation{label} = "an error occured";
+			$status_generation{style} = 'error';
+		}
+		
+		my %status_execution = ();
+		$status_execution{label} = 'pending';
+		$status_execution{style} = 'pending';
+		if ($refHash_shapes->{$shape}->{status} eq 'running') {
+			$status_execution{label} = 'running';
+			$status_execution{style} = 'running';
+		}
+		if (exists $refHash_shapes->{$shape}->{runtime}) {
+			$status_execution{label} = "finished (".sprintf("%.1f",$refHash_shapes->{$shape}->{runtime}).")";
+			$status_execution{style} = 'finish';
+		}
+		if ($refHash_shapes->{$shape}->{status} eq 'stopped') {
+			$status_execution{label} = "stopped";
+			$status_execution{style} = 'stopped';
+		}
+		if ($refHash_shapes->{$shape}->{status} eq 'error') {
+			$status_execution{label} = "an error occured";
+			$status_execution{style} = 'error';
+		}
+		
+		my $cell = "";
+		if ($settings->{mode} eq $Settings::MODE_SAMPLE) {
+			$cell = sprintf("%.".$settings->{probdecimals}."f", $refHash_shapes->{$shape}->{frequency})." %";
+		} elsif ($settings->{mode} eq $Settings::MODE_KBEST) {
+			$cell = IO::formatEnergy($refHash_shapes->{$shape}->{mfe});
+		} elsif ($settings->{mode} eq $Settings::MODE_LIST) {
+			$cell = $refHash_shapes->{$shape}->{position};
+		} elsif ($settings->{mode} eq $Settings::MODE_SUBOPT) {
+			$cell = IO::formatEnergy($refHash_shapes->{$shape}->{mfe});
+		}
+		my $rowstatus = "";
+		$rowstatus = "class='pending'" if ($refHash_shapes->{$shape}->{status} eq 'queued');
+		$rowstatus = "class='error'" if ($refHash_shapes->{$shape}->{status} eq 'error');
+		$HTML .= "\t\t\t<tr ".$rowstatus.">\n";
+		$HTML .= "\t\t\t\t<td class='shapestring'>".$shape."</td>\n";
+		$HTML .= "\t\t\t\t<td class='generation'>".printStatus(\%status_generation)."</td>\n";
+		$HTML .= "\t\t\t\t<td class='execution'>".printStatus(\%status_execution)."</td>\n";
+		$HTML .= "\t\t\t\t<td class='probability'>".(exists $refHash_shapes->{$shape}->{answer} ? sprintf("%.".$settings->{probdecimals}."f", $refHash_shapes->{$shape}->{answer}->{pfValue}/$pfAll) : '?')." %</td>\n";
+		$HTML .= "\t\t\t\t<td class='score'>".$cell."</td>\n";
+		$HTML .= "\t\t\t\t<td class='pfvalue'>".(exists $refHash_shapes->{$shape}->{answer} ? $refHash_shapes->{$shape}->{answer}->{pfValue} : '?')."</td>\n";
+		$HTML .= "\t\t\t</tr>\n";
+	}
+	$HTML .= "\t\t</table>\n";
+	
+	$HTML .= "\t</body>\n";
+	$HTML .= "</html>\n";
+	
+	if ($settings->{cluster}) {
+		open (OUT, "> ".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}) || die "can't write HTML status file to '".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}."': $!\n";
+			print OUT $HTML;
+		close (OUT);
+	}
+	#~ die;
+	return $HTML;
+}
+
+sub printStatus {
+	my ($refHash_status) = @_;
+	return "<span class='".$refHash_status->{style}."'>".$refHash_status->{label}."</span>";
+}
+
+
 
 sub doComputation {
 	my ($refHash_sequence, $settings) = @_;
@@ -79,140 +354,191 @@ sub doComputation {
 	$seq =~ s/t/u/gi;
 
 	my $workingDirectory = qx(pwd); chomp $workingDirectory;
-	if (defined $settings->{cluster}) {
-		my ($fastaDir, $fastaFile) = @{Utils::separateDirAndFile($settings->{cluster})};
-		
-		my $errDir = $workingDirectory.'/'.$fastaFile.'.cluster/ERR';
-		my $outDir = $workingDirectory.'/'.$fastaFile.'.cluster/OUT';
-		my $reformattedFastafile = $workingDirectory.'/'.$fastaFile.'.cluster/'.$fastaFile;
-		my $arrayJob =  $workingDirectory.'/'.$fastaFile.'.cluster/array.sh';
-		
-		qx(mkdir -p $errDir) if (not -d $errDir);
-		qx(mkdir -p $outDir) if (not -d $outDir);
-		open (FASTA, "> ".$reformattedFastafile) || die "cannot write to '$reformattedFastafile': $1";
-			my @count = @{Utils::applyFunctionToFastaFile($settings->{cluster}, \&reformatFasta, \*FASTA)};
-		close (FASTA);
-		
-		open (ARRAY, "> ".$arrayJob) || die "cannot write to '$arrayJob': $1";		
-			print ARRAY '#!'.$Settings::BINARIES{sh}."\n";
-			print ARRAY ''."\n";
-			print ARRAY '#$ -S '.$Settings::BINARIES{sh}."\n";
-			print ARRAY '#$ -t 1-'.@count."\n";
-			print ARRAY '#$ -N RapidShapes_'.$fastaFile."\n";
-			print ARRAY '#$ -e '.$errDir."\n";
-			print ARRAY '#$ -o '.$outDir."\n";
-			print ARRAY ''."\n";
-			print ARRAY 'sequenceFile='.$reformattedFastafile."\n";
-			print ARRAY 'headerpos=`'.$Settings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+1" | '.$Settings::BINARIES{bc}.'`; '."\n";
-			print ARRAY 'sequencepos=`'.$Settings::BINARIES{echo}.' "($SGE_TASK_ID-1)*3+2" | '.$Settings::BINARIES{bc}.'`; '."\n";
-			print ARRAY 'header=`'.$Settings::BINARIES{head}.' -n $headerpos $sequenceFile | '.$Settings::BINARIES{tail}.' -1`; '."\n";
-			print ARRAY 'sequence=`'.$Settings::BINARIES{head}.' -n $sequencepos $sequenceFile | '.$Settings::BINARIES{tail}.' -1`;'."\n";
-			print ARRAY 'uname -a'."\n";
-			my $command = "";
-			foreach my $param (keys %{$settings}) {
-				next if (($param eq 'name') || ($param eq 'cluster') || ($param eq 'binPath'));
-				$command .= " --".$RapidShapes::PARAM{$param}->{key}.'="'.$settings->{$param}.'"' if (defined $settings->{$param});
-			}
-			$command .= ' --binPath="'.$workingDirectory.'/'.$fastaFile.'.cluster/"';
-			$command .= ' --name="$header"';
-			$command .= '  "$sequence"';
-			print ARRAY $Settings::BINARIES{perl}." ".Utils::absFilename($0)." ".$command."\n";
-		close (ARRAY);
-		
-		my $bin_tdmGenerator = getCompilerBinary($settings);
-		
-		my $arch = '-l arch="sol-amd64"';
-		$arch = '-l linh=1' if (qx($Settings::BINARIES{uname} -o) !~ m/Sun/i);
-		print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G $arch $arrayJob\n";
-	} else {
-		#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
-			my @shapes = ();
-			if ($settings->{mode} eq $Settings::MODE_KBEST) {
-				@shapes = @{RapidShapes::guessShapesKbest($seq, $settings)};
-			} elsif ($settings->{mode} eq $Settings::MODE_SUBOPT) {
-				@shapes = @{RapidShapes::guessShapesSubopt($seq, $settings)};
-			} elsif ($settings->{mode} eq $Settings::MODE_LIST) {
-				@shapes = @{$settings->{list}};
-				print STDERR "step 1: using a provided list of ".@shapes." shapes.\n";		
-			} else {
-				@shapes = @{RapidShapes::guessShapesSampling($seq, $settings)};
-			}
+	my $oldTMPDir = undef;
+	if ($settings->{cluster}) {
+		$oldTMPDir = $ENV{TMPDIR} if (exists $ENV{TMPDIR});
+		$ENV{TMPDIR} = $Settings::RAPIDSHAPES_BIBISERV{clusterwide_tempdir};
+	}
+	my $tmpdir = tempdir(CLEANUP => 1);
 
-		#2) determining partition function value for complete search space	
-			my $pfAll = RapidShapes::getPFall($seq, $settings);
+	#1) guess shape classes via stochastical backtracing (default) or simple shape analysis, where shapes are sorted according to their shrep free energy
+	my @shapes = ();
+	my %waitList = ();
+	my $pfAll = undef;
+	generateHTMLstatuspage($refHash_sequence, $settings, \%waitList, $pfAll);
+
+	if ($settings->{mode} eq $Settings::MODE_KBEST) {
+		@shapes = @{RapidShapes::guessShapesKbest($seq, $settings)};
+	} elsif ($settings->{mode} eq $Settings::MODE_SUBOPT) {
+		@shapes = @{RapidShapes::guessShapesSubopt($seq, $settings)};
+	} elsif ($settings->{mode} eq $Settings::MODE_LIST) {
+		foreach my $shape (@{$settings->{list}}) {
+			push @shapes, {shapestring => $shape->{shapestring}};
+		}
+		print STDERR "step 2: using a provided list of ".@shapes." shapes.\n";		
+	} else {
+		@shapes = @{RapidShapes::guessShapesSampling($seq, $settings)};
+	}
+	my $position = 1;
+	foreach my $shape (@shapes) {
+		my $shapestring = $shape->{shapestring};
+		$waitList{$shapestring}->{position} = $position++;
+		$waitList{$shapestring}->{status} = 'queued';
+		delete $shape->{shapestring};
+		foreach my $key (keys(%{$shape})) {
+			$waitList{$shapestring}->{$key} = $shape->{$key};
+		}
+	}
+	generateHTMLstatuspage($refHash_sequence, $settings, \%waitList, $pfAll);
+
+	#2) determining partition function value for complete search space	
+		$pfAll = RapidShapes::getPFall($seq, $settings, $workingDirectory);
+		generateHTMLstatuspage($refHash_sequence, $settings, \%waitList, $pfAll);
+
+	#3) compile TDM generator if not available
+		if ($settings->{cluster}) {
+			print STDERR "step 3: compute exact probabilities for guessed shapes via grid engine ...\n";
+			print STDERR "\ttemporary grid wide directory is '".$tmpdir."'.\n";
+			my $errDir = $tmpdir.'/ERR';
+			my $outDir = $tmpdir.'/OUT';
+			my $arrayJob =  $tmpdir.'/array.sh';
+			my $shapeListFile = $tmpdir.'/shapelist.txt';
+			qx(mkdir -p $errDir) if (not -d $errDir);
+			qx(mkdir -p $outDir) if (not -d $outDir);
+			open (SHAPELIST, "> ".$shapeListFile) || die "cannot write a file that shall contain all shapes to be computed: $1";
+				foreach my $shape (sort {$waitList{$a}->{position} <=> $waitList{$b}->{position}} (keys(%waitList))) {
+					print SHAPELIST $shape."\n";
+				}
+			close (SHAPELIST);
+					
+			open (ARRAY, "> ".$arrayJob) || die "cannot write to '$arrayJob': $1";		
+				print ARRAY '#!'.$Settings::RAPIDSHAPES_BIBISERV{gridSH}."\n";
+				print ARRAY ''."\n";
+				print ARRAY '#$ -S '.$Settings::RAPIDSHAPES_BIBISERV{gridSH}."\n";
+				print ARRAY '#$ -t 1-'.@shapes."\n";
+				print ARRAY '#$ -N RapidShapes'."\n";
+				print ARRAY '#$ -e '.$errDir."\n";
+				print ARRAY '#$ -o '.$outDir."\n";
+				print ARRAY ''."\n";
+				print ARRAY 'header="'.$refHash_sequence->{header}."\"\n";
+				print ARRAY 'sequence="'.$refHash_sequence->{sequence}."\"\n";
+				print ARRAY 'shapestring=`'.$Settings::BINARIES{'head'}.' -n $SGE_TASK_ID '.$shapeListFile.' | '.$Settings::BINARIES{'tail'}.' -n 1`'."\n";
+				print ARRAY $Settings::BINARIES{'uname'}.' -a 1>&2'."\n";
+				my $command = "";
+				$settings->{binarypath} = '/vol/fold-grammars/bin/';
+				foreach my $param (keys %{$settings}) {
+					next unless (
+								($param eq 'temperature') ||
+								($param eq 'param') ||
+								($param eq 'allowlp') ||
+								($param eq 'shapelevel') ||
+								($param eq 'binarypath') ||
+								($param eq 'binaryprefix') ||
+								($param eq 'grammar')
+							);
+					$command .= " --".$RapidShapes::PARAM{$param}->{key}.'="'.$settings->{$param}.'"' if (defined $settings->{$param});
+				}
+				$command .= ' "$shapestring"';
+				$command .= ' "$sequence"';
+				print ARRAY $Settings::BINARIES{perl}." ".$Settings::RAPIDSHAPES_BIBISERV{tdmwrapper_binary}." ".$command."\n";
+				print ARRAY "echo 'status code is $?.' \n";
+			close (ARRAY);
+			my $qsubResult = qx($Settings::RAPIDSHAPES_BIBISERV{qsub} $arrayJob);
+			($gridID) = ($qsubResult =~ m/Your job-array (\d+)/);
+			print STDERR "\tsubmitted job $gridID to the grid.\n";
 			
-		#3) compile TDM generator if not available
-			print STDERR "step 3: compute exact probabilities for guessed shapes:\n";
-			my $bin_tdmGenerator = getCompilerBinary($settings);
-			my $pfShapeSum = 0;
-			my %waitList = ();
-			foreach my $shape (@shapes) {
-				my $ljshape = $shape->{shapestring};
-				$ljshape =~ s/\[/L/g;
-				$ljshape =~ s/\]/J/g;
-				print STDERR "\t".$shape->{shapestring}."\tcompiling ... ";
-				my $pfShape = Utils::compileAndrunTDM($shape->{shapestring}, $settings, $refHash_sequence, undef);
-				foreach my $line (split(m/\n/, $pfShape)) {
-					if ($line =~ m/\( \( (.+?) , \( (.+?) , (.+?) \) \) , \( (.+?) , (.+?) \) \)$/) {
-						#( ( [] , ( -2340 , 2.62995e+11 ) ) , ( (((((((..........((((........))))..))))))).... , 3.2736e+10 ) )
-						$shape->{answer} = {energy => $2/100, pfValue => $3, structure => $4, pfStructure => $5, probability => $3/$pfAll};
-						$pfShapeSum += $shape->{answer}->{pfValue};
-						$waitList{$shape->{shapestring}}->{answer} = {energy => $2/100, pfValue => $3, structure => $4, pfStructure => $5};
-						print STDERR sprintf("%8.4f", $shape->{answer}->{probability}*100)." %.\n";
+			my $sleepTime = $Settings::RAPIDSHAPES_BIBISERV{'sleepTimeInit'};
+			my $pfSum = 0;
+			my $noMoreOpenTDMs = 'false';
+			my $nrFailedTDMs = 0;
+			while (($pfSum / $pfAll < $settings->{alpha}) && ($noMoreOpenTDMs eq 'false')) {
+				$pfSum = 0;
+				$noMoreOpenTDMs = 'true';
+				foreach my $shapestring (keys(%waitList)) {
+					if ($waitList{$shapestring}->{status} eq 'gotResult') {
+						$pfSum += $waitList{$shapestring}->{answer}->{pfValue};
+						next;
+					} elsif ($waitList{$shapestring}->{status} eq 'error') {
+						$nrFailedTDMs++;
+						next;
+					} else {
+						my $errFile = $errDir."/RapidShapes.e".$gridID.".".$waitList{$shapestring}->{position};
+						my $outFile = $outDir."/RapidShapes.o".$gridID.".".$waitList{$shapestring}->{position};
+						if ((-e $errFile) && ($waitList{$shapestring}->{status} ne 'finish')) {
+							open (ERR, $errFile) || die "can't read file '$errFile': $!";
+								while (my $line = <ERR>) {
+									if ($line =~ m/\tcompiling \.\.\. (done in (.+?) seconds\.)?/) {
+										$waitList{$shapestring}->{status} = "compiling";
+										$waitList{$shapestring}->{compiletime} = $2 if (defined $2);
+									} elsif ($line =~ m/\trunning \.\.\. (done in (.+?) seconds\.)?/) {
+										$waitList{$shapestring}->{status} = "running";
+										$waitList{$shapestring}->{runtime} = $2 if (defined $2);
+									} elsif ($line =~ m/^\tfinished\.$/) {
+										$waitList{$shapestring}->{status} = "finish";
+									} elsif ($line =~ m/TDM generation failed\!/) {
+										$waitList{$shapestring}->{status} = "error";
+									}
+								}
+							close (ERR);
+						}
+						if ((-e $outFile) && ($waitList{$shapestring}->{status} eq 'finish')) {
+							my $pfAnswer = qx($Settings::BINARIES{cat} $outFile);
+							foreach my $line (split(m/\n/, $pfAnswer)) {
+								if ($line =~ m/\( \( (.+?) , \( (.+?) , (.+?) \) \) , \( (.+?) , (.+?) \) \)/) {
+									#( ( [] , ( -2340 , 2.62995e+11 ) ) , ( (((((((..........((((........))))..))))))).... , 3.2736e+10 ) )
+									$waitList{$shapestring}->{answer} = {energy => $2/100, pfValue => $3, structure => $4, pfStructure => $5};
+									$waitList{$shapestring}->{status} = 'gotResult';
+									$pfSum += $waitList{$shapestring}->{answer}->{pfValue};
+									last;
+								}
+							}
+						}
+						$noMoreOpenTDMs = 'false' if ($waitList{$shapestring}->{status} ne 'error');
+					}
+				}
+				if ($pfSum / $pfAll >= $settings->{alpha}) {
+					my $resDelGrid = qx($Settings::BINARIES{qdel} $gridID);
+					print STDERR "abort grid job, because sufficient foldingspace has been explored.\n";
+					foreach my $shape (keys(%waitList)) {
+						$waitList{$shape}->{status} = 'stopped' if (not exists $waitList{$shape}->{answer});
+					}
+					last;
+				}
+				
+				generateHTMLstatuspage($refHash_sequence, $settings, \%waitList, $pfAll);
+				
+				$sleepTime++ if ($sleepTime < $Settings::RAPIDSHAPES_BIBISERV{'sleepTimeMax'});
+				sleep $sleepTime;
+			}
+		} else {
+			print STDERR "step 3: compute exact probabilities for guessed shapes ...\n";
+			print STDERR "\ttemporary directory is '".$tmpdir."'.\n";
+			my $pfSum = 0;
+			foreach my $shape (sort {$waitList{$a}->{position} <=> $waitList{$b}->{position}} (keys(%waitList))) {
+				print STDERR "computing TDM for '$shape':\n";
+				my $pfAnswer = RapidShapes::compileAndrunTDM($shape, $settings, $refHash_sequence, "print times");
+				foreach my $line (split(m/\n/, $pfAnswer)) {
+					if ($line =~ m/\( \( (.+?) , \( (.+?) , (.+?) \) \) , \( (.+?) , (.+?) \) \)/) {
+						$waitList{$shape}->{answer} = {energy => $2/100, pfValue => $3, structure => $4, pfStructure => $5};
+						$waitList{$shape}->{status} = 'gotResult';
+						$pfSum += $waitList{$shape}->{answer}->{pfValue};
 						last;
 					}
 				}
-				if ($pfShapeSum / $pfAll >= $settings->{alpha}) {
-					print STDERR "discovered more than the required ".sprintf("%.2f", $settings->{alpha}*100)." % of the folding space. Skip remaining shapes.\n";
-					foreach my $skippedShape (@shapes) {
-						$skippedShape->{answer}->{probability} = 0 if (not exists $skippedShape->{answer}->{probability});
+				if ($pfSum / $pfAll >= $settings->{alpha}) {
+					print STDERR "abort job, because sufficient foldingspace has been explored.\n";
+					foreach my $shape (keys(%waitList)) {
+						$waitList{$shape}->{status} = 'stopped' if (not exists $waitList{$shape}->{answer});
 					}
 					last;
 				}
 			}
-			print STDERR "\n";
-			
-		#Output Results the same way RNAshapes does
-			RapidShapes::commandlineOutput($refHash_sequence, $settings, \%waitList, $pfAll);
-	}	
-}
-
-
-
-
-
-sub getCompilerBinary {
-	my ($refHash_settings) = @_;
-	return Utils::absFilename($refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.'tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapelevel});
-}
-
-
+		}
+		generateHTMLstatuspage($refHash_sequence, $settings, \%waitList, $pfAll);
 	
-
-	
-
-
-sub runTDM {
-	my ($tmpDir, $refHash_settings, $inputSequence) = @_;
-	print STDERR "done.\texecuting ... "; 
-	my $command = RapidShapes::buildCommand($refHash_settings, $RapidShapes::TASK_TDMRUN);
-	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	my $pfShape = RapidShapes::parsePFanswer(qx($tmpDir/$command -f $inputFile));
-	unlink $inputFile;
-	return $pfShape;
+		RapidShapes::commandlineOutput($refHash_sequence, $settings, \%waitList, $pfAll);
+		if ($settings->{cluster}) {
+			$ENV{TMPDIR} = $oldTMPDir if (defined $oldTMPDir);
+		}
 }
-
-
-
-sub reformatFasta {
-	my ($refHash_sequence, $refFileHandle) = @_;
-	print $refFileHandle ">".$refHash_sequence->{header}."\n".$refHash_sequence->{sequence}."\n\n";
-	return undef;
-}
-
-
-
-
-
-
 
