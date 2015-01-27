@@ -167,7 +167,8 @@ sub generateHTMLstatuspage {
 	$HTML .= "\t</head>\n";
 	$HTML .= "\t<body>\n";
 	
-	$HTML .= "\t\t<table border='0'>\n";
+	$HTML .= "\t\t<table id='status'><tr><td id='outer'>\n";
+	$HTML .= "\t\t<table>\n";
 	$HTML .= "\t\t\t<tr>\n";
 	$HTML .= "\t\t\t\t<th colspan='3'>Overall status: ".printStatus(\%status_overall)."</th>\n";
 	$HTML .= "\t\t\t</tr>\n";
@@ -178,7 +179,7 @@ sub generateHTMLstatuspage {
 	$HTML .= "\t\t\t</tr>\n";
 	$HTML .= "\t\t</table>\n";
 	
-	$HTML .= "\t\t<table border='1' class='metainfo'>\n";
+	$HTML .= "\t\t<table class='metainfo'>\n";
 	$HTML .= "\t\t\t<tr>\n";
 	$HTML .= "\t\t\t\t<th>Header</th>\n";
 	$HTML .= "\t\t\t\t<td>".$refHash_sequence->{header}."</td>\n";
@@ -251,7 +252,7 @@ sub generateHTMLstatuspage {
 	$HTML .= "\t\t\t</tr>\n";
 	$HTML .= "\t\t</table>\n";
 	
-	$HTML .= "\t\t<table border='1'>\n";
+	$HTML .= "\t\t<table>\n";
 	$HTML .= "\t\t\t<tr>\n";
 	$HTML .= "\t\t\t\t<th>Shape</th>\n";
 	$HTML .= "\t\t\t\t<th>TDM generation</th>\n";
@@ -324,6 +325,7 @@ sub generateHTMLstatuspage {
 		$HTML .= "\t\t\t</tr>\n";
 	}
 	$HTML .= "\t\t</table>\n";
+	$HTML .= "\t\t</table></tr></td>\n";
 	
 	$HTML .= "\t</body>\n";
 	$HTML .= "</html>\n";

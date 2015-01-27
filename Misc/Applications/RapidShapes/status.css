@@ -1,58 +1,67 @@
-body {
-	text-align: center;
-}
-* {
+#status > * {
 	font-family: sans-serif; 
 }
-table {
+#status > * table {
 	min-width:1000px;
 	border-collapse: collapse;
 	margin-bottom: 20px;
 	margin-left:auto; 
     margin-right:auto;
 }
-span.finish {
+#status > * span.finish {
 	color: #00680E;
 }
-span.running {
+#status > * span.running {
 	color: #1E00E8;
 }
-span.pending,tr.pending {
+#status > * span.pending,tr.pending {
 	color: #cccccc;
 }
-span.stopped {
+#status > * span.stopped {
 	color: #000000;
 }
-tr.error {
+#status > * tr.error {
 	color: #aa0000;
 }
-th {
+#status > * th {
 	background-color: #cccccc;
 }
-td.shapestring {
+#status > * td.shapestring {
 	font-family: monospace;
 	font-weight: bold;
 	padding-left: 10px;
 	padding-right: 10px;
 }
-td {
+#status > * td {
 	padding-left: 5px;
 }
-td.generation, td.execution {
+#status > * td.generation, td.execution {
 	text-align: center;
 }
-td.probability, td.score, td.pfvalue {
+#status > * td.probability, td.score, td.pfvalue {
 	text-align: right;
 }
-td.probability {
+#status > * td.probability {
 	font-weight: bold;
 }
-table.metainfo tr th {
+#status > * table.metainfo tr th {
 	text-align: left;
 }
-
 /* table borders: */
+#status > * th, #status > * td {
+	border: solid 1px #555555;
+}
+#status > * td#outer {
+	border: solid 0px;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+
+
+body {
+	text-align: center;
+}
 th, td {
-	border: solid 1px #555555;
-	border: solid 1px #555555;
+	border: solid 10px #555555;
 }
