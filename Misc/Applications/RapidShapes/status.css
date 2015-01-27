@@ -23,9 +23,11 @@ span.pending,tr.pending {
 span.stopped {
 	color: #000000;
 }
+tr.error {
+	color: #aa0000;
+}
 th {
 	background-color: #cccccc;
-	border: solid 1px #555555;
 }
 td.shapestring {
 	font-family: monospace;
@@ -35,7 +37,6 @@ td.shapestring {
 }
 td {
 	padding-left: 5px;
-	border: solid 1px #555555;
 }
 td.generation, td.execution {
 	text-align: center;
@@ -48,4 +49,10 @@ td.probability {
 }
 table.metainfo tr th {
 	text-align: left;
+}
+
+/* table borders: */
+th, td {
+	border: solid 1px #555555;
+	border: solid 1px #555555;
 }

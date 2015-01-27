@@ -16,6 +16,7 @@ use Data::Dumper;
 use foldGrammars::Settings;
 use foldGrammars::Utils;
 use foldGrammars::References;
+use foldGrammars::RapidShapes;
 use Getopt::Long;
 use POSIX 'isatty';
 use File::Temp qw/ tempfile tempdir /;
@@ -106,9 +107,9 @@ sub doComputation {
 		} elsif ($settings->{grammar} eq 'overdangle') {
 			$alg_pfunc = "alg_pfunc_overdangle";
 		}
-		my $pfShape = Utils::compileAndrunTDM($shapestring, $settings, {header => 'unnamed sequence', sequence => $sequence}, "print times");		
+		my $pfShape = RapidShapes::compileAndrunTDM($shapestring, $settings, {header => 'unnamed sequence', sequence => $sequence}, "print times");		
 		print STDERR "\n";
-	print $pfShape;
+	print $pfShape."\n";
 }
 
 sub getCompilerBinary {
