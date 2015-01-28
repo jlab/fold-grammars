@@ -72,6 +72,7 @@ our %BINARIES = (
 	'basename','basename',
 	'touch','touch',
 	'sed','sed',
+	'addRNAoptions.pl','addRNAoptions.pl',
 );
 
 our %TDMfiles = (

@@ -12,7 +12,7 @@ install:
 		$(INSTALL) -m 644 $$file $(PREFIX)/lib/foldGrammars; \
 	done;
 	$(SED) -i "s|our \$$prototypeDirectory = \$$rootDir;|our \$$prototypeDirectory = '$(INSTALLDIR)/share/fold-grammars/';|" $(PREFIX)/lib/foldGrammars/Settings.pm 
-	$(INSTALL) -m 755 addRNAoptions.pl $(PREFIX)/bin
+	$(INSTALL) -m 755 ../addRNAoptions.pl $(PREFIX)/bin
 
 clean:
 	echo "Nothing to do"
