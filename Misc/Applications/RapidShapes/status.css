@@ -1,67 +1,68 @@
-#status > * {
+#RapidShapesStatus > * {
 	font-family: sans-serif; 
 }
-#status > * table {
+#RapidShapesStatus > * table {
 	min-width:1000px;
 	border-collapse: collapse;
 	margin-bottom: 20px;
 	margin-left:auto; 
     margin-right:auto;
 }
-#status > * span.finish {
+#RapidShapesStatus > * span.finish {
 	color: #00680E;
 }
-#status > * span.running {
+#RapidShapesStatus > * span.running {
 	color: #1E00E8;
 }
-#status > * span.pending,tr.pending {
+#RapidShapesStatus > * span.pending,tr.pending {
 	color: #cccccc;
 }
-#status > * span.stopped {
+#RapidShapesStatus > * span.stopped {
 	color: #000000;
 }
-#status > * tr.error {
+#RapidShapesStatus > * tr.error {
 	color: #aa0000;
 }
-#status > * th {
+#RapidShapesStatus > * th {
 	background-color: #cccccc;
 }
-#status > * td.shapestring {
+#RapidShapesStatus > * td.shapestring {
 	font-family: monospace;
 	font-weight: bold;
 	padding-left: 10px;
 	padding-right: 10px;
 }
-#status > * td {
+#RapidShapesStatus > * td {
 	padding-left: 5px;
 }
-#status > * td.generation, td.execution {
+#RapidShapesStatus > * td.generation, td.execution {
 	text-align: center;
 }
-#status > * td.probability, td.score, td.pfvalue {
+#RapidShapesStatus > * td.probability, td.score, td.pfvalue {
 	text-align: right;
 }
-#status > * td.probability {
+#RapidShapesStatus > * td.probability {
 	font-weight: bold;
 }
-#status > * table.metainfo tr th {
+#RapidShapesStatus > * table.metainfo tr th {
 	text-align: left;
 }
 /* table borders: */
-#status > * th, #status > * td {
+#RapidShapesStatus > * th, #RapidShapesStatus > * td {
 	border: solid 1px #555555;
 }
-#status > * td#outer {
+#RapidShapesStatus > * td#outer {
 	border: solid 0px;
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;
 }
 
 
-
+/*
 body {
 	text-align: center;
 }
 th, td {
 	border: solid 10px #555555;
 }
+*/

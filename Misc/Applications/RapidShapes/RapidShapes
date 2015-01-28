@@ -161,13 +161,15 @@ sub generateHTMLstatuspage {
 	$status_tdms{style} = 'running' if (scalar(keys(%{$refHash_shapes})) > 0);
 	$status_tdms{style} = 'finish' if (($exploredPart >= $settings->{alpha}) || ($exploredTDMs == scalar(keys(%{$refHash_shapes}))));
 	
-	my $HTML = "<html>\n";
-	$HTML .= "\t<head>\n";
-	$HTML .= "\t\t<link rel='stylesheet' type='text/css' href='status.css' />\n";
-	$HTML .= "\t</head>\n";
-	$HTML .= "\t<body>\n";
+	my $HTML = "";
+	#~ $HTML .= "<html>\n";
+	#~ $HTML .= "\t<head>\n";
+	#~ $HTML .= "\t\t<link rel='stylesheet' type='text/css' href='status.css' />\n";
+	#~ $HTML .= "\t</head>\n";
+	#~ $HTML .= "\t<body>\n";
 	
-	$HTML .= "\t\t<table id='status'><tr><td id='outer'>\n";
+	$HTML .= "\t\t<div>\n";
+	$HTML .= "\t\t<table id='RapidShapesStatus'><tr><td id='outer'>\n";
 	$HTML .= "\t\t<table>\n";
 	$HTML .= "\t\t\t<tr>\n";
 	$HTML .= "\t\t\t\t<th colspan='3'>Overall status: ".printStatus(\%status_overall)."</th>\n";
@@ -326,14 +328,20 @@ sub generateHTMLstatuspage {
 	}
 	$HTML .= "\t\t</table>\n";
 	$HTML .= "\t\t</table></tr></td>\n";
+	$HTML .= "\t\t</div>\n";
 	
-	$HTML .= "\t</body>\n";
-	$HTML .= "</html>\n";
+	#~ $HTML .= "\t</body>\n";
+	#~ $HTML .= "</html>\n";
 	
 	if ($settings->{cluster}) {
+		my $diePrefix = "RapidShapes : function generateHTMLstatuspage: ";
+		my $setLock = qx($Settings::BINARIES{touch} $Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}.lock);
+		die $diePrefix."failed to set lock for '".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}."'" if ($? != 0);
 		open (OUT, "> ".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}) || die "can't write HTML status file to '".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}."': $!\n";
 			print OUT $HTML;
 		close (OUT);
+		my $unsetLock = qx($Settings::BINARIES{rm} $Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}.lock);
+		die $diePrefix."failed to remove lock for '".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}."'" if ($? != 0);
 	}
 	#~ die;
 	return $HTML;
