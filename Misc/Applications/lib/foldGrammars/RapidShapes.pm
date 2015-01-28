@@ -1,8 +1,10 @@
 #!/usr/bin/env perl
 
 use foldGrammars::Settings;
+use foldGrammars::Utils;
 use strict;
 use warnings;
+use Time::HiRes qw( time );
 
 package RapidShapes;
 
@@ -37,11 +39,72 @@ $PARAM{numsamples} = {modes => [$Settings::MODE_SAMPLE], key => 'numSamples', ty
 $PARAM{grammar} = {modes => \@RapidShapes::ALLMODES, key => 'grammar', default => $RapidShapes::GRAMMAR_OVERDANGLE, type => 's', info => "How to treat \"dangling end\" energies for bases adjacent to helices in free ends and multi-loops.\n \n\"$RapidShapes::GRAMMAR_NODANGLE\" (-d 0 in Vienna package) ignores dangling energies altogether.\n \n\"$RapidShapes::GRAMMAR_OVERDANGLE\" (-d 2 in Vienna package) always dangles bases onto helices, even if they are part of neighboring helices themselves. Seems to be wrong, but could perform surprisingly well.\n \n\"$RapidShapes::GRAMMAR_MICROSTATE\" (-d 1 in Vienna package) correct optimisation of all dangling possibilities, unfortunately this results in an semantically ambiguous search space regarding Vienna-Dot-Bracket notations.\n \n\"$RapidShapes::GRAMMAR_MACROSTATE\" (no correspondens in Vienna package) same as $RapidShapes::GRAMMAR_MICROSTATE, while staying unambiguous. Unfortunately, mfe computation violates Bellman's principle of optimality.\nDefault is \"$RapidShapes::GRAMMAR_OVERDANGLE\". See [".References::getNumber('jan:schud:ste:gie:2011')."] for further details."};
 $PARAM{alpha} = {modes => \@RapidShapes::ALLMODES, key => 'alpha', gapc => undef, type => 'f', default => 0.9, info =>, $Settings::PROGINFOS{$PROGID}->{name}." computes individual shape class probabilities until either alpha percent of the folding space is explored or nor more guessed shape classes are uncomputed. We suggest an alpha of 90% or less."};
 $PARAM{name} = {modes => \@RapidShapes::ALLMODES, key => 'name', gapc => undef, type => 's', default => "unknown sequence", info =>, "set a name for the input sequence, i.e. the header for a fasta like output."};
-$PARAM{cluster} = {modes => \@RapidShapes::ALLMODES, key => 'cluster', gapc => undef, type => 's', default => undef, info =>, "You might want to compute probabilities for a multipe fasta file. If you have a Oracle Grid Engin at your fingertips, you can prepare an array job for fasta file by providing it here to the parameter --@(cluster)."};
+$PARAM{cluster} = {modes => \@RapidShapes::ALLMODES, key => 'cluster', gapc => undef, type => 'i', default => 0, info =>, "If you have a Oracle Grid Engin at your fingertips, you can run step 3 (TDM generation and execution) in parallel. Hit this switch to use the grid. Some more advanced settings must maybe configured in the Settings.pm file."};
 $PARAM{kbest} = {modes => [$Settings::MODE_KBEST], key => 'kbest', gapc => 'k', type => 'i', default => '5', info => $Settings::PROGINFOS{$PROGID}->{name}." will first perform a simple shape analysis for the best 'kbest' shapes. Choice of an appropriate value for --@(kbest) is not easy, since it depends on sequence length and base composition.\nDefault is @(DEFAULT), which is definitively wrong!"};
 $PARAM{list} = {modes => [$Settings::MODE_LIST], key => 'list', gapc => undef, type => 's', default => undef, info => "You might want to manually provide a list of shape classes that should be checked via TDMs. Individual shapes are separated by whitespaces, commas or semicolons."};
 $PARAM{varnaoutput} = {modes => \@RapidShapes::ALLMODES, key => 'varna', default => undef, type => 's', info => "Provide a file name to which a HTML formatted version of the output should be saved in."};
 
+sub compileAndrunTDM {
+	my $diePrefix = "TDM generation failed! (Utils::compileAndrunTDM): ";
+	
+	my ($shapestring, $refHash_settings, $refHash_sequence, $verbose) = @_;
+	
+	my $tdmCall = "";
+	$tdmCall .= " -T ".$refHash_settings->{temperature}." " if ($refHash_settings->{temperature} != 37);
+	$tdmCall .= " -P ".$refHash_settings->{param}." " if (defined $refHash_settings->{param});
+	$tdmCall .= " -u ".$refHash_settings->{allowlp}." ";
+
+	my $grammar = lc($refHash_settings->{grammar});
+	my $bintdm = Utils::absFilename($refHash_settings->{binarypath}.'/'.$refHash_settings->{binaryprefix}.'tdm_'.$grammar.'_'.$refHash_settings->{shapelevel});
+	my $tdmGrammar = qx($bintdm "$shapestring" 2>&1); $tdmGrammar =~ s/Answer://;
+	die $diePrefix."failed to generate TDM grammar $tdmGrammar\n" if ($? != 0);
+	
+	my $pwd = qx($Settings::BINARIES{pwd} 2>&1); 
+	die $diePrefix."cannot retrieve pwd result: $pwd" if ($? != 0);
+	chomp $pwd;
+	
+	my $tmpDir = Utils::createUniqueTempDir($Settings::tmpdir, "tdmrun");
+	#~ my $tmpDir = '/tmp/HELP/'; qx($Settings::BINARIES{rm} -rf $tmpDir && $Settings::BINARIES{mkdir} $tmpDir -p); chdir($tmpDir);
+
+	my $mkdir = qx($Settings::BINARIES{mkdir} $tmpDir/Grammars -p 2>&1);
+	die $diePrefix."cannot mkdir subdirectory Grammars in '$tmpDir' dir: $mkdir" if ($? != 0);
+	my $ln = qx($Settings::BINARIES{ln} -s $Settings::prototypeDirectory/$grammar.gap $tmpDir/ 2>&1);
+	die $diePrefix."cannot soft link to prototype directoy '$Settings::prototypeDirectory': $ln" if ($? != 0);
+	open (OUT, "> $tmpDir/Grammars/gra_$grammar.gap") || die "can't write generated grammar file: $!";
+		print OUT $tdmGrammar;
+	close (OUT);
+	my $algebrasuffix = "";
+	$algebrasuffix = "_macrostate" if ($grammar eq 'macrostate');
+	$algebrasuffix = "_overdangle" if ($grammar eq 'overdangle');
+	#~ my $gapc = qx($Settings::BINARIES{gapc} -p "alg_pfunc$algebrasuffix" $grammar.gap -I $Settings::prototypeDirectory 2>&1);
+	my $gapc = qx($Settings::BINARIES{gapc} -p "(alg_shapeX * (alg_mfe$algebrasuffix % alg_pfunc$algebrasuffix)) * (alg_dotBracket * alg_pfunc$algebrasuffix)" $grammar.gap --kbacktrace --no-coopt-class -I $Settings::prototypeDirectory 2>&1);
+	die $diePrefix."gapc execution failed: $gapc" if ($? != 0);
+	my $perl = qx($Settings::BINARIES{perl} $Settings::prototypeDirectory/Misc/Applications/addRNAoptions.pl $tmpDir/out.mf 0 2>&1);
+	die $diePrefix."perl addRNAoptions.pl execution failed: $perl" if ($? != 0);
+	print STDERR "\tcompiling ..." if ($verbose);
+	my $start_make = Time::HiRes::gettimeofday();
+	my $make = qx($Settings::BINARIES{make} -f out.mf CPPFLAGS_EXTRA="-I $Settings::prototypeDirectory -ffast-math" LDLIBS="-lrnafast" 2>&1);
+	die $diePrefix."make execution failed: $make" if ($? != 0);
+	print STDERR " done in ".sprintf("%.2f seconds.\n", Time::HiRes::gettimeofday() - $start_make) if ($verbose);
+	
+	my $seq = $refHash_sequence->{sequence};
+	$seq =~ s/t/u/gi;
+	print STDERR "\trunning ..." if ($verbose);
+	my $start_run = Time::HiRes::gettimeofday();
+	my $tdmResult = qx(./out $tdmCall "$seq" 2>&1); 
+	die $diePrefix."TDM execution failed: $tdmResult" if ($? != 0);
+	print STDERR " done in ".sprintf("%.2f seconds.\n", Time::HiRes::gettimeofday() - $start_run) if ($verbose);
+	
+	$tdmResult =~ s/Answer://;
+	chomp $tdmResult;
+
+	chdir($pwd);
+	my $remove = qx($Settings::BINARIES{rm} -rf $tmpDir 2>&1);
+	die $diePrefix."removing temporary directory '$tmpDir' failed: $remove" if ($? != 0);
+	print STDERR "\tfinished.\n" if ($verbose);
+
+	return $tdmResult;
+}
 
 sub parsePFanswer {
 	my @inputrows = @_;
@@ -172,7 +235,6 @@ sub checkParameters {
 	die $diePrefix."there is no grammar \"".$settings->{'grammar'}."\". Please select one of \"$GRAMMAR_NODANGLE\", \"$GRAMMAR_OVERDANGLE\", \"$GRAMMAR_MICROSTATE\" or \"$GRAMMAR_MACROSTATE\".\n" if ($settings->{'grammar'} !~ m/^nodangle|overdangle|microstate|macrostate$/i);
 	die $diePrefix."--".$PARAM{'numsamples'}->{key}." must be a positive integer, otherwise shape frequencies cannot be estimated.\n" if ($settings->{'numsamples'} < 1);
 	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a positive integer number!\n" if ($settings->{'probdecimals'} < 0);
-	die $diePrefix."cannot read provided fasta file '".$settings->{cluster}."' for cluster job preparation.\n" if ((defined $settings->{cluster}) && (not -e $settings->{cluster}));
 
 	my ($programPath, $programName) = @{Utils::separateDirAndFile($0)};
 	$programPath = "./" if (not defined $programPath);
