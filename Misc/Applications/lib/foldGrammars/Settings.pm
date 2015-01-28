@@ -69,6 +69,8 @@ our %BINARIES = (
 	'dirname','dirname',
 	'qstat','qstat',
 	'qdel','qdel',
+	'basename','basename',
+	'touch','touch',
 );
 
 our %TDMfiles = (
@@ -118,9 +120,9 @@ our %RAPIDSHAPES_BIBISERV = (
 	'qsub', 'qsub -l virtual_free=6GB -l h_vmem=6GB -cwd -tc 10 ', #-tc controls the number of maximal parallel jobs for an array-job
 	'gridSH', '/usr/bin/sh',
 	'sleepTimeInit', '1', #initial number of seconds between two qstat requests
-	'sleepTimeMax', '60', #maximal number of seconds between two qstat requests
+	'sleepTimeMax', '2', #maximal number of seconds between two qstat requests
 	'wrapInputSequenceAfterChars', '70',
-	'htmlStatusFilename', 'status.html', #sets the filename to which the status reports should be written
+	'htmlStatusFilename', 'status.part', #sets the filename to which the status reports should be written
 );
 
 1;
