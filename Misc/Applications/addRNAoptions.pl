@@ -1,12 +1,21 @@
 #!/usr/bin/env perl
 
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+
+use lib getPath($0)."lib/";
+
 use strict;
 use warnings;
 use Data::Dumper;
+use foldGrammars::Settings;
 
-my $sedBinary = 'sed';
-my $gsedSearch = qx(gsed --version 2>&1);
-$sedBinary = 'gsed' if (defined $gsedSearch && $gsedSearch =~ m/GNU sed/);
+my $sedBinary = $Settings::BINARIES{'sed'};
 
 my ($infile, $mode) = @ARGV;
 die "usage: perl $0 <out.mf> <mode>\n  available modes:\n    0 = default\n    1 = read second argument as structure for RNAeval approach\n    2 = for MEA computation" if (@ARGV != 2);

@@ -71,6 +71,7 @@ our %BINARIES = (
 	'qdel','qdel',
 	'basename','basename',
 	'touch','touch',
+	'sed','sed',
 );
 
 our %TDMfiles = (
