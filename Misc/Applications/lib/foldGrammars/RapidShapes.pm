@@ -79,8 +79,10 @@ sub compileAndrunTDM {
 	#~ my $gapc = qx($Settings::BINARIES{gapc} -p "alg_pfunc$algebrasuffix" $grammar.gap -I $Settings::prototypeDirectory 2>&1);
 	my $gapc = qx($Settings::BINARIES{gapc} -p "(alg_shapeX * (alg_mfe$algebrasuffix % alg_pfunc$algebrasuffix)) * (alg_dotBracket * alg_pfunc$algebrasuffix)" $grammar.gap --kbacktrace --no-coopt-class -I $Settings::prototypeDirectory 2>&1);
 	die $diePrefix."gapc execution failed: $gapc" if ($? != 0);
+	print STDERR "\ttweaking makefile ..." if ($verbose);
 	my $perl = qx($Settings::BINARIES{perl} $Settings::prototypeDirectory/Misc/Applications/addRNAoptions.pl $tmpDir/out.mf 0 2>&1);
 	die $diePrefix."perl addRNAoptions.pl execution failed: $perl" if ($? != 0);
+	print STDERR " done.\n" if ($verbose);
 	print STDERR "\tcompiling ..." if ($verbose);
 	my $start_make = Time::HiRes::gettimeofday();
 	my $make = qx($Settings::BINARIES{make} -f out.mf CPPFLAGS_EXTRA="-I $Settings::prototypeDirectory -ffast-math" LDLIBS="-lrnafast" 2>&1);

@@ -300,7 +300,7 @@ sub generateHTMLstatuspage {
 			$status_execution{style} = 'stopped';
 		}
 		if ($refHash_shapes->{$shape}->{status} eq 'error') {
-			$status_execution{label} = "an error occured";
+			$status_execution{label} = "an error occured:".$refHash_shapes->{$shape}->{errorMessage};
 			$status_execution{style} = 'error';
 		}
 		
@@ -475,8 +475,10 @@ sub doComputation {
 						my $errFile = $errDir."/RapidShapes.e".$gridID.".".$waitList{$shapestring}->{position};
 						my $outFile = $outDir."/RapidShapes.o".$gridID.".".$waitList{$shapestring}->{position};
 						if ((-e $errFile) && ($waitList{$shapestring}->{status} ne 'finish')) {
+							my $content = "";
 							open (ERR, $errFile) || die "can't read file '$errFile': $!";
 								while (my $line = <ERR>) {
+									$content .= $line;
 									if ($line =~ m/\tcompiling \.\.\. (done in (.+?) seconds\.)?/) {
 										$waitList{$shapestring}->{status} = "compiling";
 										$waitList{$shapestring}->{compiletime} = $2 if (defined $2);
@@ -487,6 +489,10 @@ sub doComputation {
 										$waitList{$shapestring}->{status} = "finish";
 									} elsif ($line =~ m/TDM generation failed\!/) {
 										$waitList{$shapestring}->{status} = "error";
+										$waitList{$shapestring}->{errorMessage} = $content;
+										while (my $errline = <ERR>) {
+											$waitList{$shapestring}->{errorMessage} .= $errline;
+										}
 									}
 								}
 							close (ERR);
