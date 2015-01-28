@@ -117,6 +117,7 @@ our $RNAPARAM2004 = $Settings::bgapDir.'share/gapc/librna/rna_turner2004.par';
 our %RAPIDSHAPES_BIBISERV = (
 	'clusterwide_tempdir', '/vol/tmp/',
 	'tdmwrapper_binary', '/vol/fold-grammars/src/Misc/Applications/RapidShapes/tdmwrapper',
+	'binPath_grammargenerator', '/vol/fold-grammars/bin/', 
 	'qsub', 'qsub -l virtual_free=6GB -l h_vmem=6GB -cwd -tc 10 ', #-tc controls the number of maximal parallel jobs for an array-job
 	'gridSH', '/usr/bin/sh',
 	'sleepTimeInit', '1', #initial number of seconds between two qstat requests

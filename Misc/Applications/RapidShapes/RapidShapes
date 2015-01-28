@@ -435,7 +435,7 @@ sub doComputation {
 				print ARRAY 'shapestring=`'.$Settings::BINARIES{'head'}.' -n $SGE_TASK_ID '.$shapeListFile.' | '.$Settings::BINARIES{'tail'}.' -n 1`'."\n";
 				print ARRAY $Settings::BINARIES{'uname'}.' -a 1>&2'."\n";
 				my $command = "";
-				$settings->{binarypath} = '/vol/fold-grammars/bin/';
+				$settings->{binarypath} = $Settings::RAPIDSHAPES_BIBISERV{binPath_grammargenerator};
 				foreach my $param (keys %{$settings}) {
 					next unless (
 								($param eq 'temperature') ||
