@@ -29,7 +29,7 @@ our $bgapDir = '/vol/gapc/'; #must point to the directory containing "bin" "incl
 our $tmpdir = '/tmp/'; #temporary directory
 our $fileseparater = '/'; #character that separates directories in a path, / in unix but \ in windows
 
-our %BINARIES = (
+my %BINARIES = (
 	'cat', 'cat',
 	'rm', 'rm',
 	'mkdir', 'mkdir',
@@ -127,5 +127,28 @@ our %RAPIDSHAPES_BIBISERV = (
 	'wrapInputSequenceAfterChars', '70',
 	'htmlStatusFilename', 'status.part', #sets the filename to which the status reports should be written
 );
+
+my %checkedBinaries = (); #run time hash to avoid multiple check for binaries
+sub getBinary {
+	my ($requestedBinary) = @_;
+	
+	return $checkedBinaries{$requestedBinary} if (exists $checkedBinaries{$requestedBinary});
+	
+	my $binary = $requestedBinary;
+	$binary = $BINARIES{$requestedBinary} if (exists $BINARIES{$requestedBinary});
+	my $whichResult = qx(which $binary 2>&1);
+	chomp $whichResult;
+	if (($whichResult ne '') && (-x $whichResult)) {
+		$binary = $whichResult;
+	} else {
+		$binary = undef;
+	}
+	if (not defined $binary) {
+		die "You are using the binary '$requestedBinary', but it cannot be found. Please check your configuration in 'Settings.pm' or your PATH variable.";
+	} else {
+		$checkedBinaries{$requestedBinary} = $binary;
+		return $binary;
+	}
+}
 
 1;

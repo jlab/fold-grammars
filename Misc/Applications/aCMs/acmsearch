@@ -17,6 +17,7 @@ use warnings;
 use Data::Dumper;
 use Getopt::Long;
 use foldGrammars::Utils;
+use foldGrammars::Settings;
 use foldGrammars::IO;
 use POSIX 'isatty';
 
@@ -122,8 +123,7 @@ sub doComputation {
 	my $inputFile = Utils::writeInputToTempfile($seq);
 	my $command = $settings->{acmsearchBinary}." -f ".$inputFile;
 	print "Actual call was: $command\n" if ($settings->{verbose});
-	my $result = qx($command 2>&1);
-	Utils::qxDieMessage($command, $?);
+	my $result = Utils::execute("$command 2>&1");
 	unlink $inputFile if (!$settings->{verbose});
 
 	IO::parse_acm($result, $refHash_sequence, $settings, $inputIndex);

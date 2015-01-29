@@ -13,6 +13,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use foldGrammars::Utils;
+use foldGrammars::Settings;
 
 my ($shapestring, $header, $sequence, $GRAMMAR, $withMFE) = @ARGV;
 
@@ -51,19 +52,19 @@ sub compileAndrunTDM_mfe {
 
 	my $grammar = lc($refHash_settings->{grammar});
 	my $bintdm = Utils::absFilename($refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.'tdm_'.$grammar.'_'.$refHash_settings->{shapelevel});
-	my $tdmGrammar = qx($bintdm "$shapestring" 2>&1); $tdmGrammar =~ s/Answer://;
+	my $tdmGrammar = Utils::execute("$bintdm \"$shapestring\" 2>&1"); $tdmGrammar =~ s/Answer://;
 	die $diePrefix."failed to generate TDM grammar $tdmGrammar\n" if ($? != 0);
 	
-	my $pwd = qx($Settings::BINARIES{pwd} 2>&1); 
+	my $pwd = Utils::execute(Settings::getBinary('pwd')." 2>&1"); 
 	die $diePrefix."cannot retrieve pwd result: $pwd" if ($? != 0);
 	chomp $pwd;
 	
 	my $tmpDir = Utils::createUniqueTempDir($Settings::tmpdir, "tdmrun");
-	#~ my $tmpDir = '/tmp/HELP/'; qx($Settings::BINARIES{rm} -rf $tmpDir && $Settings::BINARIES{mkdir} $tmpDir -p); chdir($tmpDir);
+	#~ my $tmpDir = '/tmp/HELP/'; Utils::execute(Settings::getBinary('rm')." -rf $tmpDir && ".Settings::getBinary('mkdir')." $tmpDir -p"); chdir($tmpDir);
 	
-	my $mkdir = qx($Settings::BINARIES{mkdir} $tmpDir/Grammars -p 2>&1);
+	my $mkdir = Utils::execute(Settings::getBinary('mkdir')." $tmpDir/Grammars -p 2>&1");
 	die $diePrefix."cannot mkdir subdirectory Grammars in '$tmpDir' dir: $mkdir" if ($? != 0);
-	my $ln = qx($Settings::BINARIES{ln} -s $Settings::prototypeDirectory/$grammar.gap $tmpDir/ 2>&1);
+	my $ln = Utils::execute(Settings::getBinary('ln')." -s $Settings::prototypeDirectory/$grammar.gap $tmpDir/ 2>&1");
 	die $diePrefix."cannot soft link to prototype directoy '$Settings::prototypeDirectory': $ln" if ($? != 0);
 	open (OUT, "> $tmpDir/Grammars/gra_$grammar.gap") || die "can't write generated grammar file: $!";
 		print OUT $tdmGrammar;
@@ -71,23 +72,23 @@ sub compileAndrunTDM_mfe {
 	my $algebrasuffix = "";
 	$algebrasuffix = "_macrostate" if ($grammar eq 'macrostate');
 	$algebrasuffix = "_overdangle" if ($grammar eq 'overdangle');
-	my $gapc = qx($Settings::BINARIES{gapc} -p "alg_mfe$algebrasuffix" $grammar.gap -I $Settings::prototypeDirectory 2>&1);
+	my $gapc = Utils::execute(Settings::getBinary('gapc')." -p \"alg_mfe$algebrasuffix\" $grammar.gap -I $Settings::prototypeDirectory 2>&1");
 	die $diePrefix."gapc execution failed: $gapc" if ($? != 0);
-	my $perl = qx($Settings::BINARIES{perl} $Settings::prototypeDirectory/Misc/Applications/addRNAoptions.pl $tmpDir/out.mf 0 2>&1);
+	my $perl = Utils::execute(Settings::getBinary('perl')." $Settings::prototypeDirectory/Misc/Applications/addRNAoptions.pl $tmpDir/out.mf 0 2>&1");
 	die $diePrefix."perl addRNAoptions.pl execution failed: $perl" if ($? != 0);
-	my $make = qx($Settings::BINARIES{make} -f out.mf CPPFLAGS_EXTRA="-I $Settings::prototypeDirectory" 2>&1);
+	my $make = Utils::execute(Settings::getBinary('make')." -f out.mf CPPFLAGS_EXTRA=\"-I $Settings::prototypeDirectory\" 2>&1");
 	die $diePrefix."make execution failed: $make" if ($? != 0);
 
 	my $seq = $refHash_sequence->{sequence};
 	$seq =~ s/t/u/gi;
-	my $tdmResult = qx(./out $tdmCall "$seq" 2>&1); 
+	my $tdmResult = Utils::execute("./out $tdmCall \"$seq\" 2>&1");
 	die $diePrefix."TDM execution failed: $tdmResult" if ($? != 0);
 	
 	$tdmResult =~ s/Answer://;
 	chomp $tdmResult;
 
 	chdir($pwd);
-	my $remove = qx($Settings::BINARIES{rm} -rf $tmpDir 2>&1);
+	my $remove = Utils::execute(Settings::getBinary('rm')." -rf $tmpDir 2>&1");
 	die $diePrefix."removing temporary directory '$tmpDir' failed: $remove" if ($? != 0);
 	
 	return $tdmResult;

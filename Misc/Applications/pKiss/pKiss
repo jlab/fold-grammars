@@ -17,6 +17,7 @@ use warnings;
 use Data::Dumper;
 use Getopt::Long;
 use foldGrammars::Utils;
+use foldGrammars::Settings;
 use foldGrammars::RNAcast;
 use foldGrammars::IO;
 use foldGrammars::Structure;
@@ -117,9 +118,8 @@ if (@ARGV == 0) {
 	#only for MODE_EVAL, rna sequence and secondary structure are given as two command line parameters
 	my $inputStructure = $ARGV[1];
 	if (-e $inputStructure) { #especially for BiBiServ: structure must be delivered as a filename, thus read the file to get the structure.
-		my $command = "$Settings::BINARIES{cat} $inputStructure";
-		$inputStructure = qx($command); 
-		Utils::qxDieMessage($command, $?);
+		my $command = Settings::getBinary('cat')." $inputStructure";
+		$inputStructure = Utils::execute($command); 
 		chomp $inputStructure;
 	}
 	processInput({sequence => $ARGV[0], header => "unnamed sequence", structure => $inputStructure}, $settings);
@@ -200,8 +200,7 @@ sub doComputation {
 	
 	print "Actual call was: $command \"$seq\" $structureArg\n" if ($settings->{verbose});
 	my $inputFile = Utils::writeInputToTempfile($seq);
-	my $result = qx($command -f $inputFile $structureArg 2>&1);
-	Utils::qxDieMessage($command, $?);
+	my $result = Utils::execute("$command -f $inputFile $structureArg 2>&1");
 	unlink $inputFile if (!$settings->{verbose});
 	unlink $structureInputFile if ((defined $structureInputFile) && (!$settings->{verbose}));
 

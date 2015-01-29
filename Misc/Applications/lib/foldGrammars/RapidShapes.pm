@@ -56,53 +56,42 @@ sub compileAndrunTDM {
 
 	my $grammar = lc($refHash_settings->{grammar});
 	my $bintdm = Utils::absFilename($refHash_settings->{binarypath}.'/'.$refHash_settings->{binaryprefix}.'tdm_'.$grammar.'_'.$refHash_settings->{shapelevel});
-	my $tdmGrammar = qx($bintdm "$shapestring" 2>&1); $tdmGrammar =~ s/Answer://;
-	die $diePrefix."failed to generate TDM grammar $tdmGrammar\n" if ($? != 0);
+	my $tdmGrammar = Utils::execute("$bintdm \"$shapestring\" 2>&1"); $tdmGrammar =~ s/Answer://;
 	
-	my $pwd = qx($Settings::BINARIES{pwd} 2>&1); 
-	die $diePrefix."cannot retrieve pwd result: $pwd" if ($? != 0);
+	my $pwd = Utils::execute(Settings::getBinary('pwd')." 2>&1");
 	chomp $pwd;
 	
 	my $tmpDir = Utils::createUniqueTempDir($Settings::tmpdir, "tdmrun");
-	#~ my $tmpDir = '/tmp/HELP/'; qx($Settings::BINARIES{rm} -rf $tmpDir && $Settings::BINARIES{mkdir} $tmpDir -p); chdir($tmpDir);
-
-	my $mkdir = qx($Settings::BINARIES{mkdir} $tmpDir/Grammars -p 2>&1);
-	die $diePrefix."cannot mkdir subdirectory Grammars in '$tmpDir' dir: $mkdir" if ($? != 0);
-	my $ln = qx($Settings::BINARIES{ln} -s $Settings::prototypeDirectory/$grammar.gap $tmpDir/ 2>&1);
-	die $diePrefix."cannot soft link to prototype directoy '$Settings::prototypeDirectory': $ln" if ($? != 0);
+	
+	my $mkdir = Utils::execute(Settings::getBinary('mkdir')." $tmpDir/Grammars -p 2>&1");
+	my $ln = Utils::execute(Settings::getBinary('ln')." -s $Settings::prototypeDirectory/$grammar.gap $tmpDir/ 2>&1");
 	open (OUT, "> $tmpDir/Grammars/gra_$grammar.gap") || die "can't write generated grammar file: $!";
 		print OUT $tdmGrammar;
 	close (OUT);
 	my $algebrasuffix = "";
 	$algebrasuffix = "_macrostate" if ($grammar eq 'macrostate');
 	$algebrasuffix = "_overdangle" if ($grammar eq 'overdangle');
-	#~ my $gapc = qx($Settings::BINARIES{gapc} -p "alg_pfunc$algebrasuffix" $grammar.gap -I $Settings::prototypeDirectory 2>&1);
-	my $gapc = qx($Settings::BINARIES{gapc} -p "(alg_shapeX * (alg_mfe$algebrasuffix % alg_pfunc$algebrasuffix)) * (alg_dotBracket * alg_pfunc$algebrasuffix)" $grammar.gap --kbacktrace --no-coopt-class -I $Settings::prototypeDirectory 2>&1);
-	die $diePrefix."gapc execution failed: $gapc" if ($? != 0);
+	my $gapc = Utils::execute(Settings::getBinary('gapc')." -p \"(alg_shapeX * (alg_mfe$algebrasuffix % alg_pfunc$algebrasuffix)) * (alg_dotBracket * alg_pfunc$algebrasuffix)\" $grammar.gap --kbacktrace --no-coopt-class -I $Settings::prototypeDirectory 2>&1");
 	print STDERR "\ttweaking makefile ..." if ($verbose);
-	my $perl = qx($Settings::BINARIES{addRNAoptions.pl} $tmpDir/out.mf 0 2>&1);
-	die $diePrefix."perl addRNAoptions.pl execution failed: $perl" if ($? != 0);
+	my $perl = Utils::execute(Settings::getBinary('addRNAoptions.pl')." $tmpDir/out.mf 0 2>&1");
 	print STDERR " done.\n" if ($verbose);
 	print STDERR "\tcompiling ..." if ($verbose);
 	my $start_make = Time::HiRes::gettimeofday();
-	my $make = qx($Settings::BINARIES{make} -f out.mf CPPFLAGS_EXTRA="-I $Settings::prototypeDirectory -ffast-math" LDLIBS="-lrnafast" 2>&1);
-	die $diePrefix."make execution failed: $make" if ($? != 0);
+	my $make = Utils::execute(Settings::getBinary('make')." -f out.mf CPPFLAGS_EXTRA=\"-I $Settings::prototypeDirectory -ffast-math\" LDLIBS=\"-lrnafast\" 2>&1");
 	print STDERR " done in ".sprintf("%.2f seconds.\n", Time::HiRes::gettimeofday() - $start_make) if ($verbose);
 	
 	my $seq = $refHash_sequence->{sequence};
 	$seq =~ s/t/u/gi;
 	print STDERR "\trunning ..." if ($verbose);
 	my $start_run = Time::HiRes::gettimeofday();
-	my $tdmResult = qx(./out $tdmCall "$seq" 2>&1); 
-	die $diePrefix."TDM execution failed: $tdmResult" if ($? != 0);
+	my $tdmResult = Utils::execute("./out $tdmCall \"$seq\" 2>&1"); 
 	print STDERR " done in ".sprintf("%.2f seconds.\n", Time::HiRes::gettimeofday() - $start_run) if ($verbose);
 	
 	$tdmResult =~ s/Answer://;
 	chomp $tdmResult;
 
 	chdir($pwd);
-	my $remove = qx($Settings::BINARIES{rm} -rf $tmpDir 2>&1);
-	die $diePrefix."removing temporary directory '$tmpDir' failed: $remove" if ($? != 0);
+	my $remove = Utils::execute(Settings::getBinary('rm')." -rf $tmpDir 2>&1");
 	print STDERR "\tfinished.\n" if ($verbose);
 
 	return $tdmResult;
@@ -131,8 +120,8 @@ sub guessShapesSampling {
 	my %sampledShapes = ();
 	my $command = buildCommand($refHash_settings);
 	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	my $result = qx($command -f $inputFile 2>&1);
-	Utils::qxDieMessage($command, $?);
+	my $result = Utils::execute("$command -f $inputFile 2>&1");
+
 	foreach my $line (split(m/\r?\n/, $result)) {
 		#( 0.0135213 , ( ( ( [] , -20 ) , ...((......))...... ) , 0.0047145 ) )
 		if ($line =~ m/\( .+? , \( \( \( (.+?) , .+? \) , .+? \) , .+? \) \)/) {
@@ -156,8 +145,7 @@ sub guessShapesKbest {
 	my %kbestShapes = ();
 	my $command = buildCommand($refHash_settings);
 	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	my $result = qx($command -f $inputFile 2>&1);
-	Utils::qxDieMessage($command, $?);
+	my $result = Utils::execute("$command -f $inputFile 2>&1");
 	foreach my $line (split(m/\r?\n/, $result)) {
 		if ($line =~ m/\(\s+(\S+)\s+,\s+(.+?)\s+\)/) { #( [_[_[[]_]_]] , 70 )
 			$kbestShapes{$1} = $2;
@@ -180,8 +168,7 @@ sub guessShapesSubopt {
 	my %energyShapes = ();
 	my $command = buildCommand($refHash_settings);
 	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	my $result = qx($command -f $inputFile 2>&1);
-	Utils::qxDieMessage($command, $?);
+	my $result = Utils::execute("$command -f $inputFile 2>&1");
 	foreach my $line (split(m/\r?\n/, $result)) {
 		if ($line =~ m/\( (.+?) , \( \( \S+ , (\S+) \) , .+? \) \)/) { #( -120 , ( ( ...((((....))))...... , [] ) , 0.0131327 ) )
 			$energyShapes{$2} = $1;
@@ -206,8 +193,7 @@ sub getPFall {
 	print STDERR "step 2: computing partition function value for complete folding space ... ";
 	my $command = buildCommand($refHash_settings, $TASK_PFALL);
 	my $inputFile = Utils::writeInputToTempfile($inputSequence);
-	my $pfAll = RapidShapes::parsePFanswer(qx($command -f $inputFile));
-	Utils::qxDieMessage($command, $?);	
+	my $pfAll = RapidShapes::parsePFanswer(Utils::execute("$command -f $inputFile"));
 	unlink $inputFile;
 	print STDERR $pfAll.".\n";
 	

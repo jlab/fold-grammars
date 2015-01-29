@@ -18,7 +18,7 @@ use foldGrammars::Settings;
 use foldGrammars::Utils;
 use foldGrammars::Structure;
 
-my $PWD = qx(pwd); chomp $PWD; $PWD .= "/";
+my $PWD = Utils::execute(Settings::getBinary('pwd')); chomp $PWD; $PWD .= "/";
 
 my $BINARYSDIR = "/vol/cluster-data/sjanssen/bin/";
 
@@ -133,7 +133,7 @@ sub runFoldGrammars {
 
 	my @results = ();
 	my $mfe = 99999999;
-	foreach my $line (split(m/\n/, qx(${BINARYSDIR}fsanalysis_mfe_${grammar}_30 $energyModel ${sequence}))) {
+	foreach my $line (split(m/\n/, Utils::execute($BINARYSDIR."fsanalysis_mfe_".$grammar."_30 ".$energyModel." ".$sequence))) {
 		if ($line =~ m/\( (.*?) , ((\(|\)|\.)+) \)/) {
 			my ($energy, $structure) = ($1, $2);
 			push @results, $structure;
@@ -159,7 +159,7 @@ sub runMEA {
 
 	my @results = ();
 	my $mfe = 99999999;
-	foreach my $line (split(m/\n/, qx(/vol/fold-grammars/bin/RNAshapes --mode=mea --grammar=${grammar} ${sequence}))) {
+	foreach my $line (split(m/\n/, Utils::execute("/vol/fold-grammars/bin/RNAshapes --mode=mea --grammar=$grammar $sequence"))) {
 		if ($line =~ m/^(.+?)  ([\(|\)|\.].+?)  ([\[|\]|\_].+?)$/) {
 			my ($energy, $structure) = ($1, $2);
 			push @results, $structure;
@@ -191,7 +191,7 @@ sub runRNAfold {
 	} else {
 		$paramfile = ' -P $energyModel';
 	}
-	foreach my $line (split(m/\n/, qx(cd $PWD && echo $sequence | $Settings::BINARIES{RNAfold} --noPS --noLP $dangle $paramfile))) {
+	foreach my $line (split(m/\n/, Utils::execute("cd $PWD && echo $sequence | ".Settings::getBinary('RNAfold')." --noPS --noLP $dangle $paramfile"))) {
 		if ($line =~ m/((\(|\)|\.)+)\s+\((.+?)\)/) {
 			push @{$results{$3}}, $1;
 			$bestEnergy = $3 if ($bestEnergy > $3);
@@ -207,7 +207,7 @@ sub runRNAsubopt {
 	my %results = ();
 	my $bestEnergy = 99999;
 
-	foreach my $line (split(m/\n/, qx(cd $PWD && echo $sequence | RNAsubopt -e 1 -s -noLP $dangle))) { #bug wenn -e < 1 ?
+	foreach my $line (split(m/\n/, Utils::execute("cd $PWD && echo $sequence | RNAsubopt -e 1 -s -noLP $dangle"))) { #bug wenn -e < 1 ?
 		if ($line =~ m/((\(|\)|\.)+)\s+(.+)\s*$/) {
 			if ($bestEnergy > $3) {
 				$bestEnergy = $3;
@@ -244,14 +244,14 @@ sub runUNAFold {
 	
 	my %results = ();
 	my $bestEnergy = 99999;
-	foreach my $line (split(m/\n/, qx(/vol/pi/bin/ct2b.pl $seqFileName.ct))) {
+	foreach my $line (split(m/\n/, Utils::execute("/vol/pi/bin/ct2b.pl $seqFileName.ct"))) {
 		if ($line =~ m/((\(|\)|\.)+)\s+\((.+?)\)/) {
 			push @{$results{$3}}, $1;
 			$bestEnergy = $3 if ($bestEnergy > $3);
 		}
 	}
 	sleep 1;
-	qx(cd $PWD && rm -Rf $tempDir);
+	Utils::execute("cd $PWD && rm -Rf $tempDir");
 	
 	return {structure => $results{$bestEnergy}->[0], mfe => $bestEnergy};
 }
@@ -267,9 +267,9 @@ sub runUNAFold_noPerl {
 	
 	my $status = undef;
 	if ((defined $specialParams) && ($specialParams eq 'X')) {
-		$status = system("cd $tempDir && ".$Settings::BINARIES{'hybrid-ss-min'}." --suffix=".$energyModel." --mfold --NA=RNA --tmin=37 --tinc=1 --tmax=37 --sodium=1 --magnesium=0 ".$dangle." ".$seqFileName." > /dev/null");
+		$status = system("cd $tempDir && ".Settings::getBinary('hybrid-ss-min')." --suffix=".$energyModel." --mfold --NA=RNA --tmin=37 --tinc=1 --tmax=37 --sodium=1 --magnesium=0 ".$dangle." ".$seqFileName." > /dev/null");
 	} else {
-		$status = system("cd $tempDir && ".$Settings::BINARIES{'hybrid-ss-min'}." --suffix=".$energyModel." --mfold --NA=RNA --tmin=37 --tinc=1 --tmax=37 --sodium=1 --magnesium=0 ".$dangle." ".$seqFileName." > /dev/null");
+		$status = system("cd $tempDir && ".Settings::getBinary('hybrid-ss-min')." --suffix=".$energyModel." --mfold --NA=RNA --tmin=37 --tinc=1 --tmax=37 --sodium=1 --magnesium=0 ".$dangle." ".$seqFileName." > /dev/null");
 	}
 	#~ my $status = system("cd $tempDir && /vol/unafold-3.8/bin/hybrid-ss-min --mfold --NA=RNA --tmin=37 --tinc=1 --tmax=37 --sodium=1 --magnesium=0 --noisolate ".$dangle." ".$seqFileName." > /dev/null");
 	die "something went wrong with UNAfold." if ($status != 0);
@@ -277,14 +277,14 @@ sub runUNAFold_noPerl {
 	my %results = ();
 	my $bestEnergy = 0;
 	$results{0} = [('.' x length($sequence))]; #weil Mfold nicht die komplett ungepaarte Struktur mit beachtet
-	foreach my $line (split(m/\n/, qx($Settings::BINARIES{'ct2b.pl'} $seqFileName.ct))) {
+	foreach my $line (split(m/\n/, Utils::execute(Settings::getBinary('ct2b.pl')." $seqFileName.ct"))) {
 		if ($line =~ m/((\(|\)|\.)+)\s+\((.+?)\)/) {
 			push @{$results{$3}}, $1;
 			$bestEnergy = $3 if ($bestEnergy > $3);
 		}
 	}
 	sleep 1;
-	qx(cd $PWD && rm -Rf $tempDir);
+	Utils::execute("cd $PWD && rm -Rf $tempDir");
 	
 	return {structure => $results{$bestEnergy}->[0], mfe => $bestEnergy};
 }
@@ -300,7 +300,7 @@ sub runCentroidFold {
 	
 	my $structure = undef;
 	my $mfe = undef;
-	foreach my $line (split(m/\n/, qx(cd $tempDir; $Settings::BINARIES{'centroid_fold'} --engine=$engine "$seqFileName"))) {
+	foreach my $line (split(m/\n/, Utils::execute("cd $tempDir; ".Settings::getBinary('centroid_fold')." --engine=$engine '$seqFileName'"))) {
 		if ($line =~ m/^(.*?)\s+\(g=.+?,th=.+?e=(.+?)\)/) {
 			($structure, $mfe) = ($1, $2);
 			last;
@@ -308,7 +308,7 @@ sub runCentroidFold {
 	}
 	
 	sleep 1;
-	qx(cd $PWD && rm -Rf $tempDir);
+	Utils::execute("cd $PWD && rm -Rf $tempDir");
 	
 	return {structure => $structure, mfe => $mfe};
 }

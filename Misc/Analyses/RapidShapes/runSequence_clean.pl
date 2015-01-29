@@ -29,7 +29,7 @@ my %RS_BINARIES = (
 	'pfall', '/vol/fold-grammars/bin/RapidShapes_pfall_'.$GRAMMAR,
 	'kbest', '/vol/fold-grammars/bin/RapidShapes_kbest_'.$GRAMMAR,
 	'singleTDM', '/vol/fold-grammars/src/Misc/Analyses/RapidShapes/runSingleTDM.pl',
-	'memtime', $Settings::BINARIES{'time'}.' -f "RT: %U user, %S system, %E elapsed -- Max VSize = %ZKB, Max RSS = %MKB :RT"',
+	'memtime', Settings::getBinary('tiome').' -f "RT: %U user, %S system, %E elapsed -- Max VSize = %ZKB, Max RSS = %MKB :RT"',
 	'sample', '/vol/fold-grammars/bin/RNAshapes --mode=sample --grammar=overdangle ',
 	'RNAshapes', '/vol/pi/bin/RNAshapes ',
 );
@@ -54,15 +54,15 @@ my $currentAbsDeviation = 3;
 my $resultDir = '/vol/fold-grammars/src/Misc/Analyses/RapidShapes/ResultsClean_random/'.$header.'/';
 
 if (not -d $resultDir) {
-	my $res_mkdir = qx($Settings::BINARIES{'mkdir'} -p $resultDir 2>&1); 
+	my $res_mkdir = Utils::execute(Settings::getBinary('mkdir')." -p $resultDir 2>&1"); 
 	die("cannot create result dir: $res_mkdir") if ($? != 0);
 }
 if (not -d $resultDir.'/ERR') {
-	my $res_mkdir = qx($Settings::BINARIES{'mkdir'} -p $resultDir/ERR 2>&1);
+	my $res_mkdir = Utils::execute(Settings::getBinary('mkdir')." -p $resultDir/ERR 2>&1");
 	die("cannot create error dir: $res_mkdir") if ($? != 0);
 }
 if (not -d $resultDir.'/OUT') {
-	my $res_mkdir = qx($Settings::BINARIES{'mkdir'} -p $resultDir/OUT 2>&1);
+	my $res_mkdir = Utils::execute(Settings::getBinary('mkdir')." -p $resultDir/OUT 2>&1");
 	die("cannot create output dir: $res_mkdir") if ($? != 0);
 }
 
@@ -73,7 +73,7 @@ print "grammar: ".$GRAMMAR."\n";
 
 #pfall
 	my $pfall = undef;
-	my $pfallresult = qx($RS_BINARIES{memtime} $RS_BINARIES{pfall} "$sequence" 2>&1);
+	my $pfallresult = Utils::execute("$RS_BINARIES{memtime} $RS_BINARIES{pfall} '$sequence' 2>&1");
 	die("cannot compute pfall: $pfallresult") if ($? != 0);
 	foreach my $line (split(m/\r|\n/, $pfallresult)) {
 		if ($line =~ m/Answer/) {
@@ -84,7 +84,7 @@ print "grammar: ".$GRAMMAR."\n";
 		}
 	}
 
-my $storedResultFile = qx(grep "$header" /vol/fold-grammars/src/Misc/Analyses/RapidShapes/ResultsSample/OUT/* | cut -d ":" -f 1); chomp $storedResultFile;
+my $storedResultFile = Utils::execute("grep '$header' /vol/fold-grammars/src/Misc/Analyses/RapidShapes/ResultsSample/OUT/* | cut -d ':' -f 1"); chomp $storedResultFile;
 if (-f $storedResultFile) {
 	my $tmp = RapidShapesTools::parseRapidshapesOut($storedResultFile);
 	foreach my $header (keys(%{$tmp})) {
@@ -139,23 +139,23 @@ while($exploredSearchspace < $minSearchSpace) {
 	close (OUT);
 	my $clusterScript = $resultDir.'/arrayjob.sh.'.$iteration;
 	open (ARRAY, "> $clusterScript") || rmdie("can't write to '$clusterScript': $!");
-		print ARRAY '#!'.$Settings::BINARIES{sh}."\n";
+		print ARRAY '#!'.Settings::getBinary('sh')."\n";
 		print ARRAY ''."\n";
-		print ARRAY '#$ -S '.$Settings::BINARIES{sh}."\n";
+		print ARRAY '#$ -S '.Settings::getBinary('sh')."\n";
 		print ARRAY '#$ -t 1-'.(scalar(keys(%promisingshapes)) <= $maxArrayJobSize ? scalar(keys(%promisingshapes)) : $maxArrayJobSize)."\n";
 		print ARRAY '#$ -N rs_'.length($sequence)."\n";
 		print ARRAY '#$ -e '.$resultDir."/ERR\n"; 
 		print ARRAY '#$ -o '.$resultDir."/OUT\n";
 		print ARRAY ''."\n";
 		print ARRAY 'shapeFile='.$shapeFile."\n";
-		print ARRAY 'shape=`'.$Settings::BINARIES{cat}.' $shapeFile | '.$Settings::BINARIES{head}.' -n $SGE_TASK_ID | '.$Settings::BINARIES{tail}.' -n 1 | '.$Settings::BINARIES{cut}.' -d ";" -f 1`; '."\n";
+		print ARRAY 'shape=`'.Settings::getBinary('cat').' $shapeFile | '.Settings::getBinary('head').' -n $SGE_TASK_ID | '.Settings::getBinary('tail').' -n 1 | '.Settings::getBinary('cut').' -d ";" -f 1`; '."\n";
 		print ARRAY 'uname -a'."\n";
 		my $command = "";
 		if ($type ne 'kbest') {
-			$command = $Settings::BINARIES{perl}." ".$RS_BINARIES{singleTDM}.' "$shape" "'.$header.'" "'.$sequence.'" "'.$GRAMMAR.'" "with mfe" 2>&1';
+			$command = Settings::getBinary('perl')." ".$RS_BINARIES{singleTDM}.' "$shape" "'.$header.'" "'.$sequence.'" "'.$GRAMMAR.'" "with mfe" 2>&1';
 			print ARRAY $command."\n";
 		}
-		$command = $RS_BINARIES{memtime}." ".$Settings::BINARIES{perl}." ".$RS_BINARIES{singleTDM}.' "$shape" "'.$header.'" "'.$sequence.'" "'.$GRAMMAR.'" 2>&1';
+		$command = $RS_BINARIES{memtime}." ".Settings::getBinary('perl')." ".$RS_BINARIES{singleTDM}.' "$shape" "'.$header.'" "'.$sequence.'" "'.$GRAMMAR.'" 2>&1';
 		print ARRAY $command."\n";
 		print ARRAY 'exitStatus=$?;'."\n";
 		print ARRAY 'echo "status: $exitStatus" 1>&2;'."\n";
@@ -163,7 +163,7 @@ while($exploredSearchspace < $minSearchSpace) {
 	close (ARRAY);
 	my $qsubCommand = 'qsub -cwd '.$QSUBREST.' -l virtual_free='.$MAXMEM.'GB -l h_vmem='.$MAXMEM.'GB '.$clusterScript;
 	#~ my $sub = "Your job-array 000";
-	my $sub = qx($qsubCommand);
+	my $sub = Utils::execute($qsubCommand);
 	my ($jobID) = ($sub =~ m/Your job-array (\d+)/);
 	#~ print "array job has been created, submit it to the grid via e.g.\n".$qsubCommand."\n";
 	print STDERR "waiting for job $jobID: ";
@@ -187,9 +187,9 @@ while($exploredSearchspace < $minSearchSpace) {
 			last;
 		}
 		
-		if ((qx(qstat | grep "^$jobID" -c) eq "0\n") && (qx(find $resultDir/OUT/ -name "*${jobID}*" | wc -l) eq "0\n")) {
-			#~ print Dumper qx(qstat);
-			#~ print Dumper qx(ls -la $resultDir/OUT/);
+		if ((Utils::execute("qstat | grep \"^$jobID\" -c") eq "0\n") && (Utils::execute("find $resultDir/OUT/ -name \"*${jobID}*\" | wc -l") eq "0\n")) {
+			#~ print Dumper Utils::execute("qstat");
+			#~ print Dumper Utils::execute("ls -la $resultDir/OUT/");
 			last;
 		}
 		sleep $sleep;
@@ -244,7 +244,7 @@ sub gatherTDMresults {
 			$shapes{$shape} = {pf => $result->{pf}, time => $result->{time}, memory => $result->{memory}, energy => $result->{mfe}};
 			$tmpSeensearchspace += $shapes{$shape}->{pf}/$pfall;
 			print "TMP\t".$shape."\t".$shapes{$shape}->{energy}."\t".$shapes{$shape}->{pf}/$pfall."\t".$shapes{$shape}->{pf}."\t".$shapes{$shape}->{time}."\t".$shapes{$shape}->{memory}."\t".($shapeCount++)."\t".$tmpSeensearchspace."\n";
-			qx(rm -f $file);
+			Utils::execute("rm -f $file");
 		}
 	}
 	
@@ -295,7 +295,7 @@ sub getPromisingShapes {
 	} else {
 		while ($currentSampleSize <= 10000) {
 			if (not exists $sampledShapes{$currentSampleSize}) {
-				my $rnashapesresult = qx($RS_BINARIES{memtime} $RS_BINARIES{sample} --numSamples $currentSampleSize "$sequence" 2>&1);
+				my $rnashapesresult = Utils::execute("$RS_BINARIES{memtime} $RS_BINARIES{sample} --numSamples $currentSampleSize \"$sequence\" 2>&1");
 				die("cannot create Sampling shape list: $rnashapesresult") if ($? != 0);
 				my $nrShapeClasses = 0;
 				foreach my $line (split(m/\r|\n/, $rnashapesresult)) {
@@ -328,7 +328,7 @@ sub getPromisingShapes {
 		while (1) {
 			print STDERR "collecting promising shapes: $currentAbsDeviation, ".scalar(keys(%deviationShapes)).", ".scalar(keys(%{$refHash_promisingShapes}))."\n";
 			if (keys(%deviationShapes) <= 0) {
-				my $rnashapesresult = qx($RS_BINARIES{memtime} $RS_BINARIES{RNAshapes} -c $currentAbsDeviation "$sequence" 2>&1);
+				my $rnashapesresult = Utils::execute("$RS_BINARIES{memtime} $RS_BINARIES{RNAshapes} -c $currentAbsDeviation \"$sequence\" 2>&1");
 				die("cannot create RNAshapes shape list: $rnashapesresult") if ($? != 0);
 				my $nrShapeClasses = 0;
 				foreach my $line (split(m/\r|\n/, $rnashapesresult)) {

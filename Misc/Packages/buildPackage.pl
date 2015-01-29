@@ -13,6 +13,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use foldGrammars::Settings;
+use foldGrammars::Utils;
 
 my $TARGET_LAUNCHPAD = 'launchpad';
 my $TARGET_PORTS = 'macports';
@@ -55,22 +56,22 @@ sub commitDebian {
 	if ((exists $Settings::PROGINFOS{$package}->{packageDir}) && (-d $Settings::PROGINFOS{$package}->{packageDir}.'/debian')) {
 		my $pathContainingDebian = $Settings::PROGINFOS{$package}->{packageDir};
 		my $newversion = $Settings::PROGINFOS{$package}->{version};
-		my $currentDir = qx(pwd); chomp $currentDir;
-		qx(rm -rf $TMPDIR) if (-d $TMPDIR);
+		my $currentDir = Utils::execute(Settings::getBinaries("pwd")); chomp $currentDir;
+		Utils::execute("rm -rf $TMPDIR") if (-d $TMPDIR);
 		mkdir $TMPDIR;
 		my $packageDir = $TMPDIR.'/'.$package.'_'.$newversion;
 		mkdir $packageDir;
-		print qx(hg clone ../../ $packageDir/$package);
-		qx(cp -r $pathContainingDebian/debian $packageDir);
-		qx(cd $TMPDIR && tar czvf ${package}_$newversion.orig.tar.gz ${package}_$newversion);
+		print Utils::execute("hg clone ../../ $packageDir/$package");
+		Utils::execute("cp -r $pathContainingDebian/debian $packageDir");
+		Utils::execute("cd $TMPDIR && tar czvf ${package}_$newversion.orig.tar.gz ${package}_$newversion");
 		
 		foreach my $series (@SERIES) {
-			qx(export DEBFULLNAME="$USER"; export DEBEMAIL="$EMAIL"; cd $pathContainingDebian && debchange --newversion $newversion-0ubuntu1~${series}1 $comment --package $package --distribution $series);
-			qx(cp -r $pathContainingDebian/debian $packageDir);
-			print qx(cd $TMPDIR/${package}_$newversion && debuild -S -k"$KEYFINGERPRINT");
-			print qx(dput ppa:bibi-help/bibitools $TMPDIR/${package}_$newversion-0ubuntu1~${series}1_source.changes);
+			Utils::execute("export DEBFULLNAME=\"$USER\"; export DEBEMAIL=\"$EMAIL\"; cd $pathContainingDebian && debchange --newversion $newversion-0ubuntu1~${series}1 $comment --package $package --distribution $series");
+			Utils::execute("cp -r $pathContainingDebian/debian $packageDir");
+			print Utils::execute("cd $TMPDIR/${package}_$newversion && debuild -S -k\"$KEYFINGERPRINT\"");
+			print Utils::execute("dput ppa:bibi-help/bibitools $TMPDIR/${package}_$newversion-0ubuntu1~${series}1_source.changes");
 		}
-		qx(rm -rf $TMPDIR);
+		Utils::execute("rm -rf $TMPDIR");
 	} else {
 		die "cannot find debian package description in '".$Settings::PROGINFOS{$package}->{packageDir}."'\n";
 	}

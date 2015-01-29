@@ -23,7 +23,7 @@ sub compileGAP {
 		$addRNAoptions, #if true, than call addRNAoptions.pl to replace the normal rtlib/generic_opts.hh with rna option specific one
 	) = @_;
 
-	my $pwd = qx($Settings::BINARIES{pwd}); chomp $pwd;
+	my $pwd = Utils::execute(Settings::getBinary('pwd')); chomp $pwd;
 	$targetDirectory = $pwd if ((not defined $targetDirectory) || ($targetDirectory eq ""));
 	$binSuffix = "" if (not defined $binSuffix);
 	my ($gapDir, $gapFile) = @{separateDirAndFile($gapMainFile)};
@@ -32,7 +32,7 @@ sub compileGAP {
 
 	my $tmpDir = $Settings::tmpdir."/compileGAP_".$gapFile."_".$$."/";
 	#~ my $tmpDir = $Settings::tmpdir."tdm_/";
-	qx($Settings::BINARIES{rm} -rf $tmpDir);
+	Utils::execute(Settings::getBinary('rm')." -rf $tmpDir");
 	print STDERR "==== compileGAP: 1 of 5) create temporary directory '$tmpDir'.\n" if ($VERBOSE);
 	mkdir($tmpDir) || die "cannot create working directory '$tmpDir': $!";
 
@@ -40,8 +40,8 @@ sub compileGAP {
 	foreach my $file ((@{findDependentFiles($gapDir, $gapFile)}, $gapDir.'/Extensions/typesRNAfolding.hh', $gapDir.'/Extensions/mea.hh', $gapDir.'/Extensions/rnaoptions_defaults.hh', $gapDir.'Extensions/singlefold.hh', $gapDir.'Extensions/mfesubopt.hh', $gapDir.'Extensions/probabilities.hh', $gapDir.'/Extensions/rnaoptions.hh', $gapDir.'/Extensions/rules.hh', $gapDir.'/Extensions/shapes.hh', $gapDir.'/Misc/Applications/addRNAoptions.pl')) {
 		my $unrootedGapfile = substr($file, length($gapDir));
 		my ($subDir) = @{separateDirAndFile($unrootedGapfile)};
-		qx($Settings::BINARIES{mkdir} -p $tmpDir$subDir) if (defined $subDir);
-		my $copy = qx($Settings::BINARIES{cp} -vr $file $tmpDir$unrootedGapfile);
+		Utils::execute(Settings::getBinary('mkdir')." -p $tmpDir$subDir") if (defined $subDir);
+		my $copy = Utils::execute(Settings::getBinary('cp')." -vr $file $tmpDir$unrootedGapfile");
 		#~ print STDERR "copy source file: ".$copy if ($VERBOSE);
 	}
 	print STDERR " done.\n" if ($VERBOSE);
@@ -55,7 +55,7 @@ sub compileGAP {
 	chdir ($tmpDir) || die "cannot change into temporary directory '$tmpDir': $!;";
 
 	print STDERR "==== compileGAP: 3 of 5) translating GAP programm to C++ code:" if ($VERBOSE);
-	my $gapcResult = qx($Settings::BINARIES{gapc} $prodInst $gapcFlags $gapFile 2>&1);
+	my $gapcResult = Utils::execute(Settings::getBinary('gapc')." $prodInst $gapcFlags $gapFile 2>&1");
 	die "compileGAP: '$gapMainFile' does not contain all necessary algebras to compile '$prodInst'!\n" if ($gapcResult =~ m/Algebra .+? not defined/);
 	die "compileGAP: '$gapMainFile' does not contain instance '$prodInst'!\n" if ($gapcResult =~ m/Could not find instance/);
 	
@@ -64,14 +64,14 @@ sub compileGAP {
 	
 	if ($addRNAoptions) {
 		print STDERR "==== compileGAP: 3b of 5) adding RNA options to C++ code:" if ($VERBOSE);
-		my $makefile = qx($Settings::BINARIES{find} . -name "*.mf"); chomp $makefile;
+		my $makefile = Utils::execute(Settings::getBinary('find')." . -name \"*.mf\""); chomp $makefile;
 		die "compileGAP: there are more than one gapc makefile in the temporary directory '$tmpDir'\n" if ($makefile =~ m/\n/);
-		my $addResult = qx($Settings::BINARIES{perl} Misc/Applications/addRNAoptions.pl $makefile 0);
+		my $addResult = Utils::execute(Settings::getBinary('perl')." Misc/Applications/addRNAoptions.pl $makefile 0");
 		print STDERR " done.\n" if ($VERBOSE == 1);
 	}
 	
 	print STDERR "==== compileGAP: 4 of 5) compiling C++ code to binary: " if ($VERBOSE);
-	my $makeResult = qx($Settings::BINARIES{make} -f out.mf $makeFlags);
+	my $makeResult = Utils::execute(Settings::getBinary('make')." -f out.mf $makeFlags");
 	print STDERR " done.\n" if ($VERBOSE == 1);
 	print STDERR "\n$makeResult\n" if ($VERBOSE>1);
 	
@@ -79,7 +79,7 @@ sub compileGAP {
 	if (not defined $executionSub) {
 		print STDERR "==== compileGAP: 5 of 5) copy binary '$gapFile.$binSuffix' to target directory '$targetDirectory' ... " if ($VERBOSE);
 		$answer = $targetDirectory.'/'.$gapFile.'.'.$binSuffix;
-		my $mvResult = qx($Settings::BINARIES{mv} out $answer);
+		my $mvResult = Utils::execute(Settings::getBinary('mv')." out $answer");
 		print STDERR "done.\n" if ($VERBOSE);
 	} else {
 		print STDERR "==== compileGAP: 5 of 5) execute new binary ... " if ($VERBOSE);
@@ -89,7 +89,7 @@ sub compileGAP {
 	}
 	
 	chdir($pwd);
-	qx($Settings::BINARIES{rm} -rf $tmpDir);
+	Utils::execute(Settings::getBinary('rm')." -rf $tmpDir");
 	
 	return $answer;
 }
@@ -98,7 +98,7 @@ sub findDependentFiles { # a gap program can have inclusion of other gap files +
 	my ($rootDir, $sourcefile) = @_;
 	
 	my @dependentFiles = ($rootDir.$sourcefile);
-	foreach my $line (split(m/\r?\n/, qx($Settings::BINARIES{cat} $rootDir$sourcefile))) {
+	foreach my $line (split(m/\r?\n/, Utils::execute(Settings::getBinary('cat')." $rootDir$sourcefile"))) {
 		if ($line =~ m/include\s+"(.+)"/) {
 			push @dependentFiles, @{findDependentFiles($rootDir, $1)};
 		} elsif (($line =~ m/import\s+(\S+)/) || ($line =~ m/import\s+"(\S+)"/)) {
@@ -148,7 +148,7 @@ sub applyFunctionToClustalFile {
 	if ($filename eq \*STDIN) {
 		$FH = $filename;
 	} elsif ($filename =~ m/\.gz$/) {
-		open($FH, $Settings::BINARIES{'gunzip'}." -c $filename |") || die "can't open gzip compressed file '$filename' $!\n";
+		open($FH, Settings::getBinary('gunzip')." -c $filename |") || die "can't open gzip compressed file '$filename' $!\n";
 	} else {
 		open ($FH, $filename) || die "can't open clustalW file '".$filename."': $!";
 	}
@@ -256,7 +256,7 @@ sub applyFunctionToFastaFile {
 	if ($filename eq \*STDIN) {
 		$FH = $filename;
 	} elsif ($filename =~ m/\.gz$/) {
-		open($FH, $Settings::BINARIES{'gunzip'}." -c $filename |") || die "can't open gzip compressed file $filename $!\n";
+		open($FH, Settings::getBinary('gunzip')." -c $filename |") || die "can't open gzip compressed file $filename $!\n";
 	} else {
 		open ($FH, $filename) || die "can't open FASTA file: $1"; # es wird versucht die Fasta-Datei zu oeffnen, um aus ihr zeilenweise zu lesen, bei Miserfolg gibt das Programm eine Warnung aus und beendet sich dann.
 	}
@@ -303,7 +303,7 @@ sub applyFunctionToFastaFile {
 sub absFilename {
 	my ($filename) = @_;
 	
-	my $afn = qx($Settings::BINARIES{'readlink'} -m $filename);
+	my $afn = Utils::execute(Settings::getBinary('readlink')." -m $filename");
 	chomp $afn;
 	
 	return $afn;
@@ -311,9 +311,9 @@ sub absFilename {
 
 sub generateGrammar {
 	my ($tmpDir, $generator, $shape, $target) = @_;
-	my $result = qx($generator "$shape" | $Settings::BINARIES{grep} -v "Answer");
+	my $result = Utils::execute("$generator \"$shape\" | ".Settings::getBinary('grep')." -v \"Answer\"");
 	die "not a valid shape string '".$shape."'!\n" if ($result =~ m/\[\]/);
-	qx($Settings::BINARIES{echo} "$result" > $tmpDir/$target);
+	Utils::execute(Settings::getBinary('echo')." \"$result\" > $tmpDir/$target");
 }
 
 sub compileGenerator {
@@ -322,7 +322,7 @@ sub compileGenerator {
 	if (not -e $bin_tdmGenerator) {
 		print STDERR "compiling TDM generator for '".$refHash_settings->{grammar}."', shape level ".$refHash_settings->{shapelevel}." ... ";
 		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMgenerator, '-i tdm_'.$refHash_settings->{grammar}.'_'.$refHash_settings->{shapelevel}, "-t", '', $workingDirectory, undef, undef, undef, 0);
-		qx($Settings::BINARIES{mv} $tmpBin $bin_tdmGenerator);
+		Utils::execute(Settings::getBinary('mv')." $tmpBin $bin_tdmGenerator");
 		print STDERR "done.\n";
 	}
 	return Utils::absFilename($bin_tdmGenerator);
@@ -544,11 +544,11 @@ sub createUniqueTempDir { #create temporary unique directory
 	my ($BASEDIR, $dirSuffixName) = @_;
 	
 	$dirSuffixName = '' if (not defined $dirSuffixName);
-	my $machineName = qx($Settings::BINARIES{'uname'} -n); chomp $machineName;
-	my $currentDate = qx($Settings::BINARIES{'date'} +%s); chomp $currentDate;
+	my $machineName = Utils::execute(Settings::getBinary('uname')." -n"); chomp $machineName;
+	my $currentDate = Utils::execute(Settings::getBinary('date')." +%s"); chomp $currentDate;
 	
 	my $tempDir = $BASEDIR.$dirSuffixName.'_'.$machineName.'_'.$$.'_'.$currentDate.'/';
-	my $status = qx($Settings::BINARIES{mkdir} $tempDir 2>&1);
+	my $status = Utils::execute(Settings::getBinary('mkdir')." $tempDir 2>&1");
 	if (not -e $tempDir) {
 		die "can't create temporary directory '$tempDir':\n$status";
 	} else {
@@ -558,19 +558,49 @@ sub createUniqueTempDir { #create temporary unique directory
 	return $tempDir;
 }
 
-sub qxDieMessage {
-	my ($command, $exitCode) = @_;
+sub execute {
+	my ($command) = @_;
+	
+	my $mergeSTD = 'false';
+	if ($command =~ m/2>&1/) {
+		$command =~ s/2>&1//g;
+		$mergeSTD = 'true';
+	}
+	
+	my $mktmp_binary = Settings::getBinary('mktemp');
+	my $tmpStderr = qx($mktmp_binary);
+	my $stdout = qx($command 2>$tmpStderr);
+	my $exitCode = $? >> 8;
+	my @stderrlines = ();
+	open (IN, $tmpStderr) || die "can't open temporary stderr file: $!";
+		@stderrlines =<IN>;
+	close (IN);
+	unlink $tmpStderr;
+	
+	$exitCode = 0 if (($command =~ m/\s*diff\s+/) && ($exitCode == 1)); #because diff gives an exit code of 1 if there are differences
 	if ($exitCode != 0) {
-		die "Underlying Bellman's gapc binary call '$command' exited unexpectedly with exit code '".($exitCode >> 8)."'.\n";
+		print STDERR "Shell execution of `$command` failed with exit code $exitCode, called by\n";
+		my $j = 0;
+		while (defined caller($j)) {
+			print STDERR "\tfunction '".(caller($j))[3]."' in file '".(caller($j))[1]."', at line ".(caller($j))[2]."\n";
+			$j++;
+		}
+		print STDERR "Error message is:\n"."\t".join("\t", @stderrlines);
+		exit $exitCode;
+	} else {
+		if ($mergeSTD eq 'true') {
+			return $stdout.join("",@stderrlines);
+		} else {
+			return $stdout;
+		}
 	}
 }
-
 
 
 sub writeInputToTempfile {
 	my ($input) = @_;
 	
-	my $tmpInputFilename = qx($Settings::BINARIES{mktemp}); 
+	my $tmpInputFilename = execute(Settings::getBinary('mktemp')); 
 	chomp $tmpInputFilename;
 	die "could not create temporary file for input sequence: $!\n"  if ($? != 0);
 	open (FILE, "> ".$tmpInputFilename) || die "could not write to temporary file '$tmpInputFilename' to store input: $!";

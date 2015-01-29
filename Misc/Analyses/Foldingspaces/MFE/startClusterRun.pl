@@ -15,6 +15,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use foldGrammars::Settings;
+use foldGrammars::Utils;
 
 #~ my $QSUBREST = '-l arch=sol-amd64 -l hostname="qic*"';
 my $QSUBREST = '-l arch=sol-amd64';
@@ -34,8 +35,8 @@ sub prepareClusterrun {
 	if (-d $resultDir) {
 		die "There is already a result directory for '$inputfile'. Maybe you don't want to overwrite it.\n";
 	} else {
-		my $noSeqs = qx(grep "^>" -c $inputfile); chomp $noSeqs;
-		my $pwd = qx(pwd); chomp $pwd;
+		my $noSeqs = Utils::execute('grep "^>" -c '.$inputfile); chomp $noSeqs;
+		my $pwd = Utils::execute("pwd"); chomp $pwd;
 		mkdir ($resultDir);
 		
 		mkdir ($resultDir."/ERR_mfetools");
@@ -73,7 +74,7 @@ sub prepareClusterrun {
 		close (ARRAY);
 		
 		#~ my $sub = "Your job-array 000";
-		my $sub = qx(cd $resultDir && $qsubCommand);
+		my $sub = Utils::execute("cd $resultDir && $qsubCommand");
 		my ($jobID) = ($sub =~ m/Your job-array (\d+)/);
 		push @jobIDs, $jobID;
 		print STDERR $jobName.": ".$qsubCommand."\n";

@@ -1,6 +1,16 @@
 #!/usr/bin/env perl
 
-#~ use lib "/media/cebitec/homes/sjanssen/bin";
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+use lib getPath($0)."../../Applications/lib/";
+
+use foldGrammars::Settings;
+use foldGrammars::Utils;
 use lib "/home/sjanssen/bin";
 
 use strict;
@@ -121,9 +131,9 @@ sub run {
 #~ print $out."\n"; die;
 	my @orig;
 	if ($version eq '1.8.5') {
-		@orig = qx(cat tmp | $binVienna185 -cv 1.0 -nc 1.0 -d0 -noLP -T $TEMPERATURE 2> /dev/null);
+		@orig = Utils::execute("cat tmp | $binVienna185 -cv 1.0 -nc 1.0 -d0 -noLP -T $TEMPERATURE 2> /dev/null");
 	} else {
-		@orig = qx(cat tmp | $binVienna200 --cfactor 1.0 --nfactor 1.0 -d0 --noLP -T $TEMPERATURE 2> /dev/null);
+		@orig = Utils::execute("cat tmp | $binVienna200 --cfactor 1.0 --nfactor 1.0 -d0 --noLP -T $TEMPERATURE 2> /dev/null");
 	}
 #~ print Dumper \@orig; die;	
 	#'((((.(((.(((..((((((.(((((.(((......))).))))))))))).....))).))))))) (-22.77 = -21.51 +  -1.26)
@@ -146,7 +156,7 @@ sub run {
 #~ print $gapOUT."\n"; die;	
 	#~ my @coopts = ();
 	my ($gapMFE, $gapCovar, $gapStructure) = (undef, undef, undef);
-	foreach my $line (split(m/\n/, qx($binGAPC -t $TEMPERATURE "$gapOUT" | grep "="))) {
+	foreach my $line (split(m/\n/, Utils::execute("$binGAPC -t $TEMPERATURE \"$gapOUT\" | grep \"=\""))) {
 		($gapMFE, $gapCovar, $gapStructure) = ($line =~ m/\( \( .+? = (.+?) \+ (.+?) \) , (.+?) \)/);
 		if ($gapStructure eq $origStructure) {
 			last;

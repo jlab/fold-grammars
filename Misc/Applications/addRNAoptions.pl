@@ -9,13 +9,15 @@ sub getPath {
 }
 
 use lib getPath($0)."lib/";
+use lib getPath($0)."../lib/";
 
 use strict;
 use warnings;
 use Data::Dumper;
 use foldGrammars::Settings;
+use foldGrammars::Utils;
 
-my $sedBinary = $Settings::BINARIES{'sed'};
+my $sedBinary = Settings::getBinary('sed');
 
 my ($infile, $mode) = @ARGV;
 die "usage: perl $0 <out.mf> <mode>\n  available modes:\n    0 = default\n    1 = read second argument as structure for RNAeval approach\n    2 = for MEA computation" if (@ARGV != 2);

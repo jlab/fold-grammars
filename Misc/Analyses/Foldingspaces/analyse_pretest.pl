@@ -15,6 +15,7 @@ use Data::Dumper;
 use FSsettings;
 use Storable qw(nstore);
 use foldGrammars::Utils;
+use foldGrammars::Settings;
 
 my $INPUTSEQFILE = '/vol/fold-grammars/src/Misc/Analyses/Testinputs/Foldingspaces/randomSequences1000.fasta';
 my $OUTDIR = '/vol/fold-grammars/src/Misc/Analyses/Foldingspaces/Results/Pretest/OUT/';
@@ -24,8 +25,8 @@ my $MAXLEN = 700;
 #~ my $QSUBREST = '-l arch=sol-amd64 -l hostname="fuc*"';
 #~ my $mode = 'sample';
 
-qx(mkdir -p $OUTDIR) if (not (-d $OUTDIR));
-qx(mkdir -p $ERRDIR) if (not (-d $ERRDIR));
+Utils::execute(Settings::getBinary(mkdir)." -p $OUTDIR") if (not (-d $OUTDIR));
+Utils::execute(Settings::getBinary(mkdir)." -p $ERRDIR") if (not (-d $ERRDIR));
 
 my $STOREFILE = '/tmp/tmp.store';
 

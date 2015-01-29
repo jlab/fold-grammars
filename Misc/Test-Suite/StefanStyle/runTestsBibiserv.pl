@@ -18,7 +18,7 @@ my ($bibiservURL) = @ARGV;
 die "usage: perl $0 <BiBiServ URL>\n\texample urls are:\n\t\tbibiserv2: http://bibiserv2.cebitec.uni-bielefeld.de:80\n\t\tlocal version: http://localhost:9080\n" if (@ARGV != 1);
 
 our $TMPDIR = "bibiserv-rest";
-qx(mkdir $TMPDIR) unless (-d $TMPDIR);
+Utils::execute("mkdir $TMPDIR") unless (-d $TMPDIR);
 
 #add your testest below this line!
 
@@ -88,7 +88,7 @@ sub checkProgram {
 						$inputs{sequence} = '"'.lc($programName).'_input_rna_sequence":">unnamed sequence\r\n'.$arg.'"';
 					} else {
 						if ((lc($programName) eq 'rnaalishapes') || (lc($programName) eq 'palikiss')) {
-							my $alignment = qx(cat $arg | grep -v "\*"); chomp $alignment;
+							my $alignment = Utils::execute("cat $arg | grep -v \"\*\""); chomp $alignment;
 							$alignment =~ s/\n/\\r\\n/g;
 							$inputs{'sequence_alignment'} = '"'.lc($programName).'_input_rna_sequence_alignment":"'.$alignment.'"';
 						} else {
@@ -117,13 +117,13 @@ sub checkProgram {
 #~ next if (lc($mode) ne 'abstract'); #korrekt!
 
 		#write json content into file
-			my $tmpfilename = qx(mktemp); chomp $tmpfilename;
+			my $tmpfilename = Utils::execute("mktemp"); chomp $tmpfilename;
 			open (TMP, "> ".$tmpfilename) || die "can't write to '$tmpfilename': $!";
 				print TMP $jsonContent;
 			close (TMP);
 			
 		my $restCommand = 'curl -X POST -d @'.$tmpfilename.' '.$bibiservURL.'rest/'.lc($programName).'/'.lc($programName).'_function_'.$mode.'/request -H "Content-Type: application/json"';
-		my $restID = qx($restCommand); chomp $restID;
+		my $restID = Utils::execute($restCommand); chomp $restID;
 #~ print Dumper $restCommand, $restID;
 		if ((not defined $restID) || ($restID =~ m/^\s*$/)) {
 			die "something is wrong with the curl command: '".$restCommand."', contents of json file:\n".$jsonContent."\n";
@@ -143,12 +143,12 @@ sub checkProgram {
 		foreach my $request (@requests) {
 			if ((not (defined $request->{status})) || ($request->{status} != 600)) {
 				my $restCommand = 'curl --silent -X POST -d '.$request->{id}.' '.$bibiservURL.'rest/'.lc($programName).'/'.lc($programName).'_function_'.$request->{function}.'/statuscode -H "Content-Type: text/plain"';
-				my $statuscode = qx($restCommand); chomp $statuscode;
+				my $statuscode = Utils::execute($restCommand); chomp $statuscode;
 				$request->{status} = $statuscode;
 				if ($statuscode == 600) {
 					$noPendingJobs--;
 					$restCommand = 'curl --silent -X POST -d '.$request->{id}.' '.$bibiservURL.'rest/'.lc($programName).'/'.lc($programName).'_function_'.$request->{function}.'/response -H "Content-Type: text/plain"';
-					my $response = qx($restCommand); chomp $response;
+					my $response = Utils::execute($restCommand); chomp $response;
 					if ($request->{function} eq $Settings::MODE_OUTSIDE) {
 						my $filteredResponse = "";
 						foreach my $line (split(m/\r?\n/, $response)) {

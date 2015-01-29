@@ -156,11 +156,6 @@ our $Knotinframe = {
 	'minenergydifference' => {modes => \@knotinframe_ALLMODES, values => [-8.71,-10.34], valueSelection => $VALUE_SELECTION_ALL},
 };
 
-#~ foreach my $call (@{addRandomParameters($RNAalishapes, permutate($RNAalishapes, [{call => ""}]))}) {
-	#~ print $program $call->{call}."\n";
-	#~ print qx($program $call->{call});
-#~ }
-
 sub permutate {
 	my ($refHash_parameter, $refList_permutations) = @_;
 	
@@ -242,7 +237,7 @@ sub evaluateTest {
 	
 	my $status = 'failed';
 	if (-e "Truth/".$truth) {
-		my $diffResult = qx(diff -I "^#CMD:" Truth/$truth $TMPDIR/$truth); chomp $diffResult;
+		my $diffResult = Utils::execute("diff -I \"^#CMD:\" Truth/$truth $TMPDIR/$truth"); chomp $diffResult;
 		if ($diffResult eq "") {
 			$status = 'passed';
 		} else {

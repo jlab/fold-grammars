@@ -376,9 +376,8 @@ sub output {
 			if ($settings->{dotplotpng} == 1) {
 				my $dotplotPNGfilename = $dotplotfilename;
 				$dotplotPNGfilename =~ s/\.\w+/\.png/g;
-				my $command = "$Settings::BINARIES{gs} -dBATCH -dNOPAUSE -sDEVICE=pnggray -sOutputFile=$dotplotPNGfilename -r200 $dotplotfilename";
-				qx($command);
-				Utils::qxDieMessage($command, $?);
+				my $command = Settings::getBinary('gs')." -dBATCH -dNOPAUSE -sDEVICE=pnggray -sOutputFile=$dotplotPNGfilename -r200 $dotplotfilename";
+				Utils::execute($command);
 				print "Also converted the \"dot plot\" into PNG file '$dotplotPNGfilename'.\n";
 			}
 		} else {
@@ -618,9 +617,8 @@ sub outputVARNA {
 			if ($settings->{dotplotpng} == 1) {
 				my $dotplotPNGfilename = $dotplotfilename;
 				$dotplotPNGfilename =~ s/\.\w+/\.png/g;
-				my $command = "$Settings::BINARIES{gs} -dBATCH -dNOPAUSE -sDEVICE=pnggray -sOutputFile=$dotplotPNGfilename -r200 $dotplotfilename";
-				qx($command);
-				Utils::qxDieMessage($command, $?);
+				my $command = Settings::getBinary('gs')." -dBATCH -dNOPAUSE -sDEVICE=pnggray -sOutputFile=$dotplotPNGfilename -r200 $dotplotfilename";
+				Utils::execute($command);
 				$varnaoutput .= "\t\t\t<tr><td>Also converted the \"dot plot\" into PNG file '$dotplotPNGfilename'.</td></tr>\n";
 			}
 		} else {
@@ -941,8 +939,7 @@ sub getAvgSingleMFEs {
 		$seq =~ s/\.|\-|\_//g;
 		$seq =~ s/T/U/gi;
 		my $inputFile = Utils::writeInputToTempfile($seq);
-		my $result = qx($cmd -f $inputFile);
-		Utils::qxDieMessage("$cmd -f $inputFile", $?);
+		my $result = Utils::execute("$cmd -f $inputFile");
 		unlink $inputFile;
 		foreach my $line (split(m/\n/, $result)) {
 			if ($line =~ m/Answer/) {
@@ -994,8 +991,7 @@ sub getAlignmentRepresentation {
 	my $command = &{$refsub_buildcommand}($settings, $refHash_alignment, $TASK_REP);
 	print "Actual call for alignment representation was: $command \"$gapInput\"\n" if ($settings->{verbose});
 	my $inputFile = Utils::writeInputToTempfile($gapInput);
-	my $result = qx($command -f $inputFile);
-	Utils::qxDieMessage($command, $?);
+	my $result = Utils::execute("$command -f $inputFile");
 	unlink $inputFile if (!$settings->{verbose});
 
 	foreach my $line (split(m/\r?\n/, $result)) {

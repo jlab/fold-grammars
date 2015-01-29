@@ -1,5 +1,16 @@
 #!/usr/bin/env perl
 
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+use lib getPath($0)."../../Applications/lib/";
+
+use foldGrammars::Settings;
+use foldGrammars::Utils;
 use strict;
 use warnings;
 use Data::Dumper;
@@ -42,7 +53,7 @@ foreach my $instance (@instances) {
 		$oldMemtimeline = $memtimeLine;
 		$seq = substr($STRING, 0, $seqLength);
 		my $time = 0;
-		foreach my $line (split(m/\n/, qx(ulimit -v 8388608 && cd $oldDir && /vol/pi/bin/memtime64 ./out $seq 2>&1 >result))) {
+		foreach my $line (split(m/\n/, Utils::execute("ulimit -v 8388608 && cd $oldDir && /vol/pi/bin/memtime64 ./out $seq 2>&1 >result"))) {
 #~ print STDERR $line."\n";
 			if ($line =~ m/^(.+?) user, (.+?) system, /) {
 				$time = $1 + $2;
@@ -69,7 +80,7 @@ foreach my $instance (@instances) {
 	if (($gapRunOld ne '0') || ($gapRunNew ne '0') || ($gccRunOld ne '0') || ($gccRunNew ne '0') || ($outRunOld ne '0') || ($outRunNew ne '0')) {
 		print STDERR "failed due to execution errors.\n";
 	} else {
-		my $diff = qx(diff $oldDir/result $newDir/result);
+		my $diff = Utils::execute("diff $oldDir/result $newDir/result");
 		
 		if ($diff ne "") {
 			print STDERR "failed due to different results.\n";

@@ -17,10 +17,10 @@ use warnings;
 use Data::Dumper;
 
 our $PERL = "perl"; 
-$PERL = "/vol/perl-5.10/bin/64/perl" if (qx(uname -a) =~ m/waldorf/); #use perl 5.10 on solaris cebitec to have the same rounding behaviour as on stefans laptop.
+$PERL = "/vol/perl-5.10/bin/64/perl" if (Utils::execute("uname -a") =~ m/waldorf/); #use perl 5.10 on solaris cebitec to have the same rounding behaviour as on stefans laptop.
 
 our $TMPDIR = $Settings::ARCHTRIPLE;
-qx(mkdir $TMPDIR) unless (-d $TMPDIR);
+Utils::execute("mkdir $TMPDIR") unless (-d $TMPDIR);
 
 our $testIndex = 1;
 our @failedTests = ();
@@ -50,10 +50,10 @@ sub compile {
 	my ($TMPDIR, $sourcedir, $programName) = @_;
 	
 	mkdir($TMPDIR) if (!-d $TMPDIR);
-	qx(cp $sourcedir/makefile $TMPDIR);
+	Utils::execute("cp $sourcedir/makefile $TMPDIR");
 	$programName =~ s/Knotinframe/knotinframe/;
-	qx(cp $sourcedir/$programName $TMPDIR);
-	print qx(make -C $TMPDIR -j $numCPUs all BASEDIR=../../../../);
+	Utils::execute("cp $sourcedir/$programName $TMPDIR");
+	print Utils::execute("make -C $TMPDIR -j $numCPUs all BASEDIR=../../../../");
 }
 
 sub checkProgram {
@@ -63,7 +63,7 @@ sub checkProgram {
 	compile($TMPDIR, $programDir, $programName);
 	
 	my $testname = "$programName tests";
-	qx(rm -f $TMPDIR/$truth);
+	Utils::execute("rm -f $TMPDIR/$truth");
 	
 	my @calls = ();
 	if ($programName eq 'RNAalishapes') {
@@ -84,16 +84,16 @@ sub checkProgram {
 		next if (($run->{call} =~ m/mode=outside/) && ($run->{call} =~ m/grammar=macrostate/));
 		$run->{call} = " --binPath='$TMPDIR/$Settings::ARCHTRIPLE/' ".$run->{call};
 		print ".";
-		qx(echo "#CMD: $PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call}" >> $TMPDIR/$truth 2>&1);
+		Utils::execute("echo \"#CMD: $PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call}\" >> $TMPDIR/$truth 2>&1");
 		if ($run->{call} =~ m/mode=outside/) {
 			$run->{call} =~ s/--dotplot=dotPlot.ps/--dotplot=$TMPDIR\/gapc.ps/;
-			qx(rm -f $TMPDIR/gapc.ps);
-			qx($PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call});
-			qx(cat $TMPDIR/gapc.ps | grep "ubox\$" | grep -v "^%" >> $TMPDIR/$truth);
+			Utils::execute("rm -f $TMPDIR/gapc.ps");
+			Utils::execute("$PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call}");
+			Utils::execute("cat $TMPDIR/gapc.ps | grep \"ubox\$\" | grep -v \"^%\" >> $TMPDIR/$truth");
 		} else {
-			qx($PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call} >> $TMPDIR/$truth 2>&1);
+			Utils::execute("$PERL -I ../../Applications/lib/ $TMPDIR/$programName $run->{call} >> $TMPDIR/$truth 2>&1");
 		}
-		qx(echo "" >> $TMPDIR/$truth);
+		Utils::execute("echo '' >> $TMPDIR/$truth");
 	}
 	
 	print " done.\n";
@@ -105,7 +105,7 @@ sub checkBasicFunctions {
 	
 	print "==== starting test ".$testIndex.") '".$testname."' ====\n";
 	my $sequence = "acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg";
-	qx(rm -f $TMPDIR/$truth);
+	Utils::execute("rm -f $TMPDIR/$truth");
 	
 	my @runs = ();
 	push @runs, "enforce -y 9.99 -z 3";
@@ -128,9 +128,9 @@ sub checkBasicFunctions {
 	print "\trunning basic tests: ";
 	foreach my $run (@runs) {
 		print ".";
-		qx(echo "#CMD: $TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence" >> $TMPDIR/$truth);
-		qx($TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence >> $TMPDIR/$truth);
-		qx(echo "" >> $TMPDIR/$truth);
+		Utils::execute("echo \"#CMD: $TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence\" >> $TMPDIR/$truth");
+		Utils::execute("$TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence >> $TMPDIR/$truth");
+		Utils::execute("echo '' >> $TMPDIR/$truth");
 	}
 	
 	print " done.\n";
@@ -143,7 +143,7 @@ sub checkParameters {
 	print "==== starting test ".$testIndex.") '".$testname."' ====\n";
 	
 	my $sequence = "acccccaccccaagggggaCCCAGAGGAAACCACAGGGacacccccaaggggaagggggg";
-	qx(rm -f $TMPDIR/$truth);
+	Utils::execute("rm -f $TMPDIR/$truth");
 	print "\trun parameter tests: ";
 	
 	my @runs = ();
@@ -170,9 +170,9 @@ sub checkParameters {
 	}
 	foreach my $run (@runs) {
 		print ".";
-		qx(echo "#CMD: $TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence" >> $TMPDIR/$truth);
-		qx($TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence >> $TMPDIR/$truth);
-		qx(echo "" >> $TMPDIR/$truth);
+		Utils::execute("echo \"#CMD: $TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence\" >> $TMPDIR/$truth");
+		Utils::execute("$TMPDIR/$Settings::ARCHTRIPLE/${Settings::PROGINFOS{'pkiss'}->{name}}_$run $sequence >> $TMPDIR/$truth");
+		Utils::execute("echo '' >> $TMPDIR/$truth");
 	}
 	print " done.\n";
 	
@@ -199,7 +199,7 @@ sub runProg {
 	
 	print ".";
 	print OUT ">".$refHash_sequence->{header}."\n";
-	print OUT qx($program $runParameters $refHash_sequence->{sequence});
+	print OUT Utils::execute("$program $runParameters $refHash_sequence->{sequence}");
 	print OUT "\n";
 	
 	return undef;
@@ -212,14 +212,14 @@ sub compileMFE {
 	
 	unless (-e $TMPDIR."/".$Settings::ARCHTRIPLE.'/'.$Settings::PROGINFOS{'pkiss'}->{name}."_".$program) {
 		print "\tcompiling binary ...";
-		qx(cp ../../Applications/pKiss/makefile $TMPDIR/);
+		Utils::execute("cp ../../Applications/pKiss/makefile $TMPDIR/");
 		my $makeWindowMode = "";
 		if ($program =~ m/(.+?)_window$/) {
 			$program = $1;
 			$makeWindowMode = 'window="yes" ';
 		}
 
-		qx(cd $TMPDIR && $Settings::BINARIES{make} $program -j $numCPUs $makeWindowMode BASEDIR=../../../../);
+		Utils::execute("cd $TMPDIR && Settings::getBinary('make') $program -j $numCPUs $makeWindowMode BASEDIR=../../../../");
 		print " done.\n";
 	}
 }

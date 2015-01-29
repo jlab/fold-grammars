@@ -96,7 +96,7 @@ if (defined $settings->{'cluster'}) {
 sub doComputation {
 	my ($refHash_sequence, $settings) = @_;
 
-	my $workingDirectory = qx(pwd); chomp $workingDirectory;
+	my $workingDirectory = Utils::execute(Settings::getBinary("pwd")); chomp $workingDirectory;
 	my $inputSequence = $refHash_sequence->{sequence};
 
 	if (defined $settings->{cluster}) {
@@ -105,8 +105,8 @@ sub doComputation {
 		my $arrayJob =  $workingDirectory.'/Test.cluster/array.sh';
 		my $jobFile = $workingDirectory.'/Test.cluster/jobs.txt';
 		
-		qx(mkdir -p $errDir) if (not -d $errDir);
-		qx(mkdir -p $outDir) if (not -d $outDir);
+		Utils::execute(Settings::getBinary("mkdir")." -p $errDir") if (not -d $errDir);
+		Utils::execute(Settings::getBinary("mkdir")." -p $outDir") if (not -d $outDir);
 		open (JOB, "> ".$jobFile) || die "cannot write to '$jobFile': $1";
 			foreach my $grammar (keys(%Settings::TDMfiles)) {
 				for (my $i = 1; $i <= 5; $i++) {
@@ -120,25 +120,25 @@ sub doComputation {
 		close (JOB);
 		
 		open (ARRAY, "> ".$arrayJob) || die "cannot write to '$arrayJob': $1";		
-			print ARRAY '#!'.$Settings::BINARIES{sh}."\n";
+			print ARRAY '#!'.Settings::getBinary('sh')."\n";
 			print ARRAY ''."\n";
-			print ARRAY '#$ -S '.$Settings::BINARIES{sh}."\n";
+			print ARRAY '#$ -S '.Settings::getBinary('sh')."\n";
 			print ARRAY '#$ -t 1-'.(keys(%Settings::TDMfiles)*5)."\n";
 			print ARRAY '#$ -N test_RapidShapes'."\n";
 			print ARRAY '#$ -e '.$errDir."\n";
 			print ARRAY '#$ -o '.$outDir."\n";
 			print ARRAY ''."\n";
-			print ARRAY 'job=`'.$Settings::BINARIES{head}.' -n $SGE_TASK_ID | '.$Settings::BINARIES{tail}.' -1`'."\n";
+			print ARRAY 'job=`'.Settings::getBinary('head').' -n $SGE_TASK_ID | '.Settings::getBinary('tail').' -1`'."\n";
 			print ARRAY 'uname -a'."\n";
 			my $command = "";
 			$command .= " --temperature=".$settings->{temperature} if ((defined $settings->{temperature}) && ($settings->{temperature} ne ""));
 			$command .= " --paramfile=".$settings->{param} if ((defined $settings->{param}) && ($settings->{param} ne ""));
 			$command .= '  "'.$inputSequence.'"';
-			print ARRAY $Settings::BINARIES{perl}." ".Utils::absFilename($0).' $job '.$command."\n";
+			print ARRAY Settings::getBinary('perl')." ".Utils::absFilename($0).' $job '.$command."\n";
 		close (ARRAY);
 			
 		my $arch = '-l arch="sol-amd64"';
-		$arch = '-l linh=1' if (qx($Settings::BINARIES{uname} -o) =~ m/Sun/i);
+		$arch = '-l linh=1' if (Utils::execute(Settings::getBinary('uname')." -o") =~ m/Sun/i);
 		print "array job has been created, submit it to the grid via e.g.\nqsub -cwd -l virtual_free=17G $arch $arrayJob\n";
 	} else {
 		print "TESTING grammar: ".$settings->{grammar}.", level: ".$settings->{shapelevel}.", sequence $inputSequence ====\n"; 
@@ -147,8 +147,7 @@ sub doComputation {
 		my @failedShapes = ();
 		print "diff truth TDM\tshape\ttruth\tTDM\tgrammar\tshape level\n";
 		my $command = buildCommand($settings, $TASK_TRUTH);
-		foreach my $line (split(m/\r?\n/, qx($command "$inputSequence"))) {
-			#~ print Dumper $line;
+		foreach my $line (split(m/\r?\n/, Utils::execute("$command \"$inputSequence\""))) {
 			if ($line =~ m/\( (\S+) , (\d+) \)/) {
 				my ($shape, $trueNumber) = ($1,$2);
 				print STDERR $shape."\tcompiling ... ";
@@ -208,7 +207,7 @@ sub runTDM {
 	my ($tmpDir, $refHash_settings, $inputSequence) = @_;
 	print STDERR "done.\texecuting ... "; 
 	my $command = buildCommand($refHash_settings, $TASK_TDMRUN);
-	foreach my $line (split(m/\r?\n/, qx($tmpDir/$command "$inputSequence"))) {
+	foreach my $line (split(m/\r?\n/, Utils::execute("$tmpDir/$command \"$inputSequence\""))) {
 		if ($line =~ m/^(\d+)$/) {
 			return $1;
 		}
@@ -222,7 +221,7 @@ sub compileTruth {
 	if (not -e $bin_truth) {
 		print STDERR "compiling programm that counts structures in shapes for '".$settings->{grammar}."' ... ";
 		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "(alg_shapeX * alg_count)"', "-t", '', $workingDirectory, undef, undef, undef, 'addRNAoptions');
-		qx($Settings::BINARIES{mv} $tmpBin $bin_truth);
+		Utils::execute(Settings::getBinary('mv')." $tmpBin $bin_truth");
 		print STDERR "done.\n";
 	} else {
 		$bin_truth = Utils::absFilename($bin_truth);
