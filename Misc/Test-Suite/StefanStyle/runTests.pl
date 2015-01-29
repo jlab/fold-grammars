@@ -219,7 +219,7 @@ sub compileMFE {
 			$makeWindowMode = 'window="yes" ';
 		}
 
-		Utils::execute("cd $TMPDIR && Settings::getBinary('make') $program -j $numCPUs $makeWindowMode BASEDIR=../../../../");
+		Utils::execute("cd $TMPDIR && ".Settings::getBinary('make')." $program -j $numCPUs $makeWindowMode BASEDIR=../../../../");
 		print " done.\n";
 	}
 }
