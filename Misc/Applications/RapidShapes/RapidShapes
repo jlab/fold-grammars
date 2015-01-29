@@ -28,7 +28,7 @@ my $gridID = undef;
 #if we catch a SIGINT, we eventually delete running cluster jobs.
 $SIG{INT} = sub {
 	if (defined $gridID) {
-		system $Settings::BINARIES{qdel}." ".$gridID;
+		system Settings::getBinary('qdel')." ".$gridID;
 	}
 	print STDERR "Program terminated.\n";
 	exit 1;
@@ -223,7 +223,7 @@ sub generateHTMLstatuspage {
 	$HTML .= "\t\t\t</tr>\n";
 	my $paramName = "rna_turner2004.par";
 	if (defined $settings->{param}) {
-		$paramName = qx($Settings::BINARIES{basename} $settings->{param});
+		$paramName = Utils::execute(Settings::getBinary('basename')." $settings->{param}");
 		chomp $paramName;
 	}
 	$HTML .= "\t\t\t<tr>\n";
@@ -335,12 +335,12 @@ sub generateHTMLstatuspage {
 	
 	if ($settings->{cluster}) {
 		my $diePrefix = "RapidShapes : function generateHTMLstatuspage: ";
-		my $setLock = qx($Settings::BINARIES{touch} $Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}.lock);
+		my $setLock = Utils::execute(Settings::getBinary('touch')." $Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}.lock");
 		die $diePrefix."failed to set lock for '".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}."'" if ($? != 0);
 		open (OUT, "> ".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}) || die "can't write HTML status file to '".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}."': $!\n";
 			print OUT $HTML;
 		close (OUT);
-		my $unsetLock = qx($Settings::BINARIES{rm} $Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}.lock);
+		my $unsetLock = Utils::execute(Settings::getBinary('rm')." $Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}.lock");
 		die $diePrefix."failed to remove lock for '".$Settings::RAPIDSHAPES_BIBISERV{htmlStatusFilename}."'" if ($? != 0);
 	}
 	#~ die;
@@ -363,7 +363,7 @@ sub doComputation {
 	my $seq = $refHash_sequence->{sequence};
 	$seq =~ s/t/u/gi;
 
-	my $workingDirectory = qx(pwd); chomp $workingDirectory;
+	my $workingDirectory = Utils::execute(Settings::getBinary("pwd")); chomp $workingDirectory;
 	my $oldTMPDir = undef;
 	if ($settings->{cluster}) {
 		$oldTMPDir = $ENV{TMPDIR} if (exists $ENV{TMPDIR});
@@ -413,8 +413,8 @@ sub doComputation {
 			my $outDir = $tmpdir.'/OUT';
 			my $arrayJob =  $tmpdir.'/array.sh';
 			my $shapeListFile = $tmpdir.'/shapelist.txt';
-			qx(mkdir -p $errDir) if (not -d $errDir);
-			qx(mkdir -p $outDir) if (not -d $outDir);
+			Utils::execute(Settings::getBinary("mkdir")." -p $errDir") if (not -d $errDir);
+			Utils::execute(Settings::getBinary("mkdir")." -p $outDir") if (not -d $outDir);
 			open (SHAPELIST, "> ".$shapeListFile) || die "cannot write a file that shall contain all shapes to be computed: $1";
 				foreach my $shape (sort {$waitList{$a}->{position} <=> $waitList{$b}->{position}} (keys(%waitList))) {
 					print SHAPELIST $shape."\n";
@@ -432,8 +432,8 @@ sub doComputation {
 				print ARRAY ''."\n";
 				print ARRAY 'header="'.$refHash_sequence->{header}."\"\n";
 				print ARRAY 'sequence="'.$refHash_sequence->{sequence}."\"\n";
-				print ARRAY 'shapestring=`'.$Settings::BINARIES{'head'}.' -n $SGE_TASK_ID '.$shapeListFile.' | '.$Settings::BINARIES{'tail'}.' -n 1`'."\n";
-				print ARRAY $Settings::BINARIES{'uname'}.' -a 1>&2'."\n";
+				print ARRAY 'shapestring=`'.Settings::getBinary('head').' -n $SGE_TASK_ID '.$shapeListFile.' | '.Settings::getBinary('tail').' -n 1`'."\n";
+				print ARRAY Settings::getBinary('uname').' -a 1>&2'."\n";
 				my $command = "";
 				$settings->{binarypath} = $Settings::RAPIDSHAPES_BIBISERV{binPath_grammargenerator};
 				foreach my $param (keys %{$settings}) {
@@ -450,10 +450,10 @@ sub doComputation {
 				}
 				$command .= ' "$shapestring"';
 				$command .= ' "$sequence"';
-				print ARRAY $Settings::BINARIES{perl}." ".$Settings::RAPIDSHAPES_BIBISERV{tdmwrapper_binary}." ".$command."\n";
+				print ARRAY Settings::getBinary('perl')." ".$Settings::RAPIDSHAPES_BIBISERV{tdmwrapper_binary}." ".$command."\n";
 				print ARRAY "echo 'status code is $?.' \n";
 			close (ARRAY);
-			my $qsubResult = qx($Settings::RAPIDSHAPES_BIBISERV{qsub} $arrayJob);
+			my $qsubResult = Utils::execute($Settings::RAPIDSHAPES_BIBISERV{"qsub"}." $arrayJob");
 			($gridID) = ($qsubResult =~ m/Your job-array (\d+)/);
 			print STDERR "\tsubmitted job $gridID to the grid.\n";
 			
@@ -498,7 +498,7 @@ sub doComputation {
 							close (ERR);
 						}
 						if ((-e $outFile) && ($waitList{$shapestring}->{status} eq 'finish')) {
-							my $pfAnswer = qx($Settings::BINARIES{cat} $outFile);
+							my $pfAnswer = Utils::execute(Settings::getBinary('cat')." $outFile");
 							foreach my $line (split(m/\n/, $pfAnswer)) {
 								if ($line =~ m/\( \( (.+?) , \( (.+?) , (.+?) \) \) , \( (.+?) , (.+?) \) \)/) {
 									#( ( [] , ( -2340 , 2.62995e+11 ) ) , ( (((((((..........((((........))))..))))))).... , 3.2736e+10 ) )
@@ -513,7 +513,7 @@ sub doComputation {
 					}
 				}
 				if ($pfSum / $pfAll >= $settings->{alpha}) {
-					my $resDelGrid = qx($Settings::BINARIES{qdel} $gridID);
+					my $resDelGrid = Utils::execute(Settings::getBinary('qdel')." $gridID");
 					print STDERR "abort grid job, because sufficient foldingspace has been explored.\n";
 					foreach my $shape (keys(%waitList)) {
 						$waitList{$shape}->{status} = 'stopped' if (not exists $waitList{$shape}->{answer});

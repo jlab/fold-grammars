@@ -17,6 +17,7 @@ use warnings;
 use Data::Dumper;
 use Getopt::Long;
 use foldGrammars::Utils;
+use foldGrammars::Settings;
 use foldGrammars::RNAcast;
 use foldGrammars::IO;
 use POSIX 'isatty';
@@ -123,9 +124,8 @@ if (@ARGV == 0) {
 	#only for MODE_EVAL, rna sequence and secondary structure are given as two command line parameters
 	my $inputStructure = $ARGV[1];
 	if (-e $inputStructure) { #especially for BiBiServ: structure must be delivered as a filename, thus read the file to get the structure.
-		my $command = "$Settings::BINARIES{cat} $inputStructure";
-		$inputStructure = qx($command); 
-		Utils::qxDieMessage($command, $?);
+		my $command = Settings::getBinary('cat')." $inputStructure";
+		$inputStructure = Utils::execute($command); 
 		chomp $inputStructure;
 	}
 	processInput({sequence => $ARGV[0], header => "unnamed sequence", structure => $inputStructure}, $settings);
@@ -200,8 +200,7 @@ sub doComputation {
 		my $pfallCommand = buildCommand(\%pfallSettings, $refHash_sequence);
 		my $inputFile = Utils::writeInputToTempfile($seq);
 		print "Actual call was: $pfallCommand -f $inputFile\n" if ($settings->{verbose});
-		my $res = qx($pfallCommand -f $inputFile 2>&1);
-		Utils::qxDieMessage($pfallCommand, $?);
+		my $res = Utils::execute("$pfallCommand -f $inputFile 2>&1");
 		unlink $inputFile if (!$settings->{verbose});
 		%pfAll = %{IO::parse($res, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, \%pfallSettings, $inputIndex)};
 	}
@@ -217,8 +216,7 @@ sub doComputation {
 
 	my $inputFile = Utils::writeInputToTempfile($seq);
 	print "Actual call was: $command -f $inputFile $structureArg\n" if ($settings->{verbose});
-	my $result = qx($command -f $inputFile $structureArg 2>&1);
-	Utils::qxDieMessage($command, $?);
+	my $result = Utils::execute("$command -f $inputFile $structureArg 2>&1");
 	unlink $inputFile if (!$settings->{verbose});
 	unlink $structureInputFile if ((defined $structureInputFile) && (!$settings->{verbose}));
 	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);

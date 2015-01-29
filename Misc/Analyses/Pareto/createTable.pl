@@ -5,6 +5,7 @@ use warnings;
 use Data::Dumper;
 use lib "Misc/Applications/lib";
 use foldGrammars::Utils;
+use foldGrammars::Settings;
 use File::Temp qw/ tempfile tempdir /;
 
 # bauen einer pareto instanz in gapc: gapc -p "((alg_mfe_id * alg_SHAPE_id) * (alg_dotBracket * alg_shapeX)) suchthat pareto" microstate.gap
@@ -36,7 +37,7 @@ if (defined $reactivities) {
 }
 
 my @structures = ();
-foreach my $line (split(m/\n/, qx($PARETO_BINARY -P /home/sjanssen/share/gapc/librna/rna_stefan2004.par -S $file_reactivities "$sequence"))) {
+foreach my $line (split(m/\n/, Utils::execute($PARETO_BINARY." -P /home/sjanssen/share/gapc/librna/rna_stefan2004.par -S $file_reactivities '$sequence'"))) {
 	if ($line =~ m/^\s*\( \( (.+?) , (.+?) \) , \( (.+?) , ([\[|\]|\_]+) \) \)\s*$/) {
 		push @structures, {energy => $1/100, shape => $2/100, structure => $3, shapeString => $4};
 	} elsif ($line =~ m/^\s*\( \( (.+?) , (.+?) \) , (.+?) \)\s*$/) {

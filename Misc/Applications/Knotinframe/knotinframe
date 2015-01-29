@@ -17,6 +17,7 @@ use warnings;
 use Data::Dumper;
 use Getopt::Long;
 use foldGrammars::Utils;
+use foldGrammars::Settings;
 use foldGrammars::RNAcast;
 use foldGrammars::IO;
 use POSIX 'isatty';
@@ -182,8 +183,7 @@ sub kif {
 					my $command = buildCommand($settings, $task);
 					print "Actual call was: $command \"$candidateSequence\"\n" if ($settings->{verbose});
 					my $inputFile = Utils::writeInputToTempfile($candidateSequence);
-					my $result = qx($command -f $inputFile 2>&1);
-					Utils::qxDieMessage($command, $?);
+					my $result = Utils::execute("$command -f $inputFile 2>&1");
 					unlink $inputFile if (!$settings->{verbose});
 					foreach my $line (split(m/\n/, $result)) {
 						if ($line =~ m/^\( (.+?) , (.+?) \)$/) {

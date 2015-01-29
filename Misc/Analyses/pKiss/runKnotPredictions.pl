@@ -27,7 +27,7 @@ my %PK_BINARIES = (
 	'probknot', '/vol/pi/bin/ProbKnot',
 	'pknotse', '/vol/pi/bin/pknotsSE-1.05',
 	'dotknot', '/vol/pi/src/DotKnot_1.3.1/src/dotknot.py',
-	'memtime', $Settings::BINARIES{'time'}.' -f "RT: %U user, %S system, %E elapsed -- Max VSize = %ZKB, Max RSS = %MKB :RT"',
+	'memtime', Settings::getBinary('time').' -f "RT: %U user, %S system, %E elapsed -- Max VSize = %ZKB, Max RSS = %MKB :RT"',
 );
 
 my $MAXLEN = 20;
@@ -83,7 +83,7 @@ sub analyse {
 	
 	#nested prediction
 		print STDERR "\t".($compNr++)." / 14: RNAshapes_mfe_microstate prediction ..." if ($VERBOSE);
-		my $result = qx($PK_BINARIES{memtime} $PK_BINARIES{nested} '$refHash_sequence->{sequence}' 2>&1);
+		my $result = Utils::execute($PK_BINARIES{memtime}." ".$PK_BINARIES{nested}." '".$refHash_sequence->{sequence}."' 2>&1");
 		if ($? != 0) {
 			print Dumper $result;
 			die "died on: nested prediction";
@@ -108,9 +108,9 @@ sub analyse {
 			print STDERR "\t".($compNr++)." / 14: pKiss $strategy ..." if ($VERBOSE);
 			my $result = undef;
 			if ($strategy eq 'A left') {
-				$result = qx($PK_BINARIES{memtime} $PK_BINARIES{pkissLeft} -s A '$refHash_sequence->{sequence}' 2>&1);
+				$result = Utils::execute($PK_BINARIES{memtime}." ".$PK_BINARIES{pkissLeft}." -s A '".$refHash_sequence->{sequence}."' 2>&1");
 			} else {
-				$result = qx($PK_BINARIES{memtime} $PK_BINARIES{pkiss} -s $strategy '$refHash_sequence->{sequence}' 2>&1);
+				$result = Utils::execute($PK_BINARIES{memtime}." ".$PK_BINARIES{pkiss}." -s $strategy '".$refHash_sequence->{sequence}."' 2>&1");
 			}
 			if ($? != 0) {
 				print Dumper $result;
@@ -141,7 +141,7 @@ sub analyse {
 		foreach my $param (keys(%HotKnots_params)) {
 			print STDERR "\t".($compNr++)." / 14: HotKnots $param prediction ..." if ($VERBOSE);
 			my ($parameterName, $parameterFile) = ($param, $HotKnots_params{$param});
-			$result = qx(cd /vol/pi/src/HotKnots_v2.0/bin && $PK_BINARIES{memtime} $PK_BINARIES{hotknots} -m $parameterName -p $parameterFile -noPS -s '$refHash_sequence->{sequence}' 2>&1 && cd -);
+			$result = Utils::execute("cd /vol/pi/src/HotKnots_v2.0/bin && $PK_BINARIES{memtime} $PK_BINARIES{hotknots} -m $parameterName -p $parameterFile -noPS -s '$refHash_sequence->{sequence}' 2>&1 && cd -");
 			if ($? != 0) {
 				print Dumper $result;
 				die "died on: HotKnots $param";
@@ -163,7 +163,7 @@ sub analyse {
 		my $inputFile = Utils::writeInputToTempfile(">".$refHash_sequence->{header}."\n".$refHash_sequence->{sequence}."\n");
 		my $outputFile = Utils::writeInputToTempfile("");
 		print STDERR "\t".($compNr++)." / 14: ProbKnot prediction ..." if ($VERBOSE);
-		$result = qx(export DATAPATH=/vol/pi/src/RNAstructure/data_tables; $PK_BINARIES{memtime} $PK_BINARIES{probknot} $inputFile $outputFile -i 10 --sequence 2>&1);
+		$result = Utils::execute("export DATAPATH=/vol/pi/src/RNAstructure/data_tables; $PK_BINARIES{memtime} $PK_BINARIES{probknot} $inputFile $outputFile -i 10 --sequence 2>&1");
 		if ($? != 0) {
 			print Dumper $result;
 			die "died on: ProbKnot";
@@ -184,7 +184,7 @@ sub analyse {
 	#DotKnot
 		$inputFile = Utils::writeInputToTempfile(">".$refHash_sequence->{header}."\n".$refHash_sequence->{sequence}."\n");
 		print STDERR "\t".($compNr++)." / 14: DotKnot prediction ..." if ($VERBOSE);
-		$result = qx(cd /vol/pi/src/DotKnot_1.3.1/src/ && $PK_BINARIES{memtime} python $PK_BINARIES{dotknot} $inputFile -k -g 2>&1);
+		$result = Utils::execute("cd /vol/pi/src/DotKnot_1.3.1/src/ && $PK_BINARIES{memtime} python $PK_BINARIES{dotknot} $inputFile -k -g 2>&1");
 		if ($? != 0) {
 			print Dumper $result;
 			die "died on: DotKnot";
@@ -209,7 +209,7 @@ sub analyse {
 		$inputFile = Utils::writeInputToTempfile(">".$refHash_sequence->{header}."\n".$refHash_sequence->{sequence}."\n");
 		$outputFile = Utils::writeInputToTempfile("");
 		print STDERR "\t".($compNr++)." / 14: pknotsSE-1.05 prediction ..." if ($VERBOSE);
-		$result = qx($PK_BINARIES{memtime} $PK_BINARIES{pknotse} -k -g -o $outputFile $inputFile 2>&1);
+		$result = Utils::execute("$PK_BINARIES{memtime} $PK_BINARIES{pknotse} -k -g -o $outputFile $inputFile 2>&1");
 		unlink $inputFile;
 		if ($? != 0) {
 			print Dumper $result;
@@ -264,7 +264,7 @@ sub readPknotsse {
 sub evaluateEnergy { #evaluate energy of a structure
 	my ($sequence, $structure) = @_;
 		
-	my $result = qx($PK_BINARIES{memtime} $PK_BINARIES{eval} -s D -u 1 '$sequence' '$structure' 2>&1);
+	my $result = Utils::execute("$PK_BINARIES{memtime} $PK_BINARIES{eval} -s D -u 1 '$sequence' '$structure' 2>&1");
 	if ($? != 0) {
 		print Dumper $result;
 		die "died on: pkiss_eval";

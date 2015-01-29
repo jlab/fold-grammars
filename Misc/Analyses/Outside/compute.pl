@@ -110,7 +110,7 @@ sub getSuboptBPprobs {
 		my $options = '-e 99999 -u '.($lp eq 'yes' ? '1' : '0');
 		my $gapcInput = Helper::getGapInput($input, 0, $type);
 		for (my $runs = 0; $runs < 3; $runs++) {
-			$results = qx($binary $options $gapcInput 2>&1);
+			$results = Utils::execute("$binary $options $gapcInput 2>&1");
 			if ($results =~ m/Resource temporarily unavailable/) {
 				sleep 5;
 			} elsif ($results =~ m/abort/i) {
@@ -132,11 +132,11 @@ sub getSuboptBPprobs {
 				$options .= " -d1";
 			}
 			for (my $runs = 0; $runs < 3; $runs++) {
-				$results = qx($Settings::BINARIES{'RNAsubopt'} $options < $input);
+				$results = Utils::execute(Settings::getBinary('RNAsubopt')." $options < $input");
 				if ($results =~ m/Resource temporarily unavailable/) {
 					sleep 5;
 				} elsif ($results =~ m/abort/i) {
-					print STDERR "ERROR! Input was $Settings::BINARIES{'RNAsubopt'} $options $input\n";
+					print STDERR "ERROR! Input was Settings::getBinary('RNAsubopt') $options $input\n";
 				} else {
 					last;
 				}
@@ -192,13 +192,13 @@ sub computeBPprobs {
 	if ($package eq 'gapc') {
 		my $binary = $binDir.'RNA'.($type eq 'ali' ? 'ali' : '').'shapes_outside_'.$grammar;
 		my $gapcInput = Helper::getGapInput($input, 1, $type);
-		my $currentDir = qx(pwd); chomp $currentDir;
+		my $currentDir = Utils::execute("pwd"); chomp $currentDir;
 		my $tmpDir = Utils::createUniqueTempDir('/vol/cluster-data/sjanssen/TMP/', 'outsideEvaluation_');
 		my $psName = $tmpDir.'/dotPlot.ps';
 		my $options = '-F 0 -u '.($lp eq 'yes' ? '1' : '0').' -o '.$psName;
 		my $results = undef;
 		for (my $runs = 0; $runs < 3; $runs++) {
-			$results = qx($binary $options $gapcInput 2>&1);
+			$results = Utils::execute("$binary $options $gapcInput 2>&1");
 			if ($results =~ m/Resource temporarily unavailable/) {
 				sleep 5;
 			} elsif ($results =~ m/abort/i) {
@@ -209,9 +209,9 @@ sub computeBPprobs {
 		}
 		%bpp = %{Helper::readDotplot($psName)};
 		chdir $currentDir;
-		qx(rm -rf $tmpDir);
+		Utils::execute("rm -rf $tmpDir");
 	} else {
-		my $binary = ($type eq 'single' ? $Settings::BINARIES{'RNAfold'} : $Settings::BINARIES{'RNAalifold'});
+		my $binary = ($type eq 'single' ? Settings::getBinary('RNAfold') : Settings::getBinary('RNAalifold'));
 		my $options = "--bppmThreshold=0 -p ".($lp eq 'no' ? '--noLP' : '');
 		if ($grammar eq 'overdangle') {
 			$options .= " -d2";
@@ -220,11 +220,11 @@ sub computeBPprobs {
 		} elsif ($grammar eq 'microstate') {
 			$options .= " -d1";
 		}
-		my $currentDir = qx(pwd); chomp $currentDir;
+		my $currentDir = Utils::execute("pwd"); chomp $currentDir;
 		my $tmpDir = Utils::createUniqueTempDir('/vol/cluster-data/sjanssen/TMP/', 'outsideEvaluation_');
 		my $results = undef;
 		for (my $runs = 0; $runs < 3; $runs++) {
-			$results = qx($binary $options < $input 2>&1);
+			$results = Utils::execute("$binary $options < $input 2>&1");
 			if ($results =~ m/Resource temporarily unavailable/) {
 				sleep 5;
 			} elsif ($results =~ m/abort/i) {
@@ -234,7 +234,7 @@ sub computeBPprobs {
 			}
 		}
 		my $psName = undef;
-		foreach my $file (split(m/,\s+/, join("", qx(ls -m $tmpDir)))) {
+		foreach my $file (split(m/,\s+/, join("", Utils::execute("ls -m $tmpDir")))) {
 			chomp $file;
 			if (($file eq "alidot.ps") || ($file eq "dot.ps") || ($file =~ m/_dp.ps/)) {
 				$psName = $tmpDir.'/'.$file;
@@ -244,7 +244,7 @@ sub computeBPprobs {
 		$psName = $tmpDir.'/'.($type eq 'ali' ? 'ali' : '').'dot.ps' if (not defined $psName || $psName eq '');
 		%bpp = %{Helper::readDotplot($psName)};
 		chdir $currentDir;
-		qx(rm -rf $tmpDir);
+		Utils::execute("rm -rf $tmpDir");
 	}
 	
 	return \%bpp;

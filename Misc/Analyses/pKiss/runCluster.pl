@@ -10,12 +10,13 @@ sub getPath {
 use lib getPath($0)."../../Applications/lib/";
 
 use foldGrammars::Settings;
+use foldGrammars::Utils;
 use strict;
 use warnings;
 use Data::Dumper;
 
 my %RS_BINARIES = (
-	'memtime', $Settings::BINARIES{'time'}.' -f "RT: %U user, %S system, %E elapsed -- Max VSize = %ZKB, Max RSS = %MKB :RT"',
+	'memtime', Settings::getBinary('time').' -f "RT: %U user, %S system, %E elapsed -- Max VSize = %ZKB, Max RSS = %MKB :RT"',
 );
 my $QSUBREST = '-l linh=1 -l hostname="suc*"';
 my $MAXMEM = 8;
@@ -27,35 +28,35 @@ my $testname = $parts[$#parts];
 my $resultDir = 'Cluster_'.$testname;
 
 if (not -d $resultDir) {
-	my $res_mkdir = qx($Settings::BINARIES{'mkdir'} -p $resultDir 2>&1); 
+	my $res_mkdir = Utils::execute(Settings::getBinary('mkdir')." -p $resultDir 2>&1"); 
 	die("cannot create result dir: $res_mkdir") if ($? != 0);
 }
 my $infix = "";
 $infix = "STEM." if ($is_stemdist);
 if (not -d $resultDir.'/'.$infix.'ERR') {
-	my $res_mkdir = qx($Settings::BINARIES{'mkdir'} -p $resultDir/${infix}ERR 2>&1);
+	my $res_mkdir = Utils::execute(Settings::getBinary('mkdir')." -p ".$resultDir."/".$infix."ERR 2>&1");
 	die("cannot create error dir: $res_mkdir") if ($? != 0);
 }
 if (not -d $resultDir.'/'.$infix.'OUT') {
-	my $res_mkdir = qx($Settings::BINARIES{'mkdir'} -p $resultDir/${infix}OUT 2>&1);
+	my $res_mkdir = Utils::execute(Settings::getBinary('mkdir')." -p ".$resultDir."/".$infix."OUT 2>&1");
 	die("cannot create output dir: $res_mkdir") if ($? != 0);
 }
 if ($is_stemdist) {
 	if (not -d $resultDir.'/STORE') {
-		my $res_mkdir = qx($Settings::BINARIES{'mkdir'} -p $resultDir/STORE 2>&1);
+		my $res_mkdir = Utils::execute(Settings::getBinary('mkdir')." -p $resultDir/STORE 2>&1");
 		die("cannot create output dir: $res_mkdir") if ($? != 0);
 	}
 }
 
-my $numberSequences = qx($Settings::BINARIES{'grep'} "^>" $inputfile -c); chomp $numberSequences;
+my $numberSequences = Utils::execute(Settings::getBinary('grep').' "^>" '.$inputfile." -c"); chomp $numberSequences;
 my $numResultFiles = undef;
-$numResultFiles = qx($Settings::BINARIES{'ls'} -la $resultDir/OUT/ | grep "pseudoknots" -c); chomp $numResultFiles;
+$numResultFiles = Utils::execute(Settings::getBinary('ls')." -la $resultDir/OUT/ | grep 'pseudoknots' -c"); chomp $numResultFiles;
 
 my $clusterScript = $resultDir.'/arrayjob.sh';
 open (ARRAY, "> $clusterScript") || rmdie("can't write to '$clusterScript': $!");
-	print ARRAY '#!'.$Settings::BINARIES{sh}."\n";
+	print ARRAY '#!'.Settings::getBinary('sh')."\n";
 	print ARRAY ''."\n";
-	print ARRAY '#$ -S '.$Settings::BINARIES{sh}."\n";
+	print ARRAY '#$ -S '.Settings::getBinary('sh')."\n";
 	if ($is_stemdist) {
 		print ARRAY '#$ -t 1-'.$numResultFiles."\n";
 		print ARRAY '#$ -N stemdist'."\n";
@@ -80,9 +81,9 @@ open (ARRAY, "> $clusterScript") || rmdie("can't write to '$clusterScript': $!")
 	print ARRAY 'uname -a'."\n";
 	my $command = "";
 	if (!$is_stemdist) {
-		$command = $RS_BINARIES{memtime}." ".$Settings::BINARIES{perl}." /vol/fold-grammars/src/Misc/Analyses/pKiss/runKnotPredictions.pl ".' "$header" "$sequence" "$structure"';
+		$command = $RS_BINARIES{memtime}." ".Settings::getBinary('perl')." /vol/fold-grammars/src/Misc/Analyses/pKiss/runKnotPredictions.pl ".' "$header" "$sequence" "$structure"';
 	} else {
-		$command = $RS_BINARIES{memtime}." ".$Settings::BINARIES{perl}." /vol/fold-grammars/src/Misc/Analyses/pKiss/analyseStemDistance.pl ".$resultDir."/OUT/pseudoknots.*.\$SGE_TASK_ID ".$resultDir."/STORE/";
+		$command = $RS_BINARIES{memtime}." ".Settings::getBinary('perl')." /vol/fold-grammars/src/Misc/Analyses/pKiss/analyseStemDistance.pl ".$resultDir."/OUT/pseudoknots.*.\$SGE_TASK_ID ".$resultDir."/STORE/";
 	}
 	print ARRAY $command."\n";
 	print ARRAY 'exitStatus=$?;'."\n";

@@ -121,7 +121,7 @@ sub compute {
 	my $param = getParameters($slope, $intercept, $header);
 	my $file_reactivities = createReactivityFile($reactivities);
 	my $command = $BINS{$type}." ".$ENERGYPAR." ".$deviation." -S ".$file_reactivities." ".$param.' "'.$sequence.'"';
-	my $result = qx($command);
+	my $result = Utils::execute($command);
 
 	my %result = ();
 	foreach my $line (split(m/\n/, $result)) {
@@ -166,7 +166,7 @@ sub getParameters {
 sub build_binary {
 	my @availTypes = ('OPT','SUBOPT','SHAPES','PARETO','PARETO_PLAIN','PARETO_NORM');
 	my @availGrammars = ('overdangle', 'microstate');
-	my $platform = qx($Settings::BINARIES{gcc} -dumpmachine); chomp $platform;
+	my $platform = Utils::execute(Settings::getBinary('gcc')." -dumpmachine"); chomp $platform;
 	
 	my ($grammar, $type, $targetDir) = @_;
 	$targetDir = Utils::absFilename($targetDir);

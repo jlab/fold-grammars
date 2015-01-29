@@ -17,6 +17,7 @@ use warnings;
 use Data::Dumper;
 use Getopt::Long;
 use foldGrammars::Utils;
+use foldGrammars::Settings;
 use foldGrammars::IO;
 $IO::SUB_BUILDCOMMAND = \&buildCommand;
 use POSIX 'isatty';
@@ -113,9 +114,8 @@ if (@ARGV == 0) {
 	#only for MODE_EVAL, rna alignment filename and secondary structure are given as two command line parameters
 	my $inputStructure = $ARGV[1];
 	if (-e $inputStructure) { #especially for BiBiServ: structure must be delivered as a filename, thus read the file to get the structure.
-		my $command = "$Settings::BINARIES{cat} $inputStructure";
-		$inputStructure = qx($command); 
-		Utils::qxDieMessage($command, $?);
+		my $command = Settings::getBinary('cat')." $inputStructure";
+		$inputStructure = Utils::execute($command); 
 		chomp $inputStructure;
 	}
 	processInput($ARGV[0], $inputStructure, $settings);
@@ -135,8 +135,7 @@ sub processInput {
 		if ($refHash_settings->{mode} eq $Settings::MODE_ABSTRACT) {
 			my $structure = $input;
 			if (-e $input) {
-				$structure = qx($Settings::BINARIES{cat} $input); chomp $structure;
-				Utils::qxDieMessage("$Settings::BINARIES{cat} $input", $?);
+				$structure = Utils::execute(Settings::getBinary('cat')." $input"); chomp $structure;
 			}
 			my $command = buildCommand($settings, undef);
 			my $seqDummy = 'a' x length($structure);
@@ -144,8 +143,7 @@ sub processInput {
 			my $inputFileSequence = Utils::writeInputToTempfile($seqDummy);
 			my $inputFileStructure = Utils::writeInputToTempfile($structure);
 			print "Actual call was: $command -f $inputFileSequence -f $inputFileStructure\n" if ($settings->{verbose});
-			my $result = qx($command -f $inputFileSequence -f $inputFileStructure 2>&1);
-			Utils::qxDieMessage($command, $?);
+			my $result = Utils::execute("$command -f $inputFileSequence -f $inputFileStructure 2>&1");
 			unlink $inputFileSequence if (!$settings->{verbose});
 			unlink $inputFileStructure if (!$settings->{verbose});
 	
@@ -191,16 +189,14 @@ sub doComputation {
 		my $pfallCommand = buildCommand(\%pfallSettings, $refHash_alignment);
 		my $inputFile = Utils::writeInputToTempfile($gapInput);
 		print "Actual call was: $pfallCommand -f $inputFile\n" if ($settings->{verbose});
-		my $res = qx($pfallCommand -f $inputFile 2>&1);
-		Utils::qxDieMessage($pfallCommand, $?);
+		my $res = Utils::execute("$pfallCommand -f $inputFile 2>&1");
 		unlink $inputFile if (!$settings->{verbose});
 		%pfAll = %{IO::parse($res, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, \%pfallSettings, 0)};
 	}
 
 	print "Actual call was: $command \"$gapInput\" $structureArg\n" if ($settings->{verbose});
 	my $inputFile = Utils::writeInputToTempfile($gapInput);
-	my $result = qx($command -f $inputFile $structureArg 2>&1);
-	Utils::qxDieMessage($command, $?);
+	my $result = Utils::execute("$command -f $inputFile $structureArg 2>&1");
 	unlink $inputFile if (!$settings->{verbose});
 	unlink $structureInputFile if ((defined $structureInputFile) && (!$settings->{verbose}));
 	IO::parse($result, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);

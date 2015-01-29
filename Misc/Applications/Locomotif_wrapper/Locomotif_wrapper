@@ -17,6 +17,7 @@ use warnings;
 use Data::Dumper;
 use Getopt::Long;
 use foldGrammars::Utils;
+use foldGrammars::Settings;
 use foldGrammars::RNAcast;
 use foldGrammars::IO;
 use POSIX 'isatty';
@@ -135,8 +136,7 @@ sub doComputation {
 	my $inputFile = Utils::writeInputToTempfile($seq);
 	print "Actual call was: $command -f $inputFile\n" if ($settings->{verbose});
 
-	my $result = qx($command -f $inputFile 2>&1);
-	Utils::qxDieMessage($command, $?);
+	my $result = Utils::execute("$command -f $inputFile 2>&1");
 	unlink $inputFile if (!$settings->{verbose});
 	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, undef);
 	

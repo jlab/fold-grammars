@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 use foldGrammars::Settings;
+use foldGrammars::Utils;
 use strict;
 use warnings;
 
@@ -23,7 +24,7 @@ sub applyFunctionToStockholmFile {
 	if ($Filename eq \*STDIN) {
 		$FH = $Filename;
 	} elsif ($Filename =~ m/\.gz$/) {
-		open($FH, $Settings::BINARIES{'gunzip'}." -c $Filename |") || die "can't open gzip compressed file $Filename $!\n";
+		open($FH, Settings::getBinary('gunzip')." -c $Filename |") || die "can't open gzip compressed file $Filename $!\n";
 	} else {
 		open ($FH, $Filename) || die "can't open Stockholm file: $1"; # es wird versucht die Fasta-Datei zu oeffnen, um aus ihr zeilenweise zu lesen, bei Miserfolg gibt das Programm eine Warnung aus und beendet sich dann.
 	}

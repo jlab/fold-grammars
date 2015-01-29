@@ -17,6 +17,7 @@ use warnings;
 use Data::Dumper;
 use Getopt::Long;
 use foldGrammars::Utils;
+use foldGrammars::Settings;
 use foldGrammars::CMs;
 use POSIX 'isatty';
 use aCMs::Priors;
@@ -127,9 +128,9 @@ sub doComputation {
 	my ($refHash_family, $settings, $refHash_priors, $refHash_nullmodel) = @_;
 
 	$refHash_family->{familyname} = $settings->{name} if ((defined $settings->{name}) && ($settings->{name} ne ''));
-	my $currentDir = qx($Settings::BINARIES{pwd}); chomp $currentDir;
+	my $currentDir = Utils::execute(Settings::getBinary('pwd')); chomp $currentDir;
 	#~ my $tmpDir = '/tmp/tmp.SBZEaP52Dr/';
-	my $tmpDir = qx($Settings::BINARIES{mktemp} -d); chomp $tmpDir;
+	my $tmpDir = Utils::execute(Settings::getBinary('mktemp')." -d"); chomp $tmpDir;
 	print STDERR "Training and building an ambivalent covariance model for family '".$refHash_family->{familyname}."':\n" if ($VERBOSE);
 	print STDERR "  (temporary directory is '$tmpDir'.)\n" if ($VERBOSE);
 
@@ -149,7 +150,7 @@ sub doComputation {
 		my $concatConsensi;
 		foreach my $id (@consensiOrdering) { $concatConsensi .= "'".'("'.$id.'","'.$matchConsensi{$id}.'")'."' "; }
 		my $trainBuildCmd = buildCommand($settings, {header => undef, sequence => $concatConsensi}, 'trainbuild');
-		my $trainGAP = qx($trainBuildCmd 2>&1); 
+		my $trainGAP = Utils::execute("$trainBuildCmd 2>&1");
 
 #~ my $startSingle = 'false';
 #~ my $isUni = 'false';
@@ -188,7 +189,6 @@ sub doComputation {
 			print STDERR "\n$1\n";
 			exit 1;
 		}
-		Utils::qxDieMessage($trainBuildCmd, $?);
 		my %nodeLists = ();
 		my %trees = ();
 		my $idIndex = 0;
@@ -204,9 +204,8 @@ sub doComputation {
 			open (OUT, "> ".$gapfilename) || die "cannot write gap source code to '$gapfilename': $!";
 				print OUT $trainGAP;
 			close (OUT);
-			my $cmd = "cd $tmpDir && ln -s ".Utils::absFilename(getPath($0))."/Include/isntimes.hh . && $Settings::BINARIES{gapc} --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc && $Settings::BINARIES{make} -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/\" && rm -f string.*";
-			qx($cmd);
-			Utils::qxDieMessage($cmd, $?);
+			my $cmd = "cd $tmpDir && ln -s ".Utils::absFilename(getPath($0))."/Include/isntimes.hh . && Settings::getBinary('gapc') --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc && Settings::getBinary('make') -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/\" && rm -f string.*";
+			Utils::execute($cmd);
 			print STDERR " done.\n" if ($VERBOSE);
 		} else {
 			print STDERR " using existing one.\n" if ($VERBOSE);
@@ -243,9 +242,8 @@ sub doComputation {
 			print STDERR ".";
 			my $altID = cmUtils::getAltID($seqID);
 			my $mix = cmUtils::getTrainSeqStruct($refHash_family->{sequences}->{$seqID}, $matchConsensi{$altID});
-			my $cmd = "$trainBinaryFilename -- \"$mix\" | ".$Settings::BINARIES{grep}." -v \"Answer\" | ".$Settings::BINARIES{grep}." -v \"^\$\"";
-			my $gapres = qx($cmd);
-			Utils::qxDieMessage($cmd, $?);
+			my $cmd = "$trainBinaryFilename -- \"$mix\" | ".Settings::getBinary('grep')." -v \"Answer\" | ".Settings::getBinary('grep')." -v \"^\$\"";
+			my $gapres = Utils::execute($cmd);
 			cmUtils::parseTrainEnum($gapres, \%counts_transitions, \%counts_emissions, $seqID, $altID);
 		}
 		print STDERR " done.\n" if ($VERBOSE);
@@ -294,19 +292,17 @@ sub doComputation {
 				open (PROBS, "> ".$tmpDir."/Probs.lhs") || die "can't write to '".$tmpDir."/Probs.lhs'\n";
 					print PROBS cmUtils::generateHaskellProbMaps(\%weighted_transitions, \%weighted_emissions, $refHash_family->{familyname});
 				close (PROBS);
-				my $command = $Settings::BINARIES{ghc}." -tmpdir ".$tmpDir."/ -O -fglasgow-exts -odir ".$tmpDir." -i".$tmpDir.":".getPath($0)."../lib/aCMs/ -hidir ".$tmpDir." --make ".getPath($0)."../lib/aCMs/mcmbuild.lhs -o ".$buildBinary;
+				my $command = Settings::getBinary('ghc')." -tmpdir ".$tmpDir."/ -O -fglasgow-exts -odir ".$tmpDir." -i".$tmpDir.":".getPath($0)."../lib/aCMs/ -hidir ".$tmpDir." --make ".getPath($0)."../lib/aCMs/mcmbuild.lhs -o ".$buildBinary;
 				system($command." 1>&2");
 			}
 			my $cmd = "$buildBinary $concatConsensi";
-			my $buildGAP = qx($cmd);
-			Utils::qxDieMessage($cmd, $?);
+			my $buildGAP = Utils::execute($cmd);
 			my $targetGapFile = $outputFile.'.gap';
 			open (OUT, "> ".$targetGapFile) || die "cannot write gap source code to '".$targetGapFile."': $!";
 				print OUT $buildGAP;
 			close (OUT);
-			$cmd = "cd $tmpDir && cp $targetGapFile $tmpDir/ && $Settings::BINARIES{gapc} --tab-all -i cykali --kbacktrace $targetGapFile -o $targetBinary.cc && $Settings::BINARIES{make} -f $targetBinary.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\" && rm -f string.* && cp $targetBinary $outputFile";
-			qx($cmd);
-			Utils::qxDieMessage($cmd, $?);
+			$cmd = "cd $tmpDir && cp $targetGapFile $tmpDir/ && Settings::getBinary('gapc') --tab-all -i cykali --kbacktrace $targetGapFile -o $targetBinary.cc && Settings::getBinary('make') -f $targetBinary.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\" && rm -f string.* && cp $targetBinary $outputFile";
+			Utils::execute($cmd);
 			print STDERR " done.\n" if ($VERBOSE);
 		} else {
 			print STDERR " using existing one.\n" if ($VERBOSE);
@@ -314,7 +310,7 @@ sub doComputation {
 		
 	#remove temp directory
 		chdir($currentDir);
-		qx(rm -rf $tmpDir) if (!$settings->{verbose});
+		Utils::execute("rm -rf $tmpDir") if (!$settings->{verbose});
 		
 	$exampleSequence =~ s/\.//g;
 	print "sucessfully compiled '".$outputFile."'\nuse it like \"".$outputFile." ".uc($exampleSequence)."\"\nHowever, we strongly suggest to use the Perl wrapper acmsearch for a more pretty output and FASTA parsing capabilities, e.g.\n  acmsearch ".$outputFile." \"".$exampleSequence."\"\n" if ($VERBOSE);

@@ -1,5 +1,16 @@
 #!/usr/bin/env perl
 
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+use lib getPath($0)."../../Applications/lib/";
+
+use foldGrammars::Settings;
+use foldGrammars::Utils;
 use strict;
 use warnings;
 use Data::Dumper;
@@ -47,7 +58,7 @@ my @calls = (
 foreach my $call (@calls) {
 	next if ($call =~ m/m.crostate/);
 	
-	qx(perl -I ../../Applications/lib/ temp/RNAalishapes $call --dotplot=gapc.ps);
+	Utils::execute("perl -I ../../Applications/lib/ temp/RNAalishapes $call --dotplot=gapc.ps");
 	
 	$call =~ s/--mode=outside//g;
 	$call =~ s/--allowLP=0/--noLP/g;
@@ -60,7 +71,7 @@ foreach my $call (@calls) {
 	$call =~ s/--consensus=consensus//g;
 	$call =~ s/--consensus=mis/--mis/g;
 	my ($parameters, $sequence) = ($call =~ m/^(.+?)\s+(\S+)$/);
-	qx(cat $sequence | RNAalifold -p $parameters);
+	Utils::execute("cat $sequence | RNAalifold -p $parameters");
 	
 	print Dumper plotDistance('gapc.ps', 'alidot.ps')."\t".$call;
 	#~ die;

@@ -15,6 +15,7 @@ use Data::Dumper;
 use FSsettings;
 use Storable qw(nstore);
 use foldGrammars::Utils;
+use foldGrammars::Settings;
 
 my $INF = 5000000;
 my $INPUTSEQFILE = '/vol/fold-grammars/src/Misc/Analyses/Testinputs/Foldingspaces/sfull_lenSort.fasta';
@@ -26,8 +27,8 @@ my $MAXLEN = 400;
 my $QSUBREST = '-l linh=1 -l hostname="suc*"';
 #~ my $mode = 'sample';
 
-qx(mkdir -p $OUTDIR) if (not (-d $OUTDIR));
-qx(mkdir -p $ERRDIR) if (not (-d $ERRDIR));
+Utils::execute(Settings::getBinary("mkdir")." -p $OUTDIR") if (not (-d $OUTDIR));
+Utils::execute(Settings::getBinary("mkdir")." -p $ERRDIR") if (not (-d $ERRDIR));
 
 my ($parameter, $grammar, $level) = @ARGV;
 
@@ -620,7 +621,7 @@ sub parseOutfile {
 	my ($filename, $refHash_results) = @_;
 	
 	my @files = ();
-	foreach my $line (split(m/\n/, qx(ls -la $filename))) {
+	foreach my $line (split(m/\n/, Utils::execute("ls -la $filename"))) {
 		my ($file) = ($line =~ m/(\S+)$/);
 		push @files, $file;
 	}
@@ -711,14 +712,14 @@ sub startClusterRun {
 	
 	foreach my $parameter (keys(%{$refHash_calls})) {
 		#~ next if ($parameter ne 'T');
-		qx(mkdir -p $OUTDIR/$parameter/OUT/) if (not (-d $OUTDIR.'/'.$parameter.'/OUT'));
-		qx(mkdir -p $ERRDIR/$parameter/ERR/) if (not (-d $ERRDIR.'/'.$parameter.'/ERR'));
+		Utils::execute("mkdir -p $OUTDIR/$parameter/OUT/") if (not (-d $OUTDIR.'/'.$parameter.'/OUT'));
+		Utils::execute("mkdir -p $ERRDIR/$parameter/ERR/") if (not (-d $ERRDIR.'/'.$parameter.'/ERR'));
 		foreach my $grammar (@{$reflist_grammars}) {
-			qx(mkdir -p $OUTDIR/$parameter/OUT/$grammar) if (not (-d $OUTDIR.'/'.$parameter.'/OUT/'.$grammar));
-			qx(mkdir -p $ERRDIR/$parameter/ERR/$grammar) if (not (-d $OUTDIR.'/'.$parameter.'/ERR/'.$grammar));
+			Utils::execute("mkdir -p $OUTDIR/$parameter/OUT/$grammar") if (not (-d $OUTDIR.'/'.$parameter.'/OUT/'.$grammar));
+			Utils::execute("mkdir -p $ERRDIR/$parameter/ERR/$grammar") if (not (-d $OUTDIR.'/'.$parameter.'/ERR/'.$grammar));
 			foreach my $shapelevel (@{$reflist_shapelevels}) {
-				qx(mkdir -p $OUTDIR/$parameter/OUT/$grammar/$shapelevel) if (not (-d $OUTDIR.'/'.$parameter.'/OUT/'.$grammar.'/'.$shapelevel));
-				qx(mkdir -p $ERRDIR/$parameter/ERR/$grammar/$shapelevel) if (not (-d $OUTDIR.'/'.$parameter.'/ERR/'.$grammar.'/'.$shapelevel));
+				Utils::execute("mkdir -p $OUTDIR/$parameter/OUT/$grammar/$shapelevel") if (not (-d $OUTDIR.'/'.$parameter.'/OUT/'.$grammar.'/'.$shapelevel));
+				Utils::execute("mkdir -p $ERRDIR/$parameter/ERR/$grammar/$shapelevel") if (not (-d $OUTDIR.'/'.$parameter.'/ERR/'.$grammar.'/'.$shapelevel));
 				foreach my $value (@{$refHash_calls->{$parameter}}) {
 					my $clusterScript = 'cluster_tmp.sh';
 					my $jobName = 'r_'.$grammar."_q".$shapelevel.'_'.$parameter.getShortDescription($value);
@@ -779,7 +780,7 @@ sub startClusterRun {
 					close (ACJ);
 					my $qsubCommand = 'qsub -cwd '.$QSUBREST.' -l virtual_free='.$FSsettings::MAXMEM.'GB -l h_vmem='.$FSsettings::MAXMEM.'GB '.$clusterScript;
 					my $sub = "Your job-array 000";
-					#~ my $sub = qx($qsubCommand);
+					#~ my $sub = Utils::execute($qsubCommand);
 					my ($jobID) = ($sub =~ m/Your job-array (\d+)/);
 					push @jobIDs, $jobID;
 					print $jobName.": ".$qsubCommand."\n";

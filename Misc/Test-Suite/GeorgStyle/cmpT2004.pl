@@ -1,5 +1,16 @@
 #!/usr/bin/env perl
 
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+use lib getPath($0)."../../Applications/lib/";
+
+use foldGrammars::Settings;
+use foldGrammars::Utils;
 use strict;
 use warnings;
 use Data::Dumper;
@@ -21,7 +32,7 @@ $call = 'echo "'.$sequence.'" | '.$binVienna200.' -T 47.0 -'.$dangle.' --'.$noLP
 
 my %orig = ();
 print Dumper $call;
-foreach my $line (split(m/\n/, qx($call))) {
+foreach my $line (split(m/\n/, Utils::execute($call))) {
 	my ($str, $energy) = split(m/\s+/, $line);
 	my $noLPcheck = 1;
 	if ($version eq '1.8.5') {
@@ -33,7 +44,7 @@ foreach my $line (split(m/\n/, qx($call))) {
 my %gapc = ();
 my $callGapc = $binGAPC.' -T 47.0 '.$sequence.' -P '.$ParamFile;
 #~ print Dumper $callGapc;
-foreach my $line (split(m/\n/, qx($callGapc | grep "," | cut -d " " -f 3,8))) {
+foreach my $line (split(m/\n/, Utils::execute("$callGapc | grep \",\" | cut -d \" \" -f 3,8"))) {
 	my ($str, $energy) = split(m/\s+/, $line);
 	($energy) = ($energy =~ m/\((.+?),/) if ($grammar eq 'macrostate');
 	push @{$gapc{$str}}, sprintf("%.2f", $energy / 100);
