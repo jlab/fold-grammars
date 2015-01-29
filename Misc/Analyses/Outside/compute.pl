@@ -21,6 +21,7 @@ use Helper;
 my $binDir = "bin/";
 $binDir = Utils::absFilename($binDir).'/';
 
+our $ENERGY_PARAMETER = ' -P /vol/cluster-data/sjanssen/ExpVar/rna_stefan2004.par ';
 my @grammars = ("nodangle","overdangle","microstate");
 
 my ($plotDir, $input, $grammar, $lp) = @ARGV;
@@ -107,7 +108,7 @@ sub getSuboptBPprobs {
 	my $results = "";
 	if ($package eq 'gapc') {
 		my $binary = $binDir.'RNA'.($type eq 'ali' ? 'ali' : '').'shapes_enum_'.$grammar;
-		my $options = '-e 99999 -u '.($lp eq 'yes' ? '1' : '0');
+		my $options = $ENERGY_PARAMETER.'-e 99999 -u '.($lp eq 'yes' ? '1' : '0');
 		my $gapcInput = Helper::getGapInput($input, 0, $type);
 		for (my $runs = 0; $runs < 3; $runs++) {
 			$results = qx($binary $options $gapcInput 2>&1);
@@ -123,7 +124,7 @@ sub getSuboptBPprobs {
 		if ($type eq 'ali') {
 			die "there is no RNAsubopt equivalent for alignments!\n";
 		} else {
-			my $options = "-e9999 ".($lp eq 'no' ? '--noLP' : '');
+			my $options = "$ENERGY_PARAMETER -e9999 ".($lp eq 'no' ? '--noLP' : '');
 			if ($grammar eq 'overdangle') {
 				$options .= " -d2";
 			} elsif ($grammar eq 'nodangle') {
@@ -195,7 +196,7 @@ sub computeBPprobs {
 		my $currentDir = qx(pwd); chomp $currentDir;
 		my $tmpDir = Utils::createUniqueTempDir('/vol/cluster-data/sjanssen/TMP/', 'outsideEvaluation_');
 		my $psName = $tmpDir.'/dotPlot.ps';
-		my $options = '-F 0 -u '.($lp eq 'yes' ? '1' : '0').' -o '.$psName;
+		my $options = '$ENERGY_PARAMETER -F 0 -u '.($lp eq 'yes' ? '1' : '0').' -o '.$psName;
 		my $results = undef;
 		for (my $runs = 0; $runs < 3; $runs++) {
 			$results = qx($binary $options $gapcInput 2>&1);
@@ -212,7 +213,7 @@ sub computeBPprobs {
 		qx(rm -rf $tmpDir);
 	} else {
 		my $binary = ($type eq 'single' ? $Settings::BINARIES{'RNAfold'} : $Settings::BINARIES{'RNAalifold'});
-		my $options = "--bppmThreshold=0 -p ".($lp eq 'no' ? '--noLP' : '');
+		my $options = "$ENERGY_PARAMETER --bppmThreshold=0 -p ".($lp eq 'no' ? '--noLP' : '');
 		if ($grammar eq 'overdangle') {
 			$options .= " -d2";
 		} elsif ($grammar eq 'nodangle') {
