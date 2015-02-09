@@ -176,7 +176,8 @@ sub analyse {
 			}
 		}
 		unlink $inputFile;
-		my $ProbKnotStructure = Structure::ct2db($outputFile);
+		my %help = %{Structure::ct2db($outputFile)};
+		my $ProbKnotStructure = $help{structure};
 		unlink $outputFile;
 		printResult($MAXLEN, 'ProbKnot -i 10', $ProbKnotStructure, evaluateEnergy($refHash_sequence->{sequence}, $ProbKnotStructure), \%performance);
 		print STDERR " done.\n" if ($VERBOSE);
@@ -255,7 +256,8 @@ sub readPknotsse {
 	close (IN);
 	
 	my $pureCTfile = Utils::writeInputToTempfile($ctContent);
-	my $structure = Structure::ct2db($pureCTfile);
+	my %help = %{Structure::ct2db($pureCTfile)};
+	my $structure = $help{structure};
 	unlink $pureCTfile;
 	
 	return {structure => $structure, energy => $energy};

@@ -206,7 +206,8 @@ sub ct2db {
 		my %pairs = ();
 		while (my $line = <CT>) {
 			next if ($line =~ m/^\s*$/);
-			my ($baseNumberIndex, $base, $index_minus1, $index_plus1, $partner, $naturalNumbering) = ($line =~ m/^\s*(\d+)\s+(\w)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*$/);
+			my ($baseNumberIndex, $base, $index_minus1, $index_plus1, $partner, $naturalNumbering) = ($line =~ m/^\s*(\d+)\s+(\w|\-)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*$/);
+#~ print Dumper $line, $baseNumberIndex, $base, $index_minus1, $index_plus1, $partner, $naturalNumbering; die;
 			$sequence .= $base;
 			$pairs{$baseNumberIndex-1} = $partner-1 if (($partner != 0) && ($baseNumberIndex-1 < $partner-1));
 		}
@@ -243,7 +244,7 @@ sub ct2db {
 		}
 	}
 
-	return $structure;
+	return {structure => $structure, sequence => $sequence};
 }
 
 sub getPKtype { #computes the "type" of a pseudoknotted structure, e.g. ((.[[.))..]]....)) will become ABab
