@@ -204,8 +204,16 @@ sub doComputation {
 			open (OUT, "> ".$gapfilename) || die "cannot write gap source code to '$gapfilename': $!";
 				print OUT $trainGAP;
 			close (OUT);
-			my $cmd = "cd $tmpDir && ln -s ".Utils::absFilename(getPath($0))."/Include/isntimes.hh . && Settings::getBinary('gapc') --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc && Settings::getBinary('make') -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/\" && rm -f string.*";
+			my $cmd = "ln -s ".Utils::absFilename(getPath($0))."/Include/isntimes.hh $tmpDir/";
 			Utils::execute($cmd);
+			chdir($tmpDir);
+			$cmd = Settings::getBinary('gapc')." --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc"; 
+			Utils::execute($cmd);
+			$cmd = Settings::getBinary('make')." -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/\"";
+			Utils::execute($cmd);
+			$cmd =  Settings::getBinary('rm')." -f string.*";
+			Utils::execute($cmd);
+			chdir($currentDir);
 			print STDERR " done.\n" if ($VERBOSE);
 		} else {
 			print STDERR " using existing one.\n" if ($VERBOSE);
@@ -301,8 +309,15 @@ sub doComputation {
 			open (OUT, "> ".$targetGapFile) || die "cannot write gap source code to '".$targetGapFile."': $!";
 				print OUT $buildGAP;
 			close (OUT);
-			$cmd = "cd $tmpDir && cp $targetGapFile $tmpDir/ && Settings::getBinary('gapc') --tab-all -i cykali --kbacktrace $targetGapFile -o $targetBinary.cc && Settings::getBinary('make') -f $targetBinary.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\" && rm -f string.* && cp $targetBinary $outputFile";
+			Utils::execute(Settings::getBinary('cp')." $targetGapFile $tmpDir/");
+			chdir($tmpDir);
+			$cmd = Settings::getBinary('gapc')." --tab-all -i cykali --kbacktrace $targetGapFile -o $targetBinary.cc";
 			Utils::execute($cmd);
+			$cmd = Settings::getBinary('make')." -f $targetBinary.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\"";
+			Utils::execute($cmd);
+			$cmd = Settings::getBinary('rm')." -f string.*";
+			Utils::execute($cmd);
+			Utils::execute(Settings::getBinary('cp')." $targetBinary $outputFile");
 			print STDERR " done.\n" if ($VERBOSE);
 		} else {
 			print STDERR " using existing one.\n" if ($VERBOSE);
@@ -310,7 +325,7 @@ sub doComputation {
 		
 	#remove temp directory
 		chdir($currentDir);
-		Utils::execute("rm -rf $tmpDir") if (!$settings->{verbose});
+		Utils::execute(Settings::getBinary('rm')." -rf $tmpDir") if (!$settings->{verbose});
 		
 	$exampleSequence =~ s/\.//g;
 	print "sucessfully compiled '".$outputFile."'\nuse it like \"".$outputFile." ".uc($exampleSequence)."\"\nHowever, we strongly suggest to use the Perl wrapper acmsearch for a more pretty output and FASTA parsing capabilities, e.g.\n  acmsearch ".$outputFile." \"".$exampleSequence."\"\n" if ($VERBOSE);
