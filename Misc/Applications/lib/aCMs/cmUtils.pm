@@ -274,73 +274,19 @@ sub getTrainSeqStruct {
 
 sub parseTrainEnum {
 	my ($line, $refHash_T, $refHash_E, $sequenceID, $altID) = @_;
-
-	my $openStr = $line; $openStr =~ s/\(//g; $openStr = length($line) - length($openStr);
-	my $closeStr = $line; $closeStr =~ s/\)//g; $closeStr = length($line) - length($closeStr);
-
-	my ($algebraFktName, $rest) = ($line =~ m/^(\w+\_\d+|jump)(.*)$/);
-
-	if ($algebraFktName eq 'jump') {
-		my ($innerRest) = ($rest =~ m/\( <\d+,\d+> (.+?) \)$/);
-		no warnings 'recursion';
-		parseTrainEnum($innerRest, $refHash_T, $refHash_E, $sequenceID, $altID);
-	} else {
-		my ($fromState, $fromStateNr, $toNT, $toNTNr) = ($algebraFktName =~ m/^(\w+)\_(\d+)/);
-
-		$refHash_T->{$altID}->{$algebraFktName}->{$sequenceID} = 1;
-		if (($fromState eq 'MAT') || ($fromState eq 'INS') || ($fromState eq 'DEL')) {
-			if ($fromState ne 'DEL') {
-				$refHash_E->{$altID}->{$fromState.'_'.$fromStateNr} = {} if (not exists $refHash_E->{$altID}->{$fromState.'_'.$fromStateNr});
-				addEmissionCount($refHash_E->{$altID}->{$fromState.'_'.$fromStateNr}, substr($rest, 2, 1), $sequenceID, $altID);
-			}
-			no warnings 'recursion';
-			parseTrainEnum(substr($rest, 6, -2), $refHash_T, $refHash_E, $sequenceID, $altID);
-		} elsif (($fromState eq 'PK') || ($fromState eq 'Lr') || ($fromState eq 'lR') || ($fromState eq 'bg')) {
-			my ($left, $leftRest, $right, $rightRest) = @{split_parseTrainEnum($rest)};
-			if ($fromState eq 'PK') {
-				$refHash_E->{$altID}->{$fromState.'_'.$fromStateNr} = {} if (not exists $refHash_E->{$altID}->{$fromState.'_'.$fromStateNr});
-				addEmissionCount($refHash_E->{$altID}->{$fromState.'_'.$fromStateNr}, substr($left, 0, 1).substr($right, 0, 1), $sequenceID, $altID);	
-			} elsif ($fromState eq 'Lr') {
-				$refHash_E->{$altID}->{$fromState.'_'.$fromStateNr} = {} if (not exists $refHash_E->{$altID}->{$fromState.'_'.$fromStateNr});
-				addEmissionCount($refHash_E->{$altID}->{$fromState.'_'.$fromStateNr}, substr($left, 0, 1), $sequenceID, $altID);	
-			} elsif ($fromState eq 'lR') {
-				$refHash_E->{$altID}->{$fromState.'_'.$fromStateNr} = {} if (not exists $refHash_E->{$altID}->{$fromState.'_'.$fromStateNr});
-				addEmissionCount($refHash_E->{$altID}->{$fromState.'_'.$fromStateNr}, substr($right, 0, 1), $sequenceID, $altID);	
-			}
-			no warnings 'recursion';
-			parseTrainEnum($leftRest, $refHash_T, $refHash_E, $sequenceID, $altID);
-			parseTrainEnum($rightRest, $refHash_T, $refHash_E, $sequenceID, $altID);
-		} elsif ($fromState eq 'NIL') {
-		} else {
-			print Dumper $line;
-			die;
-		}
-	}
-}
-
-sub split_parseTrainEnum {
-	my ($input) = @_;
-
-	my ($left, $begin, $help) = ($input =~ m/\(\s+(.*?)\s+(\w+\_\d+|jump)(.+)/);
-
-	my $brackets = 0;
-	my $sawFirstBracket = 0;
-	my $endPos = -1;
-
-	for (my $i = 0; $i < length($help); $i++) {
-		my $char = substr($help, $i, 1);
-		if ($char eq '(') {
-			$brackets++;
-			$sawFirstBracket = 1;
-		}
-		$brackets-- if ($char eq ')');
-		if (($brackets == 0) && ($sawFirstBracket != 0)) {
-			$endPos = $i;
-			last;
-		}
-	}
 	
-	return [$left, $begin.substr($help, 0, $endPos+1), substr($help, $endPos+2, 3), substr($help, $endPos+2+3+1, -2)];
+	$line =~ s/^Answer:\s*\n//;
+	$line =~ s/\s*$//;
+	my @parts = split(m/;/, $line);
+	foreach my $fkt (@parts) {
+		my ($name, $index, $charA, $charB) = split(m/\s+/, $fkt);
+		$refHash_T->{$altID}->{$name."_".$index}->{$sequenceID} = 1;
+		next if (($name eq 'NIL') || ($name eq 'DEL') || ($name eq 'bg'));
+		my $char = $charA;
+		$char .= $charB if ($name eq 'PK');
+		$refHash_E->{$altID}->{$name."_".$index} = {} if (not exists $refHash_E->{$altID}->{$name."_".$index});
+		addEmissionCount($refHash_E->{$altID}->{$name."_".$index}, $char, $sequenceID, $altID);
+	}
 }
 
 sub addEmissionCount {
@@ -636,70 +582,111 @@ sub tree2transitionPriors {
 	return ($refHash_transitions, $refList_types);
 }
 
-sub generateHaskellProbMaps {
+sub generateCppProbMaps {
+	my @alphabet_one = ('A','C','G','U');
+	my @alphabet_pair = ('AA','AC','AG','AU','CA','CC','CG','CU','GA','GC','GG','GU','UA','UC','UG','UU');
+	
 	my ($refHash_transitions, $refHash_emissions, $modelname) = @_;
+
+	my $C = "#ifndef MCMPROBS_HH\n#define MCMPROBS_HH\n\n";
+	$C .= "//learned transition and emission probabilities for '".$modelname."'.\n\n";
 	
-	my $HAS = "> module Probs where\n\n";
-	$HAS .= "> import Data.Map (Map)\n";
-	$HAS .= "> import qualified Data.Map as Map\n\n";
-	
-	$HAS .= "learned transition and emission probabilities for '".$modelname."'.\n\n";
-	
-	$HAS .= "> getTransition :: String -> String\n";
-	$HAS .= "> getTransition nt = case (Map.lookup nt transitions) of\n";
-	$HAS .= ">                          Nothing -> \"0\"\n";
-	$HAS .= ">                          Just a -> a\n\n";
-
-	$HAS .= "> getEmission :: String -> String -> String\n";
-	$HAS .= "> getEmission nt sym = case (Map.lookup nt emissions) of\n";
-	$HAS .= ">                            Nothing -> \"0\"\n";
-	$HAS .= ">                            Just a -> case (Map.lookup sym a) of\n";
-	$HAS .= ">                                            Nothing -> \"0\"\n";
-	$HAS .= ">                                            Just a -> a\n\n";
-
-	$HAS .= "> getSeqCons :: String -> String\n";
-	$HAS .= "> getSeqCons nt = case (Map.lookup nt seqCons) of\n";
-	$HAS .= ">                       Nothing -> \"..\"\n";
-	$HAS .= ">                       Just a -> a\n\n";
-
-
-	$HAS .= "> transitions :: Map.Map String String\n";
-	$HAS .= "> transitions = Map.fromList [\n";
-	foreach my $transition (sort {getStateNr($a) <=> getStateNr($b)} keys(%{$refHash_transitions})) {
-		$HAS .= ">    (\"".$transition."\", \"".log($refHash_transitions->{$transition})/log(2)."\"),\n";
+	$C .= "inline int charToIndex(char a) {\n";
+	for (my $i = 0; $i < @alphabet_one; $i++) {
+		$C .= "  if ((a == '".uc($alphabet_one[$i])."') || (a == '".lc($alphabet_one[$i])."')) return ".$i.";\n";
 	}
-	$HAS = substr($HAS, 0, -2)."\n";
-	$HAS .= ">  ]\n\n";
+	$C .= "  return 99;\n";
+	$C .= "}\n";
+	$C .= "inline int charToIndex(char a, char b) {\n";
+	for (my $i = 0; $i < @alphabet_pair; $i++) {
+		$C .= "  if (((a == '".uc(substr($alphabet_pair[$i],0,1))."') || (a == '".lc(substr($alphabet_pair[$i],0,1))."')) && ((b == '".uc(substr($alphabet_pair[$i],1,2))."') || (b == '".lc(substr($alphabet_pair[$i],1,2))."'))) return ".$i.";\n";
+	}
+	$C .= "  return 99;\n";
+	$C .= "}\n";
 	
-	$HAS .= "> emissions :: Map.Map String (Map.Map String String)\n";
-	$HAS .= "> emissions = Map.fromList [\n";
-	foreach my $state (sort {getStateNr($a) <=> getStateNr($b)} keys(%{$refHash_emissions})) {
-		$HAS .= ">    (\"".$state."\", Map.fromList [\n";
-		foreach my $char (sort {$a cmp $b} keys(%{$refHash_emissions->{$state}})) {
-			$HAS .= ">                 (\"".$char."\", \"".log($refHash_emissions->{$state}->{$char})/log(2)."\"),\n"
+	my $maxIndex = -1;
+	foreach my $fkt_index (keys(%{$refHash_transitions})) {
+		my ($name, $index) = ($fkt_index =~ m/^(\w+)\_(\d+)$/);
+		$maxIndex = $index if ($index > $maxIndex);
+	}
+	
+	foreach my $type ('INS','NIL','MAT','DEL','PK','Lr','lR','bg') {
+		$C .= "static const float transition_".$type."[".$maxIndex."] = {\n";
+		for (my $i = 1; $i <= $maxIndex; $i++) {
+			my $value = 0;
+			$value = log($refHash_transitions->{$type.'_'.$i})/log(2) if ((exists $refHash_transitions->{$type.'_'.$i}) && ($refHash_transitions->{$type.'_'.$i} != 0));
+			$C .= "  ".$value;
+			$C .= "," if ($i+1 <= $maxIndex);
+			$C .= "\n";
 		}
-		$HAS = substr($HAS, 0, -2)."\n";
-		$HAS .= ">              ]\n";
-		$HAS .= ">    ),\n";
+		$C .= "};\n";
+		$C .= "inline float getTransition_".$type."(int pos) {\n";
+		$C .= "  return transition_".$type."[pos-1];\n";
+		$C .= "}\n";
+		
+		my @alphabet = @alphabet_one;
+		@alphabet = @alphabet_pair if ($type eq 'PK');
+		$C .= "static const float emission_".$type."[".$maxIndex."][".scalar(@alphabet)."] = {\n";
+		for (my $i = 1; $i <= $maxIndex; $i++) {
+			$C .= "  {";
+			for (my $j = 0; $j < @alphabet; $j++) {
+				my $value = 0;
+				$value = log($refHash_emissions->{$type.'_'.$i}->{$alphabet[$j]})/log(2) if ((exists $refHash_emissions->{$type.'_'.$i}->{$alphabet[$j]}) && ($refHash_emissions->{$type.'_'.$i}->{$alphabet[$j]} != 0));
+				$C .= $value;
+				$C .= ", " if ($j+1 < @alphabet);
+			}
+			$C .= "}";
+			$C .= "," if ($i+1 <= $maxIndex);
+			$C .= "\n";
+		}
+		$C .= "};\n";
+		$C .= "inline float getEmission_".$type."(int pos, char a".($type eq 'PK' ? ", char b" : "").") {\n";
+		$C .= "  return emission_".$type."[pos-1][charToIndex(a".($type eq 'PK' ? ", b" : "").")];\n";
+		$C .= "}\n";
+		
+		
+		if (($type eq 'PK') || ($type eq 'Lr') || ($type eq 'lR') || ($type eq 'bg')) {
+			$C .= "static const char consensus_".$type."[".$maxIndex."][2] = {\n  ";
+			for (my $i = 1; $i <= $maxIndex; $i++) {
+				$C .= "  {";
+				my $symbols = "..";
+				if (exists $refHash_emissions->{$type.'_'.$i}) {
+					my @orderedChars = sort {$refHash_emissions->{$type.'_'.$i}->{$b} <=> $refHash_emissions->{$type.'_'.$i}->{$a}} keys(%{$refHash_emissions->{$type.'_'.$i}});
+					$symbols = $orderedChars[0] if (@orderedChars > 0);
+					$symbols = ".." if ((@orderedChars > 1) && ($refHash_emissions->{$type.'_'.$i}->{$orderedChars[1]} == $refHash_emissions->{$type.'_'.$i}->{$orderedChars[0]}));
+				}
+				$symbols .= "." if (length($symbols) < 2);
+				$C .= "'".substr($symbols,0,1)."','".substr($symbols,1,2)."'";
+				$C .= "}";
+				$C .= "," if ($i+1 <= $maxIndex);
+			}
+			$C .= "\n};\n";
+			$C .= "inline char getConsensus_".$type."(int pos, int leftRight) {\n";
+			$C .= "  return consensus_".$type."[pos-1][leftRight];\n";
+			$C .= "}\n";
+		} else {
+			$C .= "static const char consensus_".$type."[".$maxIndex."] = {\n  ";
+			for (my $i = 1; $i <= $maxIndex; $i++) {
+				my $symbols = ".";
+				if (exists $refHash_emissions->{$type.'_'.$i}) {
+					my @orderedChars = sort {$refHash_emissions->{$type.'_'.$i}->{$b} <=> $refHash_emissions->{$type.'_'.$i}->{$a}} keys(%{$refHash_emissions->{$type.'_'.$i}});
+					$symbols = $orderedChars[0] if (@orderedChars > 0);
+					$symbols = "." if ((@orderedChars > 1) && ($refHash_emissions->{$type.'_'.$i}->{$orderedChars[1]} == $refHash_emissions->{$type.'_'.$i}->{$orderedChars[0]}));
+				}
+				$C .= "'".$symbols."'";
+				$C .= ", " if ($i+1 <= $maxIndex);
+			}
+			$C .= "\n};\n";
+			$C .= "inline char getConsensus_".$type."(int pos) {\n";
+			$C .= "  return consensus_".$type."[pos-1];\n";
+			$C .= "}\n";
+		}
 	}
-	$HAS = substr($HAS, 0, -2)."\n";
-	$HAS .= ">  ]\n";
-
-	$HAS .= "> seqCons :: Map.Map String String\n";
-	$HAS .= "> seqCons = Map.fromList [\n";
-	foreach my $state (sort {getStateNr($a) <=> getStateNr($b)} keys(%{$refHash_emissions})) {
-		my @orderedChars = sort {$refHash_emissions->{$state}->{$b} <=> $refHash_emissions->{$state}->{$a}} keys(%{$refHash_emissions->{$state}});
-		my $symbol = $orderedChars[0];
-		$symbol = ".." if ((@orderedChars > 1) && ($refHash_emissions->{$state}->{$orderedChars[1]} == $refHash_emissions->{$state}->{$orderedChars[0]}));
-		$HAS .= ">    (\"".$state."\", \"".$symbol."\"),\n";
-	}
-	$HAS = substr($HAS, 0, -2)."\n";
-	$HAS .= ">  ]\n\n";
 	
+	$C .= "\n#endif\n";
 
-	return $HAS;
+	return $C;
 }
-
 sub getStateNr {
 	my ($text) = @_;
 	my ($stateNr) = ($text =~ m/\_(\d+)/);

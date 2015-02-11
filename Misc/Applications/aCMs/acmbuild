@@ -152,39 +152,6 @@ sub doComputation {
 		my $trainBuildCmd = buildCommand($settings, {header => undef, sequence => $concatConsensi}, 'trainbuild');
 		my $trainGAP = Utils::execute("$trainBuildCmd 2>&1");
 
-#~ my $startSingle = 'false';
-#~ my $isUni = 'false';
-#~ my @singles = ();
-#~ my $uni = undef;
-#~ foreach my $line (split(m/\n/, $trainGAP)) {
-	#~ if (($startSingle eq 'false') && ($line =~ m/\(multiple\) covariance model for the following (\d+) consensus structure\(s\):/)) {
-		#~ $startSingle = 'true';
-		#~ next;
-	#~ } elsif ($startSingle eq 'true') {
-		#~ if ($line =~ m/^\s+(.+?):\s+([\<|\>|\-|\*|]+)\s+\(as tree: .(.+?).\)\s*$/) {
-			#~ push @singles, {name => $1, structure => $2, tree => $3};
-			#~ next;
-		#~ } elsif ($line =~ m/forming the unifying tree:/) {
-			#~ $startSingle = 'false';
-			#~ $isUni = 'true';
-			#~ next;
-		#~ }
-	#~ }
-	#~ if ($isUni eq 'true') {
-		#~ ($uni) = ($line =~ m/^\s+(.+?)\s*$/);
-		#~ last;
-	#~ }
-#~ }
-#~ print $uni."\n";
-#~ foreach my $con (@singles) {
-	#~ print $con->{name}."\t".$con->{structure}."\t".$con->{tree}."\n";
-#~ }
-#~ die;
-#~ print Dumper \@singles, $uni; die;
-
-#~ print  $trainGAP; 
-#~ print Dumper $trainGAP;
-#~ die;
 		if ($trainGAP =~ m/(Structurs '.+?' and '.+?', which you provided in the input alignment file, are incompatible to each other. Please correct them and try again.)/) {
 			print STDERR "\n$1\n";
 			exit 1;
@@ -199,6 +166,7 @@ sub doComputation {
 				$nodeLists{$ssConsName} = cmUtils::gt2nodelist($trees{$ssConsName});
 			}
 		}
+
 		if (not -e $trainBinaryFilename) {
 			my $gapfilename = $tmpDir.'/'.$PROGID.'_train_'.$refHash_family->{familyname}.'.gap';
 			open (OUT, "> ".$gapfilename) || die "cannot write gap source code to '$gapfilename': $!";
@@ -207,7 +175,7 @@ sub doComputation {
 			my $cmd = "ln -s ".Utils::absFilename(getPath($0))."/Include/isntimes.hh $tmpDir/";
 			Utils::execute($cmd);
 			chdir($tmpDir);
-			$cmd = Settings::getBinary('gapc')." --tab-all -i train $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc"; 
+			$cmd = Settings::getBinary('gapc')." --tab-all -p \"alg_parse\" $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc"; 
 			Utils::execute($cmd);
 			$cmd = Settings::getBinary('make')." -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/\"";
 			Utils::execute($cmd);
@@ -250,7 +218,7 @@ sub doComputation {
 			print STDERR ".";
 			my $altID = cmUtils::getAltID($seqID);
 			my $mix = cmUtils::getTrainSeqStruct($refHash_family->{sequences}->{$seqID}, $matchConsensi{$altID});
-			my $cmd = "$trainBinaryFilename -- \"$mix\" | ".Settings::getBinary('grep')." -v \"Answer\" | ".Settings::getBinary('grep')." -v \"^\$\"";
+			my $cmd = "$trainBinaryFilename -- \"$mix\"";
 			my $gapres = Utils::execute($cmd);
 			cmUtils::parseTrainEnum($gapres, \%counts_transitions, \%counts_emissions, $seqID, $altID);
 		}
@@ -297,8 +265,8 @@ sub doComputation {
 		if (! -e $targetBinary) {
 			my $buildBinary = $tmpDir.'/'.$PROGID.'_build_'.$refHash_family->{familyname};
 			if (not -e $buildBinary) {
-				open (PROBS, "> ".$tmpDir."/Probs.lhs") || die "can't write to '".$tmpDir."/Probs.lhs'\n";
-					print PROBS cmUtils::generateHaskellProbMaps(\%weighted_transitions, \%weighted_emissions, $refHash_family->{familyname});
+				open (PROBS, "> ".$tmpDir."/probabilities.hh") || die "can't write to '".$tmpDir."/probabilities.hh'\n";
+					print PROBS cmUtils::generateCppProbMaps(\%weighted_transitions, \%weighted_emissions, $refHash_family->{familyname});
 				close (PROBS);
 				my $command = Settings::getBinary('ghc')." -tmpdir ".$tmpDir."/ -O -fglasgow-exts -odir ".$tmpDir." -i".$tmpDir.":".getPath($0)."../lib/aCMs/ -hidir ".$tmpDir." --make ".getPath($0)."../lib/aCMs/mcmbuild.lhs -o ".$buildBinary;
 				system($command." 1>&2");
