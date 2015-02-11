@@ -311,17 +311,15 @@ sub parse_acm {
 	$GC =~ s/a|u//gi;
 	$GC = sprintf("%i",length($GC)/length($input->{sequence})*100);
 	foreach my $refHash_ali (sort {$b->{score} <=> $a->{score}} @alignments) {
-		my $modelLen = $refHash_ali->{consensus};
-		$modelLen =~ s/\.//gi;
-		$modelLen = length($modelLen);
+		my $modelLen = length($refHash_ali->{consensus});
 		print " Query 1 = ".$modelLen.", Target = 1 - ".length($refHash_ali->{sequence})."\n";
 		print " Score = ".$refHash_ali->{score}.", GC = ".$GC."\n\n";
 		
 		my ($posModel, $posSequence, $posConsensus) = (1,1,1);
 		while (1) {
-			my ($chunk_model, $rest_model) = ($refHash_ali->{model} =~ m/^(.{1,$rowlen})(.+?)$/);
-			my ($chunk_sequence, $rest_sequence) = ($refHash_ali->{sequence} =~ m/^(.{1,$rowlen})(.+?)$/);
-			my ($chunk_consensus, $rest_consensus) = ($refHash_ali->{consensus} =~ m/^(.{1,$rowlen})(.+?)$/);
+			my ($chunk_model, $rest_model) = ($refHash_ali->{model} =~ m/^(.{1,$rowlen})(.*?)$/);
+			my ($chunk_sequence, $rest_sequence) = ($refHash_ali->{sequence} =~ m/^(.{1,$rowlen})(.*?)$/);
+			my ($chunk_consensus, $rest_consensus) = ($refHash_ali->{consensus} =~ m/^(.{1,$rowlen})(.*?)$/);
 			$refHash_ali->{model} = $rest_model;
 			$refHash_ali->{sequence} = $rest_sequence;
 			$refHash_ali->{consensus} = $rest_consensus;
