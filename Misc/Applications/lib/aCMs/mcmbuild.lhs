@@ -14,11 +14,7 @@ Haskell header:
 >	  me <- getProgName
 >	  case args of
 >          []     -> putStrLn("Usage: " ++ me ++ " [shortcut] <one or more consensus structures>")
->          ("test":consensi) -> putStrLn(show (gen_build_alg_cyk (collectAlgfkts indexedConsensi)))
->                  where commonTree = foldr (\x -> \y -> fuseTreelists y x) [] allTrees
->                        allTrees = map snd [head (grammar gen (a, b)) | b <- (a:as)]
->                        indexedConsensi = indexTreeList commonTree 1
->                        (a:as) = map (\x -> (read x)::Consensus) (consensi)
+>          ("test":consensi) -> putStrLn(gen_build_alg_cyk)
 >          consensi -> if (warning == "") then putStrLn(
 >                              "/*\n" ++ 
 >                              "(multiple) covariance model for the following " ++ (show (length (a:as))) ++ " consensus structure(s):\n  " ++ 
