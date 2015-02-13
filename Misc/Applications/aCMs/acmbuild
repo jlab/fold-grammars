@@ -144,6 +144,34 @@ sub doComputation {
 		my $alignmentLength = length($matchConsensi{$consensiOrdering[0]});
 		print STDERR " done.\n" if ($VERBOSE);
 		
+	#checking consensus structures for compatibility
+		print STDERR "  ".($taskCount++)." checking consensus structures for compatibility:\n" if ($VERBOSE);
+		for (my $i = 0; $i < @consensiOrdering; $i++) {
+			for (my $j = $i+1; $j < @consensiOrdering; $j++) {
+				print STDERR "      ".substr($consensiOrdering[$i], 0, 20)." <-> ".substr($consensiOrdering[$j], 0, 20).": " if ($VERBOSE);
+				if (length($matchConsensi{$consensiOrdering[$i]}) != length($matchConsensi{$consensiOrdering[$j]})) {
+					if ($VERBOSE) {
+						print STDERR "error: lengths differ!\n";
+					} else {
+						print STDERR "consensus structures for '".$consensiOrdering[$i]."' and '".$consensiOrdering[$j]."' have different lengths. This means, they cannot be part of the same alignment. We cannot continue computation until you correct your input family.\n";
+					}
+					exit (1);
+				}
+				my @checkCompatibility_result = split(m/\n/, Utils::execute(buildCommand($settings, undef, 'checkCompatibility').' -- "'.mixConsensusStructures($matchConsensi{$consensiOrdering[$i]}, $matchConsensi{$consensiOrdering[$j]}).'"'));
+				if ($checkCompatibility_result[1] =~ m/^\s*1\s*$/) {
+					print STDERR "compatible.\n";
+				} else {
+					if ($VERBOSE) {
+						print STDERR "error: incompatible!\n";
+					} else {
+						print STDERR "consensus structures for '".$consensiOrdering[$i]."' and '".$consensiOrdering[$j]."' are incompatible. Please correct your input and try again.\n";
+					}
+					exit (1);
+				}
+			}
+		}
+		print STDERR "    done.\n" if ($VERBOSE);
+
 	#generate GAP code to train the stochastic parameters
 		print STDERR "  ".($taskCount++)." compiling bgap binary for two-track-training ..." if ($VERBOSE);
 		my $trainBinaryFilename = $tmpDir.'/'.$PROGID.'_train_'.$refHash_family->{familyname};
@@ -151,11 +179,6 @@ sub doComputation {
 		foreach my $id (@consensiOrdering) { $concatConsensi .= "'".'("'.$id.'","'.$matchConsensi{$id}.'")'."' "; }
 		my $trainBuildCmd = buildCommand($settings, {header => undef, sequence => $concatConsensi}, 'trainbuild');
 		my $trainGAP = Utils::execute("$trainBuildCmd 2>&1");
-
-		if ($trainGAP =~ m/(Structurs '.+?' and '.+?', which you provided in the input alignment file, are incompatible to each other. Please correct them and try again.)/) {
-			print STDERR "\n$1\n";
-			exit 1;
-		}
 		my %nodeLists = ();
 		my %trees = ();
 		my $idIndex = 0;
@@ -175,10 +198,11 @@ sub doComputation {
 			my $cmd = "ln -s ".Utils::absFilename(getPath($0))."/Include/isntimes.hh $tmpDir/";
 			Utils::execute($cmd);
 			chdir($tmpDir);
-			$cmd = Settings::getBinary('gapc')." --tab-all -p \"alg_parse\" $gapfilename -o ${PROGID}_train_$refHash_family->{familyname}.cc"; 
+			$cmd = Settings::getBinary('gapc')." --tab-all -p \"alg_parse\" $gapfilename -o ${PROGID}_train.cc"; 
 			Utils::execute($cmd);
-			$cmd = Settings::getBinary('make')." -f ${PROGID}_train_$refHash_family->{familyname}.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/\"";
+			$cmd = Settings::getBinary('make')." -f ${PROGID}_train.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/\"";
 			Utils::execute($cmd);
+			Utils::execute(Settings::getBinary('mv')." ".$PROGID."_train ".$trainBinaryFilename);
 			$cmd =  Settings::getBinary('rm')." -f string.*";
 			Utils::execute($cmd);
 			chdir($currentDir);
@@ -279,13 +303,13 @@ sub doComputation {
 			close (OUT);
 			Utils::execute(Settings::getBinary('cp')." $targetGapFile $tmpDir/");
 			chdir($tmpDir);
-			$cmd = Settings::getBinary('gapc')." --tab-all -i cykali --kbacktrace $targetGapFile -o $targetBinary.cc";
+			$cmd = Settings::getBinary('gapc')." --tab-all -i cykali --kbacktrace $targetGapFile -o acmsearch.cc";
 			Utils::execute($cmd);
-			$cmd = Settings::getBinary('make')." -f $targetBinary.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\"";
+			$cmd = Settings::getBinary('make')." -f acmsearch.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\"";
 			Utils::execute($cmd);
 			$cmd = Settings::getBinary('rm')." -f string.*";
 			Utils::execute($cmd);
-			Utils::execute(Settings::getBinary('cp')." $targetBinary $outputFile");
+			Utils::execute(Settings::getBinary('cp')." acmsearch $outputFile");
 			print STDERR " done.\n" if ($VERBOSE);
 		} else {
 			print STDERR " using existing one.\n" if ($VERBOSE);
@@ -296,6 +320,7 @@ sub doComputation {
 		Utils::execute(Settings::getBinary('rm')." -rf $tmpDir") if (!$settings->{verbose});
 		
 	$exampleSequence =~ s/\.//g;
+	$exampleSequence =~ s/t/u/gi;
 	print "sucessfully compiled '".$outputFile."'\nuse it like \"".$outputFile." ".uc($exampleSequence)."\"\nHowever, we strongly suggest to use the Perl wrapper acmsearch for a more pretty output and FASTA parsing capabilities, e.g.\n  acmsearch ".$outputFile." \"".$exampleSequence."\"\n" if ($VERBOSE);
 		
 	return undef;
@@ -312,7 +337,10 @@ sub buildCommand {
 		$cmd .= 'train';
 		$cmd .= ' '.$refHash_sequence->{sequence};
 	}
-	
+	if ($task eq 'checkCompatibility') {
+		$cmd .= 'checkCompatibility';
+	}
+		
 	return $cmd;
 }
 
@@ -377,3 +405,17 @@ EOF
 	exit(0);
 }
 
+sub mixConsensusStructures {
+	my ($ss_a, $ss_b) = @_;
+	
+	if (length($ss_a) != length($ss_b)) {
+		print STDERR "Consensus structures have different lenghts. They cannot be part of one alignment!\n";
+		exit(1);
+	}
+	my $mix = "";
+	for (my $i = 0; $i < length($ss_a); $i++) {
+		$mix .= substr($ss_a,$i,1).substr($ss_b,$i,1);
+	}
+	
+	return $mix;
+}

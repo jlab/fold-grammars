@@ -8,7 +8,7 @@ GHC=ghc
 WORKDIR=$(ARCHTRIPLE)
 OPTIONS= -tmpdir $(WORKDIR)/ -O -fglasgow-exts -odir $(WORKDIR) -i$(WORKDIR):$(BASEDIR)/Misc/Applications/lib/aCMs/ -hidir $(WORKDIR)
 
-all: Train
+all: Train checkCompatibility
 	
 	
 workingdir:
@@ -23,6 +23,14 @@ Train: $(BASEDIR)/Misc/Applications/lib/aCMs/mcmtrain.lhs $(BASEDIR)/Misc/Applic
 	rm -f $(WORKDIR)/Main.hi $(WORKDIR)/Main.o
 	$(GHC) $(OPTIONS)  --make $< -o $(WORKDIR)/$(PROGRAMPREFIX)train
 	rm -f $(WORKDIR)/*.o $(WORKDIR)/*.hi
+
+checkCompatibility:
+	$(MAKE) compile \
+		gapc_product="alg_g5compatibilityCheck_count" \
+		gapc_options="" \
+		gapc_file="g5compatibilityCheck.gap" \
+		gapc_binaryname="$@";
+
 
 install: install-lib install-program
 	
