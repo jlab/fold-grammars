@@ -145,32 +145,36 @@ sub doComputation {
 		print STDERR " done.\n" if ($VERBOSE);
 		
 	#checking consensus structures for compatibility
-		print STDERR "  ".($taskCount++)." checking consensus structures for compatibility:\n" if ($VERBOSE);
-		for (my $i = 0; $i < @consensiOrdering; $i++) {
-			for (my $j = $i+1; $j < @consensiOrdering; $j++) {
-				print STDERR "      ".substr($consensiOrdering[$i], 0, 20)." <-> ".substr($consensiOrdering[$j], 0, 20).": " if ($VERBOSE);
-				if (length($matchConsensi{$consensiOrdering[$i]}) != length($matchConsensi{$consensiOrdering[$j]})) {
-					if ($VERBOSE) {
-						print STDERR "error: lengths differ!\n";
-					} else {
-						print STDERR "consensus structures for '".$consensiOrdering[$i]."' and '".$consensiOrdering[$j]."' have different lengths. This means, they cannot be part of the same alignment. We cannot continue computation until you correct your input family.\n";
+		if (keys(%matchConsensi) > 1) {
+			print STDERR "  ".($taskCount++)." checking consensus structures for compatibility:\n" if ($VERBOSE);
+			for (my $i = 0; $i < @consensiOrdering; $i++) {
+				for (my $j = $i+1; $j < @consensiOrdering; $j++) {
+					print STDERR "      ".substr($consensiOrdering[$i], 0, 20)." <-> ".substr($consensiOrdering[$j], 0, 20).": " if ($VERBOSE);
+					if (length($matchConsensi{$consensiOrdering[$i]}) != length($matchConsensi{$consensiOrdering[$j]})) {
+						if ($VERBOSE) {
+							print STDERR "error: lengths differ!\n";
+						} else {
+							print STDERR "consensus structures for '".$consensiOrdering[$i]."' and '".$consensiOrdering[$j]."' have different lengths. This means, they cannot be part of the same alignment. We cannot continue computation until you correct your input family.\n";
+						}
+						exit (1);
 					}
-					exit (1);
-				}
-				my @checkCompatibility_result = split(m/\n/, Utils::execute(buildCommand($settings, undef, 'checkCompatibility').' -- "'.mixConsensusStructures($matchConsensi{$consensiOrdering[$i]}, $matchConsensi{$consensiOrdering[$j]}).'"'));
-				if ($checkCompatibility_result[1] =~ m/^\s*1\s*$/) {
-					print STDERR "compatible.\n";
-				} else {
-					if ($VERBOSE) {
-						print STDERR "error: incompatible!\n";
+					my @checkCompatibility_result = split(m/\n/, Utils::execute(buildCommand($settings, undef, 'checkCompatibility').' -- "'.mixConsensusStructures($matchConsensi{$consensiOrdering[$i]}, $matchConsensi{$consensiOrdering[$j]}).'"'));
+					if ($checkCompatibility_result[1] =~ m/^\s*1\s*$/) {
+						print STDERR "compatible.\n";
 					} else {
-						print STDERR "consensus structures for '".$consensiOrdering[$i]."' and '".$consensiOrdering[$j]."' are incompatible. Please correct your input and try again.\n";
+						if ($VERBOSE) {
+							print STDERR "error: incompatible!\n";
+						} else {
+							print STDERR "consensus structures for '".$consensiOrdering[$i]."' and '".$consensiOrdering[$j]."' are incompatible. Please correct your input and try again.\n";
+						}
+						exit (1);
 					}
-					exit (1);
 				}
 			}
+			print STDERR "    done.\n" if ($VERBOSE);
+		} else {
+			print STDERR "  ".($taskCount++)." skipping check for compatibility since there is only one consensus structure.\n" if ($VERBOSE);
 		}
-		print STDERR "    done.\n" if ($VERBOSE);
 
 	#generate GAP code to train the stochastic parameters
 		print STDERR "  ".($taskCount++)." compiling bgap binary for two-track-training ..." if ($VERBOSE);
