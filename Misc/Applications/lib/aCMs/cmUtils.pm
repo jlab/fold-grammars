@@ -277,6 +277,7 @@ sub parseTrainEnum {
 	
 	$line =~ s/^Answer:\s*\n//;
 	$line =~ s/\s*$//;
+	($line) = ($line =~ m/^\( \d+ , (.+?) \)$/);
 	my @parts = split(m/;/, $line);
 	foreach my $fkt (@parts) {
 		my ($name, $index, $charA, $charB) = split(m/\s+/, $fkt);

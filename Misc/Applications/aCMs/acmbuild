@@ -202,7 +202,7 @@ sub doComputation {
 			my $cmd = "ln -s ".Utils::absFilename(getPath($0))."/Include/isntimes.hh $tmpDir/";
 			Utils::execute($cmd);
 			chdir($tmpDir);
-			$cmd = Settings::getBinary('gapc')." --tab-all -p \"alg_parse\" $gapfilename -o ${PROGID}_train.cc"; 
+			$cmd = Settings::getBinary('gapc')." --tab-all -p \"alg_fake * alg_parse\" --kbacktrace $gapfilename -o ${PROGID}_train.cc"; 
 			Utils::execute($cmd);
 			$cmd = Settings::getBinary('make')." -f ${PROGID}_train.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/\"";
 			Utils::execute($cmd);

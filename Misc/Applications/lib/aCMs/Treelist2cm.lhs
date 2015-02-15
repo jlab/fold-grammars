@@ -13,12 +13,12 @@
 >                           "algebra alg_count auto count;\n" ++
 >                           "algebra alg_enum auto enum;\n\n" ++
 >                           gen_train_alg_parse ++
+>                           gen_train_alg_fake ++
 >                           grammar ++ 
 >                           "instance count = gra_train(alg_count);\n" ++
 >                           "instance train = gra_train(alg_enum);\n"
 >         where signature = gen_train_sig
 >               grammar   = "grammar gra_train uses sig_cm(axiom = start) {\n" ++
->                           "  base = CHAR('A') | CHAR('C') | CHAR('G') | CHAR('U') | CHAR('R') | CHAR('Y') | CHAR('M') | CHAR('K') | CHAR('W') | CHAR('S') | CHAR('B') | CHAR('D') | CHAR('H') | CHAR('V') | CHAR('N');\n" ++
 >                           "  start = " ++ (foldr1 (\x -> \y -> x ++ " | " ++ y) [ jump | x <- indexedConsensi, 
 >                                                                                           let subNT = "a_" ++ (show (snd (getTreeListIndex x))),
 >                                                                                           let jump = if ((fst (getTreeListIndex x)) == 1) then subNT else "jump(REGION0 with isntimes('_'," ++ (show ((fst (getTreeListIndex x))-1)) ++ "), " ++ subNT ++ ")"
@@ -131,6 +131,21 @@
 >                  ++ "  choice [float] h([float] i) {\n    return list(maximum(i));\n  }\n"
 >                  ++ "}\n"
 
+> -- this is an algebra computing a nonsense score to enable backtracking capabilities for Bellman's GAP, which significantly improves speed of parsing a sequence-structure pair
+> gen_train_alg_fake :: String
+> gen_train_alg_fake = "algebra alg_fake implements sig_cm(alphabet = char, answer = int) {\n"
+>                   ++ "  int INS(char a, char p, int x; int pos) {\n    return x;\n  }\n"
+>                   ++ "  int NIL(void; int pos) {\n    return 0;\n  }\n"
+>                   ++ "  int MAT(char a, char p, int x; int pos) {\n    return x;\n  }\n"
+>                   ++ "  int DEL(char a, char p, int x; int pos) {\n    return x;\n  }\n"
+>                   ++ "  int PK(char a, char p, int x, char b, char q, int y; int pos) {\n    return x+y;\n  }\n"
+>                   ++ "  int Lr(char a, char p, int x, char b, char q, int y; int pos) {\n    return x+y;\n  }\n"
+>                   ++ "  int lR(char a, char p, int x, char b, char q, int y; int pos) {\n    return x+y;\n  }\n"
+>                   ++ "  int bg(char a, char p, int x, char b, char q, int y; int pos) {\n    return x+y;\n  }\n"
+>                   ++ "  int jump(Subsequence a, int x) {\n    return x;\n  }\n"
+>                   ++ "  choice [int] h([int] i) {\n    return list(maximum(i));\n  }\n"
+>                   ++ "}\n"
+
 > -- generates the Bellman's GAP code algebra for searching unknown sequences with the CYK algorithm with given structure-consensi as a [TreeList Int]
 > gen_build_alg_align = "algebra alg_align implements sig_cm(alphabet = char, answer = ali) {\n"
 >                    ++ "  ali NIL(void; int pos) {    ali res;\n    return res;\n}\n"
@@ -155,18 +170,18 @@
 >                                                                                                  let rightNT  = "a_" ++ (show (snd (getTreeListIndex y))),
 >                                                                                                  let leftJump = if ((fst (getTreeListIndex x))-pos == 1) then leftNT else "jump(REGION0 with isntimes('_'," ++ (show ((fst (getTreeListIndex x))-pos-1)) ++ "), " ++ leftNT ++ ")",
 >                                                                                                  let rightJump = if ((fst (getTreeListIndex y))-(fst (getTreeListLastIndex x)) == 1) then rightNT else "jump(REGION0 with isntimes('_'," ++ (show ((fst (getTreeListIndex y))-(fst (getTreeListLastIndex x))-1)) ++ "), " ++ rightNT ++ ")",
->                                                                                                  let rules = " | \n\tPK(base, CHAR('<'), " ++ leftJump ++ ", base, CHAR('>'), " ++ rightJump ++ "; " ++ me ++ ") | Lr(base, CHAR('<'), " ++ leftJump ++ ", CHAR('.'), CHAR('>'), " ++ rightJump ++ "; " ++ me ++ ") | lR(CHAR('.'), CHAR('<'), " ++ leftJump ++ ", base, CHAR('>'), " ++ rightJump ++ "; " ++ me ++ ") | bg(CHAR('.'), CHAR('<'), " ++ leftJump ++ ", CHAR('.'), CHAR('>'), " ++ rightJump ++ "; " ++ me ++ ")"
+>                                                                                                  let rules = " | \n\tPK(CHAR with isAnyBase, CHAR('<'), " ++ leftJump ++ ", CHAR with isAnyBase, CHAR('>'), " ++ rightJump ++ "; " ++ me ++ ") | Lr(CHAR with isAnyBase, CHAR('<'), " ++ leftJump ++ ", CHAR('.'), CHAR('>'), " ++ rightJump ++ "; " ++ me ++ ") | lR(CHAR('.'), CHAR('<'), " ++ leftJump ++ ", CHAR with isAnyBase, CHAR('>'), " ++ rightJump ++ "; " ++ me ++ ") | bg(CHAR('.'), CHAR('<'), " ++ leftJump ++ ", CHAR('.'), CHAR('>'), " ++ rightJump ++ "; " ++ me ++ ")"
 >                                                                                        ]) ++ " # h;"] ++ (gen_train_grammar xs) ++ (gen_train_grammar ys)
 >   where me    = show pos
 > gen_train_grammar [Ol (pos,i) xs]    = [(gen_train_grammarINS (pos,i)) ++ (foldr1 (++) [ rules | x <- xs,
 >                                                                                                  let subNT  = "a_" ++ (show (snd (getTreeListIndex x))),
 >                                                                                                  let jump = if ((fst (getTreeListIndex x))-pos == 1) then subNT else "jump(REGION0 with isntimes('_'," ++ (show ((fst (getTreeListIndex x))-pos-1)) ++ "), " ++ subNT ++ ")",
->                                                                                                  let rules = " | MAT(base, CHAR('*'), " ++ jump ++ "; " ++ me ++ ") | DEL(CHAR('.'), CHAR('*'), " ++ jump ++ "; " ++ me ++ ")"
+>                                                                                                  let rules = " | MAT(CHAR with isAnyBase, CHAR('*'), " ++ jump ++ "; " ++ me ++ ") | DEL(CHAR('.'), CHAR('*'), " ++ jump ++ "; " ++ me ++ ")"
 >                                                                                        ]) ++ " # h;"] ++ (gen_train_grammar xs)
 >   where me    = show pos
 > gen_train_grammar (a:as)             = (gen_train_grammar [a]) ++ (gen_train_grammar as)
 > gen_train_grammar _                  = error ("gen_train_grammar: this case should never ever been reached")
-> gen_train_grammarINS (pos,i)         = "a_" ++ (show i) ++ " = INS(base, CHAR('-'), a_" ++ (show i) ++ "; " ++ (show pos) ++ ")"
+> gen_train_grammarINS (pos,i)         = "a_" ++ (show i) ++ " = INS(CHAR with isAnyBase, CHAR('-'), a_" ++ (show i) ++ "; " ++ (show pos) ++ ")"
 
 
 > -- generates the Bellman's GAP code grammar for training with given structure-consensi as a [TreeList Int]
