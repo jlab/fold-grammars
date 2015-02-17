@@ -23,7 +23,7 @@ template<typename T>
 inline bool isAnyBase(const Basic_Sequence<> &seq, T i, T j) {
   if (j<i) return false;
 
-  return ((seq[i] == 'A')	|| (seq[i] == 'C') || (seq[i] == 'G') || (seq[i] == 'U') || (seq[i] == 'R') || (seq[i] == 'Y') || (seq[i] == 'M') || (seq[i] == 'K') || (seq[i] == 'W') || (seq[i] == 'B') || (seq[i] == 'D') || (seq[i] == 'H') || (seq[i] == 'V') || (seq[i] == 'N'));
+  return ((seq[i] == 'A')	|| (seq[i] == 'C') || (seq[i] == 'G') || (seq[i] == 'U') || (seq[i] == 'R') || (seq[i] == 'Y') || (seq[i] == 'M') || (seq[i] == 'K') || (seq[i] == 'W') || (seq[i] == 'B') || (seq[i] == 'D') || (seq[i] == 'H') || (seq[i] == 'V') || (seq[i] == 'N') || (seq[i] == 'S'));
 }
 
 
