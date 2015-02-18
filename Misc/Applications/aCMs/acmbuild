@@ -307,7 +307,7 @@ sub doComputation {
 			close (OUT);
 			Utils::execute(Settings::getBinary('cp')." $targetGapFile $tmpDir/");
 			chdir($tmpDir);
-			$cmd = Settings::getBinary('gapc')." --tab-all -i cykali --kbacktrace $targetGapFile -o acmsearch.cc";
+			$cmd = Settings::getBinary('gapc')." --tab-all -i cykali --kbacktrace --no-coopt $targetGapFile -o acmsearch.cc";
 			Utils::execute($cmd);
 			$cmd = Settings::getBinary('make')." -f acmsearch.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\"";
 			Utils::execute($cmd);
