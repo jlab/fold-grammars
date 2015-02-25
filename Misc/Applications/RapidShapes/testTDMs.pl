@@ -151,7 +151,7 @@ sub doComputation {
 			if ($line =~ m/\( (\S+) , (\d+) \)/) {
 				my ($shape, $trueNumber) = ($1,$2);
 				print STDERR $shape."\tcompiling ... ";
-				my $tdmNumber = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "alg_count"', "-t", '', $workingDirectory, [\&Utils::generateGrammar, $bin_tdmGenerator, $shape, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $inputSequence], undef, "addRNAoptions");
+				my $tdmNumber = Utils::compileGAP($Settings::rootDir.'/'.$Settings::TDMfiles{$settings->{grammar}}, '-p "alg_count"', "-t", '', $workingDirectory, [\&Utils::generateGrammar, $bin_tdmGenerator, $shape, "Grammars/gra_".$settings->{grammar}.".gap"], [\&runTDM, $settings, $inputSequence], undef, "addRNAoptions");
 				print STDERR "done.\n";
 				print "".($trueNumber-$tdmNumber)."\t".$shape."\t".$trueNumber."\t".$tdmNumber."\t".$settings->{grammar}."\t".$settings->{shapelevel}."\n";
 				push @failedShapes, {shape => $shape, trueNumber => $trueNumber, tdmNumber => $tdmNumber} if ($trueNumber != $tdmNumber);
@@ -220,7 +220,7 @@ sub compileTruth {
 	my $bin_truth = $refHash_settings->{binarypath}.$refHash_settings->{binaryprefix}.$refHash_settings->{grammar}.'_shapeCount';
 	if (not -e $bin_truth) {
 		print STDERR "compiling programm that counts structures in shapes for '".$settings->{grammar}."' ... ";
-		my $tmpBin = Utils::compileGAP($Settings::rootDir.$Settings::TDMfiles{$settings->{grammar}}, '-p "(alg_shapeX * alg_count)"', "-t", '', $workingDirectory, undef, undef, undef, 'addRNAoptions');
+		my $tmpBin = Utils::compileGAP($Settings::rootDir.'/'.$Settings::TDMfiles{$settings->{grammar}}, '-p "(alg_shapeX * alg_count)"', "-t", '', $workingDirectory, undef, undef, undef, 'addRNAoptions');
 		Utils::execute(Settings::getBinary('mv')." $tmpBin $bin_truth");
 		print STDERR "done.\n";
 	} else {
