@@ -112,8 +112,8 @@ our $MODE_ACM = 'acm'; #single and thus default mode for ACMs
 our $MODE_LOCOMOTIF = 'locomotif'; #single and thus default mode for the perl wrapper for locomotif, to present matcher results with my standard format
 
 our $ARCHTRIPLE = qx($BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
-our $RNAPARAM1999 =  $Settings::bgapDir.'share/gapc/librna/rna_turner1999.par';
-our $RNAPARAM2004 = $Settings::bgapDir.'share/gapc/librna/rna_turner2004.par';
+our $RNAPARAM1999 =  $Settings::bgapDir.$fileseparater.'share/gapc/librna/rna_turner1999.par';
+our $RNAPARAM2004 = $Settings::bgapDir.$fileseparater.'share/gapc/librna/rna_turner2004.par';
 
 #settings for RapidShapes on BiBiServ
 our %RAPIDSHAPES_BIBISERV = (
