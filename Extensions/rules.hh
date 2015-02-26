@@ -119,7 +119,7 @@ inline Rope toRope(const rules &me) {
 
 //for choice function: combines rules of several parses, which is necessary for the ambiguous grammar for shape level 1 and macrostate
 inline
-rules merge(std::pair<List<rules, unsigned char>::Iterator, List<rules, unsigned char>::Iterator>& xs) {
+rules merge(std::pair<List<rules, unsigned char>::iterator, List<rules, unsigned char>::iterator>& xs) {
   rules res;
   if (xs.first == xs.second) {
 	empty(res);
