@@ -286,33 +286,33 @@ sub doComputation {
 		}
 
 	#move all necessary files into a temporary directory to compile there without race conditions the Haskell-ADP generator with correct Probs.lhs, i.e. probabilities.
+		my $outputDirectory = $currentDir.$Settings::fileseparater;
+		$outputDirectory = $settings->{'outputdir'}.$Settings::fileseparater if (defined $settings->{'outputdir'});
 		my $targetBinary = 'acmsearch_'.$refHash_family->{familyname};
-		my $outputFile = $currentDir.$Settings::fileseparater.$targetBinary;
-		$outputFile = $settings->{'outputdir'}.$Settings::fileseparater.$targetBinary if (defined $settings->{'outputdir'});
+		my $outputFile = $outputDirectory.$Settings::fileseparater.$targetBinary;
 		print STDERR "  ".($taskCount++)." compiling final bgap program '$targetBinary' ..." if ($VERBOSE);
 		if (! -e $targetBinary) {
 			my $buildBinary = $tmpDir.'/'.$PROGID.'_build_'.$refHash_family->{familyname};
+			my $probFilename = 'acmsearch_'.$refHash_family->{familyname}."_probabilities.hh";
 			if (not -e $buildBinary) {
-				open (PROBS, "> ".$tmpDir."/probabilities.hh") || die "can't write to '".$tmpDir."/probabilities.hh'\n";
+				open (PROBS, "> ".$tmpDir.$Settings::fileseparater.$probFilename) || die "can't write to '".$tmpDir.$Settings::fileseparater.$probFilename."'\n";
 					print PROBS cmUtils::generateCppProbMaps(\%weighted_transitions, \%weighted_emissions, $refHash_family->{familyname});
 				close (PROBS);
-				my $command = Settings::getBinary('ghc')." -tmpdir ".$tmpDir."/ -O -fglasgow-exts -odir ".$tmpDir." -i".$tmpDir.":".getPath($0)."../lib/aCMs/ -hidir ".$tmpDir." --make ".getPath($0)."../lib/aCMs/mcmbuild.lhs -o ".$buildBinary;
-				system($command." 1>&2");
+				Utils::execute(Settings::getBinary('ghc')." -tmpdir ".$tmpDir."/ -O -fglasgow-exts -odir ".$tmpDir." -i".$tmpDir.":".getPath($0)."../lib/aCMs/ -hidir ".$tmpDir." --make ".getPath($0)."../lib/aCMs/mcmbuild.lhs -o ".$buildBinary);
+				Utils::execute(Settings::getBinary('cp')." ".$tmpDir.$Settings::fileseparater.$probFilename." ".$outputDirectory);
 			}
 			my $cmd = "$buildBinary $concatConsensi";
 			my $buildGAP = Utils::execute($cmd);
 			my $targetGapFile = $outputFile.'.gap';
 			open (OUT, "> ".$targetGapFile) || die "cannot write gap source code to '".$targetGapFile."': $!";
+				$buildGAP =~ s/import probabilities/import "$probFilename"/;
 				print OUT $buildGAP;
 			close (OUT);
 			Utils::execute(Settings::getBinary('cp')." $targetGapFile $tmpDir/");
 			chdir($tmpDir);
-			$cmd = Settings::getBinary('gapc')." --tab-all -i cykali --kbacktrace --no-coopt $targetGapFile -o acmsearch.cc";
-			Utils::execute($cmd);
-			$cmd = Settings::getBinary('make')." -f acmsearch.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\"";
-			Utils::execute($cmd);
-			$cmd = Settings::getBinary('rm')." -f string.*";
-			Utils::execute($cmd);
+			Utils::execute(Settings::getBinary('gapc')." --tab-all -i cykali --kbacktrace --no-coopt $targetGapFile -o acmsearch.cc");
+			Utils::execute(Settings::getBinary('make')." -f acmsearch.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\"");
+			Utils::execute(Settings::getBinary('rm')." -f string.*");
 			Utils::execute(Settings::getBinary('cp')." acmsearch $outputFile");
 			print STDERR " done.\n" if ($VERBOSE);
 		} else {
