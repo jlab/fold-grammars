@@ -17,6 +17,9 @@ algebra alg_ali_purecovar implements sig_foldrna(alphabet = M_Char, answer = int
   int drem(Subsequence lb, int x, Subsequence rb) {
     return x;
   }
+  int dall(Subsequence lb, int x, Subsequence rb) {
+    return x;
+  }
   int sr(Subsequence lb, int x, Subsequence rb) {
     return x + covscore(lb, lb.i, rb.i);
   }
@@ -42,6 +45,9 @@ algebra alg_ali_purecovar implements sig_foldrna(alphabet = M_Char, answer = int
 	return x - covscore(lb, lb.i, rb.i);
   }
   int ml(Subsequence lb, int x, Subsequence rb) {
+	return x - covscore(lb, lb.i, rb.i);
+  }
+  int mlall(Subsequence lb, int x, Subsequence rb) {
 	return x - covscore(lb, lb.i, rb.i);
   }
   int incl(int x) {

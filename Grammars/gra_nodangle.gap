@@ -9,4 +9,6 @@
 
 grammar gra_nodangle uses sig_foldrna(axiom = struct) {
 	include "Grammars/Parts/grapart_basic.gap"
+	dangle    = drem(LOC, strong, LOC) # h;
+    multiloop = ml(BASE, ml_comps, BASE) with basepair # h;
 }

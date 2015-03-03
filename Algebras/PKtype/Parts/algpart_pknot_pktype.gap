@@ -33,6 +33,10 @@
     return e;
   }
 
+  pktype dall(Subsequence lloc, pktype e, Subsequence rloc) {
+    return e;
+  }
+
   pktype sr(Subsequence lb,pktype e,Subsequence rb) {
     return e;
   }
@@ -58,6 +62,10 @@
   }
 
   pktype ml(Subsequence lb,pktype e,Subsequence rb) {
+    return e;
+  }
+
+  pktype mlall(Subsequence lb,pktype e,Subsequence rb) {
     return e;
   }
 

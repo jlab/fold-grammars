@@ -7,6 +7,9 @@ algebra alg_ali_outside_pfunc implements sig_outside_foldrna(alphabet = M_Char, 
 	double outer_drem(Subsequence locr, double x, Subsequence locl) {
 		return x * mk_pf(termau_energy(shiftIndex(locl), locr) / float(rows(locr)));
 	}
+	double outer_dall(Subsequence locr, double x, Subsequence locl) {
+		return x * mk_pf((termau_energy(shiftIndex(locl), locr) + ext_mismatch_energy(shiftIndex(locl), locr)) / float(rows(locr)));
+	}
 	double outer_edl(Subsequence rb, double x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
@@ -44,6 +47,10 @@ algebra alg_ali_outside_pfunc implements sig_outside_foldrna(alphabet = M_Char, 
 	double outer_ml(Subsequence rb, double x, Subsequence lb) {
 		Subsequence shifted = shiftIndex(lb);
 		return x * scale(2) * mk_pf(ml_energy() + ul_energy() + (termau_energy(shifted, rb) / float(rows(lb))) + covscore(shifted, shifted.i, rb.i));
+	}
+	double outer_mlall(Subsequence rb, double x, Subsequence lb) {
+		Subsequence shifted = shiftIndex(lb);
+		return x * scale(2) * mk_pf(ml_energy() + ul_energy() + ((termau_energy(shiftIndex(lb), rb) + ml_mismatch_energy(shiftIndex(lb), rb)) / float(rows(lb))) + covscore(shifted, shifted.i, rb.i));
 	}
 	double outer_mldl(Subsequence rb, double x, Subsequence ul, Subsequence lb) {
 		Subsequence shifted = shiftIndex(lb);

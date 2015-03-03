@@ -31,6 +31,9 @@ algebra alg_ali_puremfe implements sig_foldrna(alphabet = M_Char, answer = int) 
   int drem(Subsequence lb, int x, Subsequence rb) {
     return x + (termau_energy(lb, rb) / float(rows(lb)));
   }
+  int dall(Subsequence lb, int x, Subsequence rb) {
+	return x + ((termau_energy(lb, rb) + ext_mismatch_energy(lb, rb)) / float(rows(lb)));
+  }
   int sr(Subsequence lb, int x, Subsequence rb) {
     return x + (sr_energy(lb, rb) / float(rows(lb)));
   }
@@ -57,6 +60,9 @@ algebra alg_ali_puremfe implements sig_foldrna(alphabet = M_Char, answer = int) 
   }
   int ml(Subsequence lb, int x, Subsequence rb) {
     return x + ml_energy() + ul_energy() + (termau_energy(lb, rb) / float(rows(lb)));
+  }
+  int mlall(Subsequence lb, int x, Subsequence rb) {
+	return x + ml_energy() + ul_energy() + ((termau_energy(lb, rb) + ml_mismatch_energy(lb, rb)) / float(rows(lb)));
   }
   int incl(int x) {
     return x + ul_energy();

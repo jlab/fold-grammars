@@ -70,7 +70,6 @@ sub compileAndrunTDM {
 	close (OUT);
 	my $algebrasuffix = "";
 	$algebrasuffix = "_macrostate" if ($grammar eq 'macrostate');
-	$algebrasuffix = "_overdangle" if ($grammar eq 'overdangle');
 	my $gapc = Utils::execute(Settings::getBinary('gapc')." -p \"(alg_shapeX * (alg_mfe$algebrasuffix % alg_pfunc$algebrasuffix)) * (alg_dotBracket * alg_pfunc$algebrasuffix)\" $grammar.gap --kbacktrace --no-coopt-class -I $Settings::prototypeDirectory 2>&1");
 	print STDERR "\ttweaking makefile ..." if ($verbose);
 	my $perl = Utils::execute(Settings::getBinary('addRNAoptions.pl')." $tmpDir/out.mf 0 2>&1");

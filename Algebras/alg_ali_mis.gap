@@ -81,6 +81,10 @@ algebra alg_ali_mis implements sig_foldrna(alphabet = M_Char, answer = Rope) {
     return e;
   }
 
+  Rope dall(Subsequence lloc, Rope e, Subsequence rloc) {
+    return e;
+  }
+
   Rope sr(Subsequence lb,Rope e,Subsequence rb) {
     Rope res;
     append_mis(res, lb);
@@ -127,6 +131,14 @@ algebra alg_ali_mis implements sig_foldrna(alphabet = M_Char, answer = Rope) {
   }
 
   Rope ml(Subsequence lb,Rope e,Subsequence rb) {
+    Rope res;
+    append_mis(res, lb);
+    append(res, e);
+    append_mis(res, rb);
+    return res;
+  }
+
+  Rope mlall(Subsequence lb,Rope e,Subsequence rb) {
     Rope res;
     append_mis(res, lb);
     append(res, e);

@@ -40,6 +40,10 @@ algebra alg_count_id implements sig_foldrna(alphabet = char, answer = int) {
     return e;
   }
 
+  int dall(Subsequence lloc, int e, Subsequence rloc) {
+    return e;
+  }
+
   int sr(Subsequence lb,int e,Subsequence rb) {
     return e;
   }
@@ -60,6 +64,8 @@ algebra alg_count_id implements sig_foldrna(alphabet = char, answer = int) {
   }
 
   int ml(Subsequence lb,int e,Subsequence rb) {return e;}
+  
+  int mlall(Subsequence lb,int e,Subsequence rb) {return e;}
 
   int mldr(Subsequence lb,int e,Subsequence dr,Subsequence rb) {return e;}
 

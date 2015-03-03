@@ -24,6 +24,9 @@
   int drem(Subsequence lb, int x, Subsequence rb) {
     return x + termau_energy(lb, rb);
   }
+  int dall(Subsequence lb, int x, Subsequence rb) {
+    return x + termau_energy(lb, rb) + ext_mismatch_energy(lb, rb);
+  }
   int sr(Subsequence lb, int x, Subsequence rb) {
     return x + sr_energy(lb, rb);
   }
@@ -50,6 +53,9 @@
   }
   int ml(Subsequence lb, int x, Subsequence rb) {
     return x + ml_energy() + ul_energy() + termau_energy(lb, rb);
+  }
+  int mlall(Subsequence lb, int x, Subsequence rb) {
+    return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
   }
   int incl(int x) {
     return x + ul_energy();

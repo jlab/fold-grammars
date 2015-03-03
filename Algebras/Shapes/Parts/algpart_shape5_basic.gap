@@ -39,6 +39,10 @@
     return e;
   }
 
+  shape_t dall(Subsequence lloc, shape_t e, Subsequence rloc) {
+    return e;
+  }
+
   shape_t sr(Subsequence lb,shape_t e,Subsequence rb) {
     return e;
   }
@@ -61,6 +65,10 @@
   }
 
   shape_t ml(Subsequence lb,shape_t e,Subsequence rb) {
+    return openParen + e + closeParen;
+  }
+
+  shape_t mlall(Subsequence lb,shape_t e,Subsequence rb) {
     return openParen + e + closeParen;
   }
 

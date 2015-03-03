@@ -130,6 +130,10 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = an
     return res;
   }
 
+  answer_macrostate_pfunc dall(Subsequence lloc, answer_macrostate_pfunc e, Subsequence rloc) {
+    return e;
+  }
+
   answer_macrostate_pfunc sr(Subsequence lb,answer_macrostate_pfunc e,Subsequence rb) {
     answer_macrostate_pfunc res = e;
     
@@ -214,6 +218,10 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = an
     res.pf.q4 = 0.0;
     
     return res;
+  }
+  
+  answer_macrostate_pfunc mlall(Subsequence lb,answer_macrostate_pfunc e,Subsequence rb) {
+    return e;
   }
   
   answer_macrostate_pfunc mldr(Subsequence lb,answer_macrostate_pfunc e,Subsequence dr,Subsequence rb) {

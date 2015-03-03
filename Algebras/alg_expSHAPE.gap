@@ -17,6 +17,9 @@ algebra alg_expSHAPE implements sig_foldrna(alphabet = char, answer = double) {
   double drem(Subsequence lb, double x, Subsequence rb) {
     return x;
   }
+  double dall(Subsequence lb, double x, Subsequence rb) {
+    return x;
+  }
   double sr(Subsequence lb, double x, Subsequence rb) {
     return x - getSHAPEscore_normalized(lb) - getSHAPEscore_normalized(rb);
   }
@@ -42,6 +45,9 @@ algebra alg_expSHAPE implements sig_foldrna(alphabet = char, answer = double) {
 	return x - getSHAPEscore_normalized(lb) + getSHAPEscore_normalized(dl) + getSHAPEscore_normalized(dr) - getSHAPEscore_normalized(rb);
   }
   double ml(Subsequence lb, double x, Subsequence rb) {
+    return x - getSHAPEscore_normalized(lb) - getSHAPEscore_normalized(rb);
+  }
+  double mlall(Subsequence lb, double x, Subsequence rb) {
     return x - getSHAPEscore_normalized(lb) - getSHAPEscore_normalized(rb);
   }
   double incl(double x) {

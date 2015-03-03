@@ -17,7 +17,7 @@ outname=RNAshapes_probs_overdangle_window_printall
 all: printallwindows clean
 
 printallwindows:
-	$(GAPC) -I $(BASEDIR) -p "(alg_shapeX * alg_pfunc_overdangle) suchthat filterLowProbShapes"  --no-coopt-class -w $(BASEDIR)/overdangle.gap -o $@.cc
+	$(GAPC) -I $(BASEDIR) -p "(alg_shapeX * alg_pfunc) suchthat filterLowProbShapes"  --no-coopt-class -w $(BASEDIR)/overdangle.gap -o $@.cc
 	$(PERL) $(RNAOPTIONSPERLSCRIPT) $@.mf 0
 	patch -p99 $@.hh < header.patch
 	$(MAKE) -f $@.mf CPPFLAGS_EXTRA="-I $(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA)

@@ -9,6 +9,11 @@ algebra alg_ali_outside_mfe implements sig_outside_foldrna(alphabet = M_Char, an
 		res.mfe = res.mfe + (termau_energy(shiftIndex(locl), locr) / float(rows(locl)));
 		return res;
 	}
+	mfecovar outer_dall(Subsequence locr, mfecovar x, Subsequence locl) {
+		mfecovar res = x;
+		res.mfe = x.mfe + ((termau_energy(shiftIndex(locl), locr) + ext_mismatch_energy(shiftIndex(locl), locr)) / float(rows(locl)));
+		return res;
+	}
 	mfecovar outer_edl(Subsequence rb, mfecovar x, Subsequence ldangle) {
 		mfecovar res = x;
 		Subsequence lb = ldangle;
@@ -63,6 +68,13 @@ algebra alg_ali_outside_mfe implements sig_outside_foldrna(alphabet = M_Char, an
 		res.mfe = res.mfe + ml_energy() + ul_energy() + (termau_energy(shiftIndex(lb), rb) / float(rows(lb)));
 		Subsequence shifted = shiftIndex(lb);
 		res.covar = res.covar + covscore(shifted, shifted.i, rb.i);
+		return res;
+	}
+	mfecovar outer_mlall(Subsequence rb, mfecovar x, Subsequence lb) {
+		mfecovar res = x;
+		res.mfe = x.mfe + ml_energy() + ul_energy() + ((termau_energy(shiftIndex(lb), rb) + ml_mismatch_energy(shiftIndex(lb), rb)) / float(rows(lb)));
+		Subsequence shifted = shiftIndex(lb);
+		res.covar = x.covar + covscore(lb, shifted.i, rb.i);
 		return res;
 	}
 	mfecovar outer_mldl(Subsequence rb, mfecovar x, Subsequence ul, Subsequence lb) {

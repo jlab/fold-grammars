@@ -71,7 +71,6 @@ sub compileAndrunTDM_mfe {
 	close (OUT);
 	my $algebrasuffix = "";
 	$algebrasuffix = "_macrostate" if ($grammar eq 'macrostate');
-	$algebrasuffix = "_overdangle" if ($grammar eq 'overdangle');
 	my $gapc = Utils::execute(Settings::getBinary('gapc')." -p \"alg_mfe$algebrasuffix\" $grammar.gap -I $Settings::prototypeDirectory 2>&1");
 	die $diePrefix."gapc execution failed: $gapc" if ($? != 0);
 	my $perl = Utils::execute(Settings::getBinary('perl')." $Settings::prototypeDirectory/Misc/Applications/addRNAoptions.pl $tmpDir/out.mf 0 2>&1");

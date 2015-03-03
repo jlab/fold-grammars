@@ -12,43 +12,7 @@ algebra alg_outside_count auto count;
 algebra alg_outside_enum auto enum;
 
 include "Algebras/MFE/alg_outside_mfe.gap"
-algebra alg_outside_mfe_overdangle extends alg_outside_mfe {
-	int drem(Subsequence lb, int x, Subsequence rb) {
-		return x + termau_energy(lb, rb) + ext_mismatch_energy(lb, rb);
-	}
-	int ml(Subsequence lb, int x, Subsequence rb) {
-		return x + ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb);
-	}
-	int outer_drem(Subsequence locr, int x, Subsequence locl) {
-		return x + termau_energy(shiftIndex(locl), locr) + ext_mismatch_energy(shiftIndex(locl), locr);
-	}
-	int outer_ml(Subsequence rb, int x, Subsequence lb) {
-		return x + ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb) + ml_mismatch_energy(shiftIndex(lb), rb);
-	}
-}
-
 include "Algebras/Pfunc/alg_outside_pfunc.gap"
-algebra alg_outside_pfunc_overdangle extends alg_outside_pfunc {
-	double drem(Subsequence lb, double x, Subsequence rb) {
-		return                                x * mk_pf(termau_energy(lb, rb) + ext_mismatch_energy(lb, rb));
-	}
-	double ml(Subsequence lb, double x, Subsequence rb) {
-		return scale(2)                     * x * mk_pf(ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb));
-	}
-	double outer_drem(Subsequence locr, double x, Subsequence locl) {
-		return x * mk_pf(termau_energy(shiftIndex(locl), locr) + ext_mismatch_energy(shiftIndex(locl), locr));
-	}
-	double outer_ml(Subsequence rb, double x, Subsequence lb) {
-		return scale(2) * x * mk_pf(ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb) + ml_mismatch_energy(shiftIndex(lb), rb));
-	}
-}
-
-algebra alg_outside_bppm_overdangle extends alg_outside_pfunc_overdangle {
-	double makeplot(Subsequence pos) { 
-		STOREPROBS(pos);
-		return 1.0; 
-	}
-}
 
 include "Grammars/gra_outside_overdangle.gap"
 

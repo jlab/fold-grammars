@@ -23,9 +23,8 @@ install-program:
 
 mfe: mfe_nodangle mfe_overdangle mfe_microstate mfe_macrostate
 mfe_%:
-	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
 	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sOv}$${sMa}"`; \
+	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
 		gapc_product="alg_ali_mfe$${suffix} * (alg_ali_dotBracket * alg_ali_shapeX * alg_ali_pfunc$${suffix})" \
 		gapc_options="--kbacktrace --no-coopt $(windowmodeflag)" \
@@ -34,9 +33,8 @@ mfe_%:
 
 subopt: subopt_nodangle subopt_overdangle subopt_microstate subopt_macrostate
 subopt_%:
-	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
 	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sOv}$${sMa}"`; \
+	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
 		gapc_product="alg_ali_mfe_subopt$${suffix} * (alg_ali_dotBracket * alg_ali_shapeX * alg_ali_pfunc$${suffix})" \
 		gapc_options="--kbacktrace $(windowmodeflag)" \
@@ -45,9 +43,8 @@ subopt_%:
 
 shapes: shapes_nodangle shapes_overdangle shapes_microstate shapes_macrostate
 shapes_%:
-	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
 	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sOv}$${sMa}"`; \
+	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
 		gapc_product="(((alg_ali_shapeX * alg_ali_mfe$${suffix}) suchthat suboptShapeClasses) * (alg_ali_dotBracket * alg_ali_pfunc$${suffix}))" \
 		gapc_options="--kbacktrace --no-coopt-class $(windowmodeflag)" \
@@ -56,9 +53,8 @@ shapes_%:
 
 probs: probs_nodangle probs_overdangle probs_microstate probs_macrostate
 probs_%:
-	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
 	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sOv}$${sMa}"`; \
+	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
 		gapc_product="((alg_ali_shapeX * (alg_ali_mfe$${suffix} % alg_ali_pfunc$${suffix})) suchthat filterLowProbShapes) * (alg_ali_dotBracket * alg_ali_pfunc$${suffix})" \
 		gapc_options="--kbacktrace --no-coopt-class $(windowmodeflag)" \
@@ -67,9 +63,8 @@ probs_%:
 
 sample: sample_nodangle sample_overdangle sample_microstate sample_macrostate
 sample_%:
-	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
 	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sOv}$${sMa}"`; \
+	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
 		gapc_product="(((alg_ali_pfunc$${suffix} | alg_ali_pfunc_id$${suffix}) * (alg_ali_shapeX * alg_ali_mfe$${suffix} * alg_ali_dotBracket * alg_ali_pfunc$${suffix})) suchthat sample_filter)" \
 		gapc_options="--sample $(windowmodeflag)" \
@@ -78,9 +73,8 @@ sample_%:
 
 eval: eval_nodangle eval_overdangle eval_microstate eval_macrostate
 eval_%:
-	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
 	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sOv}$${sMa}"`; \
+	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
 		gapc_product="alg_ali_dotBracket$${sMi} * alg_ali_mfe$${suffix} * alg_ali_shapeX" \
 		gapc_options="$(windowmodeflag)" \
@@ -94,10 +88,8 @@ outside_%:
 		echo "Sorry, we don't provide a outside version for macrostate yet"; \
 		continue; \
 	else \
-		sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
-		suffix=`echo "$${sOv}"`; \
 		$(MAKE) compile \
-			gapc_product="alg_ali_outside_pfunc$${suffix}" \
+			gapc_product="alg_ali_outside_pfunc" \
 			gapc_options="$(windowmodeflag)" \
 			gapc_file="ali_outside_${*}.gap" \
 			gapc_binaryname="$@"; \
@@ -109,11 +101,9 @@ mea_%:
 		echo "Sorry, we don't provide a outside version for macrostate yet"; \
 		continue; \
 	else \
-		sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
-		suffix=`echo "$${sOv}$${sMa}"`; \
 		$(MAKE) compile_mea \
-			gapc_product1="alg_ali_outside_bppm$${suffix}" \
-			gapc_product2="alg_ali_mea * (alg_ali_dotBracket * alg_ali_mfe$${suffix} * alg_ali_shapeX)" \
+			gapc_product1="alg_ali_outside_bppm" \
+			gapc_product2="alg_ali_mea * (alg_ali_dotBracket * alg_ali_mfe * alg_ali_shapeX)" \
 			gapc_options1="$(windowmodeflag)" \
 			gapc_options2="--backtrace $(windowmodeflag)" \
 			gapc_file1="ali_outside_${*}.gap" \
@@ -132,9 +122,8 @@ helper_consensus_%:
 
 helper_sci: helper_sci_nodangle helper_sci_overdangle helper_sci_microstate helper_sci_macrostate
 helper_sci_%:
-	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
 	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sOv}$${sMa}"`; \
+	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
 		gapc_product="alg_mfe$${suffix}" \
 		gapc_options="$(windowmodeflag)" \
@@ -143,9 +132,8 @@ helper_sci_%:
 
 pfall: pfall_nodangle pfall_overdangle pfall_microstate pfall_macrostate
 pfall_%:
-	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
 	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sOv}$${sMa}"`; \
+	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
 		gapc_product="alg_ali_pfunc$${suffix}" \
 		gapc_options="$(windowmodeflag)" \

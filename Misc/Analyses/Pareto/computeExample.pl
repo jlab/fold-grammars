@@ -179,27 +179,25 @@ sub build_binary {
 	if (not -e $fullBinName) {
 		my $tmpdir = tempdir(CLEANUP => 1);
 		print STDERR "need to recompile binary '$type' for grammar '$grammar', using temp directory '$tmpdir': "; 
-		my $suffix = '';
-		$suffix = '_overdangle' if ($grammar eq 'overdangle');
 		my $product = "";
 		my $flags = "";
 		if ($type eq 'OPT') {
-			$product = "alg_mfe_SHAPE$suffix * alg_dotBracket";
+			$product = "alg_mfe_SHAPE * alg_dotBracket";
 			$flags = "--kbacktrace"
 		} elsif ($type eq 'PARETO') {
-			$product = "((alg_mfe_id$suffix * alg_SHAPE_id) * (alg_dotBracket * alg_shapeX)) suchthat pareto";
+			$product = "((alg_mfe_id * alg_SHAPE_id) * (alg_dotBracket * alg_shapeX)) suchthat pareto";
 			$flags = "";
 		} elsif ($type eq 'PARETO_PLAIN') {
-			$product = "((alg_mfe_id$suffix * alg_SHAPEplain_id) * (alg_dotBracket * alg_shapeX)) suchthat pareto";
+			$product = "((alg_mfe_id * alg_SHAPEplain_id) * (alg_dotBracket * alg_shapeX)) suchthat pareto";
 			$flags = "";
 		} elsif ($type eq 'PARETO_NORM') {
-			$product = "((alg_mfe_id$suffix * alg_expSHAPE_id) * (alg_dotBracket * alg_shapeX)) suchthat pareto";
+			$product = "((alg_mfe_id * alg_expSHAPE_id) * (alg_dotBracket * alg_shapeX)) suchthat pareto";
 			$flags = "";
 		} elsif ($type eq 'SUBOPT') {
-			$product = "alg_mfe_SHAPE_subopt$suffix * alg_dotBracket";
+			$product = "alg_mfe_SHAPE_subopt * alg_dotBracket";
 			$flags = "--kbacktrace";
 		} elsif ($type eq 'SHAPES') {
-			$product = "(((alg_shapeX * alg_mfe_SHAPE$suffix) suchthat suboptShapeClasses) * alg_dotBracket)";
+			$product = "(((alg_shapeX * alg_mfe_SHAPE) suchthat suboptShapeClasses) * alg_dotBracket)";
 			$flags = "--kbacktrace --no-coopt-class";
 		}
 		system("cd $tmpdir && gapc -I ".$Settings::rootDir." -p '$product' $flags ".$Settings::rootDir."/$grammar.gap");

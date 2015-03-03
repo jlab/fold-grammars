@@ -24,6 +24,9 @@
   double drem(Subsequence lb, double x, Subsequence rb) {
     return                                x * mk_pf(termau_energy(lb, rb));
   }
+  double dall(Subsequence lb, double x, Subsequence rb) {
+    return                                x * mk_pf(termau_energy(lb, rb) + ext_mismatch_energy(lb, rb));
+  }
   double sr(Subsequence lb, double x, Subsequence rb) {
     return scale(2)                     * x * mk_pf(sr_energy(lb, rb));
   }
@@ -50,6 +53,9 @@
   }
   double ml(Subsequence lb, double x, Subsequence rb) {
     return scale(2)                     * x * mk_pf(ml_energy() + ul_energy() + termau_energy(lb, rb));
+  }
+  double mlall(Subsequence lb, double x, Subsequence rb) {
+    return scale(2)                     * x * mk_pf(ml_energy() + ul_energy() + termau_energy(lb, rb) + ml_mismatch_energy(lb, rb));
   }
   double incl(double x) {
     return                                x * mk_pf(ul_energy());

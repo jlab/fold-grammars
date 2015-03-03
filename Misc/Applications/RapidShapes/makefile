@@ -50,9 +50,8 @@ subopt_%:
 	
 kbest: kbest_nodangle kbest_overdangle kbest_microstate kbest_macrostate
 kbest_%:
-	sOv=`if [ ${*} = "overdangle" ]; then echo "_overdangle"; fi`; \
 	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sOv}$${sMa}"`; \
+	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
 		gapc_product="alg_shapeX * alg_mfe$${suffix}" \
 		gapc_options="--kbest" \

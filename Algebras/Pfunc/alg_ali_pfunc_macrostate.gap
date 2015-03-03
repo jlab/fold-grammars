@@ -154,6 +154,10 @@ algebra alg_ali_pfunc_macrostate implements sig_foldrna(alphabet = M_Char, answe
     return res;
   }
 
+  answer_ali_pfunc_macrostate dall(Subsequence lloc, answer_ali_pfunc_macrostate e, Subsequence rloc) {
+    return e;
+  }
+
   answer_ali_pfunc_macrostate sr(Subsequence lb,answer_ali_pfunc_macrostate e,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
     
@@ -243,6 +247,10 @@ algebra alg_ali_pfunc_macrostate implements sig_foldrna(alphabet = M_Char, answe
     res.pf.q4 = 0.0;
     
     return res;
+  }
+  
+  answer_ali_pfunc_macrostate mlall(Subsequence lb,answer_ali_pfunc_macrostate e,Subsequence rb) {
+    return e;
   }
   
   answer_ali_pfunc_macrostate mldr(Subsequence lb,answer_ali_pfunc_macrostate e,Subsequence dr,Subsequence rb) {

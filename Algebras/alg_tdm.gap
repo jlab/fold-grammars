@@ -11,7 +11,7 @@ algebra alg_tdm_overdangle_5 implements sig_tdm(alphabet = char, answer = rules,
   }
   rules dangle(rules x) { // levels: all (exceptions: microstate 1 and macrostate 1) = adds up to four different ways of dangling base(s) onto a helix
 	rules res = x;
-	insertProduction(res, "dangle__"+res.shape, "drem(LOC, strong__"+res.shape+",LOC)");
+	insertProduction(res, "dangle__"+res.shape, "dall(LOC, strong__"+res.shape+",LOC)");
 	return res;
   }
   rules next_hlmode(rules x, rules y) { // levels: all = adds one more component
@@ -59,7 +59,7 @@ algebra alg_tdm_overdangle_5 implements sig_tdm(alphabet = char, answer = rules,
 	rules res = x;
 	setShape(res, "L"+x.shape+"J");
 	insertProduction(res, "weak__"+res.shape, "multiloop__"+res.shape);
-	insertProduction(res, "multiloop__"+res.shape, "ml(BASE, ml_comps__"+x.shape+", BASE) with basepair");
+	insertProduction(res, "multiloop__"+res.shape, "mlall(BASE, ml_comps__"+x.shape+", BASE) with basepair");
     return res;
   }
   rules next_mlmode(rules x, rules y) { // levels: all = adds one more component in a multiloop context
@@ -91,6 +91,7 @@ algebra alg_tdm_overdangle_5 implements sig_tdm(alphabet = char, answer = rules,
   rules sadd(alphabet a, answer x) { return x; } // levels: 1 (exceptions: macrostate 1) = adds unpaired bases in front of a component
   rules saddml(alphabet a, answer x) { return x; } // levels: 1 (exceptions: macrostate 1) = adds unpaired bases in front of a component within a multiloop context
   rules drem(answer x) { return x; } // levels: 1, grammars: microstate macrostate = dangles no bases onto a helix: x
+  rules dall(answer x) { return x; } // levels: 1, grammars: microstate macrostate = dangles no bases onto a helix: x
   rules edl(answer x) { return x; } // levels: 1, grammars: microstate macrostate = dangles a base from the left onto a helix: _x
   rules edr(answer x) { return x; } // levels: 1, grammars: microstate macrostate = dangles a base from the right onto a helix: x_
   rules edlr(answer x) { return x; } // levels: 1, grammars: microstate macrostate = dangles bases from left and right onto a helix: _x_
@@ -103,6 +104,7 @@ algebra alg_tdm_overdangle_5 implements sig_tdm(alphabet = char, answer = rules,
   rules mldladr(answer x, alphabet a) { return x; } // levels: 1, grammars: microstate macrostate = begins a multiloop, where the leftmost base dangles onto the closing stem and the rightmost base dangles onto the last internal stem: [_ x_ ]
   rules mladldr(alphabet a, answer x) { return x; } // levels: 1, grammars: microstate macrostate = begins a multiloop, where the leftmost base dangles onto the first internal stem and the rightmost bases dangles onto the last internal stem: [ _x_ ]
   rules ml(answer x) { return x; } // levels: 1, grammars: microstate macrostate = begins a multiloop, with no dangling bases at all: [ x ]
+  rules mlall(answer x) { return x; } // levels: 1, grammars: microstate macrostate = begins a multiloop, with no dangling bases at all: [ x ]
   rules next_hlmode_r (answer x, alphabet a, answer y) { return x+y; } // levels 1, only microstate = adds one more component + at least one unpaired base, may it dangle or not
   rules next_ml_r(answer x, alphabet a, answer y) {return x+y; } // levels 1, only microstate = adds one more component + at least one unpaired base in a multiloop context
   rules last_r(answer x, alphabet a, answer y) { return x+y; } // levels 1, only microstate = adds the last component + at least one unpaired base, may it dangle or not
@@ -276,7 +278,7 @@ algebra alg_tdm_overdangle_1 extends alg_tdm_overdangle_5 {
 	rules res = x;
 	setShape(res, "L"+x.shape+"J");
 	insertProduction(res, "weak__"+res.shape, "multiloop__"+res.shape);
-	insertProduction(res, "multiloop__"+res.shape, "ml(BASE, ml_comps__"+x.shape+", BASE) with basepair");
+	insertProduction(res, "multiloop__"+res.shape, "mlall(BASE, ml_comps__"+x.shape+", BASE) with basepair");
     return res;
   }
   rules next_mlmode(rules x, rules y) { // levels: all = adds one more component in a multiloop context
@@ -340,26 +342,86 @@ algebra alg_tdm_overdangle_1 extends alg_tdm_overdangle_5 {
 }
 
 algebra alg_tdm_nodangle_5   extends alg_tdm_overdangle_5 {
+  rules dangle(rules x) { // levels: all (exceptions: microstate 1 and macrostate 1) = adds up to four different ways of dangling base(s) onto a helix
+	rules res = x;
+	insertProduction(res, "dangle__"+res.shape, "drem(LOC, strong__"+res.shape+",LOC)");
+	return res;
+  }
+  rules multiloop(alphabet a, rules x, alphabet b) { // levels: all = a multiloop component
+	rules res = x;
+	setShape(res, "L"+x.shape+"J");
+	insertProduction(res, "weak__"+res.shape, "multiloop__"+res.shape);
+	insertProduction(res, "multiloop__"+res.shape, "ml(BASE, ml_comps__"+x.shape+", BASE) with basepair");
+    return res;
+  }
   Rope convert(rules x) { // levels: all = converts rules into a Rope and adds header and footer to be a GAP-L grammar
 	return "grammar gra_nodangle uses sig_foldrna(axiom = struct) {\n" + toRope(x) + "}\n";
   }	
 }
 algebra alg_tdm_nodangle_4   extends alg_tdm_overdangle_4 {
+  rules dangle(rules x) { // levels: all (exceptions: microstate 1 and macrostate 1) = adds up to four different ways of dangling base(s) onto a helix
+	rules res = x;
+	insertProduction(res, "dangle__"+res.shape, "drem(LOC, strong__"+res.shape+",LOC)");
+	return res;
+  }
+  rules multiloop(alphabet a, rules x, alphabet b) { // levels: all = a multiloop component
+	rules res = x;
+	setShape(res, "L"+x.shape+"J");
+	insertProduction(res, "weak__"+res.shape, "multiloop__"+res.shape);
+	insertProduction(res, "multiloop__"+res.shape, "ml(BASE, ml_comps__"+x.shape+", BASE) with basepair");
+    return res;
+  }
   Rope convert(rules x) { // levels: all = converts rules into a Rope and adds header and footer to be a GAP-L grammar
 	return "grammar gra_nodangle uses sig_foldrna(axiom = struct) {\n" + toRope(x) + "}\n";
   }	
 }
 algebra alg_tdm_nodangle_3   extends alg_tdm_overdangle_3 {
+  rules dangle(rules x) { // levels: all (exceptions: microstate 1 and macrostate 1) = adds up to four different ways of dangling base(s) onto a helix
+	rules res = x;
+	insertProduction(res, "dangle__"+res.shape, "drem(LOC, strong__"+res.shape+",LOC)");
+	return res;
+  }
+  rules multiloop(alphabet a, rules x, alphabet b) { // levels: all = a multiloop component
+	rules res = x;
+	setShape(res, "L"+x.shape+"J");
+	insertProduction(res, "weak__"+res.shape, "multiloop__"+res.shape);
+	insertProduction(res, "multiloop__"+res.shape, "ml(BASE, ml_comps__"+x.shape+", BASE) with basepair");
+    return res;
+  }
   Rope convert(rules x) { // levels: all = converts rules into a Rope and adds header and footer to be a GAP-L grammar
 	return "grammar gra_nodangle uses sig_foldrna(axiom = struct) {\n" + toRope(x) + "}\n";
   }	
 }
 algebra alg_tdm_nodangle_2   extends alg_tdm_overdangle_2 {
+  rules dangle(rules x) { // levels: all (exceptions: microstate 1 and macrostate 1) = adds up to four different ways of dangling base(s) onto a helix
+	rules res = x;
+	insertProduction(res, "dangle__"+res.shape, "drem(LOC, strong__"+res.shape+",LOC)");
+	return res;
+  }
+  rules multiloop(alphabet a, rules x, alphabet b) { // levels: all = a multiloop component
+	rules res = x;
+	setShape(res, "L"+x.shape+"J");
+	insertProduction(res, "weak__"+res.shape, "multiloop__"+res.shape);
+	insertProduction(res, "multiloop__"+res.shape, "ml(BASE, ml_comps__"+x.shape+", BASE) with basepair");
+    return res;
+  }
   Rope convert(rules x) { // levels: all = converts rules into a Rope and adds header and footer to be a GAP-L grammar
 	return "grammar gra_nodangle uses sig_foldrna(axiom = struct) {\n" + toRope(x) + "}\n";
   }	
 }
 algebra alg_tdm_nodangle_1   extends alg_tdm_overdangle_1 {
+  rules dangle(rules x) { // levels: all (exceptions: microstate 1 and macrostate 1) = adds up to four different ways of dangling base(s) onto a helix
+	rules res = x;
+	insertProduction(res, "dangle__"+res.shape, "drem(LOC, strong__"+res.shape+",LOC)");
+	return res;
+  }
+  rules multiloop(alphabet a, rules x, alphabet b) { // levels: all = a multiloop component
+	rules res = x;
+	setShape(res, "L"+x.shape+"J");
+	insertProduction(res, "weak__"+res.shape, "multiloop__"+res.shape);
+	insertProduction(res, "multiloop__"+res.shape, "ml(BASE, ml_comps__"+x.shape+", BASE) with basepair");
+    return res;
+  }
   Rope convert(rules x) { // levels: all = converts rules into a Rope and adds header and footer to be a GAP-L grammar
 	return "grammar gra_nodangle uses sig_foldrna(axiom = struct) {\n" + toRope(x) + "}\n";
   }	

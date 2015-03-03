@@ -78,6 +78,10 @@ algebra alg_hishape_h implements sig_foldrna(alphabet = char, answer = Rope) {
     return e;
   }
 
+  Rope dall(Subsequence lloc, Rope e, Subsequence rloc) {
+    return e;
+  }
+
   Rope sr(Subsequence lb,Rope e,Subsequence rb) {
     return e;
   }
@@ -106,6 +110,10 @@ algebra alg_hishape_h implements sig_foldrna(alphabet = char, answer = Rope) {
   }
 
   Rope ml(Subsequence lb,Rope e,Subsequence rb) {
+        return e;
+  }
+
+  Rope mlall(Subsequence lb,Rope e,Subsequence rb) {
         return e;
   }
 
@@ -178,6 +186,19 @@ algebra alg_hishape_h implements sig_foldrna(alphabet = char, answer = Rope) {
 
 algebra alg_hishape_m extends alg_hishape_h {
   Rope ml(Subsequence lb,Rope e,Subsequence rb) {
+    Rope res;       
+    append(res, e);
+    int pos;
+    pos = (lb.i+rb.j+1)/2;
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    append(res, pos);
+    if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
+    append(res, 'm');
+    append(res, ',');
+    return res;
+  }
+
+  Rope mlall(Subsequence lb,Rope e,Subsequence rb) {
     Rope res;       
     append(res, e);
     int pos;

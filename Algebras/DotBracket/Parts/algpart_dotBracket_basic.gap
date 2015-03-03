@@ -43,6 +43,10 @@
     return e;
   }
 
+  string dall(Subsequence lloc, string e, Subsequence rloc) {
+    return e;
+  }
+
   string sr(Subsequence lb,string e,Subsequence rb) {
     string res;
     append(res, '(');
@@ -89,6 +93,14 @@
   }
 
   string ml(Subsequence lb,string e,Subsequence rb) {
+    string res;
+    append(res, '(');
+    append(res, e);
+    append(res, ')');
+    return res;
+  }
+
+  string mlall(Subsequence lb,string e,Subsequence rb) {
     string res;
     append(res, '(');
     append(res, e);

@@ -3,6 +3,7 @@ signature sig_outside_foldrna(alphabet,answer) {
 	
 //outside extensions:
 	answer sep(answer, Subsequence, answer);
+	answer outer_dall(Subsequence, answer, Subsequence);
 	answer outer_drem(Subsequence, answer, Subsequence);
 	answer outer_edl(Subsequence, answer, Subsequence);
 	answer outer_edr(Subsequence, answer, Subsequence);
@@ -12,6 +13,7 @@ signature sig_outside_foldrna(alphabet,answer) {
 	answer outer_br(Subsequence, answer, Subsequence);                   
 	answer outer_il(Subsequence, answer, Subsequence);
 	answer outer_ml(Subsequence, answer, Subsequence);
+	answer outer_mlall(Subsequence, answer, Subsequence);
 	answer outer_mldl(Subsequence, answer, Subsequence, Subsequence);
 	answer outer_mldr(Subsequence, Subsequence, answer, Subsequence);
 	answer outer_mldlr(Subsequence, Subsequence, answer, Subsequence, Subsequence);

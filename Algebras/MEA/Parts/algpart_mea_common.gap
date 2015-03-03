@@ -16,6 +16,9 @@
   double drem(Subsequence lb, double x, Subsequence rb) {
     return x;
   }
+  double dall(Subsequence lb, double x, Subsequence rb) {
+    return x;
+  }
   double sr(Subsequence lb, double x, Subsequence rb) {
     return x + getBPprob(lb,rb);
   }
@@ -41,6 +44,9 @@
   return x + getBPprob(lb,rb);
   }
   double ml(Subsequence lb, double x, Subsequence rb) {
+    return x + getBPprob(lb,rb);
+  }
+  double mlall(Subsequence lb, double x, Subsequence rb) {
     return x + getBPprob(lb,rb);
   }
   double incl(double x) {

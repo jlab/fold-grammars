@@ -81,6 +81,10 @@ algebra alg_ali_consensus implements sig_foldrna(alphabet = M_Char, answer = Rop
     return e;
   }
 
+  Rope dall(Subsequence lloc, Rope e, Subsequence rloc) {
+    return e;
+  }
+
   Rope sr(Subsequence lb,Rope e,Subsequence rb) {
     Rope res;
     append_consensus(res, lb);
@@ -127,6 +131,14 @@ algebra alg_ali_consensus implements sig_foldrna(alphabet = M_Char, answer = Rop
   }
 
   Rope ml(Subsequence lb,Rope e,Subsequence rb) {
+    Rope res;
+    append_consensus(res, lb);
+    append(res, e);
+    append_consensus(res, rb);
+    return res;
+  }
+
+  Rope mlall(Subsequence lb,Rope e,Subsequence rb) {
     Rope res;
     append_consensus(res, lb);
     append(res, e);

@@ -5,12 +5,14 @@
 	answer edr(Subsequence,answer,Subsequence); //dangle right base onto a component
 	answer edlr(Subsequence,answer,Subsequence); //dangle left and right base onto a component
 	answer drem(Subsequence,answer,Subsequence); //no dangle, just the component
+	answer dall(Subsequence,answer,Subsequence); //force dangle from both sides for overdangle model
 	answer sr(Subsequence,answer,Subsequence); //elongate a stack by one base-pair
 	answer hl(Subsequence,Subsequence,Subsequence); //a hairpin loop with a closing base-pair
 	answer bl(Subsequence, Subsequence, answer, Subsequence); // a bulge loop to the left with a closing base-pair
 	answer br(Subsequence, answer, Subsequence, Subsequence); // a bulge loop to the right with a closing base-pair
 	answer il(Subsequence, Subsequence, answer, Subsequence, Subsequence); // an internal loop with a closing base-pair
 	answer ml(Subsequence,answer,Subsequence);  // a multi-loop with a closing base-pair and no dangling bases
+	answer mlall(Subsequence,answer,Subsequence);  // a multi-loop with a closing base-pair and forced dangling of both bases for overdangle model
 	answer mldr(Subsequence,answer,Subsequence,Subsequence); // a multi-loop with a closing base-pair, inner right base dangles to closing stem
 	answer mldlr(Subsequence,Subsequence,answer,Subsequence,Subsequence); // a multi-loop with a closing base-pair, both inner bases dangle to closing stem
 	answer mldl(Subsequence,Subsequence,answer,Subsequence); // a multi-loop with a closing base-pair, inner left base dangles to closing stem

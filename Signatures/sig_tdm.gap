@@ -22,6 +22,7 @@ signature sig_tdm(alphabet, answer, output) {
   answer saddml(alphabet, answer);                                     // levels: 1 (exceptions: macrostate 1) = adds unpaired bases in front of a component within a multiloop context
 
   answer drem(answer);                                                 // levels: 1, grammars: microstate macrostate = dangles no bases onto a helix: x
+  answer dall(answer);                                                 // levels: 1, grammars: microstate macrostate = dangles both bases onto a helix for overdangle model: x
   answer edl(answer);                                                  // levels: 1, grammars: microstate macrostate = dangles a base from the left onto a helix: _x
   answer edr(answer);                                                  // levels: 1, grammars: microstate macrostate = dangles a base from the right onto a helix: x_
   answer edlr(answer);                                                 // levels: 1, grammars: microstate macrostate = dangles bases from left and right onto a helix: _x_
@@ -34,6 +35,7 @@ signature sig_tdm(alphabet, answer, output) {
   answer mldladr(answer, alphabet);                                    // levels: 1, grammars: microstate macrostate = begins a multiloop, where the leftmost base dangles onto the closing stem and the rightmost base dangles onto the last internal stem: [_ x_ ]
   answer mladldr(alphabet, answer);                                    // levels: 1, grammars: microstate macrostate = begins a multiloop, where the leftmost base dangles onto the first internal stem and the rightmost bases dangles onto the last internal stem: [ _x_ ]
   answer ml(answer);                                                   // levels: 1, grammars: microstate macrostate = begins a multiloop, with no dangling bases at all: [ x ]
+  answer mlall(answer);                                                   // levels: 1, grammars: microstate macrostate = begins a multiloop, with no dangling bases at all: [ x ]
 
   answer next_hlmode_r (answer, alphabet, answer);                     // levels 1, only microstate = adds one more component + at least one unpaired base, may it dangle or not
   answer last_r(answer, alphabet, answer);                             // levels 1, only microstate = adds the last component + at least one unpaired base, may it dangle or not

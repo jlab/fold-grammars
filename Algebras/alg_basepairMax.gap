@@ -17,6 +17,9 @@ algebra alg_basepairMax implements sig_foldrna(alphabet = char, answer = int) {
   int drem(Subsequence lb, int x, Subsequence rb) {
     return x;
   }
+  int dall(Subsequence lb, int x, Subsequence rb) {
+    return x;
+  }
   int sr(Subsequence lb, int x, Subsequence rb) {
     return x + 1;
   }
@@ -42,6 +45,9 @@ algebra alg_basepairMax implements sig_foldrna(alphabet = char, answer = int) {
   return x + 1;
   }
   int ml(Subsequence lb, int x, Subsequence rb) {
+    return x + 1;
+  }
+  int mlall(Subsequence lb, int x, Subsequence rb) {
     return x + 1;
   }
   int incl(int x) {

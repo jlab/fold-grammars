@@ -116,6 +116,10 @@ algebra alg_ali_mfe_macrostate implements sig_foldrna(alphabet = M_Char, answer 
     return res;
   }
 
+  mfecovar_macrostate dall(Subsequence lloc, mfecovar_macrostate e, Subsequence rloc) {
+    return e;
+  }
+
 
   mfecovar_macrostate sr(Subsequence lb,mfecovar_macrostate e,Subsequence rb) {
     mfecovar_macrostate res = e;
@@ -181,6 +185,10 @@ algebra alg_ali_mfe_macrostate implements sig_foldrna(alphabet = M_Char, answer 
     res.mfe = res.mfe + ml_energy() + ul_energy() + (termau_energy(res.firstStem,res.firstStem) / float(rows(lb)));
 	res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
+  }
+
+  mfecovar_macrostate mlall(Subsequence lb,mfecovar_macrostate e,Subsequence rb) {
+    return e;
   }
 
   mfecovar_macrostate mldr(Subsequence lb,mfecovar_macrostate e,Subsequence dr,Subsequence rb) {

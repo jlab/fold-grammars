@@ -7,6 +7,9 @@ algebra alg_outside_mfe implements sig_outside_foldrna(alphabet = char, answer =
 	int outer_drem(Subsequence locr, int x, Subsequence locl) {
 		return x + termau_energy(shiftIndex(locl), locr);
 	}
+	int outer_dall(Subsequence locr, int x, Subsequence locl) {
+		return x + termau_energy(shiftIndex(locl), locr) + ext_mismatch_energy(shiftIndex(locl), locr);
+	}
 	int outer_edl(Subsequence rb, int x, Subsequence ldangle) {
 		Subsequence lb = ldangle;
 		lb.i = ldangle.i+1;
@@ -42,6 +45,9 @@ algebra alg_outside_mfe implements sig_outside_foldrna(alphabet = char, answer =
 	}
 	int outer_ml(Subsequence rb, int x, Subsequence lb) {
 		return x + ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb);
+	}
+	int outer_mlall(Subsequence rb, int x, Subsequence lb) {
+		return x + ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb) + ml_mismatch_energy(shiftIndex(lb), rb);
 	}
 	int outer_mldl(Subsequence rb, int x, Subsequence ul, Subsequence lb) {
 		return x + ml_energy() + ul_energy() + termau_energy(shiftIndex(lb), rb) + dli_energy(shiftIndex(lb), rb);

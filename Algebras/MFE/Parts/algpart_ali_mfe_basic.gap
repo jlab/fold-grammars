@@ -58,6 +58,12 @@
 	
     return res;
   }
+  mfecovar dall(Subsequence lb, mfecovar x, Subsequence rb) {
+	mfecovar res = x;
+	res.mfe = x.mfe + ((termau_energy(lb, rb) + ext_mismatch_energy(lb, rb)) / float(rows(lb)));
+    res.covar = x.covar;
+	return res;
+  }
   mfecovar sr(Subsequence lb, mfecovar x, Subsequence rb) {
     mfecovar res;
     
@@ -129,6 +135,12 @@
 	res.mfe = x.mfe + ml_energy() + ul_energy() + (termau_energy(lb, rb) / float(rows(lb)));
 	res.covar = x.covar + covscore(lb, lb.i, rb.i);
 
+    return res;
+  }
+  mfecovar mlall(Subsequence lb, mfecovar x, Subsequence rb) {
+	mfecovar res = x;
+	res.mfe = x.mfe + ml_energy() + ul_energy() + ((termau_energy(lb, rb) + ml_mismatch_energy(lb, rb)) / float(rows(lb)));
+    res.covar = x.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
   mfecovar incl(mfecovar x) {

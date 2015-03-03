@@ -4,7 +4,11 @@ grammar gra_outside_nodangle uses sig_outside_foldrna(axiom = evert) {
         # h;
 	
   include "Grammars/Parts/grapart_outside_basic.gap"
-
+  dangle_out = outer_drem(LOC, outer_dangle, LOC) # h;
+  outer_mlfinal = outer_ml(BASE, outer_strong, BASE) with basepair # h;
+	
 //usual inside nodangel grammar
   include "Grammars/Parts/grapart_basic.gap"
+  dangle    = drem(LOC, strong, LOC) # h;
+  multiloop = ml(BASE, ml_comps, BASE) with basepair # h;
 }

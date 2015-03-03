@@ -8,6 +8,9 @@
 	string outer_drem(Subsequence locr, string x, Subsequence locl) {
 		return x;
 	}
+	string outer_dall(Subsequence locr, string x, Subsequence locl) {
+		return x;
+	}
 	string outer_edl(Subsequence locr, string x, Subsequence lb) {
 		string res;
 		append(res, x);
@@ -54,6 +57,13 @@
 		return res;
 	}
 	string outer_ml(Subsequence rb, string x, Subsequence lb) {
+		string res;
+		append(res, ')');
+		append(res, x);
+		append(res, '(');
+		return res;
+	}
+	string outer_mlall(Subsequence rb, string x, Subsequence lb) {
 		string res;
 		append(res, ')');
 		append(res, x);

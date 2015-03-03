@@ -112,6 +112,10 @@ algebra alg_shapeX implements sig_foldrna(alphabet = char, answer = Rope) {
     return e;
   }
 
+  Rope dall(Subsequence lloc, Rope e, Subsequence rloc) {
+    return e;
+  }
+
   Rope sr(Subsequence lb,Rope e,Subsequence rb) {
     return e;
   }
@@ -164,6 +168,10 @@ algebra alg_shapeX implements sig_foldrna(alphabet = char, answer = Rope) {
   }
 
   Rope ml(Subsequence lb,Rope e,Subsequence rb) {
+    return '[' + e + ']';
+  }
+
+  Rope mlall(Subsequence lb,Rope e,Subsequence rb) {
     return '[' + e + ']';
   }
 

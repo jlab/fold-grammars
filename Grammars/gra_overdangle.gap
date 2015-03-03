@@ -8,4 +8,6 @@
 
 grammar gra_overdangle uses sig_foldrna(axiom = struct) {
 	include "Grammars/Parts/grapart_basic.gap"
+	dangle    = dall(LOC, strong, LOC) # h;
+    multiloop = mlall(BASE, ml_comps, BASE) with basepair # h;
 }

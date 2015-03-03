@@ -17,6 +17,9 @@ algebra alg_SHAPE implements sig_foldrna(alphabet = char, answer = double) {
   double drem(Subsequence lb, double x, Subsequence rb) {
     return x;
   }
+  double dall(Subsequence lb, double x, Subsequence rb) {
+    return x;
+  }
   double sr(Subsequence lb, double x, Subsequence rb) {
 	Subsequence innerlb = lb;
 	innerlb.i = lb.i+1;
@@ -48,6 +51,9 @@ algebra alg_SHAPE implements sig_foldrna(alphabet = char, answer = double) {
 	return x;
   }
   double ml(Subsequence lb, double x, Subsequence rb) {
+    return x;
+  }
+  double mlall(Subsequence lb, double x, Subsequence rb) {
     return x;
   }
   double incl(double x) {

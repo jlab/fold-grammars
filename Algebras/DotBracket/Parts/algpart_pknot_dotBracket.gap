@@ -44,6 +44,10 @@
     return e;
   }
 
+  Rope dall(Subsequence lloc, Rope e, Subsequence rloc) {
+    return e;
+  }
+
   Rope sr(Subsequence lb,Rope e,Subsequence rb) {
     Rope res;
     append(res, '(');
@@ -90,6 +94,14 @@
   }
 
   Rope ml(Subsequence lb,Rope e,Subsequence rb) {
+    Rope res;
+    append(res, '(');
+    append(res, e);
+    append(res, ')');
+    return res;
+  }
+
+  Rope mlall(Subsequence lb,Rope e,Subsequence rb) {
     Rope res;
     append(res, '(');
     append(res, e);

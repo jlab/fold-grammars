@@ -33,6 +33,9 @@
   double drem(Subsequence lb, double x, Subsequence rb) {
     return x * mk_pf(termau_energy(lb, rb) / float(rows(lb)));
   }
+  double dall(Subsequence lb, double x, Subsequence rb) {
+	return x * mk_pf((termau_energy(lb, rb) + ext_mismatch_energy(lb, rb)) / float(rows(lb)));
+  }
   double sr(Subsequence lb, double x, Subsequence rb) {
 	return x * scale(2) * mk_pf(sr_energy(lb, rb) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
   }
@@ -60,6 +63,9 @@
   }
   double ml(Subsequence lb, double x, Subsequence rb) {
     return x * scale(2) * mk_pf(ml_energy() + ul_energy() + (termau_energy(lb, rb) / float(rows(lb))) + covscore(lb, lb.i, rb.i));
+  }
+  double mlall(Subsequence lb, double x, Subsequence rb) {
+	return x * scale(2) * mk_pf(ml_energy() + ul_energy() + ((termau_energy(lb, rb) + ml_mismatch_energy(lb, rb)) / float(rows(lb))) + covscore(lb, lb.i, rb.i));
   }
   double incl(double x) {
     return x * mk_pf(ul_energy());

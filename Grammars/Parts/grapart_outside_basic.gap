@@ -7,7 +7,7 @@
                | {               outer_weak                     } with allowLonelyBasepairs(true)
                # h;
 
-  outer_weak = outer_drem(LOC, outer_dangle, LOC)
+  outer_weak = dangle_out
              | outer_bl(LOC,                     outer_bp(BASE, outer_strong, BASE) with basepair, REGION with maxsize(30))
              | outer_br(REGION with maxsize(30), outer_bp(BASE, outer_strong, BASE) with basepair, LOC)                    
              | outer_il(REGION with maxsize(30), outer_bp(BASE, outer_strong, BASE) with basepair, REGION with maxsize(30))
@@ -25,6 +25,3 @@
   unpaired = sadd(BASE, unpaired) 
            | nil(LOC) 
            # h;
-
-  outer_mlfinal = outer_ml(BASE, outer_strong, BASE) with basepair
-                # h;
