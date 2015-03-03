@@ -43,6 +43,10 @@ my %BINARIES = (
 	'RNAsubopt', 'RNAsubopt-2.1.3',
 );
 
+if (qx(uname -s) =~ m/SunOS/) {
+	$BINARIES{sed} = '/vol/gnu/bin/sed';
+}
+
 our %TDMfiles = (
 	'macrostate', 'macrostate.gap',
 	'microstate', 'microstate.gap',
