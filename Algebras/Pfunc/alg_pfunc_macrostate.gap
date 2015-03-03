@@ -1,6 +1,6 @@
 //we can't use a two part partition function (one component for energy, the other for covariation), because the scorings for covariation and the Boltzman function have a very unintuitive behaviour if combined --> very strange results for stochastical backtracing. Better directly fuse energy and covariation into one double!
 
-algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = answer_macrostate_pfunc) {
+algebra alg_pfunc implements sig_foldrna(alphabet = char, answer = answer_macrostate_pfunc) {
   answer_macrostate_pfunc sadd(Subsequence lb,answer_macrostate_pfunc e) {
     answer_macrostate_pfunc res = e;
     
@@ -462,14 +462,14 @@ algebra alg_pfunc_macrostate implements sig_foldrna(alphabet = char, answer = an
   }
 }
 
-algebra alg_pfunc_macrostate_filter_me extends alg_pfunc_macrostate {
+algebra alg_pfunc_filter_me extends alg_pfunc {
   choice [answer_macrostate_pfunc] h([answer_macrostate_pfunc] l)
   {
     return l;
   }
 }
 
-algebra alg_pfunc_id_macrostate extends alg_pfunc_macrostate {
+algebra alg_pfunc_id extends alg_pfunc {
   choice [answer_macrostate_pfunc] h([answer_macrostate_pfunc] l)
   {
     return l;

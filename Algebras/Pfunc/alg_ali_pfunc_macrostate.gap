@@ -1,4 +1,4 @@
-algebra alg_ali_pfunc_macrostate implements sig_foldrna(alphabet = M_Char, answer = answer_ali_pfunc_macrostate) {
+algebra alg_ali_pfunc implements sig_foldrna(alphabet = M_Char, answer = answer_ali_pfunc_macrostate) {
   answer_ali_pfunc_macrostate sadd(Subsequence lb,answer_ali_pfunc_macrostate e) {
 	answer_ali_pfunc_macrostate res;
 	  
@@ -580,7 +580,7 @@ algebra alg_ali_pfunc_macrostate implements sig_foldrna(alphabet = M_Char, answe
 }
 
 
-algebra alg_ali_pfunc_id_macrostate extends alg_ali_pfunc_macrostate {
+algebra alg_ali_pfunc_id extends alg_ali_pfunc {
   choice [answer_ali_pfunc_macrostate] h([answer_ali_pfunc_macrostate] l) {
     return l;
   }

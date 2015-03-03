@@ -30,5 +30,5 @@ include "Grammars/gra_macrostate.gap"
 
 
 //start: instances for unit tests
-instance testalifold   = gra_macrostate(alg_ali_mfe_macrostate * alg_ali_dotBracket);
+instance testalifold   = gra_macrostate(alg_ali_mfe * alg_ali_dotBracket);
 //stop: instances for unit tests

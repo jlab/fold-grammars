@@ -102,9 +102,6 @@ sub doComputation {
 		$ljshape =~ s/\[/L/g;
 		$ljshape =~ s/\]/J/g;
 		my $alg_pfunc = "alg_pfunc";
-		if ($settings->{grammar} eq 'macrostate') {
-			$alg_pfunc = "alg_pfunc_macrostate";
-		}
 		my $pfShape = RapidShapes::compileAndrunTDM($shapestring, $settings, {header => 'unnamed sequence', sequence => $sequence}, "print times");		
 		print STDERR "\n";
 	print $pfShape."\n";

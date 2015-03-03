@@ -39,10 +39,8 @@ install-program:
 
 mfe:
 	for grammar in `echo "$(grammars)"`; do \
-		sMa=`if [ $$grammar = "macrostate" ]; then echo "_macrostate"; fi`; \
-		suffix=`echo "$${sMa}"`; \
 		if [ ! -f "$(PROGRAMPREFIX)$@_$${grammar}$(current_windowmodesuffix)" ]; then \
-			$(GAPC) -I $(BASEDIR) -p "alg_mfe$${suffix} * alg_dotBracket" $(BASEDIR)$${grammar}.gap --kbacktrace -o $@_$${grammar}.cc; \
+			$(GAPC) -I $(BASEDIR) -p "alg_mfe * alg_dotBracket" $(BASEDIR)$${grammar}.gap --kbacktrace -o $@_$${grammar}.cc; \
 			$(MAKE) compile outname="$@_$${grammar}"; \
 		fi; \
 	done

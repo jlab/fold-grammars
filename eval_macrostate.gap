@@ -20,4 +20,4 @@ algebra alg_enum auto enum ;
 
 include "Grammars/gra_macrostate.gap"
 
-instance eval = gra_macrostate(alg_mfe_macrostate * alg_dotBracket);
+instance eval = gra_macrostate(alg_mfe * alg_dotBracket);

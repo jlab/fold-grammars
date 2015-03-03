@@ -32,7 +32,7 @@ Known problems with algebra mfe for grammar MacroState:
    For edlr the energy tables of external mismatches is consulted in Turner2004 which are significant different from dl_dangle and dr_dangle. In Turner 1999 edlr is just the sum of dl_dangle and dr_dangle.
 */
 
-algebra alg_ali_mfe_macrostate implements sig_foldrna(alphabet = M_Char, answer = mfecovar_macrostate) {
+algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_macrostate) {
   mfecovar_macrostate sadd(Subsequence lb,mfecovar_macrostate e) {
     mfecovar_macrostate res = e;
 	
@@ -329,7 +329,7 @@ algebra alg_ali_mfe_macrostate implements sig_foldrna(alphabet = M_Char, answer 
 }
 
 
-algebra alg_ali_mfe_subopt_macrostate extends alg_ali_mfe_macrostate {
+algebra alg_ali_mfe_subopt extends alg_ali_mfe {
   kscoring choice [mfecovar_macrostate] h([mfecovar_macrostate] i) {
     return mfeSuboptAliMacrostate(i);
   }

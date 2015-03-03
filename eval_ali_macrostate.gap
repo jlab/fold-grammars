@@ -20,4 +20,4 @@ include "Algebras/DotBracket/alg_ali_dotBracket.gap"
 
 include "Grammars/gra_macrostate.gap"
 
-instance eval = gra_macrostate(alg_ali_dotBracket * alg_ali_mfe_macrostate * alg_ali_shapeX);
+instance eval = gra_macrostate(alg_ali_dotBracket * alg_ali_mfe * alg_ali_shapeX);

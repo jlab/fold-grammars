@@ -24,61 +24,49 @@ install-program:
 
 mfe: mfe_nodangle mfe_overdangle mfe_microstate mfe_macrostate
 mfe_%:
-	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
-		gapc_product="alg_mfe$${suffix} * (alg_dotBracket * alg_shapeX * alg_pfunc$${suffix})" \
+		gapc_product="alg_mfe * (alg_dotBracket * alg_shapeX * alg_pfunc)" \
 		gapc_options="--kbacktrace --no-coopt $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
 subopt: subopt_nodangle subopt_overdangle subopt_microstate subopt_macrostate
 subopt_%:
-	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
-		gapc_product="alg_mfe_subopt$${suffix} * (alg_dotBracket * alg_shapeX * alg_pfunc$${suffix})" \
+		gapc_product="alg_mfe_subopt * (alg_dotBracket * alg_shapeX * alg_pfunc)" \
 		gapc_options="--kbacktrace $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
 shapes: shapes_nodangle shapes_overdangle shapes_microstate shapes_macrostate
 shapes_%:
-	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
-		gapc_product="(((alg_shapeX * alg_mfe$${suffix}) suchthat suboptShapeClasses) * (alg_dotBracket * alg_pfunc$${suffix}))" \
+		gapc_product="(((alg_shapeX * alg_mfe) suchthat suboptShapeClasses) * (alg_dotBracket * alg_pfunc))" \
 		gapc_options="--kbacktrace --no-coopt-class $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
 probs: probs_nodangle probs_overdangle probs_microstate probs_macrostate
 probs_%:
-	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
-		gapc_product="((alg_shapeX * (alg_mfe$${suffix} % alg_pfunc$${suffix})) suchthat filterLowProbShapes) * (alg_dotBracket * alg_pfunc$${suffix})" \
+		gapc_product="((alg_shapeX * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * (alg_dotBracket * alg_pfunc)" \
 		gapc_options="--kbacktrace --no-coopt-class $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
 sample: sample_nodangle sample_overdangle sample_microstate sample_macrostate
 sample_%:
-	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
-		gapc_product="(((alg_pfunc$${suffix} | alg_pfunc_id$${suffix}) * (alg_shapeX * alg_mfe$${suffix} * alg_dotBracket * alg_pfunc$${suffix})) suchthat sample_filter)" \
+		gapc_product="(((alg_pfunc | alg_pfunc_id) * (alg_shapeX * alg_mfe * alg_dotBracket * alg_pfunc)) suchthat sample_filter)" \
 		gapc_options="--sample $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 	
 eval: eval_nodangle eval_overdangle eval_microstate eval_macrostate
 eval_%:
-	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
 	sMi=`if [ ${*} = "microstate" ]; then echo "_id"; fi`; \
-	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
-		gapc_product="alg_dotBracket$${sMi} * alg_mfe$${suffix} * alg_shapeX" \
+		gapc_product="alg_dotBracket$${sMi} * alg_mfe * alg_shapeX" \
 		gapc_options="" \
 		gapc_file="eval_${*}.gap" \
 		gapc_binaryname="$@" \
@@ -115,10 +103,8 @@ mea_%:
 
 pfall: pfall_nodangle pfall_overdangle pfall_microstate pfall_macrostate
 pfall_%:
-	sMa=`if [ ${*} = "macrostate" ]; then echo "_macrostate"; fi`; \
-	suffix=`echo "$${sMa}"`; \
 	$(MAKE) compile \
-		gapc_product="alg_pfunc$${suffix}" \
+		gapc_product="alg_pfunc" \
 		gapc_options="$(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
