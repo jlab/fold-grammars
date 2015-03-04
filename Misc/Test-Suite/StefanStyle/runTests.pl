@@ -17,7 +17,6 @@ use warnings;
 use Data::Dumper;
 
 our $PERL = "perl"; 
-$PERL = "/vol/perl-5.10/bin/64/perl" if (Utils::execute("uname -a") =~ m/waldorf/); #use perl 5.10 on solaris cebitec to have the same rounding behaviour as on stefans laptop.
 
 our $TMPDIR = $Settings::ARCHTRIPLE;
 Utils::execute("mkdir $TMPDIR") unless (-d $TMPDIR);
