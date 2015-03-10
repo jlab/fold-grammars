@@ -40,8 +40,9 @@ sub cast_doComputation {
 	#print results
 		my $shapeNr = 0;
 		foreach my $shape (sort {$commonShapes_infos{$a}->{score} <=> $commonShapes_infos{$b}->{score}} keys(%commonShapes_infos)) { 
-			$IO::varnaoutput .= "\t\t".$IO::tableStart."\n\t\t\t<tr><td>".(++$shapeNr).")</td><td>Shape: ".$shape."</td><td>Score: ".sprintf("%.2f", $commonShapes_infos{$shape}->{score}/100)."</td><td>Ratio of MFE: ".sprintf("%1.2f", $commonShapes_infos{$shape}->{score}/$maxMFE)."</td></tr>\n\t\t</table>\n" if ((exists $settings->{varnaoutput}) && (defined $settings->{varnaoutput}));
-			print "".(++$shapeNr).")".$IO::SEPARATOR."Shape: ".$shape.$IO::SEPARATOR."Score: ".sprintf("%.2f", $commonShapes_infos{$shape}->{score}/100).$IO::SEPARATOR."Ratio of MFE: ".sprintf("%1.2f", $commonShapes_infos{$shape}->{score}/$maxMFE)."\n";
+			$shapeNr++;
+			$IO::varnaoutput .= "\t\t".$IO::tableStart."\n\t\t\t<tr><td>".($shapeNr).")</td><td>Shape: ".$shape."</td><td>Score: ".sprintf("%.2f", $commonShapes_infos{$shape}->{score}/100)."</td><td>Ratio of MFE: ".sprintf("%1.2f", $commonShapes_infos{$shape}->{score}/$maxMFE)."</td></tr>\n\t\t</table>\n" if ((exists $settings->{varnaoutput}) && (defined $settings->{varnaoutput}));
+			print "".($shapeNr).")".$IO::SEPARATOR."Shape: ".$shape.$IO::SEPARATOR."Score: ".sprintf("%.2f", $commonShapes_infos{$shape}->{score}/100).$IO::SEPARATOR."Ratio of MFE: ".sprintf("%1.2f", $commonShapes_infos{$shape}->{score}/$maxMFE)."\n";
 			foreach my $refHash_sequence (@orderedSeqs) {
 				if ((exists $settings->{varnaoutput}) && (defined $settings->{varnaoutput})) {
 					IO::outputVARNA(
