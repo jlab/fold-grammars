@@ -17,6 +17,9 @@ use foldGrammars::Utils;
 use foldGrammars::Structure;
 use foldGrammars::Settings;
 
+#~ my $fct_distance = \&Structure::getBPdistance; #symmetric BP distance does not to be very useful to see differences, thus use FS defined distance!!
+my $fct_distance = \&Structure::getBPdistance_foldingspaces;
+
 my ($grammar, $nameSeqReact) = @ARGV;
 chomp $nameSeqReact;
 my ($header, $sequence, $refStructure, $string_reactivities) = split(m/\t/, $nameSeqReact);
@@ -28,14 +31,17 @@ print STDERR "META sequence: $sequence\n";
 print STDERR "META reference structure: $refStructure\n";
 print STDERR "META reactivities: ".join(", ", @{$reactivities})."\n";
 
+my @paretos = ("PARETO","PARETO_PLAIN","PARETO_NORM");
+
 our $ENERGYPAR = ' -P '.$Settings::rootDir.'/Misc/Analyses/Foldingspaces/Energyparameters/rna_stefan2004.par ';
 our %BINS = ();
 $BINS{OPT} = build_binary($grammar, 'OPT', "./");
-$BINS{SUBOPT} = build_binary($grammar, 'SUBOPT', "./");
-$BINS{SHAPES} = build_binary($grammar, 'SHAPES', "./");
-$BINS{PARETO} = build_binary($grammar, 'PARETO', "./");
-$BINS{PARETO_PLAIN} = build_binary($grammar, 'PARETO_PLAIN', "./");
-$BINS{PARETO_NORM} = build_binary($grammar, 'PARETO_NORM', "./");
+$BINS{PUREMFE} = build_binary($grammar, 'PUREMFE', "./");
+#~ $BINS{SUBOPT} = build_binary($grammar, 'SUBOPT', "./");
+#~ $BINS{SHAPES} = build_binary($grammar, 'SHAPES', "./");
+foreach my $parName (@paretos) {
+	$BINS{$parName} = build_binary($grammar, $parName, "./");
+}
 
 #~ print "slope\tinter.\tPARETO\trefDist\tfrontSize\tPARETO_PLAIN\trefDist\tfrontSize\tPARETO_NORM\trefDist\tfrontSize\n";
 #~ my $minParetoRefDist = 99999999;
@@ -53,38 +59,47 @@ $BINS{PARETO_NORM} = build_binary($grammar, 'PARETO_NORM', "./");
 #~ print "\n";
 #~ exit(0);
 
+print "Pareto Type\tminRefDist\tfrontSize\t#shapeClasses\n";
+foreach my $type (@paretos) { #,'PARETO_PLAIN','PARETO_NORM') {
+	my %pareto = %{compute($type, 1.0, 0.0, $header, $sequence, $refStructure, $reactivities)};
+	my %shapeClasses = ();
+	my $minRefDist_pareto = 99999999;
+	foreach my $structure (keys(%pareto)) {
+		$minRefDist_pareto = $pareto{$structure}->{refDist} if ($minRefDist_pareto > $pareto{$structure}->{refDist});
+		$shapeClasses{$pareto{$structure}->{shapeClass}}++;
+	}
+	print "$type\t".$minRefDist_pareto."\t".scalar(keys(%pareto))."\t".scalar(keys(%shapeClasses))."\n";
+	#~ $minParetoRefDist = $minRefDist_pareto if ($type eq 'PARETO');
+}
+
+print "pureMFE\tminRefDist\tnrCoopt\t#shapeClasses\n";
+my %puremfe = %{compute('PUREMFE', 0.0, 0.0, $header, $sequence, $refStructure, $reactivities)};
+my %shapeClassesPureMFE = ();
+my $minRefDist_puremfe = 99999999;
+foreach my $structure (keys(%puremfe)) {
+	$minRefDist_puremfe = $puremfe{$structure}->{refDist} if ($minRefDist_puremfe > $puremfe{$structure}->{refDist});
+	$shapeClassesPureMFE{$puremfe{$structure}->{shapeString}}++;
+}
+print "pureMFE\t".$minRefDist_puremfe."\t".scalar(keys(%puremfe))."\t".scalar(keys(%shapeClassesPureMFE))."\n";
+
 my @slopes = (0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0,3.2,3.4,3.6,3.8,4.0,4.2,4.4,4.6,4.8,5.0,);
 my @intercepts = (0,-0.2,-0.4,-0.6,-0.8,-1.0,-1.2,-1.4,-1.6,-1.8,-2.0,-2.2,-2.4,-2.6,-2.8,-3.0);
-print "slope\tinter.\t";
-foreach my $type ('PARETO','PARETO_PLAIN','PARETO_NORM') {
-	print "$type\trefDist\tfrontSize\t#shapeClasses\t";
-}
-print "OPT\trefDist\t#co-opt\tSUBOPT\trefDist\t-c\t#structures\tSHAPES\trefDist\t-c\t#structures\n";
+print "OPT\tslope\tinter.\trefDist\t#co-opt\n";
 foreach my $slope (@slopes) {
 	foreach my $intercept (@intercepts) {
-		print $slope."\t".$intercept;
-		
-		my $minParetoRefDist = 99999999;
-		foreach my $type ('PARETO','PARETO_PLAIN','PARETO_NORM') {
-			my %pareto = %{compute($type, $slope, $intercept, $header, $sequence, $refStructure, $reactivities)};
-			my %shapeClasses = ();
-			my $minRefDist_pareto = 99999999;
-			foreach my $structure (keys(%pareto)) {
-				$minRefDist_pareto = $pareto{$structure}->{refDist} if ($minRefDist_pareto > $pareto{$structure}->{refDist});
-				$shapeClasses{$pareto{$structure}->{shapeClass}}++;
-			}
-			print "\t$type\t".$minRefDist_pareto."\t".scalar(keys(%pareto))."\t".scalar(keys(%shapeClasses));
-			$minParetoRefDist = $minRefDist_pareto if ($type eq 'PARETO');
-		}
-		print "\n";
-		next;
-		
+		print "OPT\t".$slope."\t".$intercept;
+
 		my %opt = %{compute("OPT", $slope, $intercept, $header, $sequence, $refStructure, $reactivities)};
+#~ print Dumper \%opt; die;		
 		foreach my $structure (keys(%opt)) {
-			print "\tOPT\t".$opt{$structure}->{refDist}."\t".scalar(keys(%opt));
+			print "\t".$opt{$structure}->{refDist}."\t".scalar(keys(%opt));
 			last;
 		}
 	
+		print "\n";
+		next;
+		
+		my $minParetoRefDist = 0;
 		my $deviation = 0;
 		foreach my $type ('SUBOPT','SHAPES') {
 			my $minRefDist_res = 99999999;
@@ -127,13 +142,13 @@ sub compute {
 	foreach my $line (split(m/\n/, $result)) {
 		if ((($type eq 'PARETO') || ($type eq 'PARETO_PLAIN') || ($type eq 'PARETO_NORM')) && ($line =~ m/^\( \( (.+?) , (.+?) \) , \( ([\(|\)|\.]+) , (.+?) \) \)$/)) {#( ( -3870 , -128.184 ) , (((..((...(((((((((((((....((((((....))))))......((.(((...(((....)))....))).))..((....)))))))).)))))))..)).))) )
 			my ($energy, $reactivity, $structure, $shape) = ($1/100, $2/100, $3, $4);
-			$result{$structure} = {energy => $energy, reactivity => $reactivity, refDist => Structure::getBPdistance_foldingspaces($referenceStructure, $structure), shapeClass => $shape};
-		} elsif ((($type eq 'OPT') || ($type eq 'SUBOPT')) && ($line =~ m/^\( (.+?) , ([\(|\)|\.]+) \)$/)) {#( -3732 , (((..((...(((((((((((((....((((((....))))))......((.(((...(((....)))....))).))..((....)))))))).)))))))..)).))) )
-			my ($score, $structure) = ($1/100, $2);
-			$result{$structure} = {score => $score, refDist => Structure::getBPdistance_foldingspaces($referenceStructure, $structure)};
+			$result{$structure} = {energy => $energy, reactivity => $reactivity, refDist => $fct_distance->($referenceStructure,$structure), shapeClass => $shape};
+		} elsif ((($type eq 'OPT') || ($type eq 'SUBOPT') || ($type eq 'PUREMFE')) && ($line =~ m/^\( (.+?) , \( ([\(|\)|\.]+) , ([\[|\]|\_]+) \) \)$/)) {#( -3732 , (((..((...(((((((((((((....((((((....))))))......((.(((...(((....)))....))).))..((....)))))))).)))))))..)).))) )
+			my ($score, $structure, $shapeString) = ($1/100, $2, $3);
+			$result{$structure} = {score => $score, refDist => $fct_distance->($referenceStructure, $structure), shapeString => $shapeString};
 		} elsif (($type eq 'SHAPES') && ($line =~ m/^\( \( ([\[|\]|\_]+) , (.+?) \) , ([\(|\)|\.]+) \)$/)) {#( ( [[][][]] , -3732 ) , (((..((...(((((((((((((....((((((....))))))......((.(((...(((....)))....))).))..((....)))))))).)))))))..)).))) )
 			my ($shapeString, $score, $structure) = ($1, $2/100, $3);
-			$result{$structure} = {score => $score, shapeString => $shapeString, refDist => Structure::getBPdistance_foldingspaces($referenceStructure, $structure)};
+			$result{$structure} = {score => $score, shapeString => $shapeString, refDist => $fct_distance->($referenceStructure, $structure)};
 		}
 	}
 	
@@ -164,6 +179,25 @@ sub getParameters {
 }
 
 sub build_binary {
+	my $platform = Utils::execute(Settings::getBinary('gcc')." -dumpmachine"); chomp $platform;
+	
+	my ($grammar, $type, $targetDir) = @_;
+	$targetDir = Utils::absFilename($targetDir);
+	if ($type eq 'OPT') {
+		return $targetDir.'/'.$platform.'/bin_pseudo_mfe-probing';
+	} elsif ($type eq 'PARETO') {
+		return $targetDir.'/'.$platform.'/bin_pareto_mfe-probing';
+	} elsif ($type eq 'PARETO_PLAIN') {
+		return $targetDir.'/'.$platform.'/bin_pareto_mfe-probingPlain';
+	} elsif ($type eq 'PARETO_NORM') {
+		return $targetDir.'/'.$platform.'/bin_pareto_mfe-probingNorm';
+	} elsif ($type eq 'PUREMFE') {
+		return $targetDir.'/'.$platform.'/bin_pareto_mfe';
+	}
+
+	return "";
+}
+sub build_binary2 {
 	my @availTypes = ('OPT','SUBOPT','SHAPES','PARETO','PARETO_PLAIN','PARETO_NORM');
 	my @availGrammars = ('overdangle', 'microstate');
 	my $platform = Utils::execute(Settings::getBinary('gcc')." -dumpmachine"); chomp $platform;
