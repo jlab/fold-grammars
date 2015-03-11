@@ -221,7 +221,7 @@ sub writeClustal {
 		foreach my $name (sort {$refHash_alignment->{originalSequenceOrdering}->{$a} <=> $refHash_alignment->{originalSequenceOrdering}->{$b}} keys(%{$refHash_alignment->{originalSequenceOrdering}})) {
 			$out .= $name.(" " x ($longestSeqName - length($name)))."  ".substr($refHash_alignment->{sequences}->{$name}, $blockStart, $blocksize)."\n";
 		}
-		$out .= (" " x $longestSeqName)."  ".substr($refHash_alignment->{conservation}, $blockStart, $blocksize)."\n\n";
+		$out .= (" " x $longestSeqName)."  ".substr($refHash_alignment->{conservation}, $blockStart, $blocksize)."\n\n" if (exists $refHash_alignment->{conservation});
 		$blockStart += $blocksize;
 	}
 	
