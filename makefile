@@ -1,5 +1,5 @@
 PREFIX=/usr
-TESTPREFIX=/homes/sjanssen/Desktop/FGpkali/Misc/Test-Suite/StefanStyle/
+TESTPREFIX=/home/sjanssen/Desktop/fold-grammars/Misc/Test-Suite/StefanStyle/
 
 #programs
 GAPC=gapc
@@ -50,6 +50,7 @@ build-suite:
 	$(MAKE) -C Misc/Applications/RNAalishapes all
 	$(MAKE) -C Misc/Applications/Knotinframe all
 	$(MAKE) -C Misc/Applications/RapidShapes all
+	$(MAKE) -C Misc/Applications/aCMs all
 
 install-suite:
 	$(MAKE) -C Misc/Applications/lib install
@@ -60,6 +61,7 @@ install-suite:
 	$(MAKE) -C Misc/Applications/RNAalishapes install-program
 	$(MAKE) -C Misc/Applications/RNAshapes install-program
 	$(MAKE) -C Misc/Applications/Locomotif_wrapper install-program
+	$(MAKE) -C Misc/Applications/aCMs install-program
 	
 distclean-suite:
 	$(MAKE) -C Misc/Applications/Knotinframe distclean
@@ -68,6 +70,7 @@ distclean-suite:
 	$(MAKE) -C Misc/Applications/RapidShapes distclean
 	$(MAKE) -C Misc/Applications/RNAalishapes distclean
 	$(MAKE) -C Misc/Applications/RNAshapes distclean
+	$(MAKE) -C Misc/Applications/aCMs distclean
 
 install-lib:
 	$(MAKE) -C $(BASEDIR)/Misc/Applications/lib/ install

@@ -28,7 +28,8 @@
 >               indexedConsensi = indexTreeList consensi 1
 
 > get_build_code :: [TreeList Int] -> String
-> get_build_code consensi = "import probabilities\n\n" ++
+> get_build_code consensi = "import probabilities\n" ++
+>                           "import isntimes\n\n" ++
 >                           "type Rope = extern\n" ++
 >                           "type ali = (Rope model, Rope seq, Rope cons)\n\n" ++
 >                           signature ++
