@@ -199,7 +199,7 @@ sub doComputation {
 			open (OUT, "> ".$gapfilename) || die "cannot write gap source code to '$gapfilename': $!";
 				print OUT $trainGAP;
 			close (OUT);
-			my $cmd = "ln -s ".Utils::absFilename(getPath($0))."/Include/isntimes.hh $tmpDir/";
+			my $cmd = "ln -s ".Utils::absFilename(getPath($0))."../include/isntimes.hh $tmpDir/";
 			Utils::execute($cmd);
 			chdir($tmpDir);
 			$cmd = Settings::getBinary('gapc')." --tab-all -p \"alg_fake * alg_parse\" --kbacktrace $gapfilename -o ${PROGID}_train.cc"; 
@@ -311,7 +311,7 @@ sub doComputation {
 			Utils::execute(Settings::getBinary('cp')." $targetGapFile $tmpDir/");
 			chdir($tmpDir);
 			Utils::execute(Settings::getBinary('gapc')." --tab-all -i cykali --kbacktrace --no-coopt $targetGapFile -o acmsearch.cc");
-			Utils::execute(Settings::getBinary('make')." -f acmsearch.mf CXXFLAGS_EXTRA=\"-I $Settings::rootDir/Misc/Applications/ACMs/Lib/\"");
+			Utils::execute(Settings::getBinary('make')." -f acmsearch.mf CXXFLAGS_EXTRA=\"-I ".Utils::absFilename(getPath($0))."/../include/"."\"");
 			Utils::execute(Settings::getBinary('rm')." -f string.*");
 			Utils::execute(Settings::getBinary('cp')." acmsearch $outputFile");
 			print STDERR " done.\n" if ($VERBOSE);
