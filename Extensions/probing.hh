@@ -5,6 +5,80 @@
 #include <fstream>
 #include <string>
 
+//Stefans own 1-dimensional k-means clustering
+inline void kmeans(int numCluster, int numData, double *input, double centroids[]) {
+	int i = 0;
+	int j = 0;
+	int k = 0;
+	int iteration = 0;
+
+	if (numData >= numCluster) {
+		int *assignments = (int *) malloc(sizeof(int) * numData);
+
+		for (i = 0; i < numCluster; i++) {
+			int randomIndex = ((int) (rand() % numData));
+			centroids[i] = input[randomIndex];
+		}
+
+		//initially assign input data to the closest centroid
+		for (i = 0; i < numData; i++) {
+			double minDist = HUGE_VAL;
+			for (j = 0; j < numCluster; j++) {
+				double dist = pow(input[i] - centroids[j], 2);
+				if (dist < minDist) {
+					minDist = dist;
+					assignments[i] = j;
+				}
+			}
+		}
+
+		//iteration to move centroids into the data
+		int *denominators = (int *) malloc(sizeof(int) * numCluster);
+		for (iteration = 0; iteration < 10; iteration++) {
+			for (i = 0; i < numData; i++) {
+				double minDist = HUGE_VAL;
+				int minDistCluster = 0;
+				for (k = 0; k < numCluster; k++) {
+					assignments[i] = k;
+					double overallDistance = 0;
+					for (j = 0; j < numData; j++) {
+						overallDistance += pow(input[j] - centroids[assignments[j]], 2);
+					}
+					if (overallDistance < minDist) {
+						minDistCluster = k;
+						minDist = overallDistance;
+					}
+				}
+				assignments[i] = minDistCluster;
+			}
+
+			for (k = 0; k < numCluster; k++) {
+				denominators[k] = 0;
+				centroids[k] = 0.0;
+			}
+			for (i = 0; i < numData; i++) {
+				centroids[assignments[i]] += input[i];
+				denominators[assignments[i]]++;
+			}
+			for (k = 0; k < numCluster; k++) {
+				centroids[k] = centroids[k] / denominators[k];
+			}
+		}
+
+		//for return: the cluster for the unpaired probing values always comes first, i.e. 0 = unpaired = higher value; 1 = paired = lower value
+		if (centroids[0] < centroids[1]) {
+			double help = centroids[0];
+			centroids[0] = centroids[1];
+			centroids[1] = help;
+		}
+	} else {
+		centroids[0] = 0;
+		centroids[1] = 1;
+	}
+
+	std::cout << "Cluster info: unpaired = " << centroids[0] << ", paired = " << centroids[1] << "\n";
+}
+
 // START: STOLEN FROM RNASTRUCTURE
 inline double Gammadist(double data, double shape, double loc, double scale){
 	return (1/scale)*pow((data - loc)*(1/scale), (shape - 1))*exp(-(1/scale)*(data - loc))/tgamma(shape);
@@ -277,7 +351,57 @@ inline double getSHAPEscore_normalized(const TUSubsequence &leftBase) {
 	return score;
 }
 
+inline double getSHAPEscore_clustered(const TUSubsequence &leftBase, const bool isUnpaired) {
+	static bool isLoaded = false;
+	static std::vector<double> probingData;
+	static double clusterUnpaired;
+	static double clusterPaired;
 
+	if (!isLoaded) {
+		std::string line;
+		std::ifstream infile (getProbingDataFilename());
+		if (infile.is_open()) {
+		    while (getline (infile,line)) {
+				char *thisLine = strdup(line.c_str());
+			//we expect each line to hold the base position (starting with 1) and the reactivity.
+		    	strtok(thisLine, " \t");
+		    	double reactivity = atof(strtok(NULL, " \t"));
+		    	probingData.push_back(reactivity);
+		    }
+		    infile.close();
+		}
+		if (probingData.size() < (leftBase.seq->n)) {
+			std::cerr << "Warning: chemical probing data file '" << getProbingDataFilename() << "' misses " << (leftBase.seq->n - probingData.size()) << " data-row(s) " << std::endl << "         compared to the number of nucleotides in your input sequence." << std::endl << "         Missing values will be set to 0.0!" << std::endl;
+		}
+		if (probingData.size() > (leftBase.seq->n)) {
+			std::cerr << "Warning: chemical probing data file '" << getProbingDataFilename() << "' contains " << (probingData.size()-leftBase.seq->n) << " more row(s) " << std::endl << "         than there are nucleotides in your input sequence." << std::endl << "         Exceeding data lines will be ignored!" << std::endl;
+		}
+		//perform clustering of probing data
+			int numData = probingData.size();
+			double *data = (double *) malloc(sizeof(double) * numData);
+			int i = 0;
+			for (i = 0; i < numData; i++) {
+				data[i] = probingData.at(i);
+			}
+			double *centroids = (double *) malloc(sizeof(double) * 2);
+			kmeans(2,numData,data,centroids);
+			clusterUnpaired = centroids[0];
+			clusterPaired = centroids[1];
+
+		isLoaded = true;
+	}
+
+	double score = 0.0;
+	for (unsigned int i = leftBase.i; i < leftBase.j && i < probingData.size(); i++) {
+		if (isUnpaired) {
+			score += fabs(probingData.at(i) - clusterUnpaired);
+		} else {
+			score += fabs(probingData.at(i) - clusterPaired);
+		}
+	}
+
+	return score;
+}
 
 
 #endif
