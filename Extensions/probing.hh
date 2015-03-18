@@ -389,7 +389,7 @@ inline double getSHAPEscore_normalized(const TUSubsequence &leftBase) {
 	return score;
 }
 
-inline double getSHAPEscore_clustered(const TUSubsequence &leftBase, const bool isUnpaired) {
+inline double getSHAPEscore_clustered(const Subsequence &leftBase, const bool isUnpaired) {
 	static bool isLoaded = false;
 	static std::vector<double> probingData;
 	static double clusterUnpaired;
