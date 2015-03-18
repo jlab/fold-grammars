@@ -111,6 +111,9 @@ inline void kmeans(int numCluster, int numData, double *input, double centroids[
 		centroids[0] = centroids[1];
 		centroids[1] = help;
 	}
+	
+	//centroids[0] = 2.1133;
+	//centroids[1] = 0.116405;
 	std::cout << "Cluster info (" << ((sumRunIterations/((double) MAXRUNS))) << " avg. iterations for "<< MAXRUNS << " alternative start points): unpaired = " << centroids[0] << ", paired = " << centroids[1] << "\n";
 }
 
@@ -391,6 +394,7 @@ inline double getSHAPEscore_clustered(const TUSubsequence &leftBase, const bool 
 	static std::vector<double> probingData;
 	static double clusterUnpaired;
 	static double clusterPaired;
+	std::string modifier = getDotplotFilename();
 
 	if (!isLoaded) {
 		std::string line;
@@ -401,6 +405,7 @@ inline double getSHAPEscore_clustered(const TUSubsequence &leftBase, const bool 
 			//we expect each line to hold the base position (starting with 1) and the reactivity.
 		    	strtok(thisLine, " \t");
 		    	double reactivity = atof(strtok(NULL, " \t"));
+		    	if (reactivity < 0) reactivity = 0.0;
 		    	probingData.push_back(reactivity);
 		    }
 		    infile.close();
@@ -428,6 +433,12 @@ inline double getSHAPEscore_clustered(const TUSubsequence &leftBase, const bool 
 
 	double score = 0.0;
 	for (unsigned int i = leftBase.i; i < leftBase.j && i < probingData.size(); i++) {
+		if ((modifier == "DMS") && (leftBase[i] != A_BASE) && (leftBase[i] != C_BASE)) {
+			continue;
+		}
+		if ((modifier == "CMCT") && (leftBase[i] != U_BASE) && (leftBase[i] != G_BASE)) {
+			continue;
+		}
 		if (isUnpaired) {
 			score += fabs(probingData.at(i) - clusterUnpaired);
 		} else {
