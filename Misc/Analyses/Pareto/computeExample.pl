@@ -31,7 +31,8 @@ print STDERR "META sequence: $sequence\n";
 print STDERR "META reference structure: $refStructure\n";
 print STDERR "META reactivities: ".join(", ", @{$reactivities})."\n";
 
-my @paretos = ("PARETO","PARETO_PLAIN","PARETO_NORM");
+#~ my @paretos = ("PARETO","PARETO_PLAIN","PARETO_NORM","PARETO_CLUSTERED");
+my @paretos = ("PARETO","PARETO_PLAIN","PARETO_NORM","PARETO_CLUSTERED");
 
 our $ENERGYPAR = ' -P '.$Settings::rootDir.'/Misc/Analyses/Foldingspaces/Energyparameters/rna_stefan2004.par ';
 our %BINS = ();
@@ -133,14 +134,14 @@ sub compute {
 		$deviation = "";
 	}
 
-	my $param = getParameters($slope, $intercept, $header);
+	my $param = getParameters($slope, $intercept, $header, $type);
 	my $file_reactivities = createReactivityFile($reactivities);
 	my $command = $BINS{$type}." ".$ENERGYPAR." ".$deviation." -S ".$file_reactivities." ".$param.' "'.$sequence.'"';
 	my $result = Utils::execute($command);
 
 	my %result = ();
 	foreach my $line (split(m/\n/, $result)) {
-		if ((($type eq 'PARETO') || ($type eq 'PARETO_PLAIN') || ($type eq 'PARETO_NORM')) && ($line =~ m/^\( \( (.+?) , (.+?) \) , \( ([\(|\)|\.]+) , (.+?) \) \)$/)) {#( ( -3870 , -128.184 ) , (((..((...(((((((((((((....((((((....))))))......((.(((...(((....)))....))).))..((....)))))))).)))))))..)).))) )
+		if ((($type eq 'PARETO') || ($type eq 'PARETO_PLAIN') || ($type eq 'PARETO_NORM') || ($type eq 'PARETO_CLUSTERED')) && ($line =~ m/^\( \( (.+?) , (.+?) \) , \( ([\(|\)|\.]+) , (.+?) \) \)$/)) {#( ( -3870 , -128.184 ) , (((..((...(((((((((((((....((((((....))))))......((.(((...(((....)))....))).))..((....)))))))).)))))))..)).))) )
 			my ($energy, $reactivity, $structure, $shape) = ($1/100, $2/100, $3, $4);
 			$result{$structure} = {energy => $energy, reactivity => $reactivity, refDist => $fct_distance->($referenceStructure,$structure), shapeClass => $shape};
 		} elsif ((($type eq 'OPT') || ($type eq 'SUBOPT') || ($type eq 'PUREMFE')) && ($line =~ m/^\( (.+?) , \( ([\(|\)|\.]+) , ([\[|\]|\_]+) \) \)$/)) {#( -3732 , (((..((...(((((((((((((....((((((....))))))......((.(((...(((....)))....))).))..((....)))))))).)))))))..)).))) )
@@ -168,14 +169,17 @@ sub createReactivityFile {
 }
 
 sub getParameters {
-	my ($slope, $intercept, $header) = @_;
+	my ($slope, $intercept, $header, $type) = @_;
 	
 	my $probingType = '';
-	$probingType = ' -o DMS ' if ($header =~ m/modifier:DMS/);
-	$probingType = ' -o CMCT ' if ($header =~ m/modifier:CMCT/);
-	$probingType = ' -o SHAPE_AC ' if ($header =~ m/modifier:SHAPE/);
+	$probingType = ' -o "DMS" ' if ($header =~ m/modifier:DMS/);
+	$probingType = ' -o "CMCT" ' if ($header =~ m/modifier:CMCT/);
+	$probingType = ' -o "SHAPE_AC" ' if ($header =~ m/modifier:SHAPE/);
 
-	return " -x ".($slope/10)." -y ".($intercept/10)." ";
+	my $params = " -x ".($slope/10)." -y ".($intercept/10)." ";
+	$params .= $probingType if ($type eq 'PARETO_CLUSTERED');
+	
+	return $params;
 }
 
 sub build_binary {
@@ -191,6 +195,8 @@ sub build_binary {
 		return $targetDir.'/'.$platform.'/bin_pareto_mfe-probingPlain';
 	} elsif ($type eq 'PARETO_NORM') {
 		return $targetDir.'/'.$platform.'/bin_pareto_mfe-probingNorm';
+	} elsif ($type eq 'PARETO_CLUSTERED') {
+		return $targetDir.'/'.$platform.'/bin_pareto_mfe-probingClustered';
 	} elsif ($type eq 'PUREMFE') {
 		return $targetDir.'/'.$platform.'/bin_pareto_mfe';
 	}
