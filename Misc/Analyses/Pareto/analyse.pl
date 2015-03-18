@@ -99,7 +99,7 @@ if ($ISALI) {
 	@seqIDs = sort {$a cmp $b} (keys %res_opt);
 	$PDFfilename = "alignment";
 } else {
-	@paretoNames = ('PARETO','PARETO_PLAIN','PARETO_NORM');
+	@paretoNames = ('PARETO','PARETO_PLAIN','PARETO_NORM','PARETO_CLUSTERED');
 	@seqIDs = sort {splitID($a) <=> splitID($b)} (keys %res_opt);
 	$PDFfilename = "reactivity";
 }
@@ -206,6 +206,7 @@ open (R, " | R --vanilla");
 			$name = 'pareto (plain reactivity values)' if ($type eq 'PARETO_PLAIN');
 			$name = 'pareto (reactivities=probs & consid. unpaired)' if ($type eq 'PARETO_NORM');
 			$name = 'mfe ' if ($type eq 'PUREMFE');
+			$name = 'pareto (Cedrics algebra) ' if ($type eq 'PARETO_CLUSTERED');
 		}
 		if ($type eq 'PUREMFE') {
 			push @legendTexts, $name.': '.int($refFct_summarize->(\@res_mfe));
