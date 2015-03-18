@@ -4,79 +4,114 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <time.h>
 
 //Stefans own 1-dimensional k-means clustering
 inline void kmeans(int numCluster, int numData, double *input, double centroids[]) {
-	int i = 0;
-	int j = 0;
-	int k = 0;
-	int iteration = 0;
+	const int MAXRUNS = 1000;
+	const int MAXITERATIONS = 100;
+	const double CONVERGENCE = 0.01;
 
+	int i, j, k, r = 0;
+	srand (time(NULL));
+
+	int sumRunIterations = 0;
 	if (numData >= numCluster) {
+		double *clusterSumDistances = (double *) malloc(sizeof(double) * numCluster);
+		double *bestCentroids = (double *) malloc(sizeof(double) * numCluster);
+		double bestVariance = HUGE_VAL;
 		int *assignments = (int *) malloc(sizeof(int) * numData);
+		int *numClusterMembers = (int *) malloc(sizeof(int) * numCluster);
+		double minDist_point2cluster = HUGE_VAL;
+		int minDistIndex_point2cluster = HUGE_VAL;
+		double dist_point2cluster = HUGE_VAL;
+		double variance = HUGE_VAL;
+		double newVariance = HUGE_VAL;
+		int randomIndex = 0;
+		int iteration = 1;
+		double varianceChange = HUGE_VAL;
 
-		for (i = 0; i < numCluster; i++) {
-			int randomIndex = ((int) (rand() % numData));
-			centroids[i] = input[randomIndex];
-		}
-
-		//initially assign input data to the closest centroid
-		for (i = 0; i < numData; i++) {
-			double minDist = HUGE_VAL;
-			for (j = 0; j < numCluster; j++) {
-				double dist = pow(input[i] - centroids[j], 2);
-				if (dist < minDist) {
-					minDist = dist;
-					assignments[i] = j;
-				}
+		for (r = 0; r < MAXRUNS; r++) {
+			// select random data points as initial centroids
+			for (k = 0; k < numCluster; k++) {
+				randomIndex = ((int) (rand() % numData));
+				centroids[k] = input[randomIndex];
 			}
-		}
 
-		//iteration to move centroids into the data
-		int *denominators = (int *) malloc(sizeof(int) * numCluster);
-		for (iteration = 0; iteration < 10; iteration++) {
-			for (i = 0; i < numData; i++) {
-				double minDist = HUGE_VAL;
-				int minDistCluster = 0;
+			iteration = 1;
+			variance = HUGE_VAL;
+			while (iteration < MAXITERATIONS) {
+				// find for each point in the input the clostest centroid and save the centroid index as the assignment
+				for (i = 0; i < numData; i++) {
+					minDist_point2cluster = HUGE_VAL;
+					minDistIndex_point2cluster = HUGE_VAL;
+					for (k = 0; k < numCluster; k++) {
+						dist_point2cluster = pow(input[i] - centroids[k], 2);
+						if (dist_point2cluster < minDist_point2cluster) {
+							minDist_point2cluster = dist_point2cluster;
+							minDistIndex_point2cluster = k;
+						}
+					}
+					assignments[i] = minDistIndex_point2cluster;
+				}
+
+				// update centroids according to the new assignment
 				for (k = 0; k < numCluster; k++) {
-					assignments[i] = k;
-					double overallDistance = 0;
-					for (j = 0; j < numData; j++) {
-						overallDistance += pow(input[j] - centroids[assignments[j]], 2);
-					}
-					if (overallDistance < minDist) {
-						minDistCluster = k;
-						minDist = overallDistance;
+					clusterSumDistances[k] = 0;
+					numClusterMembers[k] = 0;
+				}
+				for (i = 0; i < numData; i++) {
+					clusterSumDistances[assignments[i]] += input[i];
+					numClusterMembers[assignments[i]] ++;
+				}
+				for (k = 0; k < numCluster; k++) {
+					if (numClusterMembers[k] > 0) {
+						centroids[k] = clusterSumDistances[k] / numClusterMembers[k];
+					} else {
+						centroids[k] = 0;
 					}
 				}
-				assignments[i] = minDistCluster;
-			}
 
-			for (k = 0; k < numCluster; k++) {
-				denominators[k] = 0;
-				centroids[k] = 0.0;
+				// compute overall cluster variance as a quality measure for the clustering
+				newVariance = 0;
+				for (i = 0; i < numData; i++) {
+					newVariance += pow(input[i] - centroids[assignments[i]],2);
+				}
+
+				// stop clustering if change between two iterations is too small
+				varianceChange = variance - newVariance;
+				variance = newVariance;
+				if (varianceChange < CONVERGENCE) {
+					break;
+				}
+				iteration++;
 			}
-			for (i = 0; i < numData; i++) {
-				centroids[assignments[i]] += input[i];
-				denominators[assignments[i]]++;
-			}
-			for (k = 0; k < numCluster; k++) {
-				centroids[k] = centroids[k] / denominators[k];
+			sumRunIterations += iteration;
+			if (variance < bestVariance) {
+				for (k = 0; k < numCluster; k++) {
+					bestCentroids[k] = centroids[k];
+				}
+				bestVariance = variance;
 			}
 		}
 
-		//for return: the cluster for the unpaired probing values always comes first, i.e. 0 = unpaired = higher value; 1 = paired = lower value
-		if (centroids[0] < centroids[1]) {
-			double help = centroids[0];
-			centroids[0] = centroids[1];
-			centroids[1] = help;
+		for (k = 0; k < numCluster; k++) {
+			centroids[k] = bestCentroids[k];
 		}
 	} else {
-		centroids[0] = 0;
-		centroids[1] = 1;
+		for (k = 0; k < numCluster; k++) {
+			centroids[k] = 1 / numCluster * k;
+		}
 	}
 
-	std::cout << "Cluster info: unpaired = " << centroids[0] << ", paired = " << centroids[1] << "\n";
+
+	//for return: the cluster for the unpaired probing values always comes first, i.e. 0 = unpaired = higher value; 1 = paired = lower value
+	if (centroids[0] < centroids[1]) {
+		double help = centroids[0];
+		centroids[0] = centroids[1];
+		centroids[1] = help;
+	}
+	std::cout << "Cluster info (" << ((sumRunIterations/((double) MAXRUNS))) << " avg. iterations for "<< MAXRUNS << " alternative start points): unpaired = " << centroids[0] << ", paired = " << centroids[1] << "\n";
 }
 
 // START: STOLEN FROM RNASTRUCTURE
