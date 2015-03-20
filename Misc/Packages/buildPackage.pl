@@ -56,7 +56,7 @@ sub commitDebian {
 	if ((exists $Settings::PROGINFOS{$package}->{packageDir}) && (-d $Settings::PROGINFOS{$package}->{packageDir}.'/debian')) {
 		my $pathContainingDebian = $Settings::PROGINFOS{$package}->{packageDir};
 		my $newversion = $Settings::PROGINFOS{$package}->{version};
-		my $currentDir = Utils::execute(Settings::getBinaries("pwd")); chomp $currentDir;
+		my $currentDir = Utils::execute(Settings::getBinary("pwd")); chomp $currentDir;
 		Utils::execute("rm -rf $TMPDIR") if (-d $TMPDIR);
 		mkdir $TMPDIR;
 		my $packageDir = $TMPDIR.'/'.$package.'_'.$newversion;
