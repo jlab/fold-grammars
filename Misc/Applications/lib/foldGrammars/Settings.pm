@@ -15,7 +15,7 @@ our %PROGINFOS = (
 	'knotinframe', 			{date => '20.03.2015', version => '2.0.8', name => 'knotinframe', packageDir => 'Knotinframe/'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
 	'getoutsidetruth', 	{date => '19.04.2013', version => '1.0.0', name => 'getOutsideTruth'},
-	'acms',							{date => '20.03.2015', version => '1.2.0', name => 'acms', packageDir => 'aCMs/'},
+	'acms',							{date => '21.03.2015', version => '1.2.1', name => 'acms', packageDir => 'aCMs/'},
 	'acmbuild', 					{date => '21.11.2014', version => '1.1.1', name => 'acmbuild'},
 	'acmsearch', 				{date => '21.11.2014', version => '1.1.1', name => 'acmsearch'},
 	'locomotif_wrapper', {date => '16.01.2015', version => '1.0.0', name => 'Locomotif_wrapper'},
