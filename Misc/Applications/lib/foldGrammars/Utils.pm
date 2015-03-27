@@ -560,7 +560,7 @@ sub createUniqueTempDir { #create temporary unique directory
 
 sub execute {
 	my ($command) = @_;
-	
+
 	my $mergeSTD = 'false';
 	if ($command =~ m/2>&1/) {
 		$command =~ s/2>&1//g;
@@ -578,6 +578,7 @@ sub execute {
 	unlink $tmpStderr;
 	
 	$exitCode = 0 if (($command =~ m/\s*diff\s+/) && ($exitCode == 1)); #because diff gives an exit code of 1 if there are differences
+	$exitCode = 0 if (($command =~ m/\s*baliscore\s+/)); #because baliscore exit code is strange
 	if ($exitCode != 0) {
 		print STDERR "Shell execution of `$command` failed with exit code $exitCode, called by\n";
 		my $j = 0;

@@ -4,7 +4,11 @@ include $(BASEDIR)/makefile
 PREFIX ?= $(HOME)/local/RNAshapes
 PROGRAMPREFIX=bin_
 
-all: pseudo_mfe-probing pareto_mfe-probing pareto_mfe-probingPlain pareto_mfe-probingNorm pareto_mfe ali_mfe pseudo_ali_mfe-covar pareto_ali_mfe-covar pareto_mfe-probingClustered
+all: probing alignment gotoh
+
+probing: pseudo_mfe-probing pareto_mfe-probing pareto_mfe-probingPlain pareto_mfe-probingNorm pareto_mfe pareto_mfe-probingClustered
+alignment: ali_mfe pseudo_ali_mfe-covar pareto_ali_mfe-covar
+gotoh: gotoh_pseudo gotoh_pareto
 
 pseudo_mfe-probing:
 	$(MAKE) compile \
@@ -69,6 +73,22 @@ pareto_ali_mfe-covar:
 		gapc_file="ali_overdangle.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
+gotoh_pseudo:
+	$(MAKE) compile \
+		gapc_product="alg_pseudo * alg_pretty" \
+		gapc_options="--kbacktrace --no-coopt" \
+		gapc_file="Misc/Analyses/Pareto/gotoh.gap" \
+		gapc_binaryname="$@";
+	
+gotoh_pareto:
+	$(MAKE) compile \
+		gapc_product="(alg_gap ^ alg_init) * alg_pretty" \
+		gapc_options="--kbacktrace --no-coopt-class" \
+		gapc_file="Misc/Analyses/Pareto/gotoh.gap" \
+		gapc_binaryname="$@";
+	
+baliscore:
+	$(CC) bali_score.c -o "$(ARCHTRIPLE)/$@"
 
 distclean:
 	rm -rf $(ARCHTRIPLE);
