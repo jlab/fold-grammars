@@ -134,4 +134,111 @@ rules merge(std::pair<List<rules, unsigned char>::iterator, List<rules, unsigned
   return res;
 }
 
+//the alignment data type is for representing M_Char answers
+#include <vector>
+struct alignment {
+  bool empty_;
+  std::vector<Rope> alignmentRows;
+
+  alignment() {
+	  empty_ = false;
+  }
+
+  alignment(int i) {
+	  empty_ = alignmentRows.size() == 0;
+  }
+
+  void empty() {
+	  empty_ = true;
+  }
+  bool isEmpty() const {
+	  return empty_;
+  }
+};
+inline bool isEmpty(const alignment &a) {
+	return a.empty_;
+}
+inline bool is_not_empty(const alignment &a) {
+	return !a.empty_;
+}
+inline void empty(alignment &e) {
+	e.empty_ = true;
+}
+inline int rows(const alignment &a) {
+	return a.alignmentRows.size();
+}
+
+inline std::ostream &operator<<(std::ostream &s, const alignment &r) {
+  if (r.empty_) {
+      s << 'E';
+  } else {
+	  unsigned int i = 0;
+	  for (i = 0; i < r.alignmentRows.size(); i++) {
+		  s << r.alignmentRows.at(i) << "#";
+	  }
+  }
+  return s;
+}
+
+inline uint32_t hashable_value(const alignment& candidate) {
+	Rope allinone;
+	unsigned int i;
+	for (i = 0; i < candidate.alignmentRows.size(); i++) {
+		append(allinone, candidate.alignmentRows.at(i));
+	}
+	return allinone.hashable_value();
+}
+
+inline void append(alignment &ali1, const alignment &ali2) {
+	int i = 0;
+	int numberRows = ali1.alignmentRows.size();
+	if (((int) ali2.alignmentRows.size()) > numberRows) numberRows = ali2.alignmentRows.size();
+
+	for (i = 0; i < numberRows; i++) {
+		Rope help;
+		if (((int) ali1.alignmentRows.size()) > i) append(help, ali1.alignmentRows.at(i));
+		if (((int) ali2.alignmentRows.size()) > i) append(help, ali2.alignmentRows.at(i));
+		if (((int) ali1.alignmentRows.size()) <= i) {
+			ali1.alignmentRows.push_back(help);
+		} else {
+			ali1.alignmentRows.at(i) = help;
+		}
+	}
+}
+template<typename pos_type>
+inline void append(alignment &ali1, const Basic_Subsequence<M_Char, pos_type> &mchar) {
+	unsigned int i = 0, k = 0;
+	int numberRows = ali1.alignmentRows.size();
+	if (rows(mchar) > numberRows) numberRows = rows(mchar);
+
+	for (i = 0; i < numberRows; i++) {
+		Rope help;
+		if (ali1.alignmentRows.size() > i) append(help, ali1.alignmentRows.at(i));
+		for (k = mchar.i; k < mchar.j; k++) {
+			if (rows(mchar) > i) append(help, mchar[k].column(i));
+		}
+		if (ali1.alignmentRows.size() <= i) {
+			ali1.alignmentRows.push_back(help);
+		} else {
+			ali1.alignmentRows.at(i) = help;
+		}
+	}
+}
+inline void append(alignment &ali1, char x, unsigned int rows) {
+	unsigned int i = 0;
+	unsigned int numberRows = ali1.alignmentRows.size();
+	if (rows > numberRows) numberRows = rows;
+
+	for (i = 0; i < numberRows; i++) {
+		Rope help;
+		if (ali1.alignmentRows.size() > i) append(help, ali1.alignmentRows.at(i));
+		if (rows > i) append(help, x);
+		if (ali1.alignmentRows.size() <= i) {
+			ali1.alignmentRows.push_back(help);
+		} else {
+			ali1.alignmentRows.at(i) = help;
+		}
+	}
+}
+
 #endif
