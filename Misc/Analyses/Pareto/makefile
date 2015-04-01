@@ -3,12 +3,14 @@ include $(BASEDIR)/makefile
 
 PREFIX ?= $(HOME)/local/RNAshapes
 PROGRAMPREFIX=bin_
+JALIMAXROW = 11
 
-all: probing alignment gotoh
+all: probing alignment gotoh jali
 
 probing: pseudo_mfe-probing pareto_mfe-probing pareto_mfe-probingPlain pareto_mfe-probingNorm pareto_mfe pareto_mfe-probingClustered
 alignment: ali_mfe pseudo_ali_mfe-covar pareto_ali_mfe-covar
 gotoh: gotoh_pseudo gotoh_pareto
+jali: jali_pseudo jali_pareto
 
 pseudo_mfe-probing:
 	$(MAKE) compile \
@@ -85,6 +87,22 @@ gotoh_pareto:
 		gapc_product="(alg_gap ^ alg_init) * alg_pretty" \
 		gapc_options="--kbacktrace --no-coopt-class" \
 		gapc_file="Misc/Analyses/Pareto/gotoh.gap" \
+		gapc_binaryname="$@";
+	
+jali_pseudo:
+	perl jali_generateCode.pl $(JALIMAXROW) > jali.gap
+	$(MAKE) compile \
+		gapc_product="alg_pseudo * alg_pretty" \
+		gapc_options="--kbacktrace --no-coopt" \
+		gapc_file="Misc/Analyses/Pareto/jali.gap" \
+		gapc_binaryname="$@";
+	
+jali_pareto:
+	perl jali_generateCode.pl $(JALIMAXROW) > jali.gap
+	$(MAKE) compile \
+		gapc_product="(alg_ali ^ alg_jump) * alg_pretty" \
+		gapc_options="--kbacktrace --no-coopt-class" \
+		gapc_file="Misc/Analyses/Pareto/jali.gap" \
 		gapc_binaryname="$@";
 	
 baliscore:
