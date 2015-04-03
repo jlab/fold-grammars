@@ -16,6 +16,7 @@ use foldGrammars::Utils;
 use foldGrammars::Settings;
 
 my ($aliFile, $seqFile, $binary, $jumpCost) = @ARGV;
+die "usage: <alignment> <single sequence> <binary> <jump cost>\n" if (@ARGV != 4);
 
 my $bgapAlignment = "";
 foreach my $row (@{Utils::applyFunctionToFastaFile($aliFile, \&getSeq)}) {

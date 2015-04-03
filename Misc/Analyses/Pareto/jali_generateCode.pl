@@ -21,8 +21,10 @@ $CODE .= 'type M_Char = extern'."\n";
 $CODE .= ''."\n";
 $CODE .= genSignature();
 $CODE .= ''."\n";
-$CODE .= 'algebra alg_count auto count;'."\n";
+#$CODE .= 'algebra alg_count auto count;'."\n";
 $CODE .= 'algebra alg_enum auto enum;'."\n";
+$CODE .= ''."\n";
+$CODE .= genAlgebraCount();
 $CODE .= ''."\n";
 $CODE .= genAlgebraPretty();
 $CODE .= ''."\n";
@@ -32,7 +34,7 @@ $CODE .= genAlgebraScore_ali();
 $CODE .= ''."\n";
 $CODE .= genAlgebraScore_jump();
 $CODE .= ''."\n";
-$CODE .= genGrammar();
+$CODE .= genGrammar_nonamb();
 $CODE .= ''."\n";
 $CODE .= 'instance count = gra_jump(alg_count);'."\n";
 $CODE .= 'instance enum = gra_jump(alg_enum);'."\n";
@@ -82,6 +84,64 @@ sub genGrammar {
 			$CODE .= "\n";
 		}
 		$CODE .= '       # h;'."\n";
+		$CODE .= "\n";
+	}
+	$CODE .= '}'."\n";
+	
+	return $CODE;
+}
+
+sub genGrammar_nonamb {
+	my $CODE = "";
+	$CODE .= 'grammar gra_jump uses sig_jump(axiom = alignment) {'."\n";
+	$CODE .= '  locAliLeft = skipAliLeft(<BASE, EMPTY>, locAliLeft)'."\n";
+	$CODE .= '             | locAliRight'."\n";
+	$CODE .= '             # h;'."\n";
+	$CODE .= ''."\n";
+	$CODE .= '  locAliRight = skipAliRight(locAliRight, <BASE, EMPTY>)'."\n";
+	$CODE .= '              | locSeqLeft'."\n";
+	$CODE .= '              # h;'."\n";
+	$CODE .= ''."\n";
+	$CODE .= '  locSeqLeft = skipSeqLeft(<EMPTY, BASE>, locSeqLeft)'."\n";
+	$CODE .= '              | locSeqRight'."\n";
+	$CODE .= '              # h;'."\n";
+	$CODE .= ''."\n";
+	$CODE .= '  locSeqRight = skipSeqRight(locSeqRight, <EMPTY, BASE>)'."\n";
+	$CODE .= '              | alignment'."\n";
+	$CODE .= '              # h;'."\n";
+	$CODE .= ''."\n";
+	$CODE .= '  alignment = nil(<EMPTY, EMPTY>)'."\n";
+	for (my $i = 0; $i < @ROWS; $i++) {
+		$CODE .= '        | start'.$ROWS[$i].'(ali'.$ROWS[$i].')';
+		$CODE .= ' with ifRowPresent('.($i+1).')' if ($i != 0);
+		$CODE .= "\n";
+	}
+	$CODE .= '        # h;'."\n";
+	$CODE .= ''."\n";
+	for (my $i = 0; $i < @ROWS; $i++) {
+		$CODE .= '  ali'.$ROWS[$i].' = del'.$ROWS[$i].'  (<BASE , EMPTY>, ali'.$ROWS[$i].')'."\n";
+		$CODE .= '       | ins'.$ROWS[$i]."\n";
+		$CODE .= '       # h;'."\n";
+		$CODE .= '  ins'.$ROWS[$i].' = match'.$ROWS[$i].'(<BASE , BASE >, jump'.$ROWS[$i].')'."\n";
+		$CODE .= '       | ins'.$ROWS[$i].'  (<EMPTY, BASE >, ins'.$ROWS[$i].')'."\n";
+		$CODE .= '       | nil(<EMPTY, EMPTY>)'."\n";
+		$CODE .= '       # h;'."\n";
+		$CODE .= '  jump'.$ROWS[$i].'';
+		for (my $j = 0; $j < @ROWS; $j++) {
+			if ($j == 0) {
+				$CODE .= ' = ';
+			} else {
+				$CODE .= '        | ';
+			}
+			if ($i == $j) {
+				$CODE .= 'ali'.$ROWS[$i].'         ';
+			} else {
+				$CODE .= 'jump'.$ROWS[$i].'_'.$ROWS[$j].'(ali'.$ROWS[$j].')';
+			}
+			$CODE .= ' with ifRowPresent('.($j+1).')' if ($j != 0);
+			$CODE .= "\n";
+		}
+		$CODE .= '        # h;'."\n";
 		$CODE .= "\n";
 	}
 	$CODE .= '}'."\n";
@@ -380,5 +440,54 @@ sub genSignature {
 	$CODE .= '  answer skipSeqRight(answer, <void, Subsequence>);'."\n";
 	$CODE .= '  choice [answer] h([answer]);'."\n";
 	$CODE .= '}'."\n";
+	return $CODE;
+}
+sub genAlgebraCount {
+	my $CODE = "";
+	$CODE .= 'algebra alg_count implements sig_jump(alphabet = M_Char, answer = int) {'."\n";
+	for (my $i = 0; $i < @ROWS; $i++) {
+		$CODE .= '  int match'.$ROWS[$i].'(<Subsequence a, Subsequence b>, int x) {'."\n";
+		$CODE .= '    return x;'."\n";
+		$CODE .= '  }'."\n";
+		
+		$CODE .= '  int ins'.$ROWS[$i].'(<void, Subsequence b>, int x) {'."\n";
+		$CODE .= '    return x;'."\n";
+		$CODE .= '  }'."\n";
+
+		$CODE .= '  int del'.$ROWS[$i].'(<Subsequence a, void>, int x) {'."\n";
+		$CODE .= '    return x;'."\n";
+		$CODE .= '  }'."\n";
+		
+  		$CODE .= '  int start'.$ROWS[$i].'(int x) {'."\n";
+		$CODE .= '    return x;'."\n";
+  		$CODE .= '  }'."\n";
+		
+		for (my $j = 0; $j < @ROWS; $j++) {
+			next if ($i == $j);
+			$CODE .= '  int jump'.$ROWS[$i].'_'.$ROWS[$j].'(int x) {'."\n";
+			$CODE .= '    return x;'."\n";
+			$CODE .= '  }'."\n";
+		}
+	}
+	$CODE .= '  int skipAliLeft(<Subsequence a, void>, int x) {'."\n";
+	$CODE .= '    return x;'."\n";
+	$CODE .= '  }'."\n";
+	$CODE .= '  int skipAliRight(int x, <Subsequence a, void>) {'."\n";
+	$CODE .= '    return x;'."\n";
+	$CODE .= '  }'."\n";
+	$CODE .= '  int skipSeqLeft(<void, Subsequence b>, int x) {'."\n";
+	$CODE .= '    return x;'."\n";
+	$CODE .= '  }'."\n";
+	$CODE .= '  int skipSeqRight(int x, <void, Subsequence b>) {'."\n";
+	$CODE .= '    return x;'."\n";
+	$CODE .= '  }'."\n";
+	$CODE .= '  int nil(<void, void>) {'."\n";
+	$CODE .= '    return 1;'."\n";
+	$CODE .= '  }'."\n";
+	$CODE .= '  choice [int] h([int] l) {'."\n";
+	$CODE .= '     return list(sum(l));'."\n";
+	$CODE .= '  }'."\n";
+	$CODE .= '}'."\n";
+
 	return $CODE;
 }
