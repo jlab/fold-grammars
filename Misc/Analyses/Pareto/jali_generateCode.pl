@@ -60,7 +60,7 @@ sub genGrammar {
 	$CODE .= '              | alignment'."\n";
 	$CODE .= '              # h;'."\n";
 	$CODE .= ''."\n";
-	$CODE .= '  alignment = nil(<EMPTY, EMPTY>)'."\n";
+	$CODE .= '  alignment = nil(<LOC, EMPTY>)'."\n";
 	for (my $i = 0; $i < @ROWS; $i++) {
 		$CODE .= '        | start'.$ROWS[$i].'(ali'.$ROWS[$i].')';
 		$CODE .= ' with ifRowPresent('.($i+1).')' if ($i != 0);
@@ -73,7 +73,7 @@ sub genGrammar {
 		$CODE .= '       | ins'.$ROWS[$i].'  (<EMPTY, BASE >, jump'.$ROWS[$i].')'."\n";
 		$CODE .= '       | match'.$ROWS[$i].'(<BASE , BASE >, jump'.$ROWS[$i].')'."\n";
 		$CODE .= '       # h;'."\n";
-		$CODE .= '  jump'.$ROWS[$i].' = nil(<EMPTY, EMPTY>)'."\n";
+		$CODE .= '  jump'.$ROWS[$i].' = nil(<LOC, EMPTY>)'."\n";
 		for (my $j = 0; $j < @ROWS; $j++) {
 			if ($i == $j) {
 				$CODE .= '       | ali'.$ROWS[$i].'         ';
@@ -110,7 +110,7 @@ sub genGrammar_nonamb {
 	$CODE .= '              | alignment'."\n";
 	$CODE .= '              # h;'."\n";
 	$CODE .= ''."\n";
-	$CODE .= '  alignment = nil(<EMPTY, EMPTY>)'."\n";
+	$CODE .= '  alignment = nil(<LOC, EMPTY>)'."\n";
 	for (my $i = 0; $i < @ROWS; $i++) {
 		$CODE .= '        | start'.$ROWS[$i].'(ali'.$ROWS[$i].')';
 		$CODE .= ' with ifRowPresent('.($i+1).')' if ($i != 0);
@@ -124,7 +124,7 @@ sub genGrammar_nonamb {
 		$CODE .= '       # h;'."\n";
 		$CODE .= '  ins'.$ROWS[$i].' = match'.$ROWS[$i].'(<BASE , BASE >, jump'.$ROWS[$i].')'."\n";
 		$CODE .= '       | ins'.$ROWS[$i].'  (<EMPTY, BASE >, ins'.$ROWS[$i].')'."\n";
-		$CODE .= '       | nil(<EMPTY, EMPTY>)'."\n";
+		$CODE .= '       | nil(<LOC, EMPTY>)'."\n";
 		$CODE .= '       # h;'."\n";
 		$CODE .= '  jump'.$ROWS[$i].'';
 		for (my $j = 0; $j < @ROWS; $j++) {
@@ -187,7 +187,7 @@ sub genAlgebraScore_pseudo {
 	$CODE .= '  int skipSeqRight(int x, <void, Subsequence b>) {'."\n";
 	$CODE .= '    return x;'."\n";
 	$CODE .= '  }'."\n";
-	$CODE .= '  int nil(<void, void>) {'."\n";
+	$CODE .= '  int nil(<Subsequence l, void>) {'."\n";
 	$CODE .= '    return 0;'."\n";
 	$CODE .= '  }'."\n";
 	$CODE .= '  choice [int] h([int] l) {'."\n";
@@ -236,7 +236,7 @@ sub genAlgebraScore_jump {
 	$CODE .= '  int skipSeqRight(int x, <void, Subsequence b>) {'."\n";
 	$CODE .= '    return x;'."\n";
 	$CODE .= '  }'."\n";
-	$CODE .= '  int nil(<void, void>) {'."\n";
+	$CODE .= '  int nil(<Subsequence l, void>) {'."\n";
 	$CODE .= '    return 0;'."\n";
 	$CODE .= '  }'."\n";
 	$CODE .= '  choice [int] h([int] l) {'."\n";
@@ -286,7 +286,7 @@ sub genAlgebraScore_ali {
 	$CODE .= '  int skipSeqRight(int x, <void, Subsequence b>) {'."\n";
 	$CODE .= '    return x;'."\n";
 	$CODE .= '  }'."\n";
-	$CODE .= '  int nil(<void, void>) {'."\n";
+	$CODE .= '  int nil(<Subsequence l, void>) {'."\n";
 	$CODE .= '    return 0;'."\n";
 	$CODE .= '  }'."\n";
 	$CODE .= '  choice [int] h([int] l) {'."\n";
@@ -308,6 +308,7 @@ sub genAlgebraPretty {
 		$CODE .= '    append(res.single, getChar(b[b.i], 1));'."\n";
 		$CODE .= '    append(res.single, x.single);'."\n";
 		$CODE .= '    append(res.row, \''.$ROWS[$i].'\');'."\n";
+		#~ $CODE .= '    append(res.row, \'m\');'."\n";
 		$CODE .= '    append(res.row, x.row);'."\n";
 		$CODE .= '    append(res.jump, x.jump);'."\n"; 
 		$CODE .= '    return res;'."\n";
@@ -320,6 +321,7 @@ sub genAlgebraPretty {
 		$CODE .= '    append(res.single, getChar(b[b.i], 1));'."\n";
 		$CODE .= '    append(res.single, x.single);'."\n";
 		$CODE .= '    append(res.row, \''.$ROWS[$i].'\');'."\n";
+		#~ $CODE .= '    append(res.row, \'i\');'."\n";
 		$CODE .= '    append(res.row, x.row);'."\n";
 		$CODE .= '    append(res.jump, x.jump);'."\n"; 
 		$CODE .= '    return res;'."\n";
@@ -332,6 +334,7 @@ sub genAlgebraPretty {
 		$CODE .= '    append(res.single, \'-\');'."\n";
 		$CODE .= '    append(res.single, x.single);'."\n";
 		$CODE .= '    append(res.row, \''.$ROWS[$i].'\');'."\n";
+		#~ $CODE .= '    append(res.row, \'d\');'."\n";
 		$CODE .= '    append(res.row, x.row);'."\n";
 		$CODE .= '    append(res.jump, x.jump);'."\n"; 
 		$CODE .= '    return res;'."\n";
@@ -343,6 +346,7 @@ sub genAlgebraPretty {
   		$CODE .= '    append(res.single, x.single);'."\n";
   		$CODE .= '    append(res.row, x.row);'."\n";
   		$CODE .= '    append(res.jump, \''.$ROWS[$i].'\');'."\n";
+  		#~ $CODE .= '    append(res.jump, \'s\');'."\n";
   		$CODE .= '    append(res.jump, x.jump);'."\n";
 		$CODE .= '    return res;'."\n";
   		$CODE .= '  }'."\n";
@@ -360,9 +364,10 @@ sub genAlgebraPretty {
 			$CODE .= '  }'."\n";
 		}
 	}
-	$CODE .= '  spair nil(<void, void>) {'."\n";
-	$CODE .= '    spair r;'."\n";
-	$CODE .= '    return r;'."\n";
+	$CODE .= '  spair nil(<Subsequence l, void>) {'."\n";
+	$CODE .= '    spair res;'."\n";
+	$CODE .= '    initEmpty(res.ali, rows(l));'."\n";
+	$CODE .= '    return res;'."\n";
 	$CODE .= '  }'."\n";
 	$CODE .= '  spair skipAliLeft(<Subsequence a, void>, spair x) {'."\n";
 	$CODE .= '    //spair res;'."\n";
@@ -433,7 +438,7 @@ sub genSignature {
 			$CODE .= '  answer jump'.$id.'_'.$id_to.'(answer);'."\n";
 		}
 	}
-	$CODE .= '  answer nil   (<void,        void       >        );'."\n";
+	$CODE .= '  answer nil   (<Subsequence,        void       >        );'."\n";
 	$CODE .= '  answer skipAliLeft(<Subsequence, void>, answer);'."\n";
 	$CODE .= '  answer skipAliRight(answer, <Subsequence, void>);'."\n";
 	$CODE .= '  answer skipSeqLeft(<void, Subsequence>, answer);'."\n";
@@ -481,7 +486,7 @@ sub genAlgebraCount {
 	$CODE .= '  int skipSeqRight(int x, <void, Subsequence b>) {'."\n";
 	$CODE .= '    return x;'."\n";
 	$CODE .= '  }'."\n";
-	$CODE .= '  int nil(<void, void>) {'."\n";
+	$CODE .= '  int nil(<Subsequence l, void>) {'."\n";
 	$CODE .= '    return 1;'."\n";
 	$CODE .= '  }'."\n";
 	$CODE .= '  choice [int] h([int] l) {'."\n";
