@@ -189,6 +189,15 @@ inline uint32_t hashable_value(const alignment& candidate) {
 	return allinone.hashable_value();
 }
 
+inline void initEmpty(alignment &ali, const unsigned int rows) {
+	unsigned int i;
+	if (ali.alignmentRows.size() == 0) {
+		for (i = 0; i < rows; i++) {
+			Rope help;
+			ali.alignmentRows.push_back(help);
+		}
+	}
+}
 inline void append(alignment &ali1, const alignment &ali2) {
 	int i = 0;
 	int numberRows = ali1.alignmentRows.size();
