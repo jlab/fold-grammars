@@ -22,7 +22,56 @@ my %BINS = (
 
 my ($dir) = @ARGV;
 
-evaluate($dir);
+evaluateCedric($dir);
+
+
+sub evaluateCedric {
+	my ($truthFile) = @_;
+	
+	print STDERR "META file: $truthFile\n";
+	
+	my $trueAli = parseMSF($truthFile);
+	my @order = sort {$trueAli->{order}->{$a} <=> $trueAli->{order}->{$b}} keys(%{$trueAli->{sequences}});
+	#delet rows if there are too many in the alignment
+	foreach my $id (splice (@order, 11)) {
+		delete $trueAli->{sequences}->{$id};
+		delete $trueAli->{order}->{$id};
+	}
+	removeGapCols($trueAli);
+	
+	my %inputAlignment = ();
+	foreach my $id (@order) {
+		$inputAlignment{sequences}->{$id} = $trueAli->{sequences}->{$id};
+		$inputAlignment{order}->{$id} = $trueAli->{order}->{$id};
+	}
+	my $firstID = $order[0];
+	my $seqInput = $trueAli->{sequences}->{$firstID};
+	$seqInput =~ s/\.//g;
+	delete $inputAlignment{sequences}->{$firstID};
+	delete $inputAlignment{order}->{$firstID};
+	@order = sort {$inputAlignment{order}->{$a} <=> $inputAlignment{order}->{$b}} keys(%{$inputAlignment{sequences}});
+	removeGapCols(\%inputAlignment);
+	
+	my $aliInput = "";
+	foreach my $id (@order) {
+		$aliInput .= $inputAlignment{sequences}->{$id}."#";
+	}
+	$aliInput =~ s/\./\_/g;
+		
+	print STDERR "META alignment: ".$aliInput."\n";
+	print STDERR "META sequence: ".$seqInput."\n";
+
+	print "Pareto Type\tfrontSize\taliscore\n";
+	my $paretoRes = runPareto($aliInput, $seqInput, 1, $trueAli);
+	print "PLAIN\t".$paretoRes->{frontSize}."\t".$paretoRes->{maxScore}."\n";
+	
+	print "OPT\tjump\taliscore\n";
+	foreach my $jump (-30,-26,-22,-18,-14,-10,-6,-4,-2,-1,0,1,2,4) {
+		my $gotoh = runJali($aliInput, $seqInput, $jump, $trueAli);
+		print "OPT\t".$jump."\t".$gotoh."\n";
+	}
+}
+
 
 sub evaluate {
 	my ($truthFile) = @_;
@@ -59,7 +108,11 @@ sub evaluate {
 	
 	my $seqInput = "";
 	for (my $i = 0; $i < @order; $i++) {
-		$seqInput .= substr($trueAli->{sequences}->{$order[$i]}, $i * ($aliLength/@order), ($aliLength/@order));
+		if ($i+1 < @order) {
+			$seqInput .= substr($trueAli->{sequences}->{$order[$i]}, $i * ($aliLength/@order), ($aliLength/@order));
+		} else {
+			$seqInput .= substr($trueAli->{sequences}->{$order[$i]}, $i * ($aliLength/@order));
+		}
 	}
 	$seqInput =~ s/\.//g;
 	
@@ -78,45 +131,73 @@ sub evaluate {
 }
 
 sub runPareto {
-	my ($aliInput, $seqInput, $jump) = @_;
+	my ($aliInput, $seqInput, $jump, $trueAli) = @_;
 	
 	die "jumpcost not defined!\n" if (not defined $jump);
 	$jump /= 100;
 	
-	my $res = Utils::execute($BINS{'jali_pareto'}." -x $jump \"".$aliInput."\" \"".$seqInput."\" 2>&1");
+	my $filename_ali = Utils::writeInputToTempfile($aliInput);
+	my $filename_seq = Utils::writeInputToTempfile($seqInput);
+	my $res = Utils::execute($BINS{'jali_pareto'}." -x $jump -f ".$filename_ali." -f ".$filename_seq." 2>&1");
 	my %results = ();
 	my $maxscore = 0;
 	#~ my @order = sort {$refAli->{order}->{$a} <=> $refAli->{order}->{$b}} keys(%{$refAli->{sequences}});
+	my @order = sort {$trueAli->{order}->{$a} <=> $trueAli->{order}->{$b}} keys(%{$trueAli->{sequences}});
 	foreach my $line (split(m/\n/, $res)) {
 		if ($line =~ m/^\( \( (.+?) , (.+?) \) , \((.+?), (.+?), (.+?), (.+?)\) \)$/) {
 			my ($matchScore, $jumpScore, $ali, $seq, $rows, $jumps) = ($1,$2,$3,$4,$5,$6);
-			#~ foreach my $seq ($seqa, $seqb) {
-				#~ $seq =~ s/[\=|\-]/\./g;
-			#~ }
+			my %helpAli = ();
+			$helpAli{order} = $trueAli->{order};
+			$helpAli{sequences}->{$order[0]} = $seq;
+			my $i = 1;
+			foreach my $row (split("#", $ali)) {
+				$helpAli{sequences}->{$order[$i++]} = $row;
+			}
+			foreach my $id (@order) {
+				$helpAli{sequences}->{$id} =~ s/[\_|\-|\.]/\./g;
+			}
+			my $score = getScores($trueAli, \%helpAli)->{TC}; 
 			$results{frontSize}++;
-			#~ my %newAli = ('sequences', {$order[0] => $seqa, $order[1] => $seqb}, 'order', {$order[0] => 0, $order[1] => 1});
-			#~ my $sim = getScores($refAli, \%newAli)->{TC};
-			$maxscore = $matchScore if ($matchScore > $maxscore);
+			$maxscore = $score if ($score > $maxscore);
 		}
 	}
 	$results{maxScore} = $maxscore;
+	unlink $filename_ali;
+	unlink $filename_seq;
 	
 	return \%results;
 }
 
 sub runJali {
-	my ($aliInput, $seqInput, $jump) = @_;
+	my ($aliInput, $seqInput, $jump, $trueAli) = @_;
 	
 	die "jumpcost not defined!\n" if (not defined $jump);
 	$jump /= 100;
 	
-	my $res = Utils::execute($BINS{'jali_pseudo'}." -x $jump \"".$aliInput."\" \"".$seqInput."\" 2>&1");
+	my $filename_ali = Utils::writeInputToTempfile($aliInput);
+	my $filename_seq = Utils::writeInputToTempfile($seqInput);
+	my $res = Utils::execute($BINS{'jali_pseudo'}." -x $jump -f ".$filename_ali." -f ".$filename_seq." 2>&1");
+	my @order = sort {$trueAli->{order}->{$a} <=> $trueAli->{order}->{$b}} keys(%{$trueAli->{sequences}});
 	foreach my $line (split(m/\n/, $res)) {
 		if ($line =~ m/^\( (.+?) , \((.+?), (.+?), (.+?), (.+?)\) \)$/) {
 			my ($score, $ali, $seq, $row, $jumps) = ($1,$2, $3, $4, $5);
-			return [$score, $ali, $seq, $row, $jumps];
+			my %helpAli = ();
+			$helpAli{order} = $trueAli->{order};
+			$helpAli{sequences}->{$order[0]} = $seq;
+			my $i = 1;
+			foreach my $row (split("#", $ali)) {
+				$helpAli{sequences}->{$order[$i++]} = $row;
+			}
+			foreach my $id (@order) {
+				$helpAli{sequences}->{$id} =~ s/[\_|\-|\.]/\./g;
+			}
+			my $scoreTC = getScores($trueAli, \%helpAli)->{TC}; 
+
+			return $scoreTC;
 		}
 	}
+	unlink $filename_ali;
+	unlink $filename_seq;
 	
 	return undef;
 }
@@ -183,4 +264,29 @@ sub parseMSF {
 	}
 	
 	return {sequences => \%seqs, order => \%order};
+}
+
+sub removeGapCols {
+	my ($alignment) = @_;
+	
+	my $aliLength = undef;
+	foreach my $id (keys(%{$alignment->{sequences}})) {
+		if (not defined $aliLength) {
+			$aliLength = length($alignment->{sequences}->{$id});
+			last;
+		}
+	}
+	for (my $i = 0; $i < $aliLength; $i++) {
+		my $numGaps = 0;
+		foreach my $id (keys(%{$alignment->{sequences}})) {
+			$numGaps++ if (substr($alignment->{sequences}->{$id}, $i, 1) eq '.');
+		}
+		if (scalar(keys(%{$alignment->{sequences}})) > $numGaps) {
+			foreach my $id (keys(%{$alignment->{sequences}})) {
+				$alignment->{newSeqs}->{$id} .= substr($alignment->{sequences}->{$id}, $i, 1);
+			}
+		}
+	}
+	$alignment->{sequences} = $alignment->{newSeqs};
+	delete $alignment->{newSeqs};
 }

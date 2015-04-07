@@ -161,10 +161,7 @@ algebra alg_gap implements sig_gotoh(alphabet = char, answer = int ) {
 algebra alg_init implements sig_gotoh(alphabet = char, answer = int ) {
   //pkinit = -x parameter, used here for the gap init costs. Note: parameter is multiplied by 100!
   int match(<char a, char b>, int m) {
-    if (a == b)
-      return m + 4;
-    else
-      return m - 3;
+    return m;
   }
   int del(<char a, void>, int m) {
     return m - pkinit(); 

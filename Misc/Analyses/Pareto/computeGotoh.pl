@@ -18,6 +18,7 @@ my $platform = Utils::execute(Settings::getBinary('gcc')." -dumpmachine"); chomp
 my %BINS = (
 	'gotoh_pseudo', Utils::absFilename(getPath($0)).'/'.$platform.'/bin_gotoh_pseudo',
 	'gotoh_pareto', Utils::absFilename(getPath($0)).'/'.$platform.'/bin_gotoh_pareto',
+	'baliscore', Utils::absFilename(getPath($0)).'/'.$platform.'/baliscore',
 );
 
 my ($dir) = @ARGV;
@@ -69,12 +70,12 @@ sub evaluate {
 	
 	
 	print "Pareto Type\tfrontSize\tmaxTCscore\n";
-	my $paretoRes = runPareto(@subSeq, 10, 1, \%subTrueAli);
+	my $paretoRes = runPareto(@subSeq, 5, 1, \%subTrueAli);
 	print "PLAIN\t".$paretoRes->{frontSize}."\t".$paretoRes->{maxScore}."\n";
 
 	print "OPT\textend\tinit\tTCscore\n";
-	foreach my $extend (-2,-1,0,1,2,3,4,5) {
-		foreach my $init (-2,-1,0,1,2,4,6,8,10,12,14,16) {
+	foreach my $extend (-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5) {
+		foreach my $init (-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,12,14,16) {
 			my $gotoh = runGotoh(@subSeq, $extend, $init);
 			my %newAli = ('sequences', {$order[0] => $gotoh->[0], $order[1] => $gotoh->[1]}, 'order', {$order[0] => 0, $order[1] => 1});
 			print "OPT\t".$extend."\t".$init."\t".getScores(\%subTrueAli, \%newAli)->{TC}."\n"; #or choose 'SP'
@@ -89,7 +90,8 @@ sub runPareto {
 	$gapExtend /= 100;
 	$gapInit /= 100;
 	
-	my $res = Utils::execute($BINS{'gotoh_pareto'}." -y $gapExtend -x $gapInit ".$seqA." ".$seqB." 2>&1");
+	my $res = Utils::execute($BINS{'gotoh_pareto'}." -y $gapExtend -x $gapInit ".$seqA." ".$seqB." 2>&1");	
+	#~ my $res = Utils::execute("cat o");
 	my %results = ();
 	my $maxSim = 0;
 	my @order = sort {$refAli->{order}->{$a} <=> $refAli->{order}->{$b}} keys(%{$refAli->{sequences}});
@@ -106,7 +108,7 @@ sub runPareto {
 		}
 	}
 	$results{maxScore} = $maxSim;
-	
+#~ print Dumper \%results; die;
 	return \%results;
 }
 
@@ -136,7 +138,7 @@ sub getScores {
 	
 	my $filename_reference = Utils::writeInputToTempfile(printMSF($ref));
 	my $filename_test = Utils::writeInputToTempfile(printMSF($ali));
-	my $res = Utils::execute(Settings::getBinary('baliscore')." ".$filename_reference." ".$filename_test." 2>&1");
+	my $res = Utils::execute($BINS{'baliscore'}." ".$filename_reference." ".$filename_test." 2>&1");
 	unlink $filename_reference;
 	unlink $filename_test;
 
@@ -155,14 +157,24 @@ sub printMSF {
 	
 	my $out = "//\n\n";
 	my $maxIDlen = 0;
+	my %blockedSeqs = ();
 	foreach my $id (keys(%{$ali->{sequences}})) {
 		$maxIDlen = length($id) if (length($id) > $maxIDlen);
+		my $seq = $ali->{sequences}->{$id};
+		while (length($seq) > 100) {
+			push @{$blockedSeqs{$id}}, substr($seq, 0, 100);
+			$seq = substr($seq, 100);
+		}
+		push @{$blockedSeqs{$id}}, $seq;
 	}
-	foreach my $id (sort {$ali->{order}->{$a} <=> $ali->{order}->{$b}} keys(%{$ali->{sequences}})) {
-		$out .= $id.(' ' x ($maxIDlen - length($id) + 3)).$ali->{sequences}->{$id}."\n";
+	my @order = sort {$ali->{order}->{$a} <=> $ali->{order}->{$b}} keys(%{$ali->{sequences}});
+	for (my $part = 0; $part < @{$blockedSeqs{$order[0]}}; $part++) {
+		foreach my $id (@order) {
+			$out .= $id.(' ' x ($maxIDlen - length($id) + 3)).$blockedSeqs{$id}->[$part]."\n";
+		}
+		$out .= "\n";
 	}
-	$out .= "\n";
-	
+
 	return $out;
 }
 

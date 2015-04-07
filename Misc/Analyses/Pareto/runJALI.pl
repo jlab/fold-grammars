@@ -25,11 +25,10 @@ Utils::execute(Settings::getBinary("mkdir")." -p ".$jobName) if (not -d $jobName
 my $WorkDir = Utils::absFilename($jobName.'/jali/');
 
 #~ $numberSeqs = 10;
-
 if (not -d $WorkDir) {
+	Utils::execute(Settings::getBinary("mkdir")." -p $WorkDir/");
 	Utils::execute(Settings::getBinary("find")." ".$directory." -iname ".'"*.msf"'." > ".$WorkDir."/files.txt");
-	my $numberSeqs = Utils::execute(Settings::getBinary("wc")." -l ".$WorkDir."/files.txt"); chomp $numberSeqs;
-
+	my $numberSeqs = Utils::execute(Settings::getBinary("wc")." -l ".$WorkDir."/files.txt | ".Settings::getBinary("cut")." -d ' ' -f 1"); chomp $numberSeqs;
 	Utils::execute(Settings::getBinary("mkdir")." -p $WorkDir/ERR");
 	Utils::execute(Settings::getBinary("mkdir")." -p $WorkDir/OUT");
 	

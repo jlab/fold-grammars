@@ -22,13 +22,14 @@ $directory = Utils::absFilename($directory);
 my @parts = split(m|/|, $directory);
 my $jobName = $parts[$#parts]."_CLUSTER";
 Utils::execute(Settings::getBinary("mkdir")." -p ".$jobName) if (not -d $jobName);
-my $WorkDir = Utils::absFilename($jobName.'/pseudo_vs_pareto/');
+my $WorkDir = Utils::absFilename($jobName.'/pseudo_vs_pareto_SP/');
 
 #~ $numberSeqs = 10;
 
 if (not -d $WorkDir) {
+	Utils::execute(Settings::getBinary("mkdir")." -p ".$WorkDir."/");
 	Utils::execute(Settings::getBinary("find")." ".$directory." -iname ".'"*.msf"'." > ".$WorkDir."/files.txt");
-	my $numberSeqs = Utils::execute(Settings::getBinary("wc")." -l ".$WorkDir."/files.txt"); chomp $numberSeqs;
+	my $numberSeqs = Utils::execute(Settings::getBinary("cat")." ".$WorkDir."/files.txt | ".Settings::getBinary("wc")." -l"); chomp $numberSeqs;
 
 	Utils::execute(Settings::getBinary("mkdir")." -p $WorkDir/ERR");
 	Utils::execute(Settings::getBinary("mkdir")." -p $WorkDir/OUT");
