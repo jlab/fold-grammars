@@ -312,7 +312,7 @@ open (R, " | R --vanilla");
 		}
 	} elsif ($APP eq $ID_JALI) {
 		foreach my $type (@paretoNames) {
-			push @legendTexts, 'pareto (traditional x gap-init): '.$res_pareto{$type}->{maxScore}." (front size: ".$res_pareto{$type}->{frontSize}.")";
+			push @legendTexts, 'pareto (traditional x jump-cost): '.$res_pareto{$type}->{maxScore}." (front size: ".$res_pareto{$type}->{frontSize}.")";
 			push @colors, "my_palette[".$res_pareto{$type}->{maxScore}."-minValue+1]";
 		}
 	} else {
