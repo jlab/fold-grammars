@@ -11,6 +11,7 @@ probing: pseudo_mfe-probing pareto_mfe-probing pareto_mfe-probingPlain pareto_mf
 alignment: ali_mfe pseudo_ali_mfe-covar pareto_ali_mfe-covar
 gotoh: gotoh_pseudo gotoh_pareto
 jali: jali_pseudo jali_pareto
+cedric: probing__pure_mfe probing__pure_mea probing__pure_reactivities probing__pareto_mfe_reactivities probing__pareto_mea_reactivities
 
 pseudo_mfe-probing:
 	$(MAKE) compile \

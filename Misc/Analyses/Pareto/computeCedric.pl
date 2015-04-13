@@ -27,6 +27,7 @@ my @help = split(m/\s+/, $string_reactivities);
 my $reactivities = \@help;
 print STDERR "META grammar: overdangle\n";
 print STDERR "META header: $header\n";
+print "#META header: $header\n";
 print STDERR "META sequence: $sequence\n";
 print STDERR "META reference structure: $refStructure\n";
 print STDERR "META reactivities: ".join(", ", @{$reactivities})."\n";
@@ -42,12 +43,12 @@ $BINS{reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pure_reactivitie
 $BINS{mfe_pareto_reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pareto_mfe_reactivities';
 $BINS{mea_pareto_reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pareto_mea_reactivities';
 
-print "Product\tminRefDist\tfrontSize\n";
+print "#Analysis\tProduct\tminRefDist\tfrontSize\n";
 my $exeResult = Utils::execute($BINS{mfe}." ".$sequence);
 foreach my $line (split(m/\r|\n/, $exeResult)) {
 	if ($line =~ m/^\( (.+?) , \( \( ([\(|\)|\.]+) , ([\[|\]|\_]+) \) , (.+?) \) \)/) {
 		#( -2090 , ( ( ......(((((((..((((........)))).(((((.......))))).....(((((.......)))))))))))) , [[][][]] ) , 23.5,41,63, ) )
-		print "PURE_MFE\t".$fct_distance->($refStructure,$2)."\t1\n";
+		print "boxplots\tPURE_MFE\t".$fct_distance->($refStructure,$2)."\t1\n";
 	}
 }
 
@@ -55,7 +56,7 @@ $exeResult = Utils::execute($BINS{mea}." ".$sequence);
 foreach my $line (split(m/\r|\n/, $exeResult)) {
 	if ($line =~ m/^\( (.+?) , \( \( \( ([\(|\)|\.]+) , (.+?) \) , ([\[|\]|\_]+) \) , (.+?) \) \)/) {
 		#( 13.3425 , ( ( ( ......(((((((....((((((.((......)).)))))).((((....))))(((((.......)))))))))))) , -2060 ) , [[][][]] ) , 29.5,48.5,63, ) )
-		print "PURE_MEA\t".$fct_distance->($refStructure,$2)."\t1\n";
+		print "boxplots\tPURE_MEA\t".$fct_distance->($refStructure,$2)."\t1\n";
 	}
 }
 
@@ -65,7 +66,7 @@ $exeResult = Utils::execute($BINS{reactivities}." ".$ENERGYPAR." -S ".$file_reac
 foreach my $line (split(m/\r|\n/, $exeResult)) {
 	if ($line =~ m/^\( (.+?) , \( \( ([\(|\)|\.]+) , ([\[|\]|\_]+) \) , (.+?) \) \)/) {
 		#( 9.6 , ( ( .....((........((((...............................))......)).............))... , [] ) , 35, ) )
-		print "PURE_REACTIVITIES\t".$fct_distance->($refStructure,$2)."\t1\n";
+		print "boxplots\tPURE_REACTIVITIES\t".$fct_distance->($refStructure,$2)."\t1\n";
 	}
 }
 unlink $file_reactivities;
@@ -83,7 +84,7 @@ foreach my $line (split(m/\r|\n/, $exeResult)) {
 		$frontSize++;
 	}
 }
-print "PARETO_MFE^REACTIVITIES\t".$minRefDist."\t".$frontSize."\n";
+print "boxplots\tPARETO_MFE^REACTIVITIES\t".$minRefDist."\t".$frontSize."\n";
 unlink $file_reactivities;
 
 $param = getParameters(0, 0, $header, "");
@@ -99,7 +100,7 @@ foreach my $line (split(m/\r|\n/, $exeResult)) {
 		$frontSize++;
 	}
 }
-print "PARETO_MEA^REACTIVITIES\t".$minRefDist."\t".$frontSize."\n";
+print "boxplots\tPARETO_MEA^REACTIVITIES\t".$minRefDist."\t".$frontSize."\n";
 unlink $file_reactivities;
 
 

@@ -15,7 +15,7 @@ use Data::Dumper;
 use foldGrammars::Utils;
 use foldGrammars::Settings;
 
-my ($file, $grammar) = @ARGV;
+my ($file) = @ARGV;
 my $MAXMEM = 8; # in GB
 
 $file = Utils::absFilename($file);
@@ -54,7 +54,7 @@ if (not -d $WorkDir) {
 		print ARR ''."\n";
 
 		print ARR ''.Settings::getBinary("uname").' -a'."\n";
-		print ARR ''.Settings::getBinary("perl").' '.$Settings::rootDir.'/Misc/Analyses/Pareto/computeCedric.pl "'.$grammar.'" "$header'."\t".'$sequence'."\t".'$structure'."\t".'$reactivities"'."\n";
+		print ARR ''.Settings::getBinary("perl").' '.$Settings::rootDir.'/Misc/Analyses/Pareto/computeCedric.pl "$header'."\t".'$sequence'."\t".'$structure'."\t".'$reactivities"'."\n";
 		print ARR ''."\n";
 		print ARR '#'.$qsub."\n";
 	close (ARR);
