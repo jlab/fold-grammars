@@ -20,7 +20,7 @@ use foldGrammars::Settings;
 #~ my $fct_distance = \&Structure::getBPdistance; #symmetric BP distance does not to be very useful to see differences, thus use FS defined distance!!
 my $fct_distance = \&Structure::getBPdistance_foldingspaces;
 
-my ($nameSeqReact) = @ARGV;
+my ($nameSeqReact, $diffBASE) = @ARGV;
 chomp $nameSeqReact;
 my ($header, $sequence, $refStructure, $string_reactivities) = split(m/\t/, $nameSeqReact);
 my @help = split(m/\s+/, $string_reactivities);
@@ -39,9 +39,15 @@ our $ENERGYPAR = ' -P '.$Settings::rootDir.'/Misc/Analyses/Foldingspaces/Energyp
 our %BINS = ();
 $BINS{mfe} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pure_mfe';
 $BINS{mea} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pure_mea';
-$BINS{reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pure_reactivities';
-$BINS{mfe_pareto_reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pareto_mfe_reactivities';
-$BINS{mea_pareto_reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pareto_mea_reactivities';
+if (not defined $diffBASE) {
+	$BINS{reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pure_reactivities';
+	$BINS{mfe_pareto_reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pareto_mfe_reactivities';
+	$BINS{mea_pareto_reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pareto_mea_reactivities';
+} else {
+	$BINS{reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing_cedric__pure_reactivities';
+	$BINS{mfe_pareto_reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing_cedric__pareto_mfe_reactivities';
+	$BINS{mea_pareto_reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing_cedric__pareto_mea_reactivities';
+}
 
 print "#boxplotsAnalysis\tProduct\tminRefDist\tfrontSize\n";
 print "#ranksAnalysis\tProduct\trank\tfrontSize\n";

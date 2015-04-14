@@ -11,7 +11,8 @@ probing: pseudo_mfe-probing pareto_mfe-probing pareto_mfe-probingPlain pareto_mf
 alignment: ali_mfe pseudo_ali_mfe-covar pareto_ali_mfe-covar
 gotoh: gotoh_pseudo gotoh_pareto
 jali: jali_pseudo jali_pareto
-cedric: probing__pure_mfe probing__pure_mea probing__pure_reactivities probing__pareto_mfe_reactivities probing__pareto_mea_reactivities
+cedric: probing__pure_mfe probing__pure_mea probing__pure_reactivities probing__pareto_mfe_reactivities probing__pareto_mea_reactivities probing_cedric__pure_reactivities probing_cedric__pareto_mfe_reactivities probing_cedric__pareto_mea_reactivities
+
 
 pseudo_mfe-probing:
 	$(MAKE) compile \
@@ -141,6 +142,30 @@ probing__pareto_mea_reactivities:
 	$(MAKE) compile_mea \
 		gapc_product1="alg_outside_bppm" \
 		gapc_product2="(alg_mea ^ alg_expSHAPE) * (alg_dotBracket * alg_mfe * alg_shapeX * alg_hishape_h)" \
+		gapc_options1="$(windowmodeflag)" \
+		gapc_options2="--kbacktrace --no-coopt-class $(windowmodeflag)" \
+		gapc_file1="outside_overdangle.gap" \
+		gapc_file2="overdangle.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)"; \
+	
+probing_cedric__pure_reactivities:
+	$(MAKE) compile \
+		gapc_product="alg_expSHAPEdiffbases * (alg_dotBracket * alg_shapeX * alg_hishape_h)" \
+		gapc_options="--kbacktrace --no-coopt $(windowmodeflag)" \
+		gapc_file="overdangle.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
+
+probing_cedric__pareto_mfe_reactivities:
+	$(MAKE) compile \
+		gapc_product="(alg_mfe ^ alg_expSHAPEdiffbases) * (alg_dotBracket * alg_shapeX * alg_hishape_h)" \
+		gapc_options="--kbacktrace --no-coopt-class $(windowmodeflag)" \
+		gapc_file="overdangle.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
+
+probing_cedric__pareto_mea_reactivities:
+	$(MAKE) compile_mea \
+		gapc_product1="alg_outside_bppm" \
+		gapc_product2="(alg_mea ^ alg_expSHAPEdiffbases) * (alg_dotBracket * alg_mfe * alg_shapeX * alg_hishape_h)" \
 		gapc_options1="$(windowmodeflag)" \
 		gapc_options2="--kbacktrace --no-coopt-class $(windowmodeflag)" \
 		gapc_file1="outside_overdangle.gap" \
