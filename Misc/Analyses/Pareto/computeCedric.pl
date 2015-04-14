@@ -21,6 +21,7 @@ use foldGrammars::Settings;
 my $fct_distance = \&Structure::getBPdistance_foldingspaces;
 
 my ($nameSeqReact, $diffBASE) = @ARGV;
+$diffBASE = 0 if (not defined $diffBASE);
 chomp $nameSeqReact;
 my ($header, $sequence, $refStructure, $string_reactivities) = split(m/\t/, $nameSeqReact);
 my @help = split(m/\s+/, $string_reactivities);
@@ -39,7 +40,7 @@ our $ENERGYPAR = ' -P '.$Settings::rootDir.'/Misc/Analyses/Foldingspaces/Energyp
 our %BINS = ();
 $BINS{mfe} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pure_mfe';
 $BINS{mea} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pure_mea';
-if (not defined $diffBASE) {
+if ($diffBASE == 0) {
 	$BINS{reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pure_reactivities';
 	$BINS{mfe_pareto_reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pareto_mfe_reactivities';
 	$BINS{mea_pareto_reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__pareto_mea_reactivities';
@@ -69,7 +70,7 @@ foreach my $line (split(m/\r|\n/, $exeResult)) {
 	}
 }
 
-my $param = getParameters(0, 0, $header, "");
+my $param = getParameters(0, 0, $header, "PARETO_CLUSTERED");
 my $file_reactivities = createReactivityFile($reactivities);
 $exeResult = Utils::execute($BINS{reactivities}." ".$ENERGYPAR." -S ".$file_reactivities." ".$param.' "'.$sequence.'"');
 foreach my $line (split(m/\r|\n/, $exeResult)) {
@@ -81,7 +82,7 @@ foreach my $line (split(m/\r|\n/, $exeResult)) {
 unlink $file_reactivities;
 
 foreach my $type ("mfe","mea") {
-	$param = getParameters(0, 0, $header, "");
+	$param = getParameters(0, 0, $header, "PARETO_CLUSTERED");
 	$file_reactivities = createReactivityFile($reactivities);
 	$exeResult = Utils::execute($BINS{$type.'_pareto_reactivities'}." ".$ENERGYPAR." -S ".$file_reactivities." ".$param.' "'.$sequence.'"');
 	unlink $file_reactivities;
@@ -135,94 +136,7 @@ foreach my $type ("mfe","mea") {
 
 
 
-#~ die;
-#~ $BINS{OPT} = build_binary($grammar, 'OPT', "./");
-#~ $BINS{PUREMFE} = build_binary($grammar, 'PUREMFE', "./");
-#~ $BINS{SUBOPT} = build_binary($grammar, 'SUBOPT', "./");
-#~ $BINS{SHAPES} = build_binary($grammar, 'SHAPES', "./");
-#~ foreach my $parName (@paretos) {
-	#~ $BINS{$parName} = build_binary($grammar, $parName, "./");
-#~ }
 
-#~ print "slope\tinter.\tPARETO\trefDist\tfrontSize\tPARETO_PLAIN\trefDist\tfrontSize\tPARETO_NORM\trefDist\tfrontSize\n";
-#~ my $minParetoRefDist = 99999999;
-#~ my ($slope, $intercept) = (2.2,0.0);
-#~ print $slope."\t".$intercept;
-#~ foreach my $type ('PARETO_NORM') {
-	#~ my %pareto = %{compute($type, $slope, $intercept, $header, $sequence, $refStructure, $reactivities)};
-	#~ my $minRefDist_pareto = 99999999;
-	#~ foreach my $structure (keys(%pareto)) {
-		#~ $minRefDist_pareto = $pareto{$structure}->{refDist} if ($minRefDist_pareto > $pareto{$structure}->{refDist});
-	#~ }
-	#~ print "\t$type\t".$minRefDist_pareto."\t".scalar(keys(%pareto));
-	#~ $minParetoRefDist = $minRefDist_pareto if ($type eq 'PARETO');
-#~ }
-#~ print "\n";
-#~ exit(0);
-
-#~ print "Pareto Type\tminRefDist\tfrontSize\t#shapeClasses\n";
-#~ foreach my $type (@paretos) { #,'PARETO_PLAIN','PARETO_NORM') {
-	#~ my %pareto = %{compute($type, 1.0, 0.0, $header, $sequence, $refStructure, $reactivities)};
-	#~ my %shapeClasses = ();
-	#~ my $minRefDist_pareto = 99999999;
-	#~ foreach my $structure (keys(%pareto)) {
-		#~ $minRefDist_pareto = $pareto{$structure}->{refDist} if ($minRefDist_pareto > $pareto{$structure}->{refDist});
-		#~ $shapeClasses{$pareto{$structure}->{shapeClass}}++;
-	#~ }
-	#~ print "$type\t".$minRefDist_pareto."\t".scalar(keys(%pareto))."\t".scalar(keys(%shapeClasses))."\n";
-	#~ $minParetoRefDist = $minRefDist_pareto if ($type eq 'PARETO');
-#~ }
-
-#~ print "pureMFE\tminRefDist\tnrCoopt\t#shapeClasses\n";
-#~ my %puremfe = %{compute('PUREMFE', 0.0, 0.0, $header, $sequence, $refStructure, $reactivities)};
-#~ my %shapeClassesPureMFE = ();
-#~ my $minRefDist_puremfe = 99999999;
-#~ foreach my $structure (keys(%puremfe)) {
-	#~ $minRefDist_puremfe = $puremfe{$structure}->{refDist} if ($minRefDist_puremfe > $puremfe{$structure}->{refDist});
-	#~ $shapeClassesPureMFE{$puremfe{$structure}->{shapeString}}++;
-#~ }
-#~ print "pureMFE\t".$minRefDist_puremfe."\t".scalar(keys(%puremfe))."\t".scalar(keys(%shapeClassesPureMFE))."\n";
-
-#~ my @slopes = (0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0,3.2,3.4,3.6,3.8,4.0,4.2,4.4,4.6,4.8,5.0,);
-#~ my @intercepts = (0,-0.2,-0.4,-0.6,-0.8,-1.0,-1.2,-1.4,-1.6,-1.8,-2.0,-2.2,-2.4,-2.6,-2.8,-3.0);
-#~ print "OPT\tslope\tinter.\trefDist\t#co-opt\n";
-#~ foreach my $slope (@slopes) {
-	#~ foreach my $intercept (@intercepts) {
-		#~ print "OPT\t".$slope."\t".$intercept;
-
-		#~ my %opt = %{compute("OPT", $slope, $intercept, $header, $sequence, $refStructure, $reactivities)};
-		#~ foreach my $structure (keys(%opt)) {
-			#~ print "\t".$opt{$structure}->{refDist}."\t".scalar(keys(%opt));
-			#~ last;
-		#~ }
-	
-		#~ print "\n";
-		#~ next;
-		
-		#~ my $minParetoRefDist = 0;
-		#~ my $deviation = 0;
-		#~ foreach my $type ('SUBOPT','SHAPES') {
-			#~ my $minRefDist_res = 99999999;
-			#~ my %res = ();
-			#~ my $numInspStructures = 0;
-			#~ while ((scalar(keys(%res)) < 1000) && ($minRefDist_res > $minParetoRefDist) && $deviation < 50) {
-				#~ %res = %{compute($type, $slope, $intercept, $header, $sequence, $refStructure, $reactivities, $deviation)};
-				#~ print STDERR "recompute $deviation\n";
-				#~ $numInspStructures = 0;
-				#~ foreach my $structure (sort {$res{$a}->{score} <=> $res{$b}->{score}} keys(%res)) {
-					#~ $minRefDist_res = $res{$structure}->{refDist} if ($minRefDist_res > $res{$structure}->{refDist});
-					#~ $numInspStructures++;
-					#~ last if ($minRefDist_res <= $minParetoRefDist);
-				#~ }
-				#~ $deviation += 5 if ($type eq 'SHAPES');
-				#~ $deviation += 1;
-			#~ }
-			#~ print "\t".$type."\t".$minRefDist_res."\t".$deviation."\t".$numInspStructures;
-		#~ }		
-		
-		#~ print "\n";
-	#~ }
-#~ }
 
 sub compute {
 	my ($type, $slope, $intercept, $header, $sequence, $referenceStructure, $reactivities, $deviation) = @_;
