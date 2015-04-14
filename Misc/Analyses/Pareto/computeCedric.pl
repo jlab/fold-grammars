@@ -45,6 +45,7 @@ $BINS{mea_pareto_reactivities} = './'.$Settings::ARCHTRIPLE.'/bin_probing__paret
 
 print "#boxplotsAnalysis\tProduct\tminRefDist\tfrontSize\n";
 print "#ranksAnalysis\tProduct\trank\tfrontSize\n";
+print "#shapesAnalysis\tProduct\tnoShapes\tnoHishapes\tfrontSize\tno5Shapes\tno5Hishapes\n";
 
 my $exeResult = Utils::execute($BINS{mfe}." ".$sequence);
 foreach my $line (split(m/\r|\n/, $exeResult)) {
@@ -73,57 +74,59 @@ foreach my $line (split(m/\r|\n/, $exeResult)) {
 }
 unlink $file_reactivities;
 
-$param = getParameters(0, 0, $header, "");
-$file_reactivities = createReactivityFile($reactivities);
-$exeResult = Utils::execute($BINS{mfe_pareto_reactivities}." ".$ENERGYPAR." -S ".$file_reactivities." ".$param.' "'.$sequence.'"');
-unlink $file_reactivities;
-my $minRefDist = 99999999999999;
-my $frontSize = 0;
-my @results = ();
-foreach my $line (split(m/\r|\n/, $exeResult)) {
-	if ($line =~ m/^\( \( (.+?) , (.+?) \) , \( \( ([\(|\)|\.]+) , ([\[|\]|\_]+) \) , (.+?) \) \)/) {
-		#( ( -730 , 8.8 ) , ( ( .............................................(((..((((........))))..)))....... , [] ) , 58.5, ) )
-		my $dist = $fct_distance->($refStructure,$3);
-		$minRefDist = $dist if ($dist < $minRefDist);
-		$frontSize++;
-		push @results, {energy => $1 / 100, reactivity => $2, structure => $3, shape => $4, hairpinCenter => $5, refDist => $dist};
+foreach my $type ("mfe","mea") {
+	$param = getParameters(0, 0, $header, "");
+	$file_reactivities = createReactivityFile($reactivities);
+	$exeResult = Utils::execute($BINS{$type.'_pareto_reactivities'}." ".$ENERGYPAR." -S ".$file_reactivities." ".$param.' "'.$sequence.'"');
+	unlink $file_reactivities;
+	my $minRefDist = 99999999999999;
+	my $frontSize = 0;
+	my @results = ();
+	foreach my $line (split(m/\r|\n/, $exeResult)) {
+		if (($type eq 'mea') && ($line =~ m/^\( \( (.+?) , (.+?) \) , \( \( \( ([\(|\)|\.]+) , (.+?) \) , ([\[|\]|\_]+) \) , (.+?) \) \)/)) {
+			#( ( 8.30071 , 7.4 ) , ( ( ( ......(((((((....((........))....(((.........)))......((.((.......)).))))))))) , -380 ) , [[][][]] ) , 23.5,41,63, ) )
+			my $dist = $fct_distance->($refStructure,$3);
+			$minRefDist = $dist if ($dist < $minRefDist);
+			$frontSize++;
+			push @results, {probability => $1, reactivity => $2, structure => $3, energy => $4 / 100, shape => $5, hairpinCenter => $6, refDist => $dist};
+		} elsif (($type eq 'mfe') && ($line =~ m/^\( \( (.+?) , (.+?) \) , \( \( ([\(|\)|\.]+) , ([\[|\]|\_]+) \) , (.+?) \) \)/)) {
+			#( ( -730 , 8.8 ) , ( ( .............................................(((..((((........))))..)))....... , [] ) , 58.5, ) )
+			my $dist = $fct_distance->($refStructure,$3);
+			$minRefDist = $dist if ($dist < $minRefDist);
+			$frontSize++;
+			push @results, {energy => $1 / 100, reactivity => $2, structure => $3, shape => $4, hairpinCenter => $5, refDist => $dist};
+		}
 	}
-}
-print "boxplots\tPARETO_MFE^REACTIVITIES\t".$minRefDist."\t".$frontSize."\n";
-my $rank = 1;
-foreach my $prediction (sort {$a->{energy} <=> $b->{energy}} @results) {
-	if ($prediction->{refDist} == $minRefDist) {
-		print "ranks\tPARETO_MFE^REACTIVITIES\t$rank\t$frontSize\n";
-		last;
+	print "boxplots\tPARETO_".uc($type)."^REACTIVITIES\t".$minRefDist."\t".$frontSize."\n";
+	my $rank = 1;
+	my @sorted = ();
+	@sorted = sort {$a->{energy} <=> $b->{energy}} @results if ($type eq 'mfe');
+	@sorted = sort {$b->{probability} <=> $a->{probability}} @results if ($type eq 'mea');
+	foreach my $prediction (@sorted) {
+		if ($prediction->{refDist} == $minRefDist) {
+			print "ranks\tPARETO_".uc($type)."^REACTIVITIES\t$rank\t$frontSize\n";
+			last;
+		}
+		$rank++;
 	}
-	$rank++;
+	my %shapes = ();
+	my %hishapes = ();
+	foreach my $prediction (@results) {
+		$shapes{$prediction->{shape}}++;
+		$hishapes{$prediction->{hairpinCenter}}++;
+	}
+	my %shapes5 = ();
+	my %hishapes5 = ();
+	my $count = 0;
+	foreach my $prediction (@results) {
+		$shapes5{$prediction->{shape}}++;
+		$hishapes5{$prediction->{hairpinCenter}}++;
+		$count++;
+		last if ($count >= 5);
+	}
+	print "shapes\tPARETO_".uc($type)."^REACTIVITIES\t".scalar(keys(%shapes))."\t".scalar(keys(%hishapes))."\t".$frontSize."\t".scalar(keys(%shapes5))."\t".scalar(keys(%hishapes5))."\n";
 }
 
-$param = getParameters(0, 0, $header, "");
-$file_reactivities = createReactivityFile($reactivities);
-$exeResult = Utils::execute($BINS{mea_pareto_reactivities}." ".$ENERGYPAR." -S ".$file_reactivities." ".$param.' "'.$sequence.'"');
-unlink $file_reactivities;
-$minRefDist = 99999999999999;
-$frontSize = 0;
-my @results = ();
-foreach my $line (split(m/\r|\n/, $exeResult)) {
-	if ($line =~ m/^\( \( (.+?) , (.+?) \) , \( \( \( ([\(|\)|\.]+) , (.+?) \) , ([\[|\]|\_]+) \) , (.+?) \) \)/) {
-		#( ( 8.30071 , 7.4 ) , ( ( ( ......(((((((....((........))....(((.........)))......((.((.......)).))))))))) , -380 ) , [[][][]] ) , 23.5,41,63, ) )
-		my $dist = $fct_distance->($refStructure,$3);
-		$minRefDist = $dist if ($dist < $minRefDist);
-		$frontSize++;
-		push @results, {probability => $1, reactivity => $2, structure => $3, energy => $4 / 100, shape => $5, hairpinCenter => $6, refDist => $dist};
-	}
-}
-print "boxplots\tPARETO_MEA^REACTIVITIES\t".$minRefDist."\t".$frontSize."\n";
-my $rank = 1;
-foreach my $prediction (sort {$b->{probability} <=> $a->{probability}} @results) {
-	if ($prediction->{refDist} == $minRefDist) {
-		print "ranks\tPARETO_MEA^REACTIVITIES\t$rank\t$frontSize\n";
-		last;
-	}
-	$rank++;
-}
 
 
 #~ die;
