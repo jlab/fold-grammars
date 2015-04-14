@@ -21,7 +21,8 @@ use foldGrammars::Utils;
 
 #~ my $use_avg = 0;	#1 to use average, 0 to use the median as comparison of examples
 my ($dir) = @ARGV;
-drawDistances($dir);
+getData($dir);
+#~ drawDistances($dir);
 
 sub drawDistances {
 	my ($dir) = @_;
@@ -44,11 +45,14 @@ sub drawDistances {
 			print R 'require("RColorBrewer")'."\n";
 			print R 'require("tt")'."\n";
 			print R 'pdf("'.$pdfBoxplot.'")'."\n";
+			print R 'par(mar=c(5,4.0,0.2,4))'."\n"; #bottom, left, top, right
 			print R 'data <- read.csv("'.$tmpDataDist.'",sep="\t")'."\n";
-			print R 'plot(data$dist_'.$type.', col=c("red"), xlab="example number", ylab="distance to reference", ylim=c(0,120));'."\n";
+			print R 'plot(data$dist_'.$type.', col=c("red"), xlab="example number", ylab="distance to reference", ylim=c(0,100));'."\n";
 			print R 'points(data$dist_'.$type.'React, col=c("blue"));'."\n";
 			print R 'lines(data$fs_'.$type.'React, col=c("green"));'."\n";
-			print R 'smartlegend(x="right",y="top", inset = 0, c("d_bp(reference, '.$type.')","d_bp(reference, '.$type.' ^ reactivities)", "front size('.$type.' ^ reactivities)") , fill=c("red","blue","green"));'."\n";
+			print R 'mtext("pareto front size",side=4,line=2);'."\n";
+			print R 'axis(side=4);'."\n";
+			print R 'smartlegend(x="right",y="top", inset = 0, c("d_bp(reference, '.$type.')","d_bp(reference, '.$type.' ^ reactivities)", "front size('.$type.' ^ reactivities)") , col=c("red","blue","green"), pch = c(1,1,NA), lty = c(NA, NA, 1),);'."\n";
 			print R 'dev.off()'."\n";
 		close (R);
 	}
@@ -80,6 +84,29 @@ sub drawBoxplot {
 	close (R);
 	
 	unlink $tmpDataboxplot;
+}
+
+
+sub getData {
+	my ($dir) = @_;
+	
+	my @files = ();
+	opendir (DIR, $dir) || die "can't open dir: $!";
+		while (my $file = readdir(DIR)) {
+			next if ($file !~ m/pareto\./);
+			push @files, $file;
+		}
+	closedir (DIR);
+	
+	foreach my $file (sort {splitID($a) <=> splitID($b)} @files) {
+		print STDERR $file."\n";
+	}
+}
+
+sub splitID {
+	my ($id) = @_;
+	my @parts = split(m/\./, $id);
+	return $parts[$#parts];
 }
 
 #~ print Dumper Utils::execute(Settings::getBinary('cat')." $dir/* | ".Settings::getBinary('grep')." -v '^#' | ".Settings::getBinary('grep')." -v Linux ");
