@@ -346,6 +346,7 @@ inline double getSHAPEscore_plain(const TUSubsequence &leftBase) {
 inline double getSHAPEscore_normalized_diffbases(const TUSubsequence &leftBase) {
 	static bool isLoaded = false;
 	static std::vector<double> probingData;
+	std::string modifier = getDotplotFilename();
 
 	if (!isLoaded) {
 		std::string line;
