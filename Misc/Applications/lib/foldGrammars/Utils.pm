@@ -568,6 +568,7 @@ sub execute {
 	}
 	
 	my $mktmp_binary = Settings::getBinary('mktemp');
+	my $rm_binary = Settings::getBinary('rm');
 	my $tmpStderr = qx($mktmp_binary);
 	my $stdout = qx($command 2>$tmpStderr);
 	my $exitCode = $? >> 8;
@@ -575,7 +576,7 @@ sub execute {
 	open (IN, $tmpStderr) || die "can't open temporary stderr file: $!";
 		@stderrlines =<IN>;
 	close (IN);
-	unlink $tmpStderr;
+	qx($rm_binary -f $tmpStderr);
 	
 	$exitCode = 0 if (($command =~ m/\s*diff\s+/) && ($exitCode == 1)); #because diff gives an exit code of 1 if there are differences
 	$exitCode = 0 if (($command =~ m/\s*baliscore\s+/)); #because baliscore exit code is strange

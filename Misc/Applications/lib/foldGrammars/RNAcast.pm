@@ -93,7 +93,7 @@ sub cast_generateSingleShapes {
 	my $command = &{$refSub_buildCommand}(\%cast_settings, undef);
 	my $inputFile = Utils::writeInputToTempfile($seq);
 	my $result = Utils::execute("$command -f $inputFile");
-	unlink $inputFile if (!$settings->{verbose});
+	Utils::execute(Settings::getBinary('rm')." -f $inputFile") if (!$settings->{verbose});
 
 	#determine pfAll values for sequences if structure probabilities are switched on
 		use Data::Dumper;
@@ -104,7 +104,7 @@ sub cast_generateSingleShapes {
 			my $pfall_command = &{$refSub_buildCommand}(\%pfAll_settings, undef);
 			my $pfallInputFile = Utils::writeInputToTempfile($seq);
 			$pfall_result = Utils::execute("$pfall_command -f $pfallInputFile");
-			unlink $pfallInputFile if (!$settings->{verbose});
+			Utils::execute(Settings::getBinary('rm')." -f $pfallInputFile") if (!$settings->{verbose});
 			$pfall_result = IO::parse($pfall_result, $refHash_sequence, $program, \%pfAll_settings, 0);
 		}
 

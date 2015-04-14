@@ -201,7 +201,7 @@ sub doComputation {
 		my $inputFile = Utils::writeInputToTempfile($seq);
 		print "Actual call was: $pfallCommand -f $inputFile\n" if ($settings->{verbose});
 		my $res = Utils::execute("$pfallCommand -f $inputFile 2>&1");
-		unlink $inputFile if (!$settings->{verbose});
+		Utils::execute(Settings::getBinary('rm')." -f $inputFile") if (!$settings->{verbose});
 		%pfAll = %{IO::parse($res, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, \%pfallSettings, $inputIndex)};
 	}
 	
@@ -217,8 +217,8 @@ sub doComputation {
 	my $inputFile = Utils::writeInputToTempfile($seq);
 	print "Actual call was: $command -f $inputFile $structureArg\n" if ($settings->{verbose});
 	my $result = Utils::execute("$command -f $inputFile $structureArg 2>&1");
-	unlink $inputFile if (!$settings->{verbose});
-	unlink $structureInputFile if ((defined $structureInputFile) && (!$settings->{verbose}));
+	Utils::execute(Settings::getBinary('rm')." -f $inputFile") if (!$settings->{verbose});
+	Utils::execute(Settings::getBinary('rm')." -f $structureInputFile") if ((defined $structureInputFile) && (!$settings->{verbose}));
 	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);
 	
 	return undef;

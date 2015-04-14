@@ -126,7 +126,7 @@ sub guessShapesSampling {
 			$sampledShapes{$1}++;
 		}
 	}
-	unlink $inputFile;
+	Utils::execute(Settings::getBinary('rm')." -f $inputFile");
 	my @shapes = ();
 	foreach my $shape (sort {$sampledShapes{$b} <=> $sampledShapes{$a}} keys(%sampledShapes)) {
 		push @shapes, {shapestring => $shape, frequency => $sampledShapes{$shape}/$refHash_settings->{numsamples}};
@@ -149,7 +149,7 @@ sub guessShapesKbest {
 			$kbestShapes{$1} = $2;
 		}
 	}
-	unlink $inputFile;
+	Utils::execute(Settings::getBinary('rm')." -f $inputFile");
 	my @shapes = ();
 	foreach my $shape (sort {$kbestShapes{$a} <=> $kbestShapes{$b}} keys(%kbestShapes)) {
 		push @shapes, {shapestring => $shape, mfe => $kbestShapes{$shape}/100};
@@ -172,7 +172,7 @@ sub guessShapesSubopt {
 			$energyShapes{$2} = $1;
 		}
 	}
-	unlink $inputFile;
+	Utils::execute(Settings::getBinary('rm')." -f $inputFile");
 	my @shapes = ();
 	foreach my $shape (sort {$energyShapes{$a} <=> $energyShapes{$b}} keys(%energyShapes)) {
 		push @shapes, {shapestring => $shape, mfe => $energyShapes{$shape}/100};
@@ -192,7 +192,7 @@ sub getPFall {
 	my $command = buildCommand($refHash_settings, $TASK_PFALL);
 	my $inputFile = Utils::writeInputToTempfile($inputSequence);
 	my $pfAll = RapidShapes::parsePFanswer(Utils::execute("$command -f $inputFile"));
-	unlink $inputFile;
+	Utils::execute(Settings::getBinary('rm')." -f $inputFile");
 	print STDERR $pfAll.".\n";
 	
 	return $pfAll;

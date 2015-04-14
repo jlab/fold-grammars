@@ -129,7 +129,7 @@ sub checkProgram {
 			die "something is wrong with the curl command: '".$restCommand."', contents of json file:\n".$jsonContent."\n";
 		}
 		#~ my $restID = 0;
-		unlink $tmpfilename;
+		Utils::execute(Settings::getBinary('rm')." -f $tmpfilename");
 		$jsonContent =~ s/\n|\r/ /g;
 		push @requests, {id => $restID, status => undef, function => $mode, origRun => $run, rank => $testNumber++, json => $jsonContent};
 		

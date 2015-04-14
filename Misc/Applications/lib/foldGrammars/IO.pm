@@ -938,7 +938,7 @@ sub getAvgSingleMFEs {
 		$seq =~ s/T/U/gi;
 		my $inputFile = Utils::writeInputToTempfile($seq);
 		my $result = Utils::execute("$cmd -f $inputFile");
-		unlink $inputFile;
+		Utils::execute(Settings::getBinary('rm')." -f $inputFile");
 		foreach my $line (split(m/\n/, $result)) {
 			if ($line =~ m/Answer/) {
 			} elsif ($line =~ m/^\s*$/) {
@@ -990,7 +990,7 @@ sub getAlignmentRepresentation {
 	print "Actual call for alignment representation was: $command \"$gapInput\"\n" if ($settings->{verbose});
 	my $inputFile = Utils::writeInputToTempfile($gapInput);
 	my $result = Utils::execute("$command -f $inputFile");
-	unlink $inputFile if (!$settings->{verbose});
+	Utils::execute(Settings::getBinary('rm')." -f $inputFile") if (!$settings->{verbose});
 
 	foreach my $line (split(m/\r?\n/, $result)) {
 		if ($line =~ m/^Answer:\s*$/) {

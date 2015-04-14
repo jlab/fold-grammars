@@ -184,7 +184,7 @@ sub kif {
 					print "Actual call was: $command \"$candidateSequence\"\n" if ($settings->{verbose});
 					my $inputFile = Utils::writeInputToTempfile($candidateSequence);
 					my $result = Utils::execute("$command -f $inputFile 2>&1");
-					unlink $inputFile if (!$settings->{verbose});
+					Utils::execute(Settings::getBinary('rm')." -f $inputFile") if (!$settings->{verbose});
 					foreach my $line (split(m/\n/, $result)) {
 						if ($line =~ m/^\( (.+?) , (.+?) \)$/) {
 							$foldings{$task} = {energy => $1/100, structure => $2};

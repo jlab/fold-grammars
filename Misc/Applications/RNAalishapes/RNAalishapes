@@ -144,8 +144,8 @@ sub processInput {
 			my $inputFileStructure = Utils::writeInputToTempfile($structure);
 			print "Actual call was: $command -f $inputFileSequence -f $inputFileStructure\n" if ($settings->{verbose});
 			my $result = Utils::execute("$command -f $inputFileSequence -f $inputFileStructure 2>&1");
-			unlink $inputFileSequence if (!$settings->{verbose});
-			unlink $inputFileStructure if (!$settings->{verbose});
+			Utils::execute(Settings::getBinary('rm')." -f $inputFileSequence") if (!$settings->{verbose});
+			Utils::execute(Settings::getBinary('rm')." -f $inputFileStructure") if (!$settings->{verbose});
 	
 			IO::parse($result, {header => "dummy", sequence => "a", structure => $input}, $Settings::PROGINFOS{$PROGID}->{name}, $settings);
 		} else {
@@ -190,15 +190,15 @@ sub doComputation {
 		my $inputFile = Utils::writeInputToTempfile($gapInput);
 		print "Actual call was: $pfallCommand -f $inputFile\n" if ($settings->{verbose});
 		my $res = Utils::execute("$pfallCommand -f $inputFile 2>&1");
-		unlink $inputFile if (!$settings->{verbose});
+		Utils::execute(Settings::getBinary('rm')." -f $inputFile") if (!$settings->{verbose});
 		%pfAll = %{IO::parse($res, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, \%pfallSettings, 0)};
 	}
 
 	print "Actual call was: $command \"$gapInput\" $structureArg\n" if ($settings->{verbose});
 	my $inputFile = Utils::writeInputToTempfile($gapInput);
 	my $result = Utils::execute("$command -f $inputFile $structureArg 2>&1");
-	unlink $inputFile if (!$settings->{verbose});
-	unlink $structureInputFile if ((defined $structureInputFile) && (!$settings->{verbose}));
+	Utils::execute(Settings::getBinary('rm')." -f $inputFile") if (!$settings->{verbose});
+	Utils::execute(Settings::getBinary('rm')." -f $structureInputFile") if ((defined $structureInputFile) && (!$settings->{verbose}));
 	IO::parse($result, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);
 	
 	return undef;

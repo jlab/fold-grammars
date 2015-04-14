@@ -201,8 +201,8 @@ sub doComputation {
 	print "Actual call was: $command \"$seq\" $structureArg\n" if ($settings->{verbose});
 	my $inputFile = Utils::writeInputToTempfile($seq);
 	my $result = Utils::execute("$command -f $inputFile $structureArg 2>&1");
-	unlink $inputFile if (!$settings->{verbose});
-	unlink $structureInputFile if ((defined $structureInputFile) && (!$settings->{verbose}));
+	Utils::execute(Settings::getBinary('rm')." -f $inputFile") if (!$settings->{verbose});
+	Utils::execute(Settings::getBinary('rm')." -f $structureInputFile") if ((defined $structureInputFile) && (!$settings->{verbose}));
 
 	print "\n" if ($sequenceNumber != 0);
 	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings);

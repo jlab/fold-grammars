@@ -137,7 +137,7 @@ sub doComputation {
 	print "Actual call was: $command -f $inputFile\n" if ($settings->{verbose});
 
 	my $result = Utils::execute("$command -f $inputFile 2>&1");
-	unlink $inputFile if (!$settings->{verbose});
+	Utils::execute(Settings::getBinary('rm')." -f $inputFile") if (!$settings->{verbose});
 	IO::parse($result, $refHash_sequence, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, undef);
 	
 	return undef;
