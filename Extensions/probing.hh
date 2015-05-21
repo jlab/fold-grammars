@@ -343,7 +343,7 @@ inline double getSHAPEscore_plain(const TUSubsequence &leftBase) {
 	return score;
 }
 
-inline double getSHAPEscore_normalized_diffbases(const TUSubsequence &leftBase) {
+inline double getSHAPEscore_normalized_diffbases(const Basic_Subsequence<char, unsigned> &leftBase) {
 	static bool isLoaded = false;
 	static std::vector<double> probingData;
 	std::string modifier = getDotplotFilename();
@@ -384,15 +384,14 @@ inline double getSHAPEscore_normalized_diffbases(const TUSubsequence &leftBase) 
 
 	double score = 0.0;
 	for (unsigned int i = leftBase.i; i < leftBase.j && i < probingData.size(); i++) {
-		/*if ((modifier == "DMS") && (leftBase[i] != A_BASE) && (leftBase[i] != C_BASE)) {
+		if ((modifier == "DMS") && (leftBase[i] != A_BASE) && (leftBase[i] != C_BASE)) {
 			continue;
 		}
 		if ((modifier == "CMCT") && (leftBase[i] != U_BASE) && (leftBase[i] != G_BASE)) {
 			continue;
-		}*/
+		}
 		score += probingData.at(i);
 	}
-
 	return score;
 }
 inline double getSHAPEscore_normalized(const TUSubsequence &leftBase) {
