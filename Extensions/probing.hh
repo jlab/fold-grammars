@@ -384,12 +384,12 @@ inline double getSHAPEscore_normalized_diffbases(const TUSubsequence &leftBase) 
 
 	double score = 0.0;
 	for (unsigned int i = leftBase.i; i < leftBase.j && i < probingData.size(); i++) {
-		if ((modifier == "DMS") && (leftBase[i] != A_BASE) && (leftBase[i] != C_BASE)) {
+		/*if ((modifier == "DMS") && (leftBase[i] != A_BASE) && (leftBase[i] != C_BASE)) {
 			continue;
 		}
 		if ((modifier == "CMCT") && (leftBase[i] != U_BASE) && (leftBase[i] != G_BASE)) {
 			continue;
-		}
+		}*/
 		score += probingData.at(i);
 	}
 

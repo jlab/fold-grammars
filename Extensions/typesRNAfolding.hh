@@ -111,7 +111,7 @@ struct answer_pknot_mfecovar {
 };
 
 inline uint32_t hashable_value(const answer_pknot_mfecovar& candidate) {
-  return candidate.covar+candidate.mfe; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
+  return round((candidate.mfe+candidate.covar)*100); //candidate.covar+candidate.mfe; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
 }
 
 inline std::ostream &operator<<(std::ostream &o, const answer_pknot_mfecovar &tuple) {
@@ -190,7 +190,7 @@ struct mfecovar{
 };
 
 inline uint32_t hashable_value(const mfecovar& candidate) {
-  return candidate.covar+candidate.mfe; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
+  return round((candidate.mfe+candidate.covar)*100); //candidate.covar+candidate.mfe; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
 }
 
 //inline int getEnergy(const mfecovar &x) {
@@ -299,7 +299,7 @@ inline void empty(mfecovar_macrostate &e) {e.empty_ = true; }
 inline bool isEmpty(const mfecovar_macrostate &e) { return e.empty_; }
 
 inline uint32_t hashable_value(const mfecovar_macrostate& candidate) {
-  return candidate.covar+candidate.mfe; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
+  return round((candidate.mfe+candidate.covar)*100); // candidate.covar+candidate.mfe; // + candidate.betaLeftOuter + candidate.alphaRightOuter; // for backtracing: mfe values must be unique, e.g. there cannot be two candidates with -2.0 kcal/mol but different betaLeftOuter / alphaRightOuter values
 }
 
 inline int getIntScore(const mfecovar_macrostate &x) {
