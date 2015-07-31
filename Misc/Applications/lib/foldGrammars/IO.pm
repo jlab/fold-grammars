@@ -45,7 +45,7 @@ my $firstSequenceReady = 'false';
 use Data::Dumper;
 
 sub parse {
-	my ($result, $input, $program, $settings, $inputIndex, $refHash_givenPFall) = @_;
+	my ($result, $input, $program, $settings, $inputIndex, $refHash_givenPFall, $useExternalPFall) = @_;
 
 	my $windowStartPos = 0;
 	my $windowEndPos = undef;
@@ -277,11 +277,11 @@ sub parse {
 	return \%pfAll if ($settings->{mode} eq $Settings::MODE_PFALL);
 	if ($settings->{varnaoutput}) {
 		if (($settings->{mode} ne $Settings::MODE_ABSTRACT) && ($settings->{mode} ne $Settings::MODE_OUTSIDE)) {
-			outputVARNA(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll);
+			outputVARNA(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll, $useExternalPFall);
 		}
 	}
 
-	output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll);
+	output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll, $useExternalPFall);
 }
 
 sub parse_acm {
@@ -341,7 +341,7 @@ sub parse_acm {
 }
 
 sub output {
-	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex, $refHash_pfall) = @_;
+	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex, $refHash_pfall, $useExternalPFall) = @_;
 
 	if ($firstSequenceReady eq 'false') {
 		$firstSequenceReady = 'true';
@@ -492,7 +492,9 @@ sub output {
 				}
 			#END: define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
 			foreach my $structure (@sortedStructures) {
-				last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{pfunc}/$sumPfunc->{$windowPos} < $settings->{lowprobfilteroutput}));
+				my $probDenum = $sumPfunc->{$windowPos};
+				$probDenum = $refHash_pfall->{$windowPos} if ($useExternalPFall);
+				last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{pfunc}/$probDenum < $settings->{lowprobfilteroutput}));
 				last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($program ne $PROG_RAPIDSHAPES) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
 				last if (($settings->{mode} eq $Settings::MODE_SHAPES) && (splitFields($predictions->{$windowPos}->{$blockPos}->{$structure}->{score})->[0] > $range));
 				
@@ -545,7 +547,9 @@ sub output {
 						if (($settings->{mode} eq $Settings::MODE_PROBS) || ($settings->{mode} eq $Settings::MODE_SAMPLE) || ($program eq $PROG_RAPIDSHAPES)) {
 							print $SEPARATOR;
 							my $probability = 0;
-							$probability = $result->{pfunc}/$sumPfunc->{$windowPos} if (($settings->{mode} eq $Settings::MODE_PROBS) || ($program eq $PROG_RAPIDSHAPES));
+							my $probDenum = $sumPfunc->{$windowPos};
+							$probDenum = $refHash_pfall->{$windowPos} if ($useExternalPFall);
+							$probability = $result->{pfunc}/$probDenum if (($settings->{mode} eq $Settings::MODE_PROBS) || ($program eq $PROG_RAPIDSHAPES));
 							$probability = $result->{samples} / $settings->{numsamples} if (($program ne $PROG_RAPIDSHAPES) && ($settings->{mode} eq $Settings::MODE_SAMPLE));
 							print sprintf("%1.$settings->{'probdecimals'}f", $probability);
 						}
@@ -573,7 +577,7 @@ sub output {
 }
 
 sub outputVARNA {	
-	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex, $refHash_pfall) = @_;
+	my ($predictions, $input, $program, $settings, $fieldLengths, $sumPfunc, $samples, $inputIndex, $refHash_pfall, $useExternalPFall) = @_;
 
 	if ($hasVarnaHeader eq 'false') {
 		$varnaoutput .= getVARNAheader();
@@ -733,7 +737,9 @@ sub outputVARNA {
 				}
 			#END: define energy deviation for mode SHAPES, because something in the binary is wrong, in the sense that it outputs more sub-optimal results than asked for. To not confuse the user, surplus results will be truncated by the perl script.
 			foreach my $structure (@sortedStructures) {
-				last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{pfunc}/$sumPfunc->{$windowPos} < $settings->{lowprobfilteroutput}));
+				my $probDenum = $sumPfunc->{$windowPos};
+				$probDenum = $refHash_pfall->{$windowPos} if ($useExternalPFall);				
+				last if (($settings->{mode} eq $Settings::MODE_PROBS) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{pfunc}/$probDenum < $settings->{lowprobfilteroutput}));
 				last if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($program ne $PROG_RAPIDSHAPES) && ($predictions->{$windowPos}->{$blockPos}->{$structure}->{samples} / $settings->{numsamples} < $settings->{lowprobfilteroutput}));
 				last if (($settings->{mode} eq $Settings::MODE_SHAPES) && (splitFields($predictions->{$windowPos}->{$blockPos}->{$structure}->{score})->[0] > $range));
 				
@@ -789,7 +795,9 @@ sub outputVARNA {
 					#shape probability if available and mode is right
 						if (($settings->{mode} eq $Settings::MODE_PROBS) || ($settings->{mode} eq $Settings::MODE_SAMPLE) || ($program eq $PROG_RAPIDSHAPES)) {
 							my $probability = 0;
-							$probability = $result->{pfunc}/$sumPfunc->{$windowPos} if (($settings->{mode} eq $Settings::MODE_PROBS) || ($program eq $PROG_RAPIDSHAPES));
+							my $probDenum = $sumPfunc->{$windowPos};
+							$probDenum = $refHash_pfall->{$windowPos} if ($useExternalPFall);
+							$probability = $result->{pfunc}/$probDenum if (($settings->{mode} eq $Settings::MODE_PROBS) || ($program eq $PROG_RAPIDSHAPES));
 							$probability = $result->{samples} / $settings->{numsamples} if (($program ne $PROG_RAPIDSHAPES) && ($settings->{mode} eq $Settings::MODE_SAMPLE));
 							$varnaoutput .= "<td>".sprintf("%1.$settings->{'probdecimals'}f", $probability)."</td>";
 						}
