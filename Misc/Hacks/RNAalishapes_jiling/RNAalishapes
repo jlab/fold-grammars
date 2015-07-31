@@ -1,0 +1,344 @@
+#!/usr/bin/env perl
+
+our $PROGID = 'rnaalishapes';
+
+sub getPath {
+	my ($url) = @_;
+	my @parts = split(m|/|, $url);
+	pop @parts;
+	unshift @parts, "./" if (@parts == 0);
+	return join('/', @parts).'/';
+}
+
+use lib getPath($0)."../../Applications/lib/";
+
+use strict;
+use warnings;
+use Data::Dumper;
+use Getopt::Long;
+use foldGrammars::Utils;
+use foldGrammars::Settings;
+use foldGrammars::IO;
+$IO::SUB_BUILDCOMMAND = \&buildCommand;
+use POSIX 'isatty';
+
+our @ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_OUTSIDE, $Settings::MODE_MEA);
+@References::ORDER = ('hof:fek:sta:2002','ber:hof:wil:gru:sta:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','was:hof:sta:2004','mcc:1990','voss:2006','jan:gie:2014');
+
+our $GRAMMAR_NODANGLE = 'nodangle';
+our $GRAMMAR_OVERDANGLE = 'overdangle';
+our $GRAMMAR_MICROSTATE = 'microstate';
+our $GRAMMAR_MACROSTATE = 'macrostate';
+
+my %PARAM;
+$PARAM{mode} = {modes => \@ALLMODES, key => 'mode', type => 's', default => $Settings::MODE_SHAPES, info => "Select the computation mode. Available modes are \"".join('", "', @ALLMODES)."\". Omit the ticks on input.\nDefault is \"@(DEFAULT)\"."};
+$PARAM{windowsize} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'windowSize', type => 'i', gapc => 'w', default => undef, info => "Activates window mode and computes substrings of size <int> for the input. After computation for the first <int> bases is done, the window is pushed <y> bases to the right and the next computation is startet. <y> is set by --@(windowincrement).\n<int> must be a non-zero positive integer, smaller than the input length."};
+$PARAM{windowincrement} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'windowIncrement', gapc => 'i', type => 'i', default => 1, info => "If --@(windowsize) is given, this parameter sets the offset for the next window to <int> bases.\n<int> must be a non-zero positive integer, smaller than --@(windowsize).\nDefault is @(DEFAULT)."};
+$PARAM{temperature} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'temperature', gapc => 'T', type => 'f', default => 37, info => "Rescale energy parameters to a temperature of temp C.\n<float> must be a floating point number.\nDefault is @(DEFAULT) C."};
+$PARAM{param} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'param', gapc => 'P', type => 's', default => undef, infoType => "paramfile", info => "Read energy parameters from paramfile, instead of using the default parameter set. See the RNAlib (Vienna RNA package) documentation for details on the file format.\nDefault are parameters released by the Turner group in 2004 (see [".References::getNumber('mat:dis:chi:schroe:zuk:tur:2004')."] and [".References::getNumber('tur:mat:2009')."])."};
+$PARAM{allowlp} = {modes => \@ALLMODES, key => 'allowLP', gapc => 'u', type => 'i', default => 0, info => "Lonely base pairs have no stabilizing effect, because they cannot stack on another pair, but they heavily increase the size of the folding space. Thus, we normally forbid them. Should you want to allow them set <int> to 1.\n<int> must be 0 (=don't allow lonely base pairs) or 1 (= allow them).\nDefault is @(DEFAULT), i.e. no lonely base pairs."};
+$PARAM{absolutedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES], key => 'absoluteDeviation', gapc => 'e', type => 'f', default => undef, info => "This sets the energy range as an absolute value of the minimum free energy. For example, when --@(absolutedeviation) 10.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to 0.0 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nConnot be combined with --@(relativedeviation)."};
+$PARAM{relativedeviation} = {modes => [$Settings::MODE_SUBOPT, $Settings::MODE_SHAPES], key => 'relativeDeviation', gapc => 'c', type => 'f', default => 10.0, info => "This sets the energy range as percentage value of the minimum free energy. For example, when --@(relativedeviation) 5.0 is specified, and the minimum free energy is -10.0 kcal/mol, the energy range is set to -9.5 to -10.0 kcal/mol.\n<float> must be a positive floating point number.\nBy default, --@(relativedeviation) is set to @(DEFAULT) %.\nCannot be combined with --@(absolutedeviation)."};
+$PARAM{shapelevel} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT], key => 'shapeLevel', gapc => 'q', type => 'i', default => 5, info => "Set shape abstraction level. Currently, we provide five different levels (see [".References::getNumber('jan:gie:2010')."] for their definitions), where 5 is the most abstract and 1 the most concrete one.\n<int> must be a number between 5 and 1.\nDefault is @(DEFAULT) (the most abstract one)."};
+$PARAM{lowprobfilter} = {modes => [$Settings::MODE_PROBS], key => 'lowProbFilter', gapc => 'F', type => 'f', default => 0.000001, info => "This option sets a barrier for filtering out results with very low probabilities during calculation. The default value here is @(DEFAULT), which gives a significant speedup compared to a disabled filter. (See [".References::getNumber('voss:gie:reh:2006')."] for details.) Note that this filter can have a slight influence on the overall results. To disable this filter, use option --@(lowprobfilter) 0. \n<float> must be a positive floating point number smaller than 1."};
+$PARAM{lowprobfilteroutput} = {modes => [$Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'outputLowProbFilter', gapc => undef, type => 'f', default => 0.000001, info => "This option sets a filter for omitting low probability results during output. It is just for reporting convenience. Unlike probability cutoff filter, this option does not have any influence on runtime or probabilities beyond this value. To disable this filter, use option --@(lowprobfilteroutput) 0. \n<float> must be a positive floating point number smaller than 1."};
+$PARAM{help} = {modes => \@ALLMODES, key => 'help', default => undef, info => "show this brief help on version and usage"};
+$PARAM{binarypath} = {modes => \@ALLMODES, key => 'binPath', type => 's', default => undef, info => $Settings::PROGINFOS{$PROGID}->{name}." expects that according Bellman's GAP compiled binaries are located in the same directory as the Perl wrapper is. Should you moved them into another directory, you must set --@(binarypath) to this new location!"};
+$PARAM{binaryprefix} = {modes => \@ALLMODES, key => 'binPrefix', type => 's', default => $Settings::PROGINFOS{$PROGID}->{name}.'_jiling_', info => $Settings::PROGINFOS{$PROGID}->{name}." expects a special naming schema for the according Bellman's GAP compiled binaries. The binary name is composed of three to four components:\n  1) the program prefix (on default \"@(DEFAULT)\"),\n  2) the mode,\n  3) the used grammar,\n  4) optionally, the word \"window\" if you activate window computation.\nThus, for non-window mode \"$Settings::MODE_SUBOPT\", with grammar \"$GRAMMAR_OVERDANGLE\" and \"mis\" representation, the name would be \"@(DEFAULT)".$Settings::MODE_SUBOPT."_".$GRAMMAR_OVERDANGLE."\".\nWith --@(binaryprefix) you can change the prefix into some arbitary one."};
+$PARAM{probdecimals} = {modes => [$Settings::MODE_MEA, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'probDecimals', type => 'i', default => 7, info => "Sets the number of digits used for printing shape probabilities.\n<int> must be a positive integer number.\nDefault is @(DEFAULT)."};
+$PARAM{numsamples} = {modes => [$Settings::MODE_SAMPLE], key => 'numSamples', type => 'i', gapc => 'r', default => 1000, info => "Sets the number of samples that are drawn to estimate shape probabilities.\nIn our experience, 1000 iterations are sufficient to achieve reasonable results for shapes with high probability. Thus, default is @(DEFAULT)."};
+$PARAM{showsamples} = {modes => [$Settings::MODE_SAMPLE], key => 'showSamples', type => 'i', gapc => undef, default => 0, info => "You can inspect the samples drawn by stochastic backtrace if you turn --@(showsamples) on by setting it to 1.\nDefault is @(DEFAULT) = off."};
+$PARAM{pairingfraction} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'pairingFraction', gapc => 'm', type => 'i', default => -200, info => "For a single RNA sequence it is easy to decide if positions i and j build a valid base pair. For _alignments_ of RNA sequences this is more complicated, because some sequences might contain gaps. For exact definitions, see papers [".References::getNumber('hof:fek:sta:2002')."] and [".References::getNumber('ber:hof:wil:gru:sta:2008')."] from the Vienna group. Roughly speaking, the less --@(pairingfraction), the more sequences must have a valid pair at positions i and j.\n Default value is @(DEFAULT), meaning that at most half of the sequences must pair to let alignment positions i and j be a pair."};
+$PARAM{cfactor} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'cfactor', gapc => 'C', type => 'f', default => '1.0', info => "Set the weight of the covariance term in the energy function.\nDefault is @(DEFAULT)."};
+$PARAM{nfactor} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'nfactor', gapc => 'n', type => 'f', default => '1.0', info => "Set the penalty for non-compatible sequences in the covariance term of the energy function.\nDefault is @(DEFAULT)."};
+$PARAM{ribosumscoring} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'ribosumscoring', gapc => 'R', default => 0, type => 'i', info => "Switch between hamming / ribosum distance for covariance calculation.\nBases in two pairing alignment columns are not always identical. According to compensating mutations and the nature of the bases we score replacing one base with another differently. For example, replacing C by U might be more likely than C by A. These 'distances' are expressed in form a distance matrix. By default, this matrix is a simple hamming distance matrix. A more advanced option is to use a 'Ribosum' matrix, according to minimal and maximal pairwise sequence similarity.\nDefault value is @(DEFAULT)."};
+$PARAM{consensus} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_OUTSIDE], key => 'consensus', default => 'consensus', type => 's', info => "The input alignment will be representet in a single line. You can choose between \"$IO::CONSENSUS_CONSENSUS\", for a simple consensus sequence (determined by most frequent character), or \"$IO::CONSENSUS_MIS\" the 'most informative sequence'. For each column of the alignment output the set of nucleotides with frequence greater than average in IUPAC notation.\nDefault is \"@(DEFAULT)\"."};
+$PARAM{grammar} = {modes => \@ALLMODES, key => 'grammar', default => $GRAMMAR_OVERDANGLE, type => 's', info => "The grammar is fixed to a special version required by Jiling Zhang."};
+$PARAM{sci} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL], key => 'sci', default => 0, type => 'i', info => "The structure conservation index (SCI) is a measure for the likelyhood that individual sequences will fold similar to the aligned sequences. It is computed as the aligned MFE divided by the average MFE of the unaligned sequences.\nA SCI close to zero indicates that this structure is not a good consensus structure, whereas a set of perfectly conserved structures has SCI of 1. A SCI > 1 indicates a perfectly conserved secondary structure, which is, in addition, supported by compensatory and/or consistent mutations, which contribute a covariance score to the alignment MFE. For further details see [".References::getNumber('was:hof:sta:2004')."].\nFor the sake of speed, SCI computation is switched off by default."};
+$PARAM{bppmthreshold} = {modes => [$Settings::MODE_OUTSIDE], gapc => 'F', key => 'bppmThreshold', default => 0.00001, type => 'f', info => "Set the threshold for base pair probabilities included in the postscript output.\nDefault is @(DEFAULT)."};
+$PARAM{dotplotfilename} = {modes => [$Settings::MODE_OUTSIDE], gapc => 'o', key => 'dotplot', default => 'dotPlot.ps', type => 's', info => "Sets the filename for the probability dot plot, produced in \"$Settings::MODE_OUTSIDE\" mode.\nDefault is \"@(DEFAULT)\"."};
+$PARAM{dotplotpng} = {modes => [$Settings::MODE_OUTSIDE], key => 'png', default => 0, type => 'i', info => "Activate this option to also produce a png file of the \"dot plot\". This is deactivated by default and requires an installation of the program \"GhostScript\"."};
+$PARAM{structureprobabilities} = {modes => [$Settings::MODE_MEA, $Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], key => 'structureProbs', default => 0, type => 'i', info => "If activated, in addition to free energy also the probability of structures will be computed. To speed up computation, this calculation is switched off by default."};
+$PARAM{verbose} = {modes => \@ALLMODES, key => 'verbose', default => 0, type => 'i', info => "Prints the actual command for Bellman's GAP binary."};
+$PARAM{varnaoutput} = {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_MEA], key => 'varna', default => undef, type => 's', info => "Provide a file name to which a HTML formatted version of the output should be saved in."};
+
+my $settings = {};
+foreach my $param (keys %PARAM) {
+	$settings->{$param} = $PARAM{$param}->{default};
+}
+my %help = ();
+foreach my $param (keys %PARAM) {
+	my $optionSec = $PARAM{$param}->{key};
+	$optionSec .= "=".$PARAM{$param}->{type} if (exists $PARAM{$param}->{type});
+	$help{$optionSec} = \$settings->{$param};
+}
+&GetOptions( 	
+	%help
+);
+
+
+checkParameters($settings, \%PARAM);
+
+usage() if (defined $settings->{'help'}); #user asks for help --> print usage and die
+our $inputIndex = 0;
+if (@ARGV == 0) {
+	#input not given via command line parameter
+	if (isatty(*STDIN)) {
+		#we are somehow in an interactive mode
+		if ($settings->{mode} eq $Settings::MODE_EVAL) {
+			#expecting two inputs: first alignment file name, second structure
+			print "You are in \"$Settings::MODE_EVAL\" mode. Please give me your clustal W file name:\n";
+			my $inputFile = <STDIN>; chomp $inputFile;
+			print "Second, I need your structure that should be evaluated:\n";
+			my $inputStructure = <STDIN>; chomp $inputStructure;
+			processInput($inputFile, $inputStructure, $settings);
+		} elsif ($settings->{mode} eq $Settings::MODE_ABSTRACT) {
+			print "You are in \"".$settings->{mode}."\" mode. Please give me your Vienna-Dot-Bracket string, that shell be converted into a shape string:\n";
+			my $inputStructure = <STDIN>; chomp $inputStructure;
+			processInput($inputStructure, undef, $settings);
+		} else {
+			#expecting a filename
+			print "You are in \"".$settings->{mode}."\" mode. Please give me a clustal W file name, containing your alignment:\n";
+			my $inputFile = <STDIN>; chomp $inputFile;
+			processInput($inputFile, undef, $settings);
+		}
+	} else {
+		#input must be delivered via pipe
+		die "You are in \"$Settings::MODE_EVAL\" mode. But I can't distinguish RNA alignment from structure if you deliver input via PIPE. Please choose another way to input your information.\n" if ($settings->{mode} eq $Settings::MODE_EVAL);
+		processInput(\*STDIN, undef, $settings);
+	}
+} elsif (@ARGV == 1) {
+	#rna alignment, given as command line parameter
+	processInput($ARGV[0], undef, $settings);
+} elsif (@ARGV == 2 && $settings->{mode} eq $Settings::MODE_EVAL) {
+	#only for MODE_EVAL, rna alignment filename and secondary structure are given as two command line parameters
+	my $inputStructure = $ARGV[1];
+	if (-e $inputStructure) { #especially for BiBiServ: structure must be delivered as a filename, thus read the file to get the structure.
+		my $command = Settings::getBinary('cat')." $inputStructure";
+		$inputStructure = Utils::execute($command); 
+		chomp $inputStructure;
+	}
+	processInput($ARGV[0], $inputStructure, $settings);
+} else {
+	print STDERR "You gave me too many inputs. Please ask for help, via \"".$Settings::PROGINFOS{$PROGID}->{name}." --".$PARAM{help}->{key}."\".\n";
+	exit(1);
+}
+
+sub processInput {
+	my ($input, $inputStructure, $refHash_settings) = @_;
+	
+	if (ref($input) =~ m/GLOB/) {
+		#input is STDIN
+		Utils::applyFunctionToClustalFile(\*STDIN, \&doComputation, $refHash_settings, $inputStructure);
+	} else {
+		#input is a filename
+		if ($refHash_settings->{mode} eq $Settings::MODE_ABSTRACT) {
+			my $structure = $input;
+			if (-e $input) {
+				$structure = Utils::execute(Settings::getBinary('cat')." $input"); chomp $structure;
+			}
+			my $command = buildCommand($settings, undef);
+			my $seqDummy = 'a' x length($structure);
+			
+			my $inputFileSequence = Utils::writeInputToTempfile($seqDummy);
+			my $inputFileStructure = Utils::writeInputToTempfile($structure);
+			print "Actual call was: $command -f $inputFileSequence -f $inputFileStructure\n" if ($settings->{verbose});
+			my $result = Utils::execute("$command -f $inputFileSequence -f $inputFileStructure 2>&1");
+			Utils::execute(Settings::getBinary('rm')." -f $inputFileSequence") if (!$settings->{verbose});
+			Utils::execute(Settings::getBinary('rm')." -f $inputFileStructure") if (!$settings->{verbose});
+	
+			IO::parse($result, {header => "dummy", sequence => "a", structure => $input}, $Settings::PROGINFOS{$PROGID}->{name}, $settings);
+		} else {
+			die "The file '$input' does not exist!\n" if (not -e $input);
+			Utils::applyFunctionToClustalFile($input, \&doComputation, $refHash_settings, $inputStructure);
+		}
+	}
+	
+	IO::writeVarna($refHash_settings);
+}
+
+sub doComputation {
+	my ($refHash_alignment, $settings, $inputStructure) = @_;
+
+	$inputIndex++;
+	my $gapInput = "";
+	foreach my $name (sort {$refHash_alignment->{originalSequenceOrdering}->{$a} <=> $refHash_alignment->{originalSequenceOrdering}->{$b}} keys(%{$refHash_alignment->{originalSequenceOrdering}})) {
+		my $seq = $refHash_alignment->{sequences}->{$name};
+		$seq =~ s/t/u/gi;
+		$seq =~ s/\.|\-/\_/g;
+		$seq = uc($seq);
+		$seq = $seq.'+'.$seq if ($settings->{mode} eq $Settings::MODE_OUTSIDE);
+		$gapInput .= $seq.'#';
+	}
+	
+	$refHash_alignment->{representation} = IO::getAlignmentRepresentation($gapInput, $refHash_alignment, $settings, $IO::TASK_REP, \&buildCommand);
+	my $command = buildCommand($settings, $refHash_alignment);
+	my $structureInputFile = undef;
+	my $structureArg = "";
+	if ($settings->{'mode'} eq $Settings::MODE_EVAL) {
+		die "You are in \"$Settings::MODE_EVAL\", but your input of RNA alignment and structure is of unequal length!\n" if ($refHash_alignment->{length} != length($inputStructure));
+		$structureInputFile = Utils::writeInputToTempfile($inputStructure);
+		$structureArg = " -f $structureInputFile";
+	}
+	
+	my %pfAll = ();
+	if ($settings->{'structureprobabilities'}) {
+		my %pfallSettings = %{$settings};
+		$pfallSettings{mode} = $Settings::MODE_PFALL;
+		Utils::checkBinaryPresents(\%pfallSettings, "wrong command line parameter:\n  ", [$Settings::MODE_CAST], []);
+		my $pfallCommand = buildCommand(\%pfallSettings, $refHash_alignment);
+		my $inputFile = Utils::writeInputToTempfile($gapInput);
+		print "Actual call was: $pfallCommand -f $inputFile\n" if ($settings->{verbose});
+		my $res = Utils::execute("$pfallCommand -f $inputFile 2>&1");
+		Utils::execute(Settings::getBinary('rm')." -f $inputFile") if (!$settings->{verbose});
+		%pfAll = %{IO::parse($res, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, \%pfallSettings, 0)};
+	}
+
+	print "Actual call was: $command \"$gapInput\" $structureArg\n" if ($settings->{verbose});
+	my $inputFile = Utils::writeInputToTempfile($gapInput);
+	my $result = Utils::execute("$command -f $inputFile $structureArg 2>&1");
+	Utils::execute(Settings::getBinary('rm')." -f $inputFile") if (!$settings->{verbose});
+	Utils::execute(Settings::getBinary('rm')." -f $structureInputFile") if ((defined $structureInputFile) && (!$settings->{verbose}));
+	IO::parse($result, $refHash_alignment, $Settings::PROGINFOS{$PROGID}->{name}, $settings, $inputIndex, \%pfAll);
+	
+	return undef;
+}
+
+
+sub buildCommand {
+	my ($settings, $refHash_alignment, $task) = @_;
+	
+	my $cmd = "";
+	$cmd .= $settings->{'binarypath'};
+	$cmd .= "/" if (substr($cmd, -1, 1) ne "/");
+	$cmd .= $settings->{'binaryprefix'};
+	if (not defined $task) {
+		if ($settings->{'mode'} eq $Settings::MODE_ABSTRACT) {
+			$cmd .= $Settings::MODE_EVAL;
+		} else {
+			$cmd .= $settings->{'mode'};
+		}
+		$cmd .= '_'.$settings->{'grammar'};
+	} else {
+		if ($task eq $IO::TASK_REP) {
+			$cmd .= $IO::TASK_REP;
+			$cmd .= '_'.$settings->{'consensus'};
+		} elsif ($task eq $IO::TASK_SCI) {
+			$cmd .= $IO::TASK_SCI;
+			$cmd .= '_'.$settings->{'grammar'};
+		}
+	}
+	if ((not defined $task) || ($task eq $IO::TASK_SCI)) {
+		if ((not defined $task) && (defined $settings->{'windowsize'})) {
+			$cmd .= "_window";
+			my $windowSize = $settings->{'windowsize'};
+			$windowSize = $refHash_alignment->{length} if ($settings->{'windowsize'} > $refHash_alignment->{length});
+			$cmd .= " -".$PARAM{windowsize}->{gapc}." ".$windowSize;
+			$cmd .= " -".$PARAM{windowincrement}->{gapc}." ".$settings->{'windowincrement'};
+		}
+		$cmd .= " -".$PARAM{temperature}->{gapc}." ".$settings->{'temperature'} if ($settings->{'temperature'} != $PARAM{temperature}->{default});
+		$cmd .= " -".$PARAM{param}->{gapc}." ".$settings->{'param'} if (defined $settings->{'param'});
+		$cmd .= " -".$PARAM{allowlp}->{gapc}." ".$settings->{'allowlp'} if ($settings->{'allowlp'} != $PARAM{allowlp}->{default});
+	}
+	if (not defined $task) {
+		$cmd .= " -".$PARAM{relativedeviation}->{gapc}." ".$settings->{'relativedeviation'} if ($settings->{'relativedeviation'} != $PARAM{relativedeviation}->{default});
+		$cmd .= " -".$PARAM{absolutedeviation}->{gapc}." ".$settings->{'absolutedeviation'} if (defined $settings->{'absolutedeviation'});
+		$cmd .= " -".$PARAM{shapelevel}->{gapc}." ".$settings->{'shapelevel'} if ($settings->{'shapelevel'} != $PARAM{shapelevel}->{default});
+		$cmd .= " -".$PARAM{lowprobfilter}->{gapc}." ".$settings->{'lowprobfilter'} if ($settings->{'lowprobfilter'} != $PARAM{lowprobfilter}->{default});
+		$cmd .= " -".$PARAM{numsamples}->{gapc}." ".$settings->{'numsamples'} if ($settings->{'mode'} eq $Settings::MODE_SAMPLE);
+		$cmd .= " -".$PARAM{pairingfraction}->{gapc}." ".$settings->{'pairingfraction'} if ($settings->{'pairingfraction'} != $PARAM{pairingfraction}->{default});
+		$cmd .= " -".$PARAM{cfactor}->{gapc}." ".$settings->{'cfactor'} if ($settings->{'cfactor'} != $PARAM{cfactor}->{default});
+		$cmd .= " -".$PARAM{nfactor}->{gapc}." ".$settings->{'nfactor'} if ($settings->{'nfactor'} != $PARAM{nfactor}->{default});
+		$cmd .= " -".$PARAM{ribosumscoring}->{gapc}." ".$settings->{'ribosumscoring'} if ($settings->{'ribosumscoring'} != $PARAM{ribosumscoring}->{default});
+		$cmd .= " -".$PARAM{bppmthreshold}->{gapc}." ".$settings->{'bppmthreshold'} if (($settings->{'mode'} eq $Settings::MODE_OUTSIDE) && ($settings->{'bppmthreshold'} != $PARAM{bppmthreshold}->{default}));
+		if (($settings->{'mode'} eq $Settings::MODE_OUTSIDE) && ($settings->{'dotplotfilename'} ne $PARAM{bppmthreshold}->{default})) {
+			$cmd .= " -".$PARAM{dotplotfilename}->{gapc}." ".IO::getDotplotFilename($settings, $inputIndex);
+		}
+	}
+
+	return $cmd;
+}
+
+sub checkParameters {
+	my ($settings, $refHash_params) = @_;
+	
+	my $diePrefix = "wrong command line parameter:\n  ";
+	
+	Utils::automatedParameterChecks(\%PARAM, $settings, \@ALLMODES, $diePrefix);
+	die $diePrefix."Sorry, we don't provide a outside version for grammar \"macrostate\" yet.\n" if ($settings->{'grammar'} eq 'macrostate' && $settings->{'mode'} eq $Settings::MODE_OUTSIDE);
+	Utils::checkBinaryPresents($settings, $diePrefix, [], ['rep_'.$settings->{'consensus'}, 'sci_'.$settings->{'grammar'}], $refHash_params);
+
+	die $diePrefix."--".$PARAM{'windowsize'}->{key}." must be a positive integer!\n" if ((defined $settings->{'windowsize'}) && ($settings->{'windowsize'} < 1));
+	die $diePrefix."--".$PARAM{'windowsize'}->{key}." is smaller than --".$PARAM{'windowincrement'}->{key}." !\n" if ((defined $settings->{'windowsize'}) && ($settings->{'windowsize'} < $settings->{'windowincrement'}));
+	die $diePrefix."the parameter file you specified could not be found.\n" if ((defined $settings->{'param'}) && (not -e $settings->{'param'}));
+	$settings->{'grammar'} = lc($settings->{'grammar'});
+	die $diePrefix."there is no grammar \"".$settings->{'grammar'}."\". Please select one of \"$GRAMMAR_NODANGLE\", \"$GRAMMAR_OVERDANGLE\", \"$GRAMMAR_MICROSTATE\" or \"$GRAMMAR_MACROSTATE\".\n" if ($settings->{'grammar'} !~ m/^nodangle|overdangle|microstate|macrostate$/i);
+	$settings->{'consensus'} = lc($settings->{'consensus'});
+	die $diePrefix."there is no consensus representation \"".$settings->{'consensus'}."\". Please select either \"$IO::CONSENSUS_CONSENSUS\" or \"$IO::CONSENSUS_MIS\".\n" if ($settings->{'consensus'} !~ m/^consensus|mis$/i);
+	die $diePrefix."--".$PARAM{'numsamples'}->{key}." must be a positive integer, otherwise shape frequencies cannot be estimated.\n" if ($settings->{'numsamples'} < 1);
+	die $diePrefix."--".$PARAM{'allowlp'}->{key}." can either be 0 or 1, to forbid or disallow lonely base pairs.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
+	die $diePrefix."--".$PARAM{'showsamples'}->{key}." can either be 0 or 1, to hide or omit sampled structures by stochastic backtrace.\n" if ($settings->{'showsamples'} !~ m/^0|1$/);
+	die $diePrefix."--".$PARAM{'sci'}->{key}." can either be 0 or 1. Only for 1, SCI computation will be performed.\n" if ($settings->{'allowlp'} !~ m/^0|1$/);
+	die $diePrefix."--".$PARAM{'ribosumscoring'}->{key}." can either be 0 or 1.\n" if ($settings->{'ribosumscoring'} !~ m/^0|1$/);
+	die $diePrefix."--".$PARAM{'shapelevel'}->{key}." must be a number between 5 and 1.\n" if (($settings->{'shapelevel'} < 1) || ($settings->{'shapelevel'} > 5));
+	die $diePrefix."--".$PARAM{'lowprobfilter'}->{key}." must be a non-negative floating point number below 1.\n" if (($settings->{'lowprobfilter'} >= 1) || ($settings->{'lowprobfilter'} < 0));
+	die $diePrefix."--".$PARAM{'lowprobfilteroutput'}->{key}." must be a non-negative floating point number below 1.\n" if (($settings->{'lowprobfilteroutput'} >= 1) || ($settings->{'lowprobfilteroutput'} < 0));
+	die $diePrefix."--".$PARAM{'absolutedeviation'}->{key}." and --".$PARAM{'relativedeviation'}->{key}." cannot be set at the same time!\n" if ((defined $settings->{'absolutedeviation'}) && ($settings->{'relativedeviation'} != $PARAM{'relativedeviation'}->{default}));
+	die $diePrefix."--".$PARAM{'probdecimals'}->{key}." must be a non-negative integer number!\n" if ($settings->{'probdecimals'} < 0);
+	die $diePrefix."--".$PARAM{'bppmthreshold'}->{key}." must be a non-negative integer number!\n" if ($settings->{'bppmthreshold'} < 0);
+	die $diePrefix."--".$PARAM{'bppmthreshold'}->{key}." should be less then 1, because no pair (i,j) will occure in _every_ structure of the search space.\n" if ($settings->{'bppmthreshold'} >= 1);
+	die $diePrefix."--".$PARAM{'structureprobabilities'}->{key}." can either be 0 or 1, to omit or compute individual structure probabilities.\n" if ($settings->{'structureprobabilities'} !~ m/^0|1$/);	
+}
+
+sub usage {
+	my ($settings) = @_;
+	
+my $HELP = <<EOF;
+# $Settings::PROGINFOS{$PROGID}->{name}: RNA secondary structure predictions for alignments
+#               version $Settings::PROGINFOS{$PROGID}->{version} ($Settings::PROGINFOS{$PROGID}->{date})
+#               Stefan Janssen (bibi-help\@techfak.uni-bielefeld.de)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+USAGE: 
+perl $Settings::PROGINFOS{$PROGID}->{name} [-mode] [-options] <fasta file name or RNA sequence>
+
+ $Settings::PROGINFOS{$PROGID}->{name} comes with the following different modes of predictions:
+EOF
+;
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_MFE."      : ", Utils::usage_convertInfoText("Computes the single energetically most stable secondary structure for the given RNA alignment. Co-optimal results will be suppressed, i.e. should different prediction have the same best energy value, just an arbitrary one out of them will be reported.\nThis resembles the function of the program \"RNAalifold\" of the Vienna group (see [".References::getNumber('hof:fek:sta:2002')."] and [".References::getNumber('ber:hof:wil:gru:sta:2008')."]). If you only use \"$Settings::MODE_MFE\" mode, consider switching to RNAalifold, because their implementation is much faster, due to sophisticated low level C optimisations.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_SUBOPT."   : ", Utils::usage_convertInfoText("Often, the biological relevant structure is hidden among suboptimal predictions. In \"$Settings::MODE_SUBOPT\" mode, you can also inspect all suboptimal solutions up to a given threshold (see parameters --@(absolutedeviation) and --@(relativedeviation)). \nDuplicates might appear when using grammar \"$GRAMMAR_MICROSTATE\", due to its semantic ambiguity according Vienna-Dot-Bracket strings. See [".References::getNumber('jan:schud:ste:gie:2011')."] for details.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_SHAPES."   : ", Utils::usage_convertInfoText("Output of \"$Settings::MODE_SUBOPT\" mode is crowded by many very similar answers, which make it hard to focus to the \"important\" changes. The abstract shape concept [".References::getNumber('jan:gie:2010')."] groups similar answers together and reports only the best answer within such a group. Due to abstraction, suboptimal analyses can be done more thorough, by ignoring boring differences.\n(see parameter --@(shapelevel))", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_PROBS."    : ", Utils::usage_convertInfoText("Structure probabilities are strictly correlated to their energy values. Grouped together into shape classes, their probabilities add up. Often a shape class with many members of worse energy becomes more probable than the shape containing the mfe structure but not much more members. See [".References::getNumber('voss:gie:reh:2006')."] for details on shape probabilities.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_SAMPLE."   : ", Utils::usage_convertInfoText("Probabilistic sampling based on partition function. This mode combines stochastic sampling with a-posteriori shape abstraction. A sample from the structure space holds M structures together with their shapes, on which classification is performed. The probability of a shape can then be approximated by its frequency in the sample.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_EVAL."     : ", Utils::usage_convertInfoText("Evaluates the free energy of an RNA molecule in fixed secondary structure, similar to RNAeval from the Vienna group. Multiple answers stem from semantic ambiguity of the underlying grammar.\nIt might happen, that your given structure is not a structure for the sequence. Maybe your settings are too restrictive, e.g. not allowing lonely base-pairs (--@(allowlp)).\nIf you input a (multiple) FASTA file, ".$Settings::PROGINFOS{$PROGID}->{name}." assumes that exactly first half of the contents of each entry is RNA sequence, second half is the according structure. Whitespaces are ignored.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_ABSTRACT." : ", Utils::usage_convertInfoText("Converts a Vienna-Dot-Bracket representation of a secondary structure into a shape string.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_OUTSIDE."  : ", Utils::usage_convertInfoText("Applies the \"outside\"-algorithm to compute probabilities for all base pairs (i,j), based on the partition function [".References::getNumber('mcc:1990')."]. Output is a PostScript file, visualizing these probabilities as a \"dot plot\".\nThe \"dot plot\" shows a matrix of squares with area proportional to the base pair probabilities in the upper right half. For each pair (i,j) with probability above --@(bppmthreshold) there is a line of the form\n    i  j  sqrt(p)  ubox\nin the PostScript file, so that they can be easily extracted.", \%PARAM))."\n";
+	$HELP .= Utils::printIdent("  ".$Settings::MODE_MEA."      : ", Utils::usage_convertInfoText("Finds the secondary structure with the maximal sum of base-pair probabilities (MEA=maximal expected accuracy). The equivalent Vienna Package name is the 'centroid secondary structure', defined as 'The centroid structure is the structure with the minimum total base-pair distance to all structures in the thermodynamic ensemble.'.", \%PARAM))."\n";
+
+	my @paramGroups = ();
+	push @paramGroups, {name => 'GENERAL OPTIONS', elements => ['mode','absolutedeviation','relativedeviation','shapelevel','lowprobfilter','lowprobfilteroutput','numsamples','showsamples','windowsize','windowincrement','structureprobabilities']};
+	push @paramGroups, {name => 'ALIGNMENT OPTIONS', elements => ['sci','consensus','ribosumscoring','pairingfraction','cfactor','nfactor']};
+	push @paramGroups, {name => 'FOLDING OPTIONS', elements => ['grammar','temperature','param','allowlp']};
+	push @paramGroups, {name => 'OUTSIDE OPTIONS', elements => ['bppmthreshold','dotplotfilename','dotplotpng']};
+	push @paramGroups, {name => 'SYSTEM OPTIONS', elements => ['binarypath','binaryprefix','probdecimals','help','verbose','varnaoutput']};
+	foreach my $refHash_group (@paramGroups) {
+		$HELP .= $refHash_group->{name}.":\n";
+		for my $par (@{$refHash_group->{elements}}) {
+			$HELP .= Utils::printParamUsage($PARAM{$par}, \%PARAM, \@ALLMODES)."\n";
+		}
+	}
+
+	$HELP .= "REFERENCES:\n";
+	foreach my $refID ('hof:fek:sta:2002','ber:hof:wil:gru:sta:2008','mat:dis:chi:schroe:zuk:tur:2004','tur:mat:2009','jan:schud:ste:gie:2011','jan:gie:2010','voss:gie:reh:2006','was:hof:sta:2004','mcc:1990','voss:2006') {
+		$HELP .= References::printReference($refID);
+	}
+	$HELP .= "CITATION:\n    If you use this program in your work you might want to cite:\n\n";
+	foreach my $refID ('jan:gie:2014') {
+		$HELP .= References::printReference($refID);
+	}
+
+	print $HELP;
+	exit(0);
+}
+
+
