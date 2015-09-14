@@ -48,11 +48,13 @@ open (IN, $infile) || die "can't read file '$infile': $!";
 			if ($mode == 1) { 
 				$content .= "\t".$sedBinary.' -i \'s|gapc::Opts::getOpts()->parse(argc, argv);|gapc::Opts::getOpts()->parse(argc, argv);\n\tif (gapc::Opts::getOpts()->inputs.size() == 2) {\n\t\tPairs::getGivenPairs()->setStructure(gapc::Opts::getOpts()->inputs.back());\n\t\tgapc::Opts::getOpts()->inputs.pop_back();\n\t}\n|\' '.$1.'_main.cc'."\n";
 			}
-		} elsif ($line =~ m/^(\s*\$\(CXX\) -MMD -MP \$\(CPPFLAGS\) \$\(CXXFLAGS\))(.*)$/) {
-			my ($begin, $end) = ($1,$2);
+		#~ } elsif ($line =~ m/^(\s*\$\(CXX\) -MMD -MP \$\(CPPFLAGS\) \$\(CXXFLAGS\))(.*)$/) {
+		} elsif ($line =~ m/^CXXFILES/) {
+			$content .= $line;
+			#~ my ($begin, $end) = ($1,$2);
 			my $addWindowModeFlag = "";
 			$addWindowModeFlag = " -DWINDOW_MODE" if ($gapcCall =~ m/--window-mode/);
-			$content .= $begin." -DWITH_RNAOPTIONS".$addWindowModeFlag.$end."\n";
+			$content .= "CXXFLAGS += -DWITH_RNAOPTIONS".$addWindowModeFlag."\n";
 		} elsif ($line =~ m/#   GAP-C call:/) {
 			$content .= $line;
 			$gapcCall = <IN>;
