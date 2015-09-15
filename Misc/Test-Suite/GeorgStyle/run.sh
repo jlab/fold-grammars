@@ -7,7 +7,7 @@ BASE=`$PERL -e 'use lib "../../Applications/lib/foldGrammars/"; use Settings; pr
 
 ARCHTRIPLE=`gcc -dumpmachine`;
 if [[ $ARCHTRIPLE =~ "linux" ]] ; then
-	OSSUFFIX="_linux";
+	OSSUFFIX="_linux-gnu";
 else
 	OSSUFFIX="";
 fi
