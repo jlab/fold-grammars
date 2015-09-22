@@ -4,6 +4,7 @@ import "Extensions/mfesubopt.hh"
 import "Extensions/probabilities.hh"
 import "Extensions/shapes.hh"
 import "Extensions/mea.hh"
+import "Extensions/probing.hh"
 
 input rna
 
@@ -21,6 +22,7 @@ algebra alg_enum auto enum;
 include "Algebras/MFE/alg_mfe.gap"
 include "Algebras/MEA/alg_mea.gap"
 include "Algebras/Pfunc/alg_pfunc.gap"
+include "Algebras/Probing/alg_probing_centroid.gap" //a probing algebra with Cedrics centroid idea to tell paired and unpaired reactivities apart
 
 include "Grammars/gra_nodangle.gap"
 

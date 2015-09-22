@@ -4,6 +4,7 @@ import "Extensions/mfesubopt.hh"
 import "Extensions/probabilities.hh"
 import "Extensions/typesRNAfolding.hh"
 import "Extensions/shapes.hh"
+import "Extensions/probing.hh"
 
 input rna
 
@@ -21,6 +22,7 @@ include "Algebras/MFE/alg_mfe_macrostate.gap"
 include "Algebras/DotBracket/alg_dotBracket.gap"
 include "Algebras/Shapes/alg_shapes.gap"
 include "Algebras/Shapes/alg_hishapes.gap"
+include "Algebras/Probing/alg_probing_centroid_macrostate.gap" //a probing algebra with Cedrics centroid idea to tell paired and unpaired reactivities apart
 
 algebra alg_count auto count ;
 algebra alg_enum auto enum ;

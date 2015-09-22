@@ -5,7 +5,7 @@ import "Extensions/probabilities.hh"
 import "Extensions/shapes.hh"
 import "Extensions/mea.hh"
 import "Extensions/probing.hh"
-import "Extensions/pareto.hh"
+//import "Extensions/pareto.hh" //using Thomas generic pareto implementation in Bellman's GAP instead
 
 input rna
 
@@ -26,7 +26,7 @@ include "Algebras/MFE/alg_mfe_SHAPE.gap"
 
 include "Algebras/MEA/alg_mea.gap"
 include "Algebras/alg_SHAPE.gap"
-include "Algebras/alg_expSHAPE.gap"
+include "Algebras/Probing/alg_probing_centroid.gap" //a probing algebra with Cedrics centroid idea to tell paired and unpaired reactivities apart
 
 include "Algebras/Pfunc/alg_pfunc.gap"
 
