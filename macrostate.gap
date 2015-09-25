@@ -22,7 +22,7 @@ include "Algebras/MFE/alg_mfe_macrostate.gap"
 include "Algebras/DotBracket/alg_dotBracket.gap"
 include "Algebras/Shapes/alg_shapes.gap"
 include "Algebras/Shapes/alg_hishapes.gap"
-include "Algebras/Probing/alg_probing_centroid_macrostate.gap" //a probing algebra with Cedrics centroid idea to tell paired and unpaired reactivities apart
+include "Algebras/Probing/alg_probing_macrostate.gap" //an algebra for integrating structure probing data like SHAPE or DMS
 
 algebra alg_count auto count ;
 algebra alg_enum auto enum ;

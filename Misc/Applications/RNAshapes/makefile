@@ -8,11 +8,11 @@ all:
 	$(MAKE) all_normal
 	$(MAKE) all_window
 
-all_normal: mfe subopt shapes probs sample eval outside mea pareto-energy-centroid pfall
+all_normal: mfe subopt shapes probs sample eval outside mea pareto-energy-probing pfall
 
 all_window: windowmodeflag = --window-mode
 all_window: current_windowmodesuffix = $(WINDOWSUFFIX)
-all_window: mfe subopt shapes probs sample mea pareto-energy-centroid pfall
+all_window: mfe subopt shapes probs sample mea pareto-energy-probing pfall
 
 
 install: install-lib install-program
@@ -101,15 +101,13 @@ mea_%:
 			gapc_binaryname="$@$(current_windowmodesuffix)"; \
 	fi;
 	
-pareto-energy-centroid: pareto-energy-centroid_nodangle pareto-energy-centroid_overdangle pareto-energy-centroid_microstate pareto-energy-centroid_macrostate
-pareto-energy-centroid_%:
+pareto-energy-probing: pareto-energy-probing_nodangle pareto-energy-probing_overdangle pareto-energy-probing_microstate pareto-energy-probing_macrostate
+pareto-energy-probing_%:
 	$(MAKE) compile \
-		gapc_product="(alg_mfe ^ alg_probing_centroid) * (alg_dotBracket * alg_shapeX * alg_pfunc)" \
-		gapc_options="--kbacktrace --no-coopt-class $(windowmodeflag)" \
+		gapc_product="(alg_mfe ^ alg_probing) * (alg_dotBracket * alg_shapeX * alg_pfunc)" \
+		gapc_options="$(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
-
-
 
 pfall: pfall_nodangle pfall_overdangle pfall_microstate pfall_macrostate
 pfall_%:

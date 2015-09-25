@@ -26,7 +26,7 @@ include "Algebras/MFE/alg_mfe_SHAPE.gap"
 
 include "Algebras/MEA/alg_mea.gap"
 include "Algebras/alg_SHAPE.gap"
-include "Algebras/Probing/alg_probing_centroid.gap" //a probing algebra with Cedrics centroid idea to tell paired and unpaired reactivities apart
+include "Algebras/Probing/alg_probing.gap" //an algebra for integrating structure probing data like SHAPE or DMS
 
 include "Algebras/Pfunc/alg_pfunc.gap"
 

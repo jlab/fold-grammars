@@ -1,5 +1,5 @@
-algebra alg_probing_centroid implements sig_foldrna(alphabet = char, answer = double) {
-  include "Algebras/Probing/Parts/algpart_probing_centroid_basic.gap"
+algebra alg_probing implements sig_foldrna(alphabet = char, answer = double) {
+  include "Algebras/Probing/Parts/algpart_probing_basic.gap"
   
   //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions empty here.
   double acomb(double le,Subsequence b,double re) {return le + re;}

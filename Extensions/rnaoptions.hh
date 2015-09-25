@@ -88,9 +88,13 @@ class Opts {
     int alifold_minscore_basepair;
     bool allowLonelyBasepairs;
     const char* dotPlotFilename;
-    const char* probingDataFilename;
     int consensusType;
     bool ribosum_scoring;
+    const char* probing_dataFilename;
+    float probing_slope;
+    float probing_intercept;
+    const char* probing_modifier;
+    const char* probing_normalization;
 
     Opts()
     :
@@ -118,9 +122,13 @@ class Opts {
     				alifold_minscore_basepair(-200),
     				allowLonelyBasepairs(false),
     				dotPlotFilename("\0"),
-    				probingDataFilename("\0"),
     				consensusType(0),
-    				ribosum_scoring(false)
+    				ribosum_scoring(false),
+    				probing_dataFilename("\0"),
+    				probing_slope(1.8*100),
+    				probing_intercept(-0.6*100),
+    				probing_modifier("unknown"),
+    				probing_normalization("centroid")
     {
     }
 	~Opts()
@@ -229,12 +237,23 @@ class Opts {
 				<< "-a <int-value> select alignment consensus representation for dot plots, aka. outside computation." << std::endl
 				<< "   0 = consensus, 1 = most informative sequence" << std::endl
 				<< "" << std::endl
-				<< "-S <file> EXPERIMENTAL: reads chemical probing results to 'constrain' the prediction." << std::endl
-				<< "   Format of the file has to be defined in the future." << std::endl
-				<< "" << std::endl
 				<< "-h Print this help." << std::endl
 				<< "" << std::endl
-				<< " (-[drk] [0-9]+)*\n";
+				<< " (-[drk] [0-9]+)*" << std::endl << std::endl
+				<< "The following options are for the structure probing context:" << std::endl
+				<< "-S <file> reads a file that contains chemical probing results to 'constrain' the prediction." << std::endl
+				<< "   The file must contain two tabular separated columns." << std::endl
+				<< "    The first addresses the affected base by an index starting at 1." << std::endl
+				<< "    The second holds the measured reactivity value as a float number." << std::endl
+				<< "-A <float-value> sets the 'slope' for the RNAstructure inspired formula" << std::endl
+				<< "   of how to combine free energies and reactivities [1.8]" << std::endl
+				<< "-B <float-value> sets the 'intercept' for the RNAstructure inspired formula" << std::endl
+				<< "   of how to combine free energies and reactivities [-0.6]" << std::endl
+				<< "-M <string> sets the type of the chemical modifier used to probe the structure." << std::endl
+				<< "   valid types are 'DMS', 'CMCT', 'SHAPE', 'diffSHAPE', 'unknown' [unknown]." << std::endl
+				<< "-N <string> sets the type of normalization when reading the pure reactivity values from the file." << std::endl
+				<< "   valid types are 'centroid', 'RNAstructure', 'logplain', 'asProbabilities' [centroid]." << std::endl
+				<< "" << std::endl;
 	}
 
 	void parse(int argc, char **argv) {
@@ -250,7 +269,7 @@ class Opts {
 						"s:l:F:q:u:"
 					    "o:a:"  //output filename for dot plot, consensus type: 0=consensus, 1=mis
 						"n:C:m:R:" //for alifold parameters nfactor, cfactor and minpscore_basepair, ribosum scoring
-						"S:" //reads additional probing data from file "S"
+						"S:A:B:M:N:" //S: reads additional probing data from file "S", A: slope as in RNAstructure, B: intercept as in RNAstructure, M: modifier type (SHAPE, CMCT, DMS), N: normalization of plain reactivities (centroid, RNAstructure, logplain, asProbabilities)
 						"hd:r:k:")) != -1) {
 			switch (o) {
 			case 'f':
@@ -302,7 +321,19 @@ class Opts {
 				dotPlotFilename = optarg;
 				break;
 			case 'S':
-				probingDataFilename = optarg;
+				probing_dataFilename = optarg;
+				break;
+			case 'A':
+				probing_slope = std::atof(optarg)*100;
+				break;
+			case 'B':
+				probing_intercept = std::atof(optarg)*100;
+				break;
+			case 'M':
+				probing_modifier = optarg;
+				break;
+			case 'N':
+				probing_normalization = optarg;
 				break;
 			case 'c':
 				energydeviation_relative = std::atof(optarg);
@@ -419,15 +450,22 @@ class Opts {
 		if (strcmp(dotPlotFilename, "\0") == 0) {
 			dotPlotFilename = "./dotPlot.ps";
 		}
-		if (strcmp(probingDataFilename, "\0") != 0) {
+		if (strcmp(probing_dataFilename, "\0") != 0) {
 			struct stat buffer;
-			if (stat(probingDataFilename, &buffer) != 0) {
+			if (stat(probing_dataFilename, &buffer) != 0) {
 				std::string message = "Expected file with chemical probing data (-S '";
-				message.append(probingDataFilename);
+				message.append(probing_dataFilename);
 				message.append("') does not exist!");
 				throw OptException(message);
 			}
 		}
+		if ((strcmp(probing_modifier, "DMS") != 0) && (strcmp(probing_modifier, "CMCT") != 0) && (strcmp(probing_modifier, "SHAPE") != 0) && (strcmp(probing_modifier, "diffSHAPE") != 0) && (strcmp(probing_modifier, "unknown") != 0)) {
+			throw OptException("The chemical modifier you set via (-M) is not one of the valid types. Valid are only 'SHAPE', 'diffSHAPE', 'DMS', 'CMCT' or 'unknown'.");
+		}
+		if ((strcmp(probing_normalization, "centroid") != 0) && (strcmp(probing_normalization, "RNAstructure") != 0) && (strcmp(probing_normalization, "logplain") != 0) && (strcmp(probing_normalization, "asProbabilities") != 0)) {
+			throw OptException("The normalization method you set via (-N) is not one of the valid types. Valid are only 'centroid', 'RNAstructure', 'logplain' or 'asProbabilities'.");
+		}
+
 	}
 
      //inline static Opts* getOpts();

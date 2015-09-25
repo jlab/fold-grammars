@@ -57,8 +57,20 @@
 	inline static const char* getDotplotFilename() {
 		return gapc::Opts::getOpts()->dotPlotFilename;
 	}
-	inline static const char* getProbingDataFilename() {
-		return gapc::Opts::getOpts()->probingDataFilename;
+	inline static const char* getProbing_dataFilename() {
+		return gapc::Opts::getOpts()->probing_dataFilename;
+	}
+	inline static float getProbing_slope() {
+		return gapc::Opts::getOpts()->probing_slope;
+	}
+	inline static float getProbing_intercept() {
+		return gapc::Opts::getOpts()->probing_intercept;
+	}
+	inline static const char* getProbing_modifier() {
+		return gapc::Opts::getOpts()->probing_modifier;
+	}
+	inline static const char* getProbing_normalization() {
+		return gapc::Opts::getOpts()->probing_normalization;
 	}
 	inline static int getConsensusType() {
 		return gapc::Opts::getOpts()->consensusType;
@@ -115,8 +127,22 @@
 	inline static const char* getDotplotFilename() {
 		return "./dotPlot.ps";
 	}
-	inline static const char* getProbingDataFilename() {
+	inline static const char* getProbing_dataFilename() {
 		return "\0";
+	}
+	inline static float getProbing_slope() {
+		return 1.8*100;
+	}
+	inline static float getProbing_intercept() {
+		return -0.6*100;
+	}
+	inline static const char* getProbing_modifier() {
+		return "unknown";
+	}
+	inline static const char* getProbing_normalization() {
+		return "centroid";
+	}
+	inline static const char* getProbingDataFilename() {
 	}
 	inline static int getConsensusType() {
 		return 0;

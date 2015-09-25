@@ -22,7 +22,7 @@ algebra alg_enum auto enum;
 include "Algebras/MFE/alg_mfe.gap"
 include "Algebras/MEA/alg_mea.gap"
 include "Algebras/Pfunc/alg_pfunc.gap"
-include "Algebras/Probing/alg_probing_centroid.gap" //a probing algebra with Cedrics centroid idea to tell paired and unpaired reactivities apart
+include "Algebras/Probing/alg_probing.gap" //an algebra for integrating structure probing data like SHAPE or DMS
 
 algebra alg_mfe_id extends alg_mfe {
   choice [int] h([int] i) {

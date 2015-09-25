@@ -6,7 +6,7 @@ algebra alg_mfe_SHAPE extends alg_mfe {
 	Subsequence innerrb = rb;
 	innerrb.i = rb.i-1;
 	innerrb.j = rb.j-1;
-    return x + sr_energy(lb, rb) + getSHAPEscore(lb) + getSHAPEscore(rb) + getSHAPEscore(innerlb) + getSHAPEscore(innerrb);
+    return x + sr_energy(lb, rb) - getReactivityScore(lb, false) - getReactivityScore(rb, false) - getReactivityScore(innerlb, false) - getReactivityScore(innerrb, false);
   }
 }
 
