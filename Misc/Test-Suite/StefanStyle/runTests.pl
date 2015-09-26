@@ -40,6 +40,7 @@ checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAs
 checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
 checkProgram($TMPDIR, "palikiss.run.out", "../../Applications/pAliKiss/","pAliKiss");
 checkProgram($TMPDIR, "knotinframe.run.out", "../../Applications/Knotinframe/","Knotinframe");
+checkProbing($TMPDIR, "probing.out", "probing algebra");
 
 #add your tests above this line!
 Testing::printStatistics($testIndex, \@failedTests);
@@ -221,4 +222,34 @@ sub compileMFE {
 		Utils::execute("cd $TMPDIR && ".Settings::getBinary('make')." $program -j $numCPUs $makeWindowMode BASEDIR=../../../../");
 		print " done.\n";
 	}
+}
+sub checkProbing {
+	my ($TMPDIR, $truth, $testName) = @_;
+	
+	print "\trunning $testName: ";
+	Utils::execute("rm -f $TMPDIR/$truth");
+	
+	my $progprefix = "check_";
+	Utils::execute(Settings::getBinary('cp')." '".$Settings::rootDir."/Misc/Test-Suite/StefanStyle/probing.mf' '".$TMPDIR."/makefile'");
+	Utils::execute(Settings::getBinary('cp')." '".$Settings::rootDir."/Misc/Test-Suite/StefanStyle/test.shape' '".$TMPDIR."/'");
+	Utils::execute(Settings::getBinary('make')." -j $numCPUs -C '".$TMPDIR."' all BASEDIR=../../../../ PROGRAMPREFIX=$progprefix");
+	
+	foreach my $normalization ('asProbabilities','logplain','centroid','RNAstructure') {
+		foreach my $modifier ('unknown','CMCT') {
+			my $weight = "";
+			$weight = " -A 0.01 -B 0.0" if ($normalization eq 'RNAstructure');
+			$weight = " | grep -v '^Cluster info ' ";
+			my $cmd = "./".$TMPDIR."/$Settings::ARCHTRIPLE/".$progprefix."testProbing_nodangle -S '".$TMPDIR."/test.shape' CCAAacguUUGG -N $normalization -M $modifier $weight";
+			Utils::execute(Settings::getBinary('echo')." \"#CMD: $cmd\" >> $TMPDIR/$truth");
+			Utils::execute("$cmd >> $TMPDIR/$truth");
+			print ".";
+		}
+	}
+	my $cmd = "./".$TMPDIR."/$Settings::ARCHTRIPLE/".$progprefix."testPseudo_overdangle -S '".$TMPDIR."/test.shape' CCAAacguUUGG -N RNAstructure -M SHAPE";
+	Utils::execute(Settings::getBinary('echo')." \"#CMD: $cmd\" >> $TMPDIR/$truth");
+	Utils::execute("$cmd >> $TMPDIR/$truth");
+	print ".";
+
+	print " done.\n";
+	$testIndex = Testing::evaluateTest($testName, $truth, $TMPDIR, $testIndex, \@failedTests);
 }

@@ -1,0 +1,21 @@
+BASEDIR=../../../
+include $(BASEDIR)/makefile
+PROGRAMPREFIX=RNAshapes_
+
+all: testProbing testPseudo
+
+testProbing: testProbing_nodangle
+testProbing_%: 
+	$(MAKE) compile \
+		gapc_product="alg_dotBracket * (alg_mfe * alg_probing)" \
+		gapc_options="$(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
+
+testPseudo: testPseudo_overdangle
+testPseudo_%: 
+	$(MAKE) compile \
+		gapc_product="alg_dotBracket * (alg_mfe * alg_mfe_SHAPE)" \
+		gapc_options="$(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
