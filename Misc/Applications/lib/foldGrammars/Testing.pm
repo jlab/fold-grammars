@@ -18,7 +18,7 @@ my $VALUE_SELECTION_ALL = 'all';
 my $VALUE_SELECTION_RANDOM = 'random';
 
 our @RNAalishapes_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_OUTSIDE);
-our @RNAshapes_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_OUTSIDE);
+our @RNAshapes_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT, $Settings::MODE_OUTSIDE, $Settings::MODE_PROBING);
 our @pKiss_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_CAST, $Settings::MODE_EVAL, $Settings::MODE_ABSTRACT);
 our @knotinframe_ALLMODES = ($Settings::MODE_KIF);
 our @pAliKiss_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS);
@@ -138,6 +138,11 @@ our $RNAshapes = {
 	'bppmThreshold' => {modes => [$Settings::MODE_OUTSIDE], values => [0.1, 0.01, 0.001, 0.00001], valueSelection => $VALUE_SELECTION_RANDOM},
 	'dotplot' => {modes => [$Settings::MODE_OUTSIDE], values => ['dotPlot.ps'], valueSelection => $VALUE_SELECTION_RANDOM},
 	'structureProbs' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE, $Settings::MODE_CAST], values => [0,1], valueSelection => $VALUE_SELECTION_RANDOM},
+	'slope' => {modes => [$Settings::MODE_PROBING], values => [1.8,2.4], valueSelection => $VALUE_SELECTION_RANDOM},
+	'intercept' => {modes => [$Settings::MODE_PROBING], values => [-0.6, -1.2], valueSelection => $VALUE_SELECTION_RANDOM},
+	'normalization' => {modes => [$Settings::MODE_PROBING], values => [$Settings::NORMALIZATION_CENTROID, $Settings::NORMALIZATION_ASPROBABILITIES, $Settings::NORMALIZATION_LOGPLAIN, $Settings::NORMALIZATION_RNASTRUCTURE], valueSelection => $VALUE_SELECTION_RANDOM},
+	'modifier' => {modes => [$Settings::MODE_PROBING], values => [$Settings::MODIFIER_DMS, $Settings::MODIFIER_CMCT, $Settings::MODIFIER_SHAPE, $Settings::MODIFIER_DIFFSHAPE, $Settings::MODIFIER_UNKNOWN], valueSelection => $VALUE_SELECTION_RANDOM},
+	'reactivityfilename' => {modes => [$Settings::MODE_PROBING], values => [$inputFileDir."/cedric.shape"], valueSelection => $VALUE_SELECTION_ALL},
 };
 
 our $Knotinframe = {
@@ -203,11 +208,11 @@ sub addRandomParameters {
 				}
 				
 				@values = (2) if ($parameter eq 'minHairpinLength' && $refHash_call->{mode} eq $Settings::MODE_ABSTRACT);
-				
 				$refHash_call->{call} =~ s/--allowLP=1// if ($refHash_call->{mode} eq $Settings::MODE_CAST);
 				
 				my $randomIndex = int(rand scalar(@values));
 				my $value = $values[$randomIndex];
+				$value = substr($value, 0, 30) if (($parameter eq ' ') && ($refHash_call->{call} =~ m/\-\-mode=probing/)); #prevent too long sequences to avoid too large pareto fronts
 				if (defined $value) {
 					if ($parameter =~ m/^\s+$/) {
 						if ($refHash_call->{mode} eq $Settings::MODE_CAST) {
@@ -224,11 +229,10 @@ sub addRandomParameters {
 						$refHash_call->{call} .= " --".$parameter."=".$value;
 					}
 				}
-				
 			}
 		}
 	}
-	
+
 	return $refList_permutations;
 }
 

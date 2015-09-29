@@ -8,11 +8,11 @@ all:
 	$(MAKE) all_normal
 	$(MAKE) all_window
 
-all_normal: mfe subopt shapes probs sample eval outside mea pareto-energy-probing pfall
+all_normal: mfe subopt shapes probs sample eval outside mea probing pfall
 
 all_window: windowmodeflag = --window-mode
 all_window: current_windowmodesuffix = $(WINDOWSUFFIX)
-all_window: mfe subopt shapes probs sample mea pareto-energy-probing pfall
+all_window: mfe subopt shapes probs sample mea probing pfall
 
 
 install: install-lib install-program
@@ -101,8 +101,8 @@ mea_%:
 			gapc_binaryname="$@$(current_windowmodesuffix)"; \
 	fi;
 	
-pareto-energy-probing: pareto-energy-probing_nodangle pareto-energy-probing_overdangle pareto-energy-probing_microstate pareto-energy-probing_macrostate
-pareto-energy-probing_%:
+probing: probing_nodangle probing_overdangle probing_microstate probing_macrostate
+probing_%:
 	$(MAKE) compile \
 		gapc_product="(alg_mfe ^ alg_probing) * (alg_dotBracket * alg_shapeX * alg_pfunc)" \
 		gapc_options="$(windowmodeflag)" \

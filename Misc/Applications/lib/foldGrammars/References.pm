@@ -109,8 +109,21 @@ $REFERENCES{'ree:ree:gie:2007'} = {
 	title => "Locomotif: from graphical motif description to RNA motif search.",
 	journal => "Bioinformatics 2007.",
 	doi => "10.1093/bioinformatics/btm179"};
-
-
+$REFERENCES{'wee:2010'} = {
+	authors => "Kevin M Weeks.",
+	title => "Advances in RNA Secondary and Tertiary Structure Analysis by Chemical Probing.",
+	journal => "Current Opinion in Structural Biology 2010.",
+	doi => "10.1016/j.sbi.2010.04.001"};
+$REFERENCES{'dei:li:mat:wee:2009'} = {
+	authors => "Katherine E Deigan, Tian W Li, David H Mathews, Kevin M Weeks.",
+	title => "Advances in RNA Secondary and Tertiary Structure Analysis by Chemical Probing.",
+	journal => "Proceedings of the National Academy of Sciences 2009.",
+	doi => "10.1073/pnas.0806929106"};
+$REFERENCES{'sau:gie:2015'} = {
+	authors => "Cedric Saule, Robert Giegerich.",
+	title => "Pareto optimization in algebraic dynamic programming.",
+	journal => "Algorithms for Molecular Biology 2015.",
+	doi => "10.1186/s13015-015-0051-7"};
 
 our @ORDER = ();
 
@@ -120,7 +133,7 @@ sub printReference {
 	$text .= $References::REFERENCES{$refID}->{authors}."\n";
 	$text .= "\"".$References::REFERENCES{$refID}->{title}."\"\n";
 	$text .= $References::REFERENCES{$refID}->{journal}." ";
-	$text .= "doi:".$References::REFERENCES{$refID}->{doi};
+	$text .= "doi:".$References::REFERENCES{$refID}->{doi} if (exists $References::REFERENCES{$refID}->{doi});
 	$text .= " ".$References::REFERENCES{$refID}->{www} if (exists $References::REFERENCES{$refID}->{www});
 	return Utils::printIdent("[".References::getNumber($refID)."] ", $text)."\n";
 }

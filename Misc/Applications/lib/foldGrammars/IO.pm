@@ -56,7 +56,8 @@ sub parse {
 		'energy', 0, 
 		'partEnergy', 0, 
 		'partCovar', 0, 
-		'windowStartPos', length($windowStartPos)
+		'windowStartPos', length($windowStartPos),
+		'reactivity', 0,
 	);
 		
 	my %predictions = ();
@@ -66,8 +67,9 @@ sub parse {
 	my %samples = ();
 	my $samplePos = 0;
 	my $pfall = undef;
+	my $probingCentroidInfo = undef;
 	foreach my $line (split(m/\r?\n/, $result)) {
-		my ($energy, $part_energy, $part_covar, $structure, $shape, $pfunc, $blockPos, $structureProb) = (undef, undef, undef, undef, undef, undef, undef, undef, undef);
+		my ($energy, $part_energy, $part_covar, $structure, $shape, $pfunc, $blockPos, $structureProb, $reactivity) = (undef, undef, undef, undef, undef, undef, undef, undef, undef, undef);
 		my ($windowPos, $score) = (undef, undef); #helper variables for combined information
 
 	#parsing window position information
@@ -142,13 +144,23 @@ sub parse {
 				$userMessage .= " Lonely base-pairs are currently not allowed. You might get the desired result if you activate them and re-compute." if ($settings->{allowlp} != 1);
 				print Utils::printIdent("", $userMessage);
 				exit 0;
+			} elsif ($settings->{mode} eq $Settings::MODE_PROBING && ($line =~ m/^\s*$/)) {
+				#empty line
+			} elsif ($settings->{mode} eq $Settings::MODE_PROBING && ($line =~ m/^Cluster info/)) {
+				$probingCentroidInfo = $line;
+			} elsif ($settings->{mode} eq $Settings::MODE_PROBING && ($line =~ m/^\( \( (.+?) , (.+?) \) , \( \( (.+?) , (.+?) \) , (.+?) \) \)$/)) {
+				#( ( -120 , 1.91111 ) , ( ( ((((....)))) , [] ) , 0.193718 ) )
+				($energy, $reactivity, $structure, $shape, $structureProb) = ($1/100, $2, $3, $4, $5);
 			} else {
-				die "Parsing error: $line";
+				die "Parsing error: '$line'";
 			}
 			if (defined $energy || defined $structure || defined $shape) {
 				$fieldLengths{energy} = length(formatEnergy($energy)) if (length(formatEnergy($energy)) > $fieldLengths{energy});
 				$windowPos = $windowStartPos.$DATASEPARATOR.$windowEndPos;
 				$score = $energy;
+			}
+			if (defined $reactivity) {
+				$fieldLengths{reactivity} = length(sprintf("%.0f", $reactivity)) if (length(sprintf("%.0f", $reactivity)) > $fieldLengths{reactivity});
 			}
 		} elsif ($program eq $PROG_PKISS) {
 			if ((($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT)) && ($line =~ m/^\( (.+?) , (.+?) \)/)) {
@@ -234,6 +246,7 @@ sub parse {
 				} else {
 					$predictions{$windowPos}->{dummyblock}->{$structure} = {score => $score, shape => $shape, pfunc => $pfunc, structureProb => $structureProb} if (splitFields($score)->[0] < splitFields($predictions{$windowPos}->{dummyblock}->{$structure}->{score})->[0]);
 				}
+				$predictions{$windowPos}->{dummyblock}->{$structure}->{reactivity} = $reactivity if (defined $reactivity);
 				$sumPfunc{$windowPos} += $pfunc if (defined $pfunc);
 			}
 		}
@@ -405,6 +418,11 @@ sub output {
 					print $SEPARATOR;
 				}
 				
+				if ($settings->{'mode'} eq $Settings::MODE_PROBING) {
+					print " " x ($fieldLengths->{reactivity}+$settings->{probdecimals}+1);
+					print $SEPARATOR;
+				}
+				
 				print sprintf("% ${lengthScoreField}i", $startPos+1);
 				print $SEPARATOR;
 				
@@ -444,7 +462,7 @@ sub output {
 				}
 			
 			my @sortedStructures = keys(%{$predictions->{$windowPos}->{$blockPos}});
-			if (($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT) || ($settings->{mode} eq $Settings::MODE_SHAPES)) {
+			if (($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT) || ($settings->{mode} eq $Settings::MODE_SHAPES) || ($settings->{mode} eq $Settings::MODE_PROBING)) {
 				if (($program eq $PROG_PKISS) || ($program eq $PROG_PALIKISS)) {
 					@sortedStructures =  sort {(splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]) || ($a cmp $b)} @sortedStructures;
 				} else {
@@ -516,6 +534,11 @@ sub output {
 						my $energyResult = sprintf($scoreFormat, $energy, $part_energy, $part_covar);
 						$energyResult = (" " x $lengthScoreField) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
 						print $energyResult;
+						
+					#in probing mode, print the sum of the collected reactivities
+						if (defined $result->{reactivity}) {
+							print $SEPARATOR.(" " x ($fieldLengths->{reactivity} - length(sprintf("%.0f",$result->{reactivity})))).sprintf("%.".$settings->{'probdecimals'}."f", $result->{reactivity});
+						}
 						
 					#structure probability if switched on
 						if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
@@ -612,6 +635,9 @@ sub outputVARNA {
 		return;
 	}
 	
+	my $leftCols = 3;
+	$leftCols = 4 if ($settings->{mode} eq $Settings::MODE_PROBING);
+	
 	#ID LINE
 		if ($settings->{mode} eq $Settings::MODE_OUTSIDE) {
 			my $dotplotfilename = IO::getDotplotFilename($settings, $inputIndex);
@@ -624,11 +650,11 @@ sub outputVARNA {
 				$varnaoutput .= "\t\t\t<tr><td>Also converted the \"dot plot\" into PNG file '$dotplotPNGfilename'.</td></tr>\n";
 			}
 		} else {
-			$varnaoutput .= "\t\t\t<tr><td colspan='3'>&gt;".$input->{header}."</td></tr>\n" if (exists $input->{sequence}); #input is a fasta sequence
+			$varnaoutput .= "\t\t\t<tr><td colspan='$leftCols'>&gt;".$input->{header}."</td></tr>\n" if (exists $input->{sequence}); #input is a fasta sequence
 		}
 	
 	if (($settings->{mode} eq $Settings::MODE_LOCOMOTIF) && (scalar(keys(%{$predictions})) < 1)) {
-		$varnaoutput .= "\t\t\t<tr><td colspan='3'>&nbsp;&nbsp;sequence does not satisfy the matchers motif.</td><tr>\n";
+		$varnaoutput .= "\t\t\t<tr><td colspan='$leftCols'>&nbsp;&nbsp;sequence does not satisfy the matchers motif.</td><tr>\n";
 	}
 	
 	my @windowPositions = sort {splitFields($a)->[0] <=> splitFields($b)->[0]} keys(%{$predictions});
@@ -641,7 +667,7 @@ sub outputVARNA {
 													(splitFields($a)->[0] <=> splitFields($b)->[0]) ||
 													(splitFields($a)->[1] <=> splitFields($b)->[1])
 												} keys(%{$predictions->{$windowPos}});
-			$varnaoutput .= "\t\t\t<tr><td colspan='3'>"."=== window: ".($startPos+1)." to ".$endPos.": ===</td><tr>\n";
+			$varnaoutput .= "\t\t\t<tr><td colspan='$leftCols'>"."=== window: ".($startPos+1)." to ".$endPos.": ===</td><tr>\n";
 		}
 		foreach my $blockPos (@blockPositions) {
 			($startPos, $endPos) = @{splitFields($blockPos)} if ($settings->{mode} eq $Settings::MODE_LOCAL);
@@ -649,6 +675,7 @@ sub outputVARNA {
 			
 			#WINDOW INFO LINE
 				$varnaoutput .= "\t\t\t<tr>";
+				$varnaoutput .= "<td>&#160;</td>" if ($settings->{mode} eq $Settings::MODE_PROBING);
 				if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
 					$varnaoutput .= "<td>&#160;</td>"
 				}
@@ -666,7 +693,7 @@ sub outputVARNA {
 				
 			#evtl. samples
 				if (($settings->{mode} eq $Settings::MODE_SAMPLE) && ($settings->{showsamples})) {
-					$varnaoutput .= "\t\t\t<tr><td colspan='3'>".$settings->{numsamples}." samples, drawn by stochastic backtrace to estimate shape frequencies:</td></tr>";
+					$varnaoutput .= "\t\t\t<tr><td colspan='$leftCols'>".$settings->{numsamples}." samples, drawn by stochastic backtrace to estimate shape frequencies:</td></tr>";
 					my @allSamples = ();
 					foreach my $shape (keys(%{$samples->{$windowPos}})) {
 						push @allSamples, @{$samples->{$windowPos}->{$shape}};
@@ -685,11 +712,11 @@ sub outputVARNA {
 						$varnaoutput .= "<td>".$refHash_sample->{shape}."</td>";
 						$varnaoutput .= "</tr>\n";
 					}
-					$varnaoutput .= $separatorLine."\t\t\t<tr><td colspan='3'>Sampling results:</td></tr>\n".$separatorLine;
+					$varnaoutput .= $separatorLine."\t\t\t<tr><td colspan='$leftCols'>Sampling results:</td></tr>\n".$separatorLine;
 				}
 			
 			my @sortedStructures = keys(%{$predictions->{$windowPos}->{$blockPos}});
-			if (($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT) || ($settings->{mode} eq $Settings::MODE_SHAPES)) {
+			if (($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT) || ($settings->{mode} eq $Settings::MODE_SHAPES) || ($settings->{mode} eq $Settings::MODE_PROBING)) {
 				if (($program eq $PROG_PKISS) || ($program eq $PROG_PALIKISS)) {
 					@sortedStructures =  sort {(splitFields($predictions->{$windowPos}->{$blockPos}->{$a}->{score})->[0] <=> splitFields($predictions->{$windowPos}->{$blockPos}->{$b}->{score})->[0]) || ($a cmp $b)} @sortedStructures;
 				} else {
@@ -763,6 +790,9 @@ sub outputVARNA {
 						$energyResult = (" " x $lengthScoreField) if (($settings->{mode} eq $Settings::MODE_ENFORCE) && (exists $ENFORCE_CLASSES{$structure}));
 						$energyResult =~ s/ /&#160;/g;
 						$varnaoutput .= "<td style='text-align: right;'>".$energyResult."</td>";
+						
+					#reactivity in PROBING mode
+						$varnaoutput .= "<td style='text-align: right;'>".("&#160;" x ($fieldLengths->{reactivity} - length(sprintf("%.0f", $result->{reactivity})))).sprintf("%1.".$settings->{probdecimals}."f", $result->{reactivity})."</td>" if ($settings->{mode} eq $Settings::MODE_PROBING);
 						
 					#structure probability if switched on
 						if ((exists $settings->{'structureprobabilities'}) && ($settings->{'structureprobabilities'})) {
@@ -1018,6 +1048,54 @@ sub roundFloat {
 	my $f1 = $n->round('','-'.$digits,'common');
 	
 	return $f1;
+}
+
+sub readReactivityFile {
+	my ($filename, $inputsequence) = @_;
+	
+	my @reactivities = ();
+	my @warnings = ();
+	open (REACT, $filename) || die "cannot read reactivity filename '$filename': $!";
+		my $linenumber = 0;
+		while (my $line = <REACT>) {
+			$linenumber++;
+			next if ($line =~ m/^#/); #ignoring lines starting with # 
+			$line =~ s/\n|\r//g;
+			my ($index, $value) = split(m/\t|;|,/, $line);
+			push @warnings, "line $linenumber is malformed. Cannot identify two columns." if ((not defined $index) || (not defined $value));
+			push @warnings, "reactivity for base ".$index." is defined multiple times." if (defined $reactivities[$index-1]);
+			$reactivities[$index-1] = $value;
+		}
+	close (REACT);
+
+	for (my $i = 0; $i < @reactivities || $i < length($inputsequence); $i++) {
+		if (not defined $reactivities[$i]) {
+			push @warnings, "a reactivity value for base ".($i+1)." is missing. It will be set to zero.";
+			$reactivities[$i] = 0.0;
+		}
+	}
+	
+	push @warnings, "the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored." if (($#reactivities+1) > length($inputsequence));
+	
+	if (@warnings > 0) {
+		print STDERR "The following ".scalar(@warnings)." warnings were raised when parsing the reactivity file '".$filename."':\n";
+		my $counter = 0;
+		foreach my $warning (@warnings) {
+			print STDERR "  ".(++$counter).") ".$warning."\n";
+		}
+	}
+	
+	return \@reactivities;
+}
+sub writeReactivityFileContent {
+	my ($refList_reactivities, $inputsequence) = @_;
+	
+	my $out = "";
+	for (my $i = 0; $i < @{$refList_reactivities} && $i < length($inputsequence); $i++) {
+		$out .= $i."\t".$refList_reactivities->[$i]."\n";
+	}
+	
+	return $out;
 }
 
 1;

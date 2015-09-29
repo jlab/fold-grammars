@@ -6,16 +6,16 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'rnashapes', 				{date => '20.03.2015', version => '3.2.5', name => 'RNAshapes', packageDir => 'RNAshapes/'},
-	'rnaalishapes', 			{date => '20.03.2015', version => '2.4.7', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
-	'pkiss', 						{date => '20.03.2015', version => '2.2.12', name => 'pKiss', packageDir => 'pKiss/'},
-	'palikiss',					{date => '20.03.2015', version => '1.0.7', name => 'pAliKiss', packageDir => 'pAliKiss/'},
-	'libfoldgrammars', 	{date => '21.03.2015', version => '1.1.7', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
-	'rapidshapes', 			{date => '20.03.2015', version => '2.0.9', name => 'RapidShapes', packageDir => 'RapidShapes/'},
-	'knotinframe', 			{date => '20.03.2015', version => '2.0.8', name => 'knotinframe', packageDir => 'Knotinframe/'},
+	'rnashapes', 				{date => '29.09.2015', version => '3.3.0', name => 'RNAshapes', packageDir => 'RNAshapes/'},
+	'rnaalishapes', 			{date => '23.12.2014', version => '2.4.6', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
+	'pkiss', 						{date => '23.12.2014', version => '2.2.11', name => 'pKiss', packageDir => 'pKiss/'},
+	'palikiss',					{date => '23.12.2014', version => '1.0.6', name => 'pAliKiss', packageDir => 'pAliKiss/'},
+	'libfoldgrammars', 	{date => '29.09.2015', version => '1.1.6', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
+	'rapidshapes', 			{date => '07.05.2014', version => '2.0.8', name => 'RapidShapes', packageDir => 'RapidShapes/'},
+	'knotinframe', 			{date => '23.12.2014', version => '2.0.7', name => 'knotinframe', packageDir => 'Knotinframe/'},
 	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
 	'getoutsidetruth', 	{date => '19.04.2013', version => '1.0.0', name => 'getOutsideTruth'},
-	'acms',							{date => '21.03.2015', version => '1.2.1', name => 'acms', packageDir => 'aCMs/'},
+	'acms',							{date => '21.11.2014', version => '1.1.1', name => 'acms', packageDir => 'aCMs/'},
 	'acmbuild', 					{date => '21.11.2014', version => '1.1.1', name => 'acmbuild'},
 	'acmsearch', 				{date => '21.11.2014', version => '1.1.1', name => 'acmsearch'},
 	'locomotif_wrapper', {date => '16.01.2015', version => '1.0.0', name => 'Locomotif_wrapper'},
@@ -76,6 +76,7 @@ our $MODE_OUTSIDE = 'outside';
 our $MODE_ANALYSE_OUTSIDE = 'analyse_outside';
 our $MODE_PFALL = 'pfall';
 our $MODE_MEA = 'mea';
+our $MODE_PROBING = 'probing';
 
 our $MODE_KIF = 'kif'; #single and thus default mode for KnotInFrame
 
@@ -86,6 +87,16 @@ our $MODE_LOCOMOTIF = 'locomotif'; #single and thus default mode for the perl wr
 our $ARCHTRIPLE = qx($BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
 our $RNAPARAM1999 =  $Settings::bgapDir.$fileseparater.'share/gapc/librna/rna_turner1999.par';
 our $RNAPARAM2004 = $Settings::bgapDir.$fileseparater.'share/gapc/librna/rna_turner2004.par';
+
+our $NORMALIZATION_CENTROID = 'centroid';
+our $NORMALIZATION_RNASTRUCTURE = 'RNAstructure';
+our $NORMALIZATION_LOGPLAIN = 'logplain';
+our $NORMALIZATION_ASPROBABILITIES = 'asProbabilities';
+our $MODIFIER_DMS = 'DMS';
+our $MODIFIER_CMCT = 'CMCT';
+our $MODIFIER_SHAPE = 'SHAPE';
+our $MODIFIER_DIFFSHAPE = 'diffSHAPE';
+our $MODIFIER_UNKNOWN = 'unknown';
 
 #settings for RapidShapes on BiBiServ
 our %RAPIDSHAPES_BIBISERV = (
