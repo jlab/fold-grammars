@@ -18,7 +18,7 @@ use foldGrammars::Utils;
 my $TARGET_LAUNCHPAD = 'launchpad';
 my $TARGET_PORTS = 'macports';
 
-my @SERIES = ("lucid", "precise", "trusty", "utopic");
+my @SERIES = ("vivid", "trusty", "precise");
 #~ my @SERIES = ("lucid", "precise", "trusty");
 my $USER = 'Bielefeld BioInformatics Service';
 my $EMAIL = 'bibi-help@cebitec.uni-bielefeld.de';

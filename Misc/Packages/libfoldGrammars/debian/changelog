@@ -1,3 +1,9 @@
+libfoldgrammars (1.1.8-0ubuntu1~vivid1) vivid; urgency=medium
+
+  * adaptation to Thomas new version of Bellmans GAP compiler
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 01 Oct 2015 11:06:37 +0200
+
 libfoldgrammars (1.1.7-0ubuntu1~utopic1) utopic; urgency=medium
 
   * fix: install /bin
