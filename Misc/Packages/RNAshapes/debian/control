@@ -2,13 +2,13 @@ Source: rnashapes
 Section: devel
 Priority: extra
 Maintainer: Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>
-Build-Depends: debhelper (>= 7), make (>= 3.81), bellmansgapc (>= 2014.04.10), perl (>= 5.10.1), g++ (>= 4:4.3.1), libfoldgrammars (>= 1.1.2), libmath-round-perl ( >= 0.06-3)
+Build-Depends: debhelper (>= 7), make (>= 3.81), bellmansgapc (>= 2015.09.28), perl (>= 5.10.1), g++ (>= 4:4.3.1), libfoldgrammars (>= 1.2.0), libmath-round-perl ( >= 0.06-3)
 Standards-Version: 3.9.5
 Homepage: http://bibiserv.cebitec.uni-bielefeld.de/rnashapes
 
 Package: rnashapes
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, bellmansgapc-librna (>= 2014.04.10) | bellmansgapc (>= 2014.04.10), libgsl0-dev, libgmp3-dev, libgsl0-dev (>= 1.13), libgsl0ldbl (>= 1.13), libfoldgrammars (>= 1.1.2), libmath-round-perl ( >= 0.06-3)
+Depends: ${shlibs:Depends}, ${misc:Depends}, bellmansgapc-librna (>= 2015.09.28) | bellmansgapc (>= 2015.09.28), libgsl0-dev, libgmp3-dev, libgsl0-dev (>= 1.13), libgsl0ldbl (>= 1.13), libfoldgrammars (>= 1.2.0), libmath-round-perl ( >= 0.06-3)
 Description: RNA shape abstraction maps structures to a tree-like domain of shapes, retaining adjacency and nesting of structural features, but disregarding helix lengths. Shape abstraction integrates well with dynamic programming algorithms, and hence it can be applied during structure prediction rather than afterwards. This avoids exponential explosion and can still give us a non-heuristic and complete account of properties of the molecule's folding space.
  RNAshapes offers three powerful RNA analysis tools in one single software package:
  Computation of a small set of representative structures of different shapes, complete in a well-defined sense.

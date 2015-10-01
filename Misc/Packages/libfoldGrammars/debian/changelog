@@ -1,3 +1,21 @@
+libfoldgrammars (1.2.0-0ubuntu1~vivid1) vivid; urgency=medium
+
+  * third try: adaptation to Thomas new version of Bellmans GAP compiler
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 01 Oct 2015 12:21:18 +0200
+
+libfoldgrammars (1.2.0-0ubuntu1~trusty1) trusty; urgency=medium
+
+  * third try: adaptation to Thomas new version of Bellmans GAP compiler
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 01 Oct 2015 12:21:12 +0200
+
+libfoldgrammars (1.2.0-0ubuntu1~precise1) precise; urgency=medium
+
+  * third try: adaptation to Thomas new version of Bellmans GAP compiler
+
+ -- Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de>  Thu, 01 Oct 2015 12:04:30 +0200
+
 libfoldgrammars (1.1.10-0ubuntu1~precise1) precise; urgency=medium
 
   * second try: adaptation to Thomas new version of Bellmans GAP
