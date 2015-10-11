@@ -292,15 +292,24 @@ inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpai
 			int numData = probingData.size();
 			double *data = (double *) malloc(sizeof(double) * numData);
 			int i = 0;
+			int j = 0;
 			for (i = 0; i < numData; i++) {
-				if (probingData.at(i) < 0) {
-					data[i] = 0.0;
-				} else {
-					data[i] = probingData.at(i);
+				if ((modifier == "DMS") && (leftBase[i] != A_BASE) && (leftBase[i] != C_BASE)) {
+					continue;
 				}
+				if ((modifier == "CMCT") && (leftBase[i] != U_BASE) && (leftBase[i] != G_BASE)) {
+					continue;
+				}
+
+				if (probingData.at(i) < 0) {
+					data[j] = 0.0;
+				} else {
+					data[j] = probingData.at(i);
+				}
+				j++;
 			}
 			double *centroids = (double *) malloc(sizeof(double) * 2);
-			kmeans(2,numData,data,centroids);
+			kmeans(2,j,data,centroids);
 			clusterUnpaired = centroids[0];
 			clusterPaired = centroids[1];
 		}
