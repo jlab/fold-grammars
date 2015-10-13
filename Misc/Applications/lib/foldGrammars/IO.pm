@@ -33,6 +33,7 @@ our %ENFORCE_CLASSES = (
 );
 
 my $firstSequenceReady = 'false';
+our $globalOutputInformation = '';
 
 #used for VARNA visualization
 	our $varnaoutput = "";
@@ -147,7 +148,7 @@ sub parse {
 			} elsif ($settings->{mode} eq $Settings::MODE_PROBING && ($line =~ m/^\s*$/)) {
 				#empty line
 			} elsif ($settings->{mode} eq $Settings::MODE_PROBING && ($line =~ m/^Cluster info/)) {
-				$probingCentroidInfo = $line;
+				$globalOutputInformation .= $line;
 			} elsif ($settings->{mode} eq $Settings::MODE_PROBING && ($line =~ m/^\( \( (.+?) , (.+?) \) , \( \( (.+?) , (.+?) \) , (.+?) \) \)$/)) {
 				#( ( -120 , 1.91111 ) , ( ( ((((....)))) , [] ) , 0.193718 ) )
 				($energy, $reactivity, $structure, $shape, $structureProb) = ($1/100, $2, $3, $4, $5);
@@ -378,6 +379,13 @@ sub output {
 			print $predictions->{shape}."\n";
 		}
 		return;
+	}
+	
+	#report global warnings, like probing data file errors or centroid information, ...
+	if ($globalOutputInformation ne '') {
+		chomp $globalOutputInformation;
+		$globalOutputInformation .= "\n";
+		print $globalOutputInformation;
 	}
 	
 	#ID LINE
@@ -638,6 +646,16 @@ sub outputVARNA {
 	my $leftCols = 3;
 	$leftCols = 4 if ($settings->{mode} eq $Settings::MODE_PROBING);
 	
+	#report global warnings, like probing data file errors or centroid information, ...
+	if ($globalOutputInformation ne '') {
+		chomp $globalOutputInformation;
+		my @lines = split(m/\n/, $globalOutputInformation);
+		push @lines, "&nbsp;";
+		foreach my $line (@lines) {
+			$varnaoutput .= "\t\t\t<tr><td colspan='$leftCols'>".$line."</td></tr>\n";
+		}
+	}
+
 	#ID LINE
 		if ($settings->{mode} eq $Settings::MODE_OUTSIDE) {
 			my $dotplotfilename = IO::getDotplotFilename($settings, $inputIndex);
@@ -1078,11 +1096,13 @@ sub readReactivityFile {
 	push @warnings, "the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored." if (($#reactivities+1) > length($inputsequence));
 	
 	if (@warnings > 0) {
-		print STDERR "The following ".scalar(@warnings)." warnings were raised when parsing the reactivity file '".$filename."':\n";
+		my $warnings = "The following ".scalar(@warnings)." warnings were raised when parsing the reactivity file '".$filename."':\n";
 		my $counter = 0;
 		foreach my $warning (@warnings) {
-			print STDERR "  ".(++$counter).") ".$warning."\n";
+			$warnings .= "  ".(++$counter).") ".$warning."\n";
 		}
+		#~ print STDERR $warnings;
+		$globalOutputInformation .= $warnings;
 	}
 	
 	return \@reactivities;
