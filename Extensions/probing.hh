@@ -303,6 +303,7 @@ inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpai
 
 				if (probingData.at(i) < 0) {
 					data[j] = 0.0;
+					probingData.at(i) = 0.0;
 				} else {
 					data[j] = probingData.at(i);
 				}
