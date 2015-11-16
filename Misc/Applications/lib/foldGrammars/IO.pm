@@ -360,7 +360,7 @@ sub output {
 	if ($firstSequenceReady eq 'false') {
 		$firstSequenceReady = 'true';
 	} else {
-		print "\n" if ($settings->{mode} ne $Settings::MODE_CAST && $settings->{mode} ne $Settings::MODE_OUTSIDE);
+		print "\n" if ($settings->{mode} ne $Settings::MODE_CAST && $settings->{mode} ne $Settings::MODE_OUTSIDE && $settings->{mode} ne $Settings::MODE_ABSTRACT);
 	}
 	
 	my $scoreFormat = getScoreFormatString($program, $fieldLengths);

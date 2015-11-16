@@ -4586,77 +4586,98 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 30 36 0.989635 ubox
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=nodangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-1.2 --modifier=diffSHAPE --normalization=RNAstructure --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                   1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
--8.40  1279.2000000  ..(((((....)))))..............  []
--5.50   495.9000000  ..(((((....)))))...((....))...  [][]
--5.40   329.8000000  ..(((((....)))))((...)).......  [][]
--1.50   312.5000000  ..(((((....)))))......((....))  [][]
- 1.70   -23.2000000  ....(((((((((...)))..))..)).))  []
- 8.10  -218.8000000  ..((...))((.((..((...))..)).))  [][]
+-8.40  1279.3400000  ..(((((....)))))..............  []
+-5.50   495.4560000  ..(((((....)))))...((....))...  [][]
+-5.40   329.6160000  ..(((((....)))))((...)).......  [][]
+-1.50   312.2400000  ..(((((....)))))......((....))  [][]
+ 1.70   -23.5200000  ....(((((((((...)))..))..)).))  []
+ 8.10  -219.2640000  ..((...))((.((..((...))..)).))  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=nodangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-0.6 --modifier=CMCT --normalization=logplain --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
-0.00   3.1000000  ..............................  _
-1.50   1.4000000  ......(((............)))......  []
-2.30  -1.2000000  ....(((((............))).))...  []
-3.10  -1.6000000  ....((((((.........)).)).))...  []
-3.90  -2.3000000  ....(((((((.....))...))).))...  []
+0.00   3.5061400  ..............................  _
+1.50   1.5224900  ......(((............)))......  []
+2.30  -1.3698900  ....(((((............))).))...  []
+3.10  -1.8273500  ....((((((.........)).)).))...  []
+3.90  -2.6107000  ....(((((((.....))...))).))...  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=nodangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=unknown --normalization=logplain --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
--15.20   0.0999999  ....((((((((......))))))))....  []
--15.10  -3.0000000  (((.((.((((....)))).))))).....  []
--10.40  -3.8000000  ..(((((((((.((...)))))))))..))  []
+-15.20  -0.3805890  ....((((((((......))))))))....  []
+-15.10  -3.3044100  (((.((.((((....)))).))))).....  []
+-14.40  -3.6478900  ..((((((((((......))))))))..))  []
+-10.40  -4.6685900  ..(((((((((.((...)))))))))..))  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=nodangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=DMS --normalization=RNAstructure --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                    1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
--15.20   -63.1000000  ....((((((((......))))))))....  []
--14.40  -117.5000000  ..((((((((((......))))))))..))  []
--12.80  -122.7000000  ((((((.((......)).)).)))).....  []
--10.00  -124.1000000  ((((((..(((....))))).)))).....  []
- -8.10  -132.1000000  ..(((((((.((......)).)))))..))  []
- -4.20  -133.3000000  ..(((((((............)))))..))  []
-  2.40  -133.4000000  (((((..((...))))......))).....  []
+-15.20   -63.2467000  ....((((((((......))))))))....  []
+-14.40  -117.7020000  ..((((((((((......))))))))..))  []
+-12.80  -122.6910000  ((((((.((......)).)).)))).....  []
+-10.00  -124.2890000  ((((((..(((....))))).)))).....  []
+ -8.10  -132.3510000  ..(((((((.((......)).)))))..))  []
+ -4.20  -133.4530000  ..(((((((............)))))..))  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=overdangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-1.2 --modifier=SHAPE --normalization=logplain --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
               1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
-0.00  5.2000000  ......(((............)))......  []
-1.60  2.2000000  ....(((((............))).))...  []
-3.20  0.8000000  ....(((((((.....))...))).))...  []
+0.00  5.6128500  ......(((............)))......  []
+1.60  2.1939300  ....(((((............))).))...  []
+3.20  0.6793440  ....(((((((.....))...))).))...  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=overdangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=unknown --normalization=centroid --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
+Cluster info (2.989 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
--16.00  12.5000000  ....((((((((......))))))))....  []
--15.00  11.9000000  .((.((.((((....)))).))))......  []
--13.90  11.1000000  .....(((((((......))))))).....  []
--13.10  9.9000000  ..((.(((((((....))))).)).))...  []
--11.50   9.0000000  .....(((((((....))))).))......  []
- -9.40   8.6000000  ..((.(((((((....))))).))....))  []
- -6.70   8.3000000  ..((.(((((((....)))))..))...))  []
+-16.00  13.7475000  ....((((((((......))))))))....  []
+-15.00  13.0025000  .((.((.((((....)))).))))......  []
+-14.60  12.9848000  ..((((((((((......))))))))..))  []
+-13.90  12.2584000  .....(((((((......))))))).....  []
+-13.10  11.1563000  ..((.(((((((....))))).)).))...  []
+-11.50  10.2447000  .....(((((((....))))).))......  []
+ -9.40   9.4819600  ..((.(((((((....))))).))....))  []
+ -6.70   9.2263600  ..((.(((((((....)))))..))...))  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=overdangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-0.6 --modifier=DMS --normalization=RNAstructure --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                  1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
--9.90  147.4000000  ..(((((....)))))..............  []
--8.10  136.6000000  ..(((((....)))))...((....))...  [][]
--7.70  107.2000000  ..(((((....)))))((...)).......  [][]
--5.40  105.2000000  ..((((......))))((...)).......  [][]
--1.00   93.8000000  ....((..((..((.....))))..))...  []
+-9.90  147.7160000  ..(((((....)))))..............  []
+-8.10  136.7410000  ..(((((....)))))...((....))...  [][]
+-7.70  107.5680000  ..(((((....)))))((...)).......  [][]
+-5.40  105.4040000  ..((((......))))((...)).......  [][]
+-2.10  105.3690000  ...(((......))).((...)).......  [][]
+-1.00   93.7143000  ....((..((..((.....))))..))...  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=overdangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-1.2 --modifier=SHAPE --normalization=logplain --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
               1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
-0.00  5.2000000  ......(((............)))......  []
-1.60  2.2000000  ....(((((............))).))...  []
-3.20  0.8000000  ....(((((((.....))...))).))...  []
+0.00  5.6128500  ......(((............)))......  []
+1.60  2.1939300  ....(((((............))).))...  []
+3.20  0.6793440  ....(((((((.....))...))).))...  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=microstate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-1.2 --modifier=unknown --normalization=asProbabilities --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
 -0.20  3.6000000  ......(((............)))......  []
@@ -4665,38 +4686,49 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
  3.20  0.6000000  ....(((((((.....))...))).))...  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=microstate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=CMCT --normalization=centroid --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
+Cluster info (3.549 avg. iterations for 1000 alternative start points): unpaired = 1.07452, paired = 0.255027
 >unnamed sequence
-                1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
--16.40  9.1000000  ....((((((((......))))))))....  []
--14.60  8.2000000  ..((((((((((......))))))))..))  []
--13.30  7.6000000  ..((.(((((((....))))).)).))...  []
--13.00  7.5000000  ..((.(((((((......)))))))...))  []
--11.60  7.0000000  .....(((((((....))))).))......  []
--10.60  6.7000000  ..(((((((((.((...)))))))))..))  []
- -9.40  6.2000000  ..((.(((((((....))))).))....))  []
- -9.00  6.0000000  ..((.((((((.((...))))))))...))  []
- -2.70  5.9000000  ..((.(((.((.((...)))).)))...))  []
+                 1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
+-16.40  10.4543000  ....((((((((......))))))))....  []
+-15.00  10.3977000  .((.((.((((....)))).))))......  []
+-14.60   9.2395200  ..((((((((((......))))))))..))  []
+-13.30   9.0311600  ..((.(((((((....))))).)).))...  []
+-13.00   8.4200300  ..((.(((((((......)))))))...))  []
+-10.60   7.7794800  ..(((((((((.((...)))))))))..))  []
+ -9.40   7.2334300  ..((.(((((((....))))).))....))  []
+ -9.00   6.9599900  ..((.((((((.((...))))))))...))  []
+ -2.70   6.8919300  ..((.(((.((.((...)))).)))...))  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=microstate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=DMS --normalization=logplain --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
--16.40  -1.3000000  ....((((((((......))))))))....  []
--15.90  -1.5000000  (((.((.((((....)))).))))).....  []
--14.60  -2.3000000  ..((((((((((......))))))))..))  []
--10.80  -2.5000000  ((((((..(((....))))).)))).....  []
+-16.40  -1.5924000  ....((((((((......))))))))....  []
+-15.90  -1.8661800  (((.((.((((....)))).))))).....  []
+-14.60  -2.7228000  ..((((((((((......))))))))..))  []
+-10.80  -2.8411700  ((((((..(((....))))).)))).....  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=microstate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=SHAPE --normalization=centroid --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
+Cluster info (3.01 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
--16.40  12.5000000  ....((((((((......))))))))....  []
--15.00  11.9000000  .((.((.((((....)))).))))......  []
--14.10  11.1000000  .....(((((((......))))))).....  []
--13.30  9.9000000  ..((.(((((((....))))).)).))...  []
--11.60   9.0000000  .....(((((((....))))).))......  []
- -9.40   8.6000000  ..((.(((((((....))))).))....))  []
- -6.70   8.3000000  ..((.(((((((....)))))..))...))  []
+-16.40  13.7475000  ....((((((((......))))))))....  []
+-15.00  13.0025000  .((.((.((((....)))).))))......  []
+-14.60  12.9848000  ..((((((((((......))))))))..))  []
+-14.10  12.2584000  .....(((((((......))))))).....  []
+-13.30  11.1563000  ..((.(((((((....))))).)).))...  []
+-11.60  10.2447000  .....(((((((....))))).))......  []
+ -9.40   9.4819600  ..((.(((((((....))))).))....))  []
+ -6.70   9.2263600  ..((.(((((((....)))))..))...))  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=macrostate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-0.6 --modifier=unknown --normalization=asProbabilities --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
 -9.90   2.6000000  ..(((((....)))))..............  []
@@ -4704,102 +4736,121 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -7.10   0.8000000  ..(((((....)))))((...)).......  [][]
 -3.10   0.6000000  ..(((((....)))))......((....))  [][]
  0.70   0.2000000  ...(((...)))((..((...))..))...  [][]
+ 1.50   0.2000000  ....(((((((((...)))..))..)).))  []
  3.80   0.1000000  ..((((...))..)).((...)).......  [][]
  7.60  -0.2000000  ..((...))((.((..((...))..)).))  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=macrostate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-1.2 --modifier=unknown --normalization=logplain --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
--9.90   3.4000000  ..(((((....)))))..............  []
--8.10   1.8000000  ..(((((....)))))...((....))...  [][]
--7.10   1.0000000  ..(((((....)))))((...)).......  [][]
--3.10   0.8000000  ..(((((....)))))......((....))  [][]
- 0.70   0.7000000  ...(((...)))((..((...))..))...  [][]
- 1.50  -0.1000000  ....(((((((((...)))..))..)).))  []
- 7.60  -0.8000000  ..((...))((.((..((...))..)).))  [][]
+-9.90   3.8794600  ..(((((....)))))..............  []
+-8.10   1.4626800  ..(((((....)))))...((....))...  [][]
+-7.10   0.8687130  ..(((((....)))))((...)).......  [][]
+-3.10   0.7568840  ..(((((....)))))......((....))  [][]
+ 0.70   0.4306020  ...(((...)))((..((...))..))...  [][]
+ 1.50  -0.4705660  ....(((((((((...)))..))..)).))  []
+ 7.60  -1.0658800  ..((...))((.((..((...))..)).))  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=macrostate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-0.6 --modifier=diffSHAPE --normalization=centroid --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
+Cluster info (3.01 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
--9.90  13.9000000  ..(((((....)))))..............  []
--8.10  12.5000000  ..(((((....)))))...((....))...  [][]
--4.10  12.0000000  ...(((.(((......))))))........  []
--4.10  12.4000000  ..(((((....))).))..((....))...  [][]
--4.10  12.4000000  ..(((((....)).)))..((....))...  [][]
--3.90   6.3000000  ...((((....)))).((...)).......  [][]
--0.40   6.1000000  ..((.((....)))).((...)).......  [][]
- 2.20   5.4000000  ....((...)).((..((...))..))...  [][]
- 3.00   4.9000000  ..((...)).(((...)))...........  [][]
+-9.90  15.0687000  ..(((((....)))))..............  []
+-8.10  13.7195000  ..(((((....)))))...((....))...  [][]
+-4.10  13.1146000  ...(((.(((......))))))........  []
+-4.10  13.5846000  ..(((((....))).))..((....))...  [][]
+-4.10  13.5368000  ..(((((....)).)))..((....))...  [][]
+-3.90   6.9153000  ...((((....)))).((...)).......  [][]
+-0.40   6.6737000  ..((.((....)))).((...)).......  [][]
+ 2.20   5.7232500  ....((...)).((..((...))..))...  [][]
+ 3.00   5.1414500  ..((...)).(((...)))...........  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=macrostate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-0.6 --modifier=SHAPE --normalization=centroid --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
+Cluster info (3.01 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
--9.90  13.9000000  ..(((((....)))))..............  []
--8.10  12.5000000  ..(((((....)))))...((....))...  [][]
--4.10  12.0000000  ...(((.(((......))))))........  []
--4.10  12.4000000  ..(((((....))).))..((....))...  [][]
--4.10  12.4000000  ..(((((....)).)))..((....))...  [][]
--3.90   6.3000000  ...((((....)))).((...)).......  [][]
--0.40   6.1000000  ..((.((....)))).((...)).......  [][]
- 2.20   5.4000000  ....((...)).((..((...))..))...  [][]
- 3.00   4.9000000  ..((...)).(((...)))...........  [][]
+-9.90  15.0687000  ..(((((....)))))..............  []
+-8.10  13.7195000  ..(((((....)))))...((....))...  [][]
+-4.10  13.1146000  ...(((.(((......))))))........  []
+-4.10  13.5846000  ..(((((....))).))..((....))...  [][]
+-4.10  13.5368000  ..(((((....)).)))..((....))...  [][]
+-3.90   6.9153000  ...((((....)))).((...)).......  [][]
+-0.40   6.6737000  ..((.((....)))).((...)).......  [][]
+ 2.20   5.7232500  ....((...)).((..((...))..))...  [][]
+ 3.00   5.1414500  ..((...)).(((...)))...........  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=nodangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-1.2 --modifier=DMS --normalization=centroid --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
+Cluster info (2.845 avg. iterations for 1000 alternative start points): unpaired = 0.991433, paired = 0.227229
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
- 0.00  11.8000000  ..............................  _
- 1.60  11.2000000  ......(((.(.........))))......  []
- 1.90  10.5000000  ........((....))..............  []
- 2.30  10.3000000  ......((((.........)).))......  []
- 2.40  9.7000000  ......(.((....)).)............  []
- 2.90   9.4000000  ......((((.(.....).)).))......  []
- 3.10   8.9000000  ....((((((.........)).)).))...  []
- 3.70   8.0000000  ....((((((.(.....).)).)).))...  []
- 6.40   7.4000000  ....(((.((.(.....).))..).))...  []
- 9.10   7.4000000  ....(((.(((....)...))..).))...  []
-10.20   7.3000000  ....(((.((.(.....).))..).).)..  []
-12.70   7.2000000  .(..(((.((.(.....).))..).).).)  []
-15.40   7.2000000  .(..(((.(((....)...))..).).).)  []
-18.80   7.2000000  .(..(((.(((....)..).)..).).).)  []
+ 0.00  12.4294000  ..............................  _
+ 1.60  11.7455000  ......(((.(.........))))......  []
+ 1.90  11.0877000  ........((....))..............  []
+ 2.30  10.8023000  ......((((.........)).))......  []
+ 2.40  10.3235000  ......(.((....)).)............  []
+ 2.90  10.0381000  ......((((.(.....).)).))......  []
+ 3.10   9.4882600  ....((((((.........)).)).))...  []
+ 3.70   8.7240500  ....((((((.(.....).)).)).))...  []
+ 5.30   8.6531900  .(..((((((.(.....).)).)).))..)  []
+ 6.40   8.0585100  ....(((.((.(.....).))..).))...  []
+ 8.00   7.9876500  .(..(((.((.(.....).))..).))..)  []
+10.20   7.8775100  ....(((.((.(.....).))..).).)..  []
+12.70   7.8066500  .(..(((.((.(.....).))..).).).)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=nodangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-0.6 --modifier=diffSHAPE --normalization=centroid --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
+Cluster info (3.01 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
- 0.00  17.2000000  ..............................  _
- 1.50  16.3000000  ......(((............)))......  []
- 1.60  14.7000000  ......(((.(.........))))......  []
- 1.90  14.6000000  ........((....))..............  []
- 2.30  13.8000000  ......((((.........)).))......  []
- 2.40  13.0000000  ......(.((....)).)............  []
- 2.90  12.1000000  ......((((.(.....).)).))......  []
- 3.70  12.1000000  ....((((((.(.....).)).)).))...  []
- 4.90  12.1000000  ........((....))((..........))  [][]
- 5.00  12.0000000  .....(((((.(.....).)).)).)....  []
- 5.30  11.4000000  .(..((((((.(.....).)).)).))..)  []
- 5.50  11.4000000  .......(((..((..(......).)))))  []
- 5.60  11.4000000  .......(((..((.(.......).)))))  []
- 6.50  10.5000000  .......(((..((.(.(...).).)))))  []
- 8.80  10.2000000  ......(.((..((.(.(...).).)))))  []
-13.50  10.2000000  ......(.((..(.(.((...).).)))))  []
+ 0.00  18.5588000  ..............................  _
+ 1.50  17.1754000  ......(((............)))......  []
+ 1.60  15.6637000  ......(((.(.........))))......  []
+ 2.30  14.7800000  ......((((.........)).))......  []
+ 2.40  14.1662000  ......(.((....)).)............  []
+ 2.70  14.1530000  ......(((.(.(.....).))))......  []
+ 2.90  13.2683000  ......((((.(.....).)).))......  []
+ 4.90  12.6544000  ........((....))((..........))  [][]
+ 5.30  12.5379000  .(..((((((.(.....).)).)).))..)  []
+ 5.50  12.2367000  .......(((..((..(......).)))))  []
+ 6.50  11.6163000  .......(((..((.(.(...).).)))))  []
+ 8.20  11.2337000  .......((((.(.....).)......)))  []
+ 8.30  11.2337000  .......((((.(......))......)))  []
+ 8.90  11.2326000  .......(((((.....)..)......)))  []
+10.50  11.0088000  ......(.(((.(.....).)......)))  []
+11.20  11.0076000  ......(.((((.....)..)......)))  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=nodangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-1.2 --modifier=DMS --normalization=RNAstructure --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                   1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
- 0.00   246.7000000  ..............................  _
- 1.50   131.0000000  ......(((............)))......  []
- 2.30   120.2000000  ....(((((............))).))...  []
- 2.90    44.5000000  ((......))....................  []
- 5.70   -40.9000000  (.((....).).).................  []
- 7.60   -95.8000000  (...(.(((............)))))....  []
- 8.90  -101.4000000  (......(.((..........)).))....  []
- 9.40  -107.8000000  (.(....((............))).)....  []
-12.70  -117.3000000  (.(....(((....)......))).)....  []
-14.70  -119.8000000  (.(....(((...).......))).)....  []
-16.00  -162.2000000  (.((....)((..........))).)....  [[][]]
-21.80  -165.8000000  (.(.....)(.((....(...)))))....  [[][]]
-22.70  -197.6000000  ((((....).).(....(...))).)....  [[][]]
+ 0.00   246.9280000  ..............................  _
+ 1.50   131.2180000  ......(((............)))......  []
+ 2.30   120.2420000  ....(((((............))).))...  []
+ 2.90    44.5380000  ((......))....................  []
+ 5.70   -40.9386000  (.((....).).).................  []
+ 7.60   -95.7795000  (...(.(((............)))))....  []
+ 8.90  -101.4120000  (......(.((..........)).))....  []
+ 9.40  -107.8250000  (.(....((............))).)....  []
+12.70  -117.3950000  (.(....(((....)......))).)....  []
+14.70  -119.8300000  (.(....(((...).......))).)....  []
+16.00  -162.2810000  (.((....)((..........))).)....  [[][]]
+21.60  -162.2810000  (.((....).).(....(...))..)....  [[][]]
+21.80  -165.6990000  (.(.....)(.((....(...)))))....  [[][]]
+22.70  -197.7110000  ((((....).).(....(...))).)....  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=nodangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-0.6 --modifier=diffSHAPE --normalization=asProbabilities --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
  0.00   6.2000000  ..............................  _
@@ -4807,395 +4858,386 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
  1.60   3.4000000  ......(((.(.........))))......  []
  2.30   1.2000000  ....(((((............))).))...  []
  2.40   1.0000000  ....(((((.(.........)))).))...  []
- 3.10   0.9000000  ....((((((.........).))).))...  []
  3.50   0.6000000  ....(((((.(.(.....).)))).))...  []
  3.90   0.4000000  .(..(((((............))).))..)  []
  4.00   0.2000000  .(..(((((.(.........)))).))..)  []
- 4.70   0.0999999  .(..((((((.........).))).))..)  []
+ 4.80   0.2000000  ..(.(((((............))).))..)  []
  4.90  -0.0000000  ..(.(((((.(.........)))).))..)  []
  5.10  -0.2000000  .(..(((((.(.(.....).)))).))..)  []
- 5.50  -0.2000000  .(..(((((((.....))...))).))..)  []
  6.00  -0.4000000  ..(.(((((.(.(.....).)))).))..)  []
- 6.40  -0.4000000  ..(.(((((((.....))...))).))..)  []
- 7.10  -0.9000000  (..((...((.........)).)).)....  []
+ 7.10  -0.8000000  (..((...((.........)).)).)....  []
  7.60  -1.4000000  (...(.(((............)))))....  []
  7.70  -1.6000000  (...(.(((.(.........))))))....  []
- 8.40  -1.7000000  (...(.((((.........).)))))....  []
  8.80  -2.0000000  (...(.(((.(.(.....).))))))....  []
- 9.20  -2.0000000  (...(.(((((.....))...)))))....  []
 10.90  -2.2000000  (...(.((((.(.....))..)))))....  []
 13.30  -2.4000000  (...)..(((.((....(...))))))...  [][]
 16.10  -2.6000000  (...).((((.((....(...))))))..)  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=overdangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-0.6 --modifier=diffSHAPE --normalization=RNAstructure --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                   1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
- 0.00  1372.5000000  ......(((............)))......  []
- 0.10  1256.3000000  ......(((.(.........))))......  []
- 0.80  1246.9000000  ......((((.........).)))......  []
- 1.20  1093.1000000  ......(((.(.(.....).))))......  []
- 1.60   488.1000000  ....(((((............))).))...  []
- 1.70   371.9000000  ....(((((.(.........)))).))...  []
- 2.40   362.5000000  ....((((((.........).))).))...  []
- 2.80   208.7000000  ....(((((.(.(.....).)))).))...  []
- 3.20   187.0000000  ....(((((((.....))...))).))...  []
- 3.80    76.2000000  .(..(((((.(.........)))).))..)  []
- 4.50    66.8000000  .(..((((((.........).))).))..)  []
- 4.60   -32.9000000  ..(.(((((.(.........)))).))..)  []
- 4.90   -87.0000000  .(..(((((.(.(.....).)))).))..)  []
- 5.30  -108.7000000  .(..(((((((.....))...))).))..)  []
- 5.70  -196.1000000  ..(.(((((.(.(.....).)))).))..)  []
- 6.10  -217.8000000  ..(.(((((((.....))...))).))..)  []
- 6.80  -353.0000000  (...(.(((............)))))....  []
- 6.90  -469.2000000  (...(.(((.(.........))))))....  []
- 7.60  -478.6000000  (...(.((((.........).)))))....  []
- 8.00  -632.4000000  (...(.(((.(.(.....).))))))....  []
- 8.40  -654.1000000  (...(.(((((.....))...)))))....  []
-10.10  -660.0000000  (...(.((((.(.....))..)))))....  []
-11.70  -682.6000000  (...(.(((((....).)...)))))....  []
-11.80  -738.2000000  (...)..(((.((....(...))))))...  [][]
-15.10  -888.8000000  (...).((((.((....(...))))))..)  [][]
+ 0.00  1372.7500000  ......(((............)))......  []
+ 0.10  1256.4700000  ......(((.(.........))))......  []
+ 0.80  1247.1100000  ......((((.........).)))......  []
+ 1.20  1093.2100000  ......(((.(.(.....).))))......  []
+ 1.60   487.8720000  ....(((((............))).))...  []
+ 1.70   371.5920000  ....(((((.(.........)))).))...  []
+ 2.40   362.2320000  ....((((((.........).))).))...  []
+ 2.80   208.3320000  ....(((((.(.(.....).)))).))...  []
+ 3.20   186.5880000  ....(((((((.....))...))).))...  []
+ 3.80    75.6720000  .(..(((((.(.........)))).))..)  []
+ 4.50    66.3120000  .(..((((((.........).))).))..)  []
+ 4.60   -33.4080000  ..(.(((((.(.........)))).))..)  []
+ 4.90   -87.5880000  .(..(((((.(.(.....).)))).))..)  []
+ 5.30  -109.3320000  .(..(((((((.....))...))).))..)  []
+ 5.70  -196.6680000  ..(.(((((.(.(.....).)))).))..)  []
+ 6.10  -218.4120000  ..(.(((((((.....))...))).))..)  []
+ 6.80  -353.3040000  (...(.(((............)))))....  []
+ 6.90  -469.5840000  (...(.(((.(.........))))))....  []
+ 7.60  -478.9440000  (...(.((((.........).)))))....  []
+ 8.00  -632.8440000  (...(.(((.(.(.....).))))))....  []
+ 8.40  -654.5880000  (...(.(((((.....))...)))))....  []
+10.10  -660.3480000  (...(.((((.(.....))..)))))....  []
+11.70  -683.1720000  (...(.(((((....).)...)))))....  []
+11.80  -738.6480000  (...)..(((.((....(...))))))...  [][]
+15.10  -889.4520000  (...).((((.((....(...))))))..)  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=overdangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=diffSHAPE --normalization=RNAstructure --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                     1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
--16.00    -96.4000000  ....((((((((......))))))))....  []
--15.90  -1189.7000000  (((.((.((((....)))).))))).....  []
--13.60  -1228.6000000  ((((((.((......)).)).)))).....  []
--11.90  -1309.4000000  ..(((((((((((...).))))))))..))  []
--11.80  -1559.7000000  (((((..((((....))))).)))).....  []
--10.80  -1687.8000000  (.(.((((((((......)))))))))..)  []
- -9.70  -1849.0000000  (((.((.((((....)))).)))))(...)  [][]
- -8.10  -1880.0000000  (.(.(((((((((...).)))))))))..)  []
- -7.40  -1887.9000000  ((((((.((......)).)).))))(...)  [][]
- -6.80  -1968.0000000  (.(.(((((((.((...))))))))))..)  []
- -5.60  -2219.0000000  (((((..((((....))))).))))(...)  [][]
- -2.10  -2221.9000000  ((((((.(((...)).).)).))))(...)  [][]
-  0.40  -2264.5000000  (((((..((((...).)))).))))(...)  [][]
-  4.40  -2303.7000000  (((((.((((...)).).)).))))(...)  [][]
+-16.00    -96.7680000  ....((((((((......))))))))....  []
+-15.90  -1189.9700000  (((.((.((((....)))).))))).....  []
+-13.60  -1228.7500000  ((((((.((......)).)).)))).....  []
+-11.90  -1310.1100000  ..(((((((((((...).))))))))..))  []
+-11.80  -1560.0500000  (((((..((((....))))).)))).....  []
+-10.80  -1688.5000000  (.(.((((((((......)))))))))..)  []
+ -9.70  -1849.4900000  (((.((.((((....)))).)))))(...)  [][]
+ -8.10  -1880.6900000  (.(.(((((((((...).)))))))))..)  []
+ -7.40  -1888.2700000  ((((((.((......)).)).))))(...)  [][]
+ -6.80  -1968.8600000  (.(.(((((((.((...))))))))))..)  []
+ -5.60  -2219.5700000  (((((..((((....))))).))))(...)  [][]
+ -2.10  -2222.3500000  ((((((.(((...)).).)).))))(...)  [][]
+  0.40  -2264.9300000  (((((..((((...).)))).))))(...)  [][]
+  4.40  -2304.3400000  (((((.((((...)).).)).))))(...)  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=overdangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-0.6 --modifier=SHAPE --normalization=asProbabilities --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
  0.00   3.6000000  ......(((............)))......  []
  0.10   3.4000000  ......(((.(.........))))......  []
- 0.80   3.3000000  ......((((.........).)))......  []
  1.20   3.0000000  ......(((.(.(.....).))))......  []
  1.60   1.2000000  ....(((((............))).))...  []
  1.70   1.0000000  ....(((((.(.........)))).))...  []
- 2.40   0.9000000  ....((((((.........).))).))...  []
  2.80   0.6000000  ....(((((.(.(.....).)))).))...  []
- 3.20   0.6000000  ....(((((((.....))...))).))...  []
  3.70   0.4000000  .(..(((((............))).))..)  []
  3.80   0.2000000  .(..(((((.(.........)))).))..)  []
- 4.50   0.0999999  .(..((((((.........).))).))..)  []
+ 4.50   0.2000000  ..(.(((((............))).))..)  []
  4.60  -0.0000000  ..(.(((((.(.........)))).))..)  []
  4.90  -0.2000000  .(..(((((.(.(.....).)))).))..)  []
- 5.30  -0.2000000  .(..(((((((.....))...))).))..)  []
  5.70  -0.4000000  ..(.(((((.(.(.....).)))).))..)  []
- 6.10  -0.4000000  ..(.(((((((.....))...))).))..)  []
- 6.30  -0.9000000  (..((...((.........)).)).)....  []
+ 6.30  -0.8000000  (..((...((.........)).)).)....  []
  6.80  -1.4000000  (...(.(((............)))))....  []
  6.90  -1.6000000  (...(.(((.(.........))))))....  []
- 7.60  -1.7000000  (...(.((((.........).)))))....  []
  8.00  -2.0000000  (...(.(((.(.(.....).))))))....  []
- 8.40  -2.0000000  (...(.(((((.....))...)))))....  []
 10.10  -2.2000000  (...(.((((.(.....))..)))))....  []
 11.80  -2.4000000  (...)..(((.((....(...))))))...  [][]
 15.10  -2.6000000  (...).((((.((....(...))))))..)  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=overdangle --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-1.2 --modifier=unknown --normalization=logplain --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
--9.90   3.4000000  ..(((((....)))))..............  []
--8.10   1.8000000  ..(((((....)))))...((....))...  [][]
--7.70   1.0000000  ..(((((....)))))((...)).......  [][]
--5.30   1.0000000  ..(((((....)))))(.(....).)....  [][]
--5.20   0.8000000  ..(((((....)))))...(.(...))...  [][]
--4.30   0.6000000  ..(((((....))))).....((...).).  [][]
--3.80   0.3000000  ..(((((....)))))(..(.(...)).).  [][]
--3.50   0.2000000  ..(((((....)))))..(.((...).).)  [][]
--2.90  -0.3000000  ..(((((....)))))((...)).(....)  [][][]
--2.10  -0.6000000  .((((((....)))))((...)))......  [[][]]
--2.00  -1.8000000  (.(((((....)))))((...)))......  [[][]]
- 2.20  -1.8000000  (.(((((....))))).....((...).))  [[][]]
- 2.70  -2.4000000  (.(((((....)))))((...))(....))  [[][][]]
- 2.80  -3.1000000  (.(((((....)))))((...)))(....)  [[][]][]
- 4.10  -3.5000000  (.(((((....)))))((...))).(...)  [[][]][]
-10.80  -3.7000000  (.(((((...).))))((...))).(...)  [[][]][]
+-9.90   3.8794600  ..(((((....)))))..............  []
+-8.10   1.4626800  ..(((((....)))))...((....))...  [][]
+-7.70   0.8687130  ..(((((....)))))((...)).......  [][]
+-6.70   0.7544930  ..(((((....)))))(..((....)).).  [][]
+-5.20   0.5582400  ..(((((....)))))...(.(...))...  [][]
+-4.30   0.4807010  ..(((((....))))).....((...).).  [][]
+-3.80  -0.1499480  ..(((((....)))))(..(.(...)).).  [][]
+-2.90  -0.7659310  ..(((((....)))))((...)).(....)  [][][]
+-2.10  -0.9557800  .((((((....)))))((...)))......  [[][]]
+-2.00  -2.1480000  (.(((((....)))))((...)))......  [[][]]
+ 2.70  -3.0256600  (.(((((....)))))((...))(....))  [[][][]]
+ 2.80  -3.7826400  (.(((((....)))))((...)))(....)  [[][]][]
+ 4.10  -4.0996400  (.(((((....)))))((...))).(...)  [[][]][]
+10.80  -4.1602800  (.(((((...).))))((...))).(...)  [[][]][]
+19.90  -4.2703900  ((((...)).)((((..(...))..)).))  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=microstate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-1.2 --modifier=DMS --normalization=asProbabilities --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
 -0.20   2.5000000  ......(((............)))......  []
  1.00   2.3000000  ......(((.(.(.....).))))......  []
  1.00   2.3000000  ......(((..(.....)...)))......  []
- 1.40   2.3000000  ......((((........)..)))......  []
- 1.60   2.3000000  ....(((((............))).))...  []
  2.10   1.5000000  ((......))....................  []
- 3.50   1.5000000  ((......))......(......)......  [][]
+ 4.10   1.5000000  ....(.(((.(.(.....).))))).....  []
+ 4.10   1.5000000  ....(.(((..(.....)...)))).....  []
+ 4.20   1.5000000  ....((.(.((..........)).)))...  []
+ 4.20   1.5000000  ((......))......(......)......  [][]
  4.40   0.3000000  ((......)).((.........))......  [][]
+ 6.30   0.3000000  (..((...((.........)).)).)....  []
  6.80  -0.3000000  (...(.(((............)))))....  []
  8.00  -0.5000000  (...(.(((.(.(.....).))))))....  []
  8.00  -0.5000000  (...(.(((..(.....)...)))))....  []
- 8.40  -0.5000000  (...(.((((........)..)))))....  []
+ 9.80  -0.5000000  (.(....((.(.(.....).)))).)....  []
+ 9.80  -0.5000000  (.(....((..(.....)...))).)....  []
 10.10  -0.7000000  (...(.((((.(.....))..)))))....  []
-12.80  -0.7000000  (.((....).)((.........)).)....  [[][]]
-13.20  -0.7000000  (..((...((....)).(...))).)....  [[][]]
 15.20  -1.1000000  (.((....)((..........))).)....  [[][]]
 16.20  -1.3000000  (.((....).)((....(...))).)....  [[][]]
 21.10  -1.7000000  ((((....).).(....(...))).)....  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=microstate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-0.6 --modifier=diffSHAPE --normalization=asProbabilities --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
 -16.40  -0.2000000  ....((((((((......))))))))....  []
 -15.90  -2.6000000  (((.((.((((....)))).))))).....  []
 -13.60  -2.8000000  ((((((.((......)).)).)))).....  []
 -11.80  -3.4000000  (((((..((((....))))).)))).....  []
--10.80  -3.4000000  (.(.((((((((......)))))))))..)  []
  -8.70  -4.0000000  (((.((.((((....)))).)))))(...)  [][]
  -6.40  -4.2000000  ((((((.((......)).)).))))(...)  [][]
  -4.60  -4.8000000  (((((..((((....))))).))))(...)  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=microstate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-1.2 --modifier=SHAPE --normalization=centroid --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
+Cluster info (2.961 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
--0.20  16.3000000  ......(((............)))......  []
--0.10  14.7000000  ......(((.(.........))))......  []
- 0.60  13.8000000  ......((((.........)).))......  []
- 0.70  13.0000000  ......(.((....)).)............  []
- 1.20  12.1000000  ......((((.(.....).)).))......  []
- 3.00  12.1000000  ....((((((.(.....).)).)).))...  []
- 3.90  12.0000000  ......(.((.(.....).))..)......  []
- 4.90  11.9000000  ......(.((....)).)..(........)  [][]
- 5.10  11.4000000  .(..((((((.(.....).)).)).))..)  []
- 5.20  11.4000000  .......(((..((..(......).)))))  []
- 5.30  11.4000000  .......(((..((.(.......).)))))  []
- 6.20  10.5000000  .......(((..((.(.(...).).)))))  []
- 8.60  10.2000000  ......(.((..((.(.(...).).)))))  []
-13.30  10.2000000  ......(.((..(.(.((...).).)))))  []
+-0.20  17.1754000  ......(((............)))......  []
+-0.10  15.6637000  ......(((.(.........))))......  []
+ 0.60  14.7800000  ......((((.........)).))......  []
+ 0.70  14.1662000  ......(.((....)).)............  []
+ 1.00  14.1530000  ......(((.(.(.....).))))......  []
+ 1.20  13.2683000  ......((((.(.....).)).))......  []
+ 3.90  13.1772000  ......(.((.(.....).))..)......  []
+ 4.80  12.6544000  ........((....))((..........))  [][]
+ 5.10  12.5379000  .(..((((((.(.....).)).)).))..)  []
+ 5.20  12.2367000  .......(((..((..(......).)))))  []
+ 6.20  11.6163000  .......(((..((.(.(...).).)))))  []
+ 7.90  11.2337000  .......((((.(.....).)......)))  []
+ 8.00  11.2337000  .......((((.(......))......)))  []
+ 8.60  11.2326000  .......(((((.....)..)......)))  []
+10.30  11.0088000  ......(.(((.(.....).)......)))  []
+11.00  11.0076000  ......(.((((.....)..)......)))  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=microstate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-0.6 --modifier=diffSHAPE --normalization=centroid --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
+Cluster info (2.961 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
--9.90  13.9000000  ..(((((....)))))..............  []
--8.10  12.5000000  ..(((((....)))))...((....))...  [][]
--6.10  11.1000000  ..(((((....)))))(..((....)).).  [][]
--3.50  11.1000000  ....(((.(.(((...)))).)))......  []
--3.20  11.0000000  ..(((((....)))))..(.(.(...)).)  [][]
--2.20  10.5000000  .....((.(.(((...)))).)).......  []
--0.90  10.4000000  ..(((((....)))))(((....)..).).  [][]
--0.70  10.4000000  ..(((((....)))))((.(...)..).).  [][]
- 0.00  10.3000000  ...(.((.(.(((...)))).))...)...  []
- 1.30  10.2000000  ..(((((....)))))...((..(...)))  [][]
- 1.50  9.6000000  ....(((((((((...)))..))..)).))  []
- 3.00   9.4000000  ....(((.(((((...)))..))...).))  []
- 3.50   8.9000000  ....(((((.(((...)))).....)).))  []
- 4.90   8.8000000  ....((((.((((...))).)....)).))  []
- 5.40   8.7000000  ....(((((((((...))).).)..)).))  []
- 6.50   8.6000000  ....(((.(.(((...))))).......))  []
- 6.70   8.6000000  ....(((.(((((...))).)....)).))  []
- 6.90   8.5000000  ....(((.(((((...))).).)...).))  []
- 7.30   8.5000000  ...(.((((.(((...)))).....)).))  []
- 7.50   8.5000000  ....((((.((((...))).)...).).))  []
- 7.60   8.3000000  ....(((((((((...))).).).).).))  []
- 9.60   8.1000000  .(...((((.(((...)))).....)).))  []
-11.00   8.0000000  .(...(((.((((...))).)....)).))  []
-11.40   7.9000000  ...(.((((((((...))).).).).).))  []
-12.60   7.8000000  .(...((.(.(((...))))).......))  []
-12.80   7.8000000  .(...((.(((((...))).)....)).))  []
-13.00   7.7000000  .(...((.(((((...))).).)...).))  []
-13.60   7.7000000  .(...(((.((((...))).)...).).))  []
-13.70   7.5000000  .(...((((((((...))).).).).).))  []
-16.90   7.4000000  ......(((.(((...))))(......)))  [[][]]
-17.80   7.2000000  ...(.((.(.(((...)))))..(...)))  [[][]]
-20.10   6.8000000  .(...((.(.(((...)))))..(...)))  [[][]]
+-9.90  15.0687000  ..(((((....)))))..............  []
+-8.10  13.7195000  ..(((((....)))))...((....))...  [][]
+-6.10  12.2077000  ..(((((....)))))(..((....)).).  [][]
+-5.00  12.0452000  ..(((((....)))))..(.(......).)  [][]
+-2.20  11.7585000  .....((.(.(((...)))).)).......  []
+-0.90  11.3537000  ..(((((....)))))(((....)..).).  [][]
+ 1.30  11.1911000  ..(((((....)))))...((..(...)))  [][]
+ 1.50  10.6193000  ....(((((((((...)))..))..)).))  []
+ 3.00  10.3944000  ....(((.(((((...)))..))...).))  []
+ 3.50  9.8540600  ....(((((.(((...)))).....)).))  []
+ 5.40  9.7279600  ....(((((((((...))).).)..)).))  []
+ 6.50   9.4665700  ....(((.(.(((...))))).......))  []
+ 7.20   9.4646100  ....(((((.(((...))))....).).))  []
+ 7.30   9.3782600  ...(.((((.(((...)))).....)).))  []
+ 7.60   9.3385100  ....(((((((((...))).).).).).))  []
+ 9.20   9.2521600  ...(.((((((((...))).).)..)).))  []
+ 9.60   9.0064600  .(...((((.(((...)))).....)).))  []
+10.30   8.9907700  ...(.((.(.(((...))))).......))  []
+11.00   8.9888100  ...(.((((.(((...))))....).).))  []
+11.40   8.8627100  ...(.((((((((...))).).).).).))  []
+12.60   8.6189700  .(...((.(.(((...))))).......))  []
+13.30   8.6170100  .(...((((.(((...))))....).).))  []
+13.70   8.4909100  .(...((((((((...))).).).).).))  []
+16.90   8.2023700  ......(((.(((...))))(......)))  [[][]]
+17.80   8.1367200  ...(.((.(.(((...)))))..(...)))  [[][]]
+20.10   7.7649200  .(...((.(.(((...)))))..(...)))  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=macrostate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-0.6 --modifier=DMS --normalization=logplain --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
--16.00  -1.3000000  ....((((((((......))))))))....  []
--15.90  -1.3000000  ((((.(.((((....)))).))))).....  []
--15.90  -1.5000000  (((.((.((((....)))).))))).....  []
--14.60  -2.3000000  ..((((((((((......))))))))..))  []
--11.90  -2.5000000  ..(((((((((((...).))))))))..))  []
--11.90  -1.3000000  ..(.((((((((......))))))))...)  []
- -3.80  -0.7000000  .((.(..((((....)))))).).......  []
- -3.80  -1.7000000  .(.((..((((....))))).)).......  []
- -3.80   0.7000000  .(.(...((((....)))))).........  []
- -3.80  -2.7000000  .((((..((((....))))).))).(...)  [][]
+-16.00  -1.5924000  ....((((((((......))))))))....  []
+-15.90  -1.6125800  ((((.(.((((....)))).))))).....  []
+-15.90  -1.8661800  (((.((.((((....)))).))))).....  []
+-14.60  -2.7228000  ..((((((((((......))))))))..))  []
+-11.90  -2.9965800  ..(((((((((((...).))))))))..))  []
+-11.90  -1.5924000  ..(.((((((((......))))))))...)  []
+ -3.80  -0.9487960  .((.(..((((....)))))).).......  []
+ -3.80  -1.9237900  .(.((..((((....))))).)).......  []
+ -3.80   0.6323370  .(.(...((((....)))))).........  []
+ -3.80  -3.0594200  .((((..((((....))))).))).(...)  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=macrostate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-0.6 --modifier=SHAPE --normalization=RNAstructure --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                   1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
- 0.00   273.1000000  ......(((............)))......  []
- 0.00   677.9000000  ..............................  _
- 1.60   -79.3000000  ....(((((............))).))...  []
- 2.90   374.0000000  ..((....).)...................  []
- 2.90  -104.7000000  ....(.(((............)))).....  []
- 3.70  -163.3000000  .(..(((((............))).))..)  []
- 4.20  -176.8000000  ....((.(.((..........)).)))...  []
- 4.20   174.4000000  ((......))......(......)......  [][]
- 4.50  -247.9000000  ..(.(((((............))).))..)  []
- 6.30  -425.8000000  (..((...((.........)).)).)....  []
- 6.30  -352.6000000  (.....(((............))).)....  []
- 6.30  -260.8000000  .(..((.(.((..........)).)))..)  []
- 6.30   509.6000000  .(......)..............(....).  [][]
- 6.80  -730.4000000  (...(.(((............)))))....  []
- 6.80  -128.9000000  ((......))..((.(.......).))...  [][]
-10.00  -129.3000000  (..(......).....(......).)....  [[][]]
-10.00  -220.9000000  (..((.(.((....)).).)...).)....  []
-10.00  -730.6000000  (..((...(............))).)....  []
-10.00  -548.1000000  (..(...((............))).)....  []
-10.00   -85.6000000  (..(....)................)....  []
-10.00   -94.8000000  (...(...((....))..)......)....  []
-10.00  -260.1000000  (...(..................).)....  []
-10.00  -204.8000000  (..........((.........)).)....  []
-10.10  -733.5000000  (...(.((((....)......)))))....  []
-10.10  -543.1000000  (...(.((...(.....)....))))....  []
-10.10  -674.6000000  (...(..((............)).))....  []
-10.10  -105.2000000  (.(.(...).).)...(......)......  [][]
-10.10  -218.4000000  (......)..(((.........)).)....  [][]
-12.00  -761.6000000  (.(.(...(............))).)....  []
-12.00   112.0000000  (.....(...)..............)....  []
-12.00   141.2000000  (...........(......).....)....  []
-12.00   -46.2000000  (................(...)...)....  []
-12.00  -320.8000000  (.(.(...).).).(.(......).)....  [][]
-12.00  -347.4000000  (.(.....))(((.........)).)....  [][]
-14.60  -762.1000000  (...(..(.((..........)))))....  []
-14.60  -369.2000000  (.(.(...).).)(..(......).)....  [][]
-15.30  -764.7000000  (.(.(...((....)......))).)....  []
-15.30  -742.4000000  (..((...((...).......))).)....  []
-15.30  -559.9000000  (..(...(((...).......))).)....  []
-15.30  -133.8000000  (...(..(.....).....).....)....  []
-15.30    -2.7000000  (......(.(...))..........)....  []
-15.30  -115.9000000  (.(.....)).(((.(.(...).).))..)  [][]
-15.30  -115.9000000  (.(.....)).(.(..(......).)...)  [][]
-15.30  -179.5000000  (...(...))(.((..(......).)).).  [][]
-15.30   -12.6000000  (...(...))(..........)........  [][]
-15.30   137.4000000  (...(...))(.................).  [][]
-15.30  -142.3000000  (...).((((.((....(...))))))..)  [][]
-15.30  -142.3000000  (...).((......)..............)  [][]
-15.30  -282.8000000  (.((....).).)..(.(...).).(...)  [][][]
-15.30  -115.9000000  (.(.....)).(.....)(......)....  [][][]
-15.30  -142.3000000  (...).((......)..)..(........)  [][][]
-15.30  -142.3000000  (...).((......)..)...(.......)  [][][]
-17.30  -625.7000000  (((((...).)......).....).)....  []
-17.30  -297.2000000  ((((.(...))......).....).)....  []
-17.30  -680.1000000  ((..(...((....)......))).)....  []
-17.30  -773.4000000  (.(.(...((...).......))).)....  []
-17.80  -444.2000000  (.(.((...).(.....)....)).)....  [[][]]
-17.80  -781.9000000  (.(.(..(......)..(...))).)....  [[][]]
-17.80  -742.2000000  (.(.(....(....)..(...))).)....  [[][]]
-17.80  -315.0000000  (..((..((...)))..).......)....  []
-19.20  -790.6000000  (.(.(..(.....)...(...))).)....  [[][]]
-19.20  -633.4000000  (.(.(...(.(....))(...))).)....  [[][]]
-19.20  -671.4000000  (.(.(...(.......)(...))).)....  [[][]]
-19.20  -669.1000000  (.(.(.....(.....)(...))).)....  [[][]]
-22.70  -793.8000000  (.(.(..(.(...))..(...))).)....  [[][]]
-24.20  -795.8000000  (((.(...).).(....(...))).)....  [[][]]
-24.30  -849.4000000  (.(((...).).(....(...))).)....  [[][]]
-24.30  -520.9000000  (.((.(...)).(....(...))).)....  [[][]]
+ 0.00   273.1350000  ......(((............)))......  []
+ 0.00   677.8740000  ..............................  _
+ 1.60   -79.5083000  ....(((((............))).))...  []
+ 2.90   373.9150000  ..((....).)...................  []
+ 2.90  -104.9590000  ....(.(((............)))).....  []
+ 3.70  -163.5940000  .(..(((((............))).))..)  []
+ 4.20  -177.1370000  ....((.(.((..........)).)))...  []
+ 4.20   174.3190000  ((......))......(......)......  [][]
+ 4.50  -248.1050000  ..(.(((((............))).))..)  []
+ 6.30  -425.8870000  (..((...((.........)).)).)....  []
+ 6.30  -352.7190000  (.....(((............))).)....  []
+ 6.30  -261.2220000  .(..((.(.((..........)).)))..)  []
+ 6.30   509.3960000  .(......)..............(....).  [][]
+ 6.80  -730.8130000  (...(.(((............)))))....  []
+ 6.80  -128.9200000  ((......))..((.(.......).))...  [][]
+10.00  -129.2580000  (..(......).....(......).)....  [[][]]
+10.00  -220.8950000  (..((.(.((....)).).)...).)....  []
+10.00  -730.9180000  (..((...(............))).)....  []
+10.00  -548.3250000  (..(...((............))).)....  []
+10.00   -85.6168000  (..(....)................)....  []
+10.00   -95.0266000  (...(...((....))..)......)....  []
+10.00  -260.3100000  (...(..................).)....  []
+10.00  -204.8390000  (..........((.........)).)....  []
+10.10  -734.0840000  (...(.((((....)......)))))....  []
+10.10  -543.5610000  (...(.((...(.....)....))))....  []
+10.10  -674.9520000  (...(..((............)).))....  []
+10.10  -105.1930000  (.(.(...).).)...(......)......  [][]
+10.10  -218.5080000  (......)..(((.........)).)....  [][]
+12.00  -761.8410000  (.(.(...(............))).)....  []
+12.00   112.2250000  (.....(...)..............)....  []
+12.00   141.2470000  (...........(......).....)....  []
+12.00   -46.2438000  (................(...)...)....  []
+12.00  -320.7500000  (.(.(...).).).(.(......).)....  [][]
+12.00  -347.2910000  (.(.....))(((.........)).)....  [][]
+14.60  -762.6770000  (...(..(.((..........)))))....  []
+14.60  -369.2970000  (.(.(...).).)(..(......).)....  [][]
+15.30  -765.1110000  (.(.(...((....)......))).)....  []
+15.30  -742.7980000  (..((...((...).......))).)....  []
+15.30  -560.2050000  (..(...(((...).......))).)....  []
+15.30  -134.0400000  (...(..(.....).....).....)....  []
+15.30    -2.9068800  (......(.(...))..........)....  []
+15.30  -115.8340000  (.(.....)).(((.(.(...).).))..)  [][]
+15.30  -115.8340000  (.(.....)).(.(..(......).)...)  [][]
+15.30  -179.5990000  (...(...))(.((..(......).)).).  [][]
+15.30   -12.7216000  (...(...))(..........)........  [][]
+15.30   137.3820000  (...(...))(.................).  [][]
+15.30  -142.3880000  (...).((((.((....(...))))))..)  [][]
+15.30  -142.3880000  (...).((......)..............)  [][]
+15.30  -282.6720000  (.((....).).)..(.(...).).(...)  [][][]
+15.30  -115.8340000  (.(.....)).(.....)(......)....  [][][]
+15.30  -142.3880000  (...).((......)..)..(........)  [][][]
+15.30  -142.3880000  (...).((......)..)...(.......)  [][][]
+17.30  -625.8770000  (((((...).)......).....).)....  []
+17.30  -297.1680000  ((((.(...))......).....).)....  []
+17.30  -680.6000000  ((..(...((....)......))).)....  []
+17.30  -773.7210000  (.(.(...((...).......))).)....  []
+17.80  -444.3780000  (.(.((...).(.....)....)).)....  [[][]]
+17.80  -782.4480000  (.(.(..(......)..(...))).)....  [[][]]
+17.80  -742.6720000  (.(.(....(....)..(...))).)....  [[][]]
+17.80  -315.3410000  (..((..((...)))..).......)....  []
+19.20  -791.0570000  (.(.(..(.....)...(...))).)....  [[][]]
+19.20  -633.3940000  (.(.(...(.(....))(...))).)....  [[][]]
+19.20  -671.4480000  (.(.(...(.......)(...))).)....  [[][]]
+19.20  -669.2120000  (.(.(.....(.....)(...))).)....  [[][]]
+22.70  -794.3280000  (.(.(..(.(...))..(...))).)....  [[][]]
+24.20  -796.0800000  (((.(...).).(....(...))).)....  [[][]]
+24.30  -849.6690000  (.(((...).).(....(...))).)....  [[][]]
+24.30  -520.9600000  (.((.(...)).(....(...))).)....  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=macrostate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-0.6 --modifier=unknown --normalization=logplain --slope=2.4
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
--16.00   0.0999999  ....((((((((......))))))))....  []
--15.90  -2.8000000  ((((.(.((((....)))).))))).....  []
--15.90  -3.0000000  (((.((.((((....)))).))))).....  []
--11.90  -3.6000000  ..(((((((((((...).))))))))..))  []
--11.90  -1.4000000  ..(.((((((((......))))))))...)  []
--11.80  -4.0000000  (((((..((((....))))).)))).....  []
--11.80  -3.0000000  ((((..(((((....)))).))))).....  []
--11.80  -2.2000000  (...((((((((......)))))))))...  []
- -8.70  -4.5000000  ((((.(.((((....)))).)))))(...)  [][]
- -8.70  -4.7000000  (((.((.((((....)))).)))))(...)  [][]
- -8.70  -0.4000000  (...)(((((((......))))))).....  [][]
- -6.80  -2.2000000  (.((((.((((....)))).))...))..)  []
- -6.80  -4.7000000  (.((.((((((.((...))))))))))..)  []
- -6.80  -4.9000000  (.(.(((((((.((...))))))))))..)  []
- -6.80  -2.9000000  (.(.(.((((((......)))))).))..)  []
- -4.60  -5.7000000  (((((..((((....))))).))))(...)  [][]
- -4.60  -4.7000000  ((((..(((((....)))).)))))(...)  [][]
-  5.40  -5.8000000  (((((.((((...)).).)).))))(...)  [][]
-  5.40  -5.8000000  (((((.((((...).)).)).))))(...)  [][]
-  5.40  -2.0000000  (((((..((...))))).).)....(...)  [][]
+-16.00  -0.3805890  ....((((((((......))))))))....  []
+-15.90  -3.0508100  ((((.(.((((....)))).))))).....  []
+-15.90  -3.3044100  (((.((.((((....)))).))))).....  []
+-14.60  -3.6478900  ..((((((((((......))))))))..))  []
+-11.90  -4.3738600  ..(((((((((((...).))))))))..))  []
+-11.90  -2.0830800  ..(.((((((((......))))))))...)  []
+-11.80  -4.5058600  (((((..((((....))))).)))).....  []
+-11.80  -3.4166200  ((((..(((((....)))).))))).....  []
+-11.80  -3.0568900  (...((((((((......)))))))))...  []
+-10.80  -4.5057800  (.((.(((((((......)))))))))..)  []
+-10.80  -4.7593700  (.(.((((((((......)))))))))..)  []
+-10.80  -3.2957600  .(.(((((((((......))))))))..))  []
+ -8.70  -5.0024500  ((((.(.((((....)))).)))))(...)  [][]
+ -8.70  -5.2560400  (((.((.((((....)))).)))))(...)  [][]
+ -8.70  -0.9715320  (...)(((((((......))))))).....  [][]
+ -8.10  -5.2317600  (.((.((((((((...).)))))))))..)  []
+ -8.10  -5.4853500  (.(.(((((((((...).)))))))))..)  []
+ -8.10  -4.0217300  .(.((((((((((...).))))))))..))  []
+ -6.80  -2.6199700  (.((((.((((....)))).))...))..)  []
+ -6.80  -5.4474100  (.((.(((((((.(...))))))))))..)  []
+ -6.80  -5.5264900  (.((.((((((.((...))))))))))..)  []
+ -6.80  -5.7010100  (.(.((((((((.(...))))))))))..)  []
+ -6.80  -5.7800800  (.(.(((((((.((...))))))))))..)  []
+ -6.80  -3.6184100  (.(.(.((((((......)))))).))..)  []
+ -6.80  -4.2373900  .(.(((((((((.(...)))))))))..))  []
+ -6.80  -4.3164600  .(.((((((((.((...)))))))))..))  []
+ -6.80  -2.1547900  .(.((.((((((......)))))).)..))  []
+ -4.60  -6.4574900  (((((..((((....))))).))))(...)  [][]
+ -4.60  -5.3682500  ((((..(((((....)))).)))))(...)  [][]
+  1.40  -6.6059900  (((((..((((...).)))).))))(...)  [][]
+  1.40  -5.5167500  ((((..(((((...).))).)))))(...)  [][]
+  1.40  -2.8415200  ((((...((((....))))))..))(...)  [][]
+  5.40  -6.7300500  (((((.((((...)).).)).))))(...)  [][]
+  5.40  -6.5815600  (((((.((((...).)).)).))))(...)  [][]
+  5.40  -2.3003100  (((((..((...))))).).)....(...)  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=macrostate --reactivityfilename=/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-0.6 --modifier=unknown --normalization=asProbabilities --slope=1.8
+The following 1 warnings were raised when parsing the reactivity file '/home/sjanssen/Desktop/fold-grammars//Misc/Test-Suite/StefanStyle//cedric.shape':
+  1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
  0.00   3.6000000  ......(((............)))......  []
  0.00   6.2000000  ..............................  _
  0.10   3.4000000  ......(((.(.........))))......  []
- 0.80   3.9000000  ......((((.........)).))......  []
- 0.80   3.3000000  ......((((.........).)))......  []
  1.20   3.0000000  ......(((.(.(.....).))))......  []
  1.20   3.2000000  ......(((..(.....)...)))......  []
  1.60   1.2000000  ....(((((............))).))...  []
- 1.60   3.0000000  ......(((((.....))...)))......  []
- 1.60   3.2000000  ......((((........)..)))......  []
  1.70   1.0000000  ....(((((.(.........)))).))...  []
- 2.40   1.5000000  ....((((((.........)).)).))...  []
- 2.40   0.9000000  ....((((((.........).))).))...  []
  2.80   0.6000000  ....(((((.(.(.....).)))).))...  []
  2.80   0.8000000  ....(((((..(.....)...))).))...  []
  2.80   1.4000000  .......(((.((.........)))))...  []
  2.80   3.4000000  .......(((..............)))...  []
- 3.20   2.0000000  ...((...((.(.....).)).))......  []
- 3.20   0.6000000  ....(((((((.....))...))).))...  []
- 3.20   0.8000000  ....((((((........)..))).))...  []
  3.70   0.4000000  .(..(((((............))).))..)  []
  3.80   0.2000000  .(..(((((.(.........)))).))..)  []
  3.80   4.2000000  .(......((....)).......)......  []
- 4.40  -0.0000000  ((......)).((.........))......  [][]
+ 4.40   0.0000000  ((......)).((.........))......  [][]
  4.60  -0.0000000  ..(.(((((.(.........)))).))..)  []
  4.90  -0.2000000  .(..(((((.(.(.....).)))).))..)  []
  4.90  -0.0000000  .(..(((((..(.....)...))).))..)  []
- 5.30  -0.2000000  .(..(((((((.....))...))).))..)  []
- 5.30  -0.0000001  .(..((((((........)..))).))..)  []
- 5.30   0.5000000  ..(.((((((.........)).)).))..)  []
- 5.30  -0.1000000  ..(.((((((.........).))).))..)  []
- 5.30   4.4000000  ..(.....((....)).)............  []
  5.40  -0.4000000  (...).(((............)))......  [][]
  5.70  -0.4000000  ..(.(((((.(.(.....).)))).))..)  []
  5.70  -0.2000000  ..(.(((((..(.....)...))).))..)  []
  5.70   2.2000000  ..(....(.((..........)).)....)  []
- 6.10  -0.4000000  ..(.(((((((.....))...))).))..)  []
- 6.10  -0.2000000  ..(.((((((........)..))).))..)  []
- 6.10   1.4000000  ..(..((((............))).)...)  []
- 6.10   3.0000000  ..(......((.(......).))......)  []
- 6.10   5.1000000  ..(..........................)  []
- 6.10   3.4000000  ..((....).)............(....).  [][]
- 6.30  -0.9000000  (..((...((.........)).)).)....  []
+ 6.30  -0.8000000  (..((...((.........)).)).)....  []
  6.30   0.4000000  (.....(((............))).)....  []
  6.80  -1.4000000  (...(.(((............)))))....  []
  6.80   0.6000000  ((......))..((.(.......).))...  [][]
  6.90  -1.2000000  (..((...((.(.....).)).)).)....  []
  6.90  -1.6000000  (...(.(((.(.........))))))....  []
- 7.60  -1.1000000  (...(.((((.........)).))))....  []
- 7.60  -1.7000000  (...(.((((.........).)))))....  []
- 7.60   0.4000000  ((......))(.((..(......).)).).  [][]
- 7.60   2.4000000  ((......))(..........)........  [][]
- 7.60   2.8000000  ((......))(.................).  [][]
  8.00   1.8000000  (.(.(...).).).................  []
  8.00  -2.0000000  (...(.(((.(.(.....).))))))....  []
  8.00  -1.8000000  (...(.(((..(.....)...)))))....  []
- 8.40  -2.0000000  (...(.(((((.....))...)))))....  []
- 8.40  -1.8000000  (...(.((((........)..)))))....  []
- 8.40  -0.2000000  (......(.((.(......).)).))....  []
- 8.40   1.2000000  (.((....).).)..(.......)......  [][]
- 8.40  -1.6000000  (...)..(((.((.........)))))...  [][]
- 8.40   0.4000000  (...)..(((..............)))...  [][]
- 8.40   0.6000000  (......).((..........)).......  [][]
- 8.40   3.6000000  (......)..(....)..............  [][]
 10.10  -2.2000000  (...(.((((.(.....))..)))))....  []
 10.10  -1.8000000  (...(.((((....)......)))))....  []
 10.10  -1.0000000  (...(.((...(.....)....))))....  []
 10.10  -0.8000000  (...(..((............)).))....  []
 10.10   1.2000000  (.(.(...).).)...(......)......  [][]
 10.10   0.6000000  (......)..(((.........)).)....  [][]
-11.80  -0.0000000  (.(.....))(.((.(.......).)).).  [][]
+11.80   0.0000000  (.(.....))(.((.(.......).)).).  [][]
 11.80   2.0000000  (.(.....))(.....(......)....).  [][]
 11.80  -0.4000000  (.(.....))..((.(.(...).).))...  [][]
 11.80  -0.4000000  (...).(.((.((.........))...)))  [][]

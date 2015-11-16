@@ -169,7 +169,16 @@ sub processInput {
 		if ($refHash_settings->{'mode'} eq $Settings::MODE_CAST) {
 			RNAcast::cast_doComputation($input, $refHash_settings, \&buildCommand, \%PARAM, $Settings::MODE_SHAPES, $Settings::PROGINFOS{$PROGID}->{name});
 		} else {
-			Utils::applyFunctionToFastaFile($input, \&doComputation, $refHash_settings);
+			if ($refHash_settings->{'mode'} eq $Settings::MODE_ABSTRACT) {
+				open (IN, $input) || die "cannot read from input file '$input': $!\n";
+					while (my $line = <IN>) {
+						chomp $line;
+						doComputation({sequence => $line, header => 'pure structure'}, $refHash_settings);
+					}
+				close (IN);
+			} else {
+				Utils::applyFunctionToFastaFile($input, \&doComputation, $refHash_settings);
+			}
 		}
 	}
 	
