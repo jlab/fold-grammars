@@ -29,7 +29,7 @@ if ($cluster eq "BIELEFELD") {
 	our $JOBID = 'PBS_ARRAYID';
 	our $SH = '/bin/sh';
 	our $ARCH = '';
-	our $PARAM_WORK_DIR = '-d';
+	our $PARAM_WORK_DIR = '';
 } else {
 	die "unkown cluster configuration!\n";
 }
