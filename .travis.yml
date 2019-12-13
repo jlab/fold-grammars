@@ -8,10 +8,12 @@ before_install:
   - sudo apt-get update -y
   - sudo apt-get install flex bison make libboost-all-dev libgsl-dev ghc
   - git clone https://github.com/jlab/gapc /home/travis/gapc
+  - pushd .
   - cd /home/travis/gapc
   - ./configure
   - make
   - sudo make install
+  - popd
 before_script:
   - make -C Misc/Applications/RNAshapes mfe
 script:
