@@ -20,6 +20,7 @@ before_script:
   # point to fold-grammars source directory:
   - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
 script:
-  - cd Misc/Test-Suite/StefanStyle/ && perl runTests.pl
+  - cd Misc/Test-Suite/StefanStyle/
+  - travis_wait perl runTests.pl
   #- make test -j `nproc --all`
   - echo "hier bin ich"
