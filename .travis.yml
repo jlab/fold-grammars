@@ -16,12 +16,10 @@ before_install:
   - popd
 before_script:
   # point to Bellmans's GAP install directory:
-  - which -a gapc
   - sed -i "s#bgapDir = '/vol/gapc/'#bgapDir = '/usr/local/'#" Misc/Applications/lib/foldGrammars/Settings.pm
-  - pwd
-  - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`'#" Misc/Applications/lib/foldGrammars/Settings.pm
-  - cat Misc/Applications/lib/foldGrammars/Settings.pm
-#  - make -C Misc/Applications/RNAshapes mfe
+  # point to fold-grammars source directory:
+  - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
 script:
+  - cd Misc/Test-Suite/StefanStyle/ && perl runTests.pl
   #- make test -j `nproc --all`
   - echo "hier bin ich"
