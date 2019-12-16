@@ -15,6 +15,13 @@ before_install:
   - sudo make install
   - popd
 before_script:
-  - make -C Misc/Applications/RNAshapes mfe
+  # point to Bellmans's GAP install directory:
+  - which -a gapc
+  - sed -i "s#bgapDir = '/vol/gapc/'#bgapDir = '/usr/local/'#" Misc/Applications/lib/foldGrammars/Settings.pm
+  - pwd
+  - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`'#" Misc/Applications/lib/foldGrammars/Settings.pm
+  - cat Misc/Applications/lib/foldGrammars/Settings.pm
+#  - make -C Misc/Applications/RNAshapes mfe
 script:
+  #- make test -j `nproc --all`
   - echo "hier bin ich"
