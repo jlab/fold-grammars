@@ -26,6 +26,7 @@ before_script:
   # point to fold-grammars source directory:
   - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
 script:
+  - make -j $PPN build-suite
   - cd Misc/Test-Suite/StefanStyle/
   - travis_wait 40 perl runTests.pl $PPN
   #- make test -j `nproc --all`
