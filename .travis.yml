@@ -31,8 +31,12 @@ before_script:
   - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
 script:
   - if [[ "$TEST_SUBTASK" == "default" ]]; then
+    pushd .;
     cd Misc/Test-Suite/GeorgStyle/;
     bash run.sh ../Truth;
+    popd;
     fi
-  - cd Misc/Test-Suite/StefanStyle/;
-  - travis_wait 40 perl runTests.pl $PPN $TEST_SUBTASK;
+  - pushd .
+  - cd Misc/Test-Suite/StefanStyle/
+  - travis_wait 40 perl runTests.pl $PPN $TEST_SUBTASK
+  - popd
