@@ -1262,13 +1262,13 @@ void append_consensus(rope::Ref<X> &str, const Basic_Subsequence<M_Char, unsigne
 	unsigned int s,max,maxIndex;
 	consensus = (char *) malloc ((seq_size(seq)+1) * sizeof(char));
 	for (i = 0; i < seq_size(seq); i++) {
-	  unsigned int freq[6]={0,0,0,0,0,0};
+	  unsigned int freq[7]={0,0,0,0,0,0,0};
 	  for (s=0; s<rows(seq); s++) {
 		freq[(int) column(seq_char(seq,i),s)]++;
 	  }
 	  maxIndex = GAP_BASE;
 	  max = freq[maxIndex];
-	  for (s=0; s < 6; ++s) {
+	  for (s=0; s < 7; ++s) {
 		if (freq[s] > max) {
 		  max = freq[s];
 		  maxIndex = s;
@@ -1301,7 +1301,7 @@ void append_mis(rope::Ref<X> &str, const Basic_Subsequence<M_Char, unsigned> &se
     static char IUP[17] = "-ACMGRSVUWYHKDBN";
 	consensus = (char *) malloc ((seq_size(seq)+1) * sizeof(char));
 
-	unsigned int bgfreq[6] = {0,0,0,0,0,0};
+	unsigned int bgfreq[7] = {0,0,0,0,0,0,0};
     unsigned int s;
 	for (i=0; i<seq_size(seq); i++) {
 	  for (s=0; s<rows(seq); s++) {
@@ -1311,7 +1311,7 @@ void append_mis(rope::Ref<X> &str, const Basic_Subsequence<M_Char, unsigned> &se
 
 	unsigned int c;
 	for (i=0; i<seq_size(seq); i++) {
-	  unsigned int freq[6] = {0,0,0,0,0,0};
+	  unsigned int freq[7] = {0,0,0,0,0,0,0};
 	  unsigned int code = 0;
 	  for (s=0; s<rows(seq); s++) {
 	  	freq[(unsigned int) column(seq_char(seq,i),s)]++;

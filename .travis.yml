@@ -1,0 +1,42 @@
+dist: xenial
+language: cpp
+compiler:
+- gcc
+os:
+- linux
+env:
+  - TEST_SUBTASK=default
+  - TEST_SUBTASK=shapes
+  - TEST_SUBTASK=pkiss
+before_install:
+  - sudo apt-get update -y
+  - sudo apt-get install flex bison make libboost-all-dev libgsl-dev ghc
+  - git clone https://github.com/jlab/gapc /home/travis/gapc
+  - pushd .
+  - cd /home/travis/gapc
+  - ./configure
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    export PPN=`nproc`;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    export PPN=`sysctl -n hw.logicalcpu`;
+    fi
+  - make -j $PPN
+  - sudo make install
+  - popd
+before_script:
+  # point to Bellmans's GAP install directory:
+  - sed -i "s#bgapDir = '/vol/gapc/'#bgapDir = '/usr/local/'#" Misc/Applications/lib/foldGrammars/Settings.pm
+  # point to fold-grammars source directory:
+  - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
+script:
+  - if [[ "$TEST_SUBTASK" == "default" ]]; then
+    pushd .;
+    cd Misc/Test-Suite/GeorgStyle/;
+    bash run.sh ../Truth;
+    popd;
+    fi
+  - pushd .
+  - cd Misc/Test-Suite/StefanStyle/
+  - travis_wait 40 perl runTests.pl $PPN $TEST_SUBTASK
+  - popd
