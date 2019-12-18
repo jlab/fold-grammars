@@ -4,6 +4,11 @@ compiler:
 - gcc
 os:
 - linux
+env:
+  - TEST_SUBTASK=knots
+  - TEST_SUBTASK=shapes
+  - TEST_SUBTASK=pkiss
+  - TEST_SUBTASK=probing
 before_install:
   - sudo apt-get update -y
   - sudo apt-get install flex bison make libboost-all-dev libgsl-dev ghc
@@ -26,8 +31,7 @@ before_script:
   # point to fold-grammars source directory:
   - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
 script:
-  - make -j $PPN build-suite
   - cd Misc/Test-Suite/StefanStyle/
-  - travis_wait 40 perl runTests.pl $PPN
+  - travis_wait 40 perl runTests.pl $PPN $TEST_SUBTASK
   #- make test -j `nproc --all`
   - echo "hier bin ich"
