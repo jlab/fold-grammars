@@ -14,17 +14,17 @@ type base_t = extern
 type Rope = extern
 type shape_t = shape
 
-include "Signatures/sig_foldrna.gap"
-include "Algebras/DotBracket/alg_dotBracket.gap"
+include "Signatures/sig_cofold_foldrna.gap"
+include "Algebras/DotBracket/alg_cofold_dotBracket.gap"
 // include "Algebras/Shapes/alg_shapes.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
 
-include "Algebras/MFE/alg_mfe.gap"
+include "Algebras/MFE/alg_cofold_mfe.gap"
 include "Algebras/alg_cofold.gap"
 // include "Algebras/MEA/alg_mea.gap"
-include "Algebras/Pfunc/alg_pfunc.gap"
+include "Algebras/Pfunc/alg_cofold_pfunc.gap"
 // include "Algebras/Probing/alg_probing.gap" //an algebra for integrating structure probing data like SHAPE or DMS
 // include "Algebras/MFE/alg_mfe_SHAPE.gap"
 
