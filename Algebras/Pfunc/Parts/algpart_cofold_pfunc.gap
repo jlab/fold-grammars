@@ -33,6 +33,3 @@
   double ml_cut(Subsequence lb, double x, Subsequence rb) {
     return scale(2) * x * mk_pf(duplex_energy() + termau_energy(lb, rb));
   }
-  double ssadd_cut(Subsequence lb,double x) {
-    return scale(lb.j-lb.i-1) * x;
-  }

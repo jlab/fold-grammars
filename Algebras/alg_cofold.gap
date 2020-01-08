@@ -167,11 +167,6 @@ algebra alg_cofold implements sig_foldrna(alphabet = char, answer = Rope) {
   Rope ssadd(Subsequence lb,Rope e) {
     return e;
   }
-  Rope ssadd_cut(Subsequence lb,Rope e) {
-    Rope res;
-    append(res, "interacting", 11);
-    return res;
-  }
   Rope trafo(Rope e) {
     return e;
   }

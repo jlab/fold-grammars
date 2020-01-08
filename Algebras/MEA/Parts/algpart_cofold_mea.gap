@@ -23,6 +23,3 @@
   double ml_cut(Subsequence lb, double x, Subsequence rb) {
     return 0;
   }
-  double ssadd_cut(Subsequence lb,double x) {
-    return 0;
-  }

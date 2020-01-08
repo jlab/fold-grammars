@@ -31,6 +31,3 @@
   int ml_cut(Subsequence lb, int x, Subsequence rb) {
     return x + duplex_energy() + termau_energy(lb, rb);
   }
-  int ssadd_cut(Subsequence lb,int x) {
-    return x;
-  }

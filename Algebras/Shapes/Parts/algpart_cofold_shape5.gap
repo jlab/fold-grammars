@@ -31,7 +31,3 @@
     shape_t r;
     return r;
   }
-  shape_t ssadd_cut(Subsequence lb,shape_t x) {
-    shape_t r;
-    return r;
-  }

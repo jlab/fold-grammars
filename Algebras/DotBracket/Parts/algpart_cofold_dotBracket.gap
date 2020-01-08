@@ -55,9 +55,3 @@
     append(res, ')');
     return res;
   }
-  string ssadd_cut(Subsequence lb,string e) {
-    string res;
-    appendSeperatorRegion(res, lb);
-    append(res, e);
-    return res;
-  }
