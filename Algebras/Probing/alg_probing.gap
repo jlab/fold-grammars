@@ -1,7 +1,6 @@
 algebra alg_probing implements sig_foldrna(alphabet = char, answer = double) {
   include "Algebras/Probing/Parts/algpart_probing_basic.gap"
-  include "Algebras/Probing/Parts/algpart_cofold_probing.gap"
-
+  
   //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions empty here.
   double acomb(double le,Subsequence b,double re) {return le + re;}
   double combine(double le,double re) {return le+re;}

@@ -22,9 +22,9 @@ our %PROGINFOS = (
 );
 
 
-our $rootDir = '/Daten/Git/jlab/fold-grammars/'; #must point to the root directory of the fold-grammars repository!
+our $rootDir = '/vol/fold-grammars/src/'; #must point to the root directory of the fold-grammars repository!
 our $prototypeDirectory = $rootDir; #for RapidShapes: directory where to find bgap sources, i.e. the fold-grammars repository somewhere in the file system
-our $bgapDir = '/home/sjanssen/'; #must point to the directory containing "bin" "include" "share" and "lib" sub-directories of Bellman's Gap Compiler
+our $bgapDir = '/vol/gapc/'; #must point to the directory containing "bin" "include" "share" and "lib" sub-directories of Bellman's Gap Compiler
 
 our $tmpdir = '/tmp/'; #temporary directory
 our $fileseparater = '/'; #character that separates directories in a path, / in unix but \ in windows
@@ -102,7 +102,7 @@ our $MODIFIER_UNKNOWN = 'unknown';
 our %RAPIDSHAPES_BIBISERV = (
 	'clusterwide_tempdir', '/vol/tmp/',
 	'tdmwrapper_binary', '/vol/fold-grammars/src/Misc/Applications/RapidShapes/tdmwrapper',
-	'binPath_grammargenerator', '/vol/fold-grammars/bin/',
+	'binPath_grammargenerator', '/vol/fold-grammars/bin/', 
 	'qsub', 'qsub -l virtual_free=6GB -l h_vmem=6GB -cwd -tc 10 ', #-tc controls the number of maximal parallel jobs for an array-job
 	'gridSH', '/usr/bin/sh',
 	'sleepTimeInit', '1', #initial number of seconds between two qstat requests
@@ -114,9 +114,9 @@ our %RAPIDSHAPES_BIBISERV = (
 my %checkedBinaries = (); #run time hash to avoid multiple check for binaries
 sub getBinary {
 	my ($requestedBinary) = @_;
-
+	
 	return $checkedBinaries{$requestedBinary} if (exists $checkedBinaries{$requestedBinary});
-
+	
 	my $binary = $requestedBinary;
 	$binary = $BINARIES{$requestedBinary} if (exists $BINARIES{$requestedBinary});
 	my $whichResult = qx(which $binary 2>&1);

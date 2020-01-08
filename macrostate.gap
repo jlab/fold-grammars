@@ -5,7 +5,6 @@ import "Extensions/probabilities.hh"
 import "Extensions/typesRNAfolding.hh"
 import "Extensions/shapes.hh"
 import "Extensions/probing.hh"
-import "Extensions/cofold.hh"
 
 input rna
 
