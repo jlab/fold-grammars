@@ -5,6 +5,7 @@ import "Extensions/probabilities.hh"
 import "Extensions/shapes.hh"
 import "Extensions/mea.hh"
 import "Extensions/probing.hh"
+import "Extensions/cofold.hh"
 
 input rna
 
@@ -44,7 +45,7 @@ instance shape4mfepfxpp = gra_microstate (((alg_shape4 * (alg_mfe % alg_pfunc)) 
 instance shape3mfepfxpp = gra_microstate (((alg_shape3 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
 instance shape2mfepfxpp = gra_microstate (((alg_shape2 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
 instance shape1mfepfxpp = gra_microstate (((alg_shape1 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
-                  
+
 instance mfeshape5pp = gra_microstate(alg_mfe * alg_shape5 * alg_dotBracket);
 instance mfeshape4pp = gra_microstate(alg_mfe * alg_shape4 * alg_dotBracket);
 instance mfeshape3pp = gra_microstate(alg_mfe * alg_shape3 * alg_dotBracket);

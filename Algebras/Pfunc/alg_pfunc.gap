@@ -1,6 +1,7 @@
 algebra alg_pfunc implements sig_foldrna(alphabet = char, answer = double) {
 	include "Algebras/Pfunc/Parts/algpart_pfunc_basic.gap"
-	
+	include "Algebras/Pfunc/Parts/algpart_cofold_pfunc.gap"
+
     //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special PFUNC algebra for macrostates and leave these functions empty here.
   double acomb(double le,Subsequence b,double re) {return 0;}
   double combine(double le,double re) {return 0;}

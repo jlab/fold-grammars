@@ -1,5 +1,6 @@
 signature sig_foldrna(alphabet,answer) {
 	include "Signatures/Parts/sigpart_basic.gap"
+	include "Signatures/Parts/sigpart_cofold.gap"
 	
 //microstate extensions:
 	answer cadd_Pr(answer,answer); //add one component, which has just a dangling base from left but no dangling base from left to next component
@@ -17,4 +18,3 @@ signature sig_foldrna(alphabet,answer) {
 	answer combine(answer,answer); // add one multi-loop component
 	answer acomb(answer,Subsequence,answer); // add one multi-loop component
 }
-
