@@ -10,7 +10,7 @@ env:
   - TEST_SUBTASK=pkiss
 before_install:
   - sudo apt-get update -y
-  - sudo apt-get install flex bison make libboost-all-dev libgsl-dev ghc
+  - sudo apt-get install flex bison make libboost-all-dev libgsl-dev ghc python3-biopython
   - git clone https://github.com/jlab/gapc /home/travis/gapc
   - pushd .
   - cd /home/travis/gapc
@@ -34,6 +34,8 @@ script:
     pushd .;
     cd Misc/Test-Suite/GeorgStyle/;
     bash run.sh ../Truth;
+    cd ../StefanStyle/;
+    python test_cofold.py;
     popd;
     fi
   - pushd .

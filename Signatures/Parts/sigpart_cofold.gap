@@ -1,5 +1,5 @@
 // signatures for co-folding, i.e. mark those algebra functions that contain the separator character
-	answer sadd_cut_noduplex(Subsequence,answer); //add one unpaired base
+  answer sadd_cut_noduplex(Subsequence,answer); //add one unpaired base
   answer sadd_cut(Subsequence,answer); //add one unpaired base
   answer hl_cut(Subsequence,Subsequence,Subsequence); //for COFOLD:
   answer bl_cut(Subsequence, Subsequence, answer, Subsequence); // a bulge loop to the left with a closing base-pair
