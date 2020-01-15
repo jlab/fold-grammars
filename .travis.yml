@@ -12,8 +12,7 @@ before_install:
   - sudo apt-get update -y
   - sudo apt-get install flex bison make libboost-all-dev libgsl-dev ghc
   - git clone https://github.com/jlab/gapc /home/travis/gapc
-  - git checkout -b restructure_rna
-  - git pull origin restructure_rna
+  - git checkout restructure_rna
   - pushd .
   - cd /home/travis/gapc
   - ./configure
