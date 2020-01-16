@@ -113,8 +113,28 @@ inline bool unpaired(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
 		if (Pairs::getGivenPairs()->isClose(k)) {
 			return false;
 		}
+		if (seq[k] == SEPARATOR_BASE) {
+			return false;
+		}
 	}
 	return true;
+}
+
+template<typename T>
+inline bool containsBase(const Basic_Sequence<> &seq, T i, T j, base_t x) {
+  if (j<i) return false;
+
+  for (T k = i; k < j; k++) {
+		if (Pairs::getGivenPairs()->isOpen(k)) {
+			return false;
+		}
+		if (Pairs::getGivenPairs()->isClose(k)) {
+			return false;
+		}
+    if (seq[k] == x) return true;
+  }
+
+  return false;
 }
 
 #endif
