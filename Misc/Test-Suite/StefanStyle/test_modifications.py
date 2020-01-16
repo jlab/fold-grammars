@@ -15,7 +15,7 @@ PREFIX_GAPC = run_cmd('which gapc')[0]
 PREFIX_GAPC = '/'.join(PREFIX_GAPC.split('/')[:-2])
 
 FP_PARAM = '%s/share/gapc/librna/rna_xia1998.par' % PREFIX_GAPC
-BIN_GAPC = "../../Applications/RNAcofold/%s/RNAcofold_mfe_nodangle" % ARCHTRIPLE
+BIN_GAPC = "../../Applications/RNAcofold/%s/RNAcofold_eval_nodangle" % ARCHTRIPLE
 
 #FP_TRUTH = 'Truth/RNAcofold-2.4.14_-d0_--noPS.out'
 #FP_INPUT = 'input_rnacofold.mfa'
@@ -27,10 +27,10 @@ def parse_gapc(obs):
     for line in obs:
         if line.startswith('Answer:'):
             continue
-        energy, db = line.split(' , ')
+        db, energy = line.split(' , ')
         predictions.append({
-            'energy': float(energy.split('( ')[-1].strip())/100,
-            'dotBracket': db.split('( ')[-1].strip().split(' ')[0]})
+            'energy': float(energy.split(' )')[0].strip())/100,
+            'dotBracket': db.split('( ')[-1].strip()})
     return predictions
 
 def execute_comparison(fp_goldstandard, BIN_GAPC, FP_PARAM, mfe_delta=0.011):
@@ -41,7 +41,7 @@ def execute_comparison(fp_goldstandard, BIN_GAPC, FP_PARAM, mfe_delta=0.011):
         energy = -1 * float(energy)
 
         # compute free energy via GAPC
-        cmd_gapc = '%s -P "%s" -u 1 "%s"' % (BIN_GAPC, FP_PARAM, seq)
+        cmd_gapc = '%s -P "%s" -u 1 "%s" "%s+%s"' % (BIN_GAPC, FP_PARAM, seq, '('*len(seq.split('+')[0]), ')'*len(seq.split('+')[1]))
         result_gapc = run_cmd(cmd_gapc)
         result_gapc = parse_gapc(result_gapc)
         test_instances.append({'id': inp.id, 'sequence': seq, 'exp_energy': energy, 'obs_energy': float(result_gapc[0]['energy'])})
