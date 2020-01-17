@@ -56,7 +56,7 @@ def execute_comparison(fp_goldstandard, BIN_GAPC, FP_PARAM, mfe_delta=0.011):
     return test_instances
 
 # compile GAPC program
-run_cmd('make -C ../../Applications/RNAcofold -j $NUMCPUS mfe')
+run_cmd('make -C ../../Applications/RNAcofold -j $NUMCPUS eval')
 
 execute_comparison('Truth/modfold_hudson2013.mfa', BIN_GAPC, FP_PARAM)
 execute_comparison('Truth/modfold_wright2018.mfa', BIN_GAPC, FP_PARAM)
