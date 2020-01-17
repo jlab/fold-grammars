@@ -61,5 +61,6 @@ run_cmd('make -C ../../Applications/RNAcofold -j $NUMCPUS eval')
 execute_comparison('Truth/modfold_hudson2013.mfa', BIN_GAPC, FP_PARAM)
 execute_comparison('Truth/modfold_wright2018.mfa', BIN_GAPC, FP_PARAM)
 execute_comparison('Truth/modfold_wright2007.mfa', BIN_GAPC, FP_PARAM)
+execute_comparison('Truth/modfold_richardson2016.mfa', BIN_GAPC, FP_PARAM)
 
 print("modfold tests passed")
