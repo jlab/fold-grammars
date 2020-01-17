@@ -1193,6 +1193,8 @@ float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
   		int pfreq[8]={0,0,0,0,0,0,0,0};
   		for (s=0; s<rows(seq); s++) {
         int type = bp_index(column(seq_char(seq,i),s), column(seq_char(seq,j),s));
+        if ((column(seq_char(seq,i),s) == GAP_BASE) and (column(seq_char(seq,j),s) == GAP_BASE))
+          type = N_BP;
         pfreq[type]++;
       }
   		double score = 0.0;
