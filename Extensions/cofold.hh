@@ -1,6 +1,7 @@
 #ifndef COFOLD_HH
 #define COFOLD_HH
 
+#ifndef EVALFOLD_HH
 // redefine unpaired from singlefold:
 // ensure that an unpaired REGION does not contain the SEPARATOR_BASE
 template<typename alphabet, typename pos_type, typename T>
@@ -11,6 +12,7 @@ inline bool unpaired(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
 	}
 	return true;
 }
+#endif
 
 // this function takes a REGION parse and returns a string composed of as many '.' as there are regular
 // bases and a '+' char at the position of the SEPARATOR_BASE.
