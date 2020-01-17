@@ -191,6 +191,9 @@ algebra alg_cofold implements sig_foldrna(alphabet = char, answer = Rope) {
     }
     return le;
   }
+  Rope symmetric_dimer(Subsequence lloc, Rope x, Subsequence rloc) {
+    return x;
+  }
 
   choice [Rope] h([Rope] i) {
     return unique(i);

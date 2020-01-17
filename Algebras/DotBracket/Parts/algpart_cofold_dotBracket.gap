@@ -55,3 +55,6 @@
     append(res, ')');
     return res;
   }
+  string symmetric_dimer(Subsequence lloc, string x, Subsequence rloc) {
+    return x;
+  }

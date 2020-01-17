@@ -7,7 +7,9 @@
 
 // the "with unpaired" filters are only interesting for RNAeval like instances; for singlefold or alifold they always return true. In evalfold the are false if the given position pairs with some other, thus only '.' returns true
 
-grammar gra_cofold_nodangle uses sig_foldrna(axiom = struct_cut) {
+grammar gra_cofold_nodangle uses sig_foldrna(axiom = start) {
+	start = symmetric_dimer(LOC, struct_cut, LOC) # h;
+
 	include "Grammars/Parts/grapart_basic.gap"
 	dangle    = drem(LOC, strong, LOC) # h;
   multiloop = ml(BASE, ml_comps, BASE) with basepair # h;

@@ -31,3 +31,6 @@
   int ml_cut(Subsequence lb, int x, Subsequence rb) {
     return x + duplex_energy() + termau_energy(lb, rb);
   }
+  int symmetric_dimer(Subsequence lloc, int x, Subsequence rloc) {
+    return x + symmetric_dimer_energy(lloc, rloc);
+  }

@@ -7,3 +7,4 @@
   answer il_cut(Subsequence, Subsequence, answer, Subsequence, Subsequence); // an internal loop with a closing base-pair
   answer ml_cut(Subsequence,answer,Subsequence);  // a multi-loop with a closing base-pair and no dangling bases
   answer addss_cut(answer,Subsequence); // append a region of unpaired bases
+  answer symmetric_dimer(Subsequence, answer, Subsequence);
