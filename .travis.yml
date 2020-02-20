@@ -8,6 +8,7 @@ env:
   - TEST_SUBTASK=default
   - TEST_SUBTASK=shapes
   - TEST_SUBTASK=pkiss
+  - TEST_SUBTASK=unambig
 before_install:
   - sudo apt-get update -y
   - sudo apt-get install flex bison make libboost-all-dev libgsl-dev ghc
@@ -30,13 +31,19 @@ before_script:
   # point to fold-grammars source directory:
   - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
 script:
-  - if [[ "$TEST_SUBTASK" == "default" ]]; then
+  - if [[ "$TEST_SUBTASK" == "unambig" ]]; then
     pushd .;
-    cd Misc/Test-Suite/GeorgStyle/;
-    bash run.sh ../Truth;
+    cd Misc/Test-Suite/;  
+    python runTests.py;
     popd;
     fi
-  - pushd .
-  - cd Misc/Test-Suite/StefanStyle/
-  - travis_wait 40 perl runTests.pl $PPN $TEST_SUBTASK
-  - popd
+  # - if [[ "$TEST_SUBTASK" == "default" ]]; then
+  #  pushd .;
+  #  cd Misc/Test-Suite/GeorgStyle/;
+  #  bash run.sh ../Truth;
+  #  popd;
+  #  fi
+  # - pushd .
+  # - cd Misc/Test-Suite/StefanStyle/
+  # - travis_wait 40 perl runTests.pl $PPN $TEST_SUBTASK
+  # - popd
