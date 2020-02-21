@@ -15,7 +15,7 @@ class Test(unittest.TestCase):
 
         self.fp_workdir = tempfile.mkdtemp()
         os.system('basedir=`pwd` && cd "%s" && gapc -p "alg_dotBracket*alg_count" $basedir/../../nodangle.gap -I $basedir/../../' % self.fp_workdir)
-        os.system('basedir=`pwd` && cd "%s" && echo "base: $basedir, pwd: `pwd`" && make -f out.mf CPPFLAGS_EXTRA="-I $basedir/../../"' % self.fp_workdir)
+        os.system('basedir=`pwd` && cd "%s" && make -f out.mf CPPFLAGS_EXTRA="-I $basedir/../../"' % self.fp_workdir)
 
         # self.tmp_dir = tempfile.mkdtemp()  # create temporary directory
 
