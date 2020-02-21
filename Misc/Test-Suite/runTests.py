@@ -11,9 +11,9 @@ import subprocess
 class Test(unittest.TestCase):
 
     def setUp(self):
-        os.chdir('/homes/kmaibach/GAPC/fold-grammars/')  # set working directory
-        os.system('gapc -p "alg_dotBracket*alg_count" /homes/kmaibach/GAPC/fold-grammars/nodangle.gap')
-        os.system('make -f /homes/kmaibach/GAPC/fold-grammars/out.mf')
+        # os.chdir('/homes/kmaibach/GAPC/fold-grammars/')  # set working directory
+        os.system('gapc -p "alg_dotBracket*alg_count" ../../nodangle.gap')
+        os.system('make -f ../../out.mf')
 
         # self.tmp_dir = tempfile.mkdtemp()  # create temporary directory
 
