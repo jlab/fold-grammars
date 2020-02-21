@@ -4,7 +4,7 @@ import unittest
 import os
 import subprocess
 
-# import tempfile
+import tempfile
 # import shutil
 
 
@@ -12,8 +12,10 @@ class Test(unittest.TestCase):
 
     def setUp(self):
         # os.chdir('/homes/kmaibach/GAPC/fold-grammars/')  # set working directory
-        os.system('gapc -p "alg_dotBracket*alg_count" ../../nodangle.gap')
-        os.system('make -f ../../out.mf')
+
+        self.fp_workdir = tempfile.mkdtemp()
+        os.system('basedir=`pwd` && cd "%s" && gapc -p "alg_dotBracket*alg_count" $basedir/../../nodangle.gap -I $basedir/../../' % self.fp_workdir)
+        os.system('basedir=`pwd` && cd "%s" && make -f out.mf CPPFLAGS_EXTRA="-I $basedir/../../"' % self.fp_workdir)
 
         # self.tmp_dir = tempfile.mkdtemp()  # create temporary directory
 
@@ -66,13 +68,14 @@ class Test(unittest.TestCase):
             # "GUAGUUGACAGCCCUGAAAUUCGGUCG+CUUUUAAUUAACUCCUUCCUCUUCGGACCGAUGUGCCCUUGGAUAUCCUAUAUGGAAUUUGGUGUCAGGAUUGUGCCAAGGCCACGAACACAGGAAUGCCAUACAA"
         ]
 
-    # def tearDown(self):
-    # shutil.rmtree(self.tmp_dir)  # remove temporary directory
+    def tearDown(self):
+        pass
+        #shutil.rmtree(self.fp_workdir)  # remove temporary directory
 
     def testUnambiguousness(self):
         for seq in self.sequences:
             # index = self.sequences.index(seq)
-            cmd = ('/homes/kmaibach/GAPC/fold-grammars/out ' + seq)
+            cmd = ('%s/out "%s"' % (self.fp_workdir, seq))
             dot_count = [(subprocess.check_output(cmd, shell=True)).decode("utf-8")]
             # file_name = os.path.join('/homes/kmaibach/GAPC/test/', str(index) + ".txt")
             # file = open(file_name, "w")
