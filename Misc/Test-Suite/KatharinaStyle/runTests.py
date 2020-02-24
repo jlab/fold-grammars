@@ -65,7 +65,7 @@ class Test(unittest.TestCase):
 
     def tearDown(self):
         pass
-        #shutil.rmtree(self.fp_workdir)  # remove temporary directory
+        # shutil.rmtree(self.fp_workdir)  # remove temporary directory
 
     def testUnambiguousness(self):
         for seq in self.sequences:
