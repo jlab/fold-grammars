@@ -58,6 +58,19 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = int) {
     return x + c + duplex_energy() + termau_energy(lb, rb) + termau_energy(innerBP, innerBP);
   }
 
+  int ml_cut_l(Subsequence lb,Subsequence c, int x,Subsequence rb) {
+    return x
+  }
+
+  int ml_cut_r(Subsequence lb, int x,Subsequence c,Subsequence rb) {
+    return x
+  }
+
+  int addss_cut(int x, int c) {
+    return x
+  }
+
+
 }
 
 algebra alg_mfe_subopt extends alg_mfe {
