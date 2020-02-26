@@ -59,15 +59,15 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = int) {
   }
 
   int ml_cut_l(Subsequence lb,Subsequence c, int x,Subsequence rb) {
-    return x
+    return x;
   }
 
   int ml_cut_r(Subsequence lb, int x,Subsequence c,Subsequence rb) {
-    return x
+    return x;
   }
 
   int addss_cut(int x, int c) {
-    return x
+    return x;
   }
 
 
