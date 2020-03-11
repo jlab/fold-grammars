@@ -11,6 +11,5 @@ grammar gra_nodangle uses sig_foldrna(axiom = struct) {
 	include "Grammars/Parts/grapart_basic.gap"
 	dangle    = drem(LOC, strong, LOC) # h;
     multiloop = ml(BASE, ml_comps, BASE) with basepair |
-    			ml_cut_l(BASE, BASE with containsBase(SEPARATOR_BASE), ml_comps, BASE) with basepair |
-    			ml_cut_r(BASE, ml_comps, BASE with containsBase(SEPARATOR_BASE), BASE) with basepair # h;
+    			ml_cut_l(BASE, BASE with containsBase(SEPARATOR_BASE), ml_comps, BASE) with basepair # h;
 }

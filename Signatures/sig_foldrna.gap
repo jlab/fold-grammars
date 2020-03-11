@@ -25,7 +25,6 @@ signature sig_foldrna(alphabet,answer) {
 	answer il_cut_r(Subsequence,Subsequence,answer,answer,Subsequence);
 	answer cut(Subsequence,Subsequence,Subsequence);
 	answer ml_cut_l(Subsequence,Subsequence,answer,Subsequence);
-	answer ml_cut_r(Subsequence,answer,Subsequence,Subsequence);
 	answer addss_cut(answer,answer);
 }
 

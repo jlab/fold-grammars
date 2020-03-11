@@ -32,10 +32,10 @@
                   cadd(incl(dangle),                                               ml_comps1) | 
               cadd_cut(incl(dangle),       BASE with containsBase(SEPARATOR_BASE), ml_comps1) # h;
 
-  ml_comps1 =      sadd(BASE with unpaired,                                         ml_comps1) |
-               sadd_cut(BASE with unpaired, BASE with containsBase(SEPARATOR_BASE), ml_comps1) |
-                   cadd(incl(dangle),                                               ml_comps1) |
-               cadd_cut(incl(dangle),       BASE with containsBase(SEPARATOR_BASE), ml_comps1) | 
-                   incl(dangle)                                                                |
-                  addss(incl(dangle),                                    REGION with unpaired) |
-              addss_cut(incl(dangle),                                                 seq_cut) # h;
+  ml_comps1 =      sadd(BASE with unpaired,                                         			ml_comps1) |
+               sadd_cut(BASE with unpaired, BASE with containsBase(SEPARATOR_BASE), 			ml_comps1) |
+                   cadd(incl(dangle),                                               			ml_comps1) |
+               cadd_cut(incl(dangle),       BASE with containsBase(SEPARATOR_BASE),			ml_comps1) | 
+                   incl(dangle)                                                         		           |
+                  addss(incl(dangle),                                    		     REGION with unpaired) |
+              addss_cut(incl(dangle), 	    seq_cut) # h;

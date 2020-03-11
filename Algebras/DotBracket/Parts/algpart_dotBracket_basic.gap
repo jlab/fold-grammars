@@ -178,15 +178,6 @@
     return res;
   }
 
-  string ml_cut_r(Subsequence lb, string e, Subsequence region, Subsequence rb) {
-    string res;
-    append(res, '(');
-    append(res, e);
-    append(res, '+');
-    append(res, ')');
-    return res;
-  }
-
   string mlall(Subsequence lb,string e,Subsequence rb) {
     string res;
     append(res, '(');
@@ -243,5 +234,5 @@
 
   choice [string] h([string] i) {
     //~ return list(minimum(i));
-    return i;
+    return unique(i);
   }
