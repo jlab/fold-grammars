@@ -34,9 +34,11 @@ inline void appendSeperatorRegion(String &res, const Basic_Subsequence<alphabet,
 template<typename alphabet, typename pos_type>
 inline Rope seperatorRegion_to_shape(const Basic_Subsequence<alphabet, pos_type> &seq, int shapelevel)
 {
+	bool contains_separator = false;
 	unsigned int num_leading_bases = 0;
 	for (unsigned int k = seq.i; k < seq.j; ++k) {
 		if (seq[k] == SEPARATOR_BASE) {
+			contains_separator = true;
 			break;
 		}
 		++num_leading_bases;
@@ -45,11 +47,11 @@ inline Rope seperatorRegion_to_shape(const Basic_Subsequence<alphabet, pos_type>
 	if ((shapelevel <= 2) && (num_leading_bases > 0)) {
 		append(res, '_');
 	}
-	if (num_leading_bases < seq.j - seq.i) {
+	if (contains_separator) {
 		append(res, '+');
-	}
-	if ((shapelevel <= 2) && (seq.j - seq.i - num_leading_bases > 0)) {
-		append(res, '_');
+		if ((shapelevel <= 2) && (seq.j - seq.i - num_leading_bases - 1 > 0)) {
+			append(res, '_');
+		}
 	}
 	return res;
 }

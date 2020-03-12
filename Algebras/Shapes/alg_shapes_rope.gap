@@ -2,7 +2,13 @@ algebra alg_shapeX implements sig_foldrna(alphabet = char, answer = Rope) {
   Rope sadd_cut_noduplex(Subsequence cutbase, Rope e) {
     Rope res;
     append(res, '+');
-    append(res, e);
+    if (shapelevel() == 1) {
+      append(res, e);
+    } else {
+      if (e != "_") {
+        append(res, e);
+      }
+    }
     return res;
   }
   Rope sadd_cut(Subsequence cutbase, Rope e) {
@@ -20,43 +26,39 @@ algebra alg_shapeX implements sig_foldrna(alphabet = char, answer = Rope) {
   }
   Rope bl_cut(Subsequence lb, Subsequence cutreg, Rope e, Subsequence rb) {
     Rope res;
-    if (shapelevel() <= 3) {
-      append(res, '[');
-    }
+    append(res, '[');
     append(res, seperatorRegion_to_shape(cutreg, shapelevel()));
-    append(res, e);
     if (shapelevel() <= 3) {
-      append(res, ']');
+      append(res, e);
+    } else {
+      append(res, inner(e));
     }
+    append(res, ']');
     return res;
   }
   Rope br_cut(Subsequence lb, Rope e, Subsequence cutreg, Subsequence rb) {
     Rope res;
+    append(res, '[');
     if (shapelevel() <= 3) {
-      append(res, '[');
+      append(res, e);
+    } else {
+      append(res, inner(e));
     }
-    append(res, e);
     append(res, seperatorRegion_to_shape(cutreg, shapelevel()));
-    if (shapelevel() <= 3) {
-      append(res, ']');
-    }
+    append(res, ']');
     return res;
   }
   Rope il_cut(Subsequence lb, Subsequence lr, Rope e, Subsequence rr, Subsequence rb) {
     Rope res;
+    append(res, '[');
+    append(res, seperatorRegion_to_shape(lr, shapelevel()));
     if (shapelevel() <= 4) {
-      append(res, '[');
-      append(res, seperatorRegion_to_shape(lr, shapelevel()));
       append(res, e);
-      append(res, seperatorRegion_to_shape(rb, shapelevel()));
-      append(res, ']');
     } else {
-      append(res, '[');
-      append(res, seperatorRegion_to_shape(lr, shapelevel()));
       append(res, inner(e));
-      append(res, seperatorRegion_to_shape(rb, shapelevel()));
-      append(res, ']');
     }
+    append(res, seperatorRegion_to_shape(rr, shapelevel()));
+    append(res, ']');
     return res;
   }
   Rope ml_cut(Subsequence lb, Rope e, Subsequence rb) {
@@ -77,18 +79,18 @@ algebra alg_shapeX implements sig_foldrna(alphabet = char, answer = Rope) {
     Rope emptyShape;
 
     if (x == emptyShape) {
-		Rope res;
-		append(res, '_');
+		  Rope res;
+		  append(res, '_');
       return res;
     } else {
-	  if ((shapelevel() == 1) && (front(x) != '_')) {
-		Rope res;
-		append(res, '_');
-		append(res, x);
-		return res;
-	  } else {
-		return x;
-	  }
+	    if ((shapelevel() == 1) && (front(x) != '_')) {
+		    Rope res;
+		    append(res, '_');
+		    append(res, x);
+		    return res;
+	    } else {
+		    return x;
+	    }
     }
   }
 
@@ -802,9 +804,9 @@ algebra alg_shape1 extends alg_shape5 {
     if (front(e) == "_") {
       return e;
     } else {
-		Rope res;
-		append(res, '_');
-		append(res, e);
+		  Rope res;
+		  append(res, '_');
+		  append(res, e);
       return res;
     }
   }
