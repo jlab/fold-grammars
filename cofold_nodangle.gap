@@ -16,7 +16,7 @@ type shape_t = shape
 
 include "Signatures/sig_cofold_foldrna.gap"
 include "Algebras/DotBracket/alg_cofold_dotBracket.gap"
-// include "Algebras/Shapes/alg_shapes.gap"
+include "Algebras/Shapes/alg_shapes_rope.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
