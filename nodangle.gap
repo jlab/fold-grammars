@@ -15,7 +15,7 @@ type shape_t = shape
 
 include "Signatures/sig_foldrna.gap"
 include "Algebras/DotBracket/alg_dotBracket.gap"
-//include "Algebras/Shapes/alg_shapes.gap"
+include "Algebras/Shapes/alg_shapes_rope.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
@@ -40,7 +40,7 @@ include "Grammars/gra_nodangle.gap"
 //instance shape3mfepfxpp = gra_nodangle (((alg_shape3 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
 //instance shape2mfepfxpp = gra_nodangle (((alg_shape2 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
 //instance shape1mfepfxpp = gra_nodangle (((alg_shape1 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
-                  
+
 //instance mfeshape5pp = gra_nodangle(alg_mfe * alg_shape5 * alg_dotBracket);
 //instance mfeshape4pp = gra_nodangle(alg_mfe * alg_shape4 * alg_dotBracket);
 //instance mfeshape3pp = gra_nodangle(alg_mfe * alg_shape3 * alg_dotBracket);
