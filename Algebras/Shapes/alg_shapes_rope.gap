@@ -1,16 +1,21 @@
 algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
   Rope sadd_cut(Subsequence b, Subsequence cut, Rope e) {
+    Rope emptyShape;
     Rope res;
-    append(res, '_');
+
     append(res, '+');
-    append(res, e);
+    if (e != "_") {
+      append(res, e);
+    }
     return res;
   }
   Rope cadd_cut(Rope le, Subsequence cut, Rope re) {
     Rope res;
     append(res, le);
     append(res, '+');
-    append(res, re);
+    if (re != "_") {
+      append(res, re);
+    }
     return res;
   }
   Rope hl_cut(Subsequence lb, Rope cut, Subsequence rb) {
@@ -24,14 +29,14 @@ algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
     Rope res;
     append(res, '[');
     append(res, cut);
-    append(res, e);
+    append(res, inner(e));
     append(res, ']');
     return res;
   }
   Rope br_cut(Subsequence lb, Rope e, Rope cut, Subsequence rb) {
     Rope res;
     append(res, '[');
-    append(res, e);
+    append(res, inner(e));
     append(res, cut);
     append(res, ']');
     return res;
@@ -40,29 +45,21 @@ algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
     Rope res;
     append(res, '[');
     append(res, cut);
-    append(res, e);
-    append(res, '_');
+    append(res, inner(e));
     append(res, ']');
     return res;
   }
   Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
     Rope res;
     append(res, '[');
-    append(res, '_');
-    append(res, e);
+    append(res, inner(e));
     append(res, cut);
     append(res, ']');
     return res;
   }
   Rope cut(Subsequence lregion, Subsequence cut, Subsequence rregion) {
     Rope res;
-    if (lregion.i < lregion.j) {
-      append(res, '_');
-    }
     append(res, '+');
-    if (rregion.i < rregion.j) {
-      append(res, '_');
-    }
     return res;
   }
   Rope ml_cut_l(Subsequence lb, Subsequence cut, Rope e, Subsequence rb) {
@@ -86,7 +83,6 @@ algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
     if (e == emptyShape) {
       Rope res;
       append(res, '_');
-		append(res, e);
       return res;
     } else {
       return e;
@@ -177,7 +173,6 @@ algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
 	  append(res, "[]", 2);
 	  return res;
   }
-
 
   Rope bl(Subsequence lb,Subsequence lregion,Rope e,Subsequence rb) {
     return e;
@@ -307,6 +302,23 @@ algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
 }
 
 algebra alg_shape4 extends alg_shape5 {
+  Rope il_cut_l(Subsequence lb, Rope cut, Rope e, Subsequence rregion, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, cut);
+    append(res, e);
+    append(res, ']');
+    return res;
+  }
+  Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, e);
+    append(res, cut);
+    append(res, ']');
+    return res;
+  }
+
   Rope il(Subsequence lb,Subsequence lregion,Rope e,Subsequence rregion,Subsequence rb) {
 	  Rope res;
 	  append(res, '[');
@@ -317,6 +329,39 @@ algebra alg_shape4 extends alg_shape5 {
 }
 
 algebra alg_shape3 extends alg_shape5 {
+  Rope bl_cut(Subsequence lb, Rope cut, Rope e, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, cut);
+    append(res, e);
+    append(res, ']');
+    return res;
+  }
+  Rope br_cut(Subsequence lb, Rope e, Rope cut, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, e);
+    append(res, cut);
+    append(res, ']');
+    return res;
+  }
+  Rope il_cut_l(Subsequence lb, Rope cut, Rope e, Subsequence rregion, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, cut);
+    append(res, e);
+    append(res, ']');
+    return res;
+  }
+  Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, e);
+    append(res, cut);
+    append(res, ']');
+    return res;
+  }
+
   Rope bl(Subsequence lb,Subsequence lregion,Rope e,Subsequence rb) {
     Rope res;
     append(res, '[');
@@ -343,6 +388,52 @@ algebra alg_shape3 extends alg_shape5 {
 }
 
 algebra alg_shape2 extends alg_shape5 {
+  Rope cut(Subsequence lregion, Subsequence cut, Subsequence rregion) {
+    Rope res;
+    if (lregion.i < lregion.j) {
+      append(res, '_');
+    }
+    append(res, '+');
+    if (rregion.i < rregion.j) {
+      append(res, '_');
+    }
+    return res;
+  }
+  Rope bl_cut(Subsequence lb, Rope cut, Rope e, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, cut);
+    append(res, e);
+    append(res, ']');
+    return res;
+  }
+  Rope br_cut(Subsequence lb, Rope e, Rope cut, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, e);
+    append(res, cut);
+    append(res, ']');
+    return res;
+  }
+  Rope il_cut_l(Subsequence lb, Rope cut, Rope e, Subsequence rregion, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, cut);
+    append(res, e);
+    append(res, '_');
+    append(res, ']');
+    return res;
+  }
+  Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, '_');
+    append(res, e);
+    append(res, cut);
+    append(res, ']');
+    return res;
+  }
+
   Rope bl(Subsequence lb,Subsequence lregion,Rope e,Subsequence rb) {
     Rope res;
     append(res, '[');
@@ -373,6 +464,66 @@ algebra alg_shape2 extends alg_shape5 {
 }
 
 algebra alg_shape1 extends alg_shape5 {
+  Rope cadd_cut(Rope le, Subsequence cut, Rope re) {
+    Rope res;
+    append(res, le);
+    append(res, '+');
+    append(res, re);
+    return res;
+  }
+  Rope sadd_cut(Subsequence b, Subsequence cut, Rope e) {
+    Rope res;
+    append(res, '_');
+    append(res, '+');
+    append(res, e);
+    return res;
+  }
+  Rope cut(Subsequence lregion, Subsequence cut, Subsequence rregion) {
+    Rope res;
+    if (lregion.i < lregion.j) {
+      append(res, '_');
+    }
+    append(res, '+');
+    if (rregion.i < rregion.j) {
+      append(res, '_');
+    }
+    return res;
+  }
+  Rope bl_cut(Subsequence lb, Rope cut, Rope e, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, cut);
+    append(res, e);
+    append(res, ']');
+    return res;
+  }
+  Rope br_cut(Subsequence lb, Rope e, Rope cut, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, e);
+    append(res, cut);
+    append(res, ']');
+    return res;
+  }
+  Rope il_cut_l(Subsequence lb, Rope cut, Rope e, Subsequence rregion, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, cut);
+    append(res, e);
+    append(res, '_');
+    append(res, ']');
+    return res;
+  }
+  Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, '_');
+    append(res, e);
+    append(res, cut);
+    append(res, ']');
+    return res;
+  }
+
   Rope sadd(Subsequence b, Rope e) {
     if (front(e) == '_') {
       return e;
