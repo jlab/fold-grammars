@@ -28,7 +28,7 @@ grammar gra_cofold_nodangle uses sig_foldrna(axiom = struct_cut) {
 							  bl    (BASE, REGION with maxsize(30) with unpaired,    strong_cut,                                           BASE) with basepair # h;
 	rightB_cut =  br_cut(BASE,                                           strong,     REGION with containsBase(SEPARATOR_BASE), BASE) with basepair |
 	 							br    (BASE,                                           strong_cut, REGION with maxsize(30) with unpaired,    BASE) with basepair # h;
-	iloop_cut =   il_cut(BASE, REGION with containsBase(SEPARATOR_BASE), strong,     REGION with unpaired,                     BASE) with basepair |
+	iloop_cut =   il_cut(BASE, REGION with containsBase(SEPARATOR_BASE), strong,     REGION with maxsize(30) with unpaired,    BASE) with basepair |
 	              il_cut(BASE, REGION with maxsize(30) with unpaired,    strong,     REGION with containsBase(SEPARATOR_BASE), BASE) with basepair |
 								il    (BASE, REGION with maxsize(30) with unpaired,    strong_cut, REGION with maxsize(30),                  BASE) with basepair # h;
 	multiloop_cut = ml_cut(BASE, ml_comps_cut, BASE) with basepair |
