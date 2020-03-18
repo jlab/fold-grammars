@@ -5,9 +5,8 @@
     return res;
   }
 
-  string sadd_cut(Subsequence lb, Subsequence region, string e) {
+  string sadd_cut(Subsequence region, string e) {
     string res;
-    append(res, '.');
     append(res, '+');
     append(res, e);
     return res;
@@ -16,14 +15,6 @@
   string cadd(string le,string re) {
     string res;
     append(res, le);
-    append(res, re);
-    return res;
-  }
-
-  string cadd_cut(string le, Subsequence region, string re) {
-    string res;
-    append(res, le);
-    append(res, '+');
     append(res, re);
     return res;
   }
@@ -164,15 +155,6 @@
   string ml(Subsequence lb,string e,Subsequence rb) {
     string res;
     append(res, '(');
-    append(res, e);
-    append(res, ')');
-    return res;
-  }
-
-  string ml_cut_l(Subsequence lb, Subsequence region, string e, Subsequence rb) {
-    string res;
-    append(res, '(');
-    append(res, '+');
     append(res, e);
     append(res, ')');
     return res;

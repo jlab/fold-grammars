@@ -17,11 +17,8 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = int) {
   int cadd_Pr_Pr(int le,int re) {return le+re;}
   int cadd_Pr(int le,int re) {return le+re;}
 
-  int sadd_cut(Subsequence lb, Subsequence c, int x) {
+  int sadd_cut(Subsequence c, int x) {
     return x + sbase_energy();
-  }
-  int cadd_cut(int x, Subsequence c, int y) {
-    return x + y;
   }
 
   // !!!
@@ -59,10 +56,6 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = int) {
   }
 
   // temporary functions
-  int ml_cut_l(Subsequence lb,Subsequence c, int x,Subsequence rb) {
-    return x;
-  }
-
   int addss_cut(int x, int c) {
     return x;
   }

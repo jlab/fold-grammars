@@ -1,20 +1,11 @@
 algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
-  Rope sadd_cut(Subsequence b, Subsequence cut, Rope e) {
+  Rope sadd_cut(Subsequence cut, Rope e) {
     Rope emptyShape;
     Rope res;
 
     append(res, '+');
     if (e != "_") {
       append(res, e);
-    }
-    return res;
-  }
-  Rope cadd_cut(Rope le, Subsequence cut, Rope re) {
-    Rope res;
-    append(res, le);
-    append(res, '+');
-    if (re != "_") {
-      append(res, re);
     }
     return res;
   }
@@ -60,14 +51,6 @@ algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
   Rope cut(Subsequence lregion, Subsequence cut, Subsequence rregion) {
     Rope res;
     append(res, '+');
-    return res;
-  }
-  Rope ml_cut_l(Subsequence lb, Subsequence cut, Rope e, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, '+');
-    append(res, e);
-    append(res, ']');
     return res;
   }
   Rope addss_cut(Rope e, Rope cut) {
@@ -464,16 +447,8 @@ algebra alg_shape2 extends alg_shape5 {
 }
 
 algebra alg_shape1 extends alg_shape5 {
-  Rope cadd_cut(Rope le, Subsequence cut, Rope re) {
+  Rope sadd_cut(Subsequence cut, Rope e) {
     Rope res;
-    append(res, le);
-    append(res, '+');
-    append(res, re);
-    return res;
-  }
-  Rope sadd_cut(Subsequence b, Subsequence cut, Rope e) {
-    Rope res;
-    append(res, '_');
     append(res, '+');
     append(res, e);
     return res;

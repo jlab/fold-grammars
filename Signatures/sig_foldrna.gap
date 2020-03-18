@@ -16,15 +16,13 @@ signature sig_foldrna(alphabet,answer) {
 	answer trafo(answer); // do some internal transformation
 	answer combine(answer,answer); // add one multi-loop component
 	answer acomb(answer,Subsequence,answer); // add one multi-loop component
-	answer sadd_cut(Subsequence, Subsequence, answer);
-	answer cadd_cut(answer, Subsequence, answer);
+	answer sadd_cut(Subsequence, answer);
 	answer hl_cut(Subsequence,answer,Subsequence); 
 	answer bl_cut(Subsequence,answer,answer,Subsequence);
 	answer br_cut(Subsequence,answer,answer,Subsequence);
 	answer il_cut_l(Subsequence,answer,answer,Subsequence,Subsequence);
 	answer il_cut_r(Subsequence,Subsequence,answer,answer,Subsequence);
 	answer cut(Subsequence,Subsequence,Subsequence);
-	answer ml_cut_l(Subsequence,Subsequence,answer,Subsequence);
 	answer addss_cut(answer,answer);
 }
 
