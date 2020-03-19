@@ -1,64 +1,5 @@
 algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
-  Rope sadd_cut(Subsequence cut, Rope e) {
-    Rope emptyShape;
-    Rope res;
-
-    append(res, '+');
-    if (e != "_") {
-      append(res, e);
-    }
-    return res;
-  }
-  Rope hl_cut(Subsequence lb, Rope cut, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, cut);
-    append(res, ']');
-    return res;
-  }
-  Rope bl_cut(Subsequence lb, Rope cut, Rope e, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, cut);
-    append(res, inner(e));
-    append(res, ']');
-    return res;
-  }
-  Rope br_cut(Subsequence lb, Rope e, Rope cut, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, inner(e));
-    append(res, cut);
-    append(res, ']');
-    return res;
-  }
-  Rope il_cut_l(Subsequence lb, Rope cut, Rope e, Subsequence rregion, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, cut);
-    append(res, inner(e));
-    append(res, ']');
-    return res;
-  }
-  Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, inner(e));
-    append(res, cut);
-    append(res, ']');
-    return res;
-  }
-  Rope cut(Subsequence lregion, Subsequence cut, Subsequence rregion) {
-    Rope res;
-    append(res, '+');
-    return res;
-  }
-  Rope addss_cut(Rope e, Rope cut) {
-    Rope res;
-    append(res, e);
-    append(res, cut);
-    return res;
-  }
+	include "Algebras/Shapes/Parts/algpart_cofold_shape5_rope.gap"
 
   Rope sadd(Subsequence b, Rope e) {
     Rope emptyShape;
@@ -285,22 +226,7 @@ algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
 }
 
 algebra alg_shape4 extends alg_shape5 {
-  Rope il_cut_l(Subsequence lb, Rope cut, Rope e, Subsequence rregion, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, cut);
-    append(res, e);
-    append(res, ']');
-    return res;
-  }
-  Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, e);
-    append(res, cut);
-    append(res, ']');
-    return res;
-  }
+	include "Algebras/Shapes/Parts/algpart_cofold_shape4_rope.gap"
 
   Rope il(Subsequence lb,Subsequence lregion,Rope e,Subsequence rregion,Subsequence rb) {
 	  Rope res;
@@ -312,38 +238,7 @@ algebra alg_shape4 extends alg_shape5 {
 }
 
 algebra alg_shape3 extends alg_shape5 {
-  Rope bl_cut(Subsequence lb, Rope cut, Rope e, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, cut);
-    append(res, e);
-    append(res, ']');
-    return res;
-  }
-  Rope br_cut(Subsequence lb, Rope e, Rope cut, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, e);
-    append(res, cut);
-    append(res, ']');
-    return res;
-  }
-  Rope il_cut_l(Subsequence lb, Rope cut, Rope e, Subsequence rregion, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, cut);
-    append(res, e);
-    append(res, ']');
-    return res;
-  }
-  Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, e);
-    append(res, cut);
-    append(res, ']');
-    return res;
-  }
+	include "Algebras/Shapes/Parts/algpart_cofold_shape3_rope.gap"
 
   Rope bl(Subsequence lb,Subsequence lregion,Rope e,Subsequence rb) {
     Rope res;
@@ -371,51 +266,7 @@ algebra alg_shape3 extends alg_shape5 {
 }
 
 algebra alg_shape2 extends alg_shape5 {
-  Rope cut(Subsequence lregion, Subsequence cut, Subsequence rregion) {
-    Rope res;
-    if (lregion.i < lregion.j) {
-      append(res, '_');
-    }
-    append(res, '+');
-    if (rregion.i < rregion.j) {
-      append(res, '_');
-    }
-    return res;
-  }
-  Rope bl_cut(Subsequence lb, Rope cut, Rope e, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, cut);
-    append(res, e);
-    append(res, ']');
-    return res;
-  }
-  Rope br_cut(Subsequence lb, Rope e, Rope cut, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, e);
-    append(res, cut);
-    append(res, ']');
-    return res;
-  }
-  Rope il_cut_l(Subsequence lb, Rope cut, Rope e, Subsequence rregion, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, cut);
-    append(res, e);
-    append(res, '_');
-    append(res, ']');
-    return res;
-  }
-  Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, '_');
-    append(res, e);
-    append(res, cut);
-    append(res, ']');
-    return res;
-  }
+	include "Algebras/Shapes/Parts/algpart_cofold_shape2_rope.gap"
 
   Rope bl(Subsequence lb,Subsequence lregion,Rope e,Subsequence rb) {
     Rope res;
@@ -447,57 +298,7 @@ algebra alg_shape2 extends alg_shape5 {
 }
 
 algebra alg_shape1 extends alg_shape5 {
-  Rope sadd_cut(Subsequence cut, Rope e) {
-    Rope res;
-    append(res, '+');
-    append(res, e);
-    return res;
-  }
-  Rope cut(Subsequence lregion, Subsequence cut, Subsequence rregion) {
-    Rope res;
-    if (lregion.i < lregion.j) {
-      append(res, '_');
-    }
-    append(res, '+');
-    if (rregion.i < rregion.j) {
-      append(res, '_');
-    }
-    return res;
-  }
-  Rope bl_cut(Subsequence lb, Rope cut, Rope e, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, cut);
-    append(res, e);
-    append(res, ']');
-    return res;
-  }
-  Rope br_cut(Subsequence lb, Rope e, Rope cut, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, e);
-    append(res, cut);
-    append(res, ']');
-    return res;
-  }
-  Rope il_cut_l(Subsequence lb, Rope cut, Rope e, Subsequence rregion, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, cut);
-    append(res, e);
-    append(res, '_');
-    append(res, ']');
-    return res;
-  }
-  Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
-    Rope res;
-    append(res, '[');
-    append(res, '_');
-    append(res, e);
-    append(res, cut);
-    append(res, ']');
-    return res;
-  }
+	include "Algebras/Shapes/Parts/algpart_cofold_shape1_rope.gap"
 
   Rope sadd(Subsequence b, Rope e) {
     if (front(e) == '_') {
