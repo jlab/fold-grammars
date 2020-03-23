@@ -11,7 +11,7 @@ class Test(unittest.TestCase):
 
     def setUp(self):
         self.fp_workdir = tempfile.mkdtemp()
-        os.system('basedir=`pwd` && cd "%s" && gapc -p "alg_dotBracket*alg_count" $basedir/../../../nodangle.gap -I $basedir/../../../' % self.fp_workdir)
+        os.system('basedir=`pwd` && cd "%s" && gapc -p "alg_dotBracket_unique*alg_count" $basedir/../../../cofold_nodangle.gap -I $basedir/../../../' % self.fp_workdir)
         os.system('basedir=`pwd` && cd "%s" && make -f out.mf CPPFLAGS_EXTRA="-I $basedir/../../../"' % self.fp_workdir)
 
         self.sequences = [
@@ -82,7 +82,7 @@ class Test2(unittest.TestCase):
 
     def setUp(self):
         self.fp_workdir = tempfile.mkdtemp()
-        os.system('basedir=`pwd` && cd "%s" && gapc -p "alg_count" $basedir/../../../nodangle.gap -I $basedir/../../../' % self.fp_workdir)
+        os.system('basedir=`pwd` && cd "%s" && gapc -p "alg_count" $basedir/../../../cofold_nodangle.gap -I $basedir/../../../' % self.fp_workdir)
         os.system('basedir=`pwd` && cd "%s" && make -f out.mf CPPFLAGS_EXTRA="-I $basedir/../../../"' % self.fp_workdir)
 
         self.count = {
