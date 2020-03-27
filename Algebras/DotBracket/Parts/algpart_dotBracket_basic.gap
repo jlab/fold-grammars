@@ -148,5 +148,5 @@
 
   choice [string] h([string] i) {
     //~ return list(minimum(i));
-    return unique(i);
+    return i;
   }
