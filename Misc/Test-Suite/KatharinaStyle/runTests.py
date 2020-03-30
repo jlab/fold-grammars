@@ -64,7 +64,7 @@ class Test(unittest.TestCase):
         shutil.rmtree(self.fp_workdir)  # remove temporary directory
 
     def testUnambiguousness(self):
-        os.system('basedir=`pwd` && cd "%s" && gapc -p "alg_dotBracket_unique*alg_count" $basedir/../../../cofold_nodangle.gap -I $basedir/../../../' % self.fp_workdir)
+        os.system('basedir=`pwd` && cd "%s" && gapc -p "alg_cofold_dotBracket_unique*alg_count" $basedir/../../../cofold_nodangle.gap -I $basedir/../../../' % self.fp_workdir)
         os.system('basedir=`pwd` && cd "%s" && make -f out.mf CPPFLAGS_EXTRA="-I $basedir/../../../"' % self.fp_workdir)
         for seq in list(self.sequences.keys())[0:19]:
             cmd = ('%s/out "%s"' % (self.fp_workdir, seq))
