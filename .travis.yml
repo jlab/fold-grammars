@@ -34,7 +34,7 @@ script:
   - if [[ "$TEST_SUBTASK" == "cofolding" ]]; then
     pushd . &&
     cd Misc/Test-Suite/KatharinaStyle/ &&
-    python ./runTests.py &&
+    /usr/bin/time -v python ./runTests.py &&
     popd;
     fi
   - if [[ "$TEST_SUBTASK" == "default" ]]; then
