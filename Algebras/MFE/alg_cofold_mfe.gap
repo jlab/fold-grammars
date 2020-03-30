@@ -1,7 +1,8 @@
-algebra alg_mfe implements sig_foldrna(alphabet = char, answer = int) {
-	include "Algebras/MFE/Parts/algpart_mfe_basic.gap"
-	
-  //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions empty here.
+algebra alg_cofold_mfe implements sig_cofold_foldrna(alphabet = char, answer = int) {
+        include "Algebras/MFE/Parts/algpart_mfe_basic.gap"
+        include "Algebras/MFE/Parts/algpart_cofold_mfe.gap"
+
+  //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions $
   int acomb(int le,Subsequence b,int re) {return le+re;}
   int combine(int le,int re) {return le+re;}
   int trafo(int e) {return e;}
@@ -18,7 +19,7 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = int) {
   int cadd_Pr(int le,int re) {return le+re;}
 }
 
-algebra alg_mfe_subopt extends alg_mfe {
+algebra alg_cofold_mfe_subopt extends alg_cofold_mfe {
   kscoring choice [int] h([int] i) {
     return mfeSubopt(i);
   }

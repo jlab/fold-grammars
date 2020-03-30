@@ -1,4 +1,5 @@
-algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
+algebra alg_shape5 implements sig_cofold_foldrna(alphabet = char, answer = Rope) {
+  include "Algebras/Shapes/Parts/algpart_cofold_shape5_rope.gap"
 
   Rope sadd(Subsequence b,Rope e) {
     Rope emptyShape;
@@ -224,6 +225,7 @@ algebra alg_shape5 implements sig_foldrna(alphabet = char, answer = Rope) {
 }
 
 algebra alg_shape4 extends alg_shape5 {
+  include "Algebras/Shapes/Parts/algpart_cofold_shape4_rope.gap"
 
   Rope il(Subsequence lb,Subsequence lregion,Rope e,Subsequence rregion,Subsequence rb) {
     Rope res;
@@ -236,6 +238,7 @@ algebra alg_shape4 extends alg_shape5 {
 }
 
 algebra alg_shape3 extends alg_shape5 {
+  include "Algebras/Shapes/Parts/algpart_cofold_shape3_rope.gap"
 
   Rope bl(Subsequence lb,Subsequence lregion,Rope e,Subsequence rb) {
     Rope res;
@@ -264,6 +267,7 @@ algebra alg_shape3 extends alg_shape5 {
 }
 
 algebra alg_shape2 extends alg_shape5 {
+  include "Algebras/Shapes/Parts/algpart_cofold_shape2_rope.gap"
 
   Rope bl(Subsequence lb,Subsequence lregion,Rope e,Subsequence rb) {
     Rope res;
@@ -296,6 +300,7 @@ algebra alg_shape2 extends alg_shape5 {
 }
 
 algebra alg_shape1 extends alg_shape5 {
+  include "Algebras/Shapes/Parts/algpart_cofold_shape1_rope.gap"
 
   Rope sadd(Subsequence b, Rope e) {
     if (front(e) == '_') {

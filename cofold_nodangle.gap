@@ -13,15 +13,17 @@ type base_t = extern
 type Rope = extern
 type shape_t = shape
 
-include "Signatures/sig_foldrna.gap"
-include "Algebras/DotBracket/alg_dotBracket.gap"
-include "Algebras/Shapes/alg_shapes_rope.gap"
+include "Signatures/sig_cofold_foldrna.gap"
+include "Algebras/DotBracket/alg_cofold_dotBracket.gap"
+include "Algebras/Shapes/alg_cofold_shapes_rope.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
 
-include "Algebras/MFE/alg_mfe.gap"
+include "Algebras/MFE/alg_cofold_mfe.gap"
 
-include "Grammars/gra_nodangle.gap"
+include "Grammars/gra_cofold_nodangle.gap"
 
-instance enum = gra_nodangle (alg_enum);
+instance enum = gra_cofold_nodangle (alg_enum);
+
+
