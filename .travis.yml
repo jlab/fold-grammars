@@ -31,11 +31,11 @@ before_script:
   # point to fold-grammars source directory:
   - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
 script:
-  - python --version
+  - python3 --version
   - if [[ "$TEST_SUBTASK" == "cofolding" ]]; then
     pushd . &&
     cd Misc/Test-Suite/KatharinaStyle/ &&
-    /usr/bin/time -v python ./runTests.py &&
+    /usr/bin/time -v python3 ./runTests.py &&
     popd;
     fi
   - if [[ "$TEST_SUBTASK" == "default" ]]; then
