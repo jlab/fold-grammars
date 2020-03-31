@@ -5,9 +5,9 @@ compiler:
 os:
 - linux
 env:
-  # - TEST_SUBTASK=default
-  # - TEST_SUBTASK=shapes
-  # - TEST_SUBTASK=pkiss
+  - TEST_SUBTASK=default
+  - TEST_SUBTASK=shapes
+  - TEST_SUBTASK=pkiss
   - TEST_SUBTASK=cofolding
 before_install:
   - sudo apt-get update -y
@@ -32,18 +32,20 @@ before_script:
   - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
 script:
   - if [[ "$TEST_SUBTASK" == "cofolding" ]]; then
-    pushd .;
-    cd Misc/Test-Suite/KatharinaStyle;  
-    python ./runTests.py &&
+    pushd . &&
+    cd Misc/Test-Suite/KatharinaStyle/ &&
+    /usr/bin/time -v python ./runTests.py &&
     popd;
     fi
-  # - if [[ "$TEST_SUBTASK" == "default" ]]; then
-  #  pushd .;
-  #  cd Misc/Test-Suite/GeorgStyle/;
-  #  bash run.sh ../Truth;
-  #  popd;
-  #  fi
-  # - pushd .
-  # - cd Misc/Test-Suite/StefanStyle/
-  # - travis_wait 40 perl runTests.pl $PPN $TEST_SUBTASK
-  # - popd
+  - if [[ "$TEST_SUBTASK" == "default" ]]; then
+    pushd . &&
+    cd Misc/Test-Suite/GeorgStyle/ &&
+    bash run.sh ../Truth &&
+    popd;
+    fi
+  - if [[ "$TEST_SUBTASK" == "default" || "$TEST_SUBTASK" == "shapes" || "$TEST_SUBTASK" == "pkiss" ]]; then
+    pushd . &&
+    cd Misc/Test-Suite/StefanStyle/ &&
+    travis_wait 40 perl runTests.pl $PPN $TEST_SUBTASK &&
+    popd;
+    fi
