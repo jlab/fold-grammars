@@ -47,6 +47,6 @@ script:
   - if [[ "$TEST_SUBTASK" == "default" || "$TEST_SUBTASK" == "shapes" || "$TEST_SUBTASK" == "pkiss" ]]; then
     pushd . &&
     cd Misc/Test-Suite/StefanStyle/ &&
-    travis_wait 40 perl runTests.pl $PPN $TEST_SUBTASK &&
+    travis_wait 40 perl runTests.pl $PPN $TEST_SUBTASK && 
     popd;
     fi
