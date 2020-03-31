@@ -31,6 +31,7 @@ before_script:
   # point to fold-grammars source directory:
   - sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
 script:
+  - python --version
   - if [[ "$TEST_SUBTASK" == "cofolding" ]]; then
     pushd . &&
     cd Misc/Test-Suite/KatharinaStyle/ &&
