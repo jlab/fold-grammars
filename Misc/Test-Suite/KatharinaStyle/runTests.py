@@ -6,6 +6,7 @@ import subprocess
 import tempfile
 from collections import OrderedDict
 import shutil
+import sys
 
 
 class Test(unittest.TestCase):
@@ -58,7 +59,6 @@ class Test(unittest.TestCase):
         ])
 
     def tearDown(self):
-        pass
         shutil.rmtree(self.fp_workdir)  # remove temporary directory
 
     def testUnambiguousness(self):
@@ -67,6 +67,7 @@ class Test(unittest.TestCase):
         for seq in list(self.sequences.keys())[0:19]:
             cmd = ('%s/out "%s"' % (self.fp_workdir, seq))
             dot_count = [(subprocess.check_output(cmd, shell=True)).decode("utf-8")]
+            print('  Testing with sequence "%s": got %i output lines.' % (seq, len(dot_count[0].split('\n'))), file=sys.stderr)
             for element in dot_count:
                 dot_count_list = element.split('\n')
                 for el in dot_count_list:
@@ -79,6 +80,7 @@ class Test(unittest.TestCase):
         for seq, count in self.sequences.items():
             cmd = ('%s/out "%s"' % (self.fp_workdir, seq))
             candidates = (subprocess.check_output(cmd, shell=True)).decode("utf-8")
+            print('  Testing with sequence "%s": got %s structures' % (seq, candidates.split('\n')[1]), file=sys.stderr)
             self.assertEqual(count, candidates.split('\n')[1])
 
 
