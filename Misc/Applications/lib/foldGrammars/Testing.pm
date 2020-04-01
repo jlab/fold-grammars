@@ -241,7 +241,7 @@ sub evaluateTest {
 
 	my $status = 'failed';
 	if (-e "Truth/".$truth) {
-		my $diffResult = Utils::execute("diff -I \"^#CMD:\" Truth/$truth $TMPDIR/$truth"); chomp $diffResult;
+		my $diffResult = Utils::execute("diff -I \"^#CMD:\" -I \"^Cluster info \(\" Truth/$truth $TMPDIR/$truth"); chomp $diffResult;
 		if ($diffResult eq "") {
 			$status = 'passed';
 		} else {
