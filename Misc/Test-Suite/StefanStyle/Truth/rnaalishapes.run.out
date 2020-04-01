@@ -36,7 +36,7 @@
 (-56.83 = -27.27 + -29.56)  0.8768472  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=0.9 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=30
-                         1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                         1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-27.52 = -16.50 + -11.02)  ..............((((.....))))...........((((((.......(((((......((((.....))))................)))))))))))...................................................................  (sci:  0.360)  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1.1 --consensus=mis --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
@@ -44,14 +44,14 @@
 (-20.49 = -7.49 + -13.00)  ......................................((((((.......((((........(((.....)))..................))))))))))...................................................................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=overdangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=0.9 --consensus=consensus --nfactor=1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=20
-                       1  uggugguggcccgcucaaccggcggccca______cugau  40
+                       1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAU  40
 (-13.78 = -13.95 + 0.17)  .......(((.((((.....)))).)))............  (sci:  0.600)  []
 
-                      21  ggcggccca______cugauugcgccuuuuug  52
+                      21  GGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (  0.00 =   0.00 + 0.00)  ................................  (sci: 0.000)  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=overdangle --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1 --consensus=consensus --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=20
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                         1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-59.30 = -29.58 + -29.72)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1.1 --consensus=mis --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=20
@@ -59,7 +59,7 @@
 (-22.83 = -10.16 + -12.67)  ......................................((((((.......(((((......((((.....))))................)))))))))))...................................................................  (sci:  0.400)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1.1 --consensus=consensus --nfactor=0.9 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
-                     1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                     1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-9.07 = -9.21 + 0.14)  .......(((.((((.....)))).)))........................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=microstate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1.1 --consensus=mis --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=10
@@ -73,23 +73,23 @@
 ( 0.00 =  0.00 +  0.00)  ................................  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=microstate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1 --consensus=consensus --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=20
-                         1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                         1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-17.53 =  -5.19 + -12.34)  ...............((((...................))))((.((....(((((......((((.....))))................)))))))))  (sci:  0.440)  [][]
 
-                        21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg____________  120
+                        21  CGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG____________  120
 (-25.88 = -13.77 + -12.11)  ..................((((((.......(((((......((((.....))))................)))))))))))..................  (sci:  0.720)  []
 
-                        41  ggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg  140
+                        41  GGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG  140
 (-18.34 =  -8.40 +  -9.94)  ((((.......(((((......((((.....))))................)))))))))........................................  (sci:  0.530)  []
 
-                        61  _cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__  160
+                        61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( -4.79 =  -0.24 +  -4.55)  ..((((.....))))...................((((((.((............................................)).))).)))...  (sci:  0.150)  [][]
 
-                        81  _______ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                        81  _______GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 ( -3.86 =  -0.36 +  -3.50)  ..............((((((.((............................................)).))).)))............  (sci:  0.130)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1.1 --consensus=consensus --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=20
-                                1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                                1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-3.12 = -3.27 + 0.15)  0.3941977  ...........................................(((....)))....................................................................................................................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1.1 --consensus=mis --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=10
@@ -97,17 +97,17 @@
 (-7.46 = -7.33 + -0.13)  0.3566348  ......................................((((((.......((((.....................................))))))))))...................................................................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=macrostate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1 --consensus=consensus --nfactor=1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=10
-                                   1  uggugguggcccgcucaaccggcggccca______cugau  40
+                                   1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAU  40
 (-16.36 = -16.00 + -0.36)  0.6882692  .......((((((((.....))))))))............  []
 
-                                  11  ccgcucaaccggcggccca______cugauugcgccuuuu  50
+                                  11  CCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUU  50
 ( -7.65 =  -7.29 + -0.36)  0.8847149  (((((.....))))).........................  []
 
-                                  21  ggcggccca______cugauugcgccuuuuug  52
+                                  21  GGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 ( -2.49 =  -1.13 + -1.36)  0.4967891  ((((..................))))......  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --grammar=macrostate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=0.9 --consensus=consensus --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
-                        1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                        1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-26.80 = -21.51 + -5.29)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.070)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1 --consensus=mis --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
@@ -119,19 +119,19 @@
 (-33.70 = -23.71 + -9.99)  0.6883790  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.140)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=nodangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1.1 --consensus=consensus --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=10
-                                   1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+                                   1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 ( -2.26 =  -1.08 + -1.18)  0.8222531  .........(((.............)))............  []
 
-                                  11  cucagc__ggu__agagcaccaggcuuucacccagaaagu  50
+                                  11  CUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGU  50
 ( -8.06 =  -5.60 + -2.46)  0.8100845  ...................(((((.......)))))....  []
 
-                                  21  u__agagcaccaggcuuucacccagaaagucacggguucg  60
+                                  21  U__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCG  60
 ( -8.06 =  -5.60 + -2.46)  0.8827548  .........(((((.......)))))..............  []
 
-                                  31  caggcuuucacccagaaagucacggguucgaaucccaucg  70
+                                  31  CAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCG  70
 (-15.66 = -10.41 + -5.25)  0.9439498  ((((.......))))......(((((.......)))))..  [][]
 
-                                  41  cccagaaagucacggguucgaaucccaucgaacgcg  76
+                                  41  CCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 ( -9.34 =  -6.51 + -2.83)  0.9714581  ...........(((((.......)))))........  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=nodangle --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=0.9 --consensus=mis --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=10
@@ -160,11 +160,11 @@
 ( -3.52 =   0.72 +  -4.24)  ........................(((((((.((.........................................)).)).)).)))............  (sci:  0.090)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1 --consensus=consensus --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                         1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-30.33 = -20.19 + -10.14)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.260)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1 --consensus=consensus --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=30
-                       1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                       1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-11.39 = -11.39 + 0.00)  ......................................((((((.......((((.....................................))))))))))...................................................................  (sci:  0.150)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=overdangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1 --consensus=mis --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=10
@@ -211,28 +211,28 @@
 ( 0.00 =  0.00 + 0.00)  .......................................  (sci: 0.000)  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=overdangle --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1 --consensus=consensus --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=10
-                                    1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                                    1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-18.41 =  -7.04 + -11.37)  0.0397469  ........................................((((.(....)(((((.......(((.....)))................).))))))))  (sci:  0.420)  [[][]]
 
-                                   11  _gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg__  110
+                                   11  _GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG__  110
 (-24.95 = -11.48 + -13.47)  0.0660907  ............................((((((.(....)(((((.......(((.....)))................).))))))))))........  (sci:  0.540)  [[][]]
 
-                                   21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg____________  120
+                                   21  CGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG____________  120
 (-24.95 = -11.48 + -13.47)  0.2582300  ..................((((((.(....)(((((.......(((.....)))................).))))))))))..................  (sci:  0.610)  [[][]]
 
-                                   31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u___  130
+                                   31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U___  130
 (-24.95 = -11.48 + -13.47)  0.2798148  ........((((((.(....)(((((.......(((.....)))................).))))))))))............................  (sci:  0.630)  [[][]]
 
-                                   41  ggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg  140
+                                   41  GGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG  140
 (-18.41 =  -7.04 + -11.37)  0.3538857  ((((.(....)(((((.......(((.....)))................).))))))))........................................  (sci:  0.480)  [[][]]
 
-                                   51  cgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccg  150
+                                   51  CGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCG  150
 ( -7.27 =  -0.69 +  -6.58)  0.2001368  .(((((.......(((.....)))................).))).).....................................................  (sci:  0.190)  []
 
-                                   61  _cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__  160
+                                   61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( -3.08 =   0.98 +  -4.06)  0.1008486  ...(((.....)))....................(((.((...................................................)).)))...  (sci:  0.080)  [][]
 
-                                   71  _gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                                   71  _GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 ( -2.82 =   0.28 +  -3.10)  0.2272295  ........................(((.((...................................................)).)))............  (sci:  0.080)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=0.9 --consensus=mis --nfactor=0.9 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
@@ -240,17 +240,17 @@
 (-28.46 = -19.26 + -9.20)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.210)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1.1 --consensus=consensus --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=10
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                         1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-39.63 = -28.64 + -10.99)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=microstate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1.1 --consensus=consensus --nfactor=1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
-                       1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+                       1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 ( -3.08 = -1.90 + -1.18)  .........(((.............)))............  []
 
-                      31  caggcuuucacccagaaagucacggguucgaaucccaucg  70
+                      31  CAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCG  70
 (-14.30 = -9.05 + -5.25)  ((((.......))))......(((((.......)))))..  [][]
 
-                      61  aaucccaucgaacgcg  76
+                      61  AAUCCCAUCGAACGCG  76
 (  0.00 =  0.00 +  0.00)  ................  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=microstate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1 --consensus=mis --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=10
@@ -258,7 +258,7 @@
 (-8.45 = -8.36 + -0.09)  .......((..((((.....))))..))........................  (sci:  0.400)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1.1 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=30
-                                1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                                1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-1.82 = -1.88 + 0.06)  0.1150177  ..........................................((.....))......................................................................................................................  (sci:  0.030)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1.1 --consensus=mis --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=20
@@ -266,19 +266,19 @@
 (-12.40 = -10.24 + -2.16)  .......(((((((.......)))))))........................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=macrostate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1 --consensus=consensus --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=10
-                       1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+                       1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 ( -3.11 = -2.99 + -0.12)  .........((((...........))))............  (sci:  0.450)  []
 
-                      11  cucagc__ggu__agagcaccaggcuuucacccagaaagu  50
+                      11  CUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGU  50
 ( -7.04 = -5.14 + -1.90)  ...................(((((.......)))))....  (sci:  0.810)  []
 
-                      21  u__agagcaccaggcuuucacccagaaagucacggguucg  60
+                      21  U__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCG  60
 ( -7.04 = -5.14 + -1.90)  .........(((((.......)))))..............  (sci:  0.890)  []
 
-                      31  caggcuuucacccagaaagucacggguucgaaucccaucg  70
+                      31  CAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCG  70
 (-13.35 = -9.22 + -4.13)  ((((.......))))......(((((.......)))))..  (sci:  1.190)  [][]
 
-                      41  cccagaaagucacggguucgaaucccaucgaacgcg  76
+                      41  CCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 ( -7.89 = -5.65 + -2.24)  ...........(((((.......)))))........  (sci:  0.980)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --grammar=macrostate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=0.9 --consensus=mis --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=10
@@ -290,15 +290,15 @@
 (-46.87 = -17.23 + -29.64)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  2.140)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=10
-                                 1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                                 1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-7.76 = -7.66 + -0.10)  0.5906838  .......((..((((.....))))..))........................  (sci:  0.320)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --grammar=nodangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=20
-                                    1  uggugguggcccgcucaaccggcggccca______cugau  40
+                                    1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAU  40
 (-25.31 = -14.94 + -10.37)  0.5861077  .......((((((((.....))))))))............  (sci:  1.300)  []
 (-24.86 = -13.40 + -11.46)  0.2741686  ...(((.((((((((.....)))))))).......)))..  (sci:  1.270)  []
 
-                                   21  ggcggccca______cugauugcgccuuuuug  52
+                                   21  GGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 ( -3.57 =  -0.65 +  -2.92)  0.6002689  ((((..................))))......  (sci:  0.640)  []
 ( -3.04 =  -1.22 +  -1.82)  0.2492340  (((((..............)))))........  (sci:  0.540)  []
 
@@ -419,28 +419,28 @@
 ( -0.62 =   2.57 +  -3.19)  ..............(((((....................................................)).)))............  (sci:  0.030)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=20
-                        1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                        1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-41.94 = -32.74 + -9.20)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=20
-                         1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                         1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-22.27 = -10.16 + -12.11)  ......................................((((((.......(((((......((((.....))))................)))))))))))...................................................................  []
 (-22.14 =  -9.72 + -12.42)  ......................................((((((.......((((((.....((((.....))))..............)).))))))))))...................................................................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --grammar=microstate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=10
-                       1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+                       1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 ( -1.91 = -0.84 + -1.07)  .........(((.............)))............  []
 
-                      11  cucagc__ggu__agagcaccaggcuuucacccagaaagu  50
+                      11  CUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGU  50
 ( -7.35 = -5.14 + -2.21)  ...................(((((.......)))))....  []
 
-                      21  u__agagcaccaggcuuucacccagaaagucacggguucg  60
+                      21  U__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCG  60
 ( -7.35 = -5.14 + -2.21)  .........(((((.......)))))..............  []
 
-                      31  caggcuuucacccagaaagucacggguucgaaucccaucg  70
+                      31  CAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCG  70
 (-13.99 = -9.22 + -4.77)  ((((.......))))......(((((.......)))))..  [][]
 
-                      41  cccagaaagucacggguucgaaucccaucgaacgcg  76
+                      41  CCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 ( -8.22 = -5.65 + -2.57)  ...........(((((.......)))))........  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --grammar=microstate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=1.1 --consensus=mis --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=10
@@ -484,7 +484,7 @@
 ( -4.26 =   0.55 +  -4.81)  0.0857496  ........................(((((((...............................................)).)).)))............  (sci:  0.120)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=20
-                      1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                      1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-7.59 = -7.52 + -0.07)  .......................................(((((.......((((.....................................)))))))))....................................................................  []
 (-6.82 = -6.89 +  0.07)  .......................................(((((.......(((.......................................))))))))....................................................................  []
 (-6.65 = -6.66 +  0.01)  .......................................(((((....................................................)))))....................................................................  []
@@ -499,13 +499,13 @@
 (-17.53 = -15.32 + -2.21)  ......................................((((((.......((((((.....((((.....))))..............)).))))))))))...................................................................  (sci:  0.240)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --grammar=macrostate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=20
-                      1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+                      1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 (-3.89 = -3.26 + -0.63)  .........(((.............)))............  []
 
-                     21  u__agagcaccaggcuuucacccagaaagucacggguucg  60
+                     21  U__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCG  60
 (-7.04 = -6.55 + -0.49)  .........(((((.......)))))..............  []
 
-                     41  cccagaaagucacggguucgaaucccaucgaacgcg  76
+                     41  CCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-7.48 = -7.32 + -0.16)  ...........(((((.......)))))........  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --grammar=macrostate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=mis --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=10
@@ -515,7 +515,7 @@
 (-21.08 = -19.30 + -1.78)  0.1278285  (((((((..(((.............)))..((((.......))))......(((((.......)))))))))))).  (sci:  0.840)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
-                     1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                     1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-8.77 = -8.90 + 0.13)  .......(((.((((.....)))).)))........................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=1 --consensus=mis --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=20
@@ -543,7 +543,7 @@
 (0.00 = 0.00 + 0.00)  1.0000000  ...................  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=nodangle --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=20
-                        1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                        1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-29.48 = -20.32 + -9.16)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.120)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=mis --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=20
@@ -647,30 +647,30 @@
 ( 0.00 =  0.00 +  0.00)  .........................................................................................  (sci: 0.000)  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=20
-                                    1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                                    1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-43.89 = -32.74 + -11.15)  0.1160172  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=20
-                                1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                                1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-0.75 = -0.85 + 0.10)  0.0900757  ..........................................((.....))......................................................................................................................  (sci:  0.010)  []
 (-0.43 = -0.53 + 0.10)  0.0537029  ..........................................(((...)))......................................................................................................................  (sci:  0.010)  []
 ( 0.00 =  0.00 + 0.00)  0.0267299  .........................................................................................................................................................................  (sci: 0.000)  _
 ( 0.17 =  0.12 + 0.05)  0.0204102  ...................................................((((.....................................)))).........................................................................  (sci: 0.000)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=microstate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=10
-                       1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+                       1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 ( -1.91 = -0.84 + -1.07)  .........(((.............)))............  (sci:  0.280)  []
 
-                      11  cucagc__ggu__agagcaccaggcuuucacccagaaagu  50
+                      11  CUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGU  50
 ( -7.35 = -5.14 + -2.21)  ...................(((((.......)))))....  (sci:  0.850)  []
 
-                      21  u__agagcaccaggcuuucacccagaaagucacggguucg  60
+                      21  U__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCG  60
 ( -7.35 = -5.14 + -2.21)  .........(((((.......)))))..............  (sci:  0.920)  []
 
-                      31  caggcuuucacccagaaagucacggguucgaaucccaucg  70
+                      31  CAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCG  70
 (-13.99 = -9.22 + -4.77)  ((((.......))))......(((((.......)))))..  (sci:  1.240)  [][]
 
-                      41  cccagaaagucacggguucgaaucccaucgaacgcg  76
+                      41  CCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 ( -8.22 = -5.65 + -2.57)  ...........(((((.......)))))........  (sci:  1.010)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=microstate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1 --consensus=mis --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=10
@@ -678,26 +678,26 @@
 (-11.93 = -12.12 + 0.19)  0.3768381  .......(((.((((.....)))).)))........................  (sci:  0.560)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=10
-                        1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                        1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-18.31 = -17.92 + -0.39)  .......((((((((.....))))))))........................  []
 (-18.11 = -15.95 + -2.16)  .......(((((((.......)))))))........................  []
 (-17.66 = -15.18 + -2.48)  .......((((((((.....)))))))).........(......).......  [][]
 (-17.46 = -13.21 + -4.25)  .......(((((((.......))))))).........(......).......  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=30
-                        1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                        1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-11.49 = -11.39 + -0.10)  ......................................((((((.......((((.....................................))))))))))...................................................................  []
 (-11.36 = -11.27 + -0.09)  ......................................((((((.......(((((..................................).))))))))))...................................................................  []
 (-10.95 = -11.04 +  0.09)  ......................................((((((.......((((.........((.....))...................))))))))))...................................................................  []
 (-10.66 = -10.73 +  0.07)  ......................................((((((.......(((.......................................)))))))))...................................................................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=macrostate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=10
-                                   1  uggugguggcccgcucaaccggcggccca______cugau  40
+                                   1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAU  40
 (-15.97 = -14.01 + -1.96)  0.0143560  .......(((((((.......)))))))............  []
 (-15.71 = -15.33 + -0.38)  0.2740186  .......((((((((.....))))))))............  []
 (-15.07 = -13.05 + -2.02)  0.0191458  ...(((.(((((((.......))))))).......)))..  []
 
-                                  11  ccgcucaaccggcggccca______cugauugcgccuuuu  50
+                                  11  CCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUU  50
 ( -7.98 =  -6.02 + -1.96)  0.0149635  ((((.......)))).........................  []
 ( -7.92 =  -4.05 + -3.87)  0.0134692  ((((.......))))............(......).....  [][]
 ( -7.73 =  -7.35 + -0.38)  0.2856138  (((((.....))))).........................  []
@@ -707,7 +707,7 @@
 ( -7.42 =  -7.04 + -0.38)  0.1557104  .((((.....))))..........................  []
 ( -7.35 =  -5.07 + -2.28)  0.1401604  .((((.....)))).............(......).....  [][]
 
-                                  21  ggcggccca______cugauugcgccuuuuug  52
+                                  21  GGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 ( -2.74 =  -0.65 + -2.09)  0.1079739  ((((..(..........)..))))........  []
 ( -2.57 =   0.89 + -3.46)  0.1517118  (((((..(.........)..).))))......  []
 ( -2.50 =  -0.41 + -2.09)  0.0860503  .(((..(..........)..))).........  []
@@ -716,81 +716,81 @@
 ( -1.94 =  -0.59 + -1.35)  0.1122729  .((((.(..........).)))).........  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --grammar=macrostate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=10
-                                   1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                                   1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 ( -6.40 =  -6.30 + -0.10)  0.1957547  ........................................((((.......((((.....................................))))))))  []
 ( -6.13 =  -6.15 +  0.02)  0.1070419  ........................................((((.......(((((........((.....)).................).))))))))  []
 ( -6.04 =  -5.92 + -0.12)  0.1034204  ........................................((((.......(((((..................................).))))))))  []
 ( -5.87 =  -5.91 +  0.04)  0.0684575  ........................................((((.......((((.........((.....))...................))))))))  []
 
-                                  11  _gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg__  110
+                                  11  _GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG__  110
 (-12.59 = -12.49 + -0.10)  0.2077706  ............................((((((.......((((.....................................))))))))))........  []
 (-12.33 = -12.35 +  0.02)  0.1136125  ............................((((((.......(((((........((.....)).................).))))))))))........  []
 (-12.23 = -12.11 + -0.12)  0.1097687  ............................((((((.......(((((..................................).))))))))))........  []
 (-12.06 = -12.10 +  0.04)  0.0726595  ............................((((((.......((((.........((.....))...................))))))))))........  []
 
-                                  21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg____________  120
+                                  21  CGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG____________  120
 (-12.59 = -12.49 + -0.10)  0.2227956  ..................((((((.......((((.....................................))))))))))..................  []
 (-12.33 = -12.35 +  0.02)  0.1218284  ..................((((((.......(((((........((.....)).................).))))))))))..................  []
 (-12.23 = -12.11 + -0.12)  0.1177067  ..................((((((.......(((((..................................).))))))))))..................  []
 (-12.06 = -12.10 +  0.04)  0.0779139  ..................((((((.......((((.........((.....))...................))))))))))..................  []
 
-                                  31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u___  130
+                                  31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U___  130
 (-12.59 = -12.49 + -0.10)  0.2369158  ........((((((.......((((.....................................))))))))))............................  []
 (-12.33 = -12.35 +  0.02)  0.1295496  ........((((((.......(((((........((.....)).................).))))))))))............................  []
 (-12.23 = -12.11 + -0.12)  0.1251666  ........((((((.......(((((..................................).))))))))))............................  []
 (-12.06 = -12.10 +  0.04)  0.0828519  ........((((((.......((((.........((.....))...................))))))))))............................  []
 
-                                  41  ggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg  140
+                                  41  GGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG  140
 ( -7.49 =  -7.39 + -0.10)  0.2520483  ((((.......((((.....................................))))))))........................................  []
 ( -7.22 =  -7.24 +  0.02)  0.1378235  ((((.......(((((........((.....)).................).))))))))........................................  []
 ( -7.13 =  -7.01 + -0.12)  0.1331610  ((((.......(((((..................................).))))))))........................................  []
 ( -6.96 =  -7.00 +  0.04)  0.0881435  ((((.......((((.........((.....))...................))))))))........................................  []
 
-                                  51  cgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccg  150
+                                  51  CGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCG  150
 ( -2.09 =  -1.98 + -0.11)  0.3016881  .((((.....................................))))......................................................  []
 ( -1.81 =  -1.83 +  0.02)  0.1649680  .(((((........((.....)).................).))))......................................................  []
 ( -1.72 =  -1.60 + -0.12)  0.1593863  .(((((..................................).))))......................................................  []
 ( -1.56 =  -1.59 +  0.03)  0.1055032  .((((.........((.....))...................))))......................................................  []
 
-                                  61  _cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__  160
+                                  61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( -0.30 =  -0.21 + -0.09)  0.2771475  ...................................(((.((...............................................)).)))......  []
 (  0.00 =   0.00 +  0.00)  0.2357807  ....................................................................................................  _
 (  0.41 =   0.23 +  0.18)  0.1062904  ...................................(((.....................................................)))......  []
 (  0.58 =   0.67 + -0.09)  0.0799789  ...................................(((..(...............................................)..)))......  []
 (  0.58 =   0.53 +  0.05)  0.0533367  ....((.....))......................(((.((...............................................)).)))......  [][]
 
-                                  71  _gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                                  71  _GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 ( -0.30 =  -0.21 + -0.09)  0.3333501  .........................(((.((...............................................)).)))...............  []
 (  0.00 =   0.00 +  0.00)  0.2835931  ...................................................................................................  _
 (  0.41 =   0.23 +  0.18)  0.1278445  .........................(((.....................................................)))...............  []
 (  0.58 =   0.67 + -0.09)  0.0961977  .........................(((..(...............................................)..)))...............  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=30
-                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                         1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-31.59 = -18.90 + -12.69)  .((((((((((((((.....)))))))))..........)))))........  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=20
-                                 1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                                 1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-7.69 = -7.66 + -0.03)  0.6008547  .......((..((((.....))))..))........................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=nodangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=20
-                                1  uggugguggcccgcucaaccggcggccca______cugau  40
+                                1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAU  40
 (-8.62 = -8.90 + 0.28)  0.8959865  .......(((.((((.....)))).)))............  []
 
-                               21  ggcggccca______cugauugcgccuuuuug  52
+                               21  GGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 ( 0.00 =  0.00 + 0.00)  0.9738398  ................................  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=nodangle --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=30
-                       1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                       1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 ( -4.06 =  -4.35 + 0.29)  ........................................((((.......((((.....................................))))))))  (sci:  0.090)  []
 
-                      31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u___  130
+                      31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U___  130
 (-10.10 = -10.21 + 0.11)  ........((((((.......((((.....................................))))))))))............................  (sci:  0.260)  []
 
-                      61  _cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__  160
+                      61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__  160
 (  0.00 =   0.00 + 0.00)  ....................................................................................................  (sci: 0.000)  _
 
-                      91  g_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                      91  G_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (  0.00 =   0.00 + 0.00)  ...............................................................................  (sci: 0.000)  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=1 --consensus=mis --nfactor=1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=30
@@ -804,44 +804,44 @@
 (-29.88 = -16.56 + -13.32)  ......................................((((((.......(((((......((((.....))))................)))))))))))...................................................................  (sci:  0.390)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=overdangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=30
-                                    1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+                                    1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 ( -9.68 =  -4.72 +  -4.96)  0.8268605  .........((((...........))))............  (sci:  1.000)  []
 
-                                   31  caggcuuucacccagaaagucacggguucgaaucccaucg  70
+                                   31  CAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCG  70
 (-25.86 = -12.44 + -13.42)  0.9935328  ((((.......))))......(((((.......)))))..  (sci:  1.770)  [][]
 
-                                   61  aaucccaucgaacgcg  76
+                                   61  AAUCCCAUCGAACGCG  76
 (  0.00 =   0.00 +   0.00)  0.9998100  ................  (sci: 0.000)  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=overdangle --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=20
-                      1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                      1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-0.71 = -0.85 +  0.14)  ..........................................((.....)).................................................  []
 (-0.49 = -0.73 +  0.24)  ..........................................((.....))((((.....................................))))....  [][]
 ( 0.00 =  0.00 +  0.00)  ....................................................................................................  _
 
-                     21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg____________  120
+                     21  CGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG____________  120
 (-0.71 = -0.85 +  0.14)  ......................((.....)).....................................................................  []
 (-0.49 = -0.73 +  0.24)  ......................((.....))((((.....................................))))........................  [][]
 (-0.13 =  0.15 + -0.28)  ...................((.((.....))((((.....................................))))...))...................  [[][]]
 ( 0.00 =  0.00 +  0.00)  ....................................................................................................  _
 
-                     41  ggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg  140
+                     41  GGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG  140
 (-0.71 = -0.85 +  0.14)  ..((.....)).........................................................................................  []
 (-0.49 = -0.73 +  0.24)  ..((.....))((((.....................................))))............................................  [][]
 ( 0.00 =  0.00 +  0.00)  ....................................................................................................  _
 
-                     61  _cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__  160
+                     61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( 0.00 =  0.00 +  0.00)  ....................................................................................................  _
 
-                     81  _______ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                     81  _______GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 ( 0.00 =  0.00 +  0.00)  .........................................................................................  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=30
-                                    1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                                    1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-21.98 = -10.16 + -11.82)  0.0280410  ......................................((((((.......(((((......((((.....))))................)))))))))))...................................................................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=30
-                                    1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                                    1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-21.36 = -11.10 + -10.26)  0.1582262  .......((((((((.....))))))))........................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=microstate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=1 --consensus=mis --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=30
@@ -855,11 +855,11 @@
 (  0.00 =   0.00 +  0.00)  1.0000000  ................  (sci: 0.000)  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=microstate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=10
-                                    1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                                    1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-23.71 = -13.45 + -10.26)  0.1620205  .......((((((((.....))))))))........................  (sci:  1.100)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=10
-                                   1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                                   1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-13.96 = -13.61 + -0.35)  0.2324163  .......((((((((.....))))))))........................  (sci:  0.800)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1 --consensus=mis --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=10
@@ -867,54 +867,54 @@
 (-15.97 = -14.01 + -1.96)  .......(((((((.......)))))))........................  (sci:  0.640)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=macrostate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
-                       1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+                       1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 ( -3.26 = -3.12 + -0.14)  .........((((...........))))............  (sci:  0.500)  []
 
-                      31  caggcuuucacccagaaagucacggguucgaaucccaucg  70
+                      31  CAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCG  70
 (-12.77 = -9.05 + -3.72)  ((((.......))))......(((((.......)))))..  (sci:  1.180)  [][]
 
-                      61  aaucccaucgaacgcg  76
+                      61  AAUCCCAUCGAACGCG  76
 (  0.00 =  0.00 +  0.00)  ................  (sci: 0.000)  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --grammar=macrostate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=10
-                                   1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                                   1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-21.28 = -19.50 + -1.78)  0.7687765  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --nfactor=0.9 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
-                        1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                        1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-21.43 = -9.90 + -11.53)  .......((((((((.....))))))))........................  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=10
-                     1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                     1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-8.67 = -8.90 + 0.23)  .......(((.((((.....)))).)))........................  (sci:  0.520)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=nodangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=10
-                                 1  uggugguggcccgcucaaccggcggccca______cugau  40
+                                 1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAU  40
 (-5.95 = -5.91 + -0.04)  0.6704657  .......((..((((.....))))..))............  []
 
-                                11  ccgcucaaccggcggccca______cugauugcgccuuuu  50
+                                11  CCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUU  50
 (-4.42 = -4.24 + -0.18)  0.8772379  .((((.....))))..........................  []
 
-                                21  ggcggccca______cugauugcgccuuuuug  52
+                                21  GGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 ( 0.00 =  0.00 +  0.00)  0.9593508  ................................  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=nodangle --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=30
-                                 1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                                 1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-2.94 = -3.37 +  0.43)  0.2177205  .........................................(((.(.....((((.....................................))))))))  []
 (-2.18 = -2.48 +  0.30)  0.0570744  .........................................((......))((((.....................................))))....  [][]
 
-                                31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u___  130
+                                31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U___  130
 (-2.94 = -3.37 +  0.43)  0.1421043  ...........(((.(.....((((.....................................))))))))..............................  []
 (-2.18 = -2.48 +  0.30)  0.0372520  ...........((......))((((.....................................))))..................................  [][]
 
-                                61  _cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__  160
+                                61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( 0.00 =  0.00 +  0.00)  0.9965445  ....................................................................................................  _
 
-                                91  g_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                                91  G_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 ( 0.00 =  0.00 +  0.00)  0.9969431  ...............................................................................  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=30
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                         1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-40.67 = -30.49 + -10.18)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=1.1 --consensus=mis --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
@@ -943,46 +943,46 @@
 (-20.40 =  -8.23 + -12.17)  0.0115462  .......((((((((.....)))))))).........(......).......  (sci:  1.180)  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=10
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                         1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-48.26 = -21.51 + -26.75)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.920)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=microstate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=10
-                                    1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+                                    1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 ( -9.98 =  -4.39 +  -5.59)  0.3111074  .........((((...........))))............  []
 
-                                   11  cucagc__ggu__agagcaccaggcuuucacccagaaagu  50
+                                   11  CUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGU  50
 (-16.98 =  -6.67 + -10.31)  0.2231052  (((...........)))..(((((.......)))))....  [][]
 
-                                   21  u__agagcaccaggcuuucacccagaaagucacggguucg  60
+                                   21  U__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCG  60
 (-13.89 =  -6.70 +  -7.19)  0.2384925  .........(((((.......)))))..............  []
 
-                                   31  caggcuuucacccagaaagucacggguucgaaucccaucg  70
+                                   31  CAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCG  70
 (-27.11 = -12.20 + -14.91)  0.3172337  ((((.......))))......(((((.......)))))..  [][]
 
-                                   41  cccagaaagucacggguucgaaucccaucgaacgcg  76
+                                   41  CCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-15.33 =  -7.25 +  -8.08)  0.3775144  ...........(((((.......)))))........  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=microstate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=1 --consensus=consensus --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=20
-                                 1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                                 1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-1.92 = -2.06 +  0.14)  0.1406524  ..........................................(((...))).................................................  []
 (-1.33 = -1.51 +  0.18)  0.0498855  ..........................................(((...))).(((.....................................))).....  [][]
 
-                                21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg____________  120
+                                21  CGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG____________  120
 (-1.92 = -2.06 +  0.14)  0.1342043  ......................(((...))).....................................................................  []
 (-1.33 = -1.51 +  0.18)  0.0475985  ......................(((...))).(((.....................................))).........................  [][]
 
-                                41  ggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg  140
+                                41  GGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG  140
 (-1.92 = -2.06 +  0.14)  0.1523690  ..(((...))).........................................................................................  []
 (-1.33 = -1.51 +  0.18)  0.0540410  ..(((...))).(((.....................................))).............................................  [][]
 
-                                61  _cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__  160
+                                61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( 0.00 =  0.00 +  0.00)  0.9815758  ....................................................................................................  _
 
-                                81  _______ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                                81  _______GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 ( 0.00 =  0.00 +  0.00)  0.9812828  .........................................................................................  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=10
-                                   1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                                   1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-31.70 = -29.92 + -1.78)  0.8044733  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=1.1 --consensus=mis --nfactor=0.9 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=20
@@ -990,31 +990,31 @@
 (-34.22 = -27.71 + -6.51)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.150)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=macrostate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=20
-                      1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
+                      1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGC  40
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  _
 
-                     21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu_  60
+                     21  CGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU_  60
 (-5.42 = -3.84 + -1.58)  ..................((((.......)))).......  (sci:  0.490)  []
 
-                     41  ggggugguaccgcggcgcu__cgcgcaccg_gcg______  80
+                     41  GGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG______  80
 (-2.98 = -0.09 + -2.89)  .((......))(((.........)))..............  (sci:  0.350)  [][]
 (-2.95 = -1.05 + -1.90)  .((......)).............................  (sci:  0.340)  []
 
-                     61  _cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                     61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  _
 ( 0.76 =  1.08 + -0.32)  ..((((.....)))).........................  (sci: -0.120)  []
 
-                     81  _______ggcg_ucguccccgcgccugg____________  120
+                     81  _______GGCG_UCGUCCCCGCGCCUGG____________  120
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  _
 ( 0.98 =  2.13 + -1.15)  .............((....))...................  (sci: -0.190)  []
 
-                    101  gcgccugg________________g_u________cuggg  140
+                    101  GCGCCUGG________________G_U________CUGGG  140
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  _
 
-                    121  ____g_u________cuggg_____gcccgaggagaca__  160
+                    121  ____G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  _
 
-                    141  _____gcccgaggagaca__acgcg____  169
+                    141  _____GCCCGAGGAGACA__ACGCG____  169
 ( 0.00 =  0.00 +  0.00)  .............................  (sci: 0.000)  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --grammar=macrostate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --absoluteDeviation=1 --cfactor=0.9 --consensus=mis --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=10
@@ -1022,7 +1022,7 @@
 (-28.62 = -27.71 + -0.91)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=0.9 --consensus=consensus --lowProbFilter=0.01 --nfactor=1 --outputLowProbFilter=0 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=10
-                              1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                              1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-18.23 = -7.24 + -10.99)  0.48  ......................................((((((.......((((((......(((.....)))...............)).))))))))))...................................................................  (sci:  0.350)  0.96  []
 (-15.52 = -4.45 + -11.07)  0.01  ..............(((.......)))...........((((((.......((((((......(((.....)))...............)).))))))))))...................................................................  (sci:  0.300)  0.03  [][]
 (-15.57 = -3.09 + -12.48)  0.01  ......................................((((((((....))(((((......(((.....)))...............)).))).))))))...................................................................  (sci:  0.300)  0.01  [[][]]
@@ -1030,7 +1030,7 @@
 ( -1.97 =  6.58 +  -8.55)  0.00  ...........(((.((((...................)))).(((....)))..........)))............................(((.((...................................................)).)))............  (sci:  0.040)  0.00  [[][]][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1.1 --consensus=consensus --lowProbFilter=0.01 --nfactor=1.1 --outputLowProbFilter=0 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=30
-                                    1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                                    1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-29.36 = -16.90 + -12.46)  0.4454466  .(((((.((((((((.....))))))))...........)))))........  (sci:  1.270)  1.0000000  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --grammar=nodangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1.1 --consensus=mis --lowProbFilter=0.01 --nfactor=0.9 --outputLowProbFilter=0.0001 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=10
@@ -1045,27 +1045,27 @@
 ( 2.09 =  2.75 + -0.66)  ((..((...............))..)).....  0.06  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --grammar=nodangle --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1.1 --consensus=consensus --lowProbFilter=0.01 --nfactor=1.1 --outputLowProbFilter=0 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=30
-                                   1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                                   1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-14.77 = -1.69 + -13.08)  0.2260705  ...............((((...................))))((.((....((((........(((.....)))..................))))))))  0.6212863  [][]
 (-14.59 = -3.91 + -10.68)  0.1676597  ........................................((((.......((((........(((.....)))..................))))))))  0.3642045  []
 (-12.72 = -0.67 + -12.05)  0.0071273  ...............((((...................))))(((...)))((((........(((.....)))..................))))....  0.0140979  [][][]
 (-10.16 =  3.53 + -13.69)  0.0000967  .............((((((...................))))(((...)))((((........(((.....)))..................))))))..  0.0004112  [[][][]]
 
-                                  31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u___  130
+                                  31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U___  130
 (-22.28 = -9.28 + -13.00)  0.4267972  ........((((((.......((((........(((.....)))..................))))))))))............................  1.0000000  []
 ( -8.70 =  3.25 + -11.95)  0.0000000  .(((........(((...)))((((........(((.....)))..................))))..))).............................  0.0000000  [[][]]
 ( -3.80 =  2.65 +  -6.45)  0.0000000  ((.......((.(((...))).)))).......(((.....)))........................................................  0.0000000  [][]
 ( -2.80 =  5.66 +  -8.46)  0.0000000  ((.......((.(((...))).)))).......(((.....)))...................((....)).............................  0.0000000  [][][]
 
-                                  61  _cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__  160
+                                  61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( -2.65 =  0.76 +  -3.41)  0.4553044  ..................................(((.((...................................................)).)))...  0.7607262  []
 ( -1.72 =  2.75 +  -4.47)  0.0940248  ...(((.....)))....................(((.((...................................................)).)))...  0.2392738  [][]
 
-                                  91  g_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                                  91  G_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 ( -2.65 =  0.76 +  -3.41)  0.5976160  ....(((.((...................................................)).)))............  1.0000000  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1.1 --consensus=consensus --lowProbFilter=0.01 --nfactor=1 --outputLowProbFilter=0 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                         1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-32.37 = -21.17 + -11.20)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.260)  0.9876815  [[][][]]
 (-29.69 = -19.67 + -10.02)  (((((((......................(((((.......))))).....(((((.......)))))))))))).  (sci:  1.150)  0.0123185  [[][]]
 
@@ -1088,7 +1088,7 @@
 (-52.06 = -22.34 + -29.72)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  2.170)  1.00  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --nfactor=1 --outputLowProbFilter=0 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=30
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                         1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-64.02 = -34.38 + -29.64)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  1.00  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=0.9 --consensus=mis --lowProbFilter=0.01 --nfactor=1 --outputLowProbFilter=0.0001 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=17 --windowIncrement=30
@@ -1096,10 +1096,10 @@
 (-61.06 = -34.38 + -26.68)  0.15  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  1.00  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --grammar=microstate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1.1 --consensus=consensus --lowProbFilter=0.01 --nfactor=0.9 --outputLowProbFilter=0 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
-                         1  uggugguggcccgcucaaccggcggccca______cugau  40
+                         1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAU  40
 (-26.22 = -13.80 + -12.42)  ...((((((((((((.....)))))))))......)))..  (sci:  1.580)  1.00  []
 
-                        31  _____cugauugcgccuuuuug  52
+                        31  _____CUGAUUGCGCCUUUUUG  52
 (  0.00 =   0.00 +   0.00)  ......................  (sci: 0.000)  0.89  _
 (  1.78 =   3.10 +  -1.32)  ......((....))........  (sci: -6.190)  0.11  []
 
@@ -1135,7 +1135,7 @@
 (-18.28 = -17.92 + -0.36)  .......((((((((.....))))))))........................  1.0000000  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=0.9 --consensus=consensus --lowProbFilter=0.01 --nfactor=1.1 --outputLowProbFilter=0 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=30
-                              1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                              1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-26.99 = -25.21 + -1.78)  0.83  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  (sci:  0.910)  1.00  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --grammar=macrostate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1.1 --consensus=mis --lowProbFilter=0.01 --nfactor=1 --outputLowProbFilter=0 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=30
@@ -1156,7 +1156,7 @@
 (-24.90 = -13.23 + -11.67)  0.0067193  .(((((.((((((((.....))))))))...........)))))(......)  (sci:  1.080)  0.0157450  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1.1 --consensus=consensus --lowProbFilter=0.01 --nfactor=1.1 --outputLowProbFilter=0.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=10
-                               1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                               1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-49.92 = -17.40 + -32.52)  0.63  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  1.00  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=nodangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1 --consensus=mis --lowProbFilter=0.01 --nfactor=0.9 --outputLowProbFilter=0.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=30
@@ -1172,58 +1172,58 @@
 (-27.19 = -18.95 + -8.24)  (((((((......................(((((.......))))).....(((((.......)))))))))))).  0.0167330  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1.1 --consensus=consensus --lowProbFilter=0.01 --nfactor=0.9 --outputLowProbFilter=0 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
-                      1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                      1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-9.71 = -9.85 +  0.14)  .......(((.((((.....)))).)))........................  (sci:  0.560)  0.99  []
 (-6.43 = -6.33 + -0.10)  .......(((.((((.....)))).))).........(......).......  (sci:  0.370)  0.01  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --nfactor=1 --outputLowProbFilter=0.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=20
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                         1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-38.31 = -28.13 + -10.18)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.130)  1.00  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=overdangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --nfactor=1 --outputLowProbFilter=0 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=17 --windowIncrement=30
-                      1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
+                      1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGC  40
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.93  _
 ( 2.13 =  2.04 +  0.09)  ................................(......)  (sci: -0.110)  0.07  []
 ( 4.30 =  4.08 +  0.22)  ..............(.....)...........(......)  (sci: -0.220)  0.00  [][]
 
-                     31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg  70
+                     31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG  70
 (-4.05 = -4.24 +  0.19)  .............(((....))).................  (sci:  0.230)  0.79  []
 (-2.81 = -3.33 +  0.52)  .............(((....))).((........))....  (sci:  0.160)  0.19  [][]
 (-1.19 = -1.78 +  0.59)  .....(......)(((....))).((........))....  (sci:  0.070)  0.01  [][][]
 (-0.75 = -1.09 +  0.34)  ..(..(......)(((....)))..........)......  (sci:  0.040)  0.01  [[][]]
 
-                     61  _cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                     61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.83  _
 ( 1.03 =  0.74 +  0.29)  ....((.....))...........................  (sci: -0.100)  0.17  []
 ( 3.33 =  3.15 +  0.18)  ....((.....)).....................(....)  (sci: -0.330)  0.00  [][]
 
-                     91  g_ucguccccgcgccugg________________g_u___  130
+                     91  G_UCGUCCCCGCGCCUGG________________G_U___  130
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.98  _
 ( 2.31 =  2.42 + -0.11)  ....(....)..............................  (sci: -0.220)  0.02  []
 
-                    121  ____g_u________cuggg_____gcccgaggagaca__  160
+                    121  ____G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.98  _
 ( 2.29 =  2.46 + -0.17)  .........................(..........)...  (sci: -0.200)  0.02  []
 ( 7.29 =  7.37 + -0.08)  .....(...........).......(..........)...  (sci: -0.620)  0.00  [][]
 
-                    151  aggagaca__acgcg____  169
+                    151  AGGAGACA__ACGCG____  169
 ( 0.00 =  0.00 +  0.00)  ...................  (sci: 0.000)  1.00  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=overdangle --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1.1 --consensus=consensus --lowProbFilter=0.01 --nfactor=1 --outputLowProbFilter=0.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=30
-                         1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                         1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-21.79 =  -7.13 + -14.66)  ..............((.((.(((.......)))).)..))((((.......(((((..(..(((((.....))))............))..)))))))))  0.8412972  [][]
 
-                        31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u___  130
+                        31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U___  130
 (-27.89 = -14.06 + -13.83)  .(((.(..((((((.......(((((..(..(((((.....))))............))..)))))))))))))))........................  0.9404893  []
 
-                        61  _cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__  160
+                        61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( -4.63 =   1.31 +  -5.94)  ..((((.....))))...................(((((((.((.........................................)).)).)).)))...  0.9101398  [][]
 
-                        91  g_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                        91  G_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 ( -3.74 =   1.17 +  -4.91)  ....(((((((.((.........................................)).)).)).)))............  0.9999965  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --nfactor=1 --outputLowProbFilter=0.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=25.9 --windowIncrement=20
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                         1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-58.28 = -28.64 + -29.64)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.770)  1.00  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1.1 --consensus=mis --lowProbFilter=0.01 --nfactor=1.1 --outputLowProbFilter=0.0001 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=37 --windowIncrement=10
@@ -1304,7 +1304,7 @@
 (  2.03 =   6.05 +  -4.02)  .......(.....)(((.((...................................................)).)))............  (sci: -0.080)  0.00  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1.1 --consensus=consensus --lowProbFilter=0.01 --nfactor=1.1 --outputLowProbFilter=0 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=1 --sci=1 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=10
-                                   1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                                   1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-34.13 = -27.71 + -6.42)  0.7340125  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.150)  1.0000000  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1.1 --consensus=mis --lowProbFilter=0.01 --nfactor=1.1 --outputLowProbFilter=0 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=0 --sci=1 --shapeLevel=5 --structureProbs=0 --temperature=37 --windowIncrement=30
@@ -1313,21 +1313,21 @@
 (-20.40 = -18.99 + -1.41)  (((((((......................(((((.......))))).....(((((.......)))))))))))).  (sci:  0.810)  0.0156687  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=macrostate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --nfactor=0.9 --outputLowProbFilter=0 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=0 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=10
-                              1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+                              1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 ( -3.96 =  -3.26 + -0.70)  0.88  .........(((.............)))............  1.00  []
 
-                             11  cucagc__ggu__agagcaccaggcuuucacccagaaagu  50
+                             11  CUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGU  50
 ( -6.01 =  -6.03 +  0.02)  0.18  ....((..........)).(((((.......)))))....  0.56  [][]
 ( -7.09 =  -6.55 + -0.54)  0.39  ...................(((((.......)))))....  0.43  []
 ( -4.11 =  -3.00 + -1.11)  0.00  ..(......((.....)).(((((.......)))))..).  0.01  [[][]]
 
-                             21  u__agagcaccaggcuuucacccagaaagucacggguucg  60
+                             21  U__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCG  60
 ( -7.09 =  -6.55 + -0.54)  0.85  .........(((((.......)))))..............  1.00  []
 
-                             31  caggcuuucacccagaaagucacggguucgaaucccaucg  70
+                             31  CAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCG  70
 (-12.93 = -12.21 + -0.72)  0.93  ((((.......))))......(((((.......)))))..  1.00  [][]
 
-                             41  cccagaaagucacggguucgaaucccaucgaacgcg  76
+                             41  CCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 ( -7.50 =  -7.32 + -0.18)  0.96  ...........(((((.......)))))........  1.00  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --grammar=macrostate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1 --consensus=mis --lowProbFilter=0.01 --nfactor=0.9 --outputLowProbFilter=0.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=1 --sci=0 --shapeLevel=5 --structureProbs=1 --temperature=25.9 --windowIncrement=20
@@ -1350,7 +1350,7 @@
 ( -1.20 =   0.03 + -1.23)  0.0818976  ...............(((.((.((.........................................)).)).)))...............  0.9957507  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=0 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1 --consensus=consensus --nfactor=1.1 --numSamples=10 --outputLowProbFilter=0.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=1 --sci=0 --shapeLevel=5 --showSamples=1 --structureProbs=0 --temperature=17 --windowIncrement=20
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                         1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 10 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (-55.59 = -25.19 + -30.39)  (((((((..((((.((...))...)))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 (-56.83 = -27.27 + -29.56)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
@@ -1374,59 +1374,59 @@ Sampling results:
 (0.85 = 0.58 + 0.27)  ..........................................(((...)))((((.....................................)))).........................................................................  (sci: -0.010)  0.18  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=0 --grammar=nodangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1.1 --consensus=consensus --nfactor=0.9 --numSamples=100 --outputLowProbFilter=0.0001 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=1 --sci=1 --shapeLevel=5 --showSamples=0 --structureProbs=0 --temperature=37 --windowIncrement=10
-                      1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
+                      1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGC  40
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.80  _
 ( 1.86 =  2.00 + -0.14)  ..............((((.....)))).............  (sci: -0.170)  0.20  []
 
-                     11  _gcggccgcgcgucggc_g_gggg_caagcggggugguac  50
+                     11  _GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUAC  50
 (-1.19 =  1.25 + -2.44)  ....(((.(((.................))).))).....  (sci:  0.110)  0.86  []
 ( 0.46 =  6.47 + -6.01)  .....((((.(((.......))).....)))).((...))  (sci: -0.040)  0.11  [][]
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.03  _
 
-                     21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu_  60
+                     21  CGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU_  60
 (-6.08 =  0.26 + -6.34)  ..................((.((......)))).......  (sci:  0.610)  0.95  []
 (-3.41 =  3.79 + -7.20)  (((.......))).....((.((......)))).......  (sci:  0.340)  0.05  [][]
 
-                     31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg  70
+                     31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG  70
 (-6.08 =  0.26 + -6.34)  ........((.((......)))).................  (sci:  0.680)  0.81  []
 (-5.00 =  2.24 + -7.24)  ........((.((......)))).((((....))))....  (sci:  0.560)  0.19  [][]
 
-                     41  ggggugguaccgcggcgcu__cgcgcaccg_gcg______  80
+                     41  GGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG______  80
 (-4.95 =  0.27 + -5.22)  ...(((....))).........((((.....)))).....  (sci:  0.670)  0.81  [][]
 (-4.54 = -0.48 + -4.06)  ...(((....)))...........................  (sci:  0.610)  0.19  []
 
-                     51  cgcggcgcu__cgcgcaccg_gcg_____________ggc  90
+                     51  CGCGGCGCU__CGCGCACCG_GCG_____________GGC  90
 (-2.39 =  0.50 + -2.89)  ((((.......)))).........................  (sci:  0.320)  0.99  []
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.01  _
 
-                     61  _cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                     61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-0.42 =  0.74 + -1.16)  ..((((.....)))).........................  (sci:  0.090)  0.70  []
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.30  _
 
-                     71  _gcg_____________ggcg_ucguccccgcgccugg__  110
+                     71  _GCG_____________GGCG_UCGUCCCCGCGCCUGG__  110
 ( 0.08 =  1.98 + -1.90)  ......................(((....)))........  (sci: -0.020)  0.56  []
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.44  _
 
-                     81  _______ggcg_ucguccccgcgccugg____________  120
+                     81  _______GGCG_UCGUCCCCGCGCCUGG____________  120
 ( 0.08 =  1.98 + -1.90)  ............(((....)))..................  (sci: -0.020)  0.54  []
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.46  _
 
-                     91  g_ucguccccgcgccugg________________g_u___  130
+                     91  G_UCGUCCCCGCGCCUGG________________G_U___  130
 ( 0.08 =  1.98 + -1.90)  ..(((....)))............................  (sci: -0.020)  0.54  []
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.46  _
 
-                    101  gcgccugg________________g_u________cuggg  140
+                    101  GCGCCUGG________________G_U________CUGGG  140
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  1.00  _
 
-                    111  ______________g_u________cuggg_____gcccg  150
+                    111  ______________G_U________CUGGG_____GCCCG  150
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.99  _
 ( 2.92 =  3.34 + -0.42)  ...........................(((......))).  (sci: -0.470)  0.01  []
 
-                    121  ____g_u________cuggg_____gcccgaggagaca__  160
+                    121  ____G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( 0.00 =  0.00 +  0.00)  ........................................  (sci: 0.000)  0.99  _
 ( 2.92 =  3.34 + -0.42)  .................(((......)))...........  (sci: -0.590)  0.01  []
 
-                    131  _____cuggg_____gcccgaggagaca__acgcg____  169
+                    131  _____CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 ( 0.00 =  0.00 +  0.00)  .......................................  (sci: 0.000)  0.99  _
 ( 5.19 =  4.95 +  0.24)  .......((........))....................  (sci: -1.460)  0.01  []
 
@@ -1563,7 +1563,7 @@ Sampling results:
 (-29.68 = -16.99 + -12.69)  .((((((((((((((.....)))))))))..........)))))........  (sci:  1.400)  1.0000000  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=0 --grammar=overdangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=0.9 --consensus=consensus --nfactor=1.1 --numSamples=100 --outputLowProbFilter=0.0001 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=1 --sci=1 --shapeLevel=5 --showSamples=1 --structureProbs=1 --temperature=37 --windowIncrement=10
-                            1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
+                            1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGC  40
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 ( 0.00 =  0.00 +  0.00)  0.75  ........................................  (sci: -0.000)  _
 ( 2.43 =  3.12 + -0.69)  0.01  ....................((.........)).......  (sci: -0.187)  []
@@ -1671,7 +1671,7 @@ Sampling results:
 ( 0.00 =  0.00 +  0.00)  0.75  ........................................  (sci: 0.000)  0.70  _
 ( 1.33 =  2.63 + -1.30)  0.09  .................((...................))  (sci: -0.100)  0.30  []
 
-                           11  _gcggccgcgcgucggc_g_gggg_caagcggggugguac  50
+                           11  _GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUAC  50
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (-1.17 =  0.49 + -1.66)  0.26  ....(((.(((.................))).))).....  (sci:  0.095)  []
 (-1.17 =  0.49 + -1.66)  0.26  ....(((.(((.................))).))).....  (sci:  0.095)  []
@@ -1780,7 +1780,7 @@ Sampling results:
 (-0.10 =  3.89 + -3.99)  0.05  .....((((...................)))).((...))  (sci:  0.010)  0.09  [][]
 ( 0.00 =  0.00 +  0.00)  0.04  ........................................  (sci: 0.000)  0.04  _
 
-                           21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu_  60
+                           21  CGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU_  60
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (-5.35 = -2.07 + -3.29)  0.04  .......................(((....))).......  (sci:  0.483)  []
 (-6.72 = -3.03 + -3.69)  0.35  ..................((((.......)))).......  (sci:  0.606)  []
@@ -1888,7 +1888,7 @@ Sampling results:
 (-6.72 = -3.03 + -3.69)  0.35  ..................((((.......)))).......  (sci:  0.610)  0.96  []
 (-4.14 =  1.65 + -5.79)  0.01  ((.........)).....((.((......)))).......  (sci:  0.370)  0.04  [][]
 
-                           31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg  70
+                           31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG  70
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (-6.26 = -2.09 + -4.17)  0.08  ........((((.......)))).((((....))))....  (sci:  0.571)  [][]
 (-6.57 = -1.47 + -5.10)  0.13  ........((.((......)))).................  (sci:  0.599)  []
@@ -1997,7 +1997,7 @@ Sampling results:
 (-6.72 = -3.03 + -3.69)  0.17  ........((((.......)))).................  (sci:  0.610)  0.44  []
 (-3.97 =  1.99 + -5.96)  0.00  ..........(((((...)))(((.........))).)).  (sci:  0.360)  0.03  [[][]]
 
-                           41  ggggugguaccgcggcgcu__cgcgcaccg_gcg______  80
+                           41  GGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG______  80
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (-3.40 = -0.04 + -3.37)  0.00  .((......))...(((......)))..............  (sci:  0.372)  [][]
 (-5.64 = -0.76 + -4.88)  0.16  .((......))(((.........)))..............  (sci:  0.617)  [][]
@@ -2106,7 +2106,7 @@ Sampling results:
 (-5.36 = -2.07 + -3.29)  0.10  ...(((....)))...........................  (sci:  0.590)  0.12  []
 (-3.62 =  1.67 + -5.29)  0.01  ((((.....))(((.........))).))...........  (sci:  0.400)  0.04  [[][]]
 
-                           51  cgcggcgcu__cgcgcaccg_gcg_____________ggc  90
+                           51  CGCGGCGCU__CGCGCACCG_GCG_____________GGC  90
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (-1.61 =  0.66 + -2.26)  0.37  (((.........))).........................  (sci:  0.197)  []
 (-1.61 =  0.66 + -2.26)  0.37  (((.........))).........................  (sci:  0.197)  []
@@ -2214,7 +2214,7 @@ Sampling results:
 (-1.60 =  0.66 + -2.26)  0.37  (((.........))).........................  (sci:  0.200)  0.99  []
 ( 0.00 =  0.00 +  0.00)  0.03  ........................................  (sci: 0.000)  0.01  _
 
-                           61  _cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                           61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 ( 0.61 =  1.47 + -0.86)  0.22  ...(((.....)))..........................  (sci: -0.100)  []
 ( 0.61 =  1.47 + -0.86)  0.22  ...(((.....)))..........................  (sci: -0.100)  []
@@ -2322,7 +2322,7 @@ Sampling results:
 ( 0.00 =  0.00 +  0.00)  0.58  ........................................  (sci: 0.000)  0.61  _
 ( 0.61 =  1.47 + -0.86)  0.22  ...(((.....)))..........................  (sci: -0.100)  0.39  []
 
-                           71  _gcg_____________ggcg_ucguccccgcgccugg__  110
+                           71  _GCG_____________GGCG_UCGUCCCCGCGCCUGG__  110
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 ( 2.60 =  3.34 + -0.75)  0.01  .......................(((....))).......  (sci: -0.447)  []
 ( 2.24 =  2.96 + -0.72)  0.02  .......................((......)).......  (sci: -0.385)  []
@@ -2430,7 +2430,7 @@ Sampling results:
 ( 0.00 =  0.00 +  0.00)  0.72  ........................................  (sci: 0.000)  0.54  _
 ( 0.77 =  2.42 + -1.65)  0.21  .......................((....)).........  (sci: -0.130)  0.46  []
 
-                           81  _______ggcg_ucguccccgcgccugg____________  120
+                           81  _______GGCG_UCGUCCCCGCGCCUGG____________  120
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 ( 0.00 =  0.00 +  0.00)  0.74  ........................................  (sci: -0.000)  _
 ( 0.00 =  0.00 +  0.00)  0.74  ........................................  (sci: -0.000)  _
@@ -2538,7 +2538,7 @@ Sampling results:
 ( 0.00 =  0.00 +  0.00)  0.74  ........................................  (sci: 0.000)  0.75  _
 ( 0.77 =  2.42 + -1.65)  0.21  .............((....))...................  (sci: -0.140)  0.25  []
 
-                           91  g_ucguccccgcgccugg________________g_u___  130
+                           91  G_UCGUCCCCGCGCCUGG________________G_U___  130
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 ( 2.24 =  2.96 + -0.72)  0.02  ...((......))...........................  (sci: -0.374)  []
 ( 0.00 =  0.00 +  0.00)  0.75  ........................................  (sci: -0.000)  _
@@ -2646,7 +2646,7 @@ Sampling results:
 ( 0.00 =  0.00 +  0.00)  0.75  ........................................  (sci: 0.000)  0.76  _
 ( 0.77 =  2.42 + -1.65)  0.21  ...((....)).............................  (sci: -0.130)  0.24  []
 
-                          101  gcgccugg________________g_u________cuggg  140
+                          101  GCGCCUGG________________G_U________CUGGG  140
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 ( 0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: -0.000)  _
 ( 0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: -0.000)  _
@@ -2753,7 +2753,7 @@ Sampling results:
 
 ( 0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: 0.000)  1.00  _
 
-                          111  ______________g_u________cuggg_____gcccg  150
+                          111  ______________G_U________CUGGG_____GCCCG  150
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 ( 0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: -0.000)  _
 ( 0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: -0.000)  _
@@ -2860,7 +2860,7 @@ Sampling results:
 
 ( 0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: 0.000)  1.00  _
 
-                          121  ____g_u________cuggg_____gcccgaggagaca__  160
+                          121  ____G_U________CUGGG_____GCCCGAGGAGACA__  160
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 ( 0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: -0.000)  _
 ( 0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: -0.000)  _
@@ -2967,7 +2967,7 @@ Sampling results:
 
 ( 0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: 0.000)  1.00  _
 
-                          131  _____cuggg_____gcccgaggagaca__acgcg____  169
+                          131  _____CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 ( 0.00 =  0.00 +  0.00)  0.99  .......................................  (sci: -0.000)  _
 ( 0.00 =  0.00 +  0.00)  0.99  .......................................  (sci: -0.000)  _
@@ -3110,14 +3110,14 @@ Sampling results:
 (-10.17 = -10.41 +  0.24)  ......................................((((((..((...))...........((.....)).......................))))))...................................................................  0.1100000  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=0 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1 --consensus=consensus --nfactor=1.1 --numSamples=100 --outputLowProbFilter=0 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=1 --sci=0 --shapeLevel=5 --showSamples=0 --structureProbs=1 --temperature=17 --windowIncrement=10
-                               1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                               1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-24.90 = -12.20 + -12.70)  0.01  ....................((.........)).....((((((.......((((((......(((.....)))...............)).))))))))))...................................................................  0.49  [][]
 (-25.84 = -13.91 + -11.93)  0.08  ......................................((((((.......((((((......(((.....)))...............)).))))))))))...................................................................  0.38  []
 (-23.61 = -10.01 + -13.60)  0.00  .............(((....((.........)).....((((((.......((((((......(((.....)))...............)).))))))))))...........................................))).....................  0.08  [[][]]
 (-22.37 = -10.47 + -11.90)  0.00  ..............(((.......)))...........((((((.......((((((....(((.......)))...............)).))))))))))...........................................((...............)).....  0.05  [][][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=0 --grammar=microstate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=0.9 --consensus=consensus --nfactor=1 --numSamples=10 --outputLowProbFilter=0 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=1 --sci=1 --shapeLevel=5 --showSamples=1 --structureProbs=1 --temperature=17 --windowIncrement=20
-                             1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
+                             1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGC  40
 10 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (  0.00 =  0.00 +  0.00)  0.25  ........................................  (sci: -0.000)  _
 (  0.86 =  0.94 + -0.07)  0.06  ..............(((.......))).............  (sci: -0.051)  []
@@ -3135,7 +3135,7 @@ Sampling results:
 (  0.44 =  2.38 + -1.94)  0.12  ..............((....((.........)).....))  (sci: -0.030)  0.90  []
 (  0.00 =  0.00 +  0.00)  0.25  ........................................  (sci: 0.000)  0.10  _
 
-                            21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu_  60
+                            21  CGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU_  60
 10 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (-10.41 = -5.91 + -4.50)  0.17  ...................((.(((...))).))......  (sci:  0.627)  []
 ( -9.31 = -4.79 + -4.52)  0.02  ((.........)).....((((.......)))).......  (sci:  0.561)  [][]
@@ -3153,7 +3153,7 @@ Sampling results:
 (-10.41 = -5.91 + -4.50)  0.17  ...................((.(((...))).))......  (sci:  0.630)  0.80  []
 ( -9.31 = -4.79 + -4.52)  0.02  ((.........)).....((((.......)))).......  (sci:  0.560)  0.20  [][]
 
-                            41  ggggugguaccgcggcgcu__cgcgcaccg_gcg______  80
+                            41  GGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG______  80
 10 samples, drawn by stochastic backtrace to estimate shape frequencies:
 ( -8.08 = -2.18 + -5.90)  0.12  ..(((...)))(((.........)))..............  (sci:  0.631)  [][]
 ( -8.09 = -3.12 + -4.96)  0.12  .((......))(((.........)))..............  (sci:  0.631)  [][]
@@ -3170,7 +3170,7 @@ Sampling results:
 
 ( -8.08 = -3.12 + -4.96)  0.12  .((......))(((.........)))..............  (sci:  0.630)  1.00  [][]
 
-                            61  _cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                            61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 10 samples, drawn by stochastic backtrace to estimate shape frequencies:
 ( -0.48 =  0.46 + -0.94)  0.17  ...(((.....)))..........................  (sci:  0.053)  []
 ( -0.68 =  0.27 + -0.94)  0.24  ...(((.....)))..........................  (sci:  0.074)  []
@@ -3187,7 +3187,7 @@ Sampling results:
 
 ( -0.67 =  0.27 + -0.94)  0.24  ...(((.....)))..........................  (sci:  0.070)  1.00  []
 
-                            81  _______ggcg_ucguccccgcgccugg____________  120
+                            81  _______GGCG_UCGUCCCCGCGCCUGG____________  120
 10 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (  0.67 =  1.50 + -0.83)  0.06  .............(((....))).................  (sci: -0.083)  []
 (  0.02 =  1.69 + -1.68)  0.20  .............((....))...................  (sci: -0.002)  []
@@ -3205,7 +3205,7 @@ Sampling results:
 ( -0.05 =  1.63 + -1.68)  0.22  .............((....))...................  (sci:  0.010)  0.60  []
 (  0.00 =  0.00 +  0.00)  0.20  ........................................  (sci: 0.000)  0.40  _
 
-                           101  gcgccugg________________g_u________cuggg  140
+                           101  GCGCCUGG________________G_U________CUGGG  140
 10 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (  0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: -0.000)  _
 (  0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: -0.000)  _
@@ -3222,7 +3222,7 @@ Sampling results:
 
 (  0.00 =  0.00 +  0.00)  1.00  ........................................  (sci: 0.000)  1.00  _
 
-                           121  ____g_u________cuggg_____gcccgaggagaca__  160
+                           121  ____G_U________CUGGG_____GCCCGAGGAGACA__  160
 10 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (  0.00 =  0.00 +  0.00)  0.94  ........................................  (sci: -0.000)  _
 (  0.00 =  0.00 +  0.00)  0.94  ........................................  (sci: -0.000)  _
@@ -3240,7 +3240,7 @@ Sampling results:
 (  0.00 =  0.00 +  0.00)  0.94  ........................................  (sci: 0.000)  0.90  _
 (  1.95 =  2.35 + -0.40)  0.03  ..........................((...)).......  (sci: -0.200)  0.10  []
 
-                           141  _____gcccgaggagaca__acgcg____  169
+                           141  _____GCCCGAGGAGACA__ACGCG____  169
 10 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (  0.00 =  0.00 +  0.00)  0.89  .............................  (sci: -0.000)  _
 (  0.00 =  0.00 +  0.00)  0.89  .............................  (sci: -0.000)  _
@@ -3366,7 +3366,7 @@ Sampling results:
 (-61.25 = -28.64 + -32.61)  0.12  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  1.00  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1 --consensus=consensus --nfactor=0.9 --numSamples=100 --outputLowProbFilter=0 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=1 --sci=0 --shapeLevel=5 --showSamples=1 --structureProbs=0 --temperature=17 --windowIncrement=30
-                        1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                        1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (-36.98 = -30.64 + -6.34)  (((((((..((((.((...))...)))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
 (-38.62 = -32.71 + -5.91)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  [[][][]]
@@ -3474,58 +3474,58 @@ Sampling results:
 (-38.62 = -32.71 + -5.91)  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  1.00  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1.1 --consensus=consensus --nfactor=1 --numSamples=100 --outputLowProbFilter=0.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=1 --sci=1 --shapeLevel=5 --showSamples=0 --structureProbs=1 --temperature=25.9 --windowIncrement=10
-                                   1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                                   1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-35.10 = -28.64 + -6.46)  0.7921208  (((((((..((((...........)))).(((((.......))))).....(((((.......)))))))))))).  (sci:  1.070)  1.0000000  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=0 --grammar=macrostate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1.1 --consensus=consensus --nfactor=1.1 --numSamples=100 --outputLowProbFilter=0 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=0 --sci=1 --shapeLevel=5 --showSamples=0 --structureProbs=0 --temperature=25.9 --windowIncrement=10
-                     1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
+                     1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGC  40
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  1.0000000  _
 
-                    11  _gcggccgcgcgucggc_g_gggg_caagcggggugguac  50
+                    11  _GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUAC  50
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  0.9900000  _
 ( 3.49 =  3.49 + 0.00)  .................................((...))  (sci: -0.220)  0.0100000  []
 
-                    21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu_  60
+                    21  CGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU_  60
 (-1.80 = -1.88 + 0.08)  ......................((.....)).........  (sci:  0.120)  0.9900000  []
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  0.0100000  _
 
-                    31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg  70
+                    31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG  70
 (-1.80 = -1.88 + 0.08)  ............((.....))...................  (sci:  0.130)  0.9800000  []
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  0.0200000  _
 
-                    41  ggggugguaccgcggcgcu__cgcgcaccg_gcg______  80
+                    41  GGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG______  80
 (-1.80 = -1.88 + 0.08)  ..((.....)).............................  (sci:  0.160)  0.9500000  []
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  0.0500000  _
 
-                    51  cgcggcgcu__cgcgcaccg_gcg_____________ggc  90
+                    51  CGCGGCGCU__CGCGCACCG_GCG_____________GGC  90
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  1.0000000  _
 
-                    61  _cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                    61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  1.0000000  _
 
-                    71  _gcg_____________ggcg_ucguccccgcgccugg__  110
+                    71  _GCG_____________GGCG_UCGUCCCCGCGCCUGG__  110
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  1.0000000  _
 
-                    81  _______ggcg_ucguccccgcgccugg____________  120
+                    81  _______GGCG_UCGUCCCCGCGCCUGG____________  120
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  1.0000000  _
 
-                    91  g_ucguccccgcgccugg________________g_u___  130
+                    91  G_UCGUCCCCGCGCCUGG________________G_U___  130
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  1.0000000  _
 
-                   101  gcgccugg________________g_u________cuggg  140
+                   101  GCGCCUGG________________G_U________CUGGG  140
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  1.0000000  _
 
-                   111  ______________g_u________cuggg_____gcccg  150
+                   111  ______________G_U________CUGGG_____GCCCG  150
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  1.0000000  _
 
-                   121  ____g_u________cuggg_____gcccgaggagaca__  160
+                   121  ____G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( 0.00 =  0.00 + 0.00)  ........................................  (sci: 0.000)  1.0000000  _
 
-                   131  _____cuggg_____gcccgaggagaca__acgcg____  169
+                   131  _____CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 ( 0.00 =  0.00 + 0.00)  .......................................  (sci: 0.000)  1.0000000  _
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=0 --grammar=macrostate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1 --consensus=consensus --nfactor=1 --numSamples=100 --outputLowProbFilter=0.0001 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=0 --sci=1 --shapeLevel=5 --showSamples=0 --structureProbs=0 --temperature=25.9 --windowIncrement=10
-                       1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                       1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-11.26 = -11.32 + 0.06)  .......(((.((((.....)))).)))........................  (sci:  0.520)  1.0000000  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1 --consensus=mis --nfactor=1 --numSamples=10 --outputLowProbFilter=0 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=0 --sci=0 --shapeLevel=5 --showSamples=0 --structureProbs=0 --temperature=17 --windowIncrement=30
@@ -3533,7 +3533,7 @@ Sampling results:
 (-34.66 = -24.48 + -10.18)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  1.0000000  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1.1 --consensus=consensus --nfactor=0.9 --numSamples=10 --outputLowProbFilter=0.0001 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=0 --sci=0 --shapeLevel=5 --showSamples=0 --structureProbs=1 --temperature=25.9 --windowIncrement=20
-                               1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                               1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-33.50 = -22.26 + -11.24)  0.71  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  0.90  [[][][]]
 (-31.63 = -21.56 + -10.07)  0.03  (((((((......................(((((.......))))).....(((((.......)))))))))))).  0.10  [[][]]
 
@@ -3861,12 +3861,12 @@ Sampling results:
 (  5.16 =  4.99 +   0.17)  ........(......)  0.01  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=1 --grammar=nodangle --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1.1 --consensus=consensus --nfactor=0.9 --numSamples=10 --outputLowProbFilter=0.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=0 --sci=0 --shapeLevel=5 --showSamples=0 --structureProbs=1 --temperature=25.9 --windowIncrement=10
-                               1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                               1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-33.50 = -22.26 + -11.24)  0.71  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  0.90  [[][][]]
 (-31.63 = -21.56 + -10.07)  0.03  (((((((......................(((((.......))))).....(((((.......)))))))))))).  0.10  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=1 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1.1 --consensus=consensus --nfactor=0.9 --numSamples=100 --outputLowProbFilter=0.0001 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=0 --sci=0 --shapeLevel=5 --showSamples=1 --structureProbs=1 --temperature=17 --windowIncrement=10
-                            1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                            1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 100 samples, drawn by stochastic backtrace to estimate shape frequencies:
 (-7.03 = -6.61 + -0.42)  0.01  .......((..((((.....))))..)).........(....).........  [][]
 (-4.88 = -3.84 + -1.04)  0.00  ....((.((..((((.....))))(...........).......)).))...  [[][]]
@@ -3976,21 +3976,21 @@ Sampling results:
 (-7.59 = -7.25 + -0.34)  0.03  .......((..((((.....))))..)).........(......).......  0.11  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=1 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1 --consensus=consensus --nfactor=1.1 --numSamples=10 --outputLowProbFilter=0.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=0 --sci=1 --shapeLevel=5 --showSamples=0 --structureProbs=0 --temperature=25.9 --windowIncrement=10
-                      1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                      1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-2.83 = -2.65 + -0.18)  .......................................((.((.....))((((.....................................))))...))....................................................................  (sci:  0.040)  0.60  [[][]]
 (-2.66 = -2.93 +  0.27)  ..........................................((.....))((((.....................................)))).........................................................................  (sci:  0.040)  0.40  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=1 --grammar=overdangle --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --cfactor=1.1 --consensus=consensus --nfactor=1 --numSamples=100 --outputLowProbFilter=0 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=1 --sci=0 --shapeLevel=5 --showSamples=0 --structureProbs=1 --temperature=17 --windowIncrement=20
-                                   1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+                                   1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 (-11.62 = -5.52 +  -6.10)  0.6555246  .........((((...........))))............  0.9900000  []
 ( -5.44 =  0.57 +  -6.01)  0.0000143  .....((..((((...........))))..))..(....)  0.0100000  [][]
 
-                                  21  u__agagcaccaggcuuucacccagaaagucacggguucg  60
+                                  21  U__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCG  60
 (-15.85 = -7.97 +  -7.88)  0.5316954  .........(((((.......)))))..............  0.8900000  []
 (-14.16 = -5.01 +  -9.15)  0.0282897  .........(((((.......)))))....(........)  0.1000000  [][]
 (-11.14 =  0.11 + -11.25)  0.0001517  .......(.(((((.......)))))...((...))...)  0.0100000  [[][]]
 
-                                  41  cccagaaagucacggguucgaaucccaucgaacgcg  76
+                                  41  CCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-17.45 = -8.56 +  -8.89)  0.9730040  ...........(((((.......)))))........  0.9900000  []
 (-14.15 = -4.54 +  -9.61)  0.0031476  ....(.....)(((((.......)))))........  0.0100000  [][]
 
@@ -4111,7 +4111,7 @@ Sampling results:
 ( 0.05 =  0.47 + -0.42)  .......................................((.(((...))).(((.....................................)))....))....................................................................  (sci: 0.000)  0.10  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=1 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=0.9 --consensus=consensus --nfactor=0.9 --numSamples=100 --outputLowProbFilter=0 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=1 --sci=1 --shapeLevel=5 --showSamples=0 --structureProbs=0 --temperature=17 --windowIncrement=10
-                         1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                         1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-30.24 = -14.58 + -15.66)  .............(((.((.((.........))).)..((((((.(....)(((((.....(((((.....))))............)...)))))))))))...........................................))).....................  (sci:  0.370)  0.18  [[][[][]]]
 (-27.97 = -13.04 + -14.93)  ..............(((.......))).....((.(..((((((.(....)(((((..(..(((((.....))))............))..)))))))))))..(..................................).....))).....................  (sci:  0.340)  0.13  [][[[][]][]]
 (-26.69 = -11.16 + -15.53)  .................(((............((.(..((((((.(....).((((..(..(((((.....))))............))..)))).))))))..................(..........).............)))...(....)....))).....  (sci:  0.330)  0.12  [[[[][]][]][]]
@@ -4189,26 +4189,26 @@ Sampling results:
 (-31.70 = -29.92 + -1.78)  0.80  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  (sci:  0.910)  1.00  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --cfactor=1.1 --consensus=consensus --nfactor=1.1 --numSamples=100 --outputLowProbFilter=0 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=0 --sci=1 --shapeLevel=5 --showSamples=0 --structureProbs=1 --temperature=37 --windowIncrement=20
-                                 1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                                 1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-0.97 = -1.05 +  0.08)  0.2036722  .........................................((......))......................................................................................................................  (sci:  0.020)  0.8500000  []
 ( 0.64 =  0.56 +  0.08)  0.0142876  .........................................((......)).(((.....................................)))..........................................................................  (sci: -0.010)  0.0700000  [][]
 ( 0.00 =  0.00 +  0.00)  0.0535689  .........................................................................................................................................................................  (sci: 0.000)  0.0600000  _
 ( 3.51 =  3.65 + -0.14)  0.0001194  .......................................((.(((...)))(((((..................................).))))...))....................................................................  (sci: -0.060)  0.0200000  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=1 --grammar=macrostate --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1 --consensus=consensus --nfactor=1.1 --numSamples=100 --outputLowProbFilter=0.0001 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=1 --sci=1 --shapeLevel=5 --showSamples=0 --structureProbs=0 --temperature=25.9 --windowIncrement=20
-                        1  uggugguggcccgcucaaccggcggccca______cugau  40
+                        1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAU  40
 (-14.29 = -12.33 + -1.96)  .......(((((((.......)))))))............  (sci:  0.700)  1.00  []
 
-                       21  ggcggccca______cugauugcgccuuuuug  52
+                       21  GGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 ( -1.33 =   0.73 + -2.06)  .(((..(..........)..))).........  (sci:  0.180)  0.98  []
 (  3.11 =   4.36 + -1.25)  .((((.(..........).)))).(......)  (sci: -0.430)  0.02  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=sample --allowLP=1 --grammar=macrostate --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --cfactor=1 --consensus=consensus --nfactor=1 --numSamples=100 --outputLowProbFilter=0.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=0 --sci=1 --shapeLevel=5 --showSamples=0 --structureProbs=0 --temperature=37 --windowIncrement=10
-                      1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                      1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-9.15 = -9.21 +  0.06)  .......(((.((((.....)))).)))........................  (sci:  0.530)  0.99  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln '.((....(((.((((.....)))).))).......))...............' --cfactor=0.9 --consensus=consensus --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --temperature=37
-                     1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                     1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-4.89 = -5.31 + 0.42)  .((....(((.((((.....)))).))).......))...............  (sci:  0.300)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln '.........................................(((...)))((((.....................................))))..........................................................................' --cfactor=1 --consensus=mis --nfactor=1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --temperature=37
@@ -4216,7 +4216,7 @@ Sampling results:
 (22.13 = 9.88 + 12.25)  .........................................(((...)))((((.....................................))))..........................................................................  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln '(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).' --cfactor=0.9 --consensus=consensus --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --temperature=37
-                        1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                        1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-20.74 = -11.54 + -9.20)  (((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).  (sci:  1.020)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln '.((....(((.((((.....)))).))).......))...............' --cfactor=1.1 --consensus=mis --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --temperature=17
@@ -4224,7 +4224,7 @@ Sampling results:
 (-9.81 = -10.33 + 0.52)  .((....(((.((((.....)))).))).......))...............  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln '.........................................(((...)))((((.....................................))))..........................................................................' --cfactor=1 --consensus=consensus --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --temperature=17
-                   1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                   1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (6.06 = 2.55 + 3.51)  .........................................(((...)))((((.....................................))))..........................................................................  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln '.........................................(((...)))((((.....................................))))..........................................................................' --cfactor=1.1 --consensus=mis --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --temperature=17
@@ -4240,7 +4240,7 @@ Sampling results:
 (12.29 = 8.23 + 4.06)  .........................................(((...)))((((.....................................))))..........................................................................  (sci: -0.210)  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln '.((....(((.((((.....)))).))).......))...............' --cfactor=1.1 --consensus=consensus --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --temperature=17
-                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                         1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-23.27 = -11.47 + -11.80)  .((....(((.((((.....)))).))).......))...............  []
 (-22.85 = -11.05 + -11.80)  .((....(((.((((.....)))).))).......))...............  []
 (-22.24 = -10.44 + -11.80)  .((....(((.((((.....)))).))).......))...............  []
@@ -4378,7 +4378,7 @@ Sampling results:
 (-28.96 = -18.74 + -10.22)  (((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).  (sci:  0.880)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln '.((....(((.((((.....)))).))).......))...............' --cfactor=1.1 --consensus=consensus --nfactor=0.9 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --temperature=25.9
-                        1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                        1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-21.42 = -9.37 + -12.05)  .((....(((.((((.....)))).))).......))...............  []
 (-21.10 = -9.05 + -12.05)  .((....(((.((((.....)))).))).......))...............  []
 (-20.54 = -8.49 + -12.05)  .((....(((.((((.....)))).))).......))...............  []
@@ -4392,15 +4392,15 @@ Sampling results:
 (25.30 = 7.05 + 18.25)  .........................................(((...)))((((.....................................))))..........................................................................  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln '(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).' --cfactor=1.1 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --temperature=25.9
-                        1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                        1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-32.45 = -24.15 + -8.30)  (((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln '.........................................(((...)))((((.....................................))))..........................................................................' --cfactor=1.1 --consensus=consensus --nfactor=1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --temperature=37
-                    1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                    1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (13.28 = 9.21 + 4.07)  .........................................(((...)))((((.....................................))))..........................................................................  (sci: -0.240)  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln '.((....(((.((((.....)))).))).......))...............' --cfactor=0.9 --consensus=consensus --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --temperature=17
-                       1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                       1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-10.93 = -11.05 + 0.12)  .((....(((.((((.....)))).))).......))...............  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln '.........................................(((...)))((((.....................................))))..........................................................................' --cfactor=1.1 --consensus=mis --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --temperature=25.9
@@ -4408,7 +4408,7 @@ Sampling results:
 (10.63 = 8.12 + 2.51)  .........................................(((...)))((((.....................................))))..........................................................................  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln '.((....(((.((((.....)))).))).......))...............' --cfactor=1 --consensus=consensus --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --temperature=25.9
-                        1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                        1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-18.75 = -8.02 + -10.73)  .((....(((.((((.....)))).))).......))...............  (sci:  0.910)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln '(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).' --cfactor=0.9 --consensus=mis --nfactor=1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --temperature=37
@@ -4416,7 +4416,7 @@ Sampling results:
 (-38.58 = -11.54 + -27.04)  (((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).  (sci:  1.860)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln '.((....(((.((((.....)))).))).......))...............' --cfactor=1.1 --consensus=consensus --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --temperature=17
-                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+                         1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-22.16 = -10.23 + -11.93)  .((....(((.((((.....)))).))).......))...............  (sci:  0.930)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 --grammar=nodangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln '.........................................(((...)))((((.....................................))))..........................................................................' --cfactor=0.9 --consensus=mis --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --temperature=17
@@ -4428,7 +4428,7 @@ Sampling results:
 (-47.76 = -17.67 + -30.09)  (((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln '.........................................(((...)))((((.....................................))))..........................................................................' --cfactor=1 --consensus=consensus --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --temperature=25.9
-                     1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                     1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (25.40 = 7.15 + 18.25)  .........................................(((...)))((((.....................................))))..........................................................................  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 --grammar=overdangle /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln '(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).' --cfactor=1 --consensus=mis --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --temperature=37
@@ -4578,7 +4578,7 @@ Sampling results:
 (-31.00 = -20.74 + -10.26)  (((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 --grammar=microstate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln '.........................................(((...)))((((.....................................))))..........................................................................' --cfactor=1 --consensus=consensus --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --temperature=37
-                    1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                    1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (12.67 = 9.21 + 3.46)  .........................................(((...)))((((.....................................))))..........................................................................  (sci: -0.220)  [][]
 (12.75 = 9.29 + 3.46)  .........................................(((...)))((((.....................................))))..........................................................................  (sci: -0.220)  [][]
 (13.27 = 9.81 + 3.46)  .........................................(((...)))((((.....................................))))..........................................................................  (sci: -0.230)  [][]
@@ -4716,7 +4716,7 @@ Sampling results:
 (-48.75 = -18.74 + -30.01)  (((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).  (sci:  1.480)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln '.........................................(((...)))((((.....................................))))..........................................................................' --cfactor=1.1 --consensus=consensus --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --temperature=17
-                   1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                   1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (8.66 = 3.13 + 5.53)  .........................................(((...)))((((.....................................))))..........................................................................  [][]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln '(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).' --cfactor=1 --consensus=mis --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --temperature=17
@@ -4724,7 +4724,7 @@ Sampling results:
 (-31.86 = -29.90 + -1.96)  (((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).  (sci:  0.810)  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln '(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).' --cfactor=0.9 --consensus=consensus --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --temperature=25.9
-                        1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+                        1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-25.91 = -24.15 + -1.76)  (((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).  [[][][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAalishapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 --grammar=macrostate /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln '(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).' --cfactor=1 --consensus=mis --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --temperature=37
