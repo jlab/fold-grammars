@@ -280,6 +280,10 @@ sub printStatistics {
 		}
 	}
 	print "=" x ($maxLen+6+4)."\n";
+
+	if (@{$refList_failedTests} > 0) {
+		exit(1);
+	}
 }
 
 1;
