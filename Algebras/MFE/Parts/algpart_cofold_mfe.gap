@@ -1,12 +1,12 @@
   int sadd_cut(Subsequence c, int x) {
-    return x + sbase_energy();
+    return x;
   }
 
-  // !!!
+  // ?
   int cut(Subsequence lr, Subsequence c, Subsequence rr) {
     return ss_energy(lr) + ss_energy(rr);
   }
-  // !!!
+  // ?
 
   int hl_cut(Subsequence lb, int c, Subsequence rb) {
     return c + duplex_energy() + termau_energy(lb, rb);
@@ -36,7 +36,7 @@
     return x + c + duplex_energy() + termau_energy(lb, rb) + termau_energy(innerBP, innerBP);
   }
 
-  // temporary functions
+  // temporary function
   int addss_cut(int x, int c) {
-    return x;
+    return x + c;
   }
