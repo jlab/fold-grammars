@@ -241,7 +241,10 @@ sub evaluateTest {
 
 	my $status = 'failed';
 	if (-e "Truth/".$truth) {
-		my $diffResult = Utils::execute("diff -I \"^#CMD:\" -I \"^Cluster info \(\" Truth/$truth $TMPDIR/$truth"); chomp $diffResult;
+		Utils::execute("cat $TMPDIR/$truth | sed \"s#$Settings::rootDir#ROOTDIR#g\" | sed \"s#$Settings::bgapDir#BGAPDIR#g\" > $TMPDIR/${truth}_noprefix");
+		#Utils::execute("cat Truth/$truth | sed \"s#/home/sjanssen/Desktop/fold-grammars/##g\" > Truth/${truth}_noprefix");
+
+		my $diffResult = Utils::execute("diff -I \"^Cluster info \(\" Truth/${truth} $TMPDIR/${truth}_noprefix"); chomp $diffResult;
 		if ($diffResult eq "") {
 			$status = 'passed';
 		} else {
