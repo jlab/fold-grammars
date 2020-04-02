@@ -241,10 +241,12 @@ sub evaluateTest {
 
 	my $status = 'failed';
 	if (-e "Truth/".$truth) {
-		Utils::execute("cat $TMPDIR/$truth | sed \"s#$Settings::rootDir#ROOTDIR#g\" | sed \"s#$Settings::bgapDir#BGAPDIR#g\" > $TMPDIR/${truth}_noprefix");
-		#Utils::execute("cat Truth/$truth | sed \"s#/home/sjanssen/Desktop/fold-grammars/##g\" > Truth/${truth}_noprefix");
+		# Replace concrete prefix file paths from executed test file with generic ROOTDIR and GAPDIR strings.
+		# Thus, recording truth on one system and testing at another should not result in different CMD lines.
+		# ToDo: Binaries are compiled in an arch dependent subdirectory, e.g. x86_64-linux-gnu, which will surely differ on systems like OSX!
+		Utils::execute(Settings::getBinary('cat')." $TMPDIR/$truth | ".Settings::getBinary('sed')." \"s#$Settings::rootDir#ROOTDIR#g\" | ".Settings::getBinary('sed')." \"s#$Settings::bgapDir#BGAPDIR#g\" > $TMPDIR/${truth}_noprefix");
 
-		my $diffResult = Utils::execute("diff -I \"^Cluster info \(\" Truth/${truth} $TMPDIR/${truth}_noprefix"); chomp $diffResult;
+		my $diffResult = Utils::execute(Settings::getBinary('diff')." -I \"^Cluster info \(\" Truth/${truth} $TMPDIR/${truth}_noprefix"); chomp $diffResult;
 		if ($diffResult eq "") {
 			$status = 'passed';
 		} else {
