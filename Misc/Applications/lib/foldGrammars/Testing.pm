@@ -241,7 +241,7 @@ sub evaluateTest {
 
 	my $status = 'failed';
 	if (-e "Truth/".$truth) {
-		# Replace concrete prefix file paths from executed test file with generic ROOTDIR and GAPDIR strings.
+		# Replace concrete prefix file paths from executed test file with generic ROOTDIR and BGAPDIR strings.
 		# Thus, recording truth on one system and testing at another should not result in different CMD lines.
 		# ToDo: Binaries are compiled in an arch dependent subdirectory, e.g. x86_64-linux-gnu, which will surely differ on systems like OSX!
 		Utils::execute(Settings::getBinary('cat')." $TMPDIR/$truth | ".Settings::getBinary('sed')." \"s#$Settings::rootDir#ROOTDIR#g\" | ".Settings::getBinary('sed')." \"s#$Settings::bgapDir#BGAPDIR#g\" > $TMPDIR/${truth}_noprefix");
