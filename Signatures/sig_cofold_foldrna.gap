@@ -1,5 +1,5 @@
 signature sig_cofold_foldrna(alphabet,answer) {
-	include "Signatures/Parts/sigpart_basic.gap"
+	include "Signatures/Parts/sigpart_cofold_basic.gap"
         include "Signatures/Parts/sigpart_cofold.gap"
 
 //microstate extensions:
