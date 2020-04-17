@@ -91,14 +91,6 @@
     return res;
   }
 
-  string ml(Subsequence lb,string e,Subsequence rb) {
-    string res;
-    append(res, '(');
-    append(res, e);
-    append(res, ')');
-    return res;
-  }
-
   string mlall(Subsequence lb,string e,Subsequence rb) {
     string res;
     append(res, '(');
@@ -132,13 +124,6 @@
     append(res, '.');
     append(res, e);
     append(res, ')');
-    return res;
-  }
-
-  string addss(string e,Subsequence rb) {
-    string res;
-    append(res, e);
-    append(res, '.', size(rb));
     return res;
   }
 
