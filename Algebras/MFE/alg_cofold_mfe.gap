@@ -1,26 +1,83 @@
-algebra alg_cofold_mfe implements sig_cofold_foldrna(alphabet = char, answer = int) {
-        include "Algebras/MFE/Parts/algpart_mfe_basic.gap"
+algebra alg_cofold_mfe implements sig_cofold_foldrna(alphabet = char, answer = multi_mfe) {
+        //include "Algebras/MFE/Parts/algpart_mfe_basic.gap"
+	include "Algebras/MFE/Parts/algpart_cofold_mfe_basic.gap"
         include "Algebras/MFE/Parts/algpart_cofold_mfe.gap"
 
   //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions $
-  int acomb(int le,Subsequence b,int re) {return le+re;}
-  int combine(int le,int re) {return le+re;}
-  int trafo(int e) {return e;}
-  int ssadd(Subsequence lb,int e) {return e;}
-  int mladl(Subsequence lb,Subsequence dl,int e,Subsequence rb) {return e;}
-  int mladldr(Subsequence lb,Subsequence dl,int e,Subsequence dr,Subsequence rb) {return e;}
-  int mldladr(Subsequence lb,Subsequence dl,int e,Subsequence dr,Subsequence rb) {return e;}
-  int mladlr(Subsequence lb,Subsequence dl,int e,Subsequence dr,Subsequence rb) {return e;}
-  int mladr(Subsequence lb,int e,Subsequence dr,Subsequence rb) {return e;}
-  int ambd_Pr(int le,Subsequence b,int re) {return le+re;}
-  int ambd(int le,Subsequence b,int re) {return le+re;}
-  int cadd_Pr_Pr_Pr(int le,int re) {return le+re;}
-  int cadd_Pr_Pr(int le,int re) {return le+re;}
-  int cadd_Pr(int le,int re) {return le+re;}
+  multi_mfe acomb(multi_mfe le,Subsequence b,multi_mfe re) {
+    multi_mfe r;
+    append(r.mfe, le.mfe+re.mfe);
+    return r;
+  }
+  multi_mfe combine(multi_mfe le, multi_mfe re) {
+    multi_mfe r;
+    append(r.mfe, le.mfe+re.mfe);
+    return r;
+  }
+  multi_mfe trafo(multi_mfe e) {
+    multi_mfe r;
+    append(r.mfe, e.mfe);
+    return r;
+  }
+  multi_mfe ssadd(Subsequence lb,multi_mfe e) {
+    multi_mfe r;
+    append(r.mfe, e.mfe);
+    return r;
+  }
+  multi_mfe mladl(Subsequence lb,Subsequence dl,multi_mfe e,Subsequence rb) {
+     multi_mfe r;
+     append(r.mfe, e.mfe);
+     return r;
+  }
+  multi_mfe mladldr(Subsequence lb,Subsequence dl,multi_mfe e,Subsequence dr,Subsequence rb) {
+    multi_mfe r;
+    append(r.mfe, e.mfe);
+    return r;
+  }
+  multi_mfe mldladr(Subsequence lb,Subsequence dl,multi_mfe e,Subsequence dr,Subsequence rb) {
+    multi_mfe r;
+    append(r.mfe, e.mfe);
+    return e;
+  }
+  multi_mfe mladlr(Subsequence lb,Subsequence dl, multi_mfe e,Subsequence dr,Subsequence rb) {
+    multi_mfe r;
+    append(r.mfe, e.mfe);
+    return r;
+  }
+  multi_mfe mladr(Subsequence lb,multi_mfe e,Subsequence dr,Subsequence rb) {
+    multi_mfe r;
+    append(r.mfe, e.mfe);
+    return r;
+  }
+  multi_mfe ambd_Pr(multi_mfe le,Subsequence b,multi_mfe re) {
+    multi_mfe r;
+    append(r.mfe, le.mfe+re.mfe);
+    return r;
+  }
+  multi_mfe ambd(multi_mfe le,Subsequence b,multi_mfe re) {
+    multi_mfe r;
+    append(r.mfe, le.mfe+re.mfe);
+    return r;
+  }
+  multi_mfe cadd_Pr_Pr_Pr(multi_mfe le,multi_mfe re) {
+    multi_mfe r;
+    append(r.mfe, le.mfe+re.mfe);
+    return r;
+  }
+  multi_mfe cadd_Pr_Pr(multi_mfe le,multi_mfe re) {
+    multi_mfe r;
+    append(r.mfe, le.mfe+re.mfe);
+    return r;
+  }
+  multi_mfe cadd_Pr(multi_mfe le,multi_mfe re) {
+    multi_mfe r;
+    append(r.mfe, le.mfe+re.mfe);
+    return r;
+  }
 }
 
 algebra alg_cofold_mfe_subopt extends alg_cofold_mfe {
-  kscoring choice [int] h([int] i) {
-    return mfeSubopt(i);
+  kscoring choice [multi_mfe] h([multi_mfe] i) {
+    return mfeSubopt(i.mfe);
   }
 }
