@@ -30,20 +30,20 @@ grammar gra_cofold_nodangle uses sig_cofold_foldrna(axiom = struct) {
               il_cut_l(BASE, seq_cut,                               strong, REGION with maxsize(30) with unpaired, BASE) with basepair |
               il_cut_r(BASE, REGION with maxsize(30) with unpaired, strong, seq_cut,                               BASE) with basepair # h;
 
-  multiloop     =        ml(BASE, REGION0, ml_comps,     REGION0, BASE) with basepair |
+  multiloop     =        ml(BASE, REGION0 with unpaired, ml_comps,     REGION0 with unpaired, BASE) with basepair |
                    ml_cut_l(BASE, seq_cut, ml_comps_cut, REGION0, BASE) with basepair |
                    ml_cut_r(BASE, REGION0, ml_comps_cut, seq_cut, BASE) with basepair # h;
 
-  ml_comps      = cadd_no_cut(incl(dangle),          REGION0,     ml_comps1) |
-                     cadd_cut(incl_no_malus(dangle), seq_cut, ml_comps1_cut) # h;
+  ml_comps      = cadd_no_cut(incl(dangle),          REGION0 with unpaired, ml_comps1    ) |
+                     cadd_cut(incl_no_malus(dangle), seq_cut,               ml_comps1_cut) # h;
 
   ml_comps_cut  = cadd(incl_no_malus(dangle), ml_comps1_cut) # h;
 
-  ml_comps1     =    cadd_cut(incl_no_malus(dangle), seq_cut, ml_comps1) |
-                  cadd_no_cut(incl(dangle),          REGION0, ml_comps1) |
-                     incl_end(dangle                                   ) # h;
+  ml_comps1     =    cadd_cut(incl_no_malus(dangle), seq_cut,               ml_comps1) |
+                  cadd_no_cut(incl(dangle),          REGION0 with unpaired, ml_comps1) |
+                     incl_end(dangle                                                 ) # h;
 
   ml_comps1_cut =   cadd_no_cut(incl_no_malus(dangle), REGION0, ml_comps1_cut) |
-                  incl_no_malus(dangle                                       ) # h;
+                  incl_no_malus(dangle                                                     ) # h;
 
 }
