@@ -6,40 +6,6 @@
 #include <rtlib/table.hh>
 #include <rtlib/rna.hh>
 
-static int bp_index(char x, char y)
-{
-  switch (x) {
-    case A_BASE : switch (y) {
-        case U_BASE : return AU_BP;
-        case GAP_BASE : return N_BP;
-      }
-      break;
-    case C_BASE : switch (y) {
-        case G_BASE : return CG_BP;
-        case GAP_BASE : return N_BP;
-      }
-      break;
-    case G_BASE : switch (y) {
-        case C_BASE : return GC_BP;
-        case U_BASE : return GU_BP;
-        case GAP_BASE : return N_BP;
-      }
-      break;
-    case U_BASE : switch (y) {
-        case G_BASE : return UG_BP;
-        case A_BASE : return UA_BP;
-        case GAP_BASE : return N_BP;
-      }
-      break;
-    case GAP_BASE : switch (y) {
-		case GAP_BASE : return NO_BP;
-	  }
-	  break;
-  }
-  return N_BP;
-}
-
-
 
 //needed for internal loops, because the Vienna guys say that the combined length of left and right unpaired regions can not exceed XXX nucleotides.
 template<typename alphabet, typename pos_type, typename T>
@@ -1224,23 +1190,25 @@ float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
 	for (i = 0; i < seq_size(seq); i++) {
 	  //for (j = i+1+3; j < seq_size(seq); j++) { // cannot save +3 for hairpin loop, because of outside version
 	  for (j = i+1; j < seq_size(seq); j++) {
-		int pfreq[8]={0,0,0,0,0,0,0,0};
-		for (s=0; s<rows(seq); s++) {
-          int type = bp_index(column(seq_char(seq,i),s), column(seq_char(seq,j),s));
-          pfreq[type]++;
-        }
-		double score = 0.0;
-		if (pfreq[0]*2+pfreq[7] > int(rows(seq))) {
-		  array(i,j) = -2.0 * getAlifold_minscore_basepair();
-		} else {
-		  for (k=1,score=0; k<=6; k++) { /* ignore pairtype 7 (gap-gap) */
-            for (l=k; l<=6; l++) {
-              score += pfreq[k]*pfreq[l]*dm[k][l];
-		    }
-	      }
-          float covariance = getAlifold_cfactor() * ((100.0*score)/float(rows(seq)) - getAlifold_nfactor()*100.0*(float(pfreq[0]) + float(pfreq[7])*0.25));
-		  array(i,j) = covariance * -1.0/float(rows(seq));
-	    }
+  		int pfreq[8]={0,0,0,0,0,0,0,0};
+  		for (s=0; s<rows(seq); s++) {
+        int type = bp_index(column(seq_char(seq,i),s), column(seq_char(seq,j),s));
+        if ((column(seq_char(seq,i),s) == GAP_BASE) and (column(seq_char(seq,j),s) == GAP_BASE))
+          type = N_BP;
+        pfreq[type]++;
+      }
+  		double score = 0.0;
+  		if (pfreq[7]*2+pfreq[0] > int(rows(seq))) {
+  		  array(i,j) = -2.0 * getAlifold_minscore_basepair();
+  		} else {
+  		  for (k=1,score=0; k<=6; k++) { /* ignore pairtype 7 (gap-gap) */
+          for (l=k; l<=6; l++) {
+            score += pfreq[k]*pfreq[l]*dm[k][l];
+  		    }
+  	    }
+        float covariance = getAlifold_cfactor() * ((100.0*score)/float(rows(seq)) - getAlifold_nfactor()*100.0*(float(pfreq[7]) + float(pfreq[0])*0.25));
+  		  array(i,j) = covariance * -1.0/float(rows(seq));
+  	  }
 	  }
 	}
 	compute = false;
@@ -1350,22 +1318,6 @@ inline const std::string getRepresentation(Basic_Subsequence<M_Char, unsigned> i
 	result << consensus;
 	return result.str();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #endif

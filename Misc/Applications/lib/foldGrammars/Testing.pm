@@ -24,8 +24,8 @@ our @knotinframe_ALLMODES = ($Settings::MODE_KIF);
 our @pAliKiss_ALLMODES = ($Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_ENFORCE, $Settings::MODE_LOCAL, $Settings::MODE_SHAPES, $Settings::MODE_PROBS);
 
 our $pAliKiss = {
-	' ' => {	values => [$inputFileDir.'t-box.aln',$inputFileDir.'tRNA_example_ungap.aln',$inputFileDir.'trp_attenuator.aln'], 
-					secondValues => ["'.........................................(((...)))((((.....................................))))..........................................................................'","'(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).'","'.((....(((.((((.....)))).))).......))...............'"], 
+	' ' => {	values => [$inputFileDir.'t-box.aln',$inputFileDir.'tRNA_example_ungap.aln',$inputFileDir.'trp_attenuator.aln'],
+					secondValues => ["'.........................................(((...)))((((.....................................))))..........................................................................'","'(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).'","'.((....(((.((((.....)))).))).......))...............'"],
 					valueSelection => $VALUE_SELECTION_RANDOM,
 					modes => \@pAliKiss_ALLMODES},
 
@@ -56,8 +56,8 @@ our $pAliKiss = {
 };
 
 our $RNAalishapes = {
-	' ' => {	values => [$inputFileDir.'t-box.aln',$inputFileDir.'tRNA_example_ungap.aln',$inputFileDir.'trp_attenuator.aln'], 
-					secondValues => ["'.........................................(((...)))((((.....................................))))..........................................................................'","'(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).'","'.((....(((.((((.....)))).))).......))...............'"], 
+	' ' => {	values => [$inputFileDir.'t-box.aln',$inputFileDir.'tRNA_example_ungap.aln',$inputFileDir.'trp_attenuator.aln'],
+					secondValues => ["'.........................................(((...)))((((.....................................))))..........................................................................'","'(((((((..(((..((...))....)))..((((.......))))......(((((.......)))))))))))).'","'.((....(((.((((.....)))).))).......))...............'"],
 					valueSelection => $VALUE_SELECTION_RANDOM,
 					modes => \@RNAalishapes_ALLMODES},
 
@@ -89,8 +89,8 @@ our $RNAalishapes = {
 };
 
 our $pKiss = {
-	' ' => {	values => ['ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA','AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU','gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC'], 
-					secondValues => ["'.[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...'","'..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.'","'....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....'"], 
+	' ' => {	values => ['ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA','AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU','gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC'],
+					secondValues => ["'.[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...'","'..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.'","'....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....'"],
 					valueSelection => $VALUE_SELECTION_RANDOM,
 					modes => \@pKiss_ALLMODES},
 
@@ -115,11 +115,11 @@ our $pKiss = {
 };
 
 our $RNAshapes = {
-	' ' => {	values => ['ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA','AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU','gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC'], 
-					secondValues => ["'.((((((((((((................))))))))))))........(((((((...)))))))...'","'..(((((....))))).....(((((((((.....))))))))).'","'.((.((.((((....)))).)))).....((((........)))).....'"], 
+	' ' => {	values => ['ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA','AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU','gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC'],
+					secondValues => ["'.((((((((((((................))))))))))))........(((((((...)))))))...'","'..(((((....))))).....(((((((((.....))))))))).'","'.((.((.((((....)))).)))).....((((........)))).....'"],
 					valueSelection => $VALUE_SELECTION_RANDOM,
 					modes => \@RNAshapes_ALLMODES},
-					
+
 	'mode' => {modes => \@RNAshapes_ALLMODES, values => \@RNAshapes_ALLMODES, valueSelection => $VALUE_SELECTION_ALL},
 	'windowSize' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], values => [undef, undef, 40, 100], valueSelection => $VALUE_SELECTION_ALL},
 	'windowIncrement' => {modes => [$Settings::MODE_MFE, $Settings::MODE_SUBOPT, $Settings::MODE_SHAPES, $Settings::MODE_PROBS, $Settings::MODE_SAMPLE], values => [10, 20, 30], valueSelection => $VALUE_SELECTION_RANDOM},
@@ -146,8 +146,8 @@ our $RNAshapes = {
 };
 
 our $Knotinframe = {
-	' ' => {	values => [$inputFileDir.'knotinframe_test.fas'], 
-					secondValues => [], 
+	' ' => {	values => [$inputFileDir.'knotinframe_test.fas'],
+					secondValues => [],
 					valueSelection => $VALUE_SELECTION_RANDOM,
 					modes => \@knotinframe_ALLMODES},
 
@@ -163,12 +163,12 @@ our $Knotinframe = {
 
 sub permutate {
 	my ($refHash_parameter, $refList_permutations) = @_;
-	
+
 	my @availParameters = ();
 	foreach my $param (sort {$a cmp $b} keys(%{$refHash_parameter})) {
 		push @availParameters, $param if ($refHash_parameter->{$param}->{valueSelection} eq $VALUE_SELECTION_ALL);
 	}
-	
+
 	if (@availParameters > 0) {
 		my @newPermutations = ();
 		my $parameter = $availParameters[0];
@@ -200,16 +200,16 @@ sub addRandomParameters {
 			if (Utils::contains($refHash_parameter->{$parameter}->{modes}, $refHash_call->{mode})) {
 				next if ((($parameter eq 'absoluteDeviation') && ($refHash_call->{call} =~ m/relativeDeviation/)) || (($parameter eq 'relativeDeviation') && ($refHash_call->{call} =~ m/absoluteDeviation/)));
 				my @values = @{$refHash_parameter->{$parameter}->{values}};
-				
+
 				if (exists $refHash_call->{allowLP}) {
 					@values = (1) if ($parameter eq 'absoluteDeviation' || $parameter eq 'relativeDeviation'); #otherwise tests will have to high runtime
 					@values = (0.01) if ($parameter eq 'lowProbFilter'); #otherwise tests will have to high runtime
 					@values = (5) if ($parameter eq 'shapeLevel');
 				}
-				
+
 				@values = (2) if ($parameter eq 'minHairpinLength' && $refHash_call->{mode} eq $Settings::MODE_ABSTRACT);
 				$refHash_call->{call} =~ s/--allowLP=1// if ($refHash_call->{mode} eq $Settings::MODE_CAST);
-				
+
 				my $randomIndex = int(rand scalar(@values));
 				my $value = $values[$randomIndex];
 				$value = substr($value, 0, 30) if (($parameter eq ' ') && ($refHash_call->{call} =~ m/\-\-mode=probing/)); #prevent too long sequences to avoid too large pareto fronts
@@ -238,10 +238,15 @@ sub addRandomParameters {
 
 sub evaluateTest {
 	my ($testname, $truth, $TMPDIR, $testIndex, $refList_failedTests) = @_;
-	
+
 	my $status = 'failed';
 	if (-e "Truth/".$truth) {
-		my $diffResult = Utils::execute("diff -I \"^#CMD:\" Truth/$truth $TMPDIR/$truth"); chomp $diffResult;
+		# Replace concrete prefix file paths from executed test file with generic ROOTDIR and BGAPDIR strings.
+		# Thus, recording truth on one system and testing at another should not result in different CMD lines.
+		# ToDo: Binaries are compiled in an arch dependent subdirectory, e.g. x86_64-linux-gnu, which will surely differ on systems like OSX!
+		Utils::execute(Settings::getBinary('cat')." $TMPDIR/$truth | ".Settings::getBinary('sed')." \"s#$Settings::rootDir#ROOTDIR#g\" | ".Settings::getBinary('sed')." \"s#$Settings::bgapDir#BGAPDIR#g\" > $TMPDIR/${truth}_noprefix");
+
+		my $diffResult = Utils::execute(Settings::getBinary('diff')." -I \"^Cluster info \(\" Truth/${truth} $TMPDIR/${truth}_noprefix"); chomp $diffResult;
 		if ($diffResult eq "") {
 			$status = 'passed';
 		} else {
@@ -250,36 +255,40 @@ sub evaluateTest {
 	} else {
 		print "truth file 'Truth/$truth' does not exist!\n";
 	}
-	
+
 	if ($status eq 'passed') {
 		print "==-== test ".$testIndex.") '".$testname."' PASSED ==-==\n\n";
 	} else {
 		print "==-== test ".$testIndex.") '".$testname."' FAILED ==-==\n\n";
 		push @{$refList_failedTests}, $testname;
 	}
-	
+
 	$testIndex++;
-	
+
 	return $testIndex;
 }
 
 sub printStatistics {
 	my ($testIndex, $refList_failedTests) = @_;
-	
+
 	my $maxLen = 30;
 	foreach my $test (@{$refList_failedTests}) {
 		$maxLen = length($test) if (length($test) > $maxLen);
 	}
-	
-	print "=" x ($maxLen+6+4)."\n";	
+
+	print "=" x ($maxLen+6+4)."\n";
 	print "|| PASSED: ".sprintf("% 3i", $testIndex-1-scalar(@{$refList_failedTests}))."     |   FAILED: ".sprintf("% 3i", scalar(@{$refList_failedTests})).(" " x ($maxLen - 26))."||\n";
 	if (@{$refList_failedTests} > 0) {
-		print "|| follwing tests failed:".(" " x ($maxLen-17))."||\n";  
+		print "|| follwing tests failed:".(" " x ($maxLen-17))."||\n";
 		foreach my $testname (@{$refList_failedTests}) {
 			print "|| - '$testname'".(" " x ($maxLen-length($testname)+1))."||\n";
 		}
 	}
-	print "=" x ($maxLen+6+4)."\n";	
+	print "=" x ($maxLen+6+4)."\n";
+
+	if (@{$refList_failedTests} > 0) {
+		exit(1);
+	}
 }
 
 1;

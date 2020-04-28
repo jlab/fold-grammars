@@ -1,14 +1,14 @@
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-15 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-15 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=20
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -71.40  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-15 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-15 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=30
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -70.50  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --windowSize=40 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=P --temperature=17 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --windowSize=40 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=P --temperature=17 --windowIncrement=30
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACU  40
 -62.56  [[[.[[.[[.{{]]..}}{{]]..}}.{{{]]]....}}}
@@ -16,22 +16,22 @@
     31  CCCAGCUACUCGGGAGGCUC  50
 -26.41  [[[.{{.....]]]..}}..
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --windowSize=100 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-20 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --windowSize=100 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-20 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=10
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -71.40  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-20 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-20 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=30
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -79.43  [[.[[[.{{{]]]...}}}..{{]]...}}[[[.{{.....]]]..}}..
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-20 --maxKnotSize=40 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-20 --maxKnotSize=40 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=30
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -78.95  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --windowSize=40 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-9 --Kpenalty=-15 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=17 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --windowSize=40 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-9 --Kpenalty=-15 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=17 --windowIncrement=20
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGG  40
 -44.78  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}.
@@ -42,12 +42,12 @@
     41  GGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -31.30  [[......{{]]...<<<}}....>>>..
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --windowSize=100 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-15 --Kpenalty=-20 --maxKnotSize=40 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --windowSize=100 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-15 --Kpenalty=-20 --maxKnotSize=40 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=20
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -91.00  [[.[[.{{{{{]]..<<..}}}}}.>>.{{]]..}}..[[..{{]]..}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=C --temperature=17 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=C --temperature=17 --windowIncrement=20
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -79.66  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].......}}[[.{{{.]]...}}}..
@@ -56,12 +56,12 @@
 -78.97  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}.[[.{{{.]]...}}}..
 -78.83  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]]....}}..[[[.{{{.]]]..}}}..
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=A --temperature=25.9 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=A --temperature=25.9 --windowIncrement=20
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -75.14  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --windowSize=40 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --windowSize=40 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=10
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACU  40
 -64.20  [[[.[[.[[.{{]]..}}{{]]..}}.{{{]]]....}}}
@@ -72,23 +72,23 @@
 -62.80  .[[..[[..{{]]..}}{{{]]..}}}.[[.{{.]]..}}
 -62.00  .[[..[[..{{]]..}}.{{]]..}}..[[..{{]]..}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --windowSize=100 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --windowSize=100 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=30
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -53.40  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=25.9 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=25.9 --windowIncrement=10
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -75.55  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=10
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -80.85  [[.[[[.{{{]]]...}}}..{{]]...}}[[[.{{.....]]]..}}..
 -80.74  [[.[[[.{{{]]]...}}}{{.]]....}}[[[.{{.....]]]..}}..
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --windowSize=40 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-9 --Kpenalty=-15 --absoluteDeviation=1 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=25.9 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --windowSize=40 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-9 --Kpenalty=-15 --absoluteDeviation=1 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=25.9 --windowIncrement=10
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGG  40
 -41.67  [[.{{{{{]].[[.{{{{....]]....}}}}..}}}}}.
@@ -106,7 +106,7 @@
 -43.70  .[[[....{{{]]]....}}}[[[.{{{.]]]..}}}..
 -42.78  .[[[....{{{]]]....}}}.[[.{{{.]]...}}}..
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --windowSize=100 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-15 --Kpenalty=-20 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --windowSize=100 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-15 --Kpenalty=-20 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=10
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -92.00  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].......}}[[.{{{.]]...}}}..
@@ -119,7 +119,7 @@
 -91.20  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].....}}.[[[..{{.]]]..}}...
 -91.10  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].....}}[[[[.{{....]]]]..}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=37
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=37
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -22.70  ((((((((((((......))))))))..)))).((((........)))).  best 'nested structure'
@@ -127,7 +127,7 @@
 -58.40  ...[[[.{{{]]]..<<<}}}...>>>[[[.{{.]]]..<<}}..>>...  best 'K-type pseudoknot'
 -68.00  [[[.[[..{{]]..<<<.}}.>>>..{{{.]]]..}}}[[..{{]]..}}  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --maxKnotSize=40 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --maxKnotSize=40 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=17
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -34.50  (((((..(((((....))))).((.(((((....)))))..))..)))))  best 'nested structure'
@@ -135,7 +135,7 @@
         no structure available                              best 'K-type pseudoknot'
         no structure available                              best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-15 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=C --temperature=37
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-15 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=C --temperature=37
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -22.70  ((((((((((((......))))))))..)))).((((........)))).  best 'nested structure'
@@ -143,7 +143,7 @@
         no structure available                              best 'K-type pseudoknot'
         no structure available                              best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-12 --maxKnotSize=40 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=P --temperature=37
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-12 --maxKnotSize=40 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=P --temperature=37
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -19.90  ..(((((....))))).....(((((((((.....))))))))).  best 'nested structure'
@@ -151,7 +151,7 @@
         no structure available                         best 'K-type pseudoknot'
         no structure available                         best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-12 --Kpenalty=-20 --maxKnotSize=40 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=37
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-12 --Kpenalty=-20 --maxKnotSize=40 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=37
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -18.80  ..(((((....))))).....(((((((((.....))))))))).  best 'nested structure'
@@ -159,7 +159,7 @@
         no structure available                         best 'K-type pseudoknot'
         no structure available                         best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-20 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-20 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=17
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -34.50  (((((..(((((....))))).((.(((((....)))))..))..)))))  best 'nested structure'
@@ -167,7 +167,7 @@
 -86.88  ..[[[.{{{{{]]]...<<}}}}}.>>.[[.{{.]]..<<.}}..>>...  best 'K-type pseudoknot'
 -86.57  [[.[[.{{{{{]]..<<..}}}}}.>>.{{]]..}}..[[..{{]]..}}  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-20 --maxKnotSize=40 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=37
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-20 --maxKnotSize=40 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=37
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -28.49  .((((((((((((................))))))))))))........(((((((...)))))))...  best 'nested structure'
@@ -175,7 +175,7 @@
         no structure available                                                 best 'K-type pseudoknot'
         no structure available                                                 best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --maxKnotSize=40 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=A --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --maxKnotSize=40 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=A --temperature=17
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -31.53  ((((((((((((......))))))))...((((........)))).))))  best 'nested structure'
@@ -183,7 +183,7 @@
         no structure available                              best 'K-type pseudoknot'
         no structure available                              best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=P --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=P --temperature=17
 >unnamed sequence
 === window: 1 to 45: ===
      3  GGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUG  44
@@ -220,7 +220,7 @@
      4  GGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAU  43
 -55.12  [[[[..{{]]]].[[.{{]]..}}[[.{{.]]..}}..}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-15 --Kpenalty=-20 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=C --temperature=37
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-15 --Kpenalty=-20 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=C --temperature=37
 >unnamed sequence
 === window: 1 to 69: ===
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGA  66
@@ -1528,7 +1528,7 @@
 -77.60  [[..[[.{{]].[[..[[[.....{{]]]...}}{{]].......}}..}}..{{]]...}}
 -77.10  [[..[[.{{]].[[..[[[.....{{]]]...}}.{{]].....}}...}}..{{]]...}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-20 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=D --temperature=25.9
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-20 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=D --temperature=25.9
 >unnamed sequence
 === window: 1 to 69: ===
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGA  66
@@ -3580,7 +3580,7 @@
      8  UGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGG  65
 -73.36  [[.....{{]]..<<.[[..[[..{{{.]]....}}}.{{]]..<<.}}.>>}}..>>
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=17
 >unnamed sequence
 === window: 1 to 69: ===
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGA  66
@@ -4151,7 +4151,7 @@
      4  CUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGG  65
 -77.75  [[..[[.{{]][[[..[[[.....{{]]]...}}.{{]]].....}}..}}..{{]]...}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=17
 >unnamed sequence
 === window: 1 to 69: ===
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGA  66
@@ -4723,7 +4723,7 @@
      4  CUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGG  65
 -77.75  [[..[[.{{]][[[..[[[.....{{]]]...}}.{{]]].....}}..}}..{{]]...}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=A --temperature=37
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=A --temperature=37
 >unnamed sequence
 === window: 1 to 50: ===
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
@@ -4783,7 +4783,7 @@
      4  CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGG  47
 -61.00  [[.[[.[[[..{{]]]...}}.{{{{{]]..}}}}}{{]]..}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-15 --Kpenalty=-12 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-15 --Kpenalty=-12 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=17
 >unnamed sequence
 === window: 1 to 69: ===
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGA  66
@@ -6079,7 +6079,7 @@
 -85.23  [[..[[.{{]][[[..[[[.....{{]]]...}}.{{]]]....}}...}}..{{]]...}}
 -85.13  [[..[[.{{]].[[..[[[.....{{]]]...}}{{]].......}}..}}..{{]]...}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-15 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-15 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=17
 >unnamed sequence
 === window: 1 to 50: ===
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGC  48
@@ -6213,18 +6213,18 @@
      2  GGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCU  49
 -69.46  [[[..{{{[[.{{.]]..}}]]].[[[[.{{{..]]]]..}}}..}}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=30
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -61.16  ..[[[[[.{{.]]]]]...<<}}..>>....[[[.{{.]]]..}}  [{]<}>[{]}
 -60.93  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  [{][{]}}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=P --temperature=17 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=P --temperature=17 --windowIncrement=10
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -90.87  [[[.[[.[[.{{]]..}}{{]]..}}.{{.]]]..}}.[[..{{]]..}}  [[[{]}{]}{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --windowSize=40 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=25.9 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --windowSize=40 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=25.9 --windowIncrement=20
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGU  40
 -50.63  ..[[[[[.{{.]]]]].....}}[[.{{{{]]...}}}}.  [{]}[{]}
@@ -6232,24 +6232,24 @@
     21  UCGUAGCAGUUGACUACUGUUAUGU  45
 -26.01  [[.{{{{{{{.]]..}}}}}}}...  [{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --windowSize=100 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --windowSize=100 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=10
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -70.50  [[[.[[.[[.{{]]..}}{{]]..}}.{{.]]]..}}.[[..{{]]..}}  [[[{]}{]}{]}[{]}
 -70.10  [[.[[[.{{{]]]...}}}{{.]]....}}[[[.{{.....]]]..}}..  [[{]}{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-9 --Kpenalty=-20 --absoluteDeviation=1 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=25.9 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-9 --Kpenalty=-20 --absoluteDeviation=1 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=25.9 --windowIncrement=30
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -76.42  [[..{{{{]].[[.{{{{....]]....}}}}..}}}}[[[[...{{.]]]]...<<<<}}.>>>>...  [{][{]}}[{]<}>
 -76.30  ....[[.{{]].....}}.[[[.....{{]]]...}}.[[[[...{{.]]]]...<<<<}}.>>>>...  [{]}[{]}[{]<}>
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=25.9 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=B --temperature=25.9 --windowIncrement=30
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -87.14  [[[.[[.[[.{{]]..}}{{]]..}}.{{.]]]..}}.[[..{{]]..}}  [[[{]}{]}{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --windowSize=40 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-9 --Kpenalty=-15 --absoluteDeviation=1 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --windowSize=40 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-9 --Kpenalty=-15 --absoluteDeviation=1 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=20
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGU  40
 -53.66  ..[[[[[.{{.]]]]]...<<}}..>>[[.{{.]]..}}.  [{]<}>[{]}
@@ -6257,25 +6257,25 @@
     21  UCGUAGCAGUUGACUACUGUUAUGU  45
 -29.03  .[[..{{{{.]]..<<}}}}..>>.  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --windowSize=100 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=P --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --windowSize=100 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --maxKnotSize=40 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=P --temperature=37 --windowIncrement=10
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -78.90  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].....}}.[[[.{{{.]]]..}}}..  [{]}[[{]}{]}[{]}
 -78.40  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}..  [{][{]}}[{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-15 --Kpenalty=-20 --lowProbFilter=0.01 --minHairpinLength=4 --outputLowProbFilter=0.0001 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --shapeLevel=5 --strategy=P --temperature=37 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-15 --Kpenalty=-20 --lowProbFilter=0.01 --minHairpinLength=4 --outputLowProbFilter=0.0001 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --probDecimals=2 --shapeLevel=5 --strategy=P --temperature=37 --windowIncrement=20
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -90.90  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].....}}.[[[.{{{.]]]..}}}..  0.94  [{]}[[{]}{]}[{]}
 -90.40  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}..  0.06  [{][{]}}[{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-20 --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --outputLowProbFilter=0.0001 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-12 --Kpenalty=-20 --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --outputLowProbFilter=0.0001 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --probDecimals=2 --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=10
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -78.90  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].....}}.[[[.{{{.]]]..}}}..  0.94  [{]}[[{]}{]}[{]}
 -78.40  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}..  0.06  [{][{]}}[{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --windowSize=40 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-15 --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --outputLowProbFilter=0.0001 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --windowSize=40 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-15 --Kpenalty=-15 --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --outputLowProbFilter=0.0001 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --probDecimals=7 --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=20
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGU  40
 -62.70  ..[[.{{]]..}}...[[.{{]]..}}[[.{{.]]..}}.  1.0000000  [{]}[{]}[{]}
@@ -6284,24 +6284,24 @@
 -33.80  .[[.[[.{{]]..}}{{]]....}}  0.9918935  [[{]}{]}
 -30.80  [[.{{{{{{{.]]..}}}}}}}...  0.0081065  [{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --windowSize=100 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-15 --Kpenalty=-15 --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --outputLowProbFilter=0.0001 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --windowSize=100 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-15 --Kpenalty=-15 --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --outputLowProbFilter=0.0001 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --probDecimals=7 --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=20
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -90.05  [[[.[[.[[.{{]]..}}{{]]..}}{{{.]]]..}}}[[..{{]]..}}  0.8590384  [[[{]}{]}{]}[{]}
 -89.85  [[.[[[.{{{]]]...}}}..{{]]...}}[[[.{{.....]]]..}}..  0.1409616  [[{]}{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-12 --Kpenalty=-12 --lowProbFilter=0.01 --minHairpinLength=6 --outputLowProbFilter=0.1 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --shapeLevel=5 --strategy=C --temperature=17 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --Hpenalty=-12 --Kpenalty=-12 --lowProbFilter=0.01 --minHairpinLength=6 --outputLowProbFilter=0.1 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --probDecimals=7 --shapeLevel=5 --strategy=C --temperature=17 --windowIncrement=20
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -69.93  ..[[[[[.{{.]]]]][[.{{]]..}}...}}[[.{{.]]...}}  0.9802762  [{][{]}}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-15 --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=4 --outputLowProbFilter=0.1 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=7 --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-15 --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=4 --outputLowProbFilter=0.1 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --probDecimals=7 --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=30
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -79.43  [[.[[[.{{{]]]...}}}..{{]]...}}[[[.{{.....]]]..}}..  0.6971381  [[{]}{]}[{]}
 -78.87  [[[.[[.[[.{{]]..}}{{]]..}}.{{.]]]..}}.[[..{{]]..}}  0.2295313  [[[{]}{]}{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --windowSize=40 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --outputLowProbFilter=0 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --shapeLevel=5 --strategy=D --temperature=25.9 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --windowSize=40 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC --Hpenalty=-12 --Kpenalty=-12 --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --outputLowProbFilter=0 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --probDecimals=7 --shapeLevel=5 --strategy=D --temperature=25.9 --windowIncrement=30
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACU  40
 -58.98  [[[.[[.[[.{{]]..}}{{]]..}}.{{{]]]....}}}  0.6447001  [[[{]}{]}{]}
@@ -6312,7 +6312,7 @@
     31  CCCAGCUACUCGGGAGGCUC  50
 -27.45  [[[.{{.....]]]..}}..  1.0000000  [{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --windowSize=100 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-15 --Kpenalty=-20 --lowProbFilter=0.01 --minHairpinLength=2 --outputLowProbFilter=0.0001 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --shapeLevel=5 --strategy=B --temperature=17 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --windowSize=100 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --Hpenalty=-15 --Kpenalty=-20 --lowProbFilter=0.01 --minHairpinLength=2 --outputLowProbFilter=0.0001 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --probDecimals=2 --shapeLevel=5 --strategy=B --temperature=17 --windowIncrement=20
 >unnamed sequence
       1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -103.66  [[..{{..]]..}}[[[..[[[.....{{]]]...}}.{{]]].......}}[[.{{{.]]...}}}..  0.76  [{]}[[{]}{]}[{]}
@@ -6320,10 +6320,10 @@
 -103.18  [[....{{]].[[.{{{{....]]....}}}}..}}[[.{{{]]....}}}[[[.{{{.]]]..}}}..  0.04  [{][{]}}[{]}[{]}
 -101.56  [[..{{..]]..}}[[[..[[[..[[.{{.]]...}}.{{]]]..<<...}}..>>{{]]]...}}...  0.03  [{]}[[[{]}{]<}>{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast --allowLP=0 castInput.mfa --Hpenalty=-15 --Kpenalty=-20 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=B --temperature=37
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast --allowLP=0 castInput.mfa --Hpenalty=-15 --Kpenalty=-20 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=B --temperature=37
 No consensus shapes found. Try to increase energy range with --absoluteDeviation or --relativeDeviation.
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast --allowLP=0 castInput.mfa --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast --allowLP=0 castInput.mfa --Hpenalty=-12 --Kpenalty=-12 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=P --temperature=17
 1)  Shape: [{][{]}}[{]}  Score: -229.76  Ratio of MFE: 0.95
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -6347,7 +6347,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -78.62  ...[[[.{{.]]]..}}.[[.{{.]]..}}[[[.{{.....]]]..}}..  R: 2  [{]}[{]}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast --allowLP=0 castInput.mfa --Hpenalty=-12 --Kpenalty=-15 --maxKnotSize=40 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=B --temperature=37
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast --allowLP=0 castInput.mfa --Hpenalty=-12 --Kpenalty=-15 --maxKnotSize=40 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=B --temperature=37
 1)  Shape: [{]}[{]}[{]}  Score: -202.10  Ratio of MFE: 0.95
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -6371,7 +6371,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -65.00  ..[[.{{]][[[..{{]]]...}}.....}}[[.{{{....]]..}}}..  R: 8  [{][{]}}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast --allowLP=0 castInput.mfa --Hpenalty=-15 --Kpenalty=-15 --maxKnotSize=40 --minHairpinLength=4 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=A --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast --allowLP=0 castInput.mfa --Hpenalty=-15 --Kpenalty=-15 --maxKnotSize=40 --minHairpinLength=4 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=A --temperature=17
 1)  Shape: [{][{]}}[{]}  Score: -256.76  Ratio of MFE: 0.94
 >seq1
       1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -6384,7 +6384,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
  -83.41  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 6  [{][{]}}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast  castInput.mfa --Hpenalty=-15 --Kpenalty=-20 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=A --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast  castInput.mfa --Hpenalty=-15 --Kpenalty=-20 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --strategy=A --temperature=17
 1)  Shape: [{]}[{]}[{]}  Score: -253.26  Ratio of MFE: 0.94
 >seq1
       1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -6397,7 +6397,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
  -85.80  ..[[[[.{{{]]]]..}}}[[..{{{..]]..}}}...[[..{{]]..}}  R: 5  [{]}[{]}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast  castInput.mfa --Hpenalty=-9 --Kpenalty=-15 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=25.9
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast  castInput.mfa --Hpenalty=-9 --Kpenalty=-15 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=25.9
 1)  Shape: [{]<}>[{]<}>  Score: -205.91  Ratio of MFE: 0.98
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -6410,7 +6410,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -72.54  ..[[[.{{{{{]]]...<<}}}}}.>>.[[.{{.]]..<<.}}..>>...  R: 1  [{]<}>[{]<}>
 
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast  castInput.mfa --Hpenalty=-12 --Kpenalty=-15 --maxKnotSize=40 --minHairpinLength=2 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=25.9
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast  castInput.mfa --Hpenalty=-12 --Kpenalty=-15 --maxKnotSize=40 --minHairpinLength=2 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=D --temperature=25.9
 1)  Shape: [{]}[{]}[{]}  Score: -216.63  Ratio of MFE: 0.94
 >seq1
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
@@ -6434,10 +6434,10 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -70.08  ..[[[[.{{.]]]][[[..{{]]]....}}....}}..[[..{{]]..}}  R: 13  [{][{]}}[{]}
 
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast  castInput.mfa --Hpenalty=-15 --Kpenalty=-12 --maxKnotSize=40 --minHairpinLength=6 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=C --temperature=25.9
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=cast  castInput.mfa --Hpenalty=-15 --Kpenalty=-12 --maxKnotSize=40 --minHairpinLength=6 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --strategy=C --temperature=25.9
 No consensus shapes found. Try to increase energy range with --absoluteDeviation or --relativeDeviation.
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...' --Hpenalty=-12 --Kpenalty=-15 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=37
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...' --Hpenalty=-12 --Kpenalty=-15 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=37
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -56.70  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
@@ -6505,7 +6505,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -55.30  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
 -55.30  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Hpenalty=-9 --Kpenalty=-20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --temperature=25.9
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Hpenalty=-9 --Kpenalty=-20 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --temperature=25.9
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -66.05  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
@@ -6605,7 +6605,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -59.06  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 -58.99  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Hpenalty=-15 --Kpenalty=-20 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --temperature=25.9
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Hpenalty=-15 --Kpenalty=-20 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --shapeLevel=5 --temperature=25.9
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -55.76  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
@@ -6673,7 +6673,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -50.83  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 -50.83  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Hpenalty=-9 --Kpenalty=-20 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=0 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Hpenalty=-9 --Kpenalty=-20 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=17
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -61.10  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
@@ -6741,7 +6741,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -53.76  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 -53.76  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...' --Hpenalty=-9 --Kpenalty=-15 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=25.9
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...' --Hpenalty=-9 --Kpenalty=-15 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=25.9
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -62.47  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
@@ -6809,7 +6809,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -60.82  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
 -60.82  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Hpenalty=-12 --Kpenalty=-20 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=37
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU '..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.' --Hpenalty=-12 --Kpenalty=-20 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=37
 >unnamed sequence
      1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU  45
 -52.90  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
@@ -6877,7 +6877,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -47.20  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 -47.20  ..[[[[[.{{.]]]]].....<<<<<<<<<}}...>>>>>>>>>.  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Hpenalty=-9 --Kpenalty=-15 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=25.9
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC '....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....' --Hpenalty=-9 --Kpenalty=-15 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=25.9
 >unnamed sequence
      1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACUCGGGAGGCUC  50
 -61.01  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
@@ -6977,7 +6977,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 -55.09  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 -54.97  ....[[[[[[[[.{{{{.]]]]]]]]...<<<<.}}}}...>>>>.....  [{]<}>
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...' --Hpenalty=-9 --Kpenalty=-12 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=17
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=eval --allowLP=1 ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA '.[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...' --Hpenalty=-9 --Kpenalty=-12 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --shapeLevel=5 --temperature=17
 >unnamed sequence
      1  ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA  69
 -64.29  .[[[[[[[[[[[[..........{{....]]]]]]]]]]]]........<<<<<<<}}.>>>>>>>...  [{]<}>
