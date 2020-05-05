@@ -16,31 +16,31 @@
     c.mfe = c.mfe + duplex_energy() + termau_energy(lb,rb);
     return c;
   }
-  multi_mfe bl_cut(Subsequence lb, multi_mfe c, multi_mfe x, Subsequence rb) {
+  multi_mfe bl_cut(Subsequence lb, multi_mfe c, Subsequence n, multi_mfe x, Subsequence rb) {
     Subsequence innerBP = lb;
-    innerBP.i = lb.j;
+    innerBP.i = n.j;
     innerBP.j = rb.i;
     x.mfe = x.mfe + c.mfe + duplex_energy() + termau_energy(lb,rb) + termau_energy(innerBP, innerBP);
     return x;
   }
-  multi_mfe br_cut(Subsequence lb, multi_mfe c, multi_mfe x, Subsequence rb) {
+  multi_mfe br_cut(Subsequence lb, multi_mfe c, Subsequence n, multi_mfe x, Subsequence rb) {
     Subsequence innerBP = lb;
     innerBP.i = lb.j;
-    innerBP.j = rb.i;
+    innerBP.j = n.i;
     x.mfe = x.mfe + c.mfe + duplex_energy() + termau_energy(lb, rb) + termau_energy(innerBP, innerBP);
     return x;
   }
-  multi_mfe il_cut_l(Subsequence lb, multi_mfe c, multi_mfe x, Subsequence rr, Subsequence rb) {
+  multi_mfe il_cut_l(Subsequence lb, multi_mfe c, Subsequence n, multi_mfe x, Subsequence rr, Subsequence rb) {
     Subsequence innerBP = lb;
-    innerBP.i = lb.j;
+    innerBP.i = n.j;
     innerBP.j = rr.i;
     x.mfe = x.mfe + c.mfe + duplex_energy() + termau_energy(lb, rb) + termau_energy(innerBP, innerBP);
     return x;
   }
-  multi_mfe il_cut_r(Subsequence lb, Subsequence lr, multi_mfe x, multi_mfe c, Subsequence rb) {
+  multi_mfe il_cut_r(Subsequence lb, Subsequence lr, multi_mfe x, Subsequence n, multi_mfe c, Subsequence rb) {
     Subsequence innerBP = lb;
     innerBP.i = lr.j;
-    innerBP.j = rb.i;
+    innerBP.j = n.i;
     x.mfe = x.mfe + c.mfe + duplex_energy() + termau_energy(lb, rb) + termau_energy(innerBP, innerBP);
     return x;
   }

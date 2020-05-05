@@ -23,12 +23,12 @@ grammar gra_cofold_nodangle uses sig_cofold_foldrna(axiom = struct) {
   hairpin   =       hl(BASE,                                        REGION with minsize(3) with unpaired,          BASE) with basepair |
                 hl_cut(BASE,                                        seq_cut,                                       BASE) with basepair # h;
   leftB     =       bl(BASE, REGION with maxsize(30) with unpaired, strong,                                        BASE) with basepair |
-                bl_cut(BASE, seq_cut,                               strong,                                        BASE) with basepair # h;
+                bl_cut(BASE, seq_cut, LOC,                          strong,                                        BASE) with basepair # h;
   rightB    =       br(BASE,                                        strong, REGION with maxsize(30) with unpaired, BASE) with basepair |
-                br_cut(BASE,                                        strong, seq_cut,                               BASE) with basepair # h;
+                br_cut(BASE,                                        strong, LOC, seq_cut,                          BASE) with basepair # h;
   iloop     =       il(BASE, REGION with maxsize(30) with unpaired, strong, REGION with maxsize(30) with unpaired, BASE) with basepair |
-              il_cut_l(BASE, seq_cut,                               strong, REGION with maxsize(30) with unpaired, BASE) with basepair |
-              il_cut_r(BASE, REGION with maxsize(30) with unpaired, strong, seq_cut,                               BASE) with basepair # h;
+              il_cut_l(BASE, seq_cut, LOC,                          strong, REGION with maxsize(30) with unpaired, BASE) with basepair |
+              il_cut_r(BASE, REGION with maxsize(30) with unpaired, strong, LOC, seq_cut,                          BASE) with basepair # h;
 
   multiloop     =        ml(BASE, REGION0 with unpaired, ml_comps,     REGION0 with unpaired, BASE) with basepair |
                    ml_cut_l(BASE, seq_cut,               ml_comps_cut, REGION0,               BASE) with basepair |

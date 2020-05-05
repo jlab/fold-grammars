@@ -21,7 +21,7 @@
     return res;
   }
 
-  string bl_cut(Subsequence lb,string x,string e,Subsequence rb) {
+  string bl_cut(Subsequence lb,string x,Subsequence n,string e,Subsequence rb) {
     string res;
     append(res, '(');
     append(res, x);
@@ -30,7 +30,7 @@
     return res;
   }
 
-  string br_cut(Subsequence lb,string e,string x,Subsequence rb) {
+  string br_cut(Subsequence lb,string e,Subsequence n,string x,Subsequence rb) {
     string res;
     append(res, '(');
     append(res, e);
@@ -39,7 +39,7 @@
     return res;
   }
 
-  string il_cut_l(Subsequence lb,string x,string e,Subsequence rregion,Subsequence rb) {
+  string il_cut_l(Subsequence lb,string x,Subsequence n,string e,Subsequence rregion,Subsequence rb) {
     string res;
     append(res, '(');
     append(res, x);
@@ -49,7 +49,7 @@
     return res;
   }
 
-  string il_cut_r(Subsequence lb,Subsequence lregion,string e,string x,Subsequence rb) {
+  string il_cut_r(Subsequence lb,Subsequence lregion,string e,Subsequence n,string x,Subsequence rb) {
     string res;
     append(res, '(');
     append(res, '.', size(lregion));
