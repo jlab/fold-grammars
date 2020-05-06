@@ -46,19 +46,19 @@
   }
 
   multi_mfe ml(Subsequence lb, Subsequence lr, multi_mfe x, Subsequence rr, Subsequence rb) {
-    x.mfe = x.mfe + ml_energy() + ul_energy() + termau_energy(lb,rb) + ml_mismatch_energy(lb,rb) + ss_energy(lr) + ss_energy(rr);
+    x.mfe = x.mfe + ml_energy() + ul_energy() + termau_energy(lb,rb) + ss_energy(rr);
     return x;
   }
   multi_mfe ml_cut_l(Subsequence lb, multi_mfe c, multi_mfe x, Subsequence rr, Subsequence rb) {
-    x.mfe = x.mfe + c.mfe + termau_energy(lb, rb) + ml_mismatch_energy(lb,rb) + ss_energy(rr);
+    x.mfe = x.mfe + c.mfe + duplex_energy() + termau_energy(lb, rb) + ss_energy(rr);
     return x;
   }
   multi_mfe ml_cut_r(Subsequence lb, Subsequence lr, multi_mfe x, multi_mfe c, Subsequence rb) {
-    x.mfe = x.mfe + c.mfe + termau_energy(lb,rb) + ml_mismatch_energy(lb,rb) + ss_energy(lr);
+    x.mfe = x.mfe + c.mfe + duplex_energy() + termau_energy(lb,rb) + ss_energy(lr);
     return x;
   }
   multi_mfe cadd_cut(multi_mfe x, multi_mfe c, multi_mfe y) {
-    x.mfe = x.mfe + c.mfe + y.mfe - ml_energy() - ul_energy();
+    x.mfe = x.mfe + c.mfe + y.mfe - ml_energy() - ul_energy() + duplex_energy();
     x.cut = true;
     return x;
   }
