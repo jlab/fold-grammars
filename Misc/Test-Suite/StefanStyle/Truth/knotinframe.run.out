@@ -1,4 +1,4 @@
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-8.71 --minknottedenergy=-10 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=15 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=17 --windowincrement=40 --windowsize=120
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-8.71 --minknottedenergy=-10 ROOTDIR/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=15 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --temperature=17 --windowincrement=40 --windowsize=120
 >pol_m_vir_hastr
   Rank:              1
   Slippery sequence: CCCTTTT
@@ -31,7 +31,7 @@
   -11.63  ...(((...)))...((((...(((((...((...))...)))))........))))...  nested structure
 
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-8.71 --minknottedenergy=-7.4 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=5 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 --windowincrement=20 --windowsize=160
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-8.71 --minknottedenergy=-7.4 ROOTDIR/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=5 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --temperature=25.9 --windowincrement=20 --windowsize=160
 >pol_m_vir_hastr
   Rank:              1
   Slippery sequence: CCCTTTT
@@ -64,7 +64,7 @@
    -8.84  ...........((.((....(((((.....((...))....)))))......)).))...  nested structure
 
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-8.71 --minknottedenergy=-5 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=5 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=17 --windowincrement=20 --windowsize=80
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-8.71 --minknottedenergy=-5 ROOTDIR/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=5 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --temperature=17 --windowincrement=20 --windowsize=80
 >pol_m_vir_hastr
   Rank:              1
   Slippery sequence: CCCTTTT
@@ -97,7 +97,7 @@
   -11.63  ...(((...)))...((((...(((((...((...))...)))))........))))...  nested structure
 
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-10.34 --minknottedenergy=-10 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=15 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 --windowincrement=20 --windowsize=80
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-10.34 --minknottedenergy=-10 ROOTDIR/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=15 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --temperature=25.9 --windowincrement=20 --windowsize=80
 >pol_m_vir_hastr
   Rank:              1
   Slippery sequence: CCCTTTT
@@ -130,7 +130,7 @@
    -8.84  ...........((.((....(((((.....((...))....)))))......)).))...  nested structure
 
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-10.34 --minknottedenergy=-7.4 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=15 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=37 --windowincrement=20 --windowsize=160
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-10.34 --minknottedenergy=-7.4 ROOTDIR/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=15 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --temperature=37 --windowincrement=20 --windowsize=160
 >pol_m_vir_hastr
   Rank:              1
   Slippery sequence: CCCTTTT
@@ -163,7 +163,7 @@
    -6.20  ...........((.((....(((((................)))))......)).))...  nested structure
 
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-10.34 --minknottedenergy=-5 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=15 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --temperature=25.9 --windowincrement=20 --windowsize=120
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-10.34 --minknottedenergy=-5 ROOTDIR/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=15 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --temperature=25.9 --windowincrement=20 --windowsize=120
 >pol_m_vir_hastr
   Rank:              1
   Slippery sequence: CCCTTTT

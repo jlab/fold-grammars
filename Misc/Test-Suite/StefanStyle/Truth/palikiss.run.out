@@ -1,19 +1,19 @@
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-15 --cfactor=1.1 --consensus=mis --maxKnotSize=40 --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=A --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-15 --cfactor=1.1 --consensus=mis --maxKnotSize=40 --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=A --temperature=37 --windowIncrement=10
                          1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-44.40 = -34.15 + -10.25)  (((((((...........[[.........{{{{{]].....}}}}}.....(((((.......)))))))))))).  (sci:  0.440)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-20 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=2 --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=D --temperature=25.9 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-20 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=2 --nfactor=1.1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=D --temperature=25.9 --windowIncrement=30
                         1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (-85.73 = -79.23 + -6.50)  ............[[.{{{{....]]..........<<.}}}}..>>....[[.{{]]......<<<.}}..>>>...................[[..{{]].....}}.............................................................  (sci:  0.460)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-12 --Kpenalty=-15 --cfactor=1 --consensus=mis --maxKnotSize=40 --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --strategy=C --temperature=17 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-12 --Kpenalty=-15 --cfactor=1 --consensus=mis --maxKnotSize=40 --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --strategy=C --temperature=17 --windowIncrement=20
                         1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWW  40
 (-53.33 = -45.59 + -7.74)  .[[[[[.{{.]]]]]...}}[[.{{.]].......}}...
 
                        21  rGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 (-25.49 = -21.40 + -4.09)  [[.{{.]]................}}......
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-15 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=4 --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=A --temperature=25.9 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=0 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-15 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=4 --nfactor=1 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=A --temperature=25.9 --windowIncrement=10
                        1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCY  100
 (-40.17 = -41.09 + 0.92)  ....................[[[..{{...]]]..[[.....{{]]...}}...}}............................................  (sci:  0.310)
 
@@ -38,34 +38,34 @@
                       71  rGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (  0.00 =   0.00 + 0.00)  ...................................................................................................  (sci: 0.000)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-20 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=20
-                       1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-20 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=20
+                       1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-36.93 = -37.03 + 0.10)  ..........................................[[[.{{]]].[[.{{....................................]]....}}..(...............................................)...}}............  (sci:  0.180)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-12 --cfactor=1 --consensus=consensus --maxKnotSize=40 --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=20
-                        1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-12 --cfactor=1 --consensus=consensus --maxKnotSize=40 --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=20
+                        1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-95.44 = -85.70 + -9.74)  ...........[[.{{{]]..<<.}}}...>>...[[.....{{]]...}}[[.{{]]...<<<}}.....>>>..................[[[..{{]]]....}}...........................[[........{{....]].........}}.....
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-15 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=B --temperature=17 --windowIncrement=30
-                        1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-15 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=B --temperature=17 --windowIncrement=30
+                        1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGC  40
 (-23.80 = -21.56 + -2.24)  ...........[[.{{.]][[..{{]]....}}.....}}  (sci:  0.580)
 
-                       31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg  70
+                       31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG  70
 (-42.19 = -33.71 + -8.48)  .....[[.....{{]]...}}[[[.{{......]]]..}}  (sci:  0.860)
 
-                       61  _cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                       61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-13.95 = -10.97 + -2.98)  ...[[......................{{....]]..}}.  (sci:  0.470)
 
-                       91  g_ucguccccgcgccugg________________g_u___  130
+                       91  G_UCGUCCCCGCGCCUGG________________G_U___  130
 (-18.42 = -16.47 + -1.95)  ..[[[..{{]]]....}}......................  (sci:  0.540)
 
-                      121  ____g_u________cuggg_____gcccgaggagaca__  160
+                      121  ____G_U________CUGGG_____GCCCGAGGAGACA__  160
 (  0.00 =   0.00 +  0.00)  ........................................  (sci: 0.000)
 
-                      151  aggagaca__acgcg____  169
+                      151  AGGAGACA__ACGCG____  169
 (  0.00 =   0.00 +  0.00)  ...................  (sci: 0.000)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-12 --cfactor=1.1 --consensus=mis --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=P --temperature=25.9 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=mfe --allowLP=1 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-12 --cfactor=1.1 --consensus=mis --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=P --temperature=25.9 --windowIncrement=20
                          1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCY  100
 (-82.41 = -71.59 + -10.82)  ..............[[[[..{{.]]]]....}}..[[.....{{]]...}}[[[.{{......]]]..}}.[[[.............{{....]]]..}}  (sci:  0.720)
 
@@ -81,48 +81,48 @@
                         81  -----u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (-28.66 = -25.90 +  -2.76)  .......[[....{{..]]..}}[[........................................{{....]].........}}.....  (sci:  0.360)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=10
-                          1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=1 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=10
+                          1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-102.35 = -91.08 + -11.27)  ..............[[[...{{..]]]....}}..[[.{{{{..]]...}}}}.[[......{{]].....}}..............[[....{{..]]..}}[[........................................{{....]].........}}.....  (sci:  0.570)
 (-102.25 = -90.26 + -11.99)  ..............[[[...{{..]]]....}}..[[.{{{{..]]...}}}}[[........{{{.]]..}}}.............[[....{{..]]..}}[[........................................{{....]].........}}.....  (sci:  0.570)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=P --temperature=25.9 --windowIncrement=30
-                       1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=P --temperature=25.9 --windowIncrement=30
+                       1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-36.85 = -37.43 + 0.58)  .....................[[.{{....]]...[[..{{{{{]]....[[.{{........]]...........................}}..}}}}}..}}................................................................
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --maxKnotSize=40 --minHairpinLength=4 --nfactor=1.1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=P --temperature=37 --windowIncrement=20
-                        1  ___________gcggccgcgcgucggc_g_gggg_caagc  40
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --maxKnotSize=40 --minHairpinLength=4 --nfactor=1.1 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=P --temperature=37 --windowIncrement=20
+                        1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGC  40
 (-20.13 = -18.84 + -1.29)  ...........[[.{{.]][[..{{]]....}}.....}}  (sci:  0.570)
 
-                       21  cgucggc_g_gggg_caagcggggugguaccgcggcgcu_  60
+                       21  CGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU_  60
 (-35.57 = -30.86 + -4.71)  [[[..{{...]]].....}}..[[[.{{]]]...}}....  (sci:  0.880)
 
-                       41  ggggugguaccgcggcgcu__cgcgcaccg_gcg______  80
+                       41  GGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG______  80
 (-27.91 = -23.74 + -4.17)  ..[[[.{{]]][[.{{]]......}}.....}}.......  (sci:  0.790)
 (-26.96 = -23.37 + -3.59)  ..[[[.{{]]][[.{{]]....}}.......}}.......  (sci:  0.760)
 (-26.93 = -23.82 + -3.11)  .[[..{{{.]][[.{{]]....}}..}}}...........  (sci:  0.760)
 
-                       61  _cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+                       61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-12.27 = -10.06 + -2.21)  ...[[......................{{....]]..}}.  (sci:  0.470)
 (-11.98 =  -9.87 + -2.11)  ...[[......................{{....]]...}}  (sci:  0.460)
 (-11.60 = -11.37 + -0.23)  ....[[.....{{]]...................}}....  (sci:  0.440)
 (-11.48 = -10.82 + -0.66)  ...........[[[.............{{....]]]..}}  (sci:  0.440)
 (-11.44 = -10.92 + -0.52)  ............[[.............{{]]......}}.  (sci:  0.440)
 
-                       81  _______ggcg_ucguccccgcgccugg____________  120
+                       81  _______GGCG_UCGUCCCCGCGCCUGG____________  120
 (-15.03 = -13.52 + -1.51)  .............[[..{{]].....}}............  (sci:  0.550)
 (-14.88 = -13.37 + -1.51)  .............[[.{{.]].....}}............  (sci:  0.550)
 
-                      101  gcgccugg________________g_u________cuggg  140
+                      101  GCGCCUGG________________G_U________CUGGG  140
 (  0.00 =   0.00 +  0.00)  ........................................  (sci: 0.000)
 
-                      121  ____g_u________cuggg_____gcccgaggagaca__  160
+                      121  ____G_U________CUGGG_____GCCCGAGGAGACA__  160
 (  0.00 =   0.00 +  0.00)  ........................................  (sci: 0.000)
 
-                      141  _____gcccgaggagaca__acgcg____  169
+                      141  _____GCCCGAGGAGACA__ACGCG____  169
 (  0.00 =   0.00 +  0.00)  .............................  (sci: 0.000)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1 --consensus=mis --minHairpinLength=6 --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=C --temperature=37 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=0 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1 --consensus=mis --minHairpinLength=6 --nfactor=1 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=C --temperature=37 --windowIncrement=20
                         1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCY  100
 (-77.41 = -68.53 + -8.88)  ..............[[[[..{{{]]]]...}}}..[[.....{{]]...}}[[[.{{......]]]..}}..[[.............{{]]......}}.  (sci:  0.720)
 (-77.37 = -68.30 + -9.07)  ..............[[[[..{{{]]]]...}}}..[[.....{{]]...}}[[[.{{......]]]..}}.[[[.............{{....]]]..}}  (sci:  0.720)
@@ -158,17 +158,17 @@
 (-33.30 = -31.00 + -2.30)  .............[[..{{]].....}}.............................[[......{{]].............}}.....  (sci:  0.450)
 (-33.15 = -30.85 + -2.30)  .............[[.{{.]].....}}.............................[[......{{]].............}}.....  (sci:  0.440)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-9 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --maxKnotSize=40 --minHairpinLength=6 --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=30
-                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-9 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --maxKnotSize=40 --minHairpinLength=6 --nfactor=1 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=30
+                         1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-55.24 = -43.49 + -11.75)  .[[[[[.{{{{{{{]]]]]..}}}}}}}........[[..{{]]......}}  (sci:  1.070)
 (-54.32 = -43.44 + -10.88)  .[[[[.{{{{{{{{.]]]]..}}}}}}}}.......[[..{{]]......}}  (sci:  1.050)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=30
-                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=30
+                         1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-58.64 = -44.45 + -14.19)  .[[.{{.[[[[[[[.....{{]]]]]]]........}}.]]...}}......  (sci:  0.850)
 (-58.53 = -43.90 + -14.63)  .[[.{{.[[[[[[[.{{....]]]]]]]........}}.]]...}}......  (sci:  0.850)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=4 --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=4 --nfactor=1.1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=10
                         1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWW  40
 (-38.30 = -38.44 +  0.14)  ....[[.[[...{{]].....}}{{.]].......}}...
 (-37.94 = -38.28 +  0.34)  .[[...[[[...{{]]]....}}{{.]].......}}...
@@ -181,26 +181,26 @@
 (-16.92 = -16.84 + -0.08)  ...[[...........{{......]]....}}
 (-16.70 = -16.57 + -0.13)  ....[[..........{{...]].......}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --maxKnotSize=40 --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=30
-                       1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=subopt --allowLP=1 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --maxKnotSize=40 --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=30
+                       1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-46.06 = -47.34 + 1.28)  .[[.[[[[[..{{{]]]]]..}}}{{]]......}}[[..{{]]......}}  (sci:  0.770)
 (-45.96 = -47.61 + 1.65)  [[[.[[[[[..{{{]]]]]..}}}{{]]].....}}[[..{{]]......}}  (sci:  0.770)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-15 --cfactor=1.1 --consensus=mis --minHairpinLength=2 --nfactor=1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --strategy=B --temperature=25.9 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-15 --cfactor=1.1 --consensus=mis --minHairpinLength=2 --nfactor=1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --strategy=B --temperature=25.9 --windowIncrement=10
                          1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (-27.24 = -13.93 + -13.31)  ......................................((((((.......((((((.....((((.....))))..............)).))))))))))...................................................................  best 'nested structure'
 (-98.19 = -86.32 + -11.87)  ..............[[[...{{..]]]....}}..[[.{{{{..]]...}}}}[[.......{{{{.]]..}}}}............[[....{{..]]..}}[[........................................{{....]].........}}.....  best 'H-type pseudoknot'
 (-78.03 = -65.36 + -12.67)  ............[[.{{{{....]]......<<.....}}}}[[.{{{.]]...........<<<<}}}..>>>>..............>>..[[..{{]]............................................<<....}}.........>>.....  best 'K-type pseudoknot'
 (-99.74 = -87.55 + -12.19)  ..............[[[...{{..]]]....}}..[[.....{{]]...}}[[[.{{......]]]..}}..[[.............{{]]..<<<.}}.>>>[[........................................{{....]].........}}.....  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-15 --cfactor=0.9 --consensus=mis --minHairpinLength=6 --nfactor=1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --strategy=P --temperature=17 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-15 --cfactor=0.9 --consensus=mis --minHairpinLength=6 --nfactor=1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --strategy=P --temperature=17 --windowIncrement=30
                            1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 ( -28.97 =  -16.85 + -12.12)  .............(((...((....))...........((((((.......((((((.....((((.....))))..............)).))))))))))...........................................))).....................  (sci:  0.140)  best 'nested structure'
 (-116.53 = -108.53 +  -8.00)  ...........[[.{{{]].....}}}...[[...[[.....{{]]...}}{{{]].....}}}[[.....{{]]............[[[..{{[[.{{{]]...................................}}}.....]]]....}}........}}.....  (sci:  0.550)  best 'H-type pseudoknot'
                               no structure available                                                                                                                                                     (sci: 0.000)  best 'K-type pseudoknot'
                               no structure available                                                                                                                                                     (sci: 0.000)  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=1.1 --consensus=mis --maxKnotSize=40 --minHairpinLength=4 --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --strategy=C --temperature=25.9 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=1.1 --consensus=mis --maxKnotSize=40 --minHairpinLength=4 --nfactor=1.1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=0 --strategy=C --temperature=25.9 --windowIncrement=20
                         1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGC  40
 (  0.00 =   0.00 +  0.00)  ........................................  best 'nested structure'
 (-22.99 = -20.62 + -2.37)  ..............[[.{{]].................}}  best 'H-type pseudoknot'
@@ -249,46 +249,46 @@
                            no structure available         best 'K-type pseudoknot'
                            no structure available         best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-12 --cfactor=1 --consensus=consensus --minHairpinLength=4 --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --strategy=B --temperature=37 --windowIncrement=30
-                     1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=0 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-12 --cfactor=1 --consensus=consensus --minHairpinLength=4 --nfactor=1.1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --strategy=B --temperature=37 --windowIncrement=30
+                     1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-0.71 = -0.85 + 0.14)  ..........................................((.....)).................................................  best 'nested structure'
                         no structure available                                                                                best 'H-type pseudoknot'
                         no structure available                                                                                best 'K-type pseudoknot'
                         no structure available                                                                                best 'H- and K-type pseudoknot'
 
-                    31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u___  130
+                    31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U___  130
 (-0.71 = -0.85 + 0.14)  ............((.....))...............................................................................  best 'nested structure'
                         no structure available                                                                                best 'H-type pseudoknot'
                         no structure available                                                                                best 'K-type pseudoknot'
                         no structure available                                                                                best 'H- and K-type pseudoknot'
 
-                    61  _cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__  160
+                    61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__  160
 ( 0.00 =  0.00 + 0.00)  ....................................................................................................  best 'nested structure'
                         no structure available                                                                                best 'H-type pseudoknot'
                         no structure available                                                                                best 'K-type pseudoknot'
                         no structure available                                                                                best 'H- and K-type pseudoknot'
 
-                    91  g_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                    91  G_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 ( 0.00 =  0.00 + 0.00)  ...............................................................................  best 'nested structure'
                         no structure available                                                           best 'H-type pseudoknot'
                         no structure available                                                           best 'K-type pseudoknot'
                         no structure available                                                           best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-12 --Kpenalty=-20 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --strategy=A --temperature=17 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-12 --Kpenalty=-20 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --strategy=A --temperature=17 --windowIncrement=10
                         1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 (-12.91 = -13.02 +  0.11)  .......(((.((((.....)))).)))........................  best 'nested structure'
 (-43.17 = -42.91 + -0.26)  .[[[[[.....{{{]]]]]..}}}[[..........{{...]].......}}  best 'H-type pseudoknot'
 (-39.03 = -39.82 +  0.79)  .[[[[..{{{.]]]].......<<<}}}.......>>>..............  best 'K-type pseudoknot'
 (-47.59 = -47.38 + -0.21)  [[.{{.]]...<<<<}}...>>>>[[..........{{...]].......}}  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=1.1 --consensus=mis --minHairpinLength=6 --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --strategy=C --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=1.1 --consensus=mis --minHairpinLength=6 --nfactor=1 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --strategy=C --temperature=37 --windowIncrement=10
                         1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWWYDYSCYUUUUuG  52
 ( -6.63 =  -6.56 + -0.07)  .......((..((((.....))))..))........................  (sci:  0.100)  best 'nested structure'
 (-42.56 = -42.30 + -0.26)  ....[[.[[..{{{]].....}}}{{]].............}}.........  (sci:  0.610)  best 'H-type pseudoknot'
                            no structure available                                (sci: 0.000)  best 'K-type pseudoknot'
                            no structure available                                (sci: 0.000)  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-9 --Kpenalty=-12 --cfactor=1.1 --consensus=mis --minHairpinLength=4 --nfactor=1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --strategy=P --temperature=37 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-9 --Kpenalty=-12 --cfactor=1.1 --consensus=mis --minHairpinLength=4 --nfactor=1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --strategy=P --temperature=37 --windowIncrement=30
                          1  uggUGGUGGMSCGCUHAMYmrGCGRSCCWaawcwuhURWW  40
 (-22.51 = -11.10 + -11.41)  .......((((((((.....))))))))............  (sci:  0.540)  best 'nested structure'
 (-42.90 = -29.75 + -13.15)  .[[[[[.{{{{{{{]]]]]..}}}}}}}............  (sci:  1.030)  best 'H-type pseudoknot'
@@ -301,34 +301,34 @@
                             no structure available  (sci: 0.000)  best 'K-type pseudoknot'
                             no structure available  (sci: 0.000)  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=4 --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --strategy=P --temperature=17 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=enforce --allowLP=1 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=4 --nfactor=1 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --strategy=P --temperature=17 --windowIncrement=10
                         1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-38.73 = -29.57 + -9.16)  (((((((..(((.............))).(((((.......))))).....(((((.......)))))))))))).  (sci:  0.350)  best 'nested structure'
 (-63.41 = -58.95 + -4.46)  ........[[.........((.....))..{{{{]].....}}}}[[....{{{{{]].....}}}}}........  (sci:  0.570)  best 'H-type pseudoknot'
                            no structure available                                                        (sci: 0.000)  best 'K-type pseudoknot'
                            no structure available                                                        (sci: 0.000)  best 'H- and K-type pseudoknot'
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-12 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=1 --consensus=consensus --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --strategy=P --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-12 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=1 --consensus=consensus --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --strategy=P --temperature=37 --windowIncrement=10
 === window: 1 to 76: ===
-                         5  gcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgc  75
+                         5  GCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGC  75
 (-77.00 = -53.75 + -23.25)  [[[..{{.......[[...[[....{{{{{]].....}}}}}.....{{{{{.]]....}}}}}]]]..}}
 (-76.07 = -53.48 + -22.59)  [[[..{{.......[[.....[[..{{{{{.]]....}}}}}.....{{{{{.]]....}}}}}]]]..}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1.1 --consensus=mis --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --strategy=A --temperature=25.9 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1.1 --consensus=mis --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --strategy=A --temperature=25.9 --windowIncrement=30
 === window: 1 to 169: ===
                          16  MYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYR  163
 (-103.14 = -90.87 + -12.27)  [[.{{[[...{{....]].....}}]][[[.{{]]][[.[[......{{]].....}}...................{{]][[[.{{...................................]]].....}}..}}....}}....}}  (sci:  0.560)
 (-102.35 = -90.32 + -12.03)  [[.{{[[...{{....]].....}}]][[[.{{]]][[.[[[....{{]]].......................}}.{{]][[[.{{...................................]]].....}}..}}....}}....}}  (sci:  0.550)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1 --consensus=consensus --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --strategy=B --temperature=25.9 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1 --consensus=consensus --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --strategy=B --temperature=25.9 --windowIncrement=30
 === window: 1 to 40: ===
-                         3  gugguggcccgcucaaccggcggccca______cu  37
+                         3  GUGGUGGCCCGCUCAACCGGCGGCCCA______CU  37
 (-51.10 = -41.04 + -10.06)  [[[[.{{{{{{.]]]]..<<}}}}}}.......>>  (sci:  1.040)
 
-                         4  ugguggcccgcucaaccggcggccca______cug  38
+                         4  UGGUGGCCCGCUCAACCGGCGGCCCA______CUG  38
 (-50.84 = -40.95 +  -9.89)  [[[.{{{{{{.]]]..<<<}}}}}}.......>>>  (sci:  1.050)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-9 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --strategy=C --temperature=17 --windowIncrement=30
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=0 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-9 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=0.9 --consensus=mis --maxKnotSize=40 --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=1 --sci=1 --strategy=C --temperature=17 --windowIncrement=30
 === window: 1 to 76: ===
                         33  GSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVD  72
 (-46.23 = -34.77 + -11.46)  [[..{{...]].[[[....{{{{{]]]....}}}}}..}}  (sci:  0.960)
@@ -337,9 +337,9 @@
                         27  GCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCY  66
 (-45.75 = -34.34 + -11.41)  [[.[[[[[..{{...]]]]].....}}{{]].......}}  (sci:  0.920)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=1 --consensus=consensus --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --strategy=B --temperature=25.9 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=1 --consensus=consensus --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --strategy=B --temperature=25.9 --windowIncrement=10
 === window: 1 to 169: ===
-                       43  ggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagac  157
+                       43  GGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGAC  157
 (-20.05 = -20.20 +  0.15)  [[[.{{]]].(((.....................................)))....(.............................................).........}}  (sci:  0.150)
 (-20.00 = -20.27 +  0.27)  [[[.{{]]].(............................................................................................).........}}  (sci:  0.150)
 (-19.87 = -20.10 +  0.23)  [[[.{{]]]((((.....................................))))...(.............................................).........}}  (sci:  0.150)
@@ -353,50 +353,50 @@
 (-19.08 = -19.10 +  0.02)  [[[.{{]]].((((..................................).))).....(...............................................)......}}  (sci:  0.140)
 (-19.08 = -19.38 +  0.30)  [[[.{{]]].((((..................................).))).(................................................).........}}  (sci:  0.140)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=1.1 --consensus=mis --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --strategy=D --temperature=37 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=1.1 --consensus=mis --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=0 --strategy=D --temperature=37 --windowIncrement=20
 === window: 1 to 76: ===
                         7  GURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVD  72
 (-58.83 = -54.26 + -4.57)  [[...{{......]]..[[.....{{{{]].....}}}}[[....{{{{{]].....}}}}}..}}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --maxKnotSize=40 --minHairpinLength=4 --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --strategy=D --temperature=17 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --maxKnotSize=40 --minHairpinLength=4 --nfactor=1 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --strategy=D --temperature=17 --windowIncrement=10
 === window: 21 to 60: ===
-                      36  caagcggggugguacc  51
+                      36  CAAGCGGGGUGGUACC  51
 (-22.20 = -22.48 + 0.28)  [[.....{{]]...}}  (sci:  0.860)
 (-22.11 = -22.45 + 0.34)  [[....{{.]]...}}  (sci:  0.860)
 
-                      40  cggggugguacc  51
+                      40  CGGGGUGGUACC  51
 (-21.52 = -21.67 + 0.15)  [[.{{]]...}}  (sci:  1.120)
 
 === window: 31 to 70: ===
-                      36  caagcggggugguacc  51
+                      36  CAAGCGGGGUGGUACC  51
 (-22.20 = -22.48 + 0.28)  [[.....{{]]...}}  (sci:  0.860)
 (-22.11 = -22.45 + 0.34)  [[....{{.]]...}}  (sci:  0.860)
 
-                      40  cggggugguacc  51
+                      40  CGGGGUGGUACC  51
 (-21.52 = -21.67 + 0.15)  [[.{{]]...}}  (sci:  1.120)
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=1 --consensus=consensus --minHairpinLength=4 --nfactor=1.1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --strategy=C --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=local --allowLP=1 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=1 --consensus=consensus --minHairpinLength=4 --nfactor=1.1 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --strategy=C --temperature=37 --windowIncrement=10
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-12 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=1 --consensus=consensus --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --strategy=B --temperature=17 --windowIncrement=20
-                         1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-12 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=1 --consensus=consensus --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=0 --shapeLevel=5 --strategy=B --temperature=17 --windowIncrement=20
+                         1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-59.62 = -46.93 + -12.69)  .[[.[[[[[..{{{]]]]]..}}}{{]]........<<...}}.......>>  [[{]}{]<}>
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=1 --consensus=mis --maxKnotSize=40 --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=C --temperature=17 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=1 --consensus=mis --maxKnotSize=40 --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=C --temperature=17 --windowIncrement=20
                         1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (-27.29 = -27.52 +  0.23)  ...................................[[.....{{]]...}}......................................................................................................................  (sci:  0.130)  [{]}
 (-27.26 = -27.48 +  0.22)  ...................................[[.....{{]]...}}.(((.....................................)))..........................................................................  (sci:  0.130)  [{]}()
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --minHairpinLength=2 --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=D --temperature=25.9 --windowIncrement=10
-                        1  uggugguggcccgcucaaccggcggccca______cugau  40
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-9 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --minHairpinLength=2 --nfactor=1.1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=D --temperature=25.9 --windowIncrement=10
+                        1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAU  40
 (-24.38 = -24.27 + -0.11)  ....[[.{{....]].......<<..}}........>>..  [{]<}>
 
-                       11  ccgcucaaccggcggccca______cugauugcgccuuuu  50
+                       11  CCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUU  50
 (-20.05 = -20.07 +  0.02)  .[[[.....{{]]]................}}........  [{]}
 
-                       21  ggcggccca______cugauugcgccuuuuug  52
+                       21  GGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-11.92 = -11.82 + -0.10)  ...[[...........{{......]]....}}  [{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=1.1 --consensus=mis --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=0 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-9 --Kpenalty=-15 --absoluteDeviation=1 --cfactor=1.1 --consensus=mis --minHairpinLength=6 --nfactor=0.9 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=20
                        1  a---uamu-gaKHDGMYRYRHNWHNKH-guRBGGuCAAGCRGGGUGGUACCGCGKBDYY--cgCGYAYYDrGMgya---------u-GKMkcUCGUCCCY  100
 (-31.07 = -32.14 + 1.07)  ...........[[....{{..[[..{{...]]...[[.....{{]]...}}...}}........]]............................}}....  (sci:  0.310)  [{[{][{]}}]}
 
@@ -412,37 +412,37 @@
                       81  -----u-GKMkcUCGUCCCYSHRHHYRrawugmag-camryarurmY-wwyggurCUKKR-aummGMMYGRRGARACWc-MYRCrmaaa  169
 (  0.00 =   0.00 + 0.00)  .........................................................................................  (sci: 0.000)  _
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --minHairpinLength=4 --nfactor=1 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=30
-                        1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=0.9 --consensus=consensus --minHairpinLength=4 --nfactor=1 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=1 --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=30
+                        1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-23.07 = -23.14 +  0.07)  ..........................................[[[.{{]]].(((.....................................)))....(.............................................).........}}............  (sci:  0.110)  [{]()()}
 (-22.45 = -22.66 +  0.21)  ..........................................[[[.{{]]].(............................................................................................).........}}............  (sci:  0.110)  [{]()}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --maxKnotSize=40 --minHairpinLength=6 --nfactor=1 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=10
-                         1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-12 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --maxKnotSize=40 --minHairpinLength=6 --nfactor=1 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=10
+                         1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-92.48 = -71.41 + -21.07)  ......[[.{{{..]]..}}}..[[....{{{{{]].....}}}}}.....[[[[[..{{...]]]]]....}}..  (sci:  0.910)  [{]}[{]}[{]}
 (-92.21 = -62.75 + -29.46)  (((((((.[[.[[.{{..]]......}}.{{{{{.]]....}}}}}...[[.{{{{...]]..}}}}.))))))).  (sci:  0.910)  ([[{]}{]}[{]})
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=D --temperature=25.9 --windowIncrement=30
-                        1  gcgugcguagcucagc__ggu__agagcaccaggcuuuca  40
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1.1 --consensus=consensus --minHairpinLength=6 --nfactor=1.1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=D --temperature=25.9 --windowIncrement=30
+                        1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCA  40
 (-26.77 = -25.50 + -1.27)  .........[[[......{{{....]]].....}}}....  [{]}
 
-                       31  caggcuuucacccagaaagucacggguucgaaucccaucg  70
+                       31  CAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCG  70
 (-36.86 = -31.96 + -4.90)  ((((.......))))[[....{{{{{]].....}}}}}..  ()[{]}
 
-                       61  aaucccaucgaacgcg  76
+                       61  AAUCCCAUCGAACGCG  76
 (  0.00 =   0.00 +  0.00)  ................  _
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1 --consensus=mis --maxKnotSize=40 --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=P --temperature=37 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=shapes --allowLP=1 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-12 --Kpenalty=-20 --absoluteDeviation=1 --cfactor=1 --consensus=mis --maxKnotSize=40 --minHairpinLength=2 --nfactor=0.9 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=P --temperature=37 --windowIncrement=20
                          1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-81.80 = -62.41 + -19.39)  ......[[.{{{..]]..}}}..[[....{{{{{]].....}}}}}.....[[[[[..{{...]]]]]....}}..  (sci:  0.920)  [{]}[{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=1.1 --consensus=mis --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --nfactor=1 --outputLowProbFilter=0.0001 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=1.1 --consensus=mis --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --nfactor=1 --outputLowProbFilter=0.0001 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=20
                           1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-101.50 = -80.43 + -21.07)  ......[[.{{{..]]..}}}..[[....{{{{{]].....}}}}}.....[[[[[..{{...]]]]]....}}..  (sci:  0.950)  0.9995455  [{]}[{]}[{]}
 ( -96.08 = -80.44 + -15.64)  [[...{{..]][[.{{..]]......}}..}}[[.{{....]]...}}...[[[[[..{{...]]]]]....}}..  (sci:  0.900)  0.0004545  [{][{]}}[{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-15 --cfactor=1.1 --consensus=consensus --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --nfactor=1 --outputLowProbFilter=0 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=B --temperature=25.9 --windowIncrement=10
-                         1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-12 --Kpenalty=-15 --cfactor=1.1 --consensus=consensus --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --nfactor=1 --outputLowProbFilter=0 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=B --temperature=25.9 --windowIncrement=10
+                         1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-88.84 = -78.01 + -10.83)  ..............[[[...{{..]]]....}}..[[.{{{{..]]...}}}}.[[......{{]].....}}....................[[..{{]].....}}.............................................................  (sci:  0.490)  0.9610364  [{]}[{]}[{]}[{]}
 (-86.23 = -74.52 + -11.71)  ..............[[[...{{..]]]....}}..[[.{{{{..]]...}}}}.[[......{{]].....}}....................[[..{{]].....}}.....................................((...............)).....  (sci:  0.480)  0.0389636  [{]}[{]}[{]}[{]}()
 (-57.95 = -47.77 + -10.18)  ...........((([[[...{{..]]]....}}..[[.{{{{..]]...}}}}..........)))...........................[[..{{]].....}}.............................................................  (sci:  0.320)  0.0000000  ([{]}[{]})[{]}
@@ -450,43 +450,43 @@
 (-55.34 = -44.28 + -11.06)  ...........((([[[...{{..]]]....}}..[[.{{{{..]]...}}}}..........)))...........................[[..{{]].....}}.....................................((...............)).....  (sci:  0.310)  0.0000000  ([{]}[{]})[{]}()
 (-56.58 = -45.58 + -11.00)  ...........(((....[[[....{{........[[.....{{]]...}}]]]..}}.....)))...........................[[..{{]].....}}.............................................................  (sci:  0.310)  0.0000000  ([{[{]}]})[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=2 --nfactor=1.1 --outputLowProbFilter=0.0001 --pairingFraction=-300 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=A --temperature=25.9 --windowIncrement=10
-                        1  uggugguggcccgcucaaccggcggccca______cugau  40
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=2 --nfactor=1.1 --outputLowProbFilter=0.0001 --pairingFraction=-300 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --probDecimals=2 --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=A --temperature=25.9 --windowIncrement=10
+                        1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAU  40
 (-42.54 = -42.98 +  0.44)  .[[.{{[[[..{{{]]]....}}}..]].......}}...  0.98  [{[{]}]}
 (-41.01 = -41.16 +  0.15)  ....[[.[[...{{]].....}}{{.]].......}}...  0.02  [[{]}{]}
 
-                       11  ccgcucaaccggcggccca______cugauugcgccuuuu  50
+                       11  CCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUU  50
 (-25.54 = -25.56 +  0.02)  .[[[.....{{]]]................}}........  1.00  [{]}
 
-                       21  ggcggccca______cugauugcgccuuuuug  52
+                       21  GGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-19.02 = -18.97 + -0.05)  [[..{{.........]]....}}.........  1.00  [{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=4 --nfactor=0.9 --outputLowProbFilter=0.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=30
-                        1  ___________gcggccgcgcgucggc_g_gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucgucccc  100
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=0 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/t-box.aln --Hpenalty=-15 --Kpenalty=-12 --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=4 --nfactor=0.9 --outputLowProbFilter=0.1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --probDecimals=7 --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=C --temperature=25.9 --windowIncrement=30
+                        1  ___________GCGGCCGCGCGUCGGC_G_GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCC  100
 (-96.08 = -88.90 + -7.18)  ...........[[.{{.]][[..{{]]....}}.....}}.[[..{{{.]][[.{{]]....}}..}}}..[[[.............{{....]]]..}}  (sci:  0.750)  0.9828708  [{][{]}}[{][{]}}[{]}
 
-                       31  gggg_caagcggggugguaccgcggcgcu__cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u___  130
+                       31  GGGG_CAAGCGGGGUGGUACCGCGGCGCU__CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U___  130
 (-78.63 = -68.74 + -9.89)  .....[[.{{{{..]]...}}}}[[.......{{{{.]]..}}}}..................[[..{{]].....}}......................  (sci:  0.660)  1.0000000  [{]}[{]}[{]}
 
-                       61  _cgcgcaccg_gcg_____________ggcg_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__  160
+                       61  _CGCGCACCG_GCG_____________GGCG_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__  160
 (-24.23 = -21.23 + -3.00)  ..((((.....))))..................[[..{{]].....}}....................................................  (sci:  0.230)  0.9512897  ()[{]}
 
-                       91  g_ucguccccgcgccugg________________g_u________cuggg_____gcccgaggagaca__acgcg____  169
+                       91  G_UCGUCCCCGCGCCUGG________________G_U________CUGGG_____GCCCGAGGAGACA__ACGCG____  169
 (-22.23 = -20.29 + -1.94)  ...[[..{{]].....}}.............................................................  (sci:  0.270)  0.9405870  [{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-9 --Kpenalty=-12 --cfactor=0.9 --consensus=mis --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --nfactor=1.1 --outputLowProbFilter=0.1 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=10
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-9 --Kpenalty=-12 --cfactor=0.9 --consensus=mis --lowProbFilter=0.01 --maxKnotSize=40 --minHairpinLength=6 --nfactor=1.1 --outputLowProbFilter=0.1 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=B --temperature=37 --windowIncrement=10
                          1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSRMSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-74.91 = -57.88 + -17.03)  ......[[.{{{..]]..}}}..[[....{{{{{]].....}}}}}.....[[[[[..{{...]]]]]....}}..  (sci:  0.980)  1.00  [{]}[{]}[{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-15 --Kpenalty=-20 --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --minHairpinLength=2 --nfactor=1 --outputLowProbFilter=0 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=10
-                        1  uggugguggcccgcucaaccggcggccca______cugauugcgccuuuuug  52
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 ROOTDIR/Misc/Test-Suite/StefanStyle/trp_attenuator.aln --Hpenalty=-15 --Kpenalty=-20 --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --minHairpinLength=2 --nfactor=1 --outputLowProbFilter=0 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=A --temperature=17 --windowIncrement=10
+                        1  UGGUGGUGGCCCGCUCAACCGGCGGCCCA______CUGAUUGCGCCUUUUUG  52
 (-52.99 = -52.83 + -0.16)  ....[[.[[..{{{]].....}}}{{]]........<<...}}.......>>  0.9999992  [[{]}{]<}>
 (-45.22 = -44.75 + -0.47)  ...[[[.....{{{]]]....}}}[[..........{{...]].......}}  0.0000004  [{]}[{]}
 (-44.79 = -44.52 + -0.27)  .[[.{{.[[..{{{]].....}}}...........]].......}}......  0.0000004  [{[{]}]}
 (-42.84 = -42.70 + -0.14)  .[[.{{.[[..{{{]].....}}}...(.........).]]...}}......  0.0000000  [{[{]}()]}
 (-42.23 = -41.85 + -0.38)  .[[...[[[..{{{]]]....}}}{{.........]]....}}.........  0.0000000  [[{]}{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --windowSize=40 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-12 --Kpenalty=-12 --cfactor=1 --consensus=mis --lowProbFilter=0.01 --minHairpinLength=2 --nfactor=0.9 --outputLowProbFilter=0.0001 --pairingFraction=-200 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=20
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --windowSize=40 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-12 --Kpenalty=-12 --cfactor=1 --consensus=mis --lowProbFilter=0.01 --minHairpinLength=2 --nfactor=0.9 --outputLowProbFilter=0.0001 --pairingFraction=-200 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --probDecimals=7 --ribosumscoring=1 --sci=1 --shapeLevel=5 --strategy=D --temperature=37 --windowIncrement=20
                         1  KSSUKYGURGYYYAGYu-GGY--ARRGCAYCWGSYUUUSR  40
 (-36.27 = -31.46 + -4.81)  [[....{{.]]...}}...[[..{{.]]......}}....  (sci:  0.840)  1.0000000  [{]}[{]}
 
@@ -500,8 +500,8 @@
                        41  MSCWGAADKuCVBRGGUUCGARUCCYRKCGVDSSMR  76
 (-36.04 = -26.59 + -9.45)  ....[[[....{{{{{]]]....}}}}}........  (sci:  0.910)  0.9999987  [{]}
 
-#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --windowSize=100 /vol/fold-grammars/src/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-9 --Kpenalty=-12 --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --minHairpinLength=6 --nfactor=0.9 --outputLowProbFilter=0.0001 --pairingFraction=-150 --param=/vol/gapc/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=10
-                        1  gcgugcguagcucagc__ggu__agagcaccaggcuuucacccagaaagucacggguucgaaucccaucgaacgcg  76
+#CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/pAliKiss  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probs --allowLP=1 --windowSize=100 ROOTDIR/Misc/Test-Suite/StefanStyle/tRNA_example_ungap.aln --Hpenalty=-9 --Kpenalty=-12 --cfactor=1 --consensus=consensus --lowProbFilter=0.01 --minHairpinLength=6 --nfactor=0.9 --outputLowProbFilter=0.0001 --pairingFraction=-150 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --probDecimals=2 --ribosumscoring=0 --sci=0 --shapeLevel=5 --strategy=D --temperature=17 --windowIncrement=10
+                        1  GCGUGCGUAGCUCAGC__GGU__AGAGCACCAGGCUUUCACCCAGAAAGUCACGGGUUCGAAUCCCAUCGAACGCG  76
 (-57.56 = -48.42 + -9.14)  (((((((...........[[....[[[..{{{{{]]]....}}}}}.....{{{{{.]]....}}}}}))))))).  0.83  ([[{]}{]})
 (-56.22 = -46.93 + -9.29)  (((((((..((...))..[[....[[[..{{{{{]]]....}}}}}.....{{{{{.]]....}}}}}))))))).  0.17  (()[[{]}{]})
 
