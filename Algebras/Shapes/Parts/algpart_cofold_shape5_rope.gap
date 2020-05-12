@@ -23,7 +23,7 @@
     return res;
   }
 
-  Rope bl_cut(Subsequence lb, Rope cut, Rope e, Subsequence rb) {
+  Rope bl_cut(Subsequence lb, Rope cut, Subsequence loc, Rope e, Subsequence rb) {
     Rope res;
     append(res, '[');
     append(res, cut);
@@ -32,7 +32,7 @@
     return res;
   }
 
-  Rope br_cut(Subsequence lb, Rope e, Rope cut, Subsequence rb) {
+  Rope br_cut(Subsequence lb, Rope e, Subsequence loc, Rope cut, Subsequence rb) {
     Rope res;
     append(res, '[');
     append(res, inner(e));
@@ -41,7 +41,7 @@
     return res;
   }
 
-  Rope il_cut_l(Subsequence lb, Rope cut, Rope e, Subsequence rregion, Subsequence rb) {
+  Rope il_cut_l(Subsequence lb, Rope cut, Subsequence loc, Rope e, Subsequence rregion, Subsequence rb) {
     Rope res;
     append(res, '[');
     append(res, cut);
@@ -50,7 +50,7 @@
     return res;
   }
 
-  Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
+  Rope il_cut_r(Subsequence lb, Subsequence lregion, Rope e, Subsequence loc, Rope cut, Subsequence rb) {
     Rope res;
     append(res, '[');
     append(res, inner(e));
@@ -59,9 +59,56 @@
     return res;
   }
 
-  Rope addss_cut(Rope e, Rope cut) {
+  Rope ml_cut_l(Subsequence lb, Rope cut, Rope e, Subsequence rregion, Subsequence rb) {
     Rope res;
+    append(res, '[');
+    append(res, '+');
     append(res, e);
-    append(res, cut);
+    append(res, ']');
     return res;
   }
+
+  Rope ml_cut_r(Subsequence lb, Subsequence lregion, Rope e, Rope cut, Subsequence rb) {
+    Rope res;
+    append(res, '[');
+    append(res, e);
+    append(res, '+');
+    append(res, ']');
+    return res;
+  }
+
+  Rope cadd_no_cut(Rope le, Subsequence r, Rope re) {
+    if (re == "_") {
+      return le;
+    } else {
+      Rope res;
+      append(res, le);
+      append(res, re);
+      return res;
+    }
+  }
+
+  Rope cadd_cut(Rope le, Rope cut, Rope re) {
+    if (re == "_") {
+      Rope res;
+      append(res, le);
+      append(res, '+');
+      return res;
+    } else {
+      Rope res;
+      append(res, le);
+      append(res, '+');
+      append(res, re);
+      return res;
+    }
+  }
+
+  Rope incl_end(Rope e) {
+    return e;
+  }
+
+  Rope incl_no_malus(Rope e) {
+    return e;
+  }
+
+  

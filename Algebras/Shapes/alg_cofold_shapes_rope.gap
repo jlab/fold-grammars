@@ -109,7 +109,7 @@ algebra alg_shape5 implements sig_cofold_foldrna(alphabet = char, answer = Rope)
     return e;
   }
 
-  Rope ml(Subsequence lb,Rope e,Subsequence rb) {
+  Rope ml(Subsequence lb,Subsequence lregion,Rope e,Subsequence rregion,Subsequence rb) {
     Rope res;
     append(res, '[');
     append(res, e);
@@ -187,10 +187,6 @@ algebra alg_shape5 implements sig_cofold_foldrna(alphabet = char, answer = Rope)
     append(res, e);
     append(res, ']');
     return res;
-  }
-
-  Rope addss(Rope e,Subsequence rb) {
-    return e;
   }
 
   Rope ssadd(Subsequence lb,Rope e) {
@@ -499,17 +495,6 @@ algebra alg_shape1 extends alg_shape5 {
     append(res, '_');
     append(res, re);
     return res;
-  }
-
-  Rope addss(Rope x,Subsequence rb) {
-    if (back(x) == '_') {
-      return x;
-    } else {
-      Rope res;
-      append(res, x);
-      append(res, '_');
-      return res;
-    }
   }
 
 }
