@@ -14,7 +14,7 @@ class Test(unittest.TestCase):
     def setUp(self):
         self.fp_workdir = tempfile.mkdtemp()
 
-        # Ordered dictionary with 2nd structure counts ans mfe-values for every sequence
+        # Ordered dictionary with 2nd structure counts and mfe-values for every sequence
         self.sequences = OrderedDict([
             ("CCCAA+AAAUGGG", ["9", "-410"]),
             ("CCCCCCA+AUCCCCCAAAGGGGGGGGGGGG", ["22979", "-2140"]),
