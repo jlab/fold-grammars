@@ -75,9 +75,3 @@ algebra alg_cofold_mfe implements sig_cofold_foldrna(alphabet = char, answer = m
     return res;
   }
 }
-
-algebra alg_cofold_mfe_subopt extends alg_cofold_mfe {
-  kscoring choice [multi_mfe] h([multi_mfe] i) {
-    return mfeSubopt(i.mfe);
-  }
-}
