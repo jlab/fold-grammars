@@ -1066,7 +1066,7 @@ sub roundFloat {
 
 	my $n = Math::BigFloat->new($value);
 	# switching to a non-deprecated method for rounding
-	my $f1 = $n->bfround(-1*$digits);
+	my $f1 = $n->bfround(-1*$digits, 'common');
 
 	return $f1;
 }
