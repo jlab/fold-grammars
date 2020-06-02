@@ -34,8 +34,7 @@ my %BINARIES = (
 	'centroid_fold', 'centroid_fold',
 	'ct2b.pl', 'ct2b.pl',
 	'gapc', 'gapc',
-	'gcc','gcc',
-	'ghc','/vol/ghc-7.6/bin/ghc',
+	'gcc', defined $ENV{'CC'} ? $ENV{'CC'} : 'gcc',	'ghc','/vol/ghc-7.6/bin/ghc',
 	'hybrid-ss-min', 'hybrid-ss-min-3.8',
 	'readlink', 'readlink',
 	'RNAalifold', 'RNAalifold-2.1.3',
@@ -102,7 +101,7 @@ our $MODIFIER_UNKNOWN = 'unknown';
 our %RAPIDSHAPES_BIBISERV = (
 	'clusterwide_tempdir', '/vol/tmp/',
 	'tdmwrapper_binary', '/vol/fold-grammars/src/Misc/Applications/RapidShapes/tdmwrapper',
-	'binPath_grammargenerator', '/vol/fold-grammars/bin/', 
+	'binPath_grammargenerator', '/vol/fold-grammars/bin/',
 	'qsub', 'qsub -l virtual_free=6GB -l h_vmem=6GB -cwd -tc 10 ', #-tc controls the number of maximal parallel jobs for an array-job
 	'gridSH', '/usr/bin/sh',
 	'sleepTimeInit', '1', #initial number of seconds between two qstat requests
@@ -114,9 +113,9 @@ our %RAPIDSHAPES_BIBISERV = (
 my %checkedBinaries = (); #run time hash to avoid multiple check for binaries
 sub getBinary {
 	my ($requestedBinary) = @_;
-	
+
 	return $checkedBinaries{$requestedBinary} if (exists $checkedBinaries{$requestedBinary});
-	
+
 	my $binary = $requestedBinary;
 	$binary = $BINARIES{$requestedBinary} if (exists $BINARIES{$requestedBinary});
 	my $whichResult = qx(which $binary 2>&1);
