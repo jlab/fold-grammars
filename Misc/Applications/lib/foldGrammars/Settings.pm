@@ -6,9 +6,9 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'rnashapes', 				{date => '01.10.2015', version => '3.3.0', name => 'RNAshapes', packageDir => 'RNAshapes/'},
+	'rnashapes', 				{date => '02.06.2020', version => '3.3.1', name => 'RNAshapes', packageDir => 'RNAshapes/'},
 	'rnaalishapes', 			{date => '20.03.2015', version => '2.4.7', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
-	'pkiss', 						{date => '20.03.2015', version => '2.2.12', name => 'pKiss', packageDir => 'pKiss/'},
+	'pkiss', 						{date => '02.06.2020', version => '2.2.13', name => 'pKiss', packageDir => 'pKiss/'},
 	'palikiss',					{date => '20.03.2015', version => '1.0.7', name => 'pAliKiss', packageDir => 'pAliKiss/'},
 	'libfoldgrammars', 	{date => '01.10.2015', version => '1.2.0', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
 	'rapidshapes', 			{date => '20.03.2015', version => '2.0.9', name => 'RapidShapes', packageDir => 'RapidShapes/'},
@@ -34,7 +34,8 @@ my %BINARIES = (
 	'centroid_fold', 'centroid_fold',
 	'ct2b.pl', 'ct2b.pl',
 	'gapc', 'gapc',
-	'gcc', defined $ENV{'CC'} ? $ENV{'CC'} : 'gcc',	'ghc','/vol/ghc-7.6/bin/ghc',
+	'gcc',defined $ENV{'CC'} ? $ENV{'CC'} : 'gcc',
+	'ghc','/vol/ghc-7.6/bin/ghc',
 	'hybrid-ss-min', 'hybrid-ss-min-3.8',
 	'readlink', 'readlink',
 	'RNAalifold', 'RNAalifold-2.1.3',
