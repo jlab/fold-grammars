@@ -32,14 +32,14 @@ $numCPUs = 1 if (not defined $numCPUs);
 if ((not defined $subTask) or ($subTask eq "default")) {
 	# runs for approx. 9min ...
 	checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp pknotsRG",   "-s P -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pknotsRG.out") ;
-	checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy A", "-s A -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissA.out");
-	checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy B", "-s B -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissB.out");
-	checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissC.out");
-	checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
-	checkParameters("pseudoknots parameter check", $TMPDIR."/".$Settings::ARCHTRIPLE.'/'.$Settings::PROGINFOS{'pkiss'}->{name}."_mfe", "pseudoknots.parametercheck.out");
-	checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
+	#checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy A", "-s A -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissA.out");
+	#checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy B", "-s B -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissB.out");
+	#checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy C", "-s C -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissC.out");
+	#checkPseudoknotMFEPP("pseudoknots.fasta", "pseudoknots mfe*pp strategy D", "-s D -P $Settings::RNAPARAM1999", "pseudoknots.fasta.mfepp.pKissD.out");
+	#checkParameters("pseudoknots parameter check", $TMPDIR."/".$Settings::ARCHTRIPLE.'/'.$Settings::PROGINFOS{'pkiss'}->{name}."_mfe", "pseudoknots.parametercheck.out");
+	#checkBasicFunctions("basic pseudoknot functions", "pseudoknots.basic.out");
 	# ... + 4min on Travis, thus combining here
-	checkProbing($TMPDIR, "probing.out", "probing algebra");
+	#checkProbing($TMPDIR, "probing.out", "probing algebra");
 }
 if ((not defined $subTask) or ($subTask eq "shapes")) {
 	# runs for approx. 30min on Travis
