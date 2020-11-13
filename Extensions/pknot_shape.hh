@@ -1,5 +1,5 @@
-#ifndef PKNOT_SHAPE_HH
-#define PKNOT_SHAPE_HH
+#ifndef RTLIB_SHAPE_HH_  // SMJ 2020-11-14: don't know why, but must be identical to FLAG in gapc/rtlib/shape.hh
+#define RTLIB_SHAPE_HH_
 
 template<typename alphabet, typename pos_type, typename T>
 inline bool midsize(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, int a, int l) {
