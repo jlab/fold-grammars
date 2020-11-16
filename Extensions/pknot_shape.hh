@@ -1,5 +1,5 @@
-#ifndef RTLIB_SHAPE_HH_  // SMJ 2020-11-14: don't know why, but must be identical to FLAG in gapc/rtlib/shape.hh
-#define RTLIB_SHAPE_HH_
+#ifndef PKNOT_SHAPE_HH
+#define PKNOT_SHAPE_HH
 
 template<typename alphabet, typename pos_type, typename T>
 inline bool midsize(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j, int a, int l) {
@@ -110,7 +110,7 @@ inline SHAPE tail(const SHAPE &a) {
 
 typedef shape_t myShape;
 
-static const shape_t openParen = '(';
-static const shape_t closeParen = ')';
+static const char openParen = '(';
+static const char closeParen = ')';
 
 #endif
