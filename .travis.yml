@@ -11,7 +11,7 @@ env:
 before_install:
   - sudo apt-get update -y
   - sudo apt-get install flex bison make libboost-all-dev libgsl-dev ghc
-  - git clone https://github.com/jlab/gapc /home/travis/gapc
+  - git clone --branch master https://github.com/jlab/gapc /home/travis/gapc
   - pushd .
   - cd /home/travis/gapc
   - ./configure

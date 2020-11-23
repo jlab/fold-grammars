@@ -6,18 +6,18 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'rnashapes', 				{date => '01.10.2015', version => '3.3.0', name => 'RNAshapes', packageDir => 'RNAshapes/'},
-	'rnaalishapes', 			{date => '20.03.2015', version => '2.4.7', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
-	'pkiss', 						{date => '20.03.2015', version => '2.2.12', name => 'pKiss', packageDir => 'pKiss/'},
-	'palikiss',					{date => '20.03.2015', version => '1.0.7', name => 'pAliKiss', packageDir => 'pAliKiss/'},
-	'libfoldgrammars', 	{date => '01.10.2015', version => '1.2.0', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
-	'rapidshapes', 			{date => '20.03.2015', version => '2.0.9', name => 'RapidShapes', packageDir => 'RapidShapes/'},
-	'knotinframe', 			{date => '20.03.2015', version => '2.0.8', name => 'knotinframe', packageDir => 'Knotinframe/'},
-	'rapidshapestest', 	{date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
-	'getoutsidetruth', 	{date => '19.04.2013', version => '1.0.0', name => 'getOutsideTruth'},
-	'acms',							{date => '21.03.2015', version => '1.2.1', name => 'acms', packageDir => 'aCMs/'},
-	'acmbuild', 					{date => '21.11.2014', version => '1.1.1', name => 'acmbuild'},
-	'acmsearch', 				{date => '21.11.2014', version => '1.1.1', name => 'acmsearch'},
+	'rnashapes', 				 {date => '18.11.2020', version => '3.3.1', name => 'RNAshapes', packageDir => 'RNAshapes/'},
+	'rnaalishapes', 		 {date => '18.11.2020', version => '2.4.8', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
+	'pkiss', 						 {date => '18.11.2020', version => '2.2.13', name => 'pKiss', packageDir => 'pKiss/'},
+	'palikiss',					 {date => '18.11.2020', version => '1.0.8', name => 'pAliKiss', packageDir => 'pAliKiss/'},
+	'libfoldgrammars', 	 {date => '01.10.2015', version => '1.2.0', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
+	'rapidshapes', 			 {date => '18.11.2020', version => '2.0.10', name => 'RapidShapes', packageDir => 'RapidShapes/'},
+	'knotinframe', 			 {date => '20.03.2015', version => '2.0.8', name => 'knotinframe', packageDir => 'Knotinframe/'},
+	'rapidshapestest', 	 {date => '01.03.2013', version => '2.1.0', name => 'RapidShapes-Test'},
+	'getoutsidetruth', 	 {date => '19.04.2013', version => '1.0.0', name => 'getOutsideTruth'},
+	'acms',							 {date => '21.03.2015', version => '1.2.1', name => 'acms', packageDir => 'aCMs/'},
+	'acmbuild', 				 {date => '21.11.2014', version => '1.1.1', name => 'acmbuild'},
+	'acmsearch', 				 {date => '21.11.2014', version => '1.1.1', name => 'acmsearch'},
 	'locomotif_wrapper', {date => '16.01.2015', version => '1.0.0', name => 'Locomotif_wrapper'},
 );
 
@@ -102,7 +102,7 @@ our $MODIFIER_UNKNOWN = 'unknown';
 our %RAPIDSHAPES_BIBISERV = (
 	'clusterwide_tempdir', '/vol/tmp/',
 	'tdmwrapper_binary', '/vol/fold-grammars/src/Misc/Applications/RapidShapes/tdmwrapper',
-	'binPath_grammargenerator', '/vol/fold-grammars/bin/', 
+	'binPath_grammargenerator', '/vol/fold-grammars/bin/',
 	'qsub', 'qsub -l virtual_free=6GB -l h_vmem=6GB -cwd -tc 10 ', #-tc controls the number of maximal parallel jobs for an array-job
 	'gridSH', '/usr/bin/sh',
 	'sleepTimeInit', '1', #initial number of seconds between two qstat requests
@@ -114,9 +114,9 @@ our %RAPIDSHAPES_BIBISERV = (
 my %checkedBinaries = (); #run time hash to avoid multiple check for binaries
 sub getBinary {
 	my ($requestedBinary) = @_;
-	
+
 	return $checkedBinaries{$requestedBinary} if (exists $checkedBinaries{$requestedBinary});
-	
+
 	my $binary = $requestedBinary;
 	$binary = $BINARIES{$requestedBinary} if (exists $BINARIES{$requestedBinary});
 	my $whichResult = qx(which $binary 2>&1);
