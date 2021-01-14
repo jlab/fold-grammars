@@ -15,6 +15,7 @@ type base_t = extern
 type Rope = extern
 type shape_t = shape
 type BigInteger = extern
+type multi_mfe = (int mfe, int incl_count, bool cut)
 
 include "Signatures/sig_cofold_foldrna.gap"
 include "Algebras/DotBracket/alg_cofold_dotBracket.gap"
@@ -25,6 +26,7 @@ algebra alg_count auto count;
 algebra alg_enum auto enum;
 
 include "Algebras/MFE/alg_cofold_mfe.gap"
+include "Algebras/MFE/alg_cofold_mfe_multi.gap"
 include "Algebras/alg_cofold.gap"
 // include "Algebras/MEA/alg_mea.gap"
 include "Algebras/Pfunc/alg_cofold_pfunc.gap"
