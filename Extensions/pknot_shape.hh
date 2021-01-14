@@ -110,7 +110,7 @@ inline SHAPE tail(const SHAPE &a) {
 
 typedef shape_t myShape;
 
-static const shape_t openParen = '(';
-static const shape_t closeParen = ')';
+static const char openParen = '(';
+static const char closeParen = ')';
 
 #endif
