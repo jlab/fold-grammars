@@ -1,0 +1,135 @@
+>cofold_testseq01_internal_loop_ge_30bp
+GGACAGACUACAUAGCGAUAUUCGCGAGGGACGGUCCAAGCCAUAAAGAAGACAUUAUGCCAACG&AUCGGUAGAGGCGCUUGCUGAGAUAUCUUUGGUCUUCUAGCGCCUAAGGGCUUCCACACUCCUUGCAUCGUAAAAAUCUAAGAA
+..............(((((....(((((((...((..(((((.......................&........(((((((....(((((.......)))))..)))))))...)))))..))..))))))))))))............. (-33.00)
+>cofold_testseq02_termau_energy
+CCCAa&aaaUGGG
+((((.&...)))) ( -4.10)
+>cofold_testseq03_termau_energy
+CCCCCCa&auCCCCCaaaGGGGGGGGGGGG
+((((((.&..(((((....))))))))))) (-21.40)
+>cofold_testseq04_termau_energy
+CCC&GGG
+(((&))) ( -2.50)
+>cofold_testseq05_termau_energy
+UCC&GGG
+(((&))) ( -0.20)
+>cofold_testseq06_termau_energy
+CCu&GGG
+(((&))) ( -0.80)
+>cofold_testseq07_termau_energy
+CCC&aCCCaaaGGGGGG
+(((&.(((...)))))) ( -3.70)
+>cofold_testseq08_termau_energy
+CCU&aCCCaaaGGGGGG
+...&.(((......))) ( -2.60)
+>cofold_testseq09_termau_energy
+CCC&aUCCaaaGGGGGG
+(((&.......)))... ( -2.50)
+>cofold_testseq10_termau_energy
+CCC&aCCCCCCaaaGGGGGGGGG
+(((&.((((((...))))))))) (-13.60)
+>cofold_testseq11_termau_energy
+CCC&aUCCCCCaaaGGGGGGGGG
+(((&..(((((....)))))))) (-11.50)
+>cofold_testseq12_termau_energy
+CCC&aUCCCCCaaaGGGGGGGGG
+(((&..(((((....)))))))) (-11.50)
+>cofold_testseq13_termau_energy
+CCC&aUCCCCCaaaGGGGGGGGG
+(((&..(((((....)))))))) (-11.50)
+>cofold_testseq14_termau_energy
+CCCCCCCCCaaaGGGGGGa&GGG
+(((((((((...)))))).&))) (-13.60)
+>cofold_testseq15_termau_energy
+CCCuCCCCCaaaGGGGGGa&GGG
+(((((((((....))))))&))) (-13.40)
+>cofold_testseq16_termau_energy
+CCCuCCCCCaaaGGGGGGa&GGG
+(((((((((....))))))&))) (-13.40)
+>cofold_testseq17_termau_energy
+CCCaaCCCCCCaaaGGGGGGa&GGG
+(((..((((((...)))))).&))) (-13.60)
+>cofold_testseq18_termau_energy
+CCCaaUCCCCCaaaGGGGGGa&GGG
+(((..((((((....))))))&))) (-13.40)
+>cofold_testseq19_termau_energy
+CCCaaUCCCCCaaaGGGGGGa&GGG
+(((..((((((....))))))&))) (-13.40)
+>cofold_testseq20_noIL_to_hl_cut
+CCCCaaCCCCaa&aGGGGaaGGGGa
+((((..((((..&.))))..)))). (-14.40)
+>cofold_testseq21_noIL_to_hl_cut
+CCACGGAGUUGUACAUCUCCUGUGCGAUGCCCCGCAUCCUGAAUAGGGCAGGUUGCCAGUGGAGGGUUGGGGAUACUUCCGAA&UCCAUAUCCACUCGUGACCGGAGGUUAGUACUUUACGAGCGAAAGGGUGCCCGCGCUUCUUUUCCGGACCCCGCACCACGCAUGUAGAGUACUUGGGAACGAAAGGCCGUAACACGGUGGGACAAAAGCAGCUGCCUAUACGCCGGUUUACCAAGGUCCCCUGGUUGAAUAUCAUGUCUGUGUUGAA
+.((((((((((((((.....)))))))).(((((.(((((..((..((((...)))).))..))))))))))..(((((((..&..................))))))).(((((((((((.(((....((((((((.(........)))).....))))).))).)))))))))))(((..........)))((((.(((.(((((......((((((......).))))).......)))))))))))).........))))))..... (-79.70)
+>cofold_testseq22_noIL_to_hl_cut
+UAGGAAGAUCGAGUGGCGGCUUCAACCAGGUCGACCCUGUAAAGGGAAGCUUAAAAUCAAGGACCUACCG&UAAUCGUAACUACGCACUAAGCGAAUACGUGGCGAGCCGGA
+................((((((...(((((((..((((....))))...............)))).....&....((((....(((.....)))..))))))).)))))).. (-21.30)
+>cofold_testseq23_no_uncut_dangle_in_mlcomps1tbcut
+GGCACACCCUUGACCGUUUCCUCGUUCCGCUAGCCAACUUACGUGGUGGCAGAUUGGACGGUCAACUAUAUGUGGACAACUAUAAAUUAGUGGAGCGUAGCGACGGAUCUGUAUUGGUACCAGUGU&CCAAACCAGGCUGUCUCGACUCCUGGCC
+(((.((....(((((((((..((...((((((...........))))))..))..)))))))))((((..(((((....)))))...))))((((((....(((((.((((..((((.........&))))..))))))))).)).))))))))) (-42.30)
+>cofold_testseq24_no_uncut_dangle_in_mlcomps1tbcut
+GGCCACCCUUGACCGUUUCCUCGUUCCGCUAGCCAACUUACGUGGUGGCAGAUUGGACGGUCAACUAUAUGUGGACAACUAUAAAUUAGUGGAGCGUAGCGACGGAUCUGUAUUGGUACCAGUGU&CCAAACCAGGCUGUCUCGACUCCUGGCC
+(((((....(((((((((..((...((((((...........))))))..))..)))))))))((((..(((((....)))))...))))((((((....(((((.((((..((((.........&))))..))))))))).)).))))))))) (-46.10)
+>cofold_testseq25_no_uncut_dangle_in_mlcomps1tbcut
+GGCCACCCUUGACCGUUUCCUCGUUCCGCUAGCCAACUUACGUGGUGGCAGAUUGGACGGUCAACUAUAUGUGGACAACUAUAAAUUAGUGGAGCGUAGCGACGGUCUGUUGGUACCAGUGU&CCAACAGGCUGUCCGCUCCUGGCC
+(((((....(((((((((..((...((((((...........))))))..))..)))))))))((((..(((((....)))))...))))((((((....(((((((((((((.........&)))))))))))))))))))))))) (-58.00)
+>cofold_testseq26_no_uncut_dangle_in_mlcomps1tbcut
+GGCCACCCUUGACCGUUUUCCCGCUAGCCAACUUACGUGGUGGGAGGACGGUCAACUAUGUGGACAACUAUAUAGUGGAGCGUAGCGACGGUCUGUUGGUACCAGUGU&CCAACAGGCUGUCCGCUCCUGGCC
+(((((....(((((((((((((((((...........)))))))))))))))))(((((((((....)))))))))((((((....(((((((((((((.........&)))))))))))))))))))))))) (-70.80)
+>cofold_testseq27_no_uncut_dangle_in_mlcomps1tbcut
+GGCCAUGACCGUUUUCCCGCUAGCCAACUUACGUGGUGGGAGGACGGUCAACUAUGUGGACAACUAUAUAGUGGAGCGGACGGUCUGUUGGUACCAGUGU&CCAACAGGCUGUCCGCUCCUGGCC
+((((((((((((((((((((((...........)))))))))))))))))(((((((((....)))))))))(((((((((((((((((((.........&)))))))))))))))))))))))) (-77.70)
+>cofold_testseq28_multiloop_with_cut_still_had_incl_contributions
+UAGGAAGAUCGAGUGGCGGCUUCAACCAGGUCGACCCUGUAAAGGGAAGCUUAAAAUCAAGGACCUACCG&UAAUCGUAACUACGCACUAAGCGAAUACGUGGCGAGCCGGA
+................((((((...(((((((..((((....))))...............)))).....&....((((....(((.....)))..))))))).)))))).. (-21.30)
+>cofold_testseq29_multiloop_with_cut_still_had_incl_contributions
+UAGGAAGAUCGAGUGGCGGCUUCAACCAGGUCGACCCUGUAAAGGGAAGCUUAAAAUCAAGGACCUACCG&UAUGCGACGGUCGCAUGACUUGGCGCUGAGCCAGUCCGCACUUUCGUAAUCGUAACUACGCACUAAGCGAAUACGUGGCGAGCCGGA
+................((((((...(((((((..((((....))))...............)))).....&..(((((.(((.((..((((.(((.....))))))).))))).)))))..((((....(((.....)))..))))))).)))))).. (-39.20)
+>cofold_testseq30_multiloop_with_cut_still_had_incl_contributions
+CCACCAAAGGACCAAAGGA&GG
+...................&.. (  0.00)
+>cofold_testseq31_multiloop_with_cut_still_had_incl_contributions
+GAAUACAGACAGAGUUAUGAAGGACGCUACGCAUUGUUAAAACGUCGUCUCGUUCAUUGGUCUCGGUUUAUUACGAAAGGAUGUCGGGUGCUUAAAGGGGGCUCACGUCUGACGCCACGCUCAUGGAGCACGCUGGGAUACAUAUUCCCAAUUGUUAGGGCCUGGAAGAC&CGGACCGACCAAGCAU
+................(((((.((.((.(((...........))).)).)).)))))(((((..(((((....((...((((((.((((.(((...))).))))))))))..))(((.((((....((((...(((((.......)))))..)))).)))).))).....&.))))))))))..... (-44.10)
+>cofold_testseq32_multiloop_with_cut_still_had_incl_contributions
+UGCUUUGGUCUCUUAGGUUACAGACCAGAUAACGUGCUCUCUUCUCAAGGUGUCAUGGAAAAACGCUUACUAAGAUGAGGAGCGUUGCAUCUGCGUAUCUCGGAUAAUGCAAC&UUGAUAACUAUGCUAUGG
+...((((((((..........))))))))......((((((.(((..((((((.........))))))....))).)).))))(((((((.(.((.....)).)..)))))))&.................. (-25.20)
+>cofold_testseq33_multiloop_with_cut_still_had_incl_contributions
+GCAUCUGCGUAUCUCGGAUAAUGCAAC&UUGAUAACUAUGCUAUGG
+((((.((((((((...))).)))))..&.........))))..... ( -5.40)
+>cofold_testseq34_multiloop_with_cut_still_had_incl_contributions
+GCAUCUGCGUAUCUCGGAUAAUGCAAC&UUGAUAACUAUGC
+((((.((((((((...))).)))))..&.........)))) ( -5.40)
+>cofold_testseq35_multiloop_with_cut_still_had_incl_contributions
+CAAUUUAAUCCCCACCGGUCACU&AAAGCCAUUAGG
+..........((....(((....&...)))....)) ( -2.20)
+>cofold_testseq36_multiloop_issues
+GGUUUGGGUCUUAAAGGGGCUCUGGGAUACUCCCA&CGGACC
+((((((((((((...)))))))(((((...)))))&.))))) (-11.70)
+>cofold_testseq37_multiloop_issues
+GGUUUAUCGGGUCUUAAAGGGGCUCUGGGAUACUCCCA&CGGACC
+(((((...(((((((...)))))))(((((...)))))&.))))) (-11.70)
+>cofold_testseq38_multiloop_issues
+GGUUUAUCGGGUCUUAAAGGGGCUCUGGGAUACAUAUUCCCA&CGGACC
+(((((...(((((((...)))))))(((((.......)))))&.))))) (-12.80)
+>cofold_testseq39_multiloop_issues
+GGUUUAUCGGGUGCUUAAAGGGGGCUCUGGGAUACAUAUUCCCA&CGGACC
+(((((...((((.(((...))).))))(((((.......)))))&.))))) (-12.70)
+>cofold_testseq40_multiloop_issues
+GGUUUAUUAGGAUGUCGGGUGCUUAAAGGGGGCUCACGUCUUGGGAUACAUAUUCCCA&CGGACC
+(((((....((((((.((((.(((...))).))))))))))(((((.......)))))&.))))) (-20.00)
+>cofold_testseq41_multiloop_issues
+GGUUUAUUAGGAUGUCGGGUGCUUAAAGGGGGCUCACGUCUAGCACGCUGGGAUACAUAUUCCCAAUUGUU&CGGACC
+(((((....((((((.((((.(((...))).))))))))))((((...(((((.......)))))..))))&.))))) (-21.20)
+>cofold_testseq42_multiloop_issues
+GGUUUAUUACGAAAGGAUGUCGGGUGCUUAAAGGGGGCUCACGUCUGACGAGCACGCUGGGAUACAUAUUCCCAAUUGUU&CGGACC
+(((((....((...((((((.((((.(((...))).))))))))))..))((((...(((((.......)))))..))))&.))))) (-21.90)
+>cofold_testseq43_multiloop_issues
+GGUUUAUUACGAAAGGAUGUCGGGUGCUUAAAGGGGGCUCACGUCUGACGCCACGCUCAUGGAGCACGCUGGGAUACAUAUUCCCAAUUGUUAGGGCCUGGAAGAC&CGGACC
+(((((....((...((((((.((((.(((...))).))))))))))..))(((.((((....((((...(((((.......)))))..)))).)))).))).....&.))))) (-29.10)
+>cofold_testseq44_multiloop_issues
+UGGUCUCGGUUUAUUACGAAAGGAUGUCGGGUGCUUAAAGGGGGCUCACGUCUGACGCCACGCUCAUGGAGCACGCUGGGAUACAUAUUCCCAAUUGUUAGGGCCUGGAAGAC&CGGACCGACCAAGCAU
+(((((..(((((....((...((((((.((((.(((...))).))))))))))..))(((.((((....((((...(((((.......)))))..)))).)))).))).....&.))))))))))..... (-35.80)
+>cofold_testseq45_segfault_mostlikely_due_to_alg_dotBracket
+GUAGUUGACAGCCCUGAAAUUCGGUCG&CUUUUAAUUAACUCCUUCCUCUUCGGACCGAUGUGCCCUUGGAUAUCCUAUAUGGAAUUUGGUGUCAGGAUUGUGCCAAGGCCACGAACACAGGAAUGCCAUACAA
+(((..((.((..((((....((((((.&.........................))))))((((.((((((..(((((((((........)))).)))))....)))))).))))....))))..)).))))).. (-31.50)

@@ -5,6 +5,7 @@ TESTPREFIX=/home/sjanssen/Desktop/fold-grammars/Misc/Test-Suite/StefanStyle/
 GAPC=gapc
 MAKE=make
 PERL=perl
+PYTHON=python
 INSTALL=install
 SED=sed
 CC=gcc
@@ -62,7 +63,7 @@ install-suite:
 	$(MAKE) -C Misc/Applications/RNAshapes install-program
 	$(MAKE) -C Misc/Applications/Locomotif_wrapper install-program
 	$(MAKE) -C Misc/Applications/aCMs install-program
-	
+
 distclean-suite:
 	$(MAKE) -C Misc/Applications/Knotinframe distclean
 	$(MAKE) -C Misc/Applications/pKiss distclean
@@ -71,6 +72,7 @@ distclean-suite:
 	$(MAKE) -C Misc/Applications/RNAalishapes distclean
 	$(MAKE) -C Misc/Applications/RNAshapes distclean
 	$(MAKE) -C Misc/Applications/aCMs distclean
+	$(MAKE) -C Misc/Applications/RNAcofold distclean
 
 install-lib:
 	$(MAKE) -C $(BASEDIR)/Misc/Applications/lib/ install
@@ -84,7 +86,7 @@ test-suite:
 	$(MAKE) -C Misc/Applications/RNAalishapes install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
 	$(MAKE) -C Misc/Applications/RNAshapes install-program PREFIX=$(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
 	mv $(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)/bin/* $(TESTPREFIX)/$(ARCHTRIPLE)/$(ARCHTRIPLE)
-	
+
 compile:
 	if [ ! -f "$(ARCHTRIPLE)/$(PROGRAMPREFIX)$(gapc_binaryname)" ]; then \
 		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
@@ -136,3 +138,4 @@ compile_local:
 test: build-suite
 	cd Misc/Test-Suite/GeorgStyle/ && $(BASH) run.sh ../Truth
 	cd Misc/Test-Suite/StefanStyle/ && $(PERL) runTests.pl
+	cd Misc/Test-Suite/StefanStyle/ && $(PYTHON) test_cofold.py
