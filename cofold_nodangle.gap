@@ -12,7 +12,7 @@ input rna
 type base_t = extern
 type Rope = extern
 type shape_t = shape
-type multi_mfe = (int mfe, int incl_count, bool cut)
+type multi_mfe = (int mfe, int incl_count, int cut)
 
 include "Signatures/sig_cofold_foldrna.gap"
 include "Algebras/DotBracket/alg_cofold_dotBracket.gap"
