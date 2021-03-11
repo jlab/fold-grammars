@@ -110,7 +110,11 @@
     return x;
   }
   multi_mfe nil(Subsequence n) {
-    return 0;
+    multi_mfe res;
+    res.mfe = 0;
+    res.incl_count = 0;
+    res.cut = 0;
+    return res;
   }
   choice [multi_mfe] h([multi_mfe] i) {
     return list(minimum(i));

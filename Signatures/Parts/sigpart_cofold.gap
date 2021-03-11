@@ -9,5 +9,5 @@
 	answer ml_cut_r(Subsequence, Subsequence, answer, answer, Subsequence);
 	answer cadd_cut(answer, answer, answer);
 	answer cadd_no_cut(answer, Subsequence, answer);
-	answer incl_no_malus(answer);
-	answer incl_end(answer);
+	//answer incl_no_malus(answer);
+	//answer incl_end(answer);

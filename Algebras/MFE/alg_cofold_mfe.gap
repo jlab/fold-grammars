@@ -19,24 +19,45 @@ algebra alg_cofold_mfe implements sig_cofold_foldrna(alphabet = char, answer = m
     return res;
   }
   multi_mfe trafo(multi_mfe e) {
+    e.mfe = e.mfe + 0;
+    e.incl_count = e.incl_count + 0;
+    e.cut = e.cut + 0;
     return e;
   }
   multi_mfe ssadd(Subsequence lb,multi_mfe e) {
+    e.mfe = e.mfe + 0;
+    e.incl_count = e.incl_count + 0;
+    e.cut = e.cut + 0;
     return e;
   }
   multi_mfe mladl(Subsequence lb,Subsequence dl,multi_mfe e,Subsequence rb) {
-     return e;
+    e.mfe = e.mfe + 0;
+    e.incl_count = e.incl_count + 0;
+    e.cut = e.cut + 0;
+    return e;
   }
   multi_mfe mladldr(Subsequence lb,Subsequence dl,multi_mfe e,Subsequence dr,Subsequence rb) {
+    e.mfe = e.mfe + 0;
+    e.incl_count = e.incl_count + 0;
+    e.cut = e.cut + 0;
     return e;
   }
   multi_mfe mldladr(Subsequence lb,Subsequence dl,multi_mfe e,Subsequence dr,Subsequence rb) {
+    e.mfe = e.mfe + 0;
+    e.incl_count = e.incl_count + 0;
+    e.cut = e.cut + 0;
     return e;
   }
   multi_mfe mladlr(Subsequence lb,Subsequence dl, multi_mfe e,Subsequence dr,Subsequence rb) {
+    e.mfe = e.mfe + 0;
+    e.incl_count = e.incl_count + 0;
+    e.cut = e.cut + 0;
     return e;
   }
   multi_mfe mladr(Subsequence lb,multi_mfe e,Subsequence dr,Subsequence rb) {
+    e.mfe = e.mfe + 0;
+    e.incl_count = e.incl_count + 0;
+    e.cut = e.cut + 0;
     return e;
   }
   multi_mfe ambd_Pr(multi_mfe le,Subsequence b,multi_mfe re) {
