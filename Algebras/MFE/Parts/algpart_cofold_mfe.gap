@@ -60,7 +60,7 @@
 
   multi_mfe ml(Subsequence lb, Subsequence lr, multi_mfe x, Subsequence rr, Subsequence rb) {
     if (x.cut == 1) {
-      x.mfe = x.mfe + duplex_energy() + termau_energy(lb,rb) + ss_energy(rr) + ss_energy(lr) - (x.incl_count*ul_energy()) - 5000;
+      x.mfe = x.mfe + duplex_energy() + termau_energy(lb,rb) + ss_energy(rr) + ss_energy(lr) - (x.incl_count*ul_energy());
       x.incl_count = 0;
       x.cut = 0;
     }
