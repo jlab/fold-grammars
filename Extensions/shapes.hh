@@ -1,8 +1,8 @@
 #ifndef SHAPES_HH
 #define SHAPES_HH
 
-static const shape_t openParen = '[';
-static const shape_t closeParen = ']';
+static const char openParen = '[';
+static const char closeParen = ']';
 
 // If Rope size is >= 2, returns contents from second to secondlast character
 // used to obtain "y" from "[y]"

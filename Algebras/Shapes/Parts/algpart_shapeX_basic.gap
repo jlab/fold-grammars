@@ -1,8 +1,8 @@
-//openParen and closeParen are defined in Extensions/shapes.hh as '[' ']' and in Extensions/pknot_shape.hh as '(' ')'
+//openParen and closeParen are defined in Extensions/shapes.hh as char '[' ']' and in Extensions/pknot_shape.hh as '(' ')'
 
   shape_t sadd(Subsequence b, shape_t x) {
     shape_t emptyShape;
-    
+
     if (x == emptyShape) {
       return shape_t('_');
     } else {
@@ -26,7 +26,7 @@
 		  return le;
 		} else {
 		  return le + re;
-		}			
+		}
 	}
   }
 
@@ -72,17 +72,17 @@
   }
 
   shape_t hl(Subsequence lb,Subsequence region,Subsequence rb) {
-    return openParen + closeParen;
+    return shape_t(openParen) + shape_t(closeParen);
   }
 
 
   shape_t bl(Subsequence lb,Subsequence lregion,shape_t x,Subsequence rb) {
 	if (shapelevel() <= 3) {
 		shape_t res;
-		append(res, openParen);
+		append(res, shape_t(openParen));
 		if (shapelevel() <= 2) { append(res, '_'); }
 		append(res, x);
-		append(res, closeParen);
+		append(res, shape_t(closeParen));
 		return res;
 	} else {
 		return x;
@@ -92,10 +92,10 @@
   shape_t br(Subsequence lb,shape_t x,Subsequence rregion,Subsequence rb) {
 	if (shapelevel() <= 3) {
 		shape_t res;
-		append(res, openParen);
+		append(res, shape_t(openParen));
 		append(res, x);
 		if (shapelevel() <= 2) { append(res, '_'); }
-		append(res, closeParen);
+		append(res, shape_t(closeParen));
 		return res;
 	} else {
 		return x;
@@ -105,11 +105,11 @@
   shape_t il(Subsequence lb,Subsequence lregion,shape_t x,Subsequence rregion,Subsequence rb) {
 	if (shapelevel() <= 4) {
 		shape_t res;
-		append(res, openParen);
+		append(res, shape_t(openParen));
 		if (shapelevel() <= 2) { append(res, '_'); }
 		append(res, x);
 		if (shapelevel() <= 2) { append(res, '_'); }
-		append(res, closeParen);
+		append(res, shape_t(closeParen));
 		return res;
 	} else {
 		return x;
@@ -117,39 +117,39 @@
   }
 
   shape_t ml(Subsequence lb,shape_t e,Subsequence rb) {
-    return openParen + e + closeParen;
+    return shape_t(openParen) + e + shape_t(closeParen);
   }
 
   shape_t mlall(Subsequence lb,shape_t e,Subsequence rb) {
-    return openParen + e + closeParen;
+    return shape_t(openParen) + e + shape_t(closeParen);
   }
 
   shape_t mldr(Subsequence lb,shape_t e,Subsequence dr,Subsequence rb) {
 	  shape_t res;
-	  append(res, openParen);
+	  append(res, shape_t(openParen));
 	  append(res, e);
 	  if ((shapelevel() == 1) && (back(e) != '_')) { append(res, '_'); }
-	  append(res, closeParen);
+	  append(res, shape_t(closeParen));
 	  return res;
   }
 
   shape_t mldlr(Subsequence lb,Subsequence dl,shape_t e,Subsequence dr,Subsequence rb) {
 	  shape_t res;
-	  append(res, openParen);
+	  append(res, shape_t(openParen));
 	  if ((shapelevel() == 1) && (front(e) != '_')) { append(res, '_'); }
 	  append(res, e);
 	  if ((shapelevel() == 1) && (back(e) != '_')) { append(res, '_'); }
-	  append(res, closeParen);
+	  append(res, shape_t(closeParen));
 	  return res;
-	  
+
   }
 
   shape_t mldl(Subsequence lb,Subsequence dl,shape_t e,Subsequence rb) {
 	  shape_t res;
-	  append(res, openParen);
+	  append(res, shape_t(openParen));
 	  if ((shapelevel() == 1) && (front(e) != '_')) { append(res, '_'); }
 	  append(res, e);
-	  append(res, closeParen);
+	  append(res, shape_t(closeParen));
 	  return res;
   }
 
