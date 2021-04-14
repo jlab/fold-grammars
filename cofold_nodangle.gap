@@ -7,19 +7,19 @@ import "Extensions/outside.hh"  // for containsBase filter
 // import "Extensions/shapes.hh"
 // import "Extensions/mea.hh"
 // import "Extensions/probing.hh"
-import "BigIntegerLibrary.hh"
+// import "BigIntegerLibrary.hh"
 
 input rna
 
 type base_t = extern
 type Rope = extern
 type shape_t = shape
-type BigInteger = extern
 type multi_mfe = (int mfe, int incl_count, bool cut)
+// type BigInteger = extern
 
 include "Signatures/sig_cofold_foldrna.gap"
 include "Algebras/DotBracket/alg_cofold_dotBracket.gap"
-include "Algebras/alg_count_bigint.gap"
+// include "Algebras/alg_count_bigint.gap"
 include "Algebras/Shapes/alg_shapes_rope.gap"
 
 algebra alg_count auto count;
