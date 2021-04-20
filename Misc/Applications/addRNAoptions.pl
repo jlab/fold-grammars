@@ -19,8 +19,8 @@ use foldGrammars::Utils;
 
 my $sedBinary = Settings::getBinary('sed');
 
-my ($infile, $mode) = @ARGV;
-die "usage: perl $0 <out.mf> <mode>\n  available modes:\n    0 = default\n    1 = read second argument as structure for RNAeval approach\n    2 = for MEA computation" if (@ARGV != 2);
+my ($infile, $mode, $warn_macrostate_mme_assumption) = @ARGV;
+die "usage: perl $0 <out.mf> <mode> [warn_macrostate_mme_assumption]\n  available modes:\n    0 = default\n    1 = read second argument as structure for RNAeval approach\n    2 = for MEA computation" if (@ARGV < 2);
 
 my $content = "";
 open (IN, $infile) || die "can't read file '$infile': $!";
@@ -32,6 +32,9 @@ open (IN, $infile) || die "can't read file '$infile': $!";
 			$content .= $line;
 			$line = <IN>; #: cat $(RTLIB)/generic_main.cc >> out_main.cc
 			$content .= $line;
+			if ($warn_macrostate_mme_assumption == 1) {
+				$content .= "\t".$sedBinary.' -i \'s|opts.parse(argc, argv);|opts.parse(argc, argv); test_macrostate_mme_assumption();|\' '.$1.'_main.cc'."\n";				
+			}
 			if ($mode == 2) {
 				$content .= "\t".$sedBinary.' -i \'s|#include .rtlib/string.hh.|#include "bppm.hh"\n#include "rtlib/string.hh"|\' '.$1.'_main.cc'."\n";
 				$content .= "\t".$sedBinary.' -i \'s|gapc::class_name obj;|gapc::class_name obj;\n  outside_gapc::class_name outside_obj;\n  gapc::Opts outside_opts;\n  try {\n    optind = 1;\n    outside_opts.parse(argc, argv);\n        outside_opts.inputs.clear();\n    std::pair<const char*, unsigned int> duplicatedInput = duplicateInput(gapc::Opts::getOpts()->inputs.front());\n    outside_opts.inputs.push_back(duplicatedInput);\n  } catch (std::exception \&e) {\n      std::cerr << "Exception: " << e.what() << '."'\\''\\\\n'\\''".';\n      std::exit(1);\n  }\n|\' '.$1.'_main.cc'."\n";
