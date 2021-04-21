@@ -72,7 +72,10 @@ sub parse {
 	my $iswarning = 0;
 	my $ismacrostatewarning = 0;
 	my $warning = "";
+	my $rownumber = 0;
   foreach my $line (split(m/\r?\n/, $result)) {
+		$rownumber += 1;
+
 		my ($energy, $part_energy, $part_covar, $structure, $shape, $pfunc, $blockPos, $structureProb, $reactivity) = (undef, undef, undef, undef, undef, undef, undef, undef, undef, undef);
 		my ($windowPos, $score) = (undef, undef); #helper variables for combined information
 
@@ -94,6 +97,11 @@ sub parse {
 			}
 			next;
 		}
+
+	#skip empty lines
+	if ($line =~ m/^\s*$/) {
+		next;
+	}
 
 	#parsing window position information
 		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
@@ -175,7 +183,7 @@ sub parse {
 				#( ( -120 , 1.91111 ) , ( ( ((((....)))) , [] ) , 0.193718 ) )
 				($energy, $reactivity, $structure, $shape, $structureProb) = ($1/100, $2, $3, $4, $5);
 			} else {
-				die "Parsing error: '$line'";
+				die "Parsing error line $rownumber: '$line'";
 			}
 			if (defined $energy || defined $structure || defined $shape) {
 				$fieldLengths{energy} = length(formatEnergy($energy)) if (length(formatEnergy($energy)) > $fieldLengths{energy});
