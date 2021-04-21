@@ -1,8 +1,8 @@
-//openParen and closeParen are defined in Extensions/shapes.hh as '[' ']' and in Extensions/pknot_shape.hh as '(' ')'
+//openParen and closeParen are defined in Extensions/shapes.hh as char '[' ']' and in Extensions/pknot_shape.hh as '(' ')'
 
   shape_t sadd(Subsequence b, shape_t e) {
     shape_t emptyShape;
-    
+
     if (e == emptyShape) {
       return '_' + e;
     } else {
@@ -48,7 +48,7 @@
   }
 
   shape_t hl(Subsequence lb,Subsequence region,Subsequence rb) {
-    return openParen + closeParen;
+    return shape_t(openParen) + shape_t(closeParen);
   }
 
 
@@ -65,23 +65,23 @@
   }
 
   shape_t ml(Subsequence lb,shape_t e,Subsequence rb) {
-    return openParen + e + closeParen;
+    return shape_t(openParen) + e + shape_t(closeParen);
   }
 
   shape_t mlall(Subsequence lb,shape_t e,Subsequence rb) {
-    return openParen + e + closeParen;
+    return shape_t(openParen) + e + shape_t(closeParen);
   }
 
   shape_t mldr(Subsequence lb,shape_t e,Subsequence dr,Subsequence rb) {
-    return openParen + e + closeParen;
+    return shape_t(openParen) + e + shape_t(closeParen);
   }
 
   shape_t mldlr(Subsequence lb,Subsequence dl,shape_t e,Subsequence dr,Subsequence rb) {
-    return openParen + e+ closeParen;
+    return shape_t(openParen) + e+ shape_t(closeParen);
   }
 
   shape_t mldl(Subsequence lb,Subsequence dl,shape_t e,Subsequence rb) {
-    return openParen + e+ closeParen;
+    return shape_t(openParen) + e+ shape_t(closeParen);
   }
 
   shape_t addss(shape_t e,Subsequence rb) {

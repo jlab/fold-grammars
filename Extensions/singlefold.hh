@@ -14,10 +14,13 @@ inline bool regionpair(int i, int j, int len) {
 	return true;
 }
 
+#ifndef COFOLD_HH
+// cofolding additionally requires to exclude SEPARATOR_BASE, thus this function is redefined in cofold.hh
 template<typename alphabet, typename pos_type, typename T>
 inline bool unpaired(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
 	return true;
 }
+#endif
 
 //in the Vienna Package, iloop regions are restricted such that their _combined_ length, i.e. |left region| + |right region| cannot exceed 30 bases.
 //our restrictions is usually more relaxed, because each region may have up to 30 bases individually, i.e. 60 bases for both regions in the worst case.

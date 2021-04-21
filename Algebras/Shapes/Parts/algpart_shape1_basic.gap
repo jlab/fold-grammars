@@ -1,4 +1,4 @@
-//openParen and closeParen are defined in Extensions/shapes.hh as '[' ']' and in Extensions/pknot_shape.hh as '(' ')'
+//openParen and closeParen are defined in Extensions/shapes.hh as char '[' ']' and in Extensions/pknot_shape.hh as '(' ')'
 
   shape_t sadd(Subsequence b, shape_t e) {
     if (front(e) == '_') {
@@ -28,30 +28,30 @@
   }
 
   shape_t bl(Subsequence lb,Subsequence lregion,shape_t e,Subsequence rb) {
-    return openParen + '_' + e + closeParen;
+    return shape_t(openParen) + '_' + e + shape_t(closeParen);
   }
 
   shape_t br(Subsequence lb,shape_t e,Subsequence rregion,Subsequence rb) {
-    return openParen + e + '_' + closeParen;
+    return shape_t(openParen) + e + '_' + shape_t(closeParen);
   }
 
   shape_t il(Subsequence lb,Subsequence lregion,shape_t e,Subsequence rregion,Subsequence rb) {
-    return openParen + '_' + e + '_' + closeParen;
+    return shape_t(openParen) + '_' + e + '_' + shape_t(closeParen);
   }
 
   shape_t mldr(Subsequence lb,shape_t e,Subsequence dr,Subsequence rb) {
     if (back(e) == '_') {
-      return openParen + e + closeParen;
+      return shape_t(openParen) + e + shape_t(closeParen);
     } else {
-      return openParen + e + shape_t('_') + closeParen; //cannot happen in macrostates, because this is handled in the mladr case
+      return shape_t(openParen) + e + shape_t('_') + shape_t(closeParen); //cannot happen in macrostates, because this is handled in the mladr case
     }
   }
 
   shape_t mldl(Subsequence lb,Subsequence dl,shape_t e,Subsequence rb) {
     if (front(e) == '_') {
-      return openParen + e + closeParen;
+      return shape_t(openParen) + e + shape_t(closeParen);
     } else {
-      return openParen + shape_t('_') + e + closeParen; //cannot happen in macrostates, because this is handled in the mladl case
+      return shape_t(openParen) + shape_t('_') + e + shape_t(closeParen); //cannot happen in macrostates, because this is handled in the mladl case
     }
   }
 
@@ -65,9 +65,9 @@
     if (back(res) != '_') {
       res = res + shape_t('_'); //cannot happen in macrostates
     }
-    return openParen + res + closeParen;
+    return shape_t(openParen) + res + shape_t(closeParen);
   }
-  
+
   shape_t addss(shape_t x,Subsequence rb) {
     if (back(x) == '_') {
       return x;
