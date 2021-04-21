@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jlab/fold-grammars.svg?branch=master)](https://travis-ci.org/jlab/fold-grammars)
+![example branch parameter](https://github.com/jlab/fold-grammars/actions/workflows/c-cpp.yml/badge.svg)
 
 # fold-grammars
 Collection of bgap code for RNA folding
