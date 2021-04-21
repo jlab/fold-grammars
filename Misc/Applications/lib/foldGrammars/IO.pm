@@ -69,9 +69,31 @@ sub parse {
 	my $samplePos = 0;
 	my $pfall = undef;
 	my $probingCentroidInfo = undef;
-	foreach my $line (split(m/\r?\n/, $result)) {
+	my $iswarning = 0;
+	my $ismacrostatewarning = 0;
+	my $warning = "";
+  foreach my $line (split(m/\r?\n/, $result)) {
 		my ($energy, $part_energy, $part_covar, $structure, $shape, $pfunc, $blockPos, $structureProb, $reactivity) = (undef, undef, undef, undef, undef, undef, undef, undef, undef, undef);
 		my ($windowPos, $score) = (undef, undef); #helper variables for combined information
+
+  #catch macrostate warning
+	  if ($line =~ m/^WARNING$/) {
+			$iswarning = 1;
+			$warning .= $line . "\n";
+			next;
+		}
+		if ($iswarning != 0) {
+			if ($line =~ m/^The macrostate grammar has two aims:/) {
+				$ismacrostatewarning = 1;
+			}
+			if ($ismacrostatewarning != 0) {
+				$warning .= $line . "\n";
+				if ($line =~ m/^Expect Macrostate mfe\/pfunc values to be slightly off./) {
+					$ismacrostatewarning = 0;
+				}
+			}
+			next;
+		}
 
 	#parsing window position information
 		if ($line =~ m/^Answer\s*\((\d+), (\d+)\)\s+:\s*$/) {
@@ -295,6 +317,7 @@ sub parse {
 		}
 	}
 
+	print STDERR $warning if $warning ne "";
 	output(\%predictions, $input, $program, $settings, \%fieldLengths, \%sumPfunc, \%samples, $inputIndex, \%pfAll, $useExternalPFall);
 }
 
