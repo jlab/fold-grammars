@@ -24,7 +24,9 @@ die "usage: perl $0 <out.mf> <mode> [grammar] [algebra product]\n  available mod
 
 my $content = "";
 my $warn_macrostate = 0;
-$warn_macrostate = 1 if ((lc($grammar) =~ m/macrostate/) and (lc($algebraproduct) =~ m/mfe|pfunc/));
+if (defined($grammar) and defined($algebraproduct)) {
+	$warn_macrostate = 1 if ((lc($grammar) =~ m/macrostate/) and (lc($algebraproduct) =~ m/mfe|pfunc/));
+}
 
 open (IN, $infile) || die "can't read file '$infile': $!";
 	my $gapcCall = "";
