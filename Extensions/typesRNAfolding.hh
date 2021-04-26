@@ -697,11 +697,11 @@ inline int getEnergyAtRow(const Basic_Subsequence<M_Char, unsigned> &alignment, 
 	assert(energyFkt >= 1);
 	assert(energyFkt <= 3);
 	if (energyFkt == 1) {
-		return dli_energy(alignment.seq->row(k), alignment.i, alignment.j-1, alignment.seq->window_right_border);
+		return dli_energy(alignment.seq->row(k), alignment.i, alignment.j-1);
 	} else if (energyFkt == 2) {
-		return dri_energy(alignment.seq->row(k), alignment.i, alignment.j-1, alignment.seq->window_left_border);
+		return dri_energy(alignment.seq->row(k), alignment.i, alignment.j-1);
 	} else if (energyFkt == 3) {
-		return ml_mismatch_energy(alignment.seq->row(k), alignment.i, alignment.j-1, alignment.seq->window_right_border, alignment.seq->window_left_border);
+		return ml_mismatch_energy(alignment.seq->row(k), alignment.i, alignment.j-1);
 	}
 	return 0;
 }
