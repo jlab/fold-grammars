@@ -43,4 +43,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: testresults
-          path: Misc/Test-Suite/StefanStyle/**/*.out_noprefix
+          path: |
+            Misc/Test-Suite/StefanStyle/**/*.out_noprefix
