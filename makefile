@@ -22,6 +22,7 @@ grammars=nodangle overdangle microstate macrostate
 levels=5 4 3 2 1
 isEval=0
 RNAOPTIONSPERLSCRIPT=/Misc/Applications/addRNAoptions.pl
+FIXTABLEDESIGNSCRIPT=/Misc/Applications/fix_table_design.pl
 
 #compile options
 CXXFLAGS_EXTRA=-O3 -DNDEBUG
@@ -89,7 +90,9 @@ test-suite:
 
 compile:
 	if [ ! -f "$(ARCHTRIPLE)/$(PROGRAMPREFIX)$(gapc_binaryname)" ]; then \
-		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file); \
+		cd $(TMPDIR) && \
+		manualtabledesign=`$(PERL) $(PWD)/$(BASEDIR)/$(FIXTABLEDESIGNSCRIPT) $(gapc_file) "$(gapc_options)"` && \
+		$(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product)" $(gapc_options) $(PWD)/$(BASEDIR)/$(gapc_file) $$manualtabledesign; \
 		$(PERL) $(PWD)/$(BASEDIR)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf $(isEval) '$(gapc_binaryname)' '$(gapc_product)'; \
 		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="$(EXTRARUNTIMEPATHS)"; \
 		$(INSTALL) -d $(PWD)/$(ARCHTRIPLE); \
@@ -113,7 +116,9 @@ compile_mea:
 		cd $(TMPDIR) && $(SED) -i "s/namespace gapc {/namespace outside_gapc {/" bppm.hh; \
 		cd $(TMPDIR) && $(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.hh; \
 		cd $(TMPDIR) && $(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.cc; \
-		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product2)" $(gapc_options2) $(PWD)/$(BASEDIR)/$(gapc_file2); \
+		cd $(TMPDIR) && \
+		manualtabledesign=`$(PERL) $(PWD)/$(BASEDIR)/$(FIXTABLEDESIGNSCRIPT) $(gapc_file2) "$(gapc_options2)"` && \
+		$(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product2)" $(gapc_options2) $(PWD)/$(BASEDIR)/$(gapc_file2) $$manualtabledesign; \
 		$(PERL) $(PWD)/$(BASEDIR)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf 2 '$(gapc_binaryname)' '$(gapc_product)'; \
 		cd $(TMPDIR) && $(MAKE) -f out.mf bppm.o CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="$(EXTRARUNTIMEPATHS)"; \
 		cd $(TMPDIR) && $(MAKE) -f out.mf CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="bppm.o $(EXTRARUNTIMEPATHS)"; \
