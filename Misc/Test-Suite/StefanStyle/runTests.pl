@@ -42,14 +42,18 @@ if ((not defined $subTask) or ($subTask eq "default")) {
 	checkProbing($TMPDIR, "probing.out", "probing algebra");
 }
 if ((not defined $subTask) or ($subTask eq "shapes")) {
-	# runs for approx. 30min on Travis
-	checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
 	checkProgram($TMPDIR, "rnashapes.run.out", "../../Applications/RNAshapes/","RNAshapes");
 }
+if ((not defined $subTask) or ($subTask eq "alishapes")) {
+	checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
+}
 if ((not defined $subTask) or ($subTask eq "pkiss")) {
-	# runs for approx. 26min on Travis
 	checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
+}
+if ((not defined $subTask) or ($subTask eq "palikiss")) {
 	checkProgram($TMPDIR, "palikiss.run.out", "../../Applications/pAliKiss/","pAliKiss");
+}
+if ((not defined $subTask) or ($subTask eq "knotinframe")) {
 	checkProgram($TMPDIR, "knotinframe.run.out", "../../Applications/Knotinframe/","Knotinframe");
 }
 
