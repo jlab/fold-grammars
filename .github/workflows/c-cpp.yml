@@ -40,8 +40,8 @@ jobs:
         perl runTests.pl 2 ${{ matrix.task }}
         popd
     - name: Archive test outs
-        uses: actions/upload-artifact@v2
-        with:
-          name: testresults
-          path: |
-            Misc/Test-Suite/StefanStyle/**/*.out_noprefix
+      uses: actions/upload-artifact@v2
+      with:
+        name: testresults
+        path: |
+          Misc/Test-Suite/StefanStyle/**/*.out_noprefix
