@@ -6,7 +6,7 @@ import "Extensions/outside.hh"  // for containsBase filter
 // import "Extensions/probabilities.hh"
 // import "Extensions/shapes.hh"
 // import "Extensions/mea.hh"
-// import "Extensions/probing.hh"
+import "Extensions/probing.hh"
 // import "BigIntegerLibrary.hh"
 
 input rna

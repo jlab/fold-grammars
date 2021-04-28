@@ -5,7 +5,7 @@
     return x + getReactivityScore(lb, true);
   }
   double addss_cut(double x, Subsequence r) {
-    return x getReactivityScore(r, true);
+    return x + getReactivityScore(r, true);
   }
   double hl_cut(Subsequence lb, Subsequence r, Subsequence rb) {
     return getReactivityScore(lb, false) + getReactivityScore(r, true) + getReactivityScore(rb, false);
