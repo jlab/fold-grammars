@@ -419,6 +419,12 @@ sub output {
 		$globalOutputInformation .= "\n";
 		print $globalOutputInformation;
 	}
+	if (defined $settings->{windowsize}) {
+		if ((($program eq $PROG_RNAALISHAPES) && (($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT) || ($settings->{mode} eq $Settings::MODE_SHAPES) || ($settings->{mode} eq $Settings::MODE_PROBS) || ($settings->{mode} eq $Settings::MODE_SAMPLE) || ($settings->{mode} eq $Settings::MODE_MEA))) ||
+		    (($program eq $PROG_PALIKISS) && (($settings->{mode} eq $Settings::MODE_MFE) || ($settings->{mode} eq $Settings::MODE_SUBOPT) || ($settings->{mode} eq $Settings::MODE_SHAPES) || ($settings->{mode} eq $Settings::MODE_PROBS) || ($settings->{mode} eq $Settings::MODE_ENFORCE) || ($settings->{mode} eq $Settings::MODE_LOCAL)))) {# && ) {
+			print STDERR "Warning: Energies in window mode for alignment inputs can be slightly off!\nSee https://github.com/jlab/gapc/issues/79 for details. In short: due to gaps,\na base dangling onto a stem is not necessarily next to the stem. For computa-\ntional reasons, we cannot restrict this look ahead/before to the current window.\n";
+		}
+	}
 
 	#ID LINE
 		if ($settings->{mode} eq $Settings::MODE_OUTSIDE) {
