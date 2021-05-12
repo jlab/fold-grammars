@@ -35,3 +35,4 @@ include "Grammars/gra_cofold_nodangle.gap"
 
 
 instance enum = gra_cofold_nodangle(alg_enum);
+instance probing = gra_cofold_nodangle(alg_probing);
