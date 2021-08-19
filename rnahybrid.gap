@@ -40,11 +40,11 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
   pp ulb(<void, Subsequence tbase>, pp x) {
     pp res;
     res.x = 1;
-    append(res.topU, '-');
+    append(res.topU, ' ');
     append(res.topU, x.topU);
-    append(res.topP, '-');
+    append(res.topP, ' ');
     append(res.topP, x.topP);
-    append(res.botP, '-');
+    append(res.botP, ' ');
     append(res.botP, x.botP);
     append_deep_rna(res.botU, tbase);
     append(res.botU, x.botU);
@@ -55,9 +55,9 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
     res.x = 1;
     append_deep_rna(res.topU, qbase);
     append(res.topU, x.topU);
-    append(res.topP, '-');
+    append(res.topP, ' ');
     append(res.topP, x.topP);
-    append(res.botP, '-');
+    append(res.botP, ' ');
     append(res.botP, x.botP);
     append_deep_rna(res.botU, tbase);
     append(res.botU, x.botU);
@@ -68,22 +68,22 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
     res.x = 1;
     append_deep_rna(res.topU, qbase);
     append(res.topU, x.topU);
-    append(res.topP, '-');
+    append(res.topP, ' ');
     append(res.topP, x.topP);
-    append(res.botP, '-');
+    append(res.botP, ' ');
     append(res.botP, x.botP);
-    append(res.botU, '-');
+    append(res.botU, ' ');
     append(res.botU, x.botU);
     return res;
   }
   pp edb(<Subsequence qloc, Subsequence tbase>, pp x) {
     pp res;
     res.x = 1;
-    append(res.topU, '-');
+    append(res.topU, ' ');
     append(res.topU, x.topU);
-    append(res.topP, '-');
+    append(res.topP, ' ');
     append(res.topP, x.topP);
-    append(res.botP, '-');
+    append(res.botP, ' ');
     append(res.botP, x.botP);
     append_deep_rna(res.botU, tbase);
     append(res.botU, x.botU);
@@ -92,44 +92,44 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
   pp sr(<Subsequence qbase, Subsequence tbase>, pp x) {
     pp res;
     res.x = 1;
-    append(res.topU, '-');
+    append(res.topU, ' ');
     append(res.topU, x.topU);
     append_deep_rna(res.topP, qbase);
     append(res.topP, x.topP);
     append_deep_rna(res.botP, tbase);
     append(res.botP, x.botP);
-    append(res.botU, '-');
+    append(res.botU, ' ');
     append(res.botU, x.botU);
     return res;
   }
   pp bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, void>, pp x) {
     pp res;
     res.x = 1;
-    append(res.topU, '-');
+    append(res.topU, ' ');
     append_deep_rna(res.topU, qregion);
     append(res.topU, x.topU);
     append_deep_rna(res.topP, qbase);
-    append(res.topP, '-', size(qregion));
+    append(res.topP, ' ', size(qregion));
     append(res.topP, x.topP);
     append_deep_rna(res.botP, tbase);
-    append(res.botP, '-', size(qregion));
+    append(res.botP, ' ', size(qregion));
     append(res.botP, x.botP);
-    append(res.botU, '-', 1+int(size(qregion)));
+    append(res.botU, ' ', 1+int(size(qregion)));
     append(res.botU, x.botU);
     return res;
   }
   pp bb(<Subsequence qbase, Subsequence tbase>, <void, Subsequence tregion>, pp x) {
     pp res;
     res.x = 1;
-    append(res.topU, '-', 1+int(size(tregion)));
+    append(res.topU, ' ', 1+int(size(tregion)));
     append(res.topU, x.topU);
     append_deep_rna(res.topP, qbase);
-    append(res.topP, '-', size(tregion));
+    append(res.topP, ' ', size(tregion));
     append(res.topP, x.topP);
     append_deep_rna(res.botP, tbase);
-    append(res.botP, '-', size(tregion));
+    append(res.botP, ' ', size(tregion));
     append(res.botP, x.botP);
-    append(res.botU, '-');
+    append(res.botU, ' ');
     append_deep_rna(res.botU, tregion);
     append(res.botU, x.botU);
     return res;
@@ -140,24 +140,24 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
 
     pp res;
     res.x = 1;
-    append(res.topU, '-');
+    append(res.topU, ' ');
     append_deep_rna(res.topU, qregion);
-    append(res.topU, '-', asym1);
+    append(res.topU, ' ', asym1);
     append(res.topU, x.topU);
 
     append_deep_rna(res.topP, qbase);
-    append(res.topP, '-', size(qregion));
-    append(res.topP, '-', asym1);
+    append(res.topP, ' ', size(qregion));
+    append(res.topP, ' ', asym1);
     append(res.topP, x.topP);
 
     append_deep_rna(res.botP, tbase);
-    append(res.botP, '-', size(tregion));
-    append(res.botP, '-', asym2);
+    append(res.botP, ' ', size(tregion));
+    append(res.botP, ' ', asym2);
     append(res.botP, x.botP);
 
-    append(res.botU, '-');
+    append(res.botU, ' ');
     append_deep_rna(res.botU, tregion);
-    append(res.botU, '-', asym2);
+    append(res.botU, ' ', asym2);
     append(res.botU, x.botU);
     return res;
   }
@@ -165,25 +165,25 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
     pp res;
     res.x = 1;
 
-    append(res.topU, '-');
+    append(res.topU, ' ');
     append_deep_rna(res.topP, qbase);
     append_deep_rna(res.botP, tbase);
-    append(res.botU, '-');
+    append(res.botU, ' ');
     if (int(size(qregion)) == 0) {
-      append(res.topU, '-', max(0, int(size(tregion))));
-      append(res.topP, '-', max(0, int(size(tregion))));
-      append(res.botP, '-', max(0, int(size(tregion))));
+      append(res.topU, ' ', max(0, int(size(tregion))));
+      append(res.topP, ' ', max(0, int(size(tregion))));
+      append(res.botP, ' ', max(0, int(size(tregion))));
     } else {
       Subsequence qregion_first = qregion;
       qregion_first.j = qregion_first.i+1;
       append_deep_rna(res.topU, qregion_first);
+      append(res.topU, ' ', max(0, int(size(tregion))-1));
       if (int(size(tregion)) == 0) {
-        append(res.botU, '-');
+        append(res.botU, ' ');
       }
-      append(res.topP, '-', max(1, int(size(tregion))));
-      append(res.botP, '-', max(1, int(size(tregion))));
+      append(res.topP, ' ', max(1, int(size(tregion))));
+      append(res.botP, ' ', max(1, int(size(tregion))));
     }
-    append(res.topU, '-', max(0, int(size(tregion))-1));
     append_deep_rna(res.botU, tregion);
 
     return res;
