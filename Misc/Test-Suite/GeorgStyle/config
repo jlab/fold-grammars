@@ -135,3 +135,13 @@ check_new_old_eq pKiss.gap rna mfepp AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGU
 GAPC="$BASE/bin/gapc -t -I../../../../"
 RUN_CPP_FLAGS="-S ../../StefanStyle/cedric.shape -N asProbabilities"
 check_new_old_eq cofold_nodangle.gap rna probing AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUU+UAACUACGUUUGAUACAAGUAGAGUAUUGGaaa cofoldnodangle
+
+
+## test for RNAhybrid
+GAPC="$BASE/bin/gapc "
+RUN_CPP_FLAGS=""
+# to generate truth file for this test:
+# 1) download sources form https://github.com/jlab/RNAhybrid
+# 2) compile binary as `cd Haskell && ghc --make RNAhybrid_main.lhs`
+# 3) execute like `./RNAhybrid_main ppGAPenumGAPmfe UAUUAUACA UUGAU`
+check_new_old_eq rnahybrid.gap twotrack ppenum UAUUAUACA rnahybrid UUGAU

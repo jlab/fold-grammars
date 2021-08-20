@@ -96,7 +96,13 @@ check_new_old_eq()
 
   cpp_base=${1%%.*}
   build_cpp $GRAMMAR/$1 $cpp_base $3 $2
-  run_cpp $cpp_base $3 $4 $5
+	echo "cpp_base=>$cpp_base<, 3=>$3<, 4=>$4<, 5=>$5<, 6=>--<"
+	if [ $# == 6 ]; then
+		# two track input, where second track comes as $6
+		run_cpp $cpp_base $3 $4 $5 $6
+	else
+		run_cpp $cpp_base $3 $4 $5
+	fi
   cmp_new_old_output $cpp_base $REF $3 $5
 
   if [ $temp != $failed ]; then
@@ -206,7 +212,7 @@ check_feature_repeat_mean_var()
   echo Testing mean
   # 0.00059
   log ../../paraltest/fp_eq $MEAN 0.789261 0.004
-  echo Testing variance 
+  echo Testing variance
   log ../../paraltest/fp_eq $VAR 2.87016e-05 0.00005
 
 
@@ -244,4 +250,3 @@ check_external()
 . ../config $BASE
 
 . ../stats.sh
-

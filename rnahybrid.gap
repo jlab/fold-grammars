@@ -290,3 +290,4 @@ grammar gra_rnahybrid uses sig_rnahybrid(axiom = hybrid) {
 
 instance testme = gra_rnahybrid(alg_enum);
 instance count = gra_rnahybrid(alg_count);
+instance ppenum = gra_rnahybrid(alg_pretty * alg_enum);
