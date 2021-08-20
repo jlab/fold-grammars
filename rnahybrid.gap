@@ -426,3 +426,4 @@ instance testme = gra_rnahybrid(alg_enum);
 instance count = gra_rnahybrid(alg_count);
 instance ppenum = gra_rnahybrid(alg_pretty * alg_enum);
 instance ppenummfemfedebug = gra_rnahybrid(alg_pretty * alg_enum * alg_mfe * alg_mfe_debug);
+instance mfepp = gra_rnahybrid(alg_mfe * alg_pretty);

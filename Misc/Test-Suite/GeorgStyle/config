@@ -148,3 +148,6 @@ check_new_old_eq rnahybrid.gap twotrack ppenum UAUUAUACA rnahybrid UUGAU
 
 # generate as above, but different instance `./RNAhybrid_main ppGAPenumGAPmfemfeDebug UAUUAUACA UUGAU`
 check_new_old_eq rnahybrid.gap twotrack ppenummfemfedebug UAUUAUACA rnahybrid UUGAU
+
+# generate as above, but different instance `./RNAhybrid_main mfepp UAUUAUACAACCGUUCCACCUCAA UUGAUAUGUUGGAUGAUGGAGU`
+check_new_old_eq rnahybrid.gap twotrack mfepp UAUUAUACAACCGUUCCACCUCAA rnahybrid UUGAUAUGUUGGAUGAUGGAGU
