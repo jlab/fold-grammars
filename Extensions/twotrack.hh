@@ -53,9 +53,8 @@ inline int twotrack_blstacking_energy(const Basic_Subsequence<alphabet, pos_type
       compseq[3] = bottom.seq->row(k)[bottom.i];
       energy += sr_energy(compseq, 0, 3);
     }
-    return energy;
   }
-  return 0;
+  return energy;
 }
 template<typename alphabet, typename pos_type>
 inline int twotrack_brstacking_energy(const Basic_Subsequence<alphabet, pos_type> &top,
@@ -69,14 +68,13 @@ inline int twotrack_brstacking_energy(const Basic_Subsequence<alphabet, pos_type
     for (unsigned k = 0; k < top.seq->rows(); k++) {
       char compseq [4];
       compseq[0] = top.seq->row(k)[top.i];
-      compseq[1] = top.seq->row(k)[top.i+2];
-      compseq[2] = bottom.seq->row(k)[bottom.i+1];
+      compseq[1] = top.seq->row(k)[top.i+1];
+      compseq[2] = bottom.seq->row(k)[region.j];
       compseq[3] = bottom.seq->row(k)[bottom.i];
       energy += sr_energy(compseq, 0, 3);
     }
-    return energy;
   }
-  return 0;
+  return energy;
 }
 template<typename alphabet, typename pos_type>
 inline int twotrack_dl_energy(const Basic_Subsequence<alphabet, pos_type> &lb,
@@ -102,9 +100,9 @@ inline int twotrack_dr_energy(const Basic_Subsequence<alphabet, pos_type> &lb,
   for (unsigned k = 0; k < lb.seq->rows(); k++) {
     char compseq [3];
     compseq[0] = lb.seq->row(k)[lb.i];
-    compseq[1] = lb.seq->row(k)[rb.i];
-    compseq[2] = rb.seq->row(k)[rb.i+1];
-    energy += dr_energy(compseq, 0, 1, rb.seq->n);
+    compseq[1] = rb.seq->row(k)[rb.i];
+    compseq[2] = rb.seq->row(k)[rb.i-1];
+    energy += dr_energy(compseq, 0, 1, 3);
   }
   return energy;
 }
@@ -132,9 +130,10 @@ inline int twotrack_dri_energy(const Basic_Subsequence<alphabet, pos_type> &lb,
   for (unsigned k = 0; k < lb.seq->rows(); k++) {
     char compseq [3];
     compseq[0] = lb.seq->row(k)[lb.i];
-    compseq[1] = lb.seq->row(k)[rb.i];
-    compseq[2] = rb.seq->row(k)[rb.i+1];
-    energy += dri_energy(compseq, 0, 1);
+    compseq[1] = rb.seq->row(k)[rb.i+1];
+    compseq[2] = rb.seq->row(k)[rb.i];
+    //std::cerr << "twotrack_dri_energy(" << lb << rb << "=" << compseq << "   = " << dri_energy(compseq, 0, 2) << ")\n";
+    energy += dri_energy(compseq, 0, 2);
   }
 
   return energy;
