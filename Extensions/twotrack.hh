@@ -163,7 +163,7 @@ inline int twotrack_il_energy(const Basic_Subsequence<alphabet, pos_type> &lr,
     } else if ((size(lr) == 1) && size(rr) == 2) {
       energy += il12_energy(compseq, 0, size(lr)+1, size(lr)+2, size(lr)+2+size(rr)+1);
     } else if ((size(lr) == 2) && size(rr) == 1) {
-      energy += il21_energy(compseq, 0, size(lr)+1, size(lr)+2, size(lr)+2+size(rr)+1);
+      energy += il21_energy(compseq, 0, int(size(lr))+1, int(size(lr))+2, int(size(lr))+int(size(rr))+3);
     } else if ((size(lr) == 2) && size(rr) == 2) {
       //fprintf(stderr, "%s %i %i %i %i\n", compseq, lr.i-1, lr.j, size(lr)+2+rr.i-1, size(lr)+2+rr.j);
       energy += il22_energy(compseq, 0, size(lr)+1, size(lr)+2, size(lr)+2+size(rr)+1);
