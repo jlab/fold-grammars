@@ -48,8 +48,8 @@ inline int twotrack_blstacking_energy(const Basic_Subsequence<alphabet, pos_type
     for (unsigned k = 0; k < top.seq->rows(); k++) {
       char compseq [4];
       compseq[0] = top.seq->row(k)[top.i];
-      compseq[1] = top.seq->row(k)[top.i+1];
-      compseq[2] = bottom.seq->row(k)[bottom.i+2];
+      compseq[1] = top.seq->row(k)[region.j];
+      compseq[2] = bottom.seq->row(k)[bottom.i+1];
       compseq[3] = bottom.seq->row(k)[bottom.i];
       energy += sr_energy(compseq, 0, 3);
     }
