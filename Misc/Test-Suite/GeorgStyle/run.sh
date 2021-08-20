@@ -96,7 +96,6 @@ check_new_old_eq()
 
   cpp_base=${1%%.*}
   build_cpp $GRAMMAR/$1 $cpp_base $3 $2
-	echo "cpp_base=>$cpp_base<, 3=>$3<, 4=>$4<, 5=>$5<, 6=>--<"
 	if [ $# == 6 ]; then
 		# two track input, where second track comes as $6
 		run_cpp $cpp_base $3 $4 $5 $6
