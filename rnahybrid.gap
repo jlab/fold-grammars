@@ -4,6 +4,7 @@ import rna
 input < rna, rna >
 type Rope = extern
 type pp = (int x, Rope topU, Rope topP, Rope botP, Rope botU)
+type mfedebug = (int energy, Rope stack)
 
 signature sig_rnahybrid(alphabet, answer) {
   answer nil(<Subsequence, Subsequence>);
@@ -190,6 +191,135 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
   }
   choice [pp] h([pp] i) {
     return i;
+  }
+}
+
+algebra alg_mfe_debug implements sig_rnahybrid(alphabet = char, answer = mfedebug) {
+  mfedebug nil(<Subsequence qregion, Subsequence tregion>) {
+    // v1 = 0;
+    mfedebug res;
+    res.energy = 0;
+    res.stack = Rope("nil{0}");
+    return res;
+  }
+  mfedebug ult(<Subsequence qbase, void>, mfedebug x) {
+    // v1 = tbl_unpaired_left_top[i1+1][i2];
+    return x;
+  }
+  mfedebug ulb(<void, Subsequence tbase>, mfedebug x) {
+    // v1 = tbl_unpaired_left_bot[i1][i2+1];
+    return x;
+  }
+  mfedebug eds(<Subsequence qbase, Subsequence tbase>, mfedebug x) {
+    // v2 = (tbl_closed[i1+1][i2+1] + dl_energy((i1+1) + 1, (i2+1) + 1)) + dr_energy((i1+1) + 1, (i2+1) + 1);
+    Subsequence lb = qbase;
+    lb.i = qbase.i+1;
+    Subsequence rb = tbase;
+    rb.i = tbase.i+1;
+
+    mfedebug res;
+    res.energy = x.energy + twotrack_dl_energy(lb,rb) + twotrack_dr_energy(lb,rb);
+    append(res.stack, "eds{", 4);
+    append(res.stack, twotrack_dl_energy(lb,rb));
+    append(res.stack, ',');
+    append(res.stack, twotrack_dr_energy(lb,rb));
+    append(res.stack, '}');
+    append(res.stack, x.stack);
+    return res;
+  }
+  mfedebug edt(<Subsequence qbase, Subsequence tloc>, mfedebug x) {
+    // v3 = tbl_closed[i1+1][i2] + dl_energy((i1+1) + 1, (i2) + 1);
+    Subsequence lb = qbase;
+    lb.i = qbase.i+1;
+
+    mfedebug res;
+    res.energy = x.energy + twotrack_dl_energy(lb,tloc);
+    append(res.stack, "edt{", 4);
+    append(res.stack, twotrack_dl_energy(lb,tloc));
+    append(res.stack, '}');
+    append(res.stack, x.stack);
+    return res;
+  }
+  mfedebug edb(<Subsequence qloc, Subsequence tbase>, mfedebug x) {
+    // v4 = tbl_closed[i1][i2+1] + dr_energy((i1) + 1, (i2+1) + 1);
+    Subsequence rb = tbase;
+    rb.i = tbase.i+1;
+
+    mfedebug res;
+    res.energy = x.energy + twotrack_dr_energy(qloc,rb);
+    append(res.stack, "edb{", 4);
+    append(res.stack, twotrack_dr_energy(qloc,rb));
+    append(res.stack, '}');
+    append(res.stack, x.stack);
+    return res;
+  }
+  mfedebug sr(<Subsequence qbase, Subsequence tbase>, mfedebug x) {
+    // // v1 = sr_energy(i1+1, i2+1) + tbl_closed[i1+1][i2+1];
+    mfedebug res;
+    res.energy = x.energy + twotrack_sr_energy(qbase, tbase);
+    append(res.stack, "sr{", 3);
+    append(res.stack, twotrack_sr_energy(qbase, tbase));
+    append(res.stack, '}');
+    append(res.stack, x.stack);
+    return res;
+  }
+  mfedebug bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, void>, mfedebug x) {
+    // // v2 = (tbl_closed[k][i2+1] + bl_stacking((k) - (i1+1), 0, i1+1, i2+1)) + bl_ent((k) - (i1+1));
+    mfedebug res;
+    res.energy = x.energy + twotrack_blstacking_energy(qbase, tbase, qregion) + bl_ent(qregion.j-qregion.i);
+    append(res.stack, "bt{", 3);
+    append(res.stack, twotrack_blstacking_energy(qbase, tbase, qregion));
+    append(res.stack, ',');
+    append(res.stack, bl_ent(qregion.j-qregion.i));
+    append(res.stack, '}');
+    append(res.stack, x.stack);
+    return res;
+  }
+  mfedebug bb(<Subsequence qbase, Subsequence tbase>, <void, Subsequence tregion>, mfedebug x) {
+    // // v4 = (tbl_closed[i1+1][k2] + bl_stacking(0, (k2) - (i2+1), i1+1, i2+1)) + bl_ent((k2) - (i2+1));
+    mfedebug res;
+    res.energy = x.energy + twotrack_brstacking_energy(qbase, tbase, tregion) + bl_ent(tregion.j-tregion.i);
+    append(res.stack, "bb{", 3);
+    append(res.stack, twotrack_brstacking_energy(qbase, tbase, tregion));
+    append(res.stack, ',');
+    append(res.stack, bl_ent(tregion.j-tregion.i));
+    append(res.stack, '}');
+    append(res.stack, x.stack);
+    return res;
+  }
+  mfedebug il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, mfedebug x) {
+    // lines 996 to 1078, my take is that special cases 11, 12, 21, 22 are considered,
+    // but not 1n, n1, 23 and 32
+    // all others are ent+asym+stack
+    mfedebug res;
+    res.energy = x.energy + twotrack_il_energy(qregion, tregion);
+    append(res.stack, "il{", 3);
+    append(res.stack, twotrack_il_energy(qregion, tregion));
+    append(res.stack, '}');
+    append(res.stack, x.stack);
+    return res;
+  }
+  mfedebug el(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>) {
+    // v8 = ((((j1) - (i1+1)) > 0) ? dli_energy(i1+1, i2+1) : 0) + ((((j2) - (i2+1)) > 0) ? dri_energy(i1+1, i2+1) : 0);
+    mfedebug res;
+    res.energy = 0;
+    res.stack = Rope("el{0,");
+    if (size(qregion) > 0) {
+      res.energy = res.energy + twotrack_dli_energy(qbase, tbase);
+      append(res.stack, twotrack_dli_energy(qbase, tbase));
+      append(res.stack, ',');
+    }
+    if (size(tregion)) {
+      res.energy = res.energy + twotrack_dri_energy(qbase, tbase);
+      append(res.stack, twotrack_dri_energy(qbase, tbase));
+      append(res.stack, ',');
+    }
+    append(res.stack, '}');
+
+    return res;
+  }
+  choice [mfedebug] h([mfedebug] i) {
+    return list(minimum(i));
   }
 }
 
