@@ -307,12 +307,15 @@ algebra alg_mfe_debug implements sig_rnahybrid(alphabet = char, answer = mfedebu
     if (size(qregion) > 0) {
       res.energy = res.energy + twotrack_dli_energy(qbase, tbase);
       append(res.stack, twotrack_dli_energy(qbase, tbase));
-      append(res.stack, ',');
+    } else {
+      append(res.stack, 0);
     }
+    append(res.stack, ',');
     if (size(tregion)) {
       res.energy = res.energy + twotrack_dri_energy(qbase, tbase);
       append(res.stack, twotrack_dri_energy(qbase, tbase));
-      append(res.stack, ',');
+    } else {
+      append(res.stack, 0);
     }
     append(res.stack, '}');
 
@@ -354,6 +357,7 @@ algebra alg_mfe implements sig_rnahybrid(alphabet = char, answer = int) {
     // v4 = tbl_closed[i1][i2+1] + dr_energy((i1) + 1, (i2+1) + 1);
     Subsequence rb = tbase;
     rb.i = tbase.i+1;
+    rb.j = tbase.j+1;
     return x + twotrack_dr_energy(qloc,rb);
   }
   int sr(<Subsequence qbase, Subsequence tbase>, int x) {
