@@ -45,4 +45,4 @@ jobs:
     - name: rnahybrid tests
       run: |
         cd $GITHUB_WORKSPACE/../fold-grammars
-        cd Misc/Test-Suite/GeorgStyle/; bash run.sh ../Truth;
+        cd Misc/Test-Suite/GeorgStyle/; bash run.sh ../Truth rnahybrid;
