@@ -130,3 +130,8 @@ RUN_CPP_FLAGS="$PARAMSET1999 -u 0 -s d"
 check_new_old_eq pKiss.gap rna mfepp AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUUUAACUACGUUUGAUACAAGUAGAGUAUUGG pkissD
 RUN_CPP_FLAGS="$PARAMSET1999 -u 0 -s p"
 check_new_old_eq pKiss.gap rna mfepp AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUUUAACUACGUUUGAUACAAGUAGAGUAUUGG pknotsRG
+
+# test cofolding with structure probing data
+GAPC="$BASE/bin/gapc -t -I../../../../"
+RUN_CPP_FLAGS="-S ../../StefanStyle/cedric.shape -N asProbabilities"
+check_new_old_eq cofold_nodangle.gap rna probing AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUU+UAACUACGUUUGAUACAAGUAGAGUAUUGGaaa cofoldnodangle
