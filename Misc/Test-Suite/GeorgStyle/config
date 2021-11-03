@@ -130,3 +130,18 @@ RUN_CPP_FLAGS="$PARAMSET1999 -u 0 -s d"
 check_new_old_eq pKiss.gap rna mfepp AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUUUAACUACGUUUGAUACAAGUAGAGUAUUGG pkissD
 RUN_CPP_FLAGS="$PARAMSET1999 -u 0 -s p"
 check_new_old_eq pKiss.gap rna mfepp AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUUUAACUACGUUUGAUACAAGUAGAGUAUUGG pknotsRG
+
+GAPC="$BASE/bin/gapc"
+RUN_CPP_FLAGS=""
+check_new_old_eq abstract.gap pos shapepos "(.)" singleHL
+check_new_old_eq abstract.gap pos shapepos "(.)." HLs
+check_new_old_eq abstract.gap pos shapepos "(.).." HLss
+check_new_old_eq abstract.gap pos shapepos ".(..)" sHL
+check_new_old_eq abstract.gap pos shapepos ".(..).." sHLss
+check_new_old_eq abstract.gap pos shapepos ".((.(..))).." stem
+check_new_old_eq abstract.gap pos shapepos "(.)(.)" cadd
+check_new_old_eq abstract.gap pos shapepos "((.)(.))" ML
+check_new_old_eq abstract.gap pos shapepos "(((.)(.)))" biggerML
+check_new_old_eq abstract.gap pos shapepos "((..((.))(.)(.)))." largeML
+check_new_old_eq abstract.gap pos shapepos ".(.(.).(.).(.(.).(.).(.).).).(.)." complex
+check_new_old_eq abstract.gap pos shapepos "......................................((((((.(((((((((.......))))).))))....)))))).....((((((...................(((((((.(((((((.((.((......((((.((........)).)))).....)).)).)))))))))))))).(((((((((.....((.(((.(((((.((((((((((..................)))))))))).))))).....))).))..........(((.....(((((((((((...(((((((((..(((((........)))))...))))........................))))))))))))))))...)))...)))))))))...........................)))))).............((.(((((((..........))))))).))...(((((((((((.((((((....)))))).))))))))))).." fig1c
