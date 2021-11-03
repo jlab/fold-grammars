@@ -6,7 +6,7 @@ import "Extensions/outside.hh"  // for containsBase filter
 // import "Extensions/probabilities.hh"
 // import "Extensions/shapes.hh"
 // import "Extensions/mea.hh"
-// import "Extensions/probing.hh"
+import "Extensions/probing.hh"
 // import "BigIntegerLibrary.hh"
 
 input rna
@@ -28,10 +28,11 @@ include "Algebras/MFE/alg_cofold_mfe.gap"
 include "Algebras/alg_cofold.gap"
 // include "Algebras/MEA/alg_mea.gap"
 include "Algebras/Pfunc/alg_cofold_pfunc.gap"
-// include "Algebras/Probing/alg_probing.gap" //an algebra for integrating structure probing data like SHAPE or DMS
+include "Algebras/Probing/alg_cofold_probing.gap" //an algebra for integrating structure probing data like SHAPE or DMS
 // include "Algebras/MFE/alg_mfe_SHAPE.gap"
 
 include "Grammars/gra_cofold_nodangle.gap"
 
 
 instance enum = gra_cofold_nodangle(alg_enum);
+instance probing = gra_cofold_nodangle(alg_probing);
