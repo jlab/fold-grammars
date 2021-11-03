@@ -1198,7 +1198,7 @@ float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a, int b)
         pfreq[type]++;
       }
   		double score = 0.0;
-  		if (pfreq[7]*2+pfreq[0] > int(rows(seq))) {
+  		if (pfreq[7]*2+pfreq[0] >= int(rows(seq))) {
   		  array(i,j) = -2.0 * getAlifold_minscore_basepair();
   		} else {
   		  for (k=1,score=0; k<=6; k++) { /* ignore pairtype 7 (gap-gap) */
