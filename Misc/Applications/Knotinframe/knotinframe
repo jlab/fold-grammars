@@ -187,7 +187,6 @@ sub kif {
 						}
 					}
 				}
-				
 				next if ($foldings{'knotted'}->{energy} > $settings->{'minknottedenergy'}); #this is the LEF (low energy filter) filter, ruling out candidates whose pseudoknot energy is too high
 				next if ($foldings{'nested'}->{energy} - $settings->{'minenergydifference'} < $foldings{'knotted'}->{energy}); #this is the EDF (energy difference filter) filter, ruling out candidates where energy difference between nested and knotted structures are too close, i.e. a nested structure is more likely
 				
@@ -272,11 +271,11 @@ sub output {
 							$quit = 'true';
 							last;
 						}
+						print "\n";
 						if ($candidate->{foldings}->{knotted}->{energy} > $candidate->{foldings}->{nested}->{energy}) {
 							$quit = 'true';
 							last;
 						}
-						print "\n";
 						$rank++;
 					}
 					last if ($quit eq 'true');
