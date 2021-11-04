@@ -135,3 +135,18 @@ check_new_old_eq pKiss.gap rna mfepp AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGU
 GAPC="$BASE/bin/gapc -t -I../../../../"
 RUN_CPP_FLAGS="-S ../../StefanStyle/cedric.shape -N asProbabilities"
 check_new_old_eq cofold_nodangle.gap rna probing AGAGUGCCUACCAAGCAACUAAACAAGUCUACAAAUUUCAGGUU+UAACUACGUUUGAUACAAGUAGAGUAUUGGaaa cofoldnodangle
+
+GAPC="$BASE/bin/gapc"
+RUN_CPP_FLAGS=""
+check_new_old_eq abstract.gap pos shapepos "(.)" singleHL
+check_new_old_eq abstract.gap pos shapepos "(.)." HLs
+check_new_old_eq abstract.gap pos shapepos "(.).." HLss
+check_new_old_eq abstract.gap pos shapepos ".(..)" sHL
+check_new_old_eq abstract.gap pos shapepos ".(..).." sHLss
+check_new_old_eq abstract.gap pos shapepos ".((.(..))).." stem
+check_new_old_eq abstract.gap pos shapepos "(.)(.)" cadd
+check_new_old_eq abstract.gap pos shapepos "((.)(.))" ML
+check_new_old_eq abstract.gap pos shapepos "(((.)(.)))" biggerML
+check_new_old_eq abstract.gap pos shapepos "((..((.))(.)(.)))." largeML
+check_new_old_eq abstract.gap pos shapepos ".(.(.).(.).(.(.).(.).(.).).).(.)." complex
+check_new_old_eq abstract.gap pos shapepos "......................................((((((.(((((((((.......))))).))))....)))))).....((((((...................(((((((.(((((((.((.((......((((.((........)).)))).....)).)).)))))))))))))).(((((((((.....((.(((.(((((.((((((((((..................)))))))))).))))).....))).))..........(((.....(((((((((((...(((((((((..(((((........)))))...))))........................))))))))))))))))...)))...)))))))))...........................)))))).............((.(((((((..........))))))).))...(((((((((((.((((((....)))))).))))))))))).." fig1c
