@@ -124,11 +124,6 @@ sub doComputation {
 }
 
 sub kif {
-	my $MAX_WINDOW_SIZE = 120;
-	my $WINDOW_INCREASE = 20;
-	my $MIN_KNOTTED_ENERGY = -7.4;
-	my $MIN_ENERGY_DIFFERENCE = -8.71;
-	
 	my %CODONS = (
 		'start', ['AUG'],
 		'stop', ['UAA','UGA','UAG'],
@@ -175,7 +170,7 @@ sub kif {
 
 		#folding with pseudoknot and nested MFE program
 			my @slipperySiteCandidates = ();
-			for (my $windowLength = $WINDOW_INCREASE; $windowLength <= $MAX_WINDOW_SIZE; $windowLength += $WINDOW_INCREASE) {
+			for (my $windowLength = $settings->{'windowincrement'}; $windowLength <= $settings->{'windowsize'}; $windowLength += $settings->{'windowincrement'}) {
 				last if ($windowLength > length($seq)-$slipperyStart-7);
 				my $candidateSequence = substr($seq, $slipperyStart+7, $windowLength);
 				my %foldings = ();
@@ -192,9 +187,8 @@ sub kif {
 						}
 					}
 				}
-				
-				next if ($foldings{'knotted'}->{energy} > $MIN_KNOTTED_ENERGY); #this is the LEF (low energy filter) filter, ruling out candidates whose pseudoknot energy is too high
-				next if ($foldings{'nested'}->{energy} - $MIN_ENERGY_DIFFERENCE < $foldings{'knotted'}->{energy}); #this is the EDF (energy difference filter) filter, ruling out candidates where energy difference between nested and knotted structures are too close, i.e. a nested structure is more likely
+				next if ($foldings{'knotted'}->{energy} > $settings->{'minknottedenergy'}); #this is the LEF (low energy filter) filter, ruling out candidates whose pseudoknot energy is too high
+				next if ($foldings{'nested'}->{energy} - $settings->{'minenergydifference'} < $foldings{'knotted'}->{energy}); #this is the EDF (energy difference filter) filter, ruling out candidates where energy difference between nested and knotted structures are too close, i.e. a nested structure is more likely
 				
 				push @slipperySiteCandidates, \%foldings;
 			}
@@ -272,12 +266,16 @@ sub output {
 						$text = sprintf($formatEnergy, $candidate->{foldings}->{nested}->{energy});
 						print $IO::SEPARATOR.(" " x ($maxLeftLen - length($text))).$text.$IO::SEPARATOR.$candidate->{foldings}->{nested}->{structure}.$IO::SEPARATOR."nested structure"."\n";
 						
-						$quit = 'true' if (($rank > $settings->{numberoutputs}) || ($candidate->{foldings}->{knotted}->{energy} > $candidate->{foldings}->{nested}->{energy}));
-						if ($quit eq 'true') {
+						if ($rank >= $settings->{numberoutputs}) {
 							print "\n".$IO::SEPARATOR."Warning: some further results are not shown. Increase --".$PARAM{numberoutputs}->{key}." to display them!\n";
+							$quit = 'true';
 							last;
 						}
 						print "\n";
+						if ($candidate->{foldings}->{knotted}->{energy} > $candidate->{foldings}->{nested}->{energy}) {
+							$quit = 'true';
+							last;
+						}
 						$rank++;
 					}
 					last if ($quit eq 'true');
