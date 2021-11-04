@@ -3,11 +3,11 @@
   Rank:              1
   Slippery sequence: CCCTTTT
   Slippery position: 104
-  Substring length:  40
-  Deltarel:          0.012
-    111  AAGGTGTATATAGAACACTGCCTATCACGGACTGCAAAGC  151
-  -8.77  ..[[[[[...{{{.]]]]]............}}}......  knotted structure
-  -8.30  ..(((((.......))))).((......))..........  nested structure
+  Substring length:  80
+  Deltarel:          0.011
+     111  AAGGTGTATATAGAACACTGCCTATCACGGACTGCAAAGCAGCTTCGTGACTCTGGCCTACCGGCCAGGCTCACAGAAGA  191
+  -42.71  .........[[[[....{{{.]]]]((((((((((...)))).))))))..(((((((....)))))))....}}}....  knotted structure
+  -41.80  ..(((((.......))))).((......)).((((...))))((((((((.(((((((....))))))).)))).)))).  nested structure
 
 >test
   Rank:              1
@@ -19,16 +19,15 @@
   -25.49  .............[[[[[[....((((((((....)))))))).((((.......)))){{{{{]]]]]]....}}}}}.  knotted structure
   -31.09  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
 
-  Warning: some further results are not shown. Increase --numberOutputs to display them!
 >pol_m_vir_mhv|AF029248.1
   Rank:              1
   Slippery sequence: AAAAAAG
   Slippery position: 56
-  Substring length:  60
-  Deltarel:          0.104
-      63  AAAGGTAAGACCAAGCATGGTAGGGGTAGAGTCAGACGTAACCTTAGAAAAGGCGTGAAA  123
-  -18.73  .[[[[[...((((....))))..((......))..{{{{.]]]]].......}}}}....  knotted structure
-  -12.50  ...(((...)))..((......(((((...((...))...))))).......))......  nested structure
+  Substring length:  80
+  Deltarel:          0.048
+      63  AAAGGTAAGACCAAGCATGGTAGGGGTAGAGTCAGACGTAACCTTAGAAAAGGCGTGAAACTCCTTACTGAGGAAGAGTA  143
+  -27.22  ...[[[[[[..((.((......(((((...((...))...))))).......)).))..{{{{]]]]]]......}}}}.  knotted structure
+  -23.39  ...(((...))).......((..((......))..))....((((((..((((.((...)).)))).)))))).......  nested structure
 
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/knotinframe  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=kif --minenergydifference=-8.71 --minknottedenergy=-7.4 ROOTDIR/Misc/Test-Suite/StefanStyle/knotinframe_test.fas --numberoutputs=5 --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --temperature=25.9 --windowincrement=20 --windowsize=160
@@ -52,7 +51,6 @@
   -21.14  .............[[[[[[.(((((((.((((......)))).))))...)))......{{{{{]]]]]]....}}}}}.  knotted structure
   -25.79  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
 
-  Warning: some further results are not shown. Increase --numberOutputs to display them!
 >pol_m_vir_mhv|AF029248.1
   Rank:              1
   Slippery sequence: AAAAAAG
@@ -85,7 +83,6 @@
   -25.49  .............[[[[[[....((((((((....)))))))).((((.......)))){{{{{]]]]]]....}}}}}.  knotted structure
   -31.09  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
 
-  Warning: some further results are not shown. Increase --numberOutputs to display them!
 >pol_m_vir_mhv|AF029248.1
   Rank:              1
   Slippery sequence: AAAAAAG
@@ -118,7 +115,6 @@
   -21.14  .............[[[[[[.(((((((.((((......)))).))))...)))......{{{{{]]]]]]....}}}}}.  knotted structure
   -25.79  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
 
-  Warning: some further results are not shown. Increase --numberOutputs to display them!
 >pol_m_vir_mhv|AF029248.1
   Rank:              1
   Slippery sequence: AAAAAAG
@@ -151,7 +147,6 @@
   -16.00  .............[[[[[[...(((.(((((....)))))..))).((.......))..{{{{{]]]]]]....}}}}}.  knotted structure
   -19.30  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
 
-  Warning: some further results are not shown. Increase --numberOutputs to display them!
 >pol_m_vir_mhv|AF029248.1
   Rank:              1
   Slippery sequence: AAAAAAG
@@ -168,11 +163,11 @@
   Rank:              1
   Slippery sequence: CCCTTTT
   Slippery position: 104
-  Substring length:  80
-  Deltarel:          0.018
-     111  AAGGTGTATATAGAACACTGCCTATCACGGACTGCAAAGCAGCTTCGTGACTCTGGCCTACCGGCCAGGCTCACAGAAGA  191
-  -36.71  .........[[[[....{{{.]]]]((((((((((...)))).))))))..(((((((....)))))))....}}}....  knotted structure
-  -35.27  ..(((((.......))))).((......)).((((...))))((((((((.(((((((....))))))).)))).)))).  nested structure
+  Substring length:  40
+  Deltarel:          0.019
+    111  AAGGTGTATATAGAACACTGCCTATCACGGACTGCAAAGC  151
+  -6.96  ..[[[[[...{{{.]]]]]............}}}......  knotted structure
+  -6.22  ..(((((.......))))).((......))..........  nested structure
 
 >test
   Rank:              1
@@ -184,7 +179,6 @@
   -21.14  .............[[[[[[.(((((((.((((......)))).))))...)))......{{{{{]]]]]]....}}}}}.  knotted structure
   -25.79  ..............((((((...((((.((((......)))).))))...)).)))).((((((((......))))))))  nested structure
 
-  Warning: some further results are not shown. Increase --numberOutputs to display them!
 >pol_m_vir_mhv|AF029248.1
   Rank:              1
   Slippery sequence: AAAAAAG
