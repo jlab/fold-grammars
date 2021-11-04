@@ -12,7 +12,7 @@ our %PROGINFOS = (
 	'palikiss',					 {date => '21.04.2021', version => '1.0.9', name => 'pAliKiss', packageDir => 'pAliKiss/'},
 	'libfoldgrammars', 	 {date => '21.04.2021', version => '1.2.1', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
 	'rapidshapes', 			 {date => '21.04.2021', version => '2.0.11', name => 'RapidShapes', packageDir => 'RapidShapes/'},
-	'knotinframe', 			 {date => '21.04.2021', version => '2.0.9', name => 'knotinframe', packageDir => 'Knotinframe/'},
+	'knotinframe', 			 {date => '04.11.2021', version => '2.1.0', name => 'knotinframe', packageDir => 'Knotinframe/'},
 	'rapidshapestest', 	 {date => '21.04.2021', version => '2.1.1', name => 'RapidShapes-Test'},
 	'getoutsidetruth', 	 {date => '19.04.2013', version => '1.0.1', name => 'getOutsideTruth'},
 	'acms',							 {date => '21.03.2015', version => '1.2.2', name => 'acms', packageDir => 'aCMs/'},
