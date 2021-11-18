@@ -8,7 +8,7 @@ all:
 	$(MAKE) all_normal
 	$(MAKE) all_window
 
-all_normal: mfe subopt shapes probs sample eval outside mea probing pfall
+all_normal: mfe subopt
 
 
 install: install-lib install-program
