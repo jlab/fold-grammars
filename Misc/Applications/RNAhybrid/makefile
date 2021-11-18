@@ -6,7 +6,6 @@ PROGRAMPREFIX=RNAhybrid_
 
 all:
 	$(MAKE) all_normal
-	$(MAKE) all_window
 
 all_normal: mfe subopt
 
