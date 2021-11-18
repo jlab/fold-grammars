@@ -1,6 +1,8 @@
 #ifndef TWOTRACK_HH
 #define TWOTRACK_HH
 
+#include "rnaoptions_defaults.hh"
+
 extern "C" {
 #include <rnalib.h>
 }
