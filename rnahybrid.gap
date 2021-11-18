@@ -1,5 +1,7 @@
-import "Extensions/twotrack.hh"
 import rna
+
+import "Extensions/twotrack.hh"
+import "Extensions/mfesubopt.hh"
 
 input < rna, rna >
 type Rope = extern
@@ -393,6 +395,11 @@ algebra alg_mfe implements sig_rnahybrid(alphabet = char, answer = int) {
     return list(minimum(i));
   }
 }
+algebra alg_mfe_subopt extends alg_mfe {
+  kscoring choice [int] h([int] i) {
+    return mfeSubopt(i);
+  }
+}
 
 /*
 This grammar has been extracted from src/hybrid_core.c of RNAhybrid-2.1.2.tar.gz by Stefan Janssen (2021-08-12)
@@ -427,3 +434,4 @@ instance count = gra_rnahybrid(alg_count);
 instance ppenum = gra_rnahybrid(alg_pretty * alg_enum);
 instance ppenummfemfedebug = gra_rnahybrid(alg_pretty * alg_enum * alg_mfe * alg_mfe_debug);
 instance mfepp = gra_rnahybrid(alg_mfe * alg_pretty);
+instance suboptpp = gra_rnahybrid(alg_mfe_subopt * alg_pretty);
