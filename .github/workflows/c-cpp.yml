@@ -2,9 +2,9 @@ name: github action build & CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, rnahybrid_2021 ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, rnahybrid_2021 ]
 
 jobs:
   fold-grammars:
