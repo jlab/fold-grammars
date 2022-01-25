@@ -19,17 +19,17 @@ inline void kmeans(int numCluster, int numData, double *input, double centroids[
 	if (numData >= numCluster) {
 		double *clusterSumDistances = (double *) malloc(sizeof(double) * numCluster);
 		double *bestCentroids = (double *) malloc(sizeof(double) * numCluster);
-		double bestVariance = HUGE_VAL;
+		double bestVariance = static_cast<double>(HUGE_VAL);
 		int *assignments = (int *) malloc(sizeof(int) * numData);
 		int *numClusterMembers = (int *) malloc(sizeof(int) * numCluster);
-		double minDist_point2cluster = HUGE_VAL;
-		int minDistIndex_point2cluster = HUGE_VAL;
-		double dist_point2cluster = HUGE_VAL;
-		double variance = HUGE_VAL;
-		double newVariance = HUGE_VAL;
+		double minDist_point2cluster = static_cast<double>(HUGE_VAL);
+		int minDistIndex_point2cluster = static_cast<int>(HUGE_VAL);
+		double dist_point2cluster = static_cast<double>(HUGE_VAL);
+		double variance = static_cast<double>(HUGE_VAL);
+		double newVariance = static_cast<double>(HUGE_VAL);
 		int randomIndex = 0;
 		int iteration = 1;
-		double varianceChange = HUGE_VAL;
+		double varianceChange = static_cast<double>(HUGE_VAL);
 
 		for (r = 0; r < MAXRUNS; r++) {
 			// select random data points as initial centroids
@@ -44,7 +44,7 @@ inline void kmeans(int numCluster, int numData, double *input, double centroids[
 				// find for each point in the input the clostest centroid and save the centroid index as the assignment
 				for (i = 0; i < numData; i++) {
 					minDist_point2cluster = HUGE_VAL;
-					minDistIndex_point2cluster = HUGE_VAL;
+					minDistIndex_point2cluster = static_cast<int>(HUGE_VAL);
 					for (k = 0; k < numCluster; k++) {
 						dist_point2cluster = pow(input[i] - centroids[k], 2);
 						if (dist_point2cluster < minDist_point2cluster) {
@@ -111,7 +111,7 @@ inline void kmeans(int numCluster, int numData, double *input, double centroids[
 		centroids[0] = centroids[1];
 		centroids[1] = help;
 	}
-	
+
 	//centroids[0] = 2.1133;
 	//centroids[1] = 0.116405;
 	std::cout << "Cluster info (" << ((sumRunIterations/((double) MAXRUNS))) << " avg. iterations for "<< MAXRUNS << " alternative start points): unpaired = " << centroids[0] << ", paired = " << centroids[1] << "\n";
@@ -166,7 +166,7 @@ inline double CalculatePseudoEnergy(double data, std::string modifier, double sl
 		shape_l_2.push_back(0.0);
 		SHAPE_params.push_back(shape_l_1);
 		SHAPE_params.push_back(shape_l_2);
-		
+
 //		DMS_params = new std::vector< std::vector<double> >();
 		std::vector<double> dms_l_1;// = new std::vector<double>();
 		dms_l_1.push_back(1.36184674022);
@@ -188,7 +188,7 @@ inline double CalculatePseudoEnergy(double data, std::string modifier, double sl
 		dms_l_2.push_back(0.0);
 		DMS_params.push_back(dms_l_1);
 		DMS_params.push_back(dms_l_2);
-		
+
 //		CMCT_params = new std::vector< std::vector<double> >();
 		std::vector<double> cmct_l_1;// = new std::vector<double>();
 		cmct_l_1.push_back(0.668918986169);
@@ -263,7 +263,7 @@ inline double CalculatePseudoEnergy(double data, std::string modifier, double sl
 inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpaired) {
 	static bool isLoaded = false;
 	static std::vector<double> probingData;
-	
+
 	static double clusterUnpaired;
 	static double clusterPaired;
 	std::string modifier = getProbing_modifier();
@@ -287,7 +287,7 @@ inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpai
 		if (probingData.size() > (leftBase.seq->n)) {
 			std::cerr << "Warning: chemical probing data file '" << getProbing_dataFilename() << "' contains " << (probingData.size()-leftBase.seq->n) << " more row(s) " << std::endl << "         than there are nucleotides in your input sequence." << std::endl << "         Exceeding data lines will be ignored!" << std::endl;
 		}
-		
+
 		if (strcmp(getProbing_normalization(), "centroid") == 0) {
 			int numData = probingData.size();
 			double *data = (double *) malloc(sizeof(double) * numData);
