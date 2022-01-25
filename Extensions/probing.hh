@@ -43,7 +43,7 @@ inline void kmeans(int numCluster, int numData, double *input, double centroids[
 			while (iteration < MAXITERATIONS) {
 				// find for each point in the input the clostest centroid and save the centroid index as the assignment
 				for (i = 0; i < numData; i++) {
-					minDist_point2cluster = HUGE_VAL;
+					minDist_point2cluster = static_cast<int>(HUGE_VAL);
 					minDistIndex_point2cluster = static_cast<int>(HUGE_VAL);
 					for (k = 0; k < numCluster; k++) {
 						dist_point2cluster = pow(input[i] - centroids[k], 2);
