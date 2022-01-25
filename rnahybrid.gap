@@ -2,6 +2,7 @@ import rna
 
 import "Extensions/twotrack.hh"
 import "Extensions/mfesubopt.hh"
+import "Extensions/probing.hh"
 
 input < rna, rna >
 type Rope = extern
@@ -401,6 +402,46 @@ algebra alg_mfe_subopt extends alg_mfe {
   }
 }
 
+algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
+  double nil(<Subsequence qregion, Subsequence tregion>) {
+    return 0.0;
+  }
+  double ult(<Subsequence qbase, void>, double x) {
+    return x + getReactivityScore(qbase, true);
+  }
+  double ulb(<void, Subsequence tbase>, double x) {
+    return x + getReactivityScore(tbase, true);
+  }
+  double eds(<Subsequence qbase, Subsequence tbase>, double x) {
+    return x + getReactivityScore(qbase, true) + getReactivityScore(tbase, true);
+  } 
+  double edt(<Subsequence qbase, Subsequence tloc>, double x) {
+    return x + getReactivityScore(qbase, true);
+  }
+  double edb(<Subsequence qloc, Subsequence tbase>, double x) {
+    return x + getReactivityScore(tbase, true);
+  }
+  double sr(<Subsequence qbase, Subsequence tbase>, double x) {
+    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false);
+  }  
+  double bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, void>, double x) {
+    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false) + getReactivityScore(qregion, true);
+  }
+  double bb(<Subsequence qbase, Subsequence tbase>, <void, Subsequence tregion>, double x) {
+    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false) + getReactivityScore(tregion, true);
+  }
+  double il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, double x) {
+    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false) + getReactivityScore(qregion, true) + getReactivityScore(tregion, true);
+  }
+  double el(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>) {
+    return getReactivityScore(qbase, false) + getReactivityScore(tbase, false) + getReactivityScore(qregion, true) + getReactivityScore(tregion, true);
+  }
+  
+  choice [double] h([double] i) {
+    return list(minimum(i));
+  }
+}
+
 /*
 This grammar has been extracted from src/hybrid_core.c of RNAhybrid-2.1.2.tar.gz by Stefan Janssen (2021-08-12)
 It seems to be equivalent to the Haskell Version https://bibiserv.cebitec.uni-bielefeld.de/cgi-bin/adp_RNAhybrid
@@ -435,3 +476,4 @@ instance ppenum = gra_rnahybrid(alg_pretty * alg_enum);
 instance ppenummfemfedebug = gra_rnahybrid(alg_pretty * alg_enum * alg_mfe * alg_mfe_debug);
 instance mfepp = gra_rnahybrid(alg_mfe * alg_pretty);
 instance suboptpp = gra_rnahybrid(alg_mfe_subopt * alg_pretty);
+instance probing = gra_rnahybrid(alg_probing);
