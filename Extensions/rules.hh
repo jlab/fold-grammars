@@ -68,8 +68,20 @@ inline bool isEmpty(const rules &e) {
 inline void insertProduction(rules &me, Rope nt, Rope rhs) {
 	me.insertProduction(nt, rhs);
 }
+inline void insertProduction(rules &me, Rope nt, const char *rhs) {
+	me.insertProduction(nt, Rope(rhs));
+}
+inline void insertProduction(rules &me, const char *nt, Rope rhs) {
+	me.insertProduction(Rope(nt), rhs);
+}
+inline void insertProduction(rules &me, const char *nt, const char *rhs) {
+	me.insertProduction(Rope(nt), Rope(rhs));
+}
 inline void setShape(rules &me, Rope s) {
 	me.setShape(s);
+}
+inline void setShape(rules &me, const char *s) {
+	me.setShape(Rope(s));
 }
 //In level 1 it might happen that two subshapes must be concatenated that both have unpaired bases at their tail and head, e.g. []_ and _[].
 //In such a case, the concatenation is not simply ++ ([]_ + _[] != []__[]), but must recognize the double unpaired stretch and fuse them into one, such that []_ + _[] = []_[]
