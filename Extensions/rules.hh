@@ -112,6 +112,9 @@ inline void appendShape(rules &me, Rope y) {
 	}
 	me.setShape(res);
 }
+inline void appendShape(rules &me, const char *y) {
+  appendShape(me, Rope(y));
+}
 
 inline rules operator+(const rules &x, const rules &y) {
   rules res = x;
