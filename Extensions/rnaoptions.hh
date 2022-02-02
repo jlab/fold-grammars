@@ -21,8 +21,8 @@
 
 }}} */
 
-#ifndef GENERIC_OPTS_HH
-#define GENERIC_OPTS_HH
+#ifndef RTLIB_GENERIC_OPTS_HH_
+#define RTLIB_GENERIC_OPTS_HH_
 
 #include <iostream>
 #include <fstream>
