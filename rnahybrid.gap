@@ -11,14 +11,14 @@ type mfedebug = (int energy, Rope stack)
 
 signature sig_rnahybrid(alphabet, answer) {
   answer nil(<Subsequence, Subsequence>);
-  answer ult(<Subsequence, void>, answer);
-  answer ulb(<void, Subsequence>, answer);
+  answer ult(<Subsequence, Subsequence>, answer);
+  answer ulb(<Subsequence, Subsequence>, answer);
   answer eds(<Subsequence, Subsequence>, answer);
   answer edt(<Subsequence, Subsequence>, answer);
   answer edb(<Subsequence, Subsequence>, answer);
   answer sr(<Subsequence, Subsequence>, answer);
-  answer bt(<Subsequence, Subsequence>, <Subsequence, void>, answer);
-  answer bb(<Subsequence, Subsequence>, <void, Subsequence>, answer);
+  answer bt(<Subsequence, Subsequence>, <Subsequence, Subsequence>, answer);
+  answer bb(<Subsequence, Subsequence>, <Subsequence, Subsequence>, answer);
   answer il(<Subsequence, Subsequence>, <Subsequence, Subsequence>, answer);
   answer el(<Subsequence, Subsequence>, <Subsequence, Subsequence>);
   choice [answer] h([answer]);
@@ -37,11 +37,11 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
     res.botU = Rope("");
     return res;
   }
-  pp ult(<Subsequence qbase, void>, pp x) {
+  pp ult(<Subsequence qbase, Subsequence tloc>, pp x) {
     x.x = x.x + 1;
     return x;
   }
-  pp ulb(<void, Subsequence tbase>, pp x) {
+  pp ulb(<Subsequence qloc, Subsequence tbase>, pp x) {
     pp res;
     res.x = 1;
     append(res.topU, ' ');
@@ -106,7 +106,7 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
     append(res.botU, x.botU);
     return res;
   }
-  pp bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, void>, pp x) {
+  pp bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, pp x) {
     pp res;
     res.x = 1;
     append(res.topU, ' ');
@@ -122,7 +122,7 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
     append(res.botU, x.botU);
     return res;
   }
-  pp bb(<Subsequence qbase, Subsequence tbase>, <void, Subsequence tregion>, pp x) {
+  pp bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, pp x) {
     pp res;
     res.x = 1;
     append(res.topU, ' ', 1+int(size(tregion)));
@@ -205,11 +205,11 @@ algebra alg_mfe_debug implements sig_rnahybrid(alphabet = char, answer = mfedebu
     res.stack = Rope("nil{0}");
     return res;
   }
-  mfedebug ult(<Subsequence qbase, void>, mfedebug x) {
+  mfedebug ult(<Subsequence qbase, Subsequence tloc>, mfedebug x) {
     // v1 = tbl_unpaired_left_top[i1+1][i2];
     return x;
   }
-  mfedebug ulb(<void, Subsequence tbase>, mfedebug x) {
+  mfedebug ulb(<Subsequence qloc, Subsequence tbase>, mfedebug x) {
     // v1 = tbl_unpaired_left_bot[i1][i2+1];
     return x;
   }
@@ -266,7 +266,7 @@ algebra alg_mfe_debug implements sig_rnahybrid(alphabet = char, answer = mfedebu
     append(res.stack, x.stack);
     return res;
   }
-  mfedebug bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, void>, mfedebug x) {
+  mfedebug bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, mfedebug x) {
     // // v2 = (tbl_closed[k][i2+1] + bl_stacking((k) - (i1+1), 0, i1+1, i2+1)) + bl_ent((k) - (i1+1));
     mfedebug res;
     res.energy = x.energy + twotrack_blstacking_energy(qbase, tbase, qregion) + bl_ent(qregion.j-qregion.i);
@@ -278,7 +278,7 @@ algebra alg_mfe_debug implements sig_rnahybrid(alphabet = char, answer = mfedebu
     append(res.stack, x.stack);
     return res;
   }
-  mfedebug bb(<Subsequence qbase, Subsequence tbase>, <void, Subsequence tregion>, mfedebug x) {
+  mfedebug bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, mfedebug x) {
     // // v4 = (tbl_closed[i1+1][k2] + bl_stacking(0, (k2) - (i2+1), i1+1, i2+1)) + bl_ent((k2) - (i2+1));
     mfedebug res;
     res.energy = x.energy + twotrack_brstacking_energy(qbase, tbase, tregion) + bl_ent(tregion.j-tregion.i);
@@ -334,11 +334,11 @@ algebra alg_mfe implements sig_rnahybrid(alphabet = char, answer = int) {
     // v1 = 0;
     return 0;
   }
-  int ult(<Subsequence qbase, void>, int x) {
+  int ult(<Subsequence qbase, Subsequence tloc>, int x) {
     // v1 = tbl_unpaired_left_top[i1+1][i2];
     return x;
   }
-  int ulb(<void, Subsequence tbase>, int x) {
+  int ulb(<Subsequence qloc, Subsequence tbase>, int x) {
     // v1 = tbl_unpaired_left_bot[i1][i2+1];
     return x;
   }
@@ -367,11 +367,11 @@ algebra alg_mfe implements sig_rnahybrid(alphabet = char, answer = int) {
     // v1 = sr_energy(i1+1, i2+1) + tbl_closed[i1+1][i2+1];
     return x + twotrack_sr_energy(qbase, tbase);
   }
-  int bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, void>, int x) {
+  int bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, int x) {
     // v2 = (tbl_closed[k][i2+1] + bl_stacking((k) - (i1+1), 0, i1+1, i2+1)) + bl_ent((k) - (i1+1));
     return x + twotrack_blstacking_energy(qbase, tbase, qregion) + bl_ent(qregion.j-qregion.i);
   }
-  int bb(<Subsequence qbase, Subsequence tbase>, <void, Subsequence tregion>, int x) {
+  int bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, int x) {
     // v4 = (tbl_closed[i1+1][k2] + bl_stacking(0, (k2) - (i2+1), i1+1, i2+1)) + bl_ent((k2) - (i2+1));
     return x + twotrack_brstacking_energy(qbase, tbase, tregion) + bl_ent(tregion.j-tregion.i);
   }
@@ -406,10 +406,10 @@ algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
   double nil(<Subsequence qregion, Subsequence tregion>) {
     return 0.0;
   }
-  double ult(<Subsequence qbase, void>, double x) {
+  double ult(<Subsequence qbase, Subsequence tloc>, double x) {
     return x + getReactivityScore(qbase, true);
   }
-  double ulb(<void, Subsequence tbase>, double x) {
+  double ulb(<Subsequence qloc, Subsequence tbase>, double x) {
     return x + getReactivityScore(tbase, true);
   }
   double eds(<Subsequence qbase, Subsequence tbase>, double x) {
@@ -424,10 +424,10 @@ algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
   double sr(<Subsequence qbase, Subsequence tbase>, double x) {
     return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false);
   }  
-  double bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, void>, double x) {
+  double bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, double x) {
     return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false) + getReactivityScore(qregion, true);
   }
-  double bb(<Subsequence qbase, Subsequence tbase>, <void, Subsequence tregion>, double x) {
+  double bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, double x) {
     return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false) + getReactivityScore(tregion, true);
   }
   double il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, double x) {
@@ -452,19 +452,19 @@ grammar gra_rnahybrid uses sig_rnahybrid(axiom = hybrid) {
          | closed
          # h;
 
-  unpaired_left_top = ult(<BASE, EMPTY>, unpaired_left_top)
+  unpaired_left_top = ult(<BASE, LOC>, unpaired_left_top)
                     | unpaired_left_bot
                     # h;
 
-  unpaired_left_bot = ulb(<EMPTY, BASE>, unpaired_left_bot)
+  unpaired_left_bot = ulb(<LOC, BASE>, unpaired_left_bot)
                     | eds(<BASE,  BASE>, closed)
                     | edt(<BASE,  LOC >, closed)
                     | edb(<LOC,   BASE>, closed)
                     # h;
 
   closed = sr(<BASE, BASE> with basepair, closed)
-         | bt(<BASE, BASE> with basepair, <REGION with maxsize(15), EMPTY                  >, closed)
-         | bb(<BASE, BASE> with basepair, <EMPTY,                   REGION with maxsize(15)>, closed)
+         | bt(<BASE, BASE> with basepair, <REGION with maxsize(15), LOC                    >, closed)
+         | bb(<BASE, BASE> with basepair, <LOC,                     REGION with maxsize(15)>, closed)
          | il(<BASE, BASE> with basepair, <REGION with maxsize(15), REGION with maxsize(15)>, closed)
          | el(<BASE, BASE> with basepair, <REGION0,                 REGION0                > )
          # h;
