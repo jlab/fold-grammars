@@ -142,8 +142,6 @@
 	inline static const char* getProbing_normalization() {
 		return "centroid";
 	}
-	inline static const char* getProbingDataFilename() {
-	}
 	inline static int getConsensusType() {
 		return 0;
 	}
