@@ -52,6 +52,8 @@ build-suite:
 	$(MAKE) -C Misc/Applications/Knotinframe all
 	$(MAKE) -C Misc/Applications/RapidShapes all
 	$(MAKE) -C Misc/Applications/aCMs all
+	$(MAKE) -C Misc/Applications/RNAcofold all
+	$(MAKE) -C Misc/Applications/RNAhybrid all
 
 install-suite:
 	$(MAKE) -C Misc/Applications/lib install
@@ -63,6 +65,8 @@ install-suite:
 	$(MAKE) -C Misc/Applications/RNAshapes install-program
 	$(MAKE) -C Misc/Applications/Locomotif_wrapper install-program
 	$(MAKE) -C Misc/Applications/aCMs install-program
+	$(MAKE) -C Misc/Applications/RNAcofold install-program
+	$(MAKE) -C Misc/Applications/RNAhybrid install-program
 
 distclean-suite:
 	$(MAKE) -C Misc/Applications/Knotinframe distclean
@@ -73,6 +77,7 @@ distclean-suite:
 	$(MAKE) -C Misc/Applications/RNAshapes distclean
 	$(MAKE) -C Misc/Applications/aCMs distclean
 	$(MAKE) -C Misc/Applications/RNAcofold distclean
+	$(MAKE) -C Misc/Applications/RNAhybrid distclean
 
 install-lib:
 	$(MAKE) -C $(BASEDIR)/Misc/Applications/lib/ install
