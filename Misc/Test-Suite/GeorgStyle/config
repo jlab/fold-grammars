@@ -166,3 +166,5 @@ check_new_old_eq rnahybrid.gap twotrack mfepp gCcgAGCCCgGUGCcaaGCgcaGCUa rnahybr
 check_new_old_eq rnahybrid.gap twotrack mfepp aAGCUcuucaAgGACCUggGCUGCCUCAg rnahybrid_energydiff7 UUGAuaUgUUGGAUGAUGGAGU
 check_new_old_eq rnahybrid.gap twotrack mfepp cCUAaACAACCUGCUcCCUCu rnahybrid_energydiff8 uuGAUaUGUUGGAUGAaGGAGu
 check_new_old_eq rnahybrid.gap twotrack mfepp aAAgCACACAGgCaaucCUACUUCA rnahybrid_energydiff9 UUgGUGUGUUgGauGAUGGAGU
+
+check_new_old_eq rnahybrid.gap twotrack mde UGAGGUAGUAGGUUgUauAGUU rnahybrid_mde ACUCCAUCAUCCAAcAuaUCAA
