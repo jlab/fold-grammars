@@ -14,7 +14,7 @@ build_cpp()
     INST="-i $3"
   fi
   log ${GAPC} ${GAPC_EXTRA} $1 -o $2.cc $INST
-  if [ $4 == "rna" ]; then 
+  if [ $4 == "rna" ]; then
 	log perl ../../../Applications/addRNAoptions.pl $2.mf 0
   fi
   log ${MAKE} ${MAKEFLAGS} -f $2.mf RTLIB\=$RTLIB CPPFLAGS_EXTRA\="${CPPFLAGS_EXTRA}" LDLIBS_EXTRA\="${LDLIBS_EXTRA}" GSLLIBS=""
@@ -27,7 +27,12 @@ build_haskell()
 
 run_cpp()
 {
-  log2 $1.$2.$4.out $1.$2.$4.err ./$1 $RUN_CPP_FLAGS $3
+  if [ $# == 5 ]; then
+    # for two track input, where second input string comes as $5
+    log2 $1.$2.$4.out $1.$2.$4.err ./$1 $RUN_CPP_FLAGS $3 $5
+  else
+    log2 $1.$2.$4.out $1.$2.$4.err ./$1 $RUN_CPP_FLAGS $3
+  fi
 }
 
 run_haskell()
@@ -119,4 +124,3 @@ check_eq()
   echo +------------------------------------------------------------------------------+
 
 }
-
