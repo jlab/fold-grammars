@@ -470,6 +470,15 @@ grammar gra_rnahybrid uses sig_rnahybrid(axiom = hybrid) {
          # h;
 }
 
+/* This is a grammar to compute the maximal possible free energy for the miRNA sequence,
+   iff it hybridizes with itself, i.e. second input must be the complement of first!
+   This is used to compute the likelihood of pairings with real targets */
+grammar gra_maxduplex uses sig_rnahybrid(axiom = stem) {
+  stem = sr(<BASE, BASE> with basepair, stem)
+       | nil(<LOC, LOC>)
+       # h;
+}
+
 instance testme = gra_rnahybrid(alg_enum);
 instance count = gra_rnahybrid(alg_count);
 instance ppenum = gra_rnahybrid(alg_pretty * alg_enum);
@@ -477,3 +486,6 @@ instance ppenummfemfedebug = gra_rnahybrid(alg_pretty * alg_enum * alg_mfe * alg
 instance mfepp = gra_rnahybrid(alg_mfe * alg_pretty);
 instance suboptpp = gra_rnahybrid(alg_mfe_subopt * alg_pretty);
 instance probing = gra_rnahybrid(alg_probing);
+
+// don't remove the mde instance as it is used for p-value computation
+instance mde = gra_maxduplex(alg_mfe);

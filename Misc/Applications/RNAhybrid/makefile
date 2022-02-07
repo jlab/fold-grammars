@@ -7,7 +7,7 @@ PROGRAMPREFIX=RNAhybrid_
 all:
 	$(MAKE) all_normal
 
-all_normal: mfe subopt
+all_normal: mfe subopt mde
 
 
 install: install-lib install-program
@@ -33,6 +33,14 @@ subopt_%:
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
+# build a binary that computes the "maximal duplex energy" for the miRNA,
+# i.e. stacking all bases of the sequence onto its complement
+mde:
+	$(MAKE) compile_instance \
+		gapc_instance="$@" \
+		gapc_options="" \
+		gapc_file="rnahybrid.gap" \
+		gapc_binaryname="$@";
 
 distclean:
 	rm -rf $(ARCHTRIPLE);
