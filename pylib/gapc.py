@@ -77,9 +77,11 @@ temperature = 37.0
 K0 = 273.15
 
 class DPtable:
-    def __init__(self, n:int):
+    def __init__(self, n:int, name=""):
+        self.name = name
         self.array = pd.DataFrame(data=np.nan, index=range(n+1), columns=range(n+1))
         self.tabulated = pd.DataFrame(data=False, index=range(n+1), columns=range(n+1))
+        self.backtrace = pd.DataFrame(data=np.nan, index=range(n+1), columns=range(n+1), dtype=object)
 
     def is_tabulated(self, i:int, j:int) -> bool:
         return self.tabulated.loc[i, j]
@@ -90,6 +92,9 @@ class DPtable:
     def set(self, i:int, j:int, e:float):
         self.tabulated.loc[i, j] = True
         self.array.loc[i, j] = e
+
+    def trace(self, i:int, j:int, e:float):
+        self.backtrace.loc[i,j] = e / np.sum(e)
 
 def minsize(seq:str, i, j, l) -> bool:
     return j-i >= l
