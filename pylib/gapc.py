@@ -40,7 +40,8 @@ class LOC(Basic_Subsequence):
 
 
 def is_not_empty(x):
-    if (type(x) == float) or (type(x) == np.float64) or (type(x) == int):
+    if (type(x) == float) or (type(x) == np.float64) or (type(x) == int) or\
+       (x.__class__ == np.int64):
         return (not np.isnan(x))
     elif (type(x) == LOC) or (type(x) == BASE) or (type(x) == REGION) or\
          (x.__class__.__name__ in ['BASE', 'REGION', 'LOC']):
@@ -70,7 +71,7 @@ def basepair(seq, i:int, j:int) -> bool:
             ]
     return (seq[i].upper(), seq[j-1].upper()) in PAIRS
 
-float_zero = 0
+float_zero = np.nan
 GASCONST = 1.98717
 temperature = 37.0
 K0 = 273.15
