@@ -45,25 +45,25 @@ def init(inputsequence):
     t_0_seq = inputsequence.upper().replace('A','\1').replace('C','\2').replace('G','\3').replace('U','\4')
 
     global weak_table
-    weak_table = DPtable(len(t_0_seq))
+    weak_table = DPtable(len(t_0_seq), "weak")
 
     global strong_table
-    strong_table = DPtable(len(t_0_seq))
+    strong_table = DPtable(len(t_0_seq), "strong")
 
     global iloop_table
-    iloop_table = DPtable(len(t_0_seq))
+    iloop_table = DPtable(len(t_0_seq), "iloop")
 
     global ml_comps_table
-    ml_comps_table = DPtable(len(t_0_seq))
+    ml_comps_table = DPtable(len(t_0_seq), "ml_comps")
 
     global ml_comps1_table
-    ml_comps1_table = DPtable(len(t_0_seq))
+    ml_comps1_table = DPtable(len(t_0_seq), "ml_comps1")
 
     global dangle_table
-    dangle_table = DPtable(len(t_0_seq))
+    dangle_table = DPtable(len(t_0_seq), "dangle")
 
     global struct_table
-    struct_table = DPtable(len(t_0_seq))
+    struct_table = DPtable(len(t_0_seq), "struct")
 
 def nt_dangle(t_0_i:int, t_0_j:int) -> float:
     if (dangle_table.is_tabulated(t_0_i, t_0_j)):
@@ -127,6 +127,7 @@ def nt_dangle(t_0_i:int, t_0_j:int) -> float:
 #       push_back_sum( answers, ret_0);
 #     }
 #
+    dangle_table.trace(t_0_i, t_0_j, answers)
     eval = h(answers)
 #   erase( answers);
     dangle_table.set( t_0_i, t_0_j, eval)
@@ -321,6 +322,7 @@ def nt_iloop(t_0_i:int, t_0_j:int) -> float:
 #
 #     }
 #
+    iloop_table.trace(t_0_i, t_0_j, answers)
     eval = h(answers)
 #   erase( answers);
     iloop_table.set( t_0_i, t_0_j, eval)
@@ -517,6 +519,7 @@ def nt_ml_comps(t_0_i:int, t_0_j:int) -> float:
 #
 #     }
 #
+    ml_comps_table.trace(t_0_i, t_0_j, answers)
     eval = h(answers)
 #   erase( answers);
     ml_comps_table.set( t_0_i, t_0_j, eval)
@@ -723,6 +726,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int) -> float:
 #
 #     }
 #
+    ml_comps1_table.trace(t_0_i, t_0_j, answers)
     eval = h(answers)
 #   erase( answers);
     ml_comps1_table.set( t_0_i, t_0_j, eval)
@@ -1066,6 +1070,7 @@ def nt_strong(t_0_i:int, t_0_j:int) -> float:
        answers.append(ret_5)
 #     }
 #
+    strong_table.trace(t_0_i, t_0_j, answers)
     eval = h(answers)
 #   erase( answers);
     strong_table.set( t_0_i, t_0_j, eval)
@@ -1193,6 +1198,7 @@ def nt_struct(t_0_i:int) -> float:
 #       push_back_sum( answers, ret_6);
 #     }
 #
+    struct_table.trace(t_0_i, 0, answers)
     eval = h(answers)
 #   erase( answers);
     struct_table.set( t_0_i, 0, eval)
@@ -1200,7 +1206,6 @@ def nt_struct(t_0_i:int) -> float:
 # }
 #
 def nt_weak(t_0_i:int, t_0_j:int) -> float:
-    global weak_table
 # double &  out::nt_weak(unsigned int t_0_i, unsigned int t_0_j)
 # {
     if (weak_table.is_tabulated(t_0_i, t_0_j)):
@@ -1256,6 +1261,8 @@ def nt_weak(t_0_i:int, t_0_j:int) -> float:
 #       push_back_sum( answers, ret_6);
 #     }
 #
+
+    weak_table.trace(t_0_i, t_0_j, answers)
     eval = h(answers)
 #   erase( answers);
     weak_table.set( t_0_i, t_0_j, eval)
