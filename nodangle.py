@@ -1263,128 +1263,91 @@ def nt_weak(t_0_i:int, t_0_j:int) -> float:
 # }
 #
 #
-def addss(x:float, r:Basic_Subsequence):
-    return ((scale((r.j - r.i)) * x) * mk_pf(ss_energy(r)))
-# double out::addss(double x, const TUSubsequence & r)
-# {
-# #line 1191 "nodangle.gap"
-#   return ((scale((r.j - r.i)) * x) * mk_pf(ss_energy(r)));
-# #line 1167 "out.cc"
-# }
-#
-def bl(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-    return ((scale(((2 + lr.j) - lr.i)) * x) * mk_pf(bl_energy(lr, rb)))
-# double out::bl(const TUSubsequence & lb, const TUSubsequence & lr, double x, const TUSubsequence & rb)
-# {
-# #line 1164 "nodangle.gap"
-#   return ((scale(((2 + lr.j) - lr.i)) * x) * mk_pf(bl_energy(lr, rb)));
-# #line 1174 "out.cc"
-# }
-#
-def br(lb:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
-    return ((scale(((2 + rr.j) - rr.i)) * x) * mk_pf(br_energy(lb, rr)))
-# double out::br(const TUSubsequence & lb, double x, const TUSubsequence & rr, const TUSubsequence & rb)
-# {
-# #line 1167 "nodangle.gap"
-#   return ((scale(((2 + rr.j) - rr.i)) * x) * mk_pf(br_energy(lb, rr)));
-# #line 1181 "out.cc"
-# }
-#
-def cadd(x:float, y:float):
-    return x*y
-# double out::cadd(double x, double y)
-# {
-# #line 1132 "nodangle.gap"
-#   return (x * y);
-# #line 1188 "out.cc"
-# }
-#
-def drem(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-    return (x * mk_pf(termau_energy(lb, rb)))
-# double out::drem(const TUSubsequence & lb, double x, const TUSubsequence & rb)
-# {
-# #line 1152 "nodangle.gap"
-#   return (x * mk_pf(termau_energy(lb, rb)));
-# #line 1195 "out.cc"
-# }
-#
-def h(i:[float]):
-    return np.sum(i)
-# double out::h(double i)
-# {
-#   return i;
-#   return sum(i);
-# }
-#
 
-def hl(lb:Basic_Subsequence, r:Basic_Subsequence, rb:Basic_Subsequence):
-    return (scale(((2 + r.j) - r.i)) * mk_pf(hl_energy(r)))
-# double out::hl(const TUSubsequence & lb, const TUSubsequence & r, const TUSubsequence & rb)
-# {
-# #line 1161 "nodangle.gap"
-#   return (scale(((2 + r.j) - r.i)) * mk_pf(hl_energy(r)));
-# #line 1208 "out.cc"
-# }
-#
-def il(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
-    return ((scale(((((2 + lr.j) - lr.i) + rr.j) - rr.i)) * x) * mk_pf(il_energy(lr, rr)))
-# double out::il(const TUSubsequence & lb, const TUSubsequence & lr, double x, const TUSubsequence & rr, const TUSubsequence & rb)
-# {
-# #line 1170 "nodangle.gap"
-#   return ((scale(((((2 + lr.j) - lr.i) + rr.j) - rr.i)) * x) * mk_pf(il_energy(lr, rr)));
-# #line 1215 "out.cc"
-# }
-#
-def incl(x:float):
-    return (x * mk_pf(ul_energy()))
-# double out::incl(double x)
-# {
-# #line 1188 "nodangle.gap"
-#   return (x * mk_pf(ul_energy()));
-# #line 1222 "out.cc"
-# }
-#
-def ml(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-    return ((scale(2) * x) * mk_pf(((ml_energy() + ul_energy()) + termau_energy(lb, rb))))
-# double out::ml(const TUSubsequence & lb, double x, const TUSubsequence & rb)
-# {
-# #line 1182 "nodangle.gap"
-#   return ((scale(2) * x) * mk_pf(((ml_energy() + ul_energy()) + termau_energy(lb, rb))));
-# #line 1229 "out.cc"
-# }
-#
-def nil(n:Basic_Subsequence):
-    return 1
-# double out::nil(const TUSubsequence & n)
-# {
-# #line 1194 "nodangle.gap"
-#   return 1;
-# #line 1236 "out.cc"
-# }
-#
-def sadd(lb:Basic_Subsequence, x:float):
-    return ((scale(1) * x) * mk_pf(sbase_energy()))
-# double out::sadd(const TUSubsequence & lb, double x)
-# {
-# #line 1129 "nodangle.gap"
-#   return ((scale(1) * x) * mk_pf(sbase_energy()));
-# #line 1243 "out.cc"
-# }
-#
-def sr(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-# double out::sr(const TUSubsequence & lb, double x, const TUSubsequence & rb)
-# {
-# #line 1158 "nodangle.gap"
-   return ((scale(2) * x) * mk_pf(sr_energy(lb, rb)))
-# #line 1250 "out.cc"
-# }
-#
-#
-#     void out::cyk()
-# {
-#
-# }
-#
-#
-#
-# #ident "$Id: Compiled with gapc 2022.02.01 $"
+if True:
+    # pfunc algebra
+    def addss(x:float, r:Basic_Subsequence):
+        return ((scale((r.j - r.i)) * x) * mk_pf(ss_energy(r)))
+
+    def bl(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+        return ((scale(((2 + lr.j) - lr.i)) * x) * mk_pf(bl_energy(lr, rb)))
+
+    def br(lb:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
+        return ((scale(((2 + rr.j) - rr.i)) * x) * mk_pf(br_energy(lb, rr)))
+
+    def cadd(x:float, y:float):
+        return x*y
+
+    def drem(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+        return (x * mk_pf(termau_energy(lb, rb)))
+
+    def hl(lb:Basic_Subsequence, r:Basic_Subsequence, rb:Basic_Subsequence):
+        return (scale(((2 + r.j) - r.i)) * mk_pf(hl_energy(r)))
+
+    def il(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
+        return ((scale(((((2 + lr.j) - lr.i) + rr.j) - rr.i)) * x) * mk_pf(il_energy(lr, rr)))
+
+    def incl(x:float):
+        return (x * mk_pf(ul_energy()))
+
+    def ml(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+        return ((scale(2) * x) * mk_pf(((ml_energy() + ul_energy()) + termau_energy(lb, rb))))
+
+    def nil(n:Basic_Subsequence):
+        return 1
+
+    def sadd(lb:Basic_Subsequence, x:float):
+        return ((scale(1) * x) * mk_pf(sbase_energy()))
+
+    def sr(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+       return ((scale(2) * x) * mk_pf(sr_energy(lb, rb)))
+
+    def h(i:[float]):
+        if len(i) > 0:
+            return np.sum(i)
+        else:
+            return np.nan
+
+else:
+    # mfe algebra
+    def addss(x:float, r:Basic_Subsequence):
+        return x + ss_energy(r)
+
+    def bl(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+        return x + bl_energy(lr, rb)
+
+    def br(lb:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
+        return x + br_energy(lb, rr)
+
+    def cadd(x:float, y:float):
+        return x + y
+
+    def drem(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+        return x + termau_energy(lb, rb)
+
+    def hl(lb:Basic_Subsequence, r:Basic_Subsequence, rb:Basic_Subsequence):
+        return hl_energy(r)
+
+    def il(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
+        return x + il_energy(lr, rr)
+
+    def incl(x:float):
+        return x + ul_energy()
+
+    def ml(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+        return x + ml_energy() + ul_energy() + termau_energy(lb, rb)
+
+    def nil(n:Basic_Subsequence):
+        return 0
+
+    def sadd(lb:Basic_Subsequence, x:float):
+        return x + sbase_energy()
+
+    def sr(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+       return x + sr_energy(lb, rb)
+
+    def h(i:[float]) -> [float]:
+        if len(i) > 0:
+            return np.min(i)
+        else:
+            return np.nan
