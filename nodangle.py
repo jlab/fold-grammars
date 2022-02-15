@@ -758,7 +758,7 @@ def backtrace(t_0_i:int, t_0_j:int, name:str) -> float:
     edges = tables[name].backtrace.loc[t_0_i, t_0_j]
     if is_not_empty(edges):
         for edge in edges:
-            if edge['type'] == 'nt':
+            if edge['nt'] is not None:
                 params = [backtrace(edge['i'],edge['j'],edge['nt']) if p == 'x' else p for p in edge['algparams']]
                 algfct = edge['algfct']
                 if algfct is None:
