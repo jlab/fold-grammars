@@ -8,8 +8,6 @@ def init(inputsequence, printstack=False, printBTstack=False, taball=False):
     PRINTBTSTACK = printBTstack
     global TABALL
     TABALL = taball
-    #global ALGEBRA
-    #ALGEBRA = algebra
     global INDENT
     INDENT = ""
 
@@ -52,8 +50,7 @@ def nt_dangle(t_0_i:int, t_0_j:int, name="dangle") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_0, ret_2), 'drem(LOC,strong,LOC)', [('strong', t_0_i, t_0_j)])
-        tables['strong'].add_trace2(t_0_i,t_0_j, 'dangle', t_0_i, t_0_j, decomp(ret_0, ret_2), algfct=drem, algparams=[ret_1, 'x', ret_3], fct=lambda x: drem(ret_1, x, ret_3), fctstr="drem(%s, x, %s)" % (ret_1, ret_3))
+        tables['strong'].add_trace2(t_0_i,t_0_j, 'dangle', t_0_i, t_0_j, algfct=drem, algparams=[ret_1, 'x', ret_3])
 
     tables[name].trace(t_0_i, t_0_j, answers)
     eval = h(answers)
@@ -90,8 +87,7 @@ def nt_hairpin(t_0_i:int, t_0_j:int, name="hairpin") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables[name].add_trace(t_0_i, t_0_j, ret_0, 'hl(BASE,REGION,BASE)', [])
-        tables['hairpin'].add_trace2(None, None, None, t_0_i, t_0_j, None, algfct=hl, algparams=[ret_1, ret_2, ret_3], fct=lambda x: hl(ret_1, ret_2, ret_3), fctstr="hl(%s, %s, %s)" % (ret_1, ret_2, ret_3))
+        tables['hairpin'].add_trace2(None, None, None, t_0_i, t_0_j, algfct=hl, algparams=[ret_1, ret_2, ret_3])
 
     eval = h(answers)
     if PRINTSTACK:
@@ -134,8 +130,7 @@ def nt_iloop(t_0_i:int, t_0_j:int, name="iloop") -> float:
                                     if (is_not_empty(ret_3)):
                                         res = il(ret_1, ret_2, ret_3, ret_4, ret_5)
                                         answers.append(res)
-                                        tables[name].add_trace(t_0_i, t_0_j, decomp(res, ret_3), 'il(BASE,REGION,strong,REGION,BASE)', [('strong', t_0_k_0, t_0_k_1)])
-                                        tables['strong'].add_trace2(t_0_i,t_0_j, 'iloop', t_0_k_0, t_0_k_1, decomp(res, ret_3), algfct=il, algparams=[ret_1, ret_2, 'x', ret_4, ret_5], fct=lambda x: il(ret_1, ret_2, x, ret_4, ret_5), fctstr="il(%s, %s, x, %s, %s)" % (ret_1, ret_2, ret_4, ret_5))
+                                        tables['strong'].add_trace2(t_0_i,t_0_j, 'iloop', t_0_k_0, t_0_k_1, algfct=il, algparams=[ret_1, ret_2, 'x', ret_4, ret_5])
 
                     t_0_k_1 += 1
                 t_0_k_0 += 1
@@ -175,8 +170,7 @@ def nt_leftB(t_0_i:int, t_0_j:int, name="leftB") -> float:
                             if (is_not_empty(ret_3)):
                                 res = bl(ret_1, ret_2, ret_3, ret_4)
                                 answers.append(res)
-                                tables[name].add_trace(t_0_i, t_0_j, decomp(res, ret_3), 'bl(BASE,REGION,strong,BASE)', [('strong', t_0_k_0, t_0_j-1)])
-                                tables['strong'].add_trace2(t_0_i,t_0_j, 'leftB', t_0_k_0, t_0_j-1, decomp(res, ret_3), algfct=bl, algparams=[ret_1,ret_2,'x', ret_4], fct=lambda x: bl(ret_1,ret_2,x,ret_4), fctstr="bl(%s,%s,x,%s)" % (ret_1,ret_2,ret_4))
+                                tables['strong'].add_trace2(t_0_i,t_0_j, 'leftB', t_0_k_0, t_0_j-1, algfct=bl, algparams=[ret_1,ret_2,'x', ret_4])
 
                 t_0_k_0 += 1
     eval = h(answers)
@@ -210,8 +204,7 @@ def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_0, ret_2), 'sadd(BASE, ml_comps)', [('ml_comps', t_0_i+1, t_0_j)])
-        tables['ml_comps'].add_trace2(t_0_i,t_0_j, 'ml_comps', t_0_i+1,t_0_j, decomp(ret_0, ret_2), algfct=sadd, algparams=[ret_1, 'x'], fct=lambda x: sadd(ret_1, x), fctstr="sadd(%s, x)" % ret_1)
+        tables['ml_comps'].add_trace2(t_0_i,t_0_j, 'ml_comps', t_0_i+1,t_0_j, algfct=sadd, algparams=[ret_1, 'x'])
 
     if (((t_0_j - t_0_i) >= 10)):
         t_0_k_0 = (t_0_i + 5)
@@ -226,10 +219,8 @@ def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps") -> float:
                 if (is_not_empty(ret_4)):
                     res = cadd(ret_4, ret_6)
                     answers.append(res)
-                    #print("%i %i cadd(incl=%f,dangle=%f)=%f trace=%f" % (t_0_i, t_0_j, ret_4, ret_6, res, res - (ret_4 + ret_6)))
-                    tables[name].add_trace(t_0_i, t_0_j, decomp(res, combine(ret_4, ret_6)), 'cadd(incl(dangle),ml_comps1)', [('ml_comps1', t_0_k_0, t_0_j),('dangle',t_0_i,t_0_k_0)])
-                    tables['ml_comps1'].add_trace2(t_0_i,t_0_j, 'ml_comps', t_0_k_0, t_0_j, decomp(res, combine(ret_4, ret_6)), algfct=cadd, algparams=[ret_4, 'x'], fct=lambda x: cadd(ret_4, x), fctstr="cadd(%s, x)" % ret_4)
-                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps', t_0_i, t_0_k_0, decomp(res, combine(ret_4, ret_6)), algfct=lambda x,y: cadd(incl(x), y), algparams=['x', ret_6], fct=lambda x: cadd(incl(x), ret_6), fctstr="cadd(incl(x), %s)" % ret_6)
+                    tables['ml_comps1'].add_trace2(t_0_i,t_0_j, 'ml_comps', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'])
+                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps', t_0_i, t_0_k_0, algfct=lambda x,y: cadd(incl(x), y), algparams=['x', ret_6])
 
 
             t_0_k_0 += 1
@@ -261,8 +252,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_0, ret_2), 'sadd(BASE, ml_comps1)', [('ml_comps1', t_0_i+1, t_0_j)])
-        tables['ml_comps1'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i+1, t_0_j, decomp(ret_0, ret_2), algfct=sadd, algparams=[ret_1, 'x'], fct=lambda x: sadd(ret_1, x), fctstr="sadd(%s, x)" % ret_1)
+        tables['ml_comps1'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i+1, t_0_j, algfct=sadd, algparams=[ret_1, 'x'])
 
 
     if (((t_0_j - t_0_i) >= 10)):
@@ -279,9 +269,8 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
                 if (is_not_empty(ret_4)):
                     res = cadd(ret_4, ret_6)
                     answers.append(res)
-                    tables[name].add_trace(t_0_i, t_0_j, decomp(res, combine(ret_4, ret_6)), 'cadd(incl(dangle),ml_comps1)', [('ml_comps1', t_0_k_0, t_0_j), ('dangle',t_0_i,t_0_k_0)])
-                    tables['ml_comps1'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_k_0, t_0_j, decomp(res, combine(ret_4, ret_6)), algfct=lambda x,y: cadd(incl(x),y), algparams=[ret_4, 'x'], fct=lambda x: cadd(incl(ret_4), x), fctstr="cadd(incl(%s), x)" % ret_4)
-                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_k_0, decomp(res, combine(ret_4, ret_6)), algfct=lambda x,y: cadd(incl(x),y), algparams=['x', ret_6], fct=lambda x: cadd(x, ret_6), fctstr="cadd(x, %s)" % ret_6)
+                    tables['ml_comps1'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_k_0, t_0_j, algfct=lambda x,y: cadd(incl(x),y), algparams=[ret_4, 'x'])
+                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_k_0, algfct=lambda x,y: cadd(incl(x),y), algparams=['x', ret_6])
 
             t_0_k_0 += 1
 
@@ -293,8 +282,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
 
     if (is_not_empty(ret_7)):
         answers.append(ret_7)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_7, ret_8), 'incl(dangle)', [('dangle', t_0_i, t_0_j)])
-        tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_j, decomp(ret_7, ret_8), algfct=incl, algparams=['x'], fct=lambda x: incl(x), fctstr="incl(x)")
+        tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_j, algfct=incl, algparams=['x'])
 
 
     if (((t_0_j - t_0_i) >= 6)):
@@ -312,8 +300,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
                 if (is_not_empty(ret_10)):
                     res = addss(ret_10, ret_12)
                     answers.append(res)
-                    tables[name].add_trace(t_0_i, t_0_j, decomp(res, ret_11), 'addss(incl(dangle),REGION)', [('dangle', t_0_i, t_0_k_1)])
-                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_k_1, decomp(res, ret_11), algfct=lambda x,y: addss(incl(x),y), algparams=['x', ret_12], fct=lambda x: addss(incl(x), ret_12), fctstr="addss(incl(x), %s)" % ret_12)
+                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_k_1, algfct=lambda x,y: addss(incl(x),y), algparams=['x', ret_12])
 
             t_0_k_1 += 1
 
@@ -349,8 +336,7 @@ def nt_multiloop(t_0_i:int, t_0_j:int, name='multiloop') -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_0, ret_2), 'ml(BASE, ml_comps, BASE)', [('ml_comps', t_0_i+1, t_0_j-1)])    #if t_0_i == 0 and t_0_j == 16:
-        tables['ml_comps'].add_trace2(t_0_i,t_0_j, 'multiloop', t_0_i+1, t_0_j-1, decomp(ret_0, ret_2), algfct=ml, algparams=[ret_1, 'x', ret_3], fct=lambda x: ml(ret_1, x, ret_3), fctstr="ml(%s, x, %s)" % (ret_1, ret_3))
+        tables['ml_comps'].add_trace2(t_0_i,t_0_j, 'multiloop', t_0_i+1, t_0_j-1, algfct=ml, algparams=[ret_1, 'x', ret_3])
 
     #    print("multiloop(%i,%i) = " % (t_0_i,t_0_j), answers, ret_0, ret_1, ret_2, ret_3)
     #print(" set nt_multiloop(%i,%i)" % (t_0_i, t_0_j))
@@ -393,8 +379,7 @@ def nt_rightB(t_0_i:int, t_0_j:int, name="rightB") -> float:
                             if (is_not_empty(ret_2)):
                                 res = br(ret_1, ret_2, ret_3, ret_4)
                                 answers.append(res)
-                                tables[name].add_trace(t_0_i, t_0_j, decomp(res, ret_2), 'br(BASE, strong, REGION, BASE)', [('strong', t_0_i+1, t_0_k_0)])
-                                tables['strong'].add_trace2(t_0_i,t_0_j, 'rightB', t_0_i+1, t_0_k_0, decomp(res, ret_2), algfct=br, algparams=[ret_1, 'x', ret_3, ret_4], fct=lambda x: br(ret_1, x, ret_3, ret_4), fctstr="br(%s, x, %s, %s)" % (ret_1, ret_3, ret_4))
+                                tables['strong'].add_trace2(t_0_i,t_0_j, 'rightB', t_0_i+1, t_0_k_0, algfct=br, algparams=[ret_1, 'x', ret_3, ret_4])
 
                 t_0_k_0 += 1
 
@@ -433,9 +418,7 @@ def nt_stack(t_0_i:int, t_0_j:int, name="stack") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_0, ret_2), 'sr(BASE, weak, BASE)', [('weak', t_0_i+1, t_0_j-1)])
-        #print("HIER",t_0_i,t_0_j,"calling:","weak",(t_0_i + 1), (t_0_j - 1))
-        tables['weak'].add_trace2(t_0_i,t_0_j, 'stack', t_0_i+1, t_0_j-1, decomp(ret_0, ret_2), algfct=sr, algparams=[ret_1, 'x', ret_3], fct=lambda x: sr(ret_1, x, ret_3), fctstr="sr(%s, x, %s)" % (ret_1, ret_3))
+        tables['weak'].add_trace2(t_0_i,t_0_j, 'stack', t_0_i+1, t_0_j-1, algfct=sr, algparams=[ret_1, 'x', ret_3])
 
     eval = h(answers)
     if PRINTSTACK:
@@ -470,8 +453,7 @@ def nt_strong(t_0_i:int, t_0_j:int, name="strong") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_0, ret_3), 'sr(BASE, weak, BASE)', [('weak', t_0_i+1, t_0_j-1)])
-        tables['weak'].add_trace2(t_0_i,t_0_j, 'strong', t_0_i+1, t_0_j-1, decomp(ret_0, ret_3), algfct=sr, algparams=[ret_2, 'x', ret_4], fct=lambda x: sr(ret_2, x, ret_4), fctstr="sr(%s, x, %s)" % (ret_2, ret_4))
+        tables['weak'].add_trace2(t_0_i,t_0_j, 'strong', t_0_i+1, t_0_j-1, algfct=sr, algparams=[ret_2, 'x', ret_4])
 
 
     ret_5 = np.nan
@@ -480,8 +462,7 @@ def nt_strong(t_0_i:int, t_0_j:int, name="strong") -> float:
 
     if (is_not_empty(ret_5)):
        answers.append(ret_5)
-       tables[name].add_trace(t_0_i, t_0_j, decomp(ret_5, ret_5), 'weak', [('weak', t_0_i, t_0_j)])
-       tables['weak'].add_trace2(t_0_i,t_0_j, 'strong', t_0_i, t_0_j, decomp(ret_5, ret_5), algfct=None, algparams=['x'], fct=lambda x: x, fctstr="x")
+       tables['weak'].add_trace2(t_0_i,t_0_j, 'strong', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
 
     tables[name].trace(t_0_i, t_0_j, answers)
@@ -512,8 +493,7 @@ def nt_struct(t_0_i:int, name="struct") -> float:
                 ret_0 = sadd(ret_1, ret_2)
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_0, ret_2), 'sadd(BASE, struct)', [('struct', t_0_i+1, 0)])
-        tables['struct'].add_trace2(t_0_i,t_0_j, 'struct', t_0_i+1, t_0_j, decomp(ret_0, ret_2), algfct=sadd, algparams=[ret_1, 'x'], fct=lambda x: sadd(ret_1, x), fctstr="sadd(%s, x)" % ret_1)
+        tables['struct'].add_trace2(t_0_i,t_0_j, 'struct', t_0_i+1, t_0_j, algfct=sadd, algparams=[ret_1, 'x'])
 
 
     if (((t_0_right_most - t_0_i) >= 5)):
@@ -525,9 +505,8 @@ def nt_struct(t_0_i:int, name="struct") -> float:
                 if (is_not_empty(ret_4)):
                     ret_0 = cadd(ret_4, ret_5)
                     answers.append(ret_0)
-                    tables[name].add_trace(t_0_i, t_0_j, None, 'cadd(dangle,struct)', [('struct', t_0_k_0, 0),('dangle',t_0_i,t_0_k_0)])
-                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'struct', t_0_i, t_0_k_0, None, algfct=cadd, algparams=['x', ret_5], fct=lambda x: cadd(x, ret_5), fctstr="cadd(x, %s)" % ret_5)
-                    tables['struct'].add_trace2(t_0_i,t_0_j, 'struct', t_0_k_0, t_0_j, None, algfct=cadd, algparams=[ret_4, 'x'], fct=lambda x: cadd(ret_4, x), fctstr="cadd(%s, x)" % ret_4)
+                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'struct', t_0_i, t_0_k_0, algfct=cadd, algparams=['x', ret_5])
+                    tables['struct'].add_trace2(t_0_i,t_0_j, 'struct', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'])
 
 
             t_0_k_0 += 1
@@ -540,9 +519,7 @@ def nt_struct(t_0_i:int, name="struct") -> float:
 
     if (is_not_empty(ret_6)):
         answers.append(ret_6)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_6, ret_6), 'nil(LOC)', [])
-        #tables['struct'].add_trace2base(t_0_i, t_0_j, ret_6)
-        tables['struct'].add_trace2(None, None, None, t_0_i, t_0_j, None, algfct=nil, algparams=[ret_7], fct=lambda x: nil(ret_7), fctstr="nil(%s)" % ret_7)
+        tables['struct'].add_trace2(None, None, None, t_0_i, t_0_j, algfct=nil, algparams=[ret_7])
 
 
     tables[name].trace(t_0_i, 0, answers)
@@ -563,38 +540,32 @@ def nt_weak(t_0_i:int, t_0_j:int, name="weak") -> float:
     ret_1 = nt_stack(t_0_i, t_0_j)
     if (is_not_empty(ret_1)):
         answers.append(ret_1)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_1, ret_1), 'stack', [('stack', t_0_i, t_0_j)])
-        tables['stack'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, decomp(ret_1, ret_1), algfct=None, algparams=['x'], fct=lambda x: x, fctstr="x")
+        tables['stack'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     ret_2 = nt_hairpin(t_0_i, t_0_j)
     if (is_not_empty(ret_2)):
         answers.append(ret_2)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_2, ret_2), 'hairpin', [('hairpin', t_0_i, t_0_j)])
-        tables['hairpin'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, decomp(ret_2, ret_2), algfct=None, algparams=['x'], fct=lambda x: x, fctstr="x")
+        tables['hairpin'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     ret_3 = nt_leftB(t_0_i, t_0_j)
     if (is_not_empty(ret_3)):
         answers.append(ret_3)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_3, ret_3), 'leftB', [('leftB', t_0_i, t_0_j)])
-        tables['leftB'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, decomp(ret_3, ret_3), algfct=None, algparams=['x'], fct=lambda x: x, fctstr="x")
+        tables['leftB'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     ret_4 = nt_rightB(t_0_i, t_0_j)
     if (is_not_empty(ret_4)):
         answers.append(ret_4)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_4, ret_4), 'rightB', [('rightB', t_0_i, t_0_j)])
-        tables['rightB'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, decomp(ret_4, ret_4), algfct=None, algparams=['x'], fct=lambda x: x, fctstr="x")
+        tables['rightB'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     ret_5 = nt_iloop(t_0_i, t_0_j)
     if (is_not_empty(ret_5)):
         answers.append(ret_5)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_5, ret_5), 'iloop', [('iloop', t_0_i, t_0_j)])
-        tables['iloop'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, decomp(ret_5, ret_5), algfct=None, algparams=['x'], fct=lambda x: x, fctstr="x")
+        tables['iloop'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     ret_6 = nt_multiloop(t_0_i, t_0_j)
     if (is_not_empty(ret_6)):
         answers.append(ret_6)
-        tables[name].add_trace(t_0_i, t_0_j, decomp(ret_6, ret_6), 'multiloop', [('multiloop', t_0_i, t_0_j)])
-        tables['multiloop'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, decomp(ret_6, ret_6), algfct=None, algparams=['x'], fct=lambda x: x, fctstr="x")
+        tables['multiloop'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     tables[name].trace(t_0_i, t_0_j, answers)
     eval = h(answers)
@@ -650,10 +621,6 @@ if ALGEBRA == 'pfunc':
         else:
             return np.nan
 
-    def decomp(a,b):
-        return a / b
-    def combine(a,b):
-        return a * b
 elif ALGEBRA == 'mfe':
     # mfe algebra
     def addss(x:float, r:Basic_Subsequence):
@@ -697,11 +664,6 @@ elif ALGEBRA == 'mfe':
             return np.min(i)
         else:
             return np.nan
-
-    def decomp(a,b):
-        return a - b
-    def combine(a,b):
-        return a + b
 elif ALGEBRA == 'count':
     # mfe algebra
     def addss(x:float, r:Basic_Subsequence):
@@ -736,16 +698,6 @@ elif ALGEBRA == 'count':
         else:
             return 0
 
-    def decomp(a,b):
-        if b == 0:
-            return 0
-        return a / b
-    def combine(a,b):
-        return a * b
-
-    def hl_proxy():
-        return 1
-
 def backtrace(t_0_i:int, t_0_j:int, name:str) -> float:
     if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
         return tables[name].bt_get(t_0_i, t_0_j)
@@ -765,11 +717,9 @@ def backtrace(t_0_i:int, t_0_j:int, name:str) -> float:
                     res = params[0]
                 else:
                     res = algfct(*params)
-                #res = edge['fct'](backtrace(edge['i'],edge['j'],edge['nt']))
                 answers.append(res)
 
     eval = h(answers)
-    #print('nt_%s(%i,%i) = %f:' % (name, t_0_i,t_0_j,eval),answers)
     if PRINTBTSTACK:
         decr()
         print("%s} set bt_nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))

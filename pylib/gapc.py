@@ -110,28 +110,11 @@ class DPtable:
         self.bt_tabulated.loc[i, j] = True
         self.bt_array.loc[i, j] = e
 
-    def add_trace(self, i:int, j:int, e:float, name:str="unknown", lookups=[]):
-        pass
-        #if (type(self.backtrace.loc[i,j]) == float) and (pd.isnull(self.backtrace.loc[i,j])):
-        #    self.backtrace.loc[i,j] = []
-        #self.backtrace.loc[i,j].append((name, e, lookups))
-
-    def add_trace2(self, caller_i:int, caller_j:int, nt_caller, i, j, algval, fct=None, fctstr="", algparams=[], algfct=None):
-        #if self.name == 'weak' and i==3 and j==17:
-        #    print(i,j,nt_caller,caller_i,caller_j)
+    def add_trace2(self, caller_i:int, caller_j:int, nt_caller, i, j, fct=None, fctstr="", algparams=[], algfct=None):
         if (type(self.backtrace.loc[i,j]) == float) and (pd.isnull(self.backtrace.loc[i,j])):
             self.backtrace.loc[i,j] = []
-        self.backtrace.loc[i,j].append({'type': 'nt', 'nt': nt_caller, 'i': caller_i, 'j': caller_j, 'value': algval, 'fct': fct, 'fctstr': fctstr,
+        self.backtrace.loc[i,j].append({'type': 'nt', 'nt': nt_caller, 'i': caller_i, 'j': caller_j, 'fct': fct, 'fctstr': fctstr,
                                         'algparams': algparams, 'algfct': algfct})#(nt_caller, caller_i, caller_j))
-
-    def add_trace2base(self, i:int, j:int, algval):
-        if (type(self.backtrace.loc[i,j]) == float) and (pd.isnull(self.backtrace.loc[i,j])):
-            self.backtrace.loc[i,j] = []
-        self.backtrace.loc[i,j].append({'type': 'base', 'value': algval})
-
-    def trace(self, i:int, j:int, e:float):
-        pass
-        #self.backtrace.loc[i,j] = e #/ np.sum(e)
 
 def minsize(seq:str, i, j, l) -> bool:
     return j-i >= l
