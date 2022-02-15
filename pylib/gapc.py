@@ -23,6 +23,9 @@ class Basic_Subsequence:
     def isEmpty(self):
         return self.seq == None
 
+    def __str__(self):
+        return "<%i,%i>" % (self.i, self.j)
+
 class REGION(Basic_Subsequence):
     def __init__(self, sequence:str, i:int, j:int):
         assert i < j, "For REGION, left border i=%s must be smaller than right border j=%i" % (i,j)
@@ -113,12 +116,13 @@ class DPtable:
         #    self.backtrace.loc[i,j] = []
         #self.backtrace.loc[i,j].append((name, e, lookups))
 
-    def add_trace2(self, caller_i:int, caller_j:int, nt_caller, i, j, algval, fct=None):
+    def add_trace2(self, caller_i:int, caller_j:int, nt_caller, i, j, algval, fct=None, fctstr="", algparams=[], algfct=None):
         #if self.name == 'weak' and i==3 and j==17:
         #    print(i,j,nt_caller,caller_i,caller_j)
         if (type(self.backtrace.loc[i,j]) == float) and (pd.isnull(self.backtrace.loc[i,j])):
             self.backtrace.loc[i,j] = []
-        self.backtrace.loc[i,j].append({'type': 'nt', 'nt': nt_caller, 'i': caller_i, 'j': caller_j, 'value': algval, 'fct': fct})#(nt_caller, caller_i, caller_j))
+        self.backtrace.loc[i,j].append({'type': 'nt', 'nt': nt_caller, 'i': caller_i, 'j': caller_j, 'value': algval, 'fct': fct, 'fctstr': fctstr,
+                                        'algparams': algparams, 'algfct': algfct})#(nt_caller, caller_i, caller_j))
 
     def add_trace2base(self, i:int, j:int, algval):
         if (type(self.backtrace.loc[i,j]) == float) and (pd.isnull(self.backtrace.loc[i,j])):
