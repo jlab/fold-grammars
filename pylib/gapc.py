@@ -46,6 +46,8 @@ def is_not_empty(x):
     elif (type(x) == LOC) or (type(x) == BASE) or (type(x) == REGION) or\
          (x.__class__.__name__ in ['BASE', 'REGION', 'LOC']):
         return (not x.isEmpty())
+    elif (type(x) == list):
+        return len(x) > 0
     raise ValueError("is_not_empty not implemented for type %s" % type(x))
 
 def push_back_sum(current_sum:float, value:float) -> float:
@@ -82,6 +84,8 @@ class DPtable:
         self.array = pd.DataFrame(data=np.nan, index=range(n+1), columns=range(n+1))
         self.tabulated = pd.DataFrame(data=False, index=range(n+1), columns=range(n+1))
         self.backtrace = pd.DataFrame(data=np.nan, index=range(n+1), columns=range(n+1), dtype=object)
+        self.bt_array = pd.DataFrame(data=np.nan, index=range(n+1), columns=range(n+1))
+        self.bt_tabulated = pd.DataFrame(data=False, index=range(n+1), columns=range(n+1))
 
     def is_tabulated(self, i:int, j:int) -> bool:
         return self.tabulated.loc[i, j]
@@ -93,8 +97,37 @@ class DPtable:
         self.tabulated.loc[i, j] = True
         self.array.loc[i, j] = e
 
+    def bt_is_tabulated(self, i:int, j:int) -> bool:
+        return self.bt_tabulated.loc[i, j]
+
+    def bt_get(self, i:int, j:int):
+        return self.bt_array.loc[i, j]
+
+    def bt_set(self, i:int, j:int, e:float):
+        self.bt_tabulated.loc[i, j] = True
+        self.bt_array.loc[i, j] = e
+
+    def add_trace(self, i:int, j:int, e:float, name:str="unknown", lookups=[]):
+        pass
+        #if (type(self.backtrace.loc[i,j]) == float) and (pd.isnull(self.backtrace.loc[i,j])):
+        #    self.backtrace.loc[i,j] = []
+        #self.backtrace.loc[i,j].append((name, e, lookups))
+
+    def add_trace2(self, caller_i:int, caller_j:int, nt_caller, i, j, algval, fct=None):
+        #if self.name == 'weak' and i==3 and j==17:
+        #    print(i,j,nt_caller,caller_i,caller_j)
+        if (type(self.backtrace.loc[i,j]) == float) and (pd.isnull(self.backtrace.loc[i,j])):
+            self.backtrace.loc[i,j] = []
+        self.backtrace.loc[i,j].append({'type': 'nt', 'nt': nt_caller, 'i': caller_i, 'j': caller_j, 'value': algval, 'fct': fct})#(nt_caller, caller_i, caller_j))
+
+    def add_trace2base(self, i:int, j:int, algval):
+        if (type(self.backtrace.loc[i,j]) == float) and (pd.isnull(self.backtrace.loc[i,j])):
+            self.backtrace.loc[i,j] = []
+        self.backtrace.loc[i,j].append({'type': 'base', 'value': algval})
+
     def trace(self, i:int, j:int, e:float):
-        self.backtrace.loc[i,j] = e / np.sum(e)
+        pass
+        #self.backtrace.loc[i,j] = e #/ np.sum(e)
 
 def minsize(seq:str, i, j, l) -> bool:
     return j-i >= l
@@ -109,12 +142,14 @@ def allowLonelyBasepairs(t_0_seq:str, t_0_i:int, t_0_j:int, x=False) -> bool:
     return x
 
 def scale(x:int) -> float:
+  return 1
   # mean energy for random sequences: 184.3*length cal
   mean_nrg = -0.1843;
   mean_scale = np.exp(-1.0 * mean_nrg / (GASCONST/1000 * (temperature + K0)))
-  return (1.0 / (mean_scale ** x))
+  return (1.0 / (np.exp(-1.0 * mean_nrg / (GASCONST/1000 * (temperature + K0))) ** x))
 
 def mk_pf(x:float) -> float:
+  #return np.exp(x)
   return np.exp((-1.0 * x/100.0) / (GASCONST/1000 * (temperature + K0)))
 
 # convert input arguments as in rtlib/rna.hh
