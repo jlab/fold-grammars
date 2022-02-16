@@ -1,4 +1,4 @@
-name: github action build & CI
+name: backpropagation test
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
     - name: make
       run: |
         cd $GITHUB_WORKSPACE/../gapc && make -j 2
-        cd $GITHUB_WORKSPACE/../gapc && make librna/rnalib.py
+        cd $GITHUB_WORKSPACE/../gapc && make -j 2 librna/rnalib.py
     - name: make install
       run: cd $GITHUB_WORKSPACE/../gapc && sudo make install
 
@@ -36,5 +36,5 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/../fold-grammars
         cd Misc/Test-Suite/PythonStyle/
-        make backprop
-        ls -la
+        make backprop SRC=$GITHUB_WORKSPACE/../fold-grammars/
+        python Misc/Test-Suite/PythonStyle/testBackprop.py
