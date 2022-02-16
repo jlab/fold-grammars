@@ -703,8 +703,7 @@ def backtrace(t_0_i:int, t_0_j:int, name:str) -> float:
                 # there can arise situations in the fwd pass where input is split into two ore more non-terminals (like cadd(x,y))
                 # x(i,k) evaluates to a valid parse, but y(k,j) don't. Then, x(i,k) tables are filled AND backtrace information,
                 # which will somewhere end into a nan edge. We have to prune params here for this case
-                params = [p for p in params if is_not_empty(p)]
-                if params != []:
+                if all([is_not_empty(p) for p in params]):
                     algfct = edge['algfct']
                     if algfct is None:
                         res = params[0]
