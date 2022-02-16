@@ -3,6 +3,8 @@ include $(BASEDIR)/makefile
 
 SRC=/Daten/Git/jlab/fg_rnahybrid_2021/
 
+all: backprop outside
+
 backprop:
 	cp -r $(SRC)Algebras $(SRC)Signatures $(SRC)Grammars $(SRC)Extensions $(SRC)nodangle.gap $(TMPDIR)
 	echo "  answer marker(Rope, Subsequence, answer, Subsequence);\n" >> $(TMPDIR)/Signatures/Parts/sigpart_basic.gap
@@ -23,6 +25,14 @@ backprop:
 	# add the one instance we need
 	cd $(TMPDIR) && echo "instance backprop = gra_nodangle(alg_dotBracket * alg_marked * alg_mfe * alg_pfunc * alg_enum);\n" >> nodangle.gap
 	cd $(TMPDIR) && gapc -i backprop nodangle.gap
+	$(PERL) $(PWD)/$(BASEDIR)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf 0
+	cd $(TMPDIR) && make -f out.mf
+	mkdir -p $(ARCHTRIPLE)
+	cp $(TMPDIR)/out $(ARCHTRIPLE)/$@
+
+outside:
+	cp -r $(SRC)Algebras $(SRC)Signatures $(SRC)Grammars $(SRC)Extensions $(SRC)outside_nodangle.gap $(TMPDIR)
+	cd $(TMPDIR) && gapc -p "alg_outside_pfunc" outside_nodangle.gap
 	$(PERL) $(PWD)/$(BASEDIR)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf 0
 	cd $(TMPDIR) && make -f out.mf
 	mkdir -p $(ARCHTRIPLE)
