@@ -410,31 +410,31 @@ algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
     return x + getReactivityScore(qbase, true);
   }
   double ulb(<Subsequence qloc, Subsequence tbase>, double x) {
-    return x + getReactivityScore(tbase, true);
+    return x + getReactivityScore(tbase, true, qloc);
   }
   double eds(<Subsequence qbase, Subsequence tbase>, double x) {
-    return x + getReactivityScore(qbase, true) + getReactivityScore(tbase, true);
+    return x + getReactivityScore(qbase, true) + getReactivityScore(tbase, true, qbase);
   } 
   double edt(<Subsequence qbase, Subsequence tloc>, double x) {
     return x + getReactivityScore(qbase, true);
   }
   double edb(<Subsequence qloc, Subsequence tbase>, double x) {
-    return x + getReactivityScore(tbase, true);
+    return x + getReactivityScore(tbase, true, qloc);
   }
   double sr(<Subsequence qbase, Subsequence tbase>, double x) {
-    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false);
+    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false, qbase);
   }  
   double bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, double x) {
-    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false) + getReactivityScore(qregion, true);
+    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false, qbase) + getReactivityScore(qregion, true);
   }
   double bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, double x) {
-    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false) + getReactivityScore(tregion, true);
+    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false, qbase) + getReactivityScore(tregion, true, qloc);
   }
   double il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, double x) {
-    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false) + getReactivityScore(qregion, true) + getReactivityScore(tregion, true);
+    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false, qbase) + getReactivityScore(qregion, true) + getReactivityScore(tregion, true, qregion);
   }
   double el(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>) {
-    return getReactivityScore(qbase, false) + getReactivityScore(tbase, false) + getReactivityScore(qregion, true) + getReactivityScore(tregion, true);
+    return getReactivityScore(qbase, false) + getReactivityScore(tbase, false, qbase) + getReactivityScore(qregion, true) + getReactivityScore(tregion, true, qregion);
   }
   
   choice [double] h([double] i) {
@@ -486,6 +486,8 @@ instance ppenummfemfedebug = gra_rnahybrid(alg_pretty * alg_enum * alg_mfe * alg
 instance mfepp = gra_rnahybrid(alg_mfe * alg_pretty);
 instance suboptpp = gra_rnahybrid(alg_mfe_subopt * alg_pretty);
 instance probing = gra_rnahybrid(alg_probing);
+instance probingenum = gra_rnahybrid(alg_probing * alg_enum);
+instance enumprobing = gra_rnahybrid(alg_enum * alg_probing);
 
 // don't remove the mde instance as it is used for p-value computation
 instance mde = gra_maxduplex(alg_mfe);
