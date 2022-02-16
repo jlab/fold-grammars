@@ -36,6 +36,7 @@ jobs:
         sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
         sed -i "s#/Daten/Git/jlab/gapc/librna/#$GITHUB_WORKSPACE/../../gapc/librna/#" pylib/gapc.py
         cat pylib/gapc.py
+        ls -la $GITHUB_WORKSPACE/../../gapc/librna/
     - name: execute tests
       run: |
         cd $GITHUB_WORKSPACE/../fold-grammars
