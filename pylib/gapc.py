@@ -113,7 +113,7 @@ class DPtable:
     def add_trace2(self, caller_i:int, caller_j:int, nt_caller, i, j, fct=None, fctstr="", algparams=[], algfct=None):
         if (type(self.backtrace.loc[i,j]) == float) and (pd.isnull(self.backtrace.loc[i,j])):
             self.backtrace.loc[i,j] = []
-        self.backtrace.loc[i,j].append({'type': 'nt', 'nt': nt_caller, 'i': caller_i, 'j': caller_j, 'fct': fct, 'fctstr': fctstr,
+        self.backtrace.loc[i,j].append({'nt': nt_caller, 'i': caller_i, 'j': caller_j, 'fct': fct, 'fctstr': fctstr,
                                         'algparams': algparams, 'algfct': algfct})#(nt_caller, caller_i, caller_j))
 
 def minsize(seq:str, i, j, l) -> bool:
@@ -129,15 +129,17 @@ def allowLonelyBasepairs(t_0_seq:str, t_0_i:int, t_0_j:int, x=False) -> bool:
     return x
 
 def scale(x:int) -> float:
-  return 1
   # mean energy for random sequences: 184.3*length cal
   mean_nrg = -0.1843;
   mean_scale = np.exp(-1.0 * mean_nrg / (GASCONST/1000 * (temperature + K0)))
   return (1.0 / (np.exp(-1.0 * mean_nrg / (GASCONST/1000 * (temperature + K0))) ** x))
 
 def mk_pf(x:float) -> float:
-  #return np.exp(x)
-  return np.exp((-1.0 * x/100.0) / (GASCONST/1000 * (temperature + K0)))
+    return np.exp((-1.0 * x/100.0) / (GASCONST/1000 * (temperature + K0)))
+
+def mk_pf_undo(x:float) -> float:
+    """The inverse of mk_pf."""
+    return np.log(x) * GASCONST/1000 * (temperature + K0) * -100
 
 # convert input arguments as in rtlib/rna.hh
 def hl_energy(r:Basic_Subsequence) -> float:
