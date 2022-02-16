@@ -26,5 +26,10 @@ class BackpropagationTest(TestCase):
         inpseq = 'CCCCaaaGGCCaaaGGGG'
         self.assertFalse(testBackprop(inpseq))
 
+    def test_largerExample(self):
+        # max size example, otherwise enum explodes
+        inpseq = 'ACCCUACUGUGCUAACCGAACCAGA'
+        self.assertFalse(testBackprop(inpseq))
+
 if __name__ == '__main__':
     main()
