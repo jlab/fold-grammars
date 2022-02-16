@@ -22,12 +22,8 @@ def getBackpropTruth(inputseq, alg='pfunc', base='Misc/Test-Suite/PythonStyle/')
                 if err_msg != b"":
                     raise ValueError(err_msg.decode('ascii'))
 
-    print("execute gapc binary %s '%s'" % (alg, inputseq), file=sys.stderr)
-    with subprocess.Popen("%s%s/backprop -u 1 '%s'" % (base, arch, inputseq), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as P:
-        if P.wait() != 0:
-            raise ValueError(P.stderr.read().decode('ascii'))
-        else:
-            lines = P.stdout.read().decode('ascii').split('\n')
+    print("execute (alg %s) %s%s/backprop '%s'" % (base, arch, alg, inputseq), file=sys.stderr)
+    lines = os.popen('%s%s/backprop -u 1 "%s"' % (base, arch, inputseq)).read().split('\n')
 
     usedNTs = dict()
     for line in lines[1:-1]:
