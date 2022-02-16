@@ -9,7 +9,6 @@ backprop:
 	echo "  string marker(Rope name, Subsequence a, string e, Subsequence b) {\n    return e;\n  }" >> $(TMPDIR)/Algebras/DotBracket/Parts/algpart_dotBracket_basic.gap
 	echo "  int marker(Rope name, Subsequence a, int x, Subsequence b) {\n    return x;\n  }" >> $(TMPDIR)/Algebras/MFE/Parts/algpart_mfe_basic.gap
 	echo "  double marker(Rope name, Subsequence a, double x, Subsequence b) {\n    return x;\n  }" >> $(TMPDIR)/Algebras/Pfunc/Parts/algpart_pfunc_basic.gap
-	ls -la $(TMPDIR)
 	# remove algebras not extended by marker and not used for testing instance
 	cd $(TMPDIR) && $(SED) -e 's@^\(include "Algebras/Shapes/alg_shapes.gap\)"@//\1@' -i nodangle.gap
 	cd $(TMPDIR) && $(SED) -e 's@^\(include "Algebras/MEA/alg_mea.gap\)"@//\1@' -i nodangle.gap
@@ -27,4 +26,4 @@ backprop:
 	$(PERL) $(PWD)/$(BASEDIR)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf 0
 	cd $(TMPDIR) && make -f out.mf
 	mkdir -p $(ARCHTRIPLE)
-	cp $(TMPDIR)/out $(ARCHTRIPLE)/
+	cp $(TMPDIR)/out $(ARCHTRIPLE)/$@
