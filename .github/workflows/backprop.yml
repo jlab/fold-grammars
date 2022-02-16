@@ -34,9 +34,8 @@ jobs:
         cd $GITHUB_WORKSPACE/../fold-grammars
         sed -i "s#bgapDir = '/vol/gapc/'#bgapDir = '/usr/local/'#" Misc/Applications/lib/foldGrammars/Settings.pm
         sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
-        sed -i "s#/Daten/Git/jlab/gapc/librna/#$GITHUB_WORKSPACE/../../gapc/librna/#" pylib/gapc.py
+        sed -i "s#/Daten/Git/jlab/gapc/librna/#$GITHUB_WORKSPACE/../gapc/librna/#" pylib/gapc.py
         cat pylib/gapc.py
-        find / -name "rnalib.c"
         echo "GITHUB_WORKSPACE >$GITHUB_WORKSPACE<"
     - name: execute tests
       run: |
