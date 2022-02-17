@@ -39,6 +39,6 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/../fold-grammars
         cd Misc/Test-Suite/PythonStyle/
-        make backprop SRC=$GITHUB_WORKSPACE/../fold-grammars/
+        make all SRC=$GITHUB_WORKSPACE/../fold-grammars/ -j 2
         cd ../../../
         python Misc/Test-Suite/PythonStyle/testBackprop.py
