@@ -24,6 +24,11 @@ def init(inputsequence, algebra='pfunc', printstack=False, printBTstack=False, t
         ]:
         tables[nt] = DPtable(len(t_0_seq), nt)
 
+    if algebra in ['pfunc', 'count']:
+        tables['struct'].bt_set(0,0,1.0)
+    elif algebra == 'mfe':
+        tables['struct'].bt_set(0,0,0.0)
+
 def incr():
     global INDENT
     INDENT = INDENT + " "

@@ -95,9 +95,6 @@ def testBackprop(inputseq, algebra='pfunc', verbose=sys.stderr):
     # trigger forward pass
     py = nd.nt_struct(0)
 
-    # initialize recursion base for backward pass
-    nd.tables['struct'].bt_set(0,0,1.0)
-
     # obtain Truth from gapc binary
     usedNTs = getBackpropTruth(inputseq, alg=algebra, verbose=verbose)
 
@@ -131,9 +128,6 @@ def testBasepair(inputseq, verbose=sys.stderr):
 
     # trigger forward pass
     pfunc = nd.nt_struct(0)
-
-    # initialize recursion base for backward pass
-    nd.tables['struct'].bt_set(0,0,1.0)
 
     # obtain Truth from gapc outside_nodangle binary
     exp = getBasePairTruth(inputseq, verbose=verbose)
