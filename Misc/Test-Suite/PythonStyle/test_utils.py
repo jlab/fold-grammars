@@ -90,7 +90,7 @@ def getBasePairTruth(inputseq, base='Misc/Test-Suite/PythonStyle/', verbose=sys.
 
 def testBackprop(inputseq, algebra='pfunc', verbose=sys.stderr):
     # initialize tables and other stuff
-    nd.init(inputseq, algebra=algebra, printstack=False, taball=True, printBTstack=False)
+    nd.init(inputseq, algebra=algebra, printstack=False, printBTstack=False)
 
     # trigger forward pass
     py = nd.nt_struct(0)
@@ -124,7 +124,7 @@ def testBackprop(inputseq, algebra='pfunc', verbose=sys.stderr):
 
 def testBasepair(inputseq, verbose=sys.stderr):
     # initialize tables and other stuff
-    nd.init(inputseq, printstack=False, taball=True, printBTstack=False)
+    nd.init(inputseq, printstack=False, printBTstack=False)
 
     # trigger forward pass
     pfunc = nd.nt_struct(0)
