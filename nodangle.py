@@ -14,6 +14,8 @@ def init(inputsequence, algebra='pfunc', printstack=False, printBTstack=False,
     ALGEBRA = algebra
     global COMPUTATIONALSTEPS
     COMPUTATIONALSTEPS = 0
+    global STORAGE
+    STORAGE = 0
 
     global t_0_seq
     t_0_seq = inputsequence.upper().replace('A','\1').replace('C','\2').replace('G','\3').replace('U','\4')
@@ -23,10 +25,11 @@ def init(inputsequence, algebra='pfunc', printstack=False, printBTstack=False,
     for nt in tabulateNTs:
         tables[nt] = DPtable(len(t_0_seq), nt)
 
-    if algebra in ['pfunc', 'count']:
-        tables['struct'].bt_set(0,0,1.0)
-    elif algebra == 'mfe':
-        tables['struct'].bt_set(0,0,0.0)
+    if 'struct' in tables:
+        if algebra in ['pfunc', 'count']:
+            tables['struct'].bt_set(0,0,1.0)
+        elif algebra == 'mfe':
+            tables['struct'].bt_set(0,0,0.0)
 
 def incr():
     global INDENT
@@ -37,6 +40,9 @@ def decr():
 def computed():
     global COMPUTATIONALSTEPS
     COMPUTATIONALSTEPS += 1
+def stored():
+    global STORAGE
+    STORAGE += 1
 
 def nt_dangle(t_0_i:int, t_0_j:int, name="dangle") -> float:
     computed()
@@ -69,6 +75,7 @@ def nt_dangle(t_0_i:int, t_0_j:int, name="dangle") -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
     if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
+        stored()
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
@@ -109,6 +116,7 @@ def nt_hairpin(t_0_i:int, t_0_j:int, name="hairpin") -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
     if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
+        stored()
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
@@ -156,6 +164,7 @@ def nt_iloop(t_0_i:int, t_0_j:int, name="iloop") -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
     if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
+        stored()
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
@@ -197,6 +206,7 @@ def nt_leftB(t_0_i:int, t_0_j:int, name="leftB") -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
     if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
+        stored()
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
@@ -249,6 +259,7 @@ def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps") -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
     if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
+        stored()
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
@@ -333,6 +344,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
     if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
+        stored()
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
@@ -372,6 +384,7 @@ def nt_multiloop(t_0_i:int, t_0_j:int, name='multiloop') -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
     if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
+        stored()
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
@@ -415,6 +428,7 @@ def nt_rightB(t_0_i:int, t_0_j:int, name="rightB") -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
     if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
+        stored()
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
@@ -452,6 +466,7 @@ def nt_stack(t_0_i:int, t_0_j:int, name="stack") -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
     if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
+        stored()
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
@@ -498,6 +513,7 @@ def nt_strong(t_0_i:int, t_0_j:int, name="strong") -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
     if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
+        stored()
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
@@ -559,6 +575,7 @@ def nt_struct(t_0_i:int, name="struct") -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_right_most, eval))
     if name in tables:
         tables[name].set( t_0_i, 0, eval)
+        stored()
         return tables[name].get(t_0_i, 0)
     else:
         return eval
@@ -609,6 +626,7 @@ def nt_weak(t_0_i:int, t_0_j:int, name="weak") -> float:
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
     if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
+        stored()
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
