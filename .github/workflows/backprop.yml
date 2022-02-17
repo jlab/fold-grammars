@@ -35,10 +35,12 @@ jobs:
         sed -i "s#bgapDir = '/vol/gapc/'#bgapDir = '/usr/local/'#" Misc/Applications/lib/foldGrammars/Settings.pm
         sed -i "s#rootDir = '/vol/fold-grammars/src/'#rootDir = '`pwd`/'#" Misc/Applications/lib/foldGrammars/Settings.pm
         sed -i "s#/Daten/Git/jlab/gapc/librna/#$GITHUB_WORKSPACE/../gapc/librna/#" pylib/gapc.py
-    - name: execute tests
+    - name: compile gapc truth
       run: |
         cd $GITHUB_WORKSPACE/../fold-grammars
         cd Misc/Test-Suite/PythonStyle/
         make all SRC=$GITHUB_WORKSPACE/../fold-grammars/ -j 2
-        cd ../../../
+    - name: execute tests
+      run: |
+        cd $GITHUB_WORKSPACE/../fold-grammars
         python Misc/Test-Suite/PythonStyle/testBackprop.py
