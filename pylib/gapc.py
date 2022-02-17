@@ -110,11 +110,12 @@ class DPtable:
         self.bt_tabulated.loc[i, j] = True
         self.bt_array.loc[i, j] = e
 
-    def add_trace2(self, caller_i:int, caller_j:int, nt_caller, i, j, fct=None, fctstr="", algparams=[], algfct=None):
-        if (type(self.backtrace.loc[i,j]) == float) and (pd.isnull(self.backtrace.loc[i,j])):
-            self.backtrace.loc[i,j] = []
-        self.backtrace.loc[i,j].append({'nt': nt_caller, 'i': caller_i, 'j': caller_j, 'fct': fct, 'fctstr': fctstr,
-                                        'algparams': algparams, 'algfct': algfct})#(nt_caller, caller_i, caller_j))
+def add_trace(tables, nt, caller_i:int, caller_j:int, nt_caller, i, j, algparams=[], algfct=None):
+    if nt in tables:
+        if (type(tables[nt].backtrace.loc[i,j]) == float) and (pd.isnull(tables[nt].backtrace.loc[i,j])):
+            tables[nt].backtrace.loc[i,j] = []
+        tables[nt].backtrace.loc[i,j].append({'nt': nt_caller, 'i': caller_i, 'j': caller_j,
+                                              'algparams': algparams, 'algfct': algfct})
 
 def minsize(seq:str, i, j, l) -> bool:
     return j-i >= l
