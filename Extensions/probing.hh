@@ -260,6 +260,32 @@ inline double CalculatePseudoEnergy(double data, std::string modifier, double sl
 }
 //END STOLEN FROM RNASTRUCTURE
 
+inline double calculateScore(const Subsequence &Base, const bool isUnpaired, const std::vector<double> probingData, const double clusterPaired, const double clusterUnpaired, const std::string modifier){
+    double score = 0.0;
+	for (unsigned int i = Base.i; i < Base.j && i < probingData.size(); i++) {
+		if ((modifier == "DMS") && (Base[i] != A_BASE) && (Base[i] != C_BASE)) {
+			continue;
+		}
+		if ((modifier == "CMCT") && (Base[i] != U_BASE) && (Base[i] != G_BASE)) {
+			continue;
+		}
+		if (strcmp(getProbing_normalization(), "centroid") == 0) {
+			if (isUnpaired) {
+				score += fabs(probingData.at(i) - clusterUnpaired);
+			} else {
+				score += fabs(probingData.at(i) - clusterPaired);
+			}
+		} else {
+			if (isUnpaired) {
+				score += probingData.at(i);
+			} else {
+				score -= probingData.at(i);
+			}
+		}
+	}
+	return score;
+}
+
 inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpaired) {
 	static bool isLoaded = false;
 	static std::vector<double> probingData;
@@ -318,6 +344,8 @@ inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpai
 			kmeans(2,j,data,centroids);
 			clusterUnpaired = centroids[0];
 			clusterPaired = centroids[1];
+			free(data);
+			free(centroids);
 		}
 		if (strcmp(getProbing_normalization(), "RNAstructure") == 0) {
 			for(std::vector<double>::iterator it = probingData.begin(); it != probingData.end(); it++) {
@@ -349,41 +377,21 @@ inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpai
 		isLoaded = true;
 	}
 
-	double score = 0.0;
-	for (unsigned int i = leftBase.i; i < leftBase.j && i < probingData.size(); i++) {
-		if ((modifier == "DMS") && (leftBase[i] != A_BASE) && (leftBase[i] != C_BASE)) {
-			continue;
-		}
-		if ((modifier == "CMCT") && (leftBase[i] != U_BASE) && (leftBase[i] != G_BASE)) {
-			continue;
-		}
-		if (strcmp(getProbing_normalization(), "centroid") == 0) {
-			if (isUnpaired) {
-				score += fabs(probingData.at(i) - clusterUnpaired);
-			} else {
-				score += fabs(probingData.at(i) - clusterPaired);
-			}
-		} else {
-			if (isUnpaired) {
-				score += probingData.at(i);
-			} else {
-				score -= probingData.at(i);
-			}
-		}
-	}
+	double score = calculateScore(leftBase, isUnpaired, probingData, clusterPaired, clusterUnpaired, modifier);
 	return score;
 }
 
 inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpaired, const Subsequence &offsetBase) {
-    static bool isLoaded = false;
+	static bool isLoaded = false;
+	static std::vector<double> off_probingData;
 	static std::vector<double> probingData;
+    
+	int sep = -1;
 
 	static double clusterUnpaired;
 	static double clusterPaired;
 	std::string modifier = getProbing_modifier();
-
-    unsigned int offset = offsetBase.seq->n + 1;
-
+    
 	if (!isLoaded) {
 		std::string line;
 		std::ifstream infile (getProbing_dataFilename());
@@ -393,36 +401,53 @@ inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpai
 			//we expect each line to hold the base position (starting with 1) and the reactivity.
 		    	strtok(thisLine, " \t");
 		    	double reactivity = atof(strtok(NULL, " \t"));
-		    	probingData.push_back(reactivity);
+				if (reactivity == 0){
+					sep = probingData.size();
+					continue;
+				}
+				probingData.push_back(reactivity);
 		    }
 		    infile.close();
 		}
-		/*if (probingData.size() < (leftBase.seq->n)) {
-			std::cerr << "Warning: chemical probing data file '" << getProbing_dataFilename() << "' misses " << (leftBase.seq->n - probingData.size()) << " data-row(s) " << std::endl << "         compared to the number of nucleotides in your input sequence." << std::endl << "         Missing values will be set to 0.0!" << std::endl;
+		unsigned int seqLength = leftBase.seq->n + getInput_sequence(1).second;
+        //if (probingData.size() < (leftBase.seq->n)) {
+			//std::cerr << "Warning: chemical probing data file '" << getProbing_dataFilename() << "' misses " << (leftBase.seq->n - probingData.size()) << " data-row(s) " << std::endl << "         compared to the number of nucleotides in your input sequence." << std::endl << "         Missing values will be set to 0.0!" << std::endl;
+		if (probingData.size() < seqLength) {
+			std::cerr << "Warning: chemical probing data file '" << getProbing_dataFilename() << "' misses " << (seqLength - probingData.size()) << " data-row(s) " << std::endl << "         compared to the number of nucleotides in your input sequence." << std::endl << "         Missing values will be set to 0.0!" << std::endl;
 		}
-		if (probingData.size() > (leftBase.seq->n)) {
-			std::cerr << "Warning: chemical probing data file '" << getProbing_dataFilename() << "' contains " << (probingData.size()-leftBase.seq->n) << " more row(s) " << std::endl << "         than there are nucleotides in your input sequence." << std::endl << "         Exceeding data lines will be ignored!" << std::endl;
-		}*/
-        
-        // not yet tested if working
+        //if (probingData.size() > (leftBase.seq->n)) {
+            //std::cerr << "Warning: chemical probing data file '" << getProbing_dataFilename() << "' contains " << (probingData.size()-leftBase.seq->n) << " more row(s) " << std::endl << "         than there are nucleotides in your input sequence." << std::endl << "         Exceeding data lines will be ignored!" << std::endl;
+		if (probingData.size() > seqLength) {
+            std::cerr << "Warning: chemical probing data file '" << getProbing_dataFilename() << "' contains " << (probingData.size()-seqLength) << " more row(s) " << std::endl << "         than there are nucleotides in your input sequence." << std::endl << "         Exceeding data lines will be ignored!" << std::endl;	
+		}
+		
 		if (strcmp(getProbing_normalization(), "centroid") == 0) {
-			int numData = probingData.size()-offset;
+			unsigned int numData = probingData.size();
 			double *data = (double *) malloc(sizeof(double) * numData);
-			int i = 0;
+			unsigned int i = 0;
 			int j = 0;
 			for (i = 0; i < numData; i++) {
-				if ((modifier == "DMS") && (leftBase[i] != A_BASE) && (leftBase[i] != C_BASE)) {
-					continue;
+				if (i<leftBase.size()){
+					if ((modifier == "DMS") && (leftBase[i] != A_BASE) && (leftBase[i] != C_BASE)) {
+						continue;
+					}
+					if ((modifier == "CMCT") && (leftBase[i] != U_BASE) && (leftBase[i] != G_BASE)) {
+						continue;
+					}
 				}
-				if ((modifier == "CMCT") && (leftBase[i] != U_BASE) && (leftBase[i] != G_BASE)) {
-					continue;
+				else{
+					if ((modifier == "DMS") && (offsetBase[i] != A_BASE) && (offsetBase[i] != C_BASE)) {
+						continue;
+					}
+					if ((modifier == "CMCT") && (offsetBase[i] != U_BASE) && (offsetBase[i] != G_BASE)) {
+						continue;
+					}
 				}
-
-				if (probingData.at(i+offset) < 0) {
+				if (probingData.at(i) < 0) {
 					data[j] = 0.0;
-					probingData.at(i+offset) = 0.0;
+					probingData.at(i) = 0.0;
 				} else {
-					data[j] = probingData.at(i+offset);
+					data[j] = probingData.at(i);
 				}
 				j++;
 			}
@@ -430,7 +455,10 @@ inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpai
 			kmeans(2,j,data,centroids);
 			clusterUnpaired = centroids[0];
 			clusterPaired = centroids[1];
+			free(data);
+			free(centroids);
 		}
+
 		if (strcmp(getProbing_normalization(), "RNAstructure") == 0) {
 			for(std::vector<double>::iterator it = probingData.begin(); it != probingData.end(); it++) {
 				*it = CalculatePseudoEnergy(*it,modifier,getProbing_slope(),getProbing_intercept()); //the parameters are: plain reactivity, modifier type, slope, intercept
@@ -457,32 +485,15 @@ inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpai
 				}
 			}
 		}
-
+		
+		for (int i=probingData.size()-1; i>=sep; i--){
+			off_probingData.insert(off_probingData.begin(), probingData.at(i));
+			probingData.erase(probingData.begin() + i);
+		}
 		isLoaded = true;
 	}
 
-	double score = 0.0;
-	for (unsigned int i = leftBase.i; i < leftBase.j && i < probingData.size()-offset; i++) {
-		if ((modifier == "DMS") && (leftBase[i] != A_BASE) && (leftBase[i] != C_BASE)) {
-			continue;
-		}
-		if ((modifier == "CMCT") && (leftBase[i] != U_BASE) && (leftBase[i] != G_BASE)) {
-			continue;
-		}
-		if (strcmp(getProbing_normalization(), "centroid") == 0) {
-			if (isUnpaired) {
-				score += fabs(probingData.at(i+offset) - clusterUnpaired);
-			} else {
-				score += fabs(probingData.at(i+offset) - clusterPaired);
-			}
-		} else {
-			if (isUnpaired) {
-				score += probingData.at(i+offset);
-			} else {
-				score -= probingData.at(i+offset);
-			}
-		}
-	}
+	double score = calculateScore(offsetBase, isUnpaired, off_probingData, clusterPaired, clusterUnpaired, modifier) + calculateScore(leftBase, isUnpaired, probingData, clusterPaired, clusterUnpaired, modifier);
 	return score;
 }
 

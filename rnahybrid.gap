@@ -410,31 +410,31 @@ algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
     return x + getReactivityScore(qbase, true);
   }
   double ulb(<Subsequence qloc, Subsequence tbase>, double x) {
-    return x + getReactivityScore(tbase, true, qloc);
+    return x + getReactivityScore(qloc, true, tbase);
   }
   double eds(<Subsequence qbase, Subsequence tbase>, double x) {
-    return x + getReactivityScore(qbase, true) + getReactivityScore(tbase, true, qbase);
+    return x + getReactivityScore(qbase, true, tbase);
   } 
   double edt(<Subsequence qbase, Subsequence tloc>, double x) {
     return x + getReactivityScore(qbase, true);
   }
   double edb(<Subsequence qloc, Subsequence tbase>, double x) {
-    return x + getReactivityScore(tbase, true, qloc);
+    return x + getReactivityScore(qloc, true, tbase);
   }
   double sr(<Subsequence qbase, Subsequence tbase>, double x) {
-    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false, qbase);
+    return x + getReactivityScore(qbase, false, tbase);
   }  
   double bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, double x) {
-    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false, qbase) + getReactivityScore(qregion, true);
+    return x + getReactivityScore(qbase, false, tbase) + getReactivityScore(qregion, true);
   }
   double bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, double x) {
-    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false, qbase) + getReactivityScore(tregion, true, qloc);
+    return x + getReactivityScore(qbase, false, tbase) + getReactivityScore(qloc, true, tregion);
   }
   double il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, double x) {
-    return x + getReactivityScore(qbase, false) + getReactivityScore(tbase, false, qbase) + getReactivityScore(qregion, true) + getReactivityScore(tregion, true, qregion);
+    return x + getReactivityScore(qbase, false, tbase) + getReactivityScore(qregion, true, tregion);
   }
   double el(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>) {
-    return getReactivityScore(qbase, false) + getReactivityScore(tbase, false, qbase) + getReactivityScore(qregion, true) + getReactivityScore(tregion, true, qregion);
+    return getReactivityScore(qbase, false, tbase) + getReactivityScore(qregion, true, tregion);
   }
   
   choice [double] h([double] i) {
