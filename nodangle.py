@@ -1,27 +1,26 @@
 from pylib.gapc import *
 
-def init(inputsequence, algebra='pfunc', printstack=False, printBTstack=False, taball=False):
+def init(inputsequence, algebra='pfunc', printstack=False, printBTstack=False,
+         tabulateNTs=["hairpin","leftB","multiloop","rightB","stack",
+                      "dangle","iloop","ml_comps","ml_comps1","strong","struct","weak"]):
     gapcrna.librna_read_param_file(None)
     global PRINTSTACK
     PRINTSTACK = printstack
     global PRINTBTSTACK
     PRINTBTSTACK = printBTstack
-    global TABALL
-    TABALL = taball
     global INDENT
     INDENT = ""
     global ALGEBRA
     ALGEBRA = algebra
+    global COMPUTATIONALSTEPS
+    COMPUTATIONALSTEPS = 0
 
     global t_0_seq
     t_0_seq = inputsequence.upper().replace('A','\1').replace('C','\2').replace('G','\3').replace('U','\4')
 
     global tables
     tables = dict()
-    for nt in [
-        "hairpin","leftB","multiloop","rightB","stack",
-        "dangle","iloop","ml_comps","ml_comps1","strong","struct","weak",
-        ]:
+    for nt in tabulateNTs:
         tables[nt] = DPtable(len(t_0_seq), nt)
 
     if algebra in ['pfunc', 'count']:
@@ -35,10 +34,15 @@ def incr():
 def decr():
     global INDENT
     INDENT = INDENT[:-1]
+def computed():
+    global COMPUTATIONALSTEPS
+    COMPUTATIONALSTEPS += 1
 
 def nt_dangle(t_0_i:int, t_0_j:int, name="dangle") -> float:
-    if (tables[name].is_tabulated(t_0_i, t_0_j)):
-        return tables[name].get(t_0_i, t_0_j)
+    computed()
+    if name in tables:
+        if (tables[name].is_tabulated(t_0_i, t_0_j)):
+            return tables[name].get(t_0_i, t_0_j)
 
     if PRINTSTACK:
         print("%scall nt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
@@ -57,19 +61,23 @@ def nt_dangle(t_0_i:int, t_0_j:int, name="dangle") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables['strong'].add_trace2(t_0_i,t_0_j, 'dangle', t_0_i, t_0_j, algfct=drem, algparams=[ret_1, 'x', ret_3])
+        add_trace(tables, 'strong', t_0_i,t_0_j, 'dangle', t_0_i, t_0_j, algfct=drem, algparams=[ret_1, 'x', ret_3])
 
     eval = h(answers)
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    tables[name].set( t_0_i, t_0_j, eval)
-    return tables[name].get(t_0_i, t_0_j)
+    if name in tables:
+        tables[name].set( t_0_i, t_0_j, eval)
+        return tables[name].get(t_0_i, t_0_j)
+    else:
+        return eval
 def nt_hairpin(t_0_i:int, t_0_j:int, name="hairpin") -> float:
+    computed()
     if (((t_0_j - t_0_i) < 5)):
         return float_zero
 
-    if TABALL:
+    if name in tables:
         if (tables[name].is_tabulated(t_0_i, t_0_j)):
             return tables[name].get(t_0_i, t_0_j)
 
@@ -93,20 +101,22 @@ def nt_hairpin(t_0_i:int, t_0_j:int, name="hairpin") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables['hairpin'].add_trace2(None, None, None, t_0_i, t_0_j, algfct=hl, algparams=[ret_1, ret_2, ret_3])
+        add_trace(tables, 'hairpin', None, None, None, t_0_i, t_0_j, algfct=hl, algparams=[ret_1, ret_2, ret_3])
 
     eval = h(answers)
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    if TABALL:
+    if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
 def nt_iloop(t_0_i:int, t_0_j:int, name="iloop") -> float:
-    if (tables[name].is_tabulated(t_0_i, t_0_j)):
-        return tables[name].get(t_0_i, t_0_j)
+    computed()
+    if name in tables:
+        if (tables[name].is_tabulated(t_0_i, t_0_j)):
+            return tables[name].get(t_0_i, t_0_j)
 
     if PRINTSTACK:
         print("%scall nt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
@@ -135,7 +145,7 @@ def nt_iloop(t_0_i:int, t_0_j:int, name="iloop") -> float:
                                     if (is_not_empty(ret_3)):
                                         res = il(ret_1, ret_2, ret_3, ret_4, ret_5)
                                         answers.append(res)
-                                        tables['strong'].add_trace2(t_0_i,t_0_j, 'iloop', t_0_k_0, t_0_k_1, algfct=il, algparams=[ret_1, ret_2, 'x', ret_4, ret_5])
+                                        add_trace(tables, 'strong', t_0_i,t_0_j, 'iloop', t_0_k_0, t_0_k_1, algfct=il, algparams=[ret_1, ret_2, 'x', ret_4, ret_5])
 
                     t_0_k_1 += 1
                 t_0_k_0 += 1
@@ -144,13 +154,17 @@ def nt_iloop(t_0_i:int, t_0_j:int, name="iloop") -> float:
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    tables[name].set( t_0_i, t_0_j, eval)
-    return tables[name].get(t_0_i, t_0_j)
+    if name in tables:
+        tables[name].set( t_0_i, t_0_j, eval)
+        return tables[name].get(t_0_i, t_0_j)
+    else:
+        return eval
 def nt_leftB(t_0_i:int, t_0_j:int, name="leftB") -> float:
+    computed()
     if (((t_0_j - t_0_i) < 8)):
        return float_zero;
 
-    if TABALL:
+    if name in tables:
         if (tables[name].is_tabulated(t_0_i, t_0_j)):
             return tables[name].get(t_0_i, t_0_j)
 
@@ -174,21 +188,23 @@ def nt_leftB(t_0_i:int, t_0_j:int, name="leftB") -> float:
                             if (is_not_empty(ret_3)):
                                 res = bl(ret_1, ret_2, ret_3, ret_4)
                                 answers.append(res)
-                                tables['strong'].add_trace2(t_0_i,t_0_j, 'leftB', t_0_k_0, t_0_j-1, algfct=bl, algparams=[ret_1,ret_2,'x', ret_4])
+                                add_trace(tables, 'strong', t_0_i,t_0_j, 'leftB', t_0_k_0, t_0_j-1, algfct=bl, algparams=[ret_1,ret_2,'x', ret_4])
 
                 t_0_k_0 += 1
     eval = h(answers)
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    if TABALL:
+    if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
 def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps") -> float:
-    if (tables[name].is_tabulated(t_0_i, t_0_j)):
-        return tables[name].get(t_0_i, t_0_j)
+    computed()
+    if name in tables:
+        if (tables[name].is_tabulated(t_0_i, t_0_j)):
+            return tables[name].get(t_0_i, t_0_j)
 
     if PRINTSTACK:
         print("%scall nt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
@@ -206,7 +222,7 @@ def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables['ml_comps'].add_trace2(t_0_i,t_0_j, 'ml_comps', t_0_i+1,t_0_j, algfct=sadd, algparams=[ret_1, 'x'])
+        add_trace(tables, 'ml_comps', t_0_i,t_0_j, 'ml_comps', t_0_i+1,t_0_j, algfct=sadd, algparams=[ret_1, 'x'])
 
     if (((t_0_j - t_0_i) >= 10)):
         t_0_k_0 = (t_0_i + 5)
@@ -221,8 +237,8 @@ def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps") -> float:
                 if (is_not_empty(ret_4)):
                     res = cadd(ret_4, ret_6)
                     answers.append(res)
-                    tables['ml_comps1'].add_trace2(t_0_i,t_0_j, 'ml_comps', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'])
-                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps', t_0_i, t_0_k_0, algfct=lambda x,y: cadd(incl(x), y), algparams=['x', ret_6])
+                    add_trace(tables, 'ml_comps1', t_0_i,t_0_j, 'ml_comps', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'])
+                    add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps', t_0_i, t_0_k_0, algfct=lambda x,y: cadd(incl(x), y), algparams=['x', ret_6])
 
 
             t_0_k_0 += 1
@@ -231,11 +247,16 @@ def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps") -> float:
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    tables[name].set( t_0_i, t_0_j, eval)
-    return tables[name].get(t_0_i, t_0_j)
-def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
-    if (tables[name].is_tabulated(t_0_i, t_0_j)):
+    if name in tables:
+        tables[name].set( t_0_i, t_0_j, eval)
         return tables[name].get(t_0_i, t_0_j)
+    else:
+        return eval
+def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
+    computed()
+    if name in tables:
+        if (tables[name].is_tabulated(t_0_i, t_0_j)):
+            return tables[name].get(t_0_i, t_0_j)
 
     if PRINTSTACK:
         print("%scall nt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
@@ -254,7 +275,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables['ml_comps1'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i+1, t_0_j, algfct=sadd, algparams=[ret_1, 'x'])
+        add_trace(tables, 'ml_comps1', t_0_i,t_0_j, 'ml_comps1', t_0_i+1, t_0_j, algfct=sadd, algparams=[ret_1, 'x'])
 
 
     if (((t_0_j - t_0_i) >= 10)):
@@ -271,8 +292,8 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
                 if (is_not_empty(ret_4)):
                     res = cadd(ret_4, ret_6)
                     answers.append(res)
-                    tables['ml_comps1'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'])
-                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_k_0, algfct=lambda x,y: cadd(incl(x),y), algparams=['x', ret_6])
+                    add_trace(tables, 'ml_comps1', t_0_i,t_0_j, 'ml_comps1', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'])
+                    add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_k_0, algfct=lambda x,y: cadd(incl(x),y), algparams=['x', ret_6])
 
             t_0_k_0 += 1
 
@@ -284,7 +305,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
 
     if (is_not_empty(ret_7)):
         answers.append(ret_7)
-        tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_j, algfct=incl, algparams=['x'])
+        add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_j, algfct=incl, algparams=['x'])
 
 
     if (((t_0_j - t_0_i) >= 6)):
@@ -302,7 +323,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
                 if (is_not_empty(ret_10)):
                     res = addss(ret_10, ret_12)
                     answers.append(res)
-                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_k_1, algfct=lambda x,y: addss(incl(x),y), algparams=['x', ret_12])
+                    add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_k_1, algfct=lambda x,y: addss(incl(x),y), algparams=['x', ret_12])
 
             t_0_k_1 += 1
 
@@ -310,13 +331,17 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    tables[name].set( t_0_i, t_0_j, eval)
-    return tables[name].get(t_0_i, t_0_j)
+    if name in tables:
+        tables[name].set( t_0_i, t_0_j, eval)
+        return tables[name].get(t_0_i, t_0_j)
+    else:
+        return eval
 def nt_multiloop(t_0_i:int, t_0_j:int, name='multiloop') -> float:
+    computed()
     if (((t_0_j - t_0_i) < 12)):
         return float_zero;
 
-    if TABALL:
+    if name in tables:
         if (tables[name].is_tabulated(t_0_i, t_0_j)):
             return tables[name].get(t_0_i, t_0_j)
 
@@ -337,7 +362,7 @@ def nt_multiloop(t_0_i:int, t_0_j:int, name='multiloop') -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables['ml_comps'].add_trace2(t_0_i,t_0_j, 'multiloop', t_0_i+1, t_0_j-1, algfct=ml, algparams=[ret_1, 'x', ret_3])
+        add_trace(tables, 'ml_comps', t_0_i,t_0_j, 'multiloop', t_0_i+1, t_0_j-1, algfct=ml, algparams=[ret_1, 'x', ret_3])
 
     #    print("multiloop(%i,%i) = " % (t_0_i,t_0_j), answers, ret_0, ret_1, ret_2, ret_3)
     #print(" set nt_multiloop(%i,%i)" % (t_0_i, t_0_j))
@@ -345,16 +370,17 @@ def nt_multiloop(t_0_i:int, t_0_j:int, name='multiloop') -> float:
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    if TABALL:
+    if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
 def nt_rightB(t_0_i:int, t_0_j:int, name="rightB") -> float:
+    computed()
     if (((t_0_j - t_0_i) < 8)):
         return float_zero
 
-    if TABALL:
+    if name in tables:
         if (tables[name].is_tabulated(t_0_i, t_0_j)):
             return tables[name].get(t_0_i, t_0_j)
 
@@ -379,7 +405,7 @@ def nt_rightB(t_0_i:int, t_0_j:int, name="rightB") -> float:
                             if (is_not_empty(ret_2)):
                                 res = br(ret_1, ret_2, ret_3, ret_4)
                                 answers.append(res)
-                                tables['strong'].add_trace2(t_0_i,t_0_j, 'rightB', t_0_i+1, t_0_k_0, algfct=br, algparams=[ret_1, 'x', ret_3, ret_4])
+                                add_trace(tables, 'strong', t_0_i,t_0_j, 'rightB', t_0_i+1, t_0_k_0, algfct=br, algparams=[ret_1, 'x', ret_3, ret_4])
 
                 t_0_k_0 += 1
 
@@ -387,16 +413,17 @@ def nt_rightB(t_0_i:int, t_0_j:int, name="rightB") -> float:
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    if TABALL:
+    if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
 def nt_stack(t_0_i:int, t_0_j:int, name="stack") -> float:
+    computed()
     if (((t_0_j - t_0_i) < 7)):
        return float_zero;
 
-    if TABALL:
+    if name in tables:
         if (tables[name].is_tabulated(t_0_i, t_0_j)):
             return tables[name].get(t_0_i, t_0_j)
 
@@ -417,20 +444,22 @@ def nt_stack(t_0_i:int, t_0_j:int, name="stack") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables['weak'].add_trace2(t_0_i,t_0_j, 'stack', t_0_i+1, t_0_j-1, algfct=sr, algparams=[ret_1, 'x', ret_3])
+        add_trace(tables, 'weak', t_0_i,t_0_j, 'stack', t_0_i+1, t_0_j-1, algfct=sr, algparams=[ret_1, 'x', ret_3])
 
     eval = h(answers)
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    if TABALL:
+    if name in tables:
         tables[name].set( t_0_i, t_0_j, eval)
         return tables[name].get(t_0_i, t_0_j)
     else:
         return eval
 def nt_strong(t_0_i:int, t_0_j:int, name="strong") -> float:
-    if (tables[name].is_tabulated(t_0_i, t_0_j)):
-       return tables[name].get(t_0_i, t_0_j)
+    computed()
+    if name in tables:
+        if (tables[name].is_tabulated(t_0_i, t_0_j)):
+            return tables[name].get(t_0_i, t_0_j)
 
     if PRINTSTACK:
         print("%scall nt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
@@ -451,7 +480,7 @@ def nt_strong(t_0_i:int, t_0_j:int, name="strong") -> float:
 
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables['weak'].add_trace2(t_0_i,t_0_j, 'strong', t_0_i+1, t_0_j-1, algfct=sr, algparams=[ret_2, 'x', ret_4])
+        add_trace(tables, 'weak', t_0_i,t_0_j, 'strong', t_0_i+1, t_0_j-1, algfct=sr, algparams=[ret_2, 'x', ret_4])
 
 
     ret_5 = np.nan
@@ -460,20 +489,25 @@ def nt_strong(t_0_i:int, t_0_j:int, name="strong") -> float:
 
     if (is_not_empty(ret_5)):
        answers.append(ret_5)
-       tables['weak'].add_trace2(t_0_i,t_0_j, 'strong', t_0_i, t_0_j, algfct=None, algparams=['x'])
+       add_trace(tables, 'weak', t_0_i,t_0_j, 'strong', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
 
     eval = h(answers)
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    tables[name].set( t_0_i, t_0_j, eval)
-    return tables[name].get(t_0_i, t_0_j)
+    if name in tables:
+        tables[name].set( t_0_i, t_0_j, eval)
+        return tables[name].get(t_0_i, t_0_j)
+    else:
+        return eval
 def nt_struct(t_0_i:int, name="struct") -> float:
+    computed()
     t_0_j = 0
     t_0_right_most = len(t_0_seq)
-    if (tables[name].is_tabulated(t_0_i, t_0_j)):
-        return tables[name].get(t_0_i, t_0_j)
+    if name in tables:
+        if (tables[name].is_tabulated(t_0_i, t_0_j)):
+            return tables[name].get(t_0_i, t_0_j)
 
     if PRINTSTACK:
         print("%scall nt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_right_most))
@@ -490,7 +524,7 @@ def nt_struct(t_0_i:int, name="struct") -> float:
                 ret_0 = sadd(ret_1, ret_2)
     if (is_not_empty(ret_0)):
         answers.append(ret_0)
-        tables['struct'].add_trace2(t_0_i,t_0_j, 'struct', t_0_i+1, t_0_j, algfct=sadd, algparams=[ret_1, 'x'])
+        add_trace(tables, 'struct', t_0_i,t_0_j, 'struct', t_0_i+1, t_0_j, algfct=sadd, algparams=[ret_1, 'x'])
 
 
     if (((t_0_right_most - t_0_i) >= 5)):
@@ -502,8 +536,8 @@ def nt_struct(t_0_i:int, name="struct") -> float:
                 if (is_not_empty(ret_4)):
                     ret_0 = cadd(ret_4, ret_5)
                     answers.append(ret_0)
-                    tables['dangle'].add_trace2(t_0_i,t_0_j, 'struct', t_0_i, t_0_k_0, algfct=cadd, algparams=['x', ret_5])
-                    tables['struct'].add_trace2(t_0_i,t_0_j, 'struct', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'])
+                    add_trace(tables, 'dangle', t_0_i,t_0_j, 'struct', t_0_i, t_0_k_0, algfct=cadd, algparams=['x', ret_5])
+                    add_trace(tables, 'struct', t_0_i,t_0_j, 'struct', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'])
 
 
             t_0_k_0 += 1
@@ -516,18 +550,23 @@ def nt_struct(t_0_i:int, name="struct") -> float:
 
     if (is_not_empty(ret_6)):
         answers.append(ret_6)
-        tables['struct'].add_trace2(None, None, None, t_0_i, t_0_j, algfct=nil, algparams=[ret_7])
+        add_trace(tables, 'struct', None, None, None, t_0_i, t_0_j, algfct=nil, algparams=[ret_7])
 
 
     eval = h(answers)
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_right_most, eval))
-    tables[name].set( t_0_i, 0, eval)
-    return tables[name].get(t_0_i, 0)
+    if name in tables:
+        tables[name].set( t_0_i, 0, eval)
+        return tables[name].get(t_0_i, 0)
+    else:
+        return eval
 def nt_weak(t_0_i:int, t_0_j:int, name="weak") -> float:
-    if (tables[name].is_tabulated(t_0_i, t_0_j)):
-       return tables[name].get(t_0_i, t_0_j)
+    computed()
+    if name in tables:
+        if (tables[name].is_tabulated(t_0_i, t_0_j)):
+           return tables[name].get(t_0_i, t_0_j)
 
     if PRINTSTACK:
         print("%scall nt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
@@ -536,39 +575,43 @@ def nt_weak(t_0_i:int, t_0_j:int, name="weak") -> float:
     ret_1 = nt_stack(t_0_i, t_0_j)
     if (is_not_empty(ret_1)):
         answers.append(ret_1)
-        tables['stack'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
+        if 'stack' in tables:
+            add_trace(tables, 'stack', t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     ret_2 = nt_hairpin(t_0_i, t_0_j)
     if (is_not_empty(ret_2)):
         answers.append(ret_2)
-        tables['hairpin'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
+        add_trace(tables, 'hairpin', t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     ret_3 = nt_leftB(t_0_i, t_0_j)
     if (is_not_empty(ret_3)):
         answers.append(ret_3)
-        tables['leftB'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
+        add_trace(tables, 'leftB', t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     ret_4 = nt_rightB(t_0_i, t_0_j)
     if (is_not_empty(ret_4)):
         answers.append(ret_4)
-        tables['rightB'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
+        add_trace(tables, 'rightB', t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     ret_5 = nt_iloop(t_0_i, t_0_j)
     if (is_not_empty(ret_5)):
         answers.append(ret_5)
-        tables['iloop'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
+        add_trace(tables, 'iloop', t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     ret_6 = nt_multiloop(t_0_i, t_0_j)
     if (is_not_empty(ret_6)):
         answers.append(ret_6)
-        tables['multiloop'].add_trace2(t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
+        add_trace(tables, 'multiloop', t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'])
 
     eval = h(answers)
     if PRINTSTACK:
         decr()
         print("%s} set nt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    tables[name].set( t_0_i, t_0_j, eval)
-    return tables[name].get(t_0_i, t_0_j)
+    if name in tables:
+        tables[name].set( t_0_i, t_0_j, eval)
+        return tables[name].get(t_0_i, t_0_j)
+    else:
+        return eval
 
 msg = "Function '%s' for algebra '%s' is not implemented (yet?)!"
 def addss(x:float, r:Basic_Subsequence):
