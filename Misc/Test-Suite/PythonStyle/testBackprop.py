@@ -1,6 +1,7 @@
 from unittest import TestCase, main
 
 from test_utils import testBackprop, testBasepair
+import nodangle as nd
 
 class BackpropagationTest(TestCase):
     def setUp(self):
@@ -60,6 +61,22 @@ class BasepairTest(TestCase):
         inpseq = 'ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA'
         self.assertFalse(testBasepair(inpseq, verbose=None))
 
+class MFETest(TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_A_isolated(self):
+        inpseq = 'CCCCaaaGGCCaaaGGGG'
+        nd.init(inpseq, algebra='mfe', printstack=False, taball=True, printBTstack=False)
+        fwd = nd.nt_struct(0)
+
+        # this means, that backprop is also good for non multiplicative algebras :-)
+        exp = -330  # manually determined
+        obs = nd.backtrace(3,17,'leftB')
+        self.assertEqual(exp, obs)
 
 if __name__ == '__main__':
     main()
