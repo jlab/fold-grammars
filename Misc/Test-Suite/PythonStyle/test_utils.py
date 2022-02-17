@@ -88,9 +88,9 @@ def getBasePairTruth(inputseq, base='Misc/Test-Suite/PythonStyle/', verbose=sys.
     os.remove(fp_dotPlot)
     return res
 
-def testBackprop(inputseq, verbose=sys.stderr):
+def testBackprop(inputseq, algebra='pfunc', verbose=sys.stderr):
     # initialize tables and other stuff
-    nd.init(inputseq, printstack=False, taball=True, printBTstack=False)
+    nd.init(inputseq, algebra=algebra, printstack=False, taball=True, printBTstack=False)
 
     # trigger forward pass
     py = nd.nt_struct(0)
@@ -99,7 +99,7 @@ def testBackprop(inputseq, verbose=sys.stderr):
     nd.tables['struct'].bt_set(0,0,1.0)
 
     # obtain Truth from gapc binary
-    usedNTs = getBackpropTruth(inputseq, alg=nd.ALGEBRA, verbose=verbose)
+    usedNTs = getBackpropTruth(inputseq, alg=algebra, verbose=verbose)
 
     error = False
     report = ""

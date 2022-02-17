@@ -1,6 +1,6 @@
 from pylib.gapc import *
 
-def init(inputsequence, printstack=False, printBTstack=False, taball=False):
+def init(inputsequence, algebra='pfunc', printstack=False, printBTstack=False, taball=False):
     gapcrna.librna_read_param_file(None)
     global PRINTSTACK
     PRINTSTACK = printstack
@@ -10,6 +10,8 @@ def init(inputsequence, printstack=False, printBTstack=False, taball=False):
     TABALL = taball
     global INDENT
     INDENT = ""
+    global ALGEBRA
+    ALGEBRA = algebra
 
     global t_0_seq
     t_0_seq = inputsequence.upper().replace('A','\1').replace('C','\2').replace('G','\3').replace('U','\4')
@@ -563,128 +565,134 @@ def nt_weak(t_0_i:int, t_0_j:int, name="weak") -> float:
     tables[name].set( t_0_i, t_0_j, eval)
     return tables[name].get(t_0_i, t_0_j)
 
-global ALGEBRA
-ALGEBRA = 'pfunc'
-if ALGEBRA == 'pfunc':
-    # pfunc algebra
-    def addss(x:float, r:Basic_Subsequence):
+msg = "Function '%s' for algebra '%s' is not implemented (yet?)!"
+def addss(x:float, r:Basic_Subsequence):
+    if ALGEBRA == 'pfunc':
         return ((scale((r.j - r.i)) * x) * mk_pf(ss_energy(r)))
-
-    def bl(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+    elif ALGEBRA == 'mfe':
+        return x + ss_energy(r)
+    elif ALGEBRA == 'count':
+        return x
+    else:
+        raise ValueError(msg % ('addss', ALGEBRA))
+def bl(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+    if ALGEBRA == 'pfunc':
         return ((scale(((2 + lr.j) - lr.i)) * x) * mk_pf(bl_energy(lr, rb)))
-
-    def br(lb:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
+    elif ALGEBRA == 'mfe':
+        return x + bl_energy(lr, rb)
+    elif ALGEBRA == 'count':
+        return x
+    else:
+        raise ValueError(msg % ('bl', ALGEBRA))
+def br(lb:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
+    if ALGEBRA == 'pfunc':
         return ((scale(((2 + rr.j) - rr.i)) * x) * mk_pf(br_energy(lb, rr)))
-
-    def cadd(x:float, y:float):
+    elif ALGEBRA == 'mfe':
+        return x + br_energy(lb, rr)
+    elif ALGEBRA == 'count':
+        return x
+    else:
+        raise ValueError(msg % ('br', ALGEBRA))
+def cadd(x:float, y:float):
+    if ALGEBRA == 'pfunc':
         return x*y
-
-    def drem(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+    elif ALGEBRA == 'mfe':
+        return x + y
+    elif ALGEBRA == 'count':
+        return x * y
+    else:
+        raise ValueError(msg % ('cadd', ALGEBRA))
+def drem(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+    if ALGEBRA == 'pfunc':
         return (x * mk_pf(termau_energy(lb, rb)))
-
-    def hl(lb:Basic_Subsequence, r:Basic_Subsequence, rb:Basic_Subsequence):
+    elif ALGEBRA == 'mfe':
+        return x + termau_energy(lb, rb)
+    elif ALGEBRA == 'count':
+        return x
+    else:
+        raise ValueError(msg % ('drem', ALGEBRA))
+def hl(lb:Basic_Subsequence, r:Basic_Subsequence, rb:Basic_Subsequence):
+    if ALGEBRA == 'pfunc':
         return (scale(((2 + r.j) - r.i)) * mk_pf(hl_energy(r)))
-
-    def il(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
-        return ((scale(((((2 + lr.j) - lr.i) + rr.j) - rr.i)) * x) * mk_pf(il_energy(lr, rr)))
-
-    def incl(x:float):
-        return (x * mk_pf(ul_energy()))
-
-    def ml(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-        return ((scale(2) * x) * mk_pf(((ml_energy() + ul_energy()) + termau_energy(lb, rb))))
-
-    def nil(n:Basic_Subsequence):
+    elif ALGEBRA == 'mfe':
+        return hl_energy(r)
+    elif ALGEBRA == 'count':
         return 1
-
-    def sadd(lb:Basic_Subsequence, x:float):
+    else:
+        raise ValueError(msg % ('hl', ALGEBRA))
+def il(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
+    if ALGEBRA == 'pfunc':
+        return ((scale(((((2 + lr.j) - lr.i) + rr.j) - rr.i)) * x) * mk_pf(il_energy(lr, rr)))
+    elif ALGEBRA == 'mfe':
+        return x + il_energy(lr, rr)
+    elif ALGEBRA == 'count':
+        return x
+    else:
+        raise ValueError(msg % ('il', ALGEBRA))
+def incl(x:float):
+    if ALGEBRA == 'pfunc':
+        return (x * mk_pf(ul_energy()))
+    elif ALGEBRA == 'mfe':
+        return x + ul_energy()
+    elif ALGEBRA == 'count':
+        return x
+    else:
+        raise ValueError(msg % ('incl', ALGEBRA))
+def ml(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+    if ALGEBRA == 'pfunc':
+        return ((scale(2) * x) * mk_pf(((ml_energy() + ul_energy()) + termau_energy(lb, rb))))
+    elif ALGEBRA == 'mfe':
+        return x + ml_energy() + ul_energy() + termau_energy(lb, rb)
+    elif ALGEBRA == 'count':
+        return x
+    else:
+        raise ValueError(msg % ('ml', ALGEBRA))
+def nil(n:Basic_Subsequence):
+    if ALGEBRA == 'pfunc':
+        return 1
+    elif ALGEBRA == 'mfe':
+        return 0
+    elif ALGEBRA == 'count':
+        return 1
+    else:
+        raise ValueError(msg % ('nil', ALGEBRA))
+def sadd(lb:Basic_Subsequence, x:float):
+    if ALGEBRA == 'pfunc':
         return ((scale(1) * x) * mk_pf(sbase_energy()))
-
-    def sr(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-       return ((scale(2) * x) * mk_pf(sr_energy(lb, rb)))
-
-    def h(i:[float]):
+    elif ALGEBRA == 'mfe':
+        return x + sbase_energy()
+    elif ALGEBRA == 'count':
+        return x
+    else:
+        raise ValueError(msg % ('sadd', ALGEBRA))
+def sr(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
+    if ALGEBRA == 'pfunc':
+        return ((scale(2) * x) * mk_pf(sr_energy(lb, rb)))
+    elif ALGEBRA == 'mfe':
+        return x + sr_energy(lb, rb)
+    elif ALGEBRA == 'count':
+        return x
+    else:
+        raise ValueError(msg % ('sr', ALGEBRA))
+def h(i:[float]) -> [float]:
+    if ALGEBRA == 'pfunc':
         if len(i) > 0:
             return np.sum(i)
         else:
             return np.nan
-
-elif ALGEBRA == 'mfe':
-    # mfe algebra
-    def addss(x:float, r:Basic_Subsequence):
-        return x + ss_energy(r)
-
-    def bl(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-        return x + bl_energy(lr, rb)
-
-    def br(lb:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
-        return x + br_energy(lb, rr)
-
-    def cadd(x:float, y:float):
-        return x + y
-
-    def drem(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-        return x + termau_energy(lb, rb)
-
-    def hl(lb:Basic_Subsequence, r:Basic_Subsequence, rb:Basic_Subsequence):
-        return hl_energy(r)
-
-    def il(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
-        return x + il_energy(lr, rr)
-
-    def incl(x:float):
-        return x + ul_energy()
-
-    def ml(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-        return x + ml_energy() + ul_energy() + termau_energy(lb, rb)
-
-    def nil(n:Basic_Subsequence):
-        return 0
-
-    def sadd(lb:Basic_Subsequence, x:float):
-        return x + sbase_energy()
-
-    def sr(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-       return x + sr_energy(lb, rb)
-
-    def h(i:[float]) -> [float]:
+    elif ALGEBRA == 'mfe':
         if len(i) > 0:
             return np.min(i)
         else:
             return np.nan
-elif ALGEBRA == 'count':
-    # mfe algebra
-    def addss(x:float, r:Basic_Subsequence):
-        return x
-    def bl(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-        #print("calling bl(<%i,%i>, <%i,%i>, %f, <%i,%i>)" % (lb.i,lb.j,lr.i,lr.j,x,rb.i,rb.j))
-        return x
-    def br(lb:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
-        return x
-    def cadd(x:float, y:float):
-        #print("Calling cadd(x=%s,y=%s)" % (x,y))
-        return x * y
-    def drem(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-        return x
-    def hl(lb:Basic_Subsequence, r:Basic_Subsequence, rb:Basic_Subsequence):
-        return 1
-    def il(lb:Basic_Subsequence, lr:Basic_Subsequence, x:float, rr:Basic_Subsequence, rb:Basic_Subsequence):
-        return x
-    def incl(x:float):
-        return x
-    def ml(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-        return x
-    def nil(n:Basic_Subsequence):
-        return 1
-    def sadd(lb:Basic_Subsequence, x:float):
-        return x
-    def sr(lb:Basic_Subsequence, x:float, rb:Basic_Subsequence):
-       return x
-    def h(i:[float]) -> [float]:
+    elif ALGEBRA == 'count':
         if len(i) > 0:
             return np.sum(i)
         else:
             return 0
+    else:
+        raise ValueError(msg % ('h', ALGEBRA))
+
 
 def backtrace(t_0_i:int, t_0_j:int, name:str) -> float:
     if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):

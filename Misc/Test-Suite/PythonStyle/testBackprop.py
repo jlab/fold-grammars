@@ -31,6 +31,12 @@ class BackpropagationTest(TestCase):
         inpseq = 'ACCCUACUGUGCUAACCGAACCAGA'
         self.assertFalse(testBackprop(inpseq, verbose=None))
 
+    def test_switchAlgebra(self):
+        # issue with NTs visited intermediately but not used in the end,
+        # e.g. ml_comps1 with cadd(x,y) where x might be a valid parse, but not y
+        inpseq = 'CCCaaaCaaaGG'
+        self.assertFalse(testBackprop(inpseq, algebra='count', verbose=None))
+
 class BasepairTest(TestCase):
     def setUp(self):
         pass
