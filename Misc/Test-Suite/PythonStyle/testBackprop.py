@@ -68,9 +68,9 @@ class MFETest(TestCase):
     def tearDown(self):
         pass
 
-    def test_A_isolated(self):
+    def test_mfe(self):
         inpseq = 'CCCCaaaGGCCaaaGGGG'
-        nd.init(inpseq, algebra='mfe', printstack=False, taball=True, printBTstack=False)
+        nd.init(inpseq, algebra='mfe', printstack=False, printBTstack=False)
         fwd = nd.nt_struct(0)
 
         # this means, that backprop is also good for non multiplicative algebras :-)
