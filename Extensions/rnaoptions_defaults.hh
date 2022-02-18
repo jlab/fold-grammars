@@ -72,8 +72,8 @@
 	inline static const char* getProbing_normalization() {
 		return gapc::Opts::getOpts()->probing_normalization;
     }
-    inline static std::pair<const char*, unsigned> getInput_sequence(unsigned int indx) {
-        return gapc::Opts::getOpts()->inputs.at(indx);
+    inline static std::vector<std::pair<const char*, unsigned> > getInputs() {
+        return gapc::Opts::getOpts()->inputs;
     }
 	inline static int getConsensusType() {
 		return gapc::Opts::getOpts()->consensusType;
