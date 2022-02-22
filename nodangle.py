@@ -682,9 +682,10 @@ if True:
 
         # productions:
         # weak = hairpin --> hairpin = *weak*
-        ret_2 = bt_weak(t_0_i, t_0_j)
-        if (is_not_empty(ret_2)):
-            answers.append(ret_2)
+        if (((t_0_j - t_0_i) >= 5)):
+            ret_2 = bt_weak(t_0_i, t_0_j)
+            if (is_not_empty(ret_2)):
+                answers.append(ret_2)
 
         eval = h(answers)
         if PRINTBTSTACK:
@@ -944,9 +945,10 @@ if True:
 
         # productions:
         # weak = hairpin --> hairpin = *weak*
-        ret_2 = bt_weak(t_0_i, t_0_j)
-        if (is_not_empty(ret_2)):
-            answers.append(ret_2)
+        if (((t_0_j - t_0_i) >= 7)):
+            ret_2 = bt_weak(t_0_i, t_0_j)
+            if (is_not_empty(ret_2)):
+                answers.append(ret_2)
 
         eval = h(answers)
         if PRINTBTSTACK:
@@ -971,9 +973,10 @@ if True:
 
         # productions:
         # weak = leftB --> leftB = *weak*
-        ret_2 = bt_weak(t_0_i, t_0_j)
-        if (is_not_empty(ret_2)):
-            answers.append(ret_2)
+        if (((t_0_j - t_0_i) >= 8)):
+            ret_2 = bt_weak(t_0_i, t_0_j)
+            if (is_not_empty(ret_2)):
+                answers.append(ret_2)
 
         eval = h(answers)
         if PRINTBTSTACK:
@@ -998,9 +1001,10 @@ if True:
 
         # productions:
         # weak = rightB --> rightB = *weak*
-        ret_2 = bt_weak(t_0_i, t_0_j)
-        if (is_not_empty(ret_2)):
-            answers.append(ret_2)
+        if (((t_0_j - t_0_i) >= 8)):
+            ret_2 = bt_weak(t_0_i, t_0_j)
+            if (is_not_empty(ret_2)):
+                answers.append(ret_2)
 
         eval = h(answers)
         if PRINTBTSTACK:
@@ -1025,9 +1029,10 @@ if True:
 
         # productions:
         # weak = iloop --> iloop = *weak*
-        ret_2 = bt_weak(t_0_i, t_0_j)
-        if (is_not_empty(ret_2)):
-            answers.append(ret_2)
+        if (((t_0_j - t_0_i) >= 9)):
+            ret_2 = bt_weak(t_0_i, t_0_j)
+            if (is_not_empty(ret_2)):
+                answers.append(ret_2)
 
         eval = h(answers)
         if PRINTBTSTACK:
@@ -1052,9 +1057,10 @@ if True:
 
         # productions:
         # weak = multiloop --> multiloop = *weak*
-        ret_2 = bt_weak(t_0_i, t_0_j)
-        if (is_not_empty(ret_2)):
-            answers.append(ret_2)
+        if t_0_j - t_0_i >= 12:
+            ret_2 = bt_weak(t_0_i, t_0_j)
+            if (is_not_empty(ret_2)):
+                answers.append(ret_2)
 
         eval = h(answers)
         if PRINTBTSTACK:
