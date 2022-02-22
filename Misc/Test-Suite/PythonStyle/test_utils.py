@@ -88,7 +88,7 @@ def getBasePairTruth(inputseq, base='Misc/Test-Suite/PythonStyle/', verbose=sys.
     os.remove(fp_dotPlot)
     return res
 
-def testBackprop(inputseq, algebra='pfunc', verbose=sys.stderr):
+def testBackprop(inputseq, algebra='pfunc', verbose=sys.stderr, use_backtrace=True):
     # initialize tables and other stuff
     nd.init(inputseq, algebra=algebra, printstack=False, printBTstack=False)
 
@@ -105,12 +105,19 @@ def testBackprop(inputseq, algebra='pfunc', verbose=sys.stderr):
         for i in range(len(inputseq)):
             js = range(i, len(inputseq))
             if nt == 'struct':
-                js = [0]
+                if use_backtrace:
+                    js = [0]
+                else:
+                    js = [len(inputseq)]
             for j in js:
                 truth = usedNTs[nt].loc[i,j]
                 if pd.notnull(truth):
                     fwd = nd.tables[nt].array.loc[i,j]
-                    bwd = nd.backtrace(i,j,nt)
+                    if use_backtrace:
+                        bwd = nd.backtrace(i,j,nt)
+                    else:
+                        bt_nonterminal = getattr(nd, 'bt_%s' % nt)
+                        bwd = bt_nonterminal(i,j)
                     correct = np.isclose(truth, fwd*bwd)
                     error = error or (not correct)
                     report += '*' if correct else '!'
@@ -122,7 +129,7 @@ def testBackprop(inputseq, algebra='pfunc', verbose=sys.stderr):
             verbose.write("backprop test '%s' passed." % inputseq)
     return error
 
-def testBasepair(inputseq, verbose=sys.stderr):
+def testBasepair(inputseq, verbose=sys.stderr, use_backtrace=True):
     # initialize tables and other stuff
     nd.init(inputseq, printstack=False, printBTstack=False)
 
@@ -138,7 +145,10 @@ def testBasepair(inputseq, verbose=sys.stderr):
         for j in range(i,len(inputseq)+1):
             if pd.notnull(exp.loc[i,j]):
                 fwd = nd.tables['weak'].array.loc[i,j]
-                bwd = nd.backtrace(i,j,'weak')
+                if use_backtrace:
+                    bwd = nd.backtrace(i,j,'weak')
+                else:
+                    bwd = nd.bt_weak(i,j)
                 obs = fwd*bwd/pfunc
 
                 correct = np.isclose(exp.loc[i,j], obs)
