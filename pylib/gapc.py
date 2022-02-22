@@ -110,7 +110,7 @@ class DPtable:
         self.bt_tabulated.loc[i, j] = True
         self.bt_array.loc[i, j] = e
 
-def add_trace(tables, nt, caller_i:int, caller_j:int, nt_caller, i, j, algparams=[], algfct=None, bwdpass=bwdpass):
+def add_trace(tables, nt, caller_i:int, caller_j:int, nt_caller, i, j, algparams=[], algfct=None, bwdpass=False):
     if nt in tables:
         if (type(tables[nt].backtrace.loc[i,j]) == float) and (pd.isnull(tables[nt].backtrace.loc[i,j])):
             tables[nt].backtrace.loc[i,j] = []
