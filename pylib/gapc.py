@@ -89,6 +89,8 @@ class DPtable:
         self.backtrace = pd.DataFrame(data=np.nan, index=range(n+1), columns=range(n+1), dtype=object)
         self.bt_array = pd.DataFrame(data=np.nan, index=range(n+1), columns=range(n+1))
         self.bt_tabulated = pd.DataFrame(data=False, index=range(n+1), columns=range(n+1))
+        self.bt_array_v2 = pd.DataFrame(data=np.nan, index=range(n+1), columns=range(n+1))
+        self.bt_tabulated_v2 = pd.DataFrame(data=False, index=range(n+1), columns=range(n+1))
 
     def is_tabulated(self, i:int, j:int) -> bool:
         return self.tabulated.loc[i, j]
@@ -110,7 +112,19 @@ class DPtable:
         self.bt_tabulated.loc[i, j] = True
         self.bt_array.loc[i, j] = e
 
-def add_trace(tables, nt, caller_i:int, caller_j:int, nt_caller, i, j, algparams=[], algfct=None):
+    def bt_is_tabulated_v2(self, i:int, j:int) -> bool:
+        return self.bt_tabulated_v2.loc[i, j]
+
+    def bt_get_v2(self, i:int, j:int):
+        return self.bt_array_v2.loc[i, j]
+
+    def bt_set_v2(self, i:int, j:int, e:float):
+        self.bt_tabulated_v2.loc[i, j] = True
+        self.bt_array_v2.loc[i, j] = e
+
+def add_trace(tables, nt, caller_i:int, caller_j:int, nt_caller, i, j, algparams=[], algfct=None, bwdpass=False):
+    if bwdpass and (nt_caller not in tables):
+        print("RECON", nt, caller_i, caller_j, nt_caller, i, j, algparams, algfct)
     if nt in tables:
         if (type(tables[nt].backtrace.loc[i,j]) == float) and (pd.isnull(tables[nt].backtrace.loc[i,j])):
             tables[nt].backtrace.loc[i,j] = []
