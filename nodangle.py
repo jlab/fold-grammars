@@ -225,11 +225,11 @@ def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps", bwdpass=False) -> float:
         incr()
     answers = []
 
-    if (t_0_j-t_0_i >= 5):
-        ret_0 = nt_dangle(t_0_i,t_0_j)
-        if is_not_empty(ret_0):
-            answers.append(ret_0)
-            add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps', t_0_i,t_0_j, algfct=None, algparams=['x'], bwdpass=bwdpass)
+    # if (t_0_j-t_0_i >= 5):
+    #     ret_0 = nt_dangle(t_0_i,t_0_j)
+    #     if is_not_empty(ret_0):
+    #         answers.append(ret_0)
+    #         add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps', t_0_i,t_0_j, algfct=None, algparams=['x'], bwdpass=bwdpass)
 
     # sadd(BASE, ml_comps)
     if (((t_0_j - t_0_i) >= 11)):
@@ -243,22 +243,22 @@ def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps", bwdpass=False) -> float:
                         answers.append(ret_0)
                         add_trace(tables, 'ml_comps', t_0_i,t_0_j, 'ml_comps', t_0_i+1,t_0_j, algfct=sadd, algparams=[ret_1, 'x'], bwdpass=bwdpass)
 
-    # # cadd(incl(dangle), ml_comps)
-    # if (((t_0_j - t_0_i) >= 10)):
-    #     t_0_k_0 = (t_0_i + 5)
-    #     while (t_0_k_0 <= (t_0_j - 5)):
-    #         ret_6 = nt_ml_comps1(t_0_k_0, t_0_j)
-    #         if (is_not_empty(ret_6)):
-    #             if (((t_0_k_0 - t_0_i) >= 5)):
-    #                 ret_5 = nt_dangle(t_0_i, t_0_k_0)
-    #                 if (is_not_empty(ret_5)):
-    #                     ret_4 = incl(ret_5)
-    #                     if (is_not_empty(ret_4)):
-    #                         res = cadd(ret_4, ret_6)
-    #                         answers.append(res)
-    #                         add_trace(tables, 'ml_comps', t_0_i,t_0_j, 'ml_comps', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'], bwdpass=bwdpass)
-    #                         add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps', t_0_i, t_0_k_0, algfct=lambda x,y: cadd(incl(x), y), algparams=['x', ret_6], bwdpass=bwdpass)
-    #         t_0_k_0 += 1
+    # cadd(incl(dangle), ml_comps1)
+    if (((t_0_j - t_0_i) >= 10)):
+        t_0_k_0 = (t_0_i + 5)
+        while (t_0_k_0 <= (t_0_j - 5)):
+            ret_6 = nt_ml_comps1(t_0_k_0, t_0_j)
+            if (is_not_empty(ret_6)):
+                if (((t_0_k_0 - t_0_i) >= 5)):
+                    ret_5 = nt_dangle(t_0_i, t_0_k_0)
+                    if (is_not_empty(ret_5)):
+                        ret_4 = incl(ret_5)
+                        if (is_not_empty(ret_4)):
+                            res = cadd(ret_4, ret_6)
+                            answers.append(res)
+                            add_trace(tables, 'ml_comps1', t_0_i,t_0_j, 'ml_comps', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'], bwdpass=bwdpass)
+                            add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps', t_0_i, t_0_k_0, algfct=lambda x,y: cadd(incl(x), y), algparams=['x', ret_6], bwdpass=bwdpass)
+            t_0_k_0 += 1
 
     eval = h(answers)
     if PRINTSTACK:
@@ -282,7 +282,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1", bwdpass=False) -> float
 
     answers = []
 
-    # sadd(BASE, ml_comps1)
+    # ml_comps1 = sadd(BASE, ml_comps1)
     if (((t_0_j - t_0_i) >= 6)):
         if (unpaired(t_0_seq, t_0_i, (t_0_i + 1))):
             ret_1 = BASE(t_0_seq, t_0_i, (t_0_i + 1))
@@ -294,7 +294,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1", bwdpass=False) -> float
                         answers.append(ret_0)
                         add_trace(tables, 'ml_comps1', t_0_i,t_0_j, 'ml_comps1', t_0_i+1, t_0_j, algfct=sadd, algparams=[ret_1, 'x'], bwdpass=bwdpass)
 
-    # cadd(incl(dangle), ml_comps1)
+    # ml_comps1 = cadd(incl(dangle), ml_comps1)
     if (((t_0_j - t_0_i) >= 10)):
         t_0_k_0 = (t_0_i + 5)
         while (t_0_k_0 <= (t_0_j - 5)):
@@ -311,7 +311,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1", bwdpass=False) -> float
                             add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_k_0, algfct=lambda x,y: cadd(incl(x),y), algparams=['x', ret_6], bwdpass=bwdpass)
             t_0_k_0 += 1
 
-    # incl(dangle)
+    # ml_comps1 = incl(dangle)
     if (((t_0_j - t_0_i) >= 5)):
         ret_8 = nt_dangle(t_0_i, t_0_j)
         if (is_not_empty(ret_8)):
@@ -320,7 +320,7 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1", bwdpass=False) -> float
                 answers.append(ret_7)
                 add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_j, algfct=incl, algparams=['x'], bwdpass=bwdpass)
 
-    # addss(incl(dangle), REGION)
+    # ml_comps1 = addss(incl(dangle), REGION)
     if (((t_0_j - t_0_i) >= 6)):
         t_0_k_1 = (t_0_i + 5)
         while (t_0_k_1 <= (t_0_j - 1)):
@@ -333,8 +333,8 @@ def nt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1", bwdpass=False) -> float
                             ret_10 = incl(ret_11)
                             if (is_not_empty(ret_10)):
                                 res = addss(ret_10, ret_12)
-                                answers.append(res)
-                                add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_k_1, algfct=lambda x,y: addss(incl(x),y), algparams=['x', ret_12], bwdpass=bwdpass)
+                                #answers.append(res)
+                                #add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps1', t_0_i, t_0_k_1, algfct=lambda x,y: addss(incl(x),y), algparams=['x', ret_12], bwdpass=bwdpass)
             t_0_k_1 += 1
 
     eval = h(answers)
@@ -877,57 +877,59 @@ if True:
                     ret_0 = cadd(ret_4, ret_5)
                     answers.append(ret_0)
 
-        # tmp: ml_comps = dangle --> dangle = ml_comps
-        if (t_0_j-t_0_i >= 5):
-            ret_0 = bt_ml_comps(t_0_i,t_0_j)
-            if is_not_empty(ret_0):
-                answers.append(ret_0)
-        #
-        #
-        # # ml_comps = cadd(incl(dangle), ml_comps~1~) --> dangle = cadd(incl(*ml_comps*), ml_comps~1~)
-        # t_0_k_0 = t_0_j + 5
-        # while ((t_0_k_0 <= len(t_0_seq)) and (t_0_j - t_0_i >= 5) and (t_0_k_0 - t_0_j >= 5)):
-        #     ret_4 = nt_dangle(t_0_i, t_0_j)
-        #     if (is_not_empty(ret_4)):
-        #         ret_6 = incl(ret_4)
-        #         if (is_not_empty(ret_6)):
-        #             ret_5 = bt_ml_comps(t_0_i, t_0_k_0)
-        #             if (is_not_empty(ret_5)):
-        #                 ret_0 = cadd(ret_6, ret_5)
-        #                 answers.append(ret_0)
-        #     t_0_k_0 += 1
+        # # tmp: ml_comps = dangle --> dangle = ml_comps
+        # if (t_0_j-t_0_i >= 5):
+        #     ret_0 = bt_ml_comps(t_0_i,t_0_j)
+        #     if is_not_empty(ret_0):
+        #         answers.append(ret_0)
 
-        # # ml_comps1 = cadd(incl(dangle), ml_comps1) --> cadd(incl(*ml_comps1*), ml_comps1)
-        # if (t_0_j - t_0_i) >= 5:
-        #     ret_5 = nt_ml_comps1(t_0_i, t_0_j)
-        #     if (is_not_empty(ret_5)):
-        #         ret_4 = bt_ml_comps1(t_0_i, t_0_j)
-        #         if (is_not_empty(ret_4)):
-        #             ret_6 = incl(ret_4)
-        #             if (is_not_empty(ret_6)):
-        #                 ret_0 = cadd(ret_6, ret_5)
-        #                 answers.append(ret_0)
-        #
-        # # ml_comps1 = incl(dangle) --> dangle = incl(*ml_comps1*)
-        # ret_0 = bt_ml_comps1(t_0_i, t_0_j)
-        # if (is_not_empty(ret_0)):
-        #     ret_1 = incl(ret_0)
-        #     if (is_not_empty(ret_1)):
-        #         answers.append(ret_1)
-        #
-        # # ml_comps1 = addss(incl(dangle), REGION) --> dangle = addss(incl(*ml_comp1*), REGION)
-        # t_0_k_1 = t_0_j + 1
-        # while (t_0_k_1 <= len(t_0_seq)):
-        #     if (unpaired(t_0_seq, t_0_j, t_0_k_1)):
-        #         ret_12 = REGION(t_0_seq, t_0_j, t_0_k_1)
-        #         if (is_not_empty(ret_12)):
-        #             ret_11 = bt_ml_comps1(t_0_i, t_0_k_1)
-        #             if (is_not_empty(ret_11)):
-        #                 ret_10 = incl(ret_11)
-        #                 if (is_not_empty(ret_10)):
-        #                     res = addss(ret_10, ret_12)
-        #                     answers.append(res)
-        #     t_0_k_1 += 1
+        # ml_comps = cadd(incl(dangle), ml_comps1) --> dangle = cadd(incl(*ml_comps*), ml_comps1)
+        t_0_k_0 = t_0_j + 5
+        while ((t_0_k_0 <= len(t_0_seq)) and (t_0_k_0 - t_0_i >= 10)):
+            ret_4 = nt_ml_comps1(t_0_j, t_0_k_0, bwdpass=True)
+            if is_not_empty(ret_4):
+                ret_5 = bt_ml_comps(t_0_i, t_0_k_0)
+                if is_not_empty(ret_5):
+                    ret_6 = incl(ret_5)
+                    if is_not_empty(ret_6):
+                        ret_0 = cadd(ret_4,ret_5)
+                        answers.append(ret_0)
+            t_0_k_0 += 1
+
+        # ml_comps1 = cadd(incl(dangle), ml_comps1) --> dangle = cadd(incl(*ml_comps1*), ml_comps1)
+        t_0_k_0 = t_0_j + 5
+        while ((t_0_k_0 <= len(t_0_seq)) and (t_0_k_0 - t_0_i >= 10)):
+            ret_4 = nt_ml_comps1(t_0_j, t_0_k_0, bwdpass=True)
+            if is_not_empty(ret_4):
+                ret_5 = bt_ml_comps1(t_0_i, t_0_k_0)
+                if is_not_empty(ret_5):
+                    ret_6 = incl(ret_5)
+                    if is_not_empty(ret_6):
+                        ret_0 = cadd(ret_4,ret_5)
+                        answers.append(ret_0)
+            t_0_k_0 += 1
+
+        # ml_comps1 = incl(dangle) --> dangle = incl(*ml_comps1*)
+        ret_0 = bt_ml_comps1(t_0_i, t_0_j)
+        if (is_not_empty(ret_0)):
+            ret_1 = incl(ret_0)
+            if (is_not_empty(ret_1)):
+                answers.append(ret_1)
+
+        # ml_comps1 = addss(incl(dangle), REGION) --> dangle = addss(incl(*ml_comp1*), REGION)
+        t_0_k_1 = t_0_j + 1
+        if (t_0_k_1 - t_0_i >= 6):
+            while ((t_0_k_1 <= len(t_0_seq)) and (t_0_j - t_0_i >= 5)):
+                if (unpaired(t_0_seq, t_0_j, t_0_k_1)):
+                    ret_12 = REGION(t_0_seq, t_0_j, t_0_k_1)
+                    if (is_not_empty(ret_12)):
+                        ret_11 = bt_ml_comps1(t_0_i, t_0_k_1)
+                        if (is_not_empty(ret_11)):
+                            ret_10 = incl(ret_11)
+                            if (is_not_empty(ret_10)):
+                                res = addss(ret_10, ret_12)
+                                #answers.append(res)
+                t_0_k_1 += 1
 
 
         eval = h(answers)
@@ -1116,19 +1118,6 @@ if True:
                         if (is_not_empty(ret_0)):
                             answers.append(ret_0)
 
-        # # ml_comps = cadd(incl(dangle), ml_comps~1~) --> ml_comps~1~ = cadd(incl(dangle), *ml_comps*)
-        # t_0_k_0 = t_0_i - 5
-        # while ((t_0_k_0 >= 0) and (t_0_j - t_0_k_0 >= 10) and (t_0_i - t_0_k_0 >= 5)):
-        #     ret_4 = nt_dangle(t_0_k_0, t_0_i)
-        #     if (is_not_empty(ret_4)):
-        #         ret_6 = incl(ret_4)
-        #         if (is_not_empty(ret_6)):
-        #             ret_5 = bt_ml_comps(t_0_k_0, t_0_j)
-        #             if (is_not_empty(ret_5)):
-        #                 ret_0 = cadd(ret_6, ret_5)
-        #                 answers.append(ret_0)
-        #     t_0_k_0 -= 1
-        #
         # # struct = cadd(dangle, struct) --> struct = cadd(dangle, *struct*)
         # t_0_k_0 = t_0_i - 5
         # while (t_0_k_0 >= 0):
@@ -1149,66 +1138,92 @@ if True:
             return tables[name].bt_get_v2(t_0_i, t_0_j)
         else:
             return eval
-#     # def bt_ml_comps1(t_0_i:int, t_0_j, name="ml_comps1") -> float:
-#     #     if name in tables:
-#     #         if (tables[name].bt_is_tabulated_v2(t_0_i, t_0_j)):
-#     #             if PRINTBTSTACK:
-#     #                 print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get_v2(t_0_i, t_0_j)))
-#     #             return tables[name].bt_get_v2(t_0_i, t_0_j)
-#     #     if PRINTBTSTACK:
-#     #         print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-#     #         incr()
-#     #
-#     #     answers = []
-#     #
-#     #     # productions:
-#     #     # ml_comps = cadd(incl(dangle), ml_comps1) --> ml_comps1 = cadd(incl(dangle), *ml_comps*)
-#     #     t_0_k_0 = t_0_i - 5
-#     #     while (t_0_k_0 >= 0):
-#     #         ret_4 = nt_dangle(t_0_k_0, t_0_i)
-#     #         if (is_not_empty(ret_4)):
-#     #             ret_6 = incl(ret_4)
-#     #             if (is_not_empty(ret_6)):
-#     #                 ret_5 = bt_ml_comps(t_0_k_0, t_0_j)
-#     #                 if (is_not_empty(ret_5)):
-#     #                     ret_0 = cadd(ret_6, ret_5)
-#     #                     answers.append(ret_0)
-#     #         t_0_k_0 -= 1
-#     #
-#     #     # ml_comps1 = cadd(incl(dangle), ml_comps1) --> ml_comps1 = cadd(incl(dangle), *ml_comps1*)
-#     #     t_0_k_0 = t_0_i - 5
-#     #     while (t_0_k_0 >= 0):
-#     #         ret_4 = nt_dangle(t_0_k_0, t_0_i)
-#     #         if (is_not_empty(ret_4)):
-#     #             ret_6 = incl(ret_4)
-#     #             if (is_not_empty(ret_6)):
-#     #                 ret_5 = bt_ml_comps1(t_0_k_0, t_0_j)
-#     #                 if (is_not_empty(ret_5)):
-#     #                     ret_0 = cadd(ret_6, ret_5)
-#     #                     answers.append(ret_0)
-#     #         t_0_k_0 -= 1
-#     #
-#     #     # ml_comps1 = sadd(BASE, ml_comps1) --> ml_comps1 = sadd(BASE, *ml_comps1*)
-#     #     if (t_0_i - 1 >= 0):
-#     #         if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
-#     #             ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
-#     #             if (is_not_empty(ret_1)):
-#     #                 ret_2 = bt_ml_comps1(t_0_i-1, t_0_j) # nt_struct((t_0_i + 1))
-#     #                 if (is_not_empty(ret_2)):
-#     #                     ret_0 = sadd(ret_1, ret_2)
-#     #                     if (is_not_empty(ret_0)):
-#     #                         answers.append(ret_0)
-#     #
-#     #     eval = h(answers)
-#     #     if PRINTBTSTACK:
-#     #         decr()
-#     #         print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-#     #     if name in tables:
-#     #         tables[name].bt_set_v2( t_0_i, t_0_j, eval)
-#     #         return tables[name].bt_get_v2(t_0_i, t_0_j)
-#     #     else:
-#     #         return eval
-#
+    def bt_ml_comps1(t_0_i:int, t_0_j, name="ml_comps1") -> float:
+        if name in tables:
+            if (tables[name].bt_is_tabulated_v2(t_0_i, t_0_j)):
+                if PRINTBTSTACK:
+                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get_v2(t_0_i, t_0_j)))
+                return tables[name].bt_get_v2(t_0_i, t_0_j)
+        if PRINTBTSTACK:
+            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+            incr()
+
+        answers = []
+
+        # productions:
+        # ml_comps = cadd(incl(dangle), ml_comps1) --> ml_comps1 = cadd(incl(dangle), *ml_comps*)
+        t_0_k_0 = t_0_i - 5
+        while ((t_0_k_0 >= 0) and (t_0_j - t_0_k_0 >= 10)):
+            ret_4 = nt_dangle(t_0_k_0, t_0_i, bwdpass=True)
+            if (is_not_empty(ret_4)):
+                ret_6 = incl(ret_4)
+                if (is_not_empty(ret_6)):
+                    ret_5 = bt_ml_comps(t_0_k_0, t_0_j)
+                    if (is_not_empty(ret_5)):
+                        ret_0 = cadd(ret_6, ret_5)
+                        answers.append(ret_0)
+            t_0_k_0 -= 1
+
+        # ml_comps1 = cadd(incl(dangle), ml_comps1) --> ml_comps1 = cadd(incl(dangle), *ml_comps1*)
+        t_0_k_0 = t_0_i - 5
+        while ((t_0_k_0 >= 0) and (t_0_j - t_0_k_0 >= 10)):
+            ret_4 = nt_dangle(t_0_k_0, t_0_i, bwdpass=True)
+            if (is_not_empty(ret_4)):
+                ret_6 = incl(ret_4)
+                if (is_not_empty(ret_6)):
+                    ret_5 = bt_ml_comps1(t_0_k_0, t_0_j)
+                    if (is_not_empty(ret_5)):
+                        ret_0 = cadd(ret_6, ret_5)
+                        answers.append(ret_0)
+            t_0_k_0 -= 1
+
+        # # ml_comps = cadd(incl(dangle), ml_comps1) --> ml_comps1 = cadd(incl(dangle), *ml_comps*)
+        # t_0_k_0 = t_0_i - 5
+        # while (t_0_k_0 >= 0):
+        #     ret_4 = nt_dangle(t_0_k_0, t_0_i)
+        #     if (is_not_empty(ret_4)):
+        #         ret_6 = incl(ret_4)
+        #         if (is_not_empty(ret_6)):
+        #             ret_5 = bt_ml_comps(t_0_k_0, t_0_j)
+        #             if (is_not_empty(ret_5)):
+        #                 ret_0 = cadd(ret_6, ret_5)
+        #                 answers.append(ret_0)
+        #     t_0_k_0 -= 1
+        #
+        # # ml_comps1 = cadd(incl(dangle), ml_comps1) --> ml_comps1 = cadd(incl(dangle), *ml_comps1*)
+        # t_0_k_0 = t_0_i - 5
+        # while (t_0_k_0 >= 0):
+        #     ret_4 = nt_dangle(t_0_k_0, t_0_i)
+        #     if (is_not_empty(ret_4)):
+        #         ret_6 = incl(ret_4)
+        #         if (is_not_empty(ret_6)):
+        #             ret_5 = bt_ml_comps1(t_0_k_0, t_0_j)
+        #             if (is_not_empty(ret_5)):
+        #                 ret_0 = cadd(ret_6, ret_5)
+        #                 answers.append(ret_0)
+        #     t_0_k_0 -= 1
+
+        # ml_comps1 = sadd(BASE, ml_comps1) --> ml_comps1 = sadd(BASE, *ml_comps1*)
+        if (t_0_i - 1 >= 0):
+            if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
+                ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
+                if (is_not_empty(ret_1)):
+                    ret_2 = bt_ml_comps1(t_0_i-1, t_0_j) # nt_struct((t_0_i + 1))
+                    if (is_not_empty(ret_2)):
+                        ret_0 = sadd(ret_1, ret_2)
+                        if (is_not_empty(ret_0)):
+                            answers.append(ret_0)
+
+        eval = h(answers)
+        if PRINTBTSTACK:
+            decr()
+            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+        if name in tables:
+            tables[name].bt_set_v2( t_0_i, t_0_j, eval)
+            return tables[name].bt_get_v2(t_0_i, t_0_j)
+        else:
+            return eval
+
 # if False:
 #     def bt_dangle(t_0_i:int, t_0_j:int, name="dangle") -> float:
 #         if name in tables:
