@@ -361,12 +361,14 @@ def nt_multiloop(t_0_i:int, t_0_j:int, name='multiloop', bwdpass=False) -> float
             if (is_not_empty(ret_3)):
                 ret_1 = BASE(t_0_seq, t_0_i, (t_0_i + 1))
                 if (is_not_empty(ret_1)):
-                    ret_2 = nt_ml_comps((t_0_i + 1), (t_0_j - 1))
+                    #ret_2 = nt_ml_comps((t_0_i + 1), (t_0_j - 1))
+                    ret_2 = nt_dangle((t_0_i + 1), (t_0_j - 1))
                     if (is_not_empty(ret_2)):
                         ret_0 = ml(ret_1, ret_2, ret_3)
                         if (is_not_empty(ret_0)):
                             answers.append(ret_0)
-                            add_trace(tables, 'ml_comps', t_0_i,t_0_j, 'multiloop', t_0_i+1, t_0_j-1, algfct=ml, algparams=[ret_1, 'x', ret_3], bwdpass=bwdpass)
+                            #add_trace(tables, 'ml_comps', t_0_i,t_0_j, 'multiloop', t_0_i+1, t_0_j-1, algfct=ml, algparams=[ret_1, 'x', ret_3], bwdpass=bwdpass)
+                            add_trace(tables, 'dangle', t_0_i,t_0_j, 'multiloop', t_0_i+1, t_0_j-1, algfct=ml, algparams=[ret_1, 'x', ret_3], bwdpass=bwdpass)
 
     eval = h(answers)
     if PRINTSTACK:
@@ -602,11 +604,11 @@ def nt_weak(t_0_i:int, t_0_j:int, name="weak", bwdpass=False) -> float:
         answers.append(ret_5)
         add_trace(tables, 'iloop', t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'], bwdpass=bwdpass)
 
-    # # multiloop
-    # ret_6 = nt_multiloop(t_0_i, t_0_j)
-    # if (is_not_empty(ret_6)):
-    #     answers.append(ret_6)
-    #     add_trace(tables, 'multiloop', t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'], bwdpass=bwdpass)
+    # multiloop
+    ret_6 = nt_multiloop(t_0_i, t_0_j)
+    if (is_not_empty(ret_6)):
+        answers.append(ret_6)
+        add_trace(tables, 'multiloop', t_0_i,t_0_j, 'weak', t_0_i, t_0_j, algfct=None, algparams=['x'], bwdpass=bwdpass)
 
     eval = h(answers)
     if PRINTSTACK:
@@ -862,6 +864,19 @@ if True:
                     ret_0 = cadd(ret_4, ret_5)
                     answers.append(ret_0)
 
+        # multiloop = ml(BASE, ~ml_comps~dangle, BASE) --> ~ml_comps~dangle = ml(BASE, multiloop, BASE)
+        if (t_0_i-1 >= 0) and (t_0_j+1 <= len(t_0_seq)):
+            if (basepair(t_0_seq, t_0_i-1, t_0_j+1)):
+                ret_3 = BASE(t_0_seq, (t_0_j ), t_0_j+1)
+                if (is_not_empty(ret_3)):
+                    ret_1 = BASE(t_0_seq, t_0_i-1, (t_0_i ))
+                    if (is_not_empty(ret_1)):
+                        ret_2 = bt_multiloop((t_0_i - 1), (t_0_j + 1))
+                        if (is_not_empty(ret_2)):
+                            ret_0 = ml(ret_1, ret_2, ret_3)
+                            if (is_not_empty(ret_0)):
+                                answers.append(ret_0)
+
         # # ml_comps = cadd(incl(dangle), ml_comps1) --> dangle = cadd(incl(*ml_comps*), ml_comps1)
         # if (t_0_j - t_0_i) >= 5:
         #     ret_5 = nt_ml_comps1(t_0_i, t_0_j)
@@ -1023,33 +1038,33 @@ if True:
             return tables[name].bt_get_v2(t_0_i, t_0_j)
         else:
             return eval
-    # def bt_multiloop(t_0_i:int, t_0_j, name="multiloop") -> float:
-    #     if name in tables:
-    #         if (tables[name].bt_is_tabulated_v2(t_0_i, t_0_j)):
-    #             if PRINTBTSTACK:
-    #                 print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get_v2(t_0_i, t_0_j)))
-    #             return tables[name].bt_get_v2(t_0_i, t_0_j)
-    #     if PRINTBTSTACK:
-    #         print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-    #         incr()
-    #
-    #     answers = []
-    #
-    #     # productions:
-    #     # weak = multiloop --> multiloop = *weak*
-    #     ret_2 = bt_weak(t_0_i, t_0_j)
-    #     if (is_not_empty(ret_2)):
-    #         answers.append(ret_2)
-    #
-    #     eval = h(answers)
-    #     if PRINTBTSTACK:
-    #         decr()
-    #         print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    #     if name in tables:
-    #         tables[name].bt_set_v2( t_0_i, t_0_j, eval)
-    #         return tables[name].bt_get_v2(t_0_i, t_0_j)
-    #     else:
-    #         return eval
+    def bt_multiloop(t_0_i:int, t_0_j, name="multiloop") -> float:
+        if name in tables:
+            if (tables[name].bt_is_tabulated_v2(t_0_i, t_0_j)):
+                if PRINTBTSTACK:
+                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get_v2(t_0_i, t_0_j)))
+                return tables[name].bt_get_v2(t_0_i, t_0_j)
+        if PRINTBTSTACK:
+            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+            incr()
+
+        answers = []
+
+        # productions:
+        # weak = multiloop --> multiloop = *weak*
+        ret_2 = bt_weak(t_0_i, t_0_j)
+        if (is_not_empty(ret_2)):
+            answers.append(ret_2)
+
+        eval = h(answers)
+        if PRINTBTSTACK:
+            decr()
+            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+        if name in tables:
+            tables[name].bt_set_v2( t_0_i, t_0_j, eval)
+            return tables[name].bt_get_v2(t_0_i, t_0_j)
+        else:
+            return eval
     # def bt_ml_comps(t_0_i:int, t_0_j, name="ml_comps") -> float:
     #     if name in tables:
     #         if (tables[name].bt_is_tabulated_v2(t_0_i, t_0_j)):
