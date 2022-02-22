@@ -231,18 +231,18 @@ def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps", bwdpass=False) -> float:
             answers.append(ret_0)
             add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps', t_0_i,t_0_j, algfct=None, algparams=['x'], bwdpass=bwdpass)
 
-    # # sadd(BASE, ml_comps)
-    # if (((t_0_j - t_0_i) >= 11)):
-    #     if (unpaired(t_0_seq, t_0_i, (t_0_i + 1))):
-    #         ret_1 = BASE(t_0_seq, t_0_i, (t_0_i + 1))
-    #         if (is_not_empty(ret_1)):
-    #             ret_2 = nt_ml_comps((t_0_i + 1), t_0_j)
-    #             if (is_not_empty(ret_2)):
-    #                 ret_0 = sadd(ret_1, ret_2)
-    #                 if (is_not_empty(ret_0)):
-    #                     answers.append(ret_0)
-    #                     add_trace(tables, 'ml_comps', t_0_i,t_0_j, 'ml_comps', t_0_i+1,t_0_j, algfct=sadd, algparams=[ret_1, 'x'], bwdpass=bwdpass)
-    #
+    # sadd(BASE, ml_comps)
+    if (((t_0_j - t_0_i) >= 11)):
+        if (unpaired(t_0_seq, t_0_i, (t_0_i + 1))):
+            ret_1 = BASE(t_0_seq, t_0_i, (t_0_i + 1))
+            if (is_not_empty(ret_1)):
+                ret_2 = nt_ml_comps((t_0_i + 1), t_0_j)
+                if (is_not_empty(ret_2)):
+                    ret_0 = sadd(ret_1, ret_2)
+                    if (is_not_empty(ret_0)):
+                        answers.append(ret_0)
+                        add_trace(tables, 'ml_comps', t_0_i,t_0_j, 'ml_comps', t_0_i+1,t_0_j, algfct=sadd, algparams=[ret_1, 'x'], bwdpass=bwdpass)
+
     # # cadd(incl(dangle), ml_comps1)
     # if (((t_0_j - t_0_i) >= 10)):
     #     t_0_k_0 = (t_0_i + 5)
@@ -1095,30 +1095,16 @@ if True:
                             if (is_not_empty(ret_0)):
                                 answers.append(ret_0)
 
-        # # multiloop = ml(BASE, ml_comps, BASE) --> ml_comps = ml(BASE, multiloop, BASE)
-        # if (t_0_i-1 >= 0) and (t_0_j+1 <= len(t_0_seq)):
-        #     if (basepair(t_0_seq, t_0_i-1, t_0_j+1)):
-        #         ret_3 = BASE(t_0_seq, (t_0_j ), t_0_j+1)
-        #         if (is_not_empty(ret_3)):
-        #             ret_1 = BASE(t_0_seq, t_0_i-1, (t_0_i ))
-        #             if (is_not_empty(ret_1)):
-        #                 ret_2 = bt_multiloop((t_0_i - 1), (t_0_j + 1))
-        #                 if (is_not_empty(ret_2)):
-        #                     ret_0 = ml(ret_1, ret_2, ret_3)
-        #                     if (is_not_empty(ret_0)):
-        #                         answers.append(ret_0)
-        #
-        # # productions:
-        # # ml_comps = sadd(BASE, ml_comps) --> ml_comps = sadd(BASE, *ml_comps*)
-        # if (t_0_i - 1 >= 0):
-        #     if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
-        #         ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
-        #         if (is_not_empty(ret_1)):
-        #             ret_2 = bt_ml_comps(t_0_i-1, t_0_j) # nt_struct((t_0_i + 1))
-        #             if (is_not_empty(ret_2)):
-        #                 ret_0 = sadd(ret_1, ret_2)
-        #                 if (is_not_empty(ret_0)):
-        #                     answers.append(ret_0)
+        # ml_comps = sadd(BASE, ml_comps) --> ml_comps = sadd(BASE, *ml_comps*)
+        if (t_0_i - 1 >= 0) and (((t_0_j - t_0_i) >= 11)):
+            if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
+                ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
+                if (is_not_empty(ret_1)):
+                    ret_2 = bt_ml_comps(t_0_i-1, t_0_j)
+                    if (is_not_empty(ret_2)):
+                        ret_0 = sadd(ret_1, ret_2)
+                        if (is_not_empty(ret_0)):
+                            answers.append(ret_0)
 
         eval = h(answers)
         if PRINTBTSTACK:
