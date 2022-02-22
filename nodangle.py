@@ -34,7 +34,7 @@ def init(inputsequence, algebra='pfunc', printstack=False, printBTstack=False, t
             base = 0.0
             #tables['struct'].bt_set(0,0,0.0)
         tables['struct'].bt_set(0,0,base)
-        tables['struct'].bt_set_v2(0,0,base)
+        #tables['struct'].bt_set_v2(0,0,base)
         #tables['struct'].bt_set(len(t_0_seq),0,base)
 
 def incr():
@@ -243,7 +243,7 @@ def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps", bwdpass=False) -> float:
                         answers.append(ret_0)
                         add_trace(tables, 'ml_comps', t_0_i,t_0_j, 'ml_comps', t_0_i+1,t_0_j, algfct=sadd, algparams=[ret_1, 'x'], bwdpass=bwdpass)
 
-    # # cadd(incl(dangle), ml_comps1)
+    # # cadd(incl(dangle), ml_comps)
     # if (((t_0_j - t_0_i) >= 10)):
     #     t_0_k_0 = (t_0_i + 5)
     #     while (t_0_k_0 <= (t_0_j - 5)):
@@ -256,7 +256,7 @@ def nt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps", bwdpass=False) -> float:
     #                     if (is_not_empty(ret_4)):
     #                         res = cadd(ret_4, ret_6)
     #                         answers.append(res)
-    #                         add_trace(tables, 'ml_comps1', t_0_i,t_0_j, 'ml_comps', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'], bwdpass=bwdpass)
+    #                         add_trace(tables, 'ml_comps', t_0_i,t_0_j, 'ml_comps', t_0_k_0, t_0_j, algfct=cadd, algparams=[ret_4, 'x'], bwdpass=bwdpass)
     #                         add_trace(tables, 'dangle', t_0_i,t_0_j, 'ml_comps', t_0_i, t_0_k_0, algfct=lambda x,y: cadd(incl(x), y), algparams=['x', ret_6], bwdpass=bwdpass)
     #         t_0_k_0 += 1
 
@@ -626,8 +626,8 @@ def nt_weak(t_0_i:int, t_0_j:int, name="weak", bwdpass=False) -> float:
         return eval
 
 if True:
-    def bt_struct(t_0_i:int, t_0_j, name="struct") -> float:
-        t_0_j = 0
+    def bt_struct(t_0_i:int, t_0_j:int, name="struct") -> float:
+        #t_0_j = 0
         if name in tables:
             if (tables[name].bt_is_tabulated_v2(t_0_i, t_0_j)):
                 if PRINTBTSTACK:
@@ -641,7 +641,7 @@ if True:
 
         # productions:
         # struct = sadd(BASE, struct) --> struct = sadd(BASE, *struct*)
-        if (t_0_i - 1 >= 0):
+        if (t_0_i - 1 >= 0) and (t_0_j == len(t_0_seq)):# and (t_0_j == len(t_0_seq)):
             if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
                 ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
                 if (is_not_empty(ret_1)):
@@ -655,13 +655,21 @@ if True:
         # struct = cadd(dangle, struct) --> struct = cadd(dangle, *struct*)
         t_0_k_0 = t_0_i - 5
         while (t_0_k_0 >= 0):
-            ret_4 = nt_dangle(t_0_k_0, t_0_i)
+            ret_4 = nt_dangle(t_0_k_0, t_0_i, bwdpass=True)
             if (is_not_empty(ret_4)):
-                ret_5 = bt_struct(t_0_k_0, t_0_j)
+                ret_5 = bt_struct(t_0_k_0, len(t_0_seq))
                 if (is_not_empty(ret_5)):
                     ret_0 = cadd(ret_4, ret_5)
                     answers.append(ret_0)
             t_0_k_0 -= 1
+
+        # nil(LOC)
+        if (t_0_i == 0) and (t_0_j == len(t_0_seq)):
+            ret_7 = LOC(t_0_seq, t_0_j, t_0_j)
+            if (is_not_empty(ret_7)):
+                ret_6 = nil(ret_7);
+                if (is_not_empty(ret_6)):
+                    answers.append(ret_6)
 
         eval = h(answers)
         if PRINTBTSTACK:
@@ -862,9 +870,9 @@ if True:
         # productions:
         # struct = cadd(dangle, struct) --> dangle = cadd(*struct*, struct)
         if (t_0_j - t_0_i) >= 5:
-            ret_5 = nt_struct(t_0_j)
+            ret_5 = nt_struct(t_0_j, len(t_0_seq), bwdpass=True)
             if (is_not_empty(ret_5)):
-                ret_4 = bt_struct(t_0_i, t_0_j)
+                ret_4 = bt_struct(t_0_i, len(t_0_seq))
                 if (is_not_empty(ret_4)):
                     ret_0 = cadd(ret_4, ret_5)
                     answers.append(ret_0)
@@ -874,19 +882,21 @@ if True:
             ret_0 = bt_ml_comps(t_0_i,t_0_j)
             if is_not_empty(ret_0):
                 answers.append(ret_0)
-
-
-        # # ml_comps = cadd(incl(dangle), ml_comps1) --> dangle = cadd(incl(*ml_comps*), ml_comps1)
-        # if (t_0_j - t_0_i) >= 5:
-        #     ret_5 = nt_ml_comps1(t_0_i, t_0_j)
-        #     if (is_not_empty(ret_5)):
-        #         ret_4 = bt_ml_comps(t_0_i, t_0_j)
-        #         if (is_not_empty(ret_4)):
-        #             ret_6 = incl(ret_4)
-        #             if (is_not_empty(ret_6)):
+        #
+        #
+        # # ml_comps = cadd(incl(dangle), ml_comps~1~) --> dangle = cadd(incl(*ml_comps*), ml_comps~1~)
+        # t_0_k_0 = t_0_j + 5
+        # while ((t_0_k_0 <= len(t_0_seq)) and (t_0_j - t_0_i >= 5) and (t_0_k_0 - t_0_j >= 5)):
+        #     ret_4 = nt_dangle(t_0_i, t_0_j)
+        #     if (is_not_empty(ret_4)):
+        #         ret_6 = incl(ret_4)
+        #         if (is_not_empty(ret_6)):
+        #             ret_5 = bt_ml_comps(t_0_i, t_0_k_0)
+        #             if (is_not_empty(ret_5)):
         #                 ret_0 = cadd(ret_6, ret_5)
         #                 answers.append(ret_0)
-        #
+        #     t_0_k_0 += 1
+
         # # ml_comps1 = cadd(incl(dangle), ml_comps1) --> cadd(incl(*ml_comps1*), ml_comps1)
         # if (t_0_j - t_0_i) >= 5:
         #     ret_5 = nt_ml_comps1(t_0_i, t_0_j)
@@ -1106,6 +1116,30 @@ if True:
                         if (is_not_empty(ret_0)):
                             answers.append(ret_0)
 
+        # # ml_comps = cadd(incl(dangle), ml_comps~1~) --> ml_comps~1~ = cadd(incl(dangle), *ml_comps*)
+        # t_0_k_0 = t_0_i - 5
+        # while ((t_0_k_0 >= 0) and (t_0_j - t_0_k_0 >= 10) and (t_0_i - t_0_k_0 >= 5)):
+        #     ret_4 = nt_dangle(t_0_k_0, t_0_i)
+        #     if (is_not_empty(ret_4)):
+        #         ret_6 = incl(ret_4)
+        #         if (is_not_empty(ret_6)):
+        #             ret_5 = bt_ml_comps(t_0_k_0, t_0_j)
+        #             if (is_not_empty(ret_5)):
+        #                 ret_0 = cadd(ret_6, ret_5)
+        #                 answers.append(ret_0)
+        #     t_0_k_0 -= 1
+        #
+        # # struct = cadd(dangle, struct) --> struct = cadd(dangle, *struct*)
+        # t_0_k_0 = t_0_i - 5
+        # while (t_0_k_0 >= 0):
+        #     ret_4 = nt_dangle(t_0_k_0, t_0_i)
+        #     if (is_not_empty(ret_4)):
+        #         ret_5 = bt_struct(t_0_k_0, t_0_j)
+        #         if (is_not_empty(ret_5)):
+        #             ret_0 = cadd(ret_4, ret_5)
+        #             answers.append(ret_0)
+        #     t_0_k_0 -= 1
+
         eval = h(answers)
         if PRINTBTSTACK:
             decr()
@@ -1115,986 +1149,986 @@ if True:
             return tables[name].bt_get_v2(t_0_i, t_0_j)
         else:
             return eval
-    # def bt_ml_comps1(t_0_i:int, t_0_j, name="ml_comps1") -> float:
-    #     if name in tables:
-    #         if (tables[name].bt_is_tabulated_v2(t_0_i, t_0_j)):
-    #             if PRINTBTSTACK:
-    #                 print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get_v2(t_0_i, t_0_j)))
-    #             return tables[name].bt_get_v2(t_0_i, t_0_j)
-    #     if PRINTBTSTACK:
-    #         print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-    #         incr()
-    #
-    #     answers = []
-    #
-    #     # productions:
-    #     # ml_comps = cadd(incl(dangle), ml_comps1) --> ml_comps1 = cadd(incl(dangle), *ml_comps*)
-    #     t_0_k_0 = t_0_i - 5
-    #     while (t_0_k_0 >= 0):
-    #         ret_4 = nt_dangle(t_0_k_0, t_0_i)
-    #         if (is_not_empty(ret_4)):
-    #             ret_6 = incl(ret_4)
-    #             if (is_not_empty(ret_6)):
-    #                 ret_5 = bt_ml_comps(t_0_k_0, t_0_j)
-    #                 if (is_not_empty(ret_5)):
-    #                     ret_0 = cadd(ret_6, ret_5)
-    #                     answers.append(ret_0)
-    #         t_0_k_0 -= 1
-    #
-    #     # ml_comps1 = cadd(incl(dangle), ml_comps1) --> ml_comps1 = cadd(incl(dangle), *ml_comps1*)
-    #     t_0_k_0 = t_0_i - 5
-    #     while (t_0_k_0 >= 0):
-    #         ret_4 = nt_dangle(t_0_k_0, t_0_i)
-    #         if (is_not_empty(ret_4)):
-    #             ret_6 = incl(ret_4)
-    #             if (is_not_empty(ret_6)):
-    #                 ret_5 = bt_ml_comps1(t_0_k_0, t_0_j)
-    #                 if (is_not_empty(ret_5)):
-    #                     ret_0 = cadd(ret_6, ret_5)
-    #                     answers.append(ret_0)
-    #         t_0_k_0 -= 1
-    #
-    #     # ml_comps1 = sadd(BASE, ml_comps1) --> ml_comps1 = sadd(BASE, *ml_comps1*)
-    #     if (t_0_i - 1 >= 0):
-    #         if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
-    #             ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
-    #             if (is_not_empty(ret_1)):
-    #                 ret_2 = bt_ml_comps1(t_0_i-1, t_0_j) # nt_struct((t_0_i + 1))
-    #                 if (is_not_empty(ret_2)):
-    #                     ret_0 = sadd(ret_1, ret_2)
-    #                     if (is_not_empty(ret_0)):
-    #                         answers.append(ret_0)
-    #
-    #     eval = h(answers)
-    #     if PRINTBTSTACK:
-    #         decr()
-    #         print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-    #     if name in tables:
-    #         tables[name].bt_set_v2( t_0_i, t_0_j, eval)
-    #         return tables[name].bt_get_v2(t_0_i, t_0_j)
-    #     else:
-    #         return eval
-
-if False:
-    def bt_dangle(t_0_i:int, t_0_j:int, name="dangle") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # Productions
-        sys.exit()
-
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-            #print(answers, h(answers))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-    def bt_hairpin(t_0_i:int, t_0_j:int, name="hairpin") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        sys.exit()
-
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-    def bt_iloop(t_0_i:int, t_0_j:int, name="iloop") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        sys.exit()
-
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-    def bt_leftB(t_0_i:int, t_0_j:int, name="leftB") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        # bl(BASE, REGION, strong, BASE) -> weak
-        if (((t_0_j - t_0_i) >= 8)):
-            if (basepair(t_0_seq, t_0_i, t_0_j)):
-                t_0_k_0 = t_0_i + 2
-                while ((t_0_k_0 <= (t_0_j - 6)) and (t_0_k_0 <= (t_0_i + 31))):
-                    ret_4 = BASE(t_0_seq, (t_0_j - 1), t_0_j)
-                    if (is_not_empty(ret_4)):
-                        if ((maxsize(t_0_seq, (t_0_i + 1), t_0_k_0, 30) and unpaired(t_0_seq, (t_0_i + 1), t_0_k_0))):
-                            ret_2 = REGION(t_0_seq, (t_0_i + 1), t_0_k_0)
-                            if (is_not_empty(ret_2)):
-                                ret_1 = BASE(t_0_seq, t_0_i, (t_0_i + 1))
-                                if (is_not_empty(ret_1)):
-                                    ret_3 = 0# bt_weak(t_0_i, t_0_j)
-                                    print("calling weak(%i,%i) region(%i,%i)" % (t_0_i, t_0_j, t_0_i+1, t_0_k_0))
-                                    if (is_not_empty(ret_3)):
-                                        res = bl(ret_1, ret_2, ret_3, ret_4)
-                                        answers.append(res)
-                    t_0_k_0 += 1
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-    def bt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-        answers = []
-
-        # productions:
-        sys.exit()
-
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-    def bt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-        answers = []
-
-        # productions:
-        sys.exit()
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-    def bt_multiloop(t_0_i:int, t_0_j:int, name="multiloop") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-        answers = []
-
-        # productions:
-        sys.exit()
-
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-    def bt_rightB(t_0_i:int, t_0_j:int, name="rightB") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-        answers = []
-
-        # productions:
-        sys.exit()
-
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-    def bt_stack(t_0_i:int, t_0_j:int, name="stack") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-        answers = []
-
-        # productions:
-        sys.exit()
-
-
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-    def bt_strong(t_0_i:int, t_0_j:int, name="strong") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        sys.exit()
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-    def bt_struct(t_0_i:int, t_0_j:int, name="struct") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        sys.exit()
-
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-    def bt_weak(t_0_i:int, t_0_j:int, name="weak") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        sys.exit()
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, 0, eval)
-            return tables[name].bt_get(t_0_i, 0)
-        else:
-            return eval
-
-if False:
-    def bt_dangle(t_0_i:int, t_0_j:int, name="dangle") -> float:
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # cadd(incl(*dangle*), ml_comps1)
-        if (((t_0_j + 5) <= len(t_0_seq))):
-            t_0_k_0 = (t_0_j + 5)
-            while (t_0_k_0 <= len(t_0_seq)):
-                ret_6 = nt_ml_comps1(t_0_j, t_0_k_0)
-                if (is_not_empty(ret_6)):
-                    if (((t_0_k_0 - t_0_i) >= 10)):
-                        ret_5 = bt_ml_comps1(t_0_i, t_0_k_0) # nt_dangle(t_0_i, t_0_k_0)
-                        if (is_not_empty(ret_5)):
-                            ret_4 = incl(ret_5)
-                            if (is_not_empty(ret_4)):
-                                res = cadd(ret_4, ret_6)
-                                answers.append(res)
-                t_0_k_0 += 1
-
-        # incl(*dangle*)
-        #if (((t_0_j - t_0_i) >= 5)):
-        ret_8 = bt_ml_comps1(t_0_i, t_0_j) # nt_dangle(t_0_i, t_0_j)
-        if (is_not_empty(ret_8)):
-            ret_7 = incl(ret_8)
-            if (is_not_empty(ret_7)):
-                answers.append(ret_7)
-
-        # addss(incl(*dangle*), REGION)
-        if (((t_0_j + 1) <= len(t_0_seq))):
-            t_0_k_1 = (t_0_j + 1)
-            while (t_0_k_1 <= len(t_0_seq)):
-                if (unpaired(t_0_seq, t_0_j, t_0_k_1)):
-                    ret_12 = REGION(t_0_seq, t_0_j, t_0_k_1)
-                    if (is_not_empty(ret_12)):
-                        if (((t_0_k_1 - t_0_i) >= 6)):
-                            ret_11 = bt_ml_comps1(t_0_i, t_0_k_1) # nt_dangle(t_0_i, t_0_k_1)
-                            if (is_not_empty(ret_11)):
-                                ret_10 = incl(ret_11)
-                                if (is_not_empty(ret_10)):
-                                    res = addss(ret_10, ret_12)
-                                    answers.append(res)
-                t_0_k_1 += 1
-
-        # cadd(incl(*dangle*), ml_comps1)
-        if (((t_0_j + 5) <= len(t_0_seq))):
-            t_0_k_0 = (t_0_j + 5)
-            while (t_0_k_0 <= len(t_0_seq)):
-                ret_6 = nt_ml_comps1(t_0_j, t_0_k_0)
-                if (is_not_empty(ret_6)):
-                    if (((t_0_k_0 - t_0_i) >= 10)):
-                        ret_5 = bt_ml_comps(t_0_i, t_0_k_0) # nt_dangle(t_0_i, t_0_k_0)
-                        if (is_not_empty(ret_5)):
-                            ret_4 = incl(ret_5)
-                            if (is_not_empty(ret_4)):
-                                res = cadd(ret_4, ret_6)
-                                answers.append(res)
-                t_0_k_0 += 1
-
-        # cadd(*dangle*, struct)
-        # if True: # (t_0_i <= 0) and (t_0_j >= len(t_0_seq)):
-        #     ret_5 = nt_struct(t_0_j)
-        #     if (is_not_empty(ret_5)):
-        #         ret_4 = bt_struct(t_0_i)
-        #         if (is_not_empty(ret_4)):
-        #             ret_0 = cadd(ret_4, ret_5)
-        #             answers.append(ret_0)
-        # if (((t_0_j + 0 <= len(t_0_seq)))):
-            t_0_k_0 = t_0_j
-            while (t_0_k_0 <= len(t_0_seq)):
-                #print("nt_dangle(%i,%i) = " % (t_0_i,t_0_j))
-                ret_5 = nt_struct(t_0_k_0)
-                if (is_not_empty(ret_5)):
-                    ret_4 = bt_struct(t_0_k_0) # nt_dangle(t_0_i, t_0_k_0)
-                    if (is_not_empty(ret_4)):
-                        ret_0 = cadd(ret_4, ret_5)
-                        answers.append(ret_0)
-                t_0_k_0 += 1
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-            #print(answers, h(answers))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-    def bt_hairpin(t_0_i:int, t_0_j:int, name="hairpin") -> float:
-        #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
-        #    return float_zero
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        # hl(BASE, REGION, BASE)
-        if False:
-            if (((t_0_j - t_0_i) >= 5)):
-                if (basepair(t_0_seq, t_0_i, t_0_j)):
-                    ret_3 = BASE(t_0_seq, (t_0_j - 1), t_0_j)
-                    if (is_not_empty(ret_3)):
-                        ret_2 = np.nan;
-                        if ((minsize(t_0_seq, (t_0_i + 1), (t_0_j - 1), 3) and unpaired(t_0_seq, (t_0_i + 1), (t_0_j - 1)))):
-                            ret_2 = REGION(t_0_seq, (t_0_i + 1), (t_0_j - 1))
-                            if (is_not_empty(ret_2)):
-                                ret_1 = BASE(t_0_seq, t_0_i, (t_0_i + 1))
-                                if (is_not_empty(ret_1)):
-                                    ret_0 = hl(ret_1, ret_2, ret_3)
-                                    if (is_not_empty(ret_0)):
-                                        answers.append(ret_0)
-
-        # hairpin
-        ret_2 = bt_weak(t_0_i, t_0_j) #nt_hairpin(t_0_i, t_0_j)
-        if (is_not_empty(ret_2)):
-            answers.append(ret_2)
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-    def bt_iloop(t_0_i:int, t_0_j:int, name="iloop") -> float:
-        #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
-        #    return float_zero
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        # iloop
-        ret_5 = bt_weak(t_0_i, t_0_j) #nt_iloop(t_0_i, t_0_j)
-        if (is_not_empty(ret_5)):
-            answers.append(ret_5)
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-    def bt_leftB(t_0_i:int, t_0_j:int, name="leftB") -> float:
-        #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
-        #    return float_zero
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        # leftB
-        ret_3 = bt_weak(t_0_i, t_0_j) #nt_leftB(t_0_i, t_0_j)
-        if (is_not_empty(ret_3)):
-            answers.append(ret_3)
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-    def bt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps") -> float:
-        #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
-        #    return float_zero
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-        answers = []
-
-        # productions:
-        # sadd(BASE, *ml_comps*)
-        #if (((t_0_j - t_0_i-1) >= 11)):
-        if (t_0_i-1 >= 0):
-            if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
-                ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
-                if (is_not_empty(ret_1)):
-                    ret_2 = bt_ml_comps(t_0_i-1,t_0_j) #nt_ml_comps((t_0_i + 1), t_0_j)
-                    if (is_not_empty(ret_2)):
-                        ret_0 = sadd(ret_1, ret_2)
-                        if (is_not_empty(ret_0)):
-                            answers.append(ret_0)
-
-        # ml(BASE, ml_comps, BASE)
-        #if (((t_0_j - t_0_i-2) >= 12)):
-        if (t_0_i-1 >= 0) and (t_0_j+1 <= len(t_0_seq)):
-            if (basepair(t_0_seq, t_0_i-1, t_0_j+1)):
-                ret_3 = BASE(t_0_seq, t_0_j, t_0_j+1)
-                if (is_not_empty(ret_3)):
-                    ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
-                    if (is_not_empty(ret_1)):
-                        #ret_2 = bt_multiloop(t_0_i+1, t_0_j-1) # nt_ml_comps((t_0_i + 1), (t_0_j - 1))
-                        ret_2 = bt_multiloop(t_0_i-1, t_0_j+1) # nt_ml_comps((t_0_i + 1), (t_0_j - 1))
-                        if (is_not_empty(ret_2)):
-                            ret_0 = ml(ret_1, ret_2, ret_3)
-                            if (is_not_empty(ret_0)):
-                                answers.append(ret_0)
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-    def bt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
-        #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
-        #    return float_zero
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-        answers = []
-
-        # productions:
-        # cadd(incl(dangle), *ml_comps1*)
-        if (((t_0_j - t_0_i) >= 5)):
-            t_0_k_0 = t_0_i - 5
-            while (t_0_k_0 >= 0):
-                ret_6 = bt_ml_comps(t_0_k_0, t_0_j) # nt_ml_comps1(t_0_k_0, t_0_j)
-                if (is_not_empty(ret_6)):
-                    if (((t_0_k_0 - t_0_j) >= 10)):
-                        ret_5 = nt_dangle(t_0_k_0, t_0_i)
-                        if (is_not_empty(ret_5)):
-                            ret_4 = incl(ret_5)
-                            if (is_not_empty(ret_4)):
-                                res = cadd(ret_4, ret_6)
-                                answers.append(res)
-                t_0_k_0 -= 1
-
-        # sadd(BASE, *ml_comps1*)
-        #if (((t_0_j - t_0_i-1) >= 6)):
-        if (t_0_i-1 >= 0):
-            if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
-                ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
-                if (is_not_empty(ret_1)):
-                    #ret_2 = bt_ml_comps1(t_0_i+1, t_0_j) # nt_ml_comps1((t_0_i + 1), t_0_j)
-                    ret_2 = bt_ml_comps1(t_0_i-1, t_0_j) # nt_ml_comps1((t_0_i + 1), t_0_j)
-                    if (is_not_empty(ret_2)):
-                        ret_0 = sadd(ret_1, ret_2)
-                        if (is_not_empty(ret_0)):
-                            answers.append(ret_0)
-
-        # cadd(incl(dangle), *ml_comps1*)
-        if (((t_0_j - t_0_i) >= 10)):
-            t_0_k_0 = (t_0_i - 5)
-            while (t_0_k_0 >= 0):
-                ret_6 = bt_ml_comps1(t_0_k_0, t_0_j) # nt_ml_comps1(t_0_k_0, t_0_j)
-                if (is_not_empty(ret_6)):
-                    if (((t_0_k_0 - t_0_i) >= 5)):
-                        ret_5 = nt_dangle(t_0_k_0, t_0_i)
-                        if (is_not_empty(ret_5)):
-                            ret_4 = incl(ret_5)
-                            if (is_not_empty(ret_4)):
-                                res = cadd(ret_4, ret_6)
-                                answers.append(res)
-                t_0_k_0 -= 1
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-    def bt_multiloop(t_0_i:int, t_0_j:int, name="multiloop") -> float:
-        #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
-        #    return float_zero
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-        answers = []
-
-        # productions:
-        # multiloop
-        ret_6 = bt_weak(t_0_i, t_0_j) # nt_multiloop(t_0_i, t_0_j)
-        if (is_not_empty(ret_6)):
-            answers.append(ret_6)
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-    def bt_rightB(t_0_i:int, t_0_j:int, name="rightB") -> float:
-        #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
-        #    return float_zero
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-        answers = []
-
-        # productions:
-        # rightB
-        ret_4 = bt_weak(t_0_i, t_0_j) # nt_rightB(t_0_i, t_0_j)
-        if (is_not_empty(ret_4)):
-            answers.append(ret_4)
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-    def bt_stack(t_0_i:int, t_0_j:int, name="stack") -> float:
-        #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
-        #    return float_zero
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-        answers = []
-
-        # productions:
-        # stack
-        ret_1 = bt_weak(t_0_i, t_0_j) # nt_stack(t_0_i, t_0_j)
-        if (is_not_empty(ret_1)):
-            answers.append(ret_1)
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-    def bt_strong(t_0_i:int, t_0_j:int, name="strong") -> float:
-        #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
-        #    return float_zero
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        # drem(LOC, *strong*, LOC)
-        if (t_0_i >= 0) and (t_0_j <= len(t_0_seq)):
-            ret_3 = LOC(t_0_seq, t_0_j, t_0_j)
-            if (is_not_empty(ret_3)):
-                ret_1 = LOC(t_0_seq, t_0_i, t_0_i)
-                if (is_not_empty(ret_1)):
-                    ret_2 = bt_dangle(t_0_i, t_0_j) # nt_strong(t_0_i, t_0_j)
-                    if (is_not_empty(ret_2)):
-                        ret_0 = drem(ret_1, ret_2, ret_3)
-                        if (is_not_empty(ret_0)):
-                            answers.append(ret_0)
-
-        # br(BASE, *strong*, REGION, BASE)
-        #if (((t_0_j - t_0_i) >= 8)):
-        if (t_0_i-1 >= 0):
-            t_0_k_0 = t_0_j+2 #((t_0_j - 31)) if (((t_0_j - (t_0_i + 6)) >= 31)) else ((t_0_i + 6))
-            while (t_0_k_0 <= len(t_0_seq)):
-                if (basepair(t_0_seq, t_0_i-1, t_0_k_0)):
-                    ret_4 = BASE(t_0_seq, (t_0_k_0 - 1), t_0_k_0)
-                    if (is_not_empty(ret_4)):
-                        if (maxsize(t_0_seq, t_0_j, t_0_k_0 - 1, 30) and unpaired(t_0_seq, t_0_j, t_0_k_0-1)):
-                            ret_3 = REGION(t_0_seq, t_0_j, t_0_k_0 - 1)
-                            if (is_not_empty(ret_3)):
-                                ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
-                                if (is_not_empty(ret_1)):
-                                    #ret_2 = bt_rightB(t_0_i+1, t_0_k_0) # nt_strong((t_0_i + 1), t_0_k_0)
-                                    ret_2 = bt_rightB(t_0_i-1, t_0_k_0) # nt_strong((t_0_i + 1), t_0_k_0)
-                                    if (is_not_empty(ret_2)):
-                                        res = br(ret_1, ret_2, ret_3, ret_4)
-                                        answers.append(res)
-                t_0_k_0 += 1
-
-        # il(BASE, REGION, *strong*, REGION, BASE)
-        if (((t_0_j - t_0_i) >= 9)):
-            t_0_k_0 = t_0_i - 2
-            while ((t_0_k_0 >= 0) and (t_0_i - t_0_k_0 <= 31)):
-                t_0_k_1 = t_0_j+2#((t_0_j - 31)) if (((t_0_j - (t_0_k_0 + 5)) >= 31)) else ((t_0_k_0 + 5))
-                while (t_0_k_1 <= len(t_0_seq)):
-                    if (basepair(t_0_seq, t_0_k_0, t_0_k_1)):
-                        ret_5 = BASE(t_0_seq, t_0_k_1-1, t_0_k_1)
-                        if (is_not_empty(ret_5)):
-                            if ((maxsize(t_0_seq, t_0_j, t_0_k_1 - 1, 30) and unpaired(t_0_seq, t_0_j, t_0_k_1 - 1))):
-                                ret_4 = REGION(t_0_seq, t_0_j, t_0_k_1 - 1)
-                                if (is_not_empty(ret_4)):
-                                    if ((maxsize(t_0_seq, t_0_k_0+1, t_0_i, 30) and unpaired(t_0_seq, (t_0_k_0 + 1), t_0_i))):
-                                        ret_2 = REGION(t_0_seq, t_0_k_0 + 1, t_0_i)
-                                        if (is_not_empty(ret_2)):
-                                            ret_1 = BASE(t_0_seq, t_0_k_0, t_0_k_0 + 1)
-                                            if (is_not_empty(ret_1)):
-                                                ret_3 = bt_iloop(t_0_k_0, t_0_k_1) # nt_strong(t_0_k_0, t_0_k_1)
-                                                if (is_not_empty(ret_3)):
-                                                    res = il(ret_1, ret_2, ret_3, ret_4, ret_5)
-                                                    answers.append(res)
-                    t_0_k_1 += 1
-                t_0_k_0 -= 1
-
-        # bl(BASE, REGION, *strong*, BASE)
-        if (t_0_i-2 >= 0) and (t_0_j+1 <= len(t_0_seq)):# (((t_0_j - t_0_i) >= 8)):
-            t_0_k_0 = t_0_i - 2
-            while (t_0_k_0 >= 0):#((t_0_k_0 <= (t_0_j - 6)) and (t_0_k_0 <= (t_0_i + 31))):
-                if (basepair(t_0_seq, t_0_k_0, t_0_j+1)):
-                    ret_4 = BASE(t_0_seq, t_0_j, t_0_j+1)
-                    if (is_not_empty(ret_4)):
-                        if ((maxsize(t_0_seq, (t_0_k_0 + 1), t_0_i, 30) and unpaired(t_0_seq, (t_0_k_0 + 1), t_0_i))):
-                            ret_2 = REGION(t_0_seq, (t_0_k_0 + 1), t_0_i)
-                            if (is_not_empty(ret_2)):
-                                ret_1 = BASE(t_0_seq, t_0_k_0, t_0_k_0 + 1)
-                                if (is_not_empty(ret_1)):
-                                    #ret_3 = bt_leftB(t_0_k_0, t_0_j-1) # nt_strong(t_0_k_0, (t_0_j - 1))
-                                    ret_3 = bt_leftB(t_0_k_0, t_0_j+1) # nt_strong(t_0_k_0, (t_0_j - 1))
-                                    if (is_not_empty(ret_3)):
-                                        res = bl(ret_1, ret_2, ret_3, ret_4)
-                                        answers.append(res)
-                t_0_k_0 -= 1
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-    def bt_struct(t_0_i:int, name="struct") -> float:
-        t_0_j = 0
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        # sadd(BASE, *struct*)
-        if (t_0_i - 1 >= 0):
-            if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
-                ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
-                if (is_not_empty(ret_1)):
-                    #ret_2 = bt_struct(t_0_i+1, t_0_j) # nt_struct((t_0_i + 1))
-                    ret_2 = bt_struct(t_0_i-1) # nt_struct((t_0_i + 1))
-                    if (is_not_empty(ret_2)):
-                        ret_0 = sadd(ret_1, ret_2)
-                        if (is_not_empty(ret_0)):
-                            answers.append(ret_0)
-
-        # # cadd(dangle, *struct*)
-        # ret_5 = nt_struct(t_0_j)
-        # if (is_not_empty(ret_5)):
-        #     ret_4 = bt_struct(t_0_i)
-        #     if (is_not_empty(ret_4)):
-        #         ret_0 = cadd(ret_4, ret_5)
-        #         answers.append(ret_0)
-        if (((t_0_i-5) >= 0)):
-            t_0_k_0 = (t_0_i - 5)
-            while (t_0_k_0 >= 0):
-                ret_5 = bt_struct(t_0_k_0) # nt_struct(t_0_k_0)
-                if (is_not_empty(ret_5)):
-                    ret_4 = nt_dangle(t_0_k_0, t_0_i)
-                    if (is_not_empty(ret_4)):
-                        ret_0 = cadd(ret_4, ret_5)
-                        answers.append(ret_0)
-                t_0_k_0 -= 1
-
-        # # # nil(LOC)
-        # if (t_0_i == 0):
-        #     ret_7 = LOC(t_0_seq, t_0_i, t_0_i)
-        #     if (is_not_empty(ret_7)):
-        #         ret_6 = nil(ret_7);
-        #         if (is_not_empty(ret_6)):
-        #             answers.append(ret_6)
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-    def bt_weak(t_0_i:int, t_0_j:int, name="weak") -> float:
-        if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
-            return float_zero
-        if name in tables:
-            if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
-                if PRINTBTSTACK:
-                    print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
-                return tables[name].bt_get(t_0_i, t_0_j)
-        if PRINTBTSTACK:
-            print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
-            incr()
-
-        answers = []
-
-        # productions:
-        # sr(BASE, weak, BASE)
-        if (allowLonelyBasepairs(t_0_seq, t_0_i, t_0_j, False)):
-            if (t_0_i-1 >= 0) and (t_0_j+1 <= len(t_0_seq)):#if (((t_0_j - t_0_i) >= 7)):
-                if (basepair(t_0_seq, t_0_i, t_0_j)):
-                    ret_4 = BASE(t_0_seq, (t_0_j ), t_0_j+1)
-                    if (is_not_empty(ret_4)):
-                        ret_2 = BASE(t_0_seq, t_0_i-1, (t_0_i ))
-                        if (is_not_empty(ret_2)):
-                            #ret_3 = bt_strong(t_0_i+1, t_0_j-1) # nt_weak((t_0_i + 1), (t_0_j - 1))
-                            ret_3 = bt_strong(t_0_i-1, t_0_j+1) # nt_weak((t_0_i + 1), (t_0_j - 1))
-                            if (is_not_empty(ret_3)):
-                                ret_0 = sr(ret_2, ret_3, ret_4)
-                                if (is_not_empty(ret_0)):
-                                    answers.append(ret_0)
-
-        # weak
-        if (allowLonelyBasepairs(t_0_seq, t_0_i, t_0_j, True)):
-            ret_5 = bt_strong(t_0_i, t_0_j) # nt_weak(t_0_i, t_0_j)
-            if (is_not_empty(ret_5)):
-               answers.append(ret_5)
-
-        # sr(BASE, *weak*, BASE)
-        if (t_0_i-1 >= 0) and (t_0_j+1 <= len(t_0_seq)):#(((t_0_j - t_0_i) >= 7)):
-           if (basepair(t_0_seq, t_0_i, t_0_j)):
-             ret_3 = BASE(t_0_seq, (t_0_j ), t_0_j+1)
-             if (is_not_empty(ret_3)):
-               ret_1 = BASE(t_0_seq, t_0_i-1, (t_0_i))
-               if (is_not_empty(ret_1)):
-                 #ret_2 = bt_stack(t_0_i+1, t_0_j-1) # nt_weak((t_0_i + 1), (t_0_j - 1))
-                 ret_2 = bt_stack(t_0_i-1, t_0_j+1) # nt_weak((t_0_i + 1), (t_0_j - 1))
-                 if (is_not_empty(ret_2)):
-                     ret_0 = sr(ret_1, ret_2, ret_3)
-                     if (is_not_empty(ret_0)):
-                         answers.append(ret_0)
-
-        eval = h(answers)
-        if PRINTBTSTACK:
-            decr()
-            print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
-        if name in tables:
-            tables[name].bt_set( t_0_i, t_0_j, eval)
-            return tables[name].bt_get(t_0_i, t_0_j)
-        else:
-            return eval
-
+#     # def bt_ml_comps1(t_0_i:int, t_0_j, name="ml_comps1") -> float:
+#     #     if name in tables:
+#     #         if (tables[name].bt_is_tabulated_v2(t_0_i, t_0_j)):
+#     #             if PRINTBTSTACK:
+#     #                 print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get_v2(t_0_i, t_0_j)))
+#     #             return tables[name].bt_get_v2(t_0_i, t_0_j)
+#     #     if PRINTBTSTACK:
+#     #         print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#     #         incr()
+#     #
+#     #     answers = []
+#     #
+#     #     # productions:
+#     #     # ml_comps = cadd(incl(dangle), ml_comps1) --> ml_comps1 = cadd(incl(dangle), *ml_comps*)
+#     #     t_0_k_0 = t_0_i - 5
+#     #     while (t_0_k_0 >= 0):
+#     #         ret_4 = nt_dangle(t_0_k_0, t_0_i)
+#     #         if (is_not_empty(ret_4)):
+#     #             ret_6 = incl(ret_4)
+#     #             if (is_not_empty(ret_6)):
+#     #                 ret_5 = bt_ml_comps(t_0_k_0, t_0_j)
+#     #                 if (is_not_empty(ret_5)):
+#     #                     ret_0 = cadd(ret_6, ret_5)
+#     #                     answers.append(ret_0)
+#     #         t_0_k_0 -= 1
+#     #
+#     #     # ml_comps1 = cadd(incl(dangle), ml_comps1) --> ml_comps1 = cadd(incl(dangle), *ml_comps1*)
+#     #     t_0_k_0 = t_0_i - 5
+#     #     while (t_0_k_0 >= 0):
+#     #         ret_4 = nt_dangle(t_0_k_0, t_0_i)
+#     #         if (is_not_empty(ret_4)):
+#     #             ret_6 = incl(ret_4)
+#     #             if (is_not_empty(ret_6)):
+#     #                 ret_5 = bt_ml_comps1(t_0_k_0, t_0_j)
+#     #                 if (is_not_empty(ret_5)):
+#     #                     ret_0 = cadd(ret_6, ret_5)
+#     #                     answers.append(ret_0)
+#     #         t_0_k_0 -= 1
+#     #
+#     #     # ml_comps1 = sadd(BASE, ml_comps1) --> ml_comps1 = sadd(BASE, *ml_comps1*)
+#     #     if (t_0_i - 1 >= 0):
+#     #         if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
+#     #             ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
+#     #             if (is_not_empty(ret_1)):
+#     #                 ret_2 = bt_ml_comps1(t_0_i-1, t_0_j) # nt_struct((t_0_i + 1))
+#     #                 if (is_not_empty(ret_2)):
+#     #                     ret_0 = sadd(ret_1, ret_2)
+#     #                     if (is_not_empty(ret_0)):
+#     #                         answers.append(ret_0)
+#     #
+#     #     eval = h(answers)
+#     #     if PRINTBTSTACK:
+#     #         decr()
+#     #         print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#     #     if name in tables:
+#     #         tables[name].bt_set_v2( t_0_i, t_0_j, eval)
+#     #         return tables[name].bt_get_v2(t_0_i, t_0_j)
+#     #     else:
+#     #         return eval
+#
+# if False:
+#     def bt_dangle(t_0_i:int, t_0_j:int, name="dangle") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # Productions
+#         sys.exit()
+#
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#             #print(answers, h(answers))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#     def bt_hairpin(t_0_i:int, t_0_j:int, name="hairpin") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         sys.exit()
+#
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#     def bt_iloop(t_0_i:int, t_0_j:int, name="iloop") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         sys.exit()
+#
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#     def bt_leftB(t_0_i:int, t_0_j:int, name="leftB") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         # bl(BASE, REGION, strong, BASE) -> weak
+#         if (((t_0_j - t_0_i) >= 8)):
+#             if (basepair(t_0_seq, t_0_i, t_0_j)):
+#                 t_0_k_0 = t_0_i + 2
+#                 while ((t_0_k_0 <= (t_0_j - 6)) and (t_0_k_0 <= (t_0_i + 31))):
+#                     ret_4 = BASE(t_0_seq, (t_0_j - 1), t_0_j)
+#                     if (is_not_empty(ret_4)):
+#                         if ((maxsize(t_0_seq, (t_0_i + 1), t_0_k_0, 30) and unpaired(t_0_seq, (t_0_i + 1), t_0_k_0))):
+#                             ret_2 = REGION(t_0_seq, (t_0_i + 1), t_0_k_0)
+#                             if (is_not_empty(ret_2)):
+#                                 ret_1 = BASE(t_0_seq, t_0_i, (t_0_i + 1))
+#                                 if (is_not_empty(ret_1)):
+#                                     ret_3 = 0# bt_weak(t_0_i, t_0_j)
+#                                     print("calling weak(%i,%i) region(%i,%i)" % (t_0_i, t_0_j, t_0_i+1, t_0_k_0))
+#                                     if (is_not_empty(ret_3)):
+#                                         res = bl(ret_1, ret_2, ret_3, ret_4)
+#                                         answers.append(res)
+#                     t_0_k_0 += 1
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#     def bt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#         answers = []
+#
+#         # productions:
+#         sys.exit()
+#
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#     def bt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#         answers = []
+#
+#         # productions:
+#         sys.exit()
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#     def bt_multiloop(t_0_i:int, t_0_j:int, name="multiloop") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#         answers = []
+#
+#         # productions:
+#         sys.exit()
+#
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#     def bt_rightB(t_0_i:int, t_0_j:int, name="rightB") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#         answers = []
+#
+#         # productions:
+#         sys.exit()
+#
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#     def bt_stack(t_0_i:int, t_0_j:int, name="stack") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#         answers = []
+#
+#         # productions:
+#         sys.exit()
+#
+#
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#     def bt_strong(t_0_i:int, t_0_j:int, name="strong") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         sys.exit()
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#     def bt_struct(t_0_i:int, t_0_j:int, name="struct") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         sys.exit()
+#
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#     def bt_weak(t_0_i:int, t_0_j:int, name="weak") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         sys.exit()
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, 0, eval)
+#             return tables[name].bt_get(t_0_i, 0)
+#         else:
+#             return eval
+#
+# if False:
+#     def bt_dangle(t_0_i:int, t_0_j:int, name="dangle") -> float:
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # cadd(incl(*dangle*), ml_comps1)
+#         if (((t_0_j + 5) <= len(t_0_seq))):
+#             t_0_k_0 = (t_0_j + 5)
+#             while (t_0_k_0 <= len(t_0_seq)):
+#                 ret_6 = nt_ml_comps1(t_0_j, t_0_k_0)
+#                 if (is_not_empty(ret_6)):
+#                     if (((t_0_k_0 - t_0_i) >= 10)):
+#                         ret_5 = bt_ml_comps1(t_0_i, t_0_k_0) # nt_dangle(t_0_i, t_0_k_0)
+#                         if (is_not_empty(ret_5)):
+#                             ret_4 = incl(ret_5)
+#                             if (is_not_empty(ret_4)):
+#                                 res = cadd(ret_4, ret_6)
+#                                 answers.append(res)
+#                 t_0_k_0 += 1
+#
+#         # incl(*dangle*)
+#         #if (((t_0_j - t_0_i) >= 5)):
+#         ret_8 = bt_ml_comps1(t_0_i, t_0_j) # nt_dangle(t_0_i, t_0_j)
+#         if (is_not_empty(ret_8)):
+#             ret_7 = incl(ret_8)
+#             if (is_not_empty(ret_7)):
+#                 answers.append(ret_7)
+#
+#         # addss(incl(*dangle*), REGION)
+#         if (((t_0_j + 1) <= len(t_0_seq))):
+#             t_0_k_1 = (t_0_j + 1)
+#             while (t_0_k_1 <= len(t_0_seq)):
+#                 if (unpaired(t_0_seq, t_0_j, t_0_k_1)):
+#                     ret_12 = REGION(t_0_seq, t_0_j, t_0_k_1)
+#                     if (is_not_empty(ret_12)):
+#                         if (((t_0_k_1 - t_0_i) >= 6)):
+#                             ret_11 = bt_ml_comps1(t_0_i, t_0_k_1) # nt_dangle(t_0_i, t_0_k_1)
+#                             if (is_not_empty(ret_11)):
+#                                 ret_10 = incl(ret_11)
+#                                 if (is_not_empty(ret_10)):
+#                                     res = addss(ret_10, ret_12)
+#                                     answers.append(res)
+#                 t_0_k_1 += 1
+#
+#         # cadd(incl(*dangle*), ml_comps1)
+#         if (((t_0_j + 5) <= len(t_0_seq))):
+#             t_0_k_0 = (t_0_j + 5)
+#             while (t_0_k_0 <= len(t_0_seq)):
+#                 ret_6 = nt_ml_comps1(t_0_j, t_0_k_0)
+#                 if (is_not_empty(ret_6)):
+#                     if (((t_0_k_0 - t_0_i) >= 10)):
+#                         ret_5 = bt_ml_comps(t_0_i, t_0_k_0) # nt_dangle(t_0_i, t_0_k_0)
+#                         if (is_not_empty(ret_5)):
+#                             ret_4 = incl(ret_5)
+#                             if (is_not_empty(ret_4)):
+#                                 res = cadd(ret_4, ret_6)
+#                                 answers.append(res)
+#                 t_0_k_0 += 1
+#
+#         # cadd(*dangle*, struct)
+#         # if True: # (t_0_i <= 0) and (t_0_j >= len(t_0_seq)):
+#         #     ret_5 = nt_struct(t_0_j)
+#         #     if (is_not_empty(ret_5)):
+#         #         ret_4 = bt_struct(t_0_i)
+#         #         if (is_not_empty(ret_4)):
+#         #             ret_0 = cadd(ret_4, ret_5)
+#         #             answers.append(ret_0)
+#         # if (((t_0_j + 0 <= len(t_0_seq)))):
+#             t_0_k_0 = t_0_j
+#             while (t_0_k_0 <= len(t_0_seq)):
+#                 #print("nt_dangle(%i,%i) = " % (t_0_i,t_0_j))
+#                 ret_5 = nt_struct(t_0_k_0)
+#                 if (is_not_empty(ret_5)):
+#                     ret_4 = bt_struct(t_0_k_0) # nt_dangle(t_0_i, t_0_k_0)
+#                     if (is_not_empty(ret_4)):
+#                         ret_0 = cadd(ret_4, ret_5)
+#                         answers.append(ret_0)
+#                 t_0_k_0 += 1
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#             #print(answers, h(answers))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#     def bt_hairpin(t_0_i:int, t_0_j:int, name="hairpin") -> float:
+#         #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
+#         #    return float_zero
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         # hl(BASE, REGION, BASE)
+#         if False:
+#             if (((t_0_j - t_0_i) >= 5)):
+#                 if (basepair(t_0_seq, t_0_i, t_0_j)):
+#                     ret_3 = BASE(t_0_seq, (t_0_j - 1), t_0_j)
+#                     if (is_not_empty(ret_3)):
+#                         ret_2 = np.nan;
+#                         if ((minsize(t_0_seq, (t_0_i + 1), (t_0_j - 1), 3) and unpaired(t_0_seq, (t_0_i + 1), (t_0_j - 1)))):
+#                             ret_2 = REGION(t_0_seq, (t_0_i + 1), (t_0_j - 1))
+#                             if (is_not_empty(ret_2)):
+#                                 ret_1 = BASE(t_0_seq, t_0_i, (t_0_i + 1))
+#                                 if (is_not_empty(ret_1)):
+#                                     ret_0 = hl(ret_1, ret_2, ret_3)
+#                                     if (is_not_empty(ret_0)):
+#                                         answers.append(ret_0)
+#
+#         # hairpin
+#         ret_2 = bt_weak(t_0_i, t_0_j) #nt_hairpin(t_0_i, t_0_j)
+#         if (is_not_empty(ret_2)):
+#             answers.append(ret_2)
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#     def bt_iloop(t_0_i:int, t_0_j:int, name="iloop") -> float:
+#         #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
+#         #    return float_zero
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         # iloop
+#         ret_5 = bt_weak(t_0_i, t_0_j) #nt_iloop(t_0_i, t_0_j)
+#         if (is_not_empty(ret_5)):
+#             answers.append(ret_5)
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#     def bt_leftB(t_0_i:int, t_0_j:int, name="leftB") -> float:
+#         #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
+#         #    return float_zero
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         # leftB
+#         ret_3 = bt_weak(t_0_i, t_0_j) #nt_leftB(t_0_i, t_0_j)
+#         if (is_not_empty(ret_3)):
+#             answers.append(ret_3)
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#     def bt_ml_comps(t_0_i:int, t_0_j:int, name="ml_comps") -> float:
+#         #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
+#         #    return float_zero
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#         answers = []
+#
+#         # productions:
+#         # sadd(BASE, *ml_comps*)
+#         #if (((t_0_j - t_0_i-1) >= 11)):
+#         if (t_0_i-1 >= 0):
+#             if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
+#                 ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
+#                 if (is_not_empty(ret_1)):
+#                     ret_2 = bt_ml_comps(t_0_i-1,t_0_j) #nt_ml_comps((t_0_i + 1), t_0_j)
+#                     if (is_not_empty(ret_2)):
+#                         ret_0 = sadd(ret_1, ret_2)
+#                         if (is_not_empty(ret_0)):
+#                             answers.append(ret_0)
+#
+#         # ml(BASE, ml_comps, BASE)
+#         #if (((t_0_j - t_0_i-2) >= 12)):
+#         if (t_0_i-1 >= 0) and (t_0_j+1 <= len(t_0_seq)):
+#             if (basepair(t_0_seq, t_0_i-1, t_0_j+1)):
+#                 ret_3 = BASE(t_0_seq, t_0_j, t_0_j+1)
+#                 if (is_not_empty(ret_3)):
+#                     ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
+#                     if (is_not_empty(ret_1)):
+#                         #ret_2 = bt_multiloop(t_0_i+1, t_0_j-1) # nt_ml_comps((t_0_i + 1), (t_0_j - 1))
+#                         ret_2 = bt_multiloop(t_0_i-1, t_0_j+1) # nt_ml_comps((t_0_i + 1), (t_0_j - 1))
+#                         if (is_not_empty(ret_2)):
+#                             ret_0 = ml(ret_1, ret_2, ret_3)
+#                             if (is_not_empty(ret_0)):
+#                                 answers.append(ret_0)
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#     def bt_ml_comps1(t_0_i:int, t_0_j:int, name="ml_comps1") -> float:
+#         #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
+#         #    return float_zero
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#         answers = []
+#
+#         # productions:
+#         # cadd(incl(dangle), *ml_comps1*)
+#         if (((t_0_j - t_0_i) >= 5)):
+#             t_0_k_0 = t_0_i - 5
+#             while (t_0_k_0 >= 0):
+#                 ret_6 = bt_ml_comps(t_0_k_0, t_0_j) # nt_ml_comps1(t_0_k_0, t_0_j)
+#                 if (is_not_empty(ret_6)):
+#                     if (((t_0_k_0 - t_0_j) >= 10)):
+#                         ret_5 = nt_dangle(t_0_k_0, t_0_i)
+#                         if (is_not_empty(ret_5)):
+#                             ret_4 = incl(ret_5)
+#                             if (is_not_empty(ret_4)):
+#                                 res = cadd(ret_4, ret_6)
+#                                 answers.append(res)
+#                 t_0_k_0 -= 1
+#
+#         # sadd(BASE, *ml_comps1*)
+#         #if (((t_0_j - t_0_i-1) >= 6)):
+#         if (t_0_i-1 >= 0):
+#             if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
+#                 ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
+#                 if (is_not_empty(ret_1)):
+#                     #ret_2 = bt_ml_comps1(t_0_i+1, t_0_j) # nt_ml_comps1((t_0_i + 1), t_0_j)
+#                     ret_2 = bt_ml_comps1(t_0_i-1, t_0_j) # nt_ml_comps1((t_0_i + 1), t_0_j)
+#                     if (is_not_empty(ret_2)):
+#                         ret_0 = sadd(ret_1, ret_2)
+#                         if (is_not_empty(ret_0)):
+#                             answers.append(ret_0)
+#
+#         # cadd(incl(dangle), *ml_comps1*)
+#         if (((t_0_j - t_0_i) >= 10)):
+#             t_0_k_0 = (t_0_i - 5)
+#             while (t_0_k_0 >= 0):
+#                 ret_6 = bt_ml_comps1(t_0_k_0, t_0_j) # nt_ml_comps1(t_0_k_0, t_0_j)
+#                 if (is_not_empty(ret_6)):
+#                     if (((t_0_k_0 - t_0_i) >= 5)):
+#                         ret_5 = nt_dangle(t_0_k_0, t_0_i)
+#                         if (is_not_empty(ret_5)):
+#                             ret_4 = incl(ret_5)
+#                             if (is_not_empty(ret_4)):
+#                                 res = cadd(ret_4, ret_6)
+#                                 answers.append(res)
+#                 t_0_k_0 -= 1
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#     def bt_multiloop(t_0_i:int, t_0_j:int, name="multiloop") -> float:
+#         #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
+#         #    return float_zero
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#         answers = []
+#
+#         # productions:
+#         # multiloop
+#         ret_6 = bt_weak(t_0_i, t_0_j) # nt_multiloop(t_0_i, t_0_j)
+#         if (is_not_empty(ret_6)):
+#             answers.append(ret_6)
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#     def bt_rightB(t_0_i:int, t_0_j:int, name="rightB") -> float:
+#         #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
+#         #    return float_zero
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#         answers = []
+#
+#         # productions:
+#         # rightB
+#         ret_4 = bt_weak(t_0_i, t_0_j) # nt_rightB(t_0_i, t_0_j)
+#         if (is_not_empty(ret_4)):
+#             answers.append(ret_4)
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#     def bt_stack(t_0_i:int, t_0_j:int, name="stack") -> float:
+#         #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
+#         #    return float_zero
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#         answers = []
+#
+#         # productions:
+#         # stack
+#         ret_1 = bt_weak(t_0_i, t_0_j) # nt_stack(t_0_i, t_0_j)
+#         if (is_not_empty(ret_1)):
+#             answers.append(ret_1)
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#     def bt_strong(t_0_i:int, t_0_j:int, name="strong") -> float:
+#         #if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
+#         #    return float_zero
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         # drem(LOC, *strong*, LOC)
+#         if (t_0_i >= 0) and (t_0_j <= len(t_0_seq)):
+#             ret_3 = LOC(t_0_seq, t_0_j, t_0_j)
+#             if (is_not_empty(ret_3)):
+#                 ret_1 = LOC(t_0_seq, t_0_i, t_0_i)
+#                 if (is_not_empty(ret_1)):
+#                     ret_2 = bt_dangle(t_0_i, t_0_j) # nt_strong(t_0_i, t_0_j)
+#                     if (is_not_empty(ret_2)):
+#                         ret_0 = drem(ret_1, ret_2, ret_3)
+#                         if (is_not_empty(ret_0)):
+#                             answers.append(ret_0)
+#
+#         # br(BASE, *strong*, REGION, BASE)
+#         #if (((t_0_j - t_0_i) >= 8)):
+#         if (t_0_i-1 >= 0):
+#             t_0_k_0 = t_0_j+2 #((t_0_j - 31)) if (((t_0_j - (t_0_i + 6)) >= 31)) else ((t_0_i + 6))
+#             while (t_0_k_0 <= len(t_0_seq)):
+#                 if (basepair(t_0_seq, t_0_i-1, t_0_k_0)):
+#                     ret_4 = BASE(t_0_seq, (t_0_k_0 - 1), t_0_k_0)
+#                     if (is_not_empty(ret_4)):
+#                         if (maxsize(t_0_seq, t_0_j, t_0_k_0 - 1, 30) and unpaired(t_0_seq, t_0_j, t_0_k_0-1)):
+#                             ret_3 = REGION(t_0_seq, t_0_j, t_0_k_0 - 1)
+#                             if (is_not_empty(ret_3)):
+#                                 ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
+#                                 if (is_not_empty(ret_1)):
+#                                     #ret_2 = bt_rightB(t_0_i+1, t_0_k_0) # nt_strong((t_0_i + 1), t_0_k_0)
+#                                     ret_2 = bt_rightB(t_0_i-1, t_0_k_0) # nt_strong((t_0_i + 1), t_0_k_0)
+#                                     if (is_not_empty(ret_2)):
+#                                         res = br(ret_1, ret_2, ret_3, ret_4)
+#                                         answers.append(res)
+#                 t_0_k_0 += 1
+#
+#         # il(BASE, REGION, *strong*, REGION, BASE)
+#         if (((t_0_j - t_0_i) >= 9)):
+#             t_0_k_0 = t_0_i - 2
+#             while ((t_0_k_0 >= 0) and (t_0_i - t_0_k_0 <= 31)):
+#                 t_0_k_1 = t_0_j+2#((t_0_j - 31)) if (((t_0_j - (t_0_k_0 + 5)) >= 31)) else ((t_0_k_0 + 5))
+#                 while (t_0_k_1 <= len(t_0_seq)):
+#                     if (basepair(t_0_seq, t_0_k_0, t_0_k_1)):
+#                         ret_5 = BASE(t_0_seq, t_0_k_1-1, t_0_k_1)
+#                         if (is_not_empty(ret_5)):
+#                             if ((maxsize(t_0_seq, t_0_j, t_0_k_1 - 1, 30) and unpaired(t_0_seq, t_0_j, t_0_k_1 - 1))):
+#                                 ret_4 = REGION(t_0_seq, t_0_j, t_0_k_1 - 1)
+#                                 if (is_not_empty(ret_4)):
+#                                     if ((maxsize(t_0_seq, t_0_k_0+1, t_0_i, 30) and unpaired(t_0_seq, (t_0_k_0 + 1), t_0_i))):
+#                                         ret_2 = REGION(t_0_seq, t_0_k_0 + 1, t_0_i)
+#                                         if (is_not_empty(ret_2)):
+#                                             ret_1 = BASE(t_0_seq, t_0_k_0, t_0_k_0 + 1)
+#                                             if (is_not_empty(ret_1)):
+#                                                 ret_3 = bt_iloop(t_0_k_0, t_0_k_1) # nt_strong(t_0_k_0, t_0_k_1)
+#                                                 if (is_not_empty(ret_3)):
+#                                                     res = il(ret_1, ret_2, ret_3, ret_4, ret_5)
+#                                                     answers.append(res)
+#                     t_0_k_1 += 1
+#                 t_0_k_0 -= 1
+#
+#         # bl(BASE, REGION, *strong*, BASE)
+#         if (t_0_i-2 >= 0) and (t_0_j+1 <= len(t_0_seq)):# (((t_0_j - t_0_i) >= 8)):
+#             t_0_k_0 = t_0_i - 2
+#             while (t_0_k_0 >= 0):#((t_0_k_0 <= (t_0_j - 6)) and (t_0_k_0 <= (t_0_i + 31))):
+#                 if (basepair(t_0_seq, t_0_k_0, t_0_j+1)):
+#                     ret_4 = BASE(t_0_seq, t_0_j, t_0_j+1)
+#                     if (is_not_empty(ret_4)):
+#                         if ((maxsize(t_0_seq, (t_0_k_0 + 1), t_0_i, 30) and unpaired(t_0_seq, (t_0_k_0 + 1), t_0_i))):
+#                             ret_2 = REGION(t_0_seq, (t_0_k_0 + 1), t_0_i)
+#                             if (is_not_empty(ret_2)):
+#                                 ret_1 = BASE(t_0_seq, t_0_k_0, t_0_k_0 + 1)
+#                                 if (is_not_empty(ret_1)):
+#                                     #ret_3 = bt_leftB(t_0_k_0, t_0_j-1) # nt_strong(t_0_k_0, (t_0_j - 1))
+#                                     ret_3 = bt_leftB(t_0_k_0, t_0_j+1) # nt_strong(t_0_k_0, (t_0_j - 1))
+#                                     if (is_not_empty(ret_3)):
+#                                         res = bl(ret_1, ret_2, ret_3, ret_4)
+#                                         answers.append(res)
+#                 t_0_k_0 -= 1
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#     def bt_struct(t_0_i:int, name="struct") -> float:
+#         t_0_j = 0
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         # sadd(BASE, *struct*)
+#         if (t_0_i - 1 >= 0):
+#             if (unpaired(t_0_seq, t_0_i-1, t_0_i)):
+#                 ret_1 = BASE(t_0_seq, t_0_i-1, t_0_i)
+#                 if (is_not_empty(ret_1)):
+#                     #ret_2 = bt_struct(t_0_i+1, t_0_j) # nt_struct((t_0_i + 1))
+#                     ret_2 = bt_struct(t_0_i-1) # nt_struct((t_0_i + 1))
+#                     if (is_not_empty(ret_2)):
+#                         ret_0 = sadd(ret_1, ret_2)
+#                         if (is_not_empty(ret_0)):
+#                             answers.append(ret_0)
+#
+#         # # cadd(dangle, *struct*)
+#         # ret_5 = nt_struct(t_0_j)
+#         # if (is_not_empty(ret_5)):
+#         #     ret_4 = bt_struct(t_0_i)
+#         #     if (is_not_empty(ret_4)):
+#         #         ret_0 = cadd(ret_4, ret_5)
+#         #         answers.append(ret_0)
+#         if (((t_0_i-5) >= 0)):
+#             t_0_k_0 = (t_0_i - 5)
+#             while (t_0_k_0 >= 0):
+#                 ret_5 = bt_struct(t_0_k_0) # nt_struct(t_0_k_0)
+#                 if (is_not_empty(ret_5)):
+#                     ret_4 = nt_dangle(t_0_k_0, t_0_i)
+#                     if (is_not_empty(ret_4)):
+#                         ret_0 = cadd(ret_4, ret_5)
+#                         answers.append(ret_0)
+#                 t_0_k_0 -= 1
+#
+#         # # # nil(LOC)
+#         # if (t_0_i == 0):
+#         #     ret_7 = LOC(t_0_seq, t_0_i, t_0_i)
+#         #     if (is_not_empty(ret_7)):
+#         #         ret_6 = nil(ret_7);
+#         #         if (is_not_empty(ret_6)):
+#         #             answers.append(ret_6)
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#     def bt_weak(t_0_i:int, t_0_j:int, name="weak") -> float:
+#         if (t_0_i < 0) or (t_0_j > len(t_0_seq)):
+#             return float_zero
+#         if name in tables:
+#             if (tables[name].bt_is_tabulated(t_0_i, t_0_j)):
+#                 if PRINTBTSTACK:
+#                     print("%sretrieved bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, tables[name].bt_get(t_0_i, t_0_j)))
+#                 return tables[name].bt_get(t_0_i, t_0_j)
+#         if PRINTBTSTACK:
+#             print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+#             incr()
+#
+#         answers = []
+#
+#         # productions:
+#         # sr(BASE, weak, BASE)
+#         if (allowLonelyBasepairs(t_0_seq, t_0_i, t_0_j, False)):
+#             if (t_0_i-1 >= 0) and (t_0_j+1 <= len(t_0_seq)):#if (((t_0_j - t_0_i) >= 7)):
+#                 if (basepair(t_0_seq, t_0_i, t_0_j)):
+#                     ret_4 = BASE(t_0_seq, (t_0_j ), t_0_j+1)
+#                     if (is_not_empty(ret_4)):
+#                         ret_2 = BASE(t_0_seq, t_0_i-1, (t_0_i ))
+#                         if (is_not_empty(ret_2)):
+#                             #ret_3 = bt_strong(t_0_i+1, t_0_j-1) # nt_weak((t_0_i + 1), (t_0_j - 1))
+#                             ret_3 = bt_strong(t_0_i-1, t_0_j+1) # nt_weak((t_0_i + 1), (t_0_j - 1))
+#                             if (is_not_empty(ret_3)):
+#                                 ret_0 = sr(ret_2, ret_3, ret_4)
+#                                 if (is_not_empty(ret_0)):
+#                                     answers.append(ret_0)
+#
+#         # weak
+#         if (allowLonelyBasepairs(t_0_seq, t_0_i, t_0_j, True)):
+#             ret_5 = bt_strong(t_0_i, t_0_j) # nt_weak(t_0_i, t_0_j)
+#             if (is_not_empty(ret_5)):
+#                answers.append(ret_5)
+#
+#         # sr(BASE, *weak*, BASE)
+#         if (t_0_i-1 >= 0) and (t_0_j+1 <= len(t_0_seq)):#(((t_0_j - t_0_i) >= 7)):
+#            if (basepair(t_0_seq, t_0_i, t_0_j)):
+#              ret_3 = BASE(t_0_seq, (t_0_j ), t_0_j+1)
+#              if (is_not_empty(ret_3)):
+#                ret_1 = BASE(t_0_seq, t_0_i-1, (t_0_i))
+#                if (is_not_empty(ret_1)):
+#                  #ret_2 = bt_stack(t_0_i+1, t_0_j-1) # nt_weak((t_0_i + 1), (t_0_j - 1))
+#                  ret_2 = bt_stack(t_0_i-1, t_0_j+1) # nt_weak((t_0_i + 1), (t_0_j - 1))
+#                  if (is_not_empty(ret_2)):
+#                      ret_0 = sr(ret_1, ret_2, ret_3)
+#                      if (is_not_empty(ret_0)):
+#                          answers.append(ret_0)
+#
+#         eval = h(answers)
+#         if PRINTBTSTACK:
+#             decr()
+#             print("%s} set bt_%s(%i,%i) = %s" % (INDENT, name, t_0_i, t_0_j, eval))
+#         if name in tables:
+#             tables[name].bt_set( t_0_i, t_0_j, eval)
+#             return tables[name].bt_get(t_0_i, t_0_j)
+#         else:
+#             return eval
+#
 
 msg = "Function '%s' for algebra '%s' is not implemented (yet?)!"
 def addss(x:float, r:Basic_Subsequence):
@@ -2235,7 +2269,7 @@ def backtrace(t_0_i:int, t_0_j:int, name:str) -> float:
         return tables[name].bt_get(t_0_i, t_0_j)
 
     if PRINTBTSTACK:
-        print("%scall bt_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
+        print("%scall backtrace_%s(%i,%i) {" % (INDENT, name, t_0_i, t_0_j))
         incr()
 
     answers = []
@@ -2260,6 +2294,6 @@ def backtrace(t_0_i:int, t_0_j:int, name:str) -> float:
     eval = h(answers)
     if PRINTBTSTACK:
         decr()
-        print("%s} set bt_%s(%i,%i) = %s %s" % (INDENT, name, t_0_i, t_0_j, eval, rep))
+        print("%s} set backtrace_%s(%i,%i) = %s %s" % (INDENT, name, t_0_i, t_0_j, eval, rep))
     tables[name].bt_set( t_0_i, t_0_j, eval)
     return tables[name].bt_get(t_0_i, t_0_j)
