@@ -305,7 +305,7 @@ inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpai
 		    while (getline (infile,line)) {
 				char *thisLine = strdup(line.c_str());
 			//we expect each line to hold the base position (starting with 1) and the reactivity.
-				if (strcmp(thisLine,"&&")==0){
+				if (strcmp(thisLine,"&")==0){
 					sep = probingData.size();
 					continue;
 				}
