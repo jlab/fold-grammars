@@ -332,20 +332,28 @@ inline double getReactivityScore(const Subsequence &leftBase, const bool isUnpai
 		}
 
         
-        // centroid normalization not yet working for two track inputs
+        // centroid normalization
 		if (strcmp(getProbing_normalization(), "centroid") == 0) {		
             int numData = probingData.size();
+			Subsequence base = leftBase;
 			double *data = (double *) malloc(sizeof(double) * numData);
 			int i = 0;
 			int j = 0;
+			int k;
 			for (i = 0; i < numData; i++) {
-				if ((modifier == "DMS") && (leftBase[i] != A_BASE) && (leftBase[i] != C_BASE)) {
+				k = i;
+				if (offset){
+					if(i >= (int) inputSequences.at(0).second || i >= sep){
+						base = offsetBase;
+						k = i - sep;
+					}
+				}
+				if ((modifier == "DMS") && (base[k] != A_BASE) && (base[k] != C_BASE)) {
 					continue;
 				}
-				if ((modifier == "CMCT") && (leftBase[i] != U_BASE) && (leftBase[i] != G_BASE)) {
+				if ((modifier == "CMCT") && (base[k] != U_BASE) && (base[k] != G_BASE)) {
 					continue;
 				}
-
 				if (probingData.at(i) < 0) {
 					data[j] = 0.0;
 					probingData.at(i) = 0.0;
