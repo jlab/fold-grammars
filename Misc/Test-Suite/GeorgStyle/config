@@ -168,3 +168,10 @@ check_new_old_eq rnahybrid.gap twotrack mfepp cCUAaACAACCUGCUcCCUCu rnahybrid_en
 check_new_old_eq rnahybrid.gap twotrack mfepp aAAgCACACAGgCaaucCUACUUCA rnahybrid_energydiff9 UUgGUGUGUUgGauGAUGGAGU
 
 check_new_old_eq rnahybrid.gap twotrack mde UGAGGUAGUAGGUUgUauAGUU rnahybrid_mde ACUCCAUCAUCCAAcAuaUCAA
+
+# test RNAhybrid with structure probing data
+GAPC="$BASE/bin/gapc -t -I../../../../"
+RUN_CPP_FLAGS="-S ../../KatharinaStyle/rnahybrid.shape -N asProbabilities"
+check_new_old_eq rnahybrid.gap rna probingenum AAGG rnahybrid_probingenum1 UUCC
+check_new_old_eq rnahybrid.gap rna probingenum ACCU rnahybrid_probingenum2 UCCA
+check_new_old_eq rnahybrid.gap rna probingenum ACUG rnahybrid_probingenum3 ACUG

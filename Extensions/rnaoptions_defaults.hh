@@ -157,5 +157,5 @@
 		return false;
 	}
 #endif
-	
+
 #endif //RNAOPTIONS_DEFAULTS_HH
