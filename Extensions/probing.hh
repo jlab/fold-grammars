@@ -362,10 +362,12 @@ inline double getReactivityScore(const Subsequence &inputSubseq, const bool isUn
 			  }
         j++;
       }
+	  free(data);
       double *centroids = (double *) malloc(sizeof(double) * 2);
       kmeans(2,j,data,centroids);
       clusterUnpaired = centroids[0];
       clusterPaired = centroids[1];
+	  free(centroids);
     }
     
 	  if (strcmp(getProbing_normalization(), "RNAstructure") == 0) {
