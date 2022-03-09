@@ -71,7 +71,10 @@
 	}
 	inline static const char* getProbing_normalization() {
 		return gapc::Opts::getOpts()->probing_normalization;
-	}
+    }
+    inline static std::vector<std::pair<const char*, unsigned> > getInputs() {
+        return gapc::Opts::getOpts()->inputs;
+    }
 	inline static int getConsensusType() {
 		return gapc::Opts::getOpts()->consensusType;
 	}
@@ -142,6 +145,11 @@
 	inline static const char* getProbing_normalization() {
 		return "centroid";
 	}
+    inline static std::vector<std::pair<const char*, unsigned> > getInputs() {
+        std::vector<std::pair<const char*, unsigned> > emptyInput;
+        emptyInput.push_back(std::make_pair((char*)"", 0));
+        return(emptyInput);
+    }
 	inline static int getConsensusType() {
 		return 0;
 	}
@@ -149,5 +157,5 @@
 		return false;
 	}
 #endif
-	
+
 #endif //RNAOPTIONS_DEFAULTS_HH
