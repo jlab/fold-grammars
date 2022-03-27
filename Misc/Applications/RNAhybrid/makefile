@@ -36,8 +36,8 @@ subopt_%:
 probing: probing_rnahybrid
 probing_%:
 	$(MAKE) compile \
-		gapc_product="alg_probing * alg_mfe * alg_pretty" \
-		gapc_options="--kbacktrace --no-coopt $(windowmodeflag)" \
+		gapc_product="(alg_probing ^ alg_mfe) * alg_pretty" \
+		gapc_options="--kbacktrace $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
