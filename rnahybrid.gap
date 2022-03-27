@@ -488,6 +488,7 @@ instance suboptpp = gra_rnahybrid(alg_mfe_subopt * alg_pretty);
 instance probing = gra_rnahybrid(alg_probing);
 instance probingenum = gra_rnahybrid(alg_probing * alg_enum);
 instance enumprobing = gra_rnahybrid(alg_enum * alg_probing);
+instance probingmfepp = gra_rnahybrid((alg_probing ^ alg_mfe) * alg_pretty);
 
 // don't remove the mde instance as it is used for p-value computation
 instance mde = gra_maxduplex(alg_mfe);
