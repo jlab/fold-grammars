@@ -175,3 +175,6 @@ RUN_CPP_FLAGS="-S ../../KatharinaStyle/rnahybrid.shape -N asProbabilities"
 check_new_old_eq rnahybrid.gap rna probingenum AAGG rnahybrid_probingenum1 UUCC
 check_new_old_eq rnahybrid.gap rna probingenum ACCU rnahybrid_probingenum2 UCCA
 check_new_old_eq rnahybrid.gap rna probingenum ACUG rnahybrid_probingenum3 ACUG
+check_new_old_eq rnahybrid.gap rna probingmfepp AAGG rnahybrid_probingmfepp1 UUCC
+check_new_old_eq rnahybrid.gap rna probingmfepp ACCU rnahybrid_probingmfepp2 UCCA
+check_new_old_eq rnahybrid.gap rna probingmfepp ACUG rnahybrid_probingmfepp3 ACUG
