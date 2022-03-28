@@ -7,7 +7,7 @@ PROGRAMPREFIX=RNAhybrid_
 all:
 	$(MAKE) all_normal
 
-all_normal: mfe subopt mde
+all_normal: mfe subopt probing mde
 
 
 install: install-lib install-program
@@ -29,6 +29,14 @@ subopt: subopt_rnahybrid
 subopt_%:
 	$(MAKE) compile \
 		gapc_product="alg_mfe_subopt * alg_pretty" \
+		gapc_options="--kbacktrace $(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
+
+probing: probing_rnahybrid
+probing_%:
+	$(MAKE) compile \
+		gapc_product="(alg_probing ^ alg_mfe) * alg_pretty" \
 		gapc_options="--kbacktrace $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
