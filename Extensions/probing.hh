@@ -7,11 +7,15 @@
 #include <time.h>
 
 #define ARRAYLOOKUP // use array to store calc results
+
 #ifdef ARRAYLOOKUP
-//#define PRECALC // precalculate everything and store results in array (use in combination w/ ARRAYLOOKUP)
+// can use TRIU_ONLY and/or PRECALC in combination w/ ARRAYLOOKUP
+#define TRIU_ONLY // only store the upper triangular matrix for the scores lookup (more complicated indexing, half the memory)
+//#define PRECALC // precalculate everything and store results in array
 #endif
 
 //#define HASHLOOKUP // use hashmap to store calc results
+
 #ifdef HASHLOOKUP
 //#define PRINT_INFO // turn on to print debugging information in hash lookup version
 #endif
@@ -36,15 +40,21 @@
   -major adjustments:
 	-GetReactivityScore (hash version):
 		-keep track of already calculated scores by hashing the function parameters and
-	  	performing a simple hashmap lookup to see if the function was aleady called once
-	  	w/ the same parameters (separately for inputSubseq and offsetSubseq);
-		if so, simply return the previously calculated result 
+	  	 performing a simple hashmap lookup to see if the function was aleady called once
+	  	 w/ the same parameters (separately for inputSubseq and offsetSubseq);
+		 if so, simply return the previously calculated result 
 		-makes code about about 5-10x faster, speedup seems to grow expontentially w/ input
 
 	-GetReactivityScore (array version):
 		-store previously calculated results in one (single track) or two (two track) matrices
-		-and simply retrieve the previously calculated results if they exist
+		 and simply retrieve the previously calculated results if they exist
 		-makes code about 1.5-2x faster the the hash version
+		-optional: 
+			-calculate all possible scores once and only do lookups whenever the
+		     function is called after the initial calculation (slower than adding scores dynamically)
+			-store only the upper triangular matrix to store the results
+			 (makes calculating the correct indices more complicated,
+			  but only requires half the memory and is slightly faster)
 */
 
 //Stefans own 1-dimensional k-means clustering
@@ -472,8 +482,8 @@ inline double getReactivityScore(const Subsequence &inputSubseq, const bool isUn
 
 #ifdef PRECALC
 inline double calculateScoreAdj(const unsigned int Base_i, const unsigned int Base_j, const Subsequence &Base,
-                                const bool isUnpaired, const std::vector<double>& probingData, const double clusterPaired, 
-								const double clusterUnpaired, const std::string& modifier)
+                                const unsigned int isUnpaired, const std::vector<double>& probingData, 
+								const double clusterPaired, const double clusterUnpaired, const std::string& modifier)
 {
 	double score = 0.0;
 
@@ -503,14 +513,46 @@ inline double getReactivityScore(const Subsequence &inputSubseq, const bool isUn
 	static std::vector<double> off_probingData;
 	static std::vector<double> probingData;
 
-	unsigned int iLen = inputSubseq.seq->n;
-	unsigned int oLen = offsetSubseq.seq->n;
+	static unsigned int iLen = inputSubseq.seq->n;
+	static unsigned int oLen = offsetSubseq.seq->n;
+
+	#ifdef TRIU_ONLY
+	/*
+	  -store only the upper triangular matrix (as a 1d array)
+	  -makes figuring out the correct indices a bit more
+	   complicated and adds slightly more compute
+	  -roughly cuts the required memory in half
+	*/
+
+	static unsigned int iTriuSum = (iLen*(iLen+1)) / 2;
+	static unsigned int oTriuSum = (oLen*(oLen+1)) / 2;
+	
+	unsigned int currI_TrilSum = (inputSubseq.i * (inputSubseq.i + 1)) / 2;
+	unsigned int currO_TrilSum = (offsetSubseq.i * (offsetSubseq.i + 1)) / 2;
+
+	unsigned long iIndex = (iTriuSum * isUnpaired) + inputSubseq.i * iLen + inputSubseq.j - currI_TrilSum;
+	unsigned long oIndex = (oTriuSum * isUnpaired) + offsetSubseq.i * oLen + offsetSubseq.j - currO_TrilSum;
+
+	static double* iSubseqScores = new double[iTriuSum*2]();
+
+	// only allocate array for offset Subseq scores if offset is true
+	static double* oSubseqScores = offset ? new double[oTriuSum*2]() : iSubseqScores;
+
+	#else
+	/*
+	  allocate n*n matrix as single dimensional array and initialize values to 0
+	  -makes indexing easier
+	  -requires roughly twice the amount of memory as using only the upper triangular matrix
+	*/
+
 	unsigned long iIndex = (iLen * iLen * isUnpaired) + inputSubseq.i * iLen + inputSubseq.j;
 	unsigned long oIndex = (oLen * oLen * isUnpaired) + offsetSubseq.i * oLen + offsetSubseq.j;
 
-	// allocate n*n matrix as single dimensional array and initialize values to 0
 	static double* iSubseqScores = new double[iLen*iLen*2]();
-	static double* oSubseqScores = new double[oLen*oLen*2]();
+	
+	// only allocate array for offset Subseq scores if offset is true
+	static double* oSubseqScores = offset ? new double[oLen*oLen*2]() : iSubseqScores;
+	#endif
 
 	int sep = -1;
 	double score;
@@ -635,20 +677,40 @@ inline double getReactivityScore(const Subsequence &inputSubseq, const bool isUn
 		isLoaded = true;
 
 		#ifdef PRECALC
-		for (unsigned int i=0; i<iLen-1; i++)
+		for (unsigned int unpaired=0; unpaired<2; unpaired++)
 		{
-			for (unsigned int j=i+1; j<iLen; j++) 
+			for (unsigned int i=0; i<iLen-1; i++)
 			{
-				unsigned long iIndex = (iLen * iLen * isUnpaired) + i * iLen + j;
-				iSubseqScores[iIndex] = calculateScoreAdj(i, j, inputSubseq, isUnpaired, probingData, clusterPaired, clusterUnpaired, modifier);
+				for (unsigned int j=i+1; j<iLen; j++) 
+				{
+					#ifdef TRIU_ONLY
+					unsigned int currI_TrilSum = (i * (i + 1)) / 2;
+					unsigned long iIndex = (iTriuSum * unpaired) + i * iLen + j - currI_TrilSum;
+					#else
+					unsigned long iIndex = (iLen * iLen * unpaired) + i * iLen + j;
+					#endif
+					iSubseqScores[iIndex] = calculateScoreAdj(i, j, inputSubseq, unpaired, probingData, clusterPaired, clusterUnpaired, modifier);
+				}
 			}
 		}
-		for (unsigned int i=0; i<oLen-1; i++)
+
+		if (offset)
 		{
-			for (unsigned int j=i+1; j<oLen; j++)
+			for (unsigned int unpaired=0; unpaired<2; unpaired++)
 			{
-				unsigned long oIndex = (oLen * oLen * isUnpaired) + i * oLen + j;
-				oSubseqScores[oIndex] = calculateScoreAdj(i, j, offsetSubseq, isUnpaired, off_probingData, clusterPaired, clusterUnpaired, modifier);
+				for (unsigned int i=0; i<oLen-1; i++)
+				{
+					for (unsigned int j=i+1; j<oLen; j++)
+					{
+						#ifdef TRIU_ONLY
+						unsigned int currO_TrilSum = (i * (i + 1)) / 2;
+						unsigned long oIndex = (oTriuSum * unpaired) + i * oLen + j - currO_TrilSum;
+						#else
+						unsigned long oIndex = (oLen * oLen * unpaired) + i * oLen + j;
+						#endif
+						oSubseqScores[oIndex] = calculateScoreAdj(i, j, offsetSubseq, unpaired, off_probingData, clusterPaired, clusterUnpaired, modifier);
+					}
+				}
 			}
 		}
 		#endif
