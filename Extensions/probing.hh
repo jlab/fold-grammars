@@ -337,7 +337,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
           continue;
         }
         strtok(thisLine, " \t");
-        double reactivity = atof(strtok_r(NULL, " \t"));
+        double reactivity = atof(strtok(NULL, " \t"));
         probingData.push_back(reactivity);
       }
       infile.close();
@@ -445,7 +445,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
       if (max > 0.0) {
         for (std::vector<double>::iterator it = probingData.begin();
             it != probingData.end(); it++) {
-          *it = reinterpret_cast<int>(((*it / max) * 10.0)) / 10.0;
+          *it = static_cast<int>(((*it / max) * 10.0)) / 10.0;
         }
       }
     }
