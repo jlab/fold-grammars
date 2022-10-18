@@ -40,7 +40,7 @@ inline void kmeans(int numCluster, int numData, double *input,
     for (r = 0; r < MAXRUNS; r++) {
       // select random data points as initial centroids
       for (k = 0; k < numCluster; k++) {
-        randomIndex = reinterpret_cast<int>(rand_r() % numData);
+        randomIndex = reinterpret_cast<int>(rand() % numData);
         centroids[k] = input[randomIndex];
       }
 
