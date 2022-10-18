@@ -20,13 +20,13 @@ inline void kmeans(int numCluster, int numData, double *input,
 
   int sumRunIterations = 0;
   if (numData >= numCluster) {
-    double *clusterSumDistances = reinterpret_cast<double *>(malloc(
+    double *clusterSumDistances = static_cast<double *>(malloc(
       sizeof(double) * numCluster));
-    double *bestCentroids = reinterpret_cast<double *>(
+    double *bestCentroids = static_cast<double *>(
       malloc(sizeof(double) * numCluster));
     double bestVariance = static_cast<double>(HUGE_VAL);
-    int *assignments = reinterpret_cast<int *>(malloc(sizeof(int) * numData));
-    int *numClusterMembers = reinterpret_cast<int *>(
+    int *assignments = static_cast<int *>(malloc(sizeof(int) * numData));
+    int *numClusterMembers = static_cast<int *>(
       malloc(sizeof(int) * numCluster));
     double minDist_point2cluster = static_cast<double>(HUGE_VAL);
     int minDistIndex_point2cluster = static_cast<int>(HUGE_VAL);
@@ -40,7 +40,7 @@ inline void kmeans(int numCluster, int numData, double *input,
     for (r = 0; r < MAXRUNS; r++) {
       // select random data points as initial centroids
       for (k = 0; k < numCluster; k++) {
-        randomIndex = reinterpret_cast<int>(rand() % numData);
+        randomIndex = static_cast<int>(rand() % numData);
         centroids[k] = input[randomIndex];
       }
 
@@ -124,7 +124,7 @@ inline void kmeans(int numCluster, int numData, double *input,
   // centroids[0] = 2.1133;
   // centroids[1] = 0.116405;
   std::cout << "Cluster info ("
-            << (sumRunIterations/reinterpret_cast<double>(MAXRUNS))
+            << (sumRunIterations/static_cast<double>(MAXRUNS))
             << " avg. iterations for "<< MAXRUNS
             << " alternative start points): unpaired = " << centroids[0]
             << ", paired = " << centroids[1] << "\n";
@@ -378,7 +378,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
     if (strcmp(getProbing_normalization(), "centroid") == 0) {
       int numData = probingData.size();
       Subsequence base = inputSubseq;
-      double *data = reinterpret_cast<double *>(
+      double *data = static_cast<double *>(
         malloc(sizeof(double) * numData));
       int i = 0;
       int j = 0;
@@ -386,7 +386,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
       for (i = 0; i < numData; i++) {
         k = i;
         if (offset) {
-          if (i >= reinterpret_cast<int>(inputsSequences.at(0).second)
+          if (i >= static_cast<int>(inputsSequences.at(0).second)
               || i >= sep) {
             base = offsetSubseq;
             k = i - sep;
@@ -408,7 +408,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
         }
         j++;
       }
-      double *centroids = reinterpret_cast<double *>(
+      double *centroids = static_cast<double *>(
         malloc(sizeof(double) * 2));
       kmeans(2, j, data, centroids);
       clusterUnpaired = centroids[0];
