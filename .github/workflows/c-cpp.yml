@@ -41,3 +41,17 @@ jobs:
         cd Misc/Test-Suite/StefanStyle/
         perl runTests.pl 2 ${{ matrix.task }}
         popd
+
+  cpplint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+    - run: pip install cpplint
+    - run: cpplint --recursive --counting 'detailed' --filter="-legal/copyright,-build/header_guard" --extensions=hh Extensions/probing.hh
+    - uses: vishnudxb/cancel-workflow@v1.2
+      if: failure()
+      with:
+        repo: jlab/fold-grammars
+        workflow_id: ${{ github.run_id }}
+        access_token: ${{ github.token }}
