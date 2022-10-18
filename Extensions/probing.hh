@@ -20,12 +20,14 @@ inline void kmeans(int numCluster, int numData, double *input,
 
   int sumRunIterations = 0;
   if (numData >= numCluster) {
-    double *clusterSumDistances = (double *) malloc(
-      sizeof(double) * numCluster);
-    double *bestCentroids = (double *) malloc(sizeof(double) * numCluster);
+    double *clusterSumDistances = reinterpret_cast<double *>(malloc(
+      sizeof(double) * numCluster));
+    double *bestCentroids = reinterpret_cast<double *>(
+      malloc(sizeof(double) * numCluster));
     double bestVariance = static_cast<double>(HUGE_VAL);
-    int *assignments = (int *) malloc(sizeof(int) * numData);
-    int *numClusterMembers = (int *) malloc(sizeof(int) * numCluster);
+    int *assignments = reinterpret_cast<int *>(malloc(sizeof(int) * numData));
+    int *numClusterMembers = reinterpret_cast<int *>(
+      malloc(sizeof(int) * numCluster));
     double minDist_point2cluster = static_cast<double>(HUGE_VAL);
     int minDistIndex_point2cluster = static_cast<int>(HUGE_VAL);
     double dist_point2cluster = static_cast<double>(HUGE_VAL);
@@ -38,7 +40,7 @@ inline void kmeans(int numCluster, int numData, double *input,
     for (r = 0; r < MAXRUNS; r++) {
       // select random data points as initial centroids
       for (k = 0; k < numCluster; k++) {
-        randomIndex = ((int) (rand() % numData));
+        randomIndex = reinterpret_cast<int>(rand_r() % numData);
         centroids[k] = input[randomIndex];
       }
 
@@ -121,7 +123,8 @@ inline void kmeans(int numCluster, int numData, double *input,
 
   // centroids[0] = 2.1133;
   // centroids[1] = 0.116405;
-  std::cout << "Cluster info (" << ((sumRunIterations/((double) MAXRUNS)))
+  std::cout << "Cluster info ("
+            << (sumRunIterations/reinterpret_cast<double>(MAXRUNS))
             << " avg. iterations for "<< MAXRUNS
             << " alternative start points): unpaired = " << centroids[0]
             << ", paired = " << centroids[1] << "\n";
@@ -334,7 +337,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
           continue;
         }
         strtok(thisLine, " \t");
-        double reactivity = atof(strtok(NULL, " \t"));
+        double reactivity = atof(strtok_r(NULL, " \t"));
         probingData.push_back(reactivity);
       }
       infile.close();
@@ -375,14 +378,16 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
     if (strcmp(getProbing_normalization(), "centroid") == 0) {
       int numData = probingData.size();
       Subsequence base = inputSubseq;
-      double *data = (double *) malloc(sizeof(double) * numData);
+      double *data = reinterpret_cast<double *>(
+        malloc(sizeof(double) * numData));
       int i = 0;
       int j = 0;
       int k;
       for (i = 0; i < numData; i++) {
         k = i;
         if (offset) {
-          if (i >= (int) inputsSequences.at(0).second || i >= sep) {
+          if (i >= reinterpret_cast<int>(inputsSequences.at(0).second)
+              || i >= sep) {
             base = offsetSubseq;
             k = i - sep;
           }
@@ -403,7 +408,8 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
         }
         j++;
       }
-      double *centroids = (double *) malloc(sizeof(double) * 2);
+      double *centroids = reinterpret_cast<double *>(
+        malloc(sizeof(double) * 2));
       kmeans(2, j, data, centroids);
       clusterUnpaired = centroids[0];
       clusterPaired = centroids[1];
@@ -439,7 +445,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
       if (max > 0.0) {
         for (std::vector<double>::iterator it = probingData.begin();
             it != probingData.end(); it++) {
-          *it = ((int) ((*it / max) * 10.0)) / 10.0;
+          *it = reinterpret_cast<int>(((*it / max) * 10.0)) / 10.0;
         }
       }
     }
