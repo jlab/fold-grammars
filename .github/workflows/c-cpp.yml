@@ -27,7 +27,7 @@ jobs:
     - name: make install
       run: cd $GITHUB_WORKSPACE/../gapc && sudo make install
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: configure fold-grammars
       run: |
         cd $GITHUB_WORKSPACE/../fold-grammars
