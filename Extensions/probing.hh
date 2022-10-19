@@ -163,7 +163,8 @@ inline double CalculatePseudoEnergy(double data, const std::string &modifier,
                                     double slope, double intercept) {
   static const double (*params)[8];
   static constexpr double SHAPE_params[2][8] = {{1.82374892807, 0.0,
-                                                 0.0830320205572, 0.0,
+                                                 0.0830320205572,
+                                                 1.82374892807, 0.0,
                                                  0.0830320205572,
                                                  1.82374892807, 0.0},
                                                 {1.27932240423, 0.0,
