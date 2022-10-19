@@ -158,6 +158,7 @@ inline double Potential(double data, const double (*params)[8],
    the log-likelihood-ratio of the unpaired/paired probabilities given a
    reactivity distribution per modifier, or the "classic" Deigan et al. bonus
    term when no modifier or an unrecognized modifier is provided. */
+
 inline double CalculatePseudoEnergy(double data, std::string &modifier,
                                     double slope, double intercept) 
 {
@@ -313,8 +314,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
 	// only allocate array for offset Subseq scores if offset is true
 	static double* oSubseqScores = offset ? new double[oTriuSum*2]() :
                                  iSubseqScores;
-
-
+                                 
   if (!isLoaded) {
     std::string line;
     std::ifstream infile(getProbing_dataFilename());
