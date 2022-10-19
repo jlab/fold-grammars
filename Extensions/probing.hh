@@ -162,69 +162,69 @@ inline double Potential(double data, const double (*params)[8],
 inline double CalculatePseudoEnergy(double data, std::string &modifier,
                                     double slope, double intercept) 
 {
-	static const double (*params)[8];
-	static constexpr double SHAPE_params[2][8] = {{1.82374892807, 0.0,
-                                                 0.0830320205572, 0.0,
-											                           0.0830320205572,
-                                                 1.82374892807, 0.0}, 
-											                          {1.27932240423, 0.0,
-                                                 0.374470347084, 1.27932240423,
-											                           0.0, 0.374470347084,
-                                                 1.27932240423, 0.0}};
+ static const double (*params)[8];
+ static constexpr double SHAPE_params[2][8] = {{1.82374892807, 0.0,
+                                                0.0830320205572, 0.0,
+                                                0.0830320205572,
+                                                1.82374892807, 0.0}, 
+                                               {1.27932240423, 0.0,
+                                                0.374470347084, 1.27932240423,
+                                                0.0, 0.374470347084,
+                                                1.27932240423, 0.0}};
 
-	static constexpr double DMS_params[2][8] = {{1.36184674022, 0.0,
+ static constexpr double DMS_params[2][8] = {{1.36184674022, 0.0,
                                                0.0876565404957, 1.36184674022,
-												                       0.0, 0.0876565404957,
+                                               0.0, 0.0876565404957,
                                                1.36184674022, 0.0},
-												                      {1.33486621438, 0.0,
+                                             {1.33486621438, 0.0,
                                                0.37015874678, 1.33486621438,
-												                       0.0, 0.37015874678,
+                                               0.0, 0.37015874678,
                                                1.33486621438, 0.0}};
 
-	static constexpr double CMCT_params[2][8] = {{0.668918986169, 0.0,
-                                                0.268161495459, 0.668918986169, 
-												                        0.0, 0.268161495459,
-                                                0.668918986169, 0.0},
-												                       {0.641092593747, 0.0,
-                                                0.8373230903, 0.641092593747,
-                                                0.0, 0.8373230903,
-                                                0.641092593747, 0.0}};
+ static constexpr double CMCT_params[2][8] = {{0.668918986169, 0.0,
+                                               0.268161495459, 0.668918986169, 
+                                               0.0, 0.268161495459,
+                                               0.668918986169, 0.0},
+                                              {0.641092593747, 0.0,
+                                               0.8373230903, 0.641092593747,
+                                               0.0, 0.8373230903,
+                                               0.641092593747, 0.0}};
 
-	if( data <= -500) {
+ if( data <= -500) {
     return 0;
   }
 
-	if(modifier == "SHAPE_AC" || modifier == "SHAPE_GU") {
-		// This is only applied if SHAPE_AC or SHAPE_GU is specified
-		// For now, I'm using the "default" calculations for SHAPE
-		// pseudoenergies when the modifier is "SHAPE".
-		params = SHAPE_params;
-	} else if (modifier == "DMS") {
+ if(modifier == "SHAPE_AC" || modifier == "SHAPE_GU") {
+  // This is only applied if SHAPE_AC or SHAPE_GU is specified
+  // For now, I'm using the "default" calculations for SHAPE
+  // pseudoenergies when the modifier is "SHAPE".
+  params = SHAPE_params;
+ } else if (modifier == "DMS") {
     params = DMS_params;
   } else if (modifier == "CMCT") {
     params = CMCT_params;
   } else if (modifier == "diffSHAPE") {
-		if (data > 0) {
+  if (data > 0) {
       return data * slope;
     } else {
       return 0;
     }
-	} else {
-		if (data > 0) {
+ } else {
+  if (data > 0) {
       return log(data + 1.0) * slope + intercept;
     } else {
       return intercept;
     }
-	}
+ }
 
-	if (data < 0 || (slope == 0 && intercept == 0)) {
+ if (data < 0 || (slope == 0 && intercept == 0)) {
     return 0;
   }
-	//double val2 = log(data+1.0)*slope+intercept;
-	double kT = 5.904976983149999;
-	double val = Potential(data, params, kT);
+ //double val2 = log(data+1.0)*slope+intercept;
+ double kT = 5.904976983149999;
+ double val = Potential(data, params, kT);
 
-	return val;
+ return val;
 }
 
 // END STOLEN FROM RNASTRUCTURE
@@ -273,46 +273,41 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
   static double clusterPaired;
   std::string modifier = getProbing_modifier();
 
-	/*
-    -store scores in a lookup matrix to avoid recalculations
-	  -store only the upper triangular matrix (as a 1d-array)
-	   ->makes figuring out the correct indices a bit more
-	     complicated and adds slightly more compute compared
-       to using a NxN array, but roughly cuts the required memory in half
-	*/
+  /* -store scores in a lookup matrix to avoid recalculations
+     -store only the upper triangular matrix (as a 1d-array)
+     ->makes figuring out the correct indices a bit more
+       complicated and adds slightly more compute compared
+       to using a NxN array, but roughly cuts the required memory in half */
 
   static unsigned int iLen = inputSubseq.seq->n; // length of inputSubseq
-	static unsigned int oLen = offsetSubseq.seq->n; // length of offsetSubseq
+  static unsigned int oLen = offsetSubseq.seq->n; // length of offsetSubseq
 
-	static unsigned int iTriuSum = (iLen * (iLen + 1)) / 2;
-	static unsigned int oTriuSum = (oLen * (oLen + 1)) / 2;
-	
-  /*
-    -calculate sums of the size/number of cells in the lower triangular
-     up to row inputSubseq.i/offsetSubseq.i based on the
-     current inputSubseq/offsetSubseq input parameters
-    -these are needed to calculate the correct index in the
-     1d array representing the upper triangular matrix
-     containing all previously calculated scores
-  */
-	unsigned int ciTrilSum = (inputSubseq.i * (inputSubseq.i + 1)) / 2;
-	unsigned int coTrilSum = (offsetSubseq.i * (offsetSubseq.i + 1)) / 2;
+  static unsigned int iTriuSum = (iLen * (iLen + 1)) / 2;
+  static unsigned int oTriuSum = (oLen * (oLen + 1)) / 2;
+ 
+  /* -calculate sums of the size/number of cells in the lower triangular
+      up to row inputSubseq.i/offsetSubseq.i based on the
+      current inputSubseq/offsetSubseq input parameters
+     -these are needed to calculate the correct index in the
+      1d array representing the upper triangular matrix
+      containing all previously calculated scores */
+
+  unsigned int ciTrilSum = (inputSubseq.i * (inputSubseq.i + 1)) / 2;
+  unsigned int coTrilSum = (offsetSubseq.i * (offsetSubseq.i + 1)) / 2;
 
   // calculate the correct indices for the score lookup/storing
-	unsigned int iIndex = (iTriuSum * isUnpaired) + inputSubseq.i * iLen +
+  unsigned int iIndex = (iTriuSum * isUnpaired) + inputSubseq.i * iLen +
                         inputSubseq.j - ciTrilSum;
-	unsigned int oIndex = (oTriuSum * isUnpaired) + offsetSubseq.i * oLen +
+  unsigned int oIndex = (oTriuSum * isUnpaired) + offsetSubseq.i * oLen +
                         offsetSubseq.j - coTrilSum;
 
-  /*
-    -allocate a static 1d-array (size of upper triangular matrix only)
-     to store/look up the scores
-    -requires additional dimension to store both paired and unpaired scores
-  */
-	static double* iSubseqScores = new double[iTriuSum*2](); 
+  /* -allocate a static 1d-array (size of upper triangular matrix only)
+      to store/look up the scores
+     -requires additional dimension to store both paired and unpaired scores */
+  static double* iSubseqScores = new double[iTriuSum*2](); 
 
-	// only allocate array for offset Subseq scores if offset is true
-	static double* oSubseqScores = offset ? new double[oTriuSum*2]() :
+  // only allocate array for offset Subseq scores if offset is true
+  static double* oSubseqScores = offset ? new double[oTriuSum*2]() :
                                  iSubseqScores;
                                  
   if (!isLoaded) {
@@ -457,28 +452,28 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
     -if it doesn't exist yet, calculate it and store it in
      the lookup array
   */
-	if (iSubseqScores[iIndex]) {
-		score = iSubseqScores[iIndex];
-	} else {
-		double iSubseqScore = calculateScore(inputSubseq, isUnpaired, probingData,
+  if (iSubseqScores[iIndex]) {
+    score = iSubseqScores[iIndex];
+  } else {
+    double iSubseqScore = calculateScore(inputSubseq, isUnpaired, probingData,
                                          clusterPaired, clusterUnpaired,
                                          modifier);
-		score = iSubseqScore;
-		iSubseqScores[iIndex] = iSubseqScore;
-	}
+    score = iSubseqScore;
+    iSubseqScores[iIndex] = iSubseqScore;
+  }
 
   // if offset is true, do the same thing
-	if (offset) {
-		if (oSubseqScores[oIndex]) {
-			score += oSubseqScores[oIndex];
-		} else {
-			double oSubseqScore = calculateScore(offsetSubseq, isUnpaired,
+  if (offset) {
+    if (oSubseqScores[oIndex]) {
+    score += oSubseqScores[oIndex];
+    } else {
+      double oSubseqScore = calculateScore(offsetSubseq, isUnpaired,
                                            off_probingData, clusterPaired,
                                            clusterUnpaired, modifier);
-			score += oSubseqScore;
-			oSubseqScores[oIndex] = oSubseqScore;
-		}
-	}
+      score += oSubseqScore;
+      oSubseqScores[oIndex] = oSubseqScore;
+    }
+  }
 
   return score;
 }
