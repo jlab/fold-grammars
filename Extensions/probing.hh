@@ -282,7 +282,10 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
      -store only the upper triangular matrix (as a 1d-array)
      ->makes figuring out the correct indices a bit more
        complicated and adds slightly more compute compared
-       to using a NxN array, but roughly cuts the required memory in half */
+       to using a NxN array, but roughly cuts the required memory in half
+      -the offset parameter is only true in two-track mode (see overloads
+       below), so the creation of a second array for offset score
+       lookups is only done if the offset parameter is true */
 
   static unsigned int iLen = inputSubseq.seq->n + 1;
   static unsigned int oLen = offsetSubseq.seq->n + 1;
