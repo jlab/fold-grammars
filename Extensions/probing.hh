@@ -106,6 +106,11 @@ inline void kmeans(int numCluster, int numData, double *input,
     for (k = 0; k < numCluster; k++) {
       centroids[k] = bestCentroids[k];
     }
+    // free the allocated memory
+    free(clusterSumDistances);
+    free(bestCentroids);
+    free(assignments);
+    free(numClusterMembers);
   } else {
     for (k = 0; k < numCluster; k++) {
       centroids[k] = 1 / numCluster * k;
@@ -262,6 +267,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
                                  const bool isUnpaired,
                                  const Subsequence &offsetSubseq,
                                  const bool offset) {
+
   static bool isLoaded = false;
   static std::vector<double> off_probingData;
   static std::vector<double> probingData;
@@ -279,14 +285,14 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
        complicated and adds slightly more compute compared
        to using a NxN array, but roughly cuts the required memory in half */
 
-  static unsigned int iLen = inputSubseq.seq->n;   // length of inputSubseq
-  static unsigned int oLen = offsetSubseq.seq->n;  // length of offsetSubseq
+  static unsigned int iLen = inputSubseq.seq->n + 1;
+  static unsigned int oLen = offsetSubseq.seq->n + 1;
 
   static unsigned int iTriuSum = (iLen * (iLen + 1)) / 2;
   static unsigned int oTriuSum = (oLen * (oLen + 1)) / 2;
 
   /* -calculate sums of the size/number of cells in the lower triangular
-      up to row inputSubseq.i/offsetSubseq.i based on the
+      matrix up to row inputSubseq.i/offsetSubseq.i based on the
       current inputSubseq/offsetSubseq input parameters
      -these are needed to calculate the correct index in the
       1d array representing the upper triangular matrix
@@ -301,14 +307,15 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
   unsigned int oIndex = (oTriuSum * isUnpaired) + offsetSubseq.i * oLen +
                         offsetSubseq.j - coTrilSum;
 
-  /* -allocate a static 1d-array (size of upper triangular matrix only)
+  /* -allocate a static vector/1d-array (size of upper triangular matrix only)
       to store/look up the scores
      -requires additional dimension to store both paired and unpaired scores */
-  static double* iSubseqScores = new double[iTriuSum*2]();
+  static std::vector<double> iSubseqScores(iTriuSum * 2);
 
   // only allocate array for offset Subseq scores if offset is true
-  static double* oSubseqScores = offset ? new double[oTriuSum*2]() :
-                                 iSubseqScores;
+  static std::vector<double> oSubseqScores = offset ?
+                                             std::vector<double>(oTriuSum * 2) :
+                                             iSubseqScores;
 
   if (!isLoaded) {
     std::string line;
@@ -464,7 +471,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
   // if offset is true, do the same thing
   if (offset) {
     if (oSubseqScores[oIndex]) {
-    score += oSubseqScores[oIndex];
+      score += oSubseqScores[oIndex];
     } else {
       double oSubseqScore = calculateScore(offsetSubseq, isUnpaired,
                                            off_probingData, clusterPaired,
