@@ -314,11 +314,6 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
      -requires additional dimension to store both paired and unpaired scores */
   static std::vector<double> iSubseqScores(iTriuSum * 2);
 
-  // only allocate array for offset Subseq scores if offset is true
-  static std::vector<double> oSubseqScores = offset ?
-                                             std::vector<double>(oTriuSum * 2) :
-                                             iSubseqScores;
-
   if (!isLoaded) {
     std::string line;
     std::ifstream infile(getProbing_dataFilename());
@@ -472,6 +467,11 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
 
   // if offset is true, do the same thing
   if (offset) {
+    /* only allocate array for offset Subseq scores if offset is true
+       (in the GAPC compilations that call this function, offset is either
+       always true or always false) */
+    static std::vector<double> oSubseqScores(oTriuSum * 2);
+
     if (oSubseqScores[oIndex]) {
       score += oSubseqScores[oIndex];
     } else {
