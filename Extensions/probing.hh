@@ -267,7 +267,6 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
                                  const bool isUnpaired,
                                  const Subsequence &offsetSubseq,
                                  const bool offset) {
-
   static bool isLoaded = false;
   static std::vector<double> off_probingData;
   static std::vector<double> probingData;
