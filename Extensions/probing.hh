@@ -106,6 +106,11 @@ inline void kmeans(int numCluster, int numData, double *input,
     for (k = 0; k < numCluster; k++) {
       centroids[k] = bestCentroids[k];
     }
+    // free the allocated memory
+    free(clusterSumDistances);
+    free(bestCentroids);
+    free(assignments);
+    free(numClusterMembers);
   } else {
     for (k = 0; k < numCluster; k++) {
       centroids[k] = 1 / numCluster * k;
@@ -136,7 +141,7 @@ inline double Gammadist(double data, double shape, double loc, double scale) {
          exp(-(1 / scale) * (data - loc)) / tgamma(shape);
 }
 
-inline double Potential(double data, std::vector< std::vector<double> > params,
+inline double Potential(double data, const double (*params)[8],
                         double kT) {
   /* params[0] is for paired, params[0] for unpaired...params[][j], j=0,1,2 for
      shape, loc scale of component 1
@@ -158,132 +163,81 @@ inline double Potential(double data, std::vector< std::vector<double> > params,
    the log-likelihood-ratio of the unpaired/paired probabilities given a
    reactivity distribution per modifier, or the "classic" Deigan et al. bonus
    term when no modifier or an unrecognized modifier is provided. */
-inline double CalculatePseudoEnergy(double data, std::string modifier,
+
+inline double CalculatePseudoEnergy(double data, const std::string &modifier,
                                     double slope, double intercept) {
-  std::vector< std::vector<double> > params;
-  static std::vector< std::vector<double> > SHAPE_params;
-  static std::vector< std::vector<double> > DMS_params;
-  static std::vector< std::vector<double> > CMCT_params;
+  static const double (*params)[8];
+  static constexpr double SHAPE_params[2][8] = {{1.82374892807, 0.0,
+                                                 0.0830320205572,
+                                                 1.82374892807, 0.0,
+                                                 0.0830320205572,
+                                                 1.82374892807, 0.0},
+                                                {1.27932240423, 0.0,
+                                                 0.374470347084, 1.27932240423,
+                                                 0.0, 0.374470347084,
+                                                 1.27932240423, 0.0}};
 
-  static bool isInit = false;
-  if (isInit == false) {
-    // SHAPE_params = new std::vector< std::vector<double> >();
-    std::vector<double> shape_l_1;  // = new std::vector<double>();
-    shape_l_1.push_back(1.82374892807);
-    shape_l_1.push_back(0.0);
-    shape_l_1.push_back(0.0830320205572);
-    shape_l_1.push_back(1.82374892807);
-    shape_l_1.push_back(0.0);
-    shape_l_1.push_back(0.0830320205572);
-    shape_l_1.push_back(1.82374892807);
-    shape_l_1.push_back(0.0);
-    std::vector<double> shape_l_2;  // = new std::vector<double>();
-    shape_l_2.push_back(1.27932240423);
-    shape_l_2.push_back(0.0);
-    shape_l_2.push_back(0.374470347084);
-    shape_l_2.push_back(1.27932240423);
-    shape_l_2.push_back(0.0);
-    shape_l_2.push_back(0.374470347084);
-    shape_l_2.push_back(1.27932240423);
-    shape_l_2.push_back(0.0);
-    SHAPE_params.push_back(shape_l_1);
-    SHAPE_params.push_back(shape_l_2);
+  static constexpr double DMS_params[2][8] = {{1.36184674022, 0.0,
+                                               0.0876565404957, 1.36184674022,
+                                               0.0, 0.0876565404957,
+                                               1.36184674022, 0.0},
+                                              {1.33486621438, 0.0,
+                                               0.37015874678, 1.33486621438,
+                                               0.0, 0.37015874678,
+                                               1.33486621438, 0.0}};
 
-    // DMS_params = new std::vector< std::vector<double> >();
-    std::vector<double> dms_l_1;  // = new std::vector<double>();
-    dms_l_1.push_back(1.36184674022);
-    dms_l_1.push_back(0.0);
-    dms_l_1.push_back(0.0876565404957);
-    dms_l_1.push_back(1.36184674022);
-    dms_l_1.push_back(0.0);
-    dms_l_1.push_back(0.0876565404957);
-    dms_l_1.push_back(1.36184674022);
-    dms_l_1.push_back(0.0);
-    std::vector<double> dms_l_2;  // = new std::vector<double>();
-    dms_l_2.push_back(1.33486621438);
-    dms_l_2.push_back(0.0);
-    dms_l_2.push_back(0.37015874678);
-    dms_l_2.push_back(1.33486621438);
-    dms_l_2.push_back(0.0);
-    dms_l_2.push_back(0.37015874678);
-    dms_l_2.push_back(1.33486621438);
-    dms_l_2.push_back(0.0);
-    DMS_params.push_back(dms_l_1);
-    DMS_params.push_back(dms_l_2);
+  static constexpr double CMCT_params[2][8] = {{0.668918986169, 0.0,
+                                                0.268161495459, 0.668918986169,
+                                                0.0, 0.268161495459,
+                                                0.668918986169, 0.0},
+                                               {0.641092593747, 0.0,
+                                                0.8373230903, 0.641092593747,
+                                                0.0, 0.8373230903,
+                                                0.641092593747, 0.0}};
 
-    // CMCT_params = new std::vector< std::vector<double> >();
-    std::vector<double> cmct_l_1;  // = new std::vector<double>();
-    cmct_l_1.push_back(0.668918986169);
-    cmct_l_1.push_back(0.0);
-    cmct_l_1.push_back(0.268161495459);
-    cmct_l_1.push_back(0.668918986169);
-    cmct_l_1.push_back(0.0);
-    cmct_l_1.push_back(0.268161495459);
-    cmct_l_1.push_back(0.668918986169);
-    cmct_l_1.push_back(0.0);
-    std::vector<double> cmct_l_2;  // = new std::vector<double>();
-    cmct_l_2.push_back(0.641092593747);
-    cmct_l_2.push_back(0.0);
-    cmct_l_2.push_back(0.8373230903);
-    cmct_l_2.push_back(0.641092593747);
-    cmct_l_2.push_back(0.0);
-    cmct_l_2.push_back(0.8373230903);
-    cmct_l_2.push_back(0.641092593747);
-    cmct_l_2.push_back(0.0);
-    CMCT_params.push_back(cmct_l_1);
-    CMCT_params.push_back(cmct_l_2);
-
-    isInit = true;
+  if (data <= -500) {
+    return 0;
   }
 
-  if (data <= -500)
-    return 0;
   if (modifier == "SHAPE_AC" || modifier == "SHAPE_GU") {
     // This is only applied if SHAPE_AC or SHAPE_GU is specified
     // For now, I'm using the "default" calculations for SHAPE
     // pseudoenergies when the modifier is "SHAPE".
     params = SHAPE_params;
-  } else {
-    if (modifier == "DMS") {
-      params = DMS_params;
+  } else if (modifier == "DMS") {
+    params = DMS_params;
+  } else if (modifier == "CMCT") {
+    params = CMCT_params;
+  } else if (modifier == "diffSHAPE") {
+    if (data > 0) {
+      return data * slope;
     } else {
-      if (modifier == "CMCT") {
-        params = CMCT_params;
-      } else {
-        if (modifier == "diffSHAPE") {
-          if (data > 0) {
-            return data * slope;
-          } else {
-            return 0;
-          }
-        } else {
-          if (data > 0) {
-            return log(data + 1.0) * slope + intercept;
-          } else {
-            return intercept;
-          }
-        }
-      }
+      return 0;
+    }
+  } else {
+    if (data > 0) {
+      return log(data + 1.0) * slope + intercept;
+    } else {
+      return intercept;
     }
   }
-  if (data < 0 || (slope == 0 && intercept == 0))
+
+  if (data < 0 || (slope == 0 && intercept == 0)) {
     return 0;
+  }
   // double val2 = log(data+1.0)*slope+intercept;
   double kT = 5.904976983149999;
   double val = Potential(data, params, kT);
 
-  if ((slope == 0 && intercept == 0)) {
-    return 0;
-  } else {
-    return val;
-  }
+  return val;
 }
+
 // END STOLEN FROM RNASTRUCTURE
 inline double calculateScore(const Subsequence &Base, const bool isUnpaired,
-                             const std::vector<double> probingData,
+                             const std::vector<double> &probingData,
                              const double clusterPaired,
                              const double clusterUnpaired,
-                             const std::string modifier) {
+                             const std::string &modifier) {
   double score = 0.0;
   for (unsigned int i = Base.i; i < Base.j && i < probingData.size(); i++) {
     if ((modifier == "DMS") && (Base[i] != A_BASE) && (Base[i] != C_BASE)) {
@@ -323,6 +277,42 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
   static double clusterUnpaired;
   static double clusterPaired;
   std::string modifier = getProbing_modifier();
+
+  /* -store scores in a lookup matrix to avoid recalculations
+     -store only the upper triangular matrix (as a 1d-array)
+     ->makes figuring out the correct indices a bit more
+       complicated and adds slightly more compute compared
+       to using a NxN array, but roughly cuts the required memory in half
+      -the offset parameter is only true in two-track mode (see overloads
+       below), so the creation of a second array for offset score
+       lookups is only done if the offset parameter is true */
+
+  static unsigned int iLen = inputSubseq.seq->n + 1;
+  static unsigned int oLen = offsetSubseq.seq->n + 1;
+
+  static unsigned int iTriuSum = (iLen * (iLen + 1)) / 2;
+  static unsigned int oTriuSum = (oLen * (oLen + 1)) / 2;
+
+  /* -calculate sums of the size/number of cells in the lower triangular
+      matrix up to row inputSubseq.i/offsetSubseq.i based on the
+      current inputSubseq/offsetSubseq input parameters
+     -these are needed to calculate the correct index in the
+      1d array representing the upper triangular matrix
+      containing all previously calculated scores */
+
+  unsigned int ciTrilSum = (inputSubseq.i * (inputSubseq.i + 1)) / 2;
+  unsigned int coTrilSum = (offsetSubseq.i * (offsetSubseq.i + 1)) / 2;
+
+  // calculate the correct indices for the score lookup/storing
+  unsigned int iIndex = (iTriuSum * isUnpaired) + inputSubseq.i * iLen +
+                        inputSubseq.j - ciTrilSum;
+  unsigned int oIndex = (oTriuSum * isUnpaired) + offsetSubseq.i * oLen +
+                        offsetSubseq.j - coTrilSum;
+
+  /* -allocate a static vector/1d-array (size of upper triangular matrix only)
+      to store/look up the scores
+     -requires additional dimension to store both paired and unpaired scores */
+  static std::vector<double> iSubseqScores(iTriuSum * 2);
 
   if (!isLoaded) {
     std::string line;
@@ -459,15 +449,40 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
     isLoaded = true;
   }
 
-  if (offset) {
-    score = calculateScore(offsetSubseq, isUnpaired, off_probingData,
-                           clusterPaired, clusterUnpaired, modifier) \
-          + calculateScore(inputSubseq, isUnpaired, probingData,
-                           clusterPaired, clusterUnpaired, modifier);
+  /* -check if score was already calculated once
+     (meaning if value at index isn't 0 anymore)
+    -if so, simply use that score instead of recalculating
+    -if it doesn't exist yet, calculate it and store it in
+     the lookup array */
+
+  if (iSubseqScores[iIndex]) {
+    score = iSubseqScores[iIndex];
   } else {
-    score = calculateScore(inputSubseq, isUnpaired, probingData, clusterPaired,
-                           clusterUnpaired, modifier);
+    double iSubseqScore = calculateScore(inputSubseq, isUnpaired, probingData,
+                                         clusterPaired, clusterUnpaired,
+                                         modifier);
+    score = iSubseqScore;
+    iSubseqScores[iIndex] = iSubseqScore;
   }
+
+  // if offset is true, do the same thing
+  if (offset) {
+    /* only allocate array for offset Subseq scores if offset is true
+       (in the GAPC compilations that call this function, offset is either
+       always true or always false) */
+    static std::vector<double> oSubseqScores(oTriuSum * 2);
+
+    if (oSubseqScores[oIndex]) {
+      score += oSubseqScores[oIndex];
+    } else {
+      double oSubseqScore = calculateScore(offsetSubseq, isUnpaired,
+                                           off_probingData, clusterPaired,
+                                           clusterUnpaired, modifier);
+      score += oSubseqScore;
+      oSubseqScores[oIndex] = oSubseqScore;
+    }
+  }
+
   return score;
 }
 
