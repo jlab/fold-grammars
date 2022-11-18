@@ -448,10 +448,10 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
 
 
     if (sep > -1) {
-      for (int i=probingData.size()-1; i >= sep; i--) {
-        off_probingData.insert(off_probingData.begin(), probingData.at(i));
-        probingData.erase(probingData.begin() + i);
-      }
+      /* add the content of probingData to off_probingData
+         in reverse oder and remove the values from probingData */
+      off_probingData = std::vector(probingData.rbegin(), probingData.rend());
+      probingData.clear();
     }
 
     isLoaded = true;
