@@ -237,16 +237,17 @@ inline double calculateScore(const Subsequence &Base, const bool isUnpaired,
                              const std::vector<double> &probingData,
                              const double clusterPaired,
                              const double clusterUnpaired,
-                             const std::string &modifier) {
+                             const bool hasDMSModifier,
+                             const bool hasCMCTModifier,
+                             const bool isCentroidProbNorm) {
   double score = 0.0;
   for (unsigned int i = Base.i; i < Base.j && i < probingData.size(); i++) {
-    if ((modifier == "DMS") && (Base[i] != A_BASE) && (Base[i] != C_BASE)) {
+    if (hasDMSModifier && (Base[i] != A_BASE) && (Base[i] != C_BASE)) {
+      continue;
+    } else if (hasCMCTModifier && (Base[i] != U_BASE) && (Base[i] != G_BASE)) {
       continue;
     }
-    if ((modifier == "CMCT") && (Base[i] != U_BASE) && (Base[i] != G_BASE)) {
-      continue;
-    }
-    if (strcmp(getProbing_normalization(), "centroid") == 0) {
+    if (isCentroidProbNorm) {
       if (isUnpaired) {
         score += fabs(probingData.at(i) - clusterUnpaired);
       } else {
@@ -271,12 +272,19 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
   static std::vector<double> off_probingData;
   static std::vector<double> probingData;
 
-  int sep = -1;
   double score;
 
   static double clusterUnpaired;
   static double clusterPaired;
-  std::string modifier = getProbing_modifier();
+
+  // get the probing modifier and check its value
+  static const std::string modifier = getProbing_modifier();
+  static const bool hasDMSModifier = modifier == "DMS";
+  static const bool hasCMCTModifier = modifier == "CMCT";
+
+  // check if the probing normalization method is "centroid"
+  static const bool isCentroidProbNorm = strcmp(getProbing_normalization(),
+                                                "centroid") == 0;
 
   /* -store scores in a lookup matrix to avoid recalculations
      -store only the upper triangular matrix (as a 1d-array)
@@ -315,6 +323,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
   static std::vector<double> iSubseqScores(iTriuSum * 2);
 
   if (!isLoaded) {
+    int sep = -1;
     std::string line;
     std::ifstream infile(getProbing_dataFilename());
     if (infile.is_open()) {
@@ -365,7 +374,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
     }
 
     // centroid normalization
-    if (strcmp(getProbing_normalization(), "centroid") == 0) {
+    if (isCentroidProbNorm) {
       int numData = probingData.size();
       Subsequence base = inputSubseq;
       double *data = static_cast<double *>(
@@ -382,11 +391,10 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
             k = i - sep;
           }
         }
-        if ((modifier == "DMS") && (base[k] != A_BASE) &&
+        if (hasDMSModifier && (base[k] != A_BASE) &&
             (base[k] != C_BASE)) {
           continue;
-        }
-        if ((modifier == "CMCT") && (base[k] != U_BASE) &&
+        } else if (hasCMCTModifier && (base[k] != U_BASE) &&
             (base[k] != G_BASE)) {
           continue;
         }
@@ -405,17 +413,16 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
       clusterPaired = centroids[1];
       free(data);
       free(centroids);
-    }
 
-    if (strcmp(getProbing_normalization(), "RNAstructure") == 0) {
+    } else if (strcmp(getProbing_normalization(), "RNAstructure") == 0) {
       for (std::vector<double>::iterator it = probingData.begin();
           it != probingData.end(); it++) {
         // the parameters are: plain reactivity, modifier type, slope, intercept
         *it = CalculatePseudoEnergy(*it, modifier, getProbing_slope(),
                                     getProbing_intercept());
       }
-    }
-    if (strcmp(getProbing_normalization(), "logplain") == 0) {
+
+    } else if (strcmp(getProbing_normalization(), "logplain") == 0) {
       for (std::vector<double>::iterator it = probingData.begin();
           it != probingData.end(); it++) {
         if (*it+1.0 < 0.0) {
@@ -424,8 +431,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
           *it = log(*it+1.0);
         }
       }
-    }
-    if ((strcmp(getProbing_normalization(), "asProbabilities") == 0)) {
+    } else if (strcmp(getProbing_normalization(), "asProbabilities") == 0) {
       double max = 0.0;
       for (std::vector<double>::iterator it = probingData.begin();
           it != probingData.end(); it++) {
@@ -440,12 +446,14 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
       }
     }
 
+
     if (sep > -1) {
       for (int i=probingData.size()-1; i >= sep; i--) {
         off_probingData.insert(off_probingData.begin(), probingData.at(i));
         probingData.erase(probingData.begin() + i);
       }
     }
+
     isLoaded = true;
   }
 
@@ -460,7 +468,8 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
   } else {
     double iSubseqScore = calculateScore(inputSubseq, isUnpaired, probingData,
                                          clusterPaired, clusterUnpaired,
-                                         modifier);
+                                         hasDMSModifier, hasCMCTModifier,
+                                         isCentroidProbNorm);
     score = iSubseqScore;
     iSubseqScores[iIndex] = iSubseqScore;
   }
@@ -477,7 +486,9 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
     } else {
       double oSubseqScore = calculateScore(offsetSubseq, isUnpaired,
                                            off_probingData, clusterPaired,
-                                           clusterUnpaired, modifier);
+                                           clusterUnpaired,
+                                           hasDMSModifier, hasCMCTModifier,
+                                           isCentroidProbNorm);
       score += oSubseqScore;
       oSubseqScores[oIndex] = oSubseqScore;
     }
