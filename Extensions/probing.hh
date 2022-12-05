@@ -1,12 +1,15 @@
 #ifndef PROBING_HH
 #define PROBING_HH
 
+//#define PRECALC_BASE_SCORES
+
 #include <time.h>
 #include <utility>
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <limits>
 
 // Stefans own 1-dimensional k-means clustering
 inline void kmeans(int numCluster, int numData, double *input,
@@ -264,6 +267,272 @@ inline double calculateScore(const Subsequence &Base, const bool isUnpaired,
   return score;
 }
 
+#ifdef PRECALC_BASE_SCORES
+
+static void calcBaseScores(double **baseScores,
+                           const Subsequence &Base,
+                           const std::vector<double> &probingData,
+                           const double clusterPaired,
+                           const double clusterUnpaired,
+                           const bool hasDMSModifier,
+                           const bool hasCMCTModifier,
+                           const bool isCentroidProbNorm) {
+  // precalculate the score up to every base position
+  const unsigned int lookupSize = Base.seq->n + 1;
+  baseScores[0] = new double[lookupSize]();  // paired base scores
+  baseScores[1] = new double[lookupSize]();  // unpaired base scores
+  double pairedScore = 0.0, unpairedScore = 0.0;
+  
+  for (unsigned int i = 1; i < probingData.size(); i++) {
+    if (hasDMSModifier && (Base[i] != A_BASE) && (Base[i] != C_BASE)) {
+      baseScores[0][i] = pairedScore;
+      baseScores[1][i] = unpairedScore;
+      continue;
+    } else if (hasCMCTModifier && (Base[i] != U_BASE) && (Base[i] != G_BASE)) {
+      baseScores[0][i] = pairedScore;
+      baseScores[1][i] = unpairedScore;
+      continue;
+    }
+    if (isCentroidProbNorm) {
+      unpairedScore += fabs(probingData[i-1] - clusterUnpaired);
+      pairedScore += fabs(probingData[i-1] - clusterPaired);
+    } else {
+      unpairedScore += probingData[i-1];
+      pairedScore -= probingData[i-1];
+    }
+    baseScores[0][i] = pairedScore;
+    baseScores[1][i] = unpairedScore;
+  }
+
+  for (unsigned int i = probingData.size(); i < lookupSize; i++) {
+    baseScores[0][i] = pairedScore;
+    baseScores[1][i] = unpairedScore;
+  }
+}
+
+// static void calcBaseScores(double **baseScores,
+//                            const Subsequence &Base,
+//                            const std::vector<double> &probingData,
+//                            const double clusterPaired,
+//                            const double clusterUnpaired,
+//                            const bool hasDMSModifier,
+//                            const bool hasCMCTModifier,
+//                            const bool isCentroidProbNorm) {
+//   // precalculate the score up to every base position
+//   const unsigned int lookupSize = Base.seq->n;
+//   baseScores[0] = new double[lookupSize]();  // paired base scores
+//   baseScores[1] = new double[lookupSize]();  // unpaired base scores
+//   double pairedScore, unpairedScore;
+  
+//   for (unsigned int i = 0; i < probingData.size(); i++) {
+//     if (hasDMSModifier && (Base[i] != A_BASE) && (Base[i] != C_BASE)) {
+//       continue;
+//     } else if (hasCMCTModifier && (Base[i] != U_BASE) && (Base[i] != G_BASE)) {
+//       continue;
+//     }
+//     if (isCentroidProbNorm) {
+//       unpairedScore = fabs(probingData[i] - clusterUnpaired);
+//       pairedScore = fabs(probingData[i] - clusterPaired);
+//     } else {
+//       unpairedScore = probingData[i];
+//       pairedScore = probingData[i];
+//     }
+//     baseScores[0][i] = pairedScore;
+//     baseScores[1][i] = unpairedScore;
+//   }
+// }
+
+inline double getReactivityScore(const Subsequence &inputSubseq,
+                                 const bool isUnpaired,
+                                 const Subsequence &offsetSubseq,
+                                 const bool offset) {
+  static bool isLoaded = false;
+  static std::vector<double> off_probingData;
+  static std::vector<double> probingData;
+
+  static double clusterUnpaired;
+  static double clusterPaired;
+
+  // get the probing modifier and check its value
+  static const std::string modifier = getProbing_modifier();
+  static const bool hasDMSModifier = modifier == "DMS";
+  static const bool hasCMCTModifier = modifier == "CMCT";
+
+  // check if the probing normalization method is "centroid"
+  static const bool isCentroidProbNorm = strcmp(getProbing_normalization(),
+                                                "centroid") == 0;
+
+  static double *inputSubseqBaseScores[2], *offsetSubseqBaseScores[2];
+
+  if (!isLoaded) {
+    int sep = -1;
+    std::string line;
+    std::ifstream infile(getProbing_dataFilename());
+    if (infile.is_open()) {
+      while (getline(infile, line)) {
+        char *thisLine = strdup(line.c_str());
+        /* we expect each line to hold the base position (starting with 1) and
+           the reactivity. */
+        if (strcmp(thisLine, "&") == 0) {
+          sep = probingData.size();
+          continue;
+        }
+        strtok(thisLine, " \t");
+        double reactivity = atof(strtok(NULL, " \t"));
+        probingData.push_back(reactivity);
+      }
+      infile.close();
+    }
+
+    /* TODO (kmaibach): needs reworking when changing the way the whitespace
+       between two sequences is represented */
+    unsigned int inputsLength = 0;
+    std::vector<std::pair<const char*, unsigned> > inputsSequences = \
+      getInputs();
+
+    if (offset) {
+      inputsLength = inputsSequences.at(0).second + \
+                     inputsSequences.at(1).second;
+    } else {
+      inputsLength = inputsSequences.at(0).second;
+    }
+
+    if (probingData.size() < inputsLength) {
+      std::cerr << "Warning: chemical probing data file '"
+                << getProbing_dataFilename() << "' misses "
+                << (inputsLength - probingData.size()) << " data-row(s) "
+                << std::endl << "         compared to the number of nucleotides"
+                << " in your input sequence." << std::endl
+                << "         Missing values will be set to 0.0!" << std::endl;
+    }
+    if (probingData.size() > inputsLength) {
+      std::cerr << "Warning: chemical probing data file '"
+                << getProbing_dataFilename() << "' contains "
+                << (probingData.size()-inputsLength) << " more row(s) "
+                << std::endl << "         than there are nucleotides in your "
+                << "input sequence." << std::endl
+                << "         Exceeding data lines will be ignored!"
+                << std::endl;
+    }
+
+    // centroid normalization
+    if (isCentroidProbNorm) {
+      int numData = probingData.size();
+      Subsequence base = inputSubseq;
+      double *data = static_cast<double *>(
+        malloc(sizeof(double) * numData));
+      int i = 0;
+      int j = 0;
+      int k;
+      for (i = 0; i < numData; i++) {
+        k = i;
+        if (offset) {
+          if (i >= static_cast<int>(inputsSequences.at(0).second)
+              || i >= sep) {
+            base = offsetSubseq;
+            k = i - sep;
+          }
+        }
+        if (hasDMSModifier && (base[k] != A_BASE) &&
+            (base[k] != C_BASE)) {
+          continue;
+        } else if (hasCMCTModifier && (base[k] != U_BASE) &&
+            (base[k] != G_BASE)) {
+          continue;
+        }
+        if (probingData.at(i) < 0) {
+          data[j] = 0.0;
+          probingData.at(i) = 0.0;
+        } else {
+          data[j] = probingData.at(i);
+        }
+        j++;
+      }
+      double *centroids = static_cast<double *>(
+        malloc(sizeof(double) * 2));
+      kmeans(2, j, data, centroids);
+      clusterUnpaired = centroids[0];
+      clusterPaired = centroids[1];
+      free(data);
+      free(centroids);
+
+    } else if (strcmp(getProbing_normalization(), "RNAstructure") == 0) {
+      for (std::vector<double>::iterator it = probingData.begin();
+          it != probingData.end(); it++) {
+        // the parameters are: plain reactivity, modifier type, slope, intercept
+        *it = CalculatePseudoEnergy(*it, modifier, getProbing_slope(),
+                                    getProbing_intercept());
+      }
+
+    } else if (strcmp(getProbing_normalization(), "logplain") == 0) {
+      for (std::vector<double>::iterator it = probingData.begin();
+          it != probingData.end(); it++) {
+        if (*it+1.0 < 0.0) {
+          *it = 0.0;
+        } else {
+          *it = log(*it+1.0);
+        }
+      }
+    } else if (strcmp(getProbing_normalization(), "asProbabilities") == 0) {
+      double max = 0.0;
+      for (std::vector<double>::iterator it = probingData.begin();
+          it != probingData.end(); it++) {
+        if (max < *it) max = *it;
+        if (*it < 0.0) *it = 0.0;
+      }
+      if (max > 0.0) {
+        for (std::vector<double>::iterator it = probingData.begin();
+            it != probingData.end(); it++) {
+          *it = static_cast<int>(((*it / max) * 10.0)) / 10.0;
+        }
+      }
+    }
+
+
+    if (sep > -1) {
+      for (int i=probingData.size()-1; i >= sep; i--) {
+        off_probingData.insert(off_probingData.begin(), probingData.at(i));
+        probingData.erase(probingData.begin() + i);
+      }
+    }
+    
+    calcBaseScores(inputSubseqBaseScores,
+                   inputSubseq, probingData, clusterPaired,
+                   clusterUnpaired, hasDMSModifier,
+                   hasCMCTModifier, isCentroidProbNorm);
+    calcBaseScores(offsetSubseqBaseScores,
+                   offsetSubseq, off_probingData, clusterPaired,
+                   clusterUnpaired, hasDMSModifier,
+                   hasCMCTModifier, isCentroidProbNorm);
+
+    isLoaded = true;
+  }
+  
+  double score = inputSubseqBaseScores[isUnpaired][inputSubseq.j] -
+                 inputSubseqBaseScores[isUnpaired][inputSubseq.i] +
+                 (offsetSubseqBaseScores[isUnpaired][offsetSubseq.j] -
+                 offsetSubseqBaseScores[isUnpaired][offsetSubseq.i]) *
+                 offset;
+  // double old_score = calculateScore(inputSubseq, isUnpaired, probingData,
+  //                                        clusterPaired, clusterUnpaired,
+  //                                        hasDMSModifier, hasCMCTModifier,
+  //                                        isCentroidProbNorm);
+
+  // static int same = 0, diff = 0;
+  // bool sameVal = fabs(score - old_score) < std::numeric_limits<double>::epsilon();
+  // if (!sameVal) {
+  //   diff++;
+  //   printf("New score: %f, Correct score: %f\n", score, old_score);
+  //   printf("score - correct_score = %.30f\n\n", score - old_score);
+  // }
+  // else same++;
+  // if (diff % 100000 == 0) printf("diff: %d same: %d\n", diff, same);
+
+  return score;
+}
+
+#else
+
 inline double getReactivityScore(const Subsequence &inputSubseq,
                                  const bool isUnpaired,
                                  const Subsequence &offsetSubseq,
@@ -456,7 +725,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
 
     isLoaded = true;
   }
-
+  static int same = 0, diff = 0;
   /* -check if score was already calculated once
      (meaning if value at index isn't 0 anymore)
     -if so, simply use that score instead of recalculating
@@ -465,6 +734,14 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
 
   if (iSubseqScores[iIndex]) {
     score = iSubseqScores[iIndex];
+    // double oldScore = calculateScore(inputSubseq, isUnpaired, probingData,
+    //                                      clusterPaired, clusterUnpaired,
+    //                                      hasDMSModifier, hasCMCTModifier,
+    //                                      isCentroidProbNorm);
+    // bool sameVal = fabs(score - oldScore) < std::numeric_limits<double>::epsilon();
+    // if (!sameVal) diff++;
+    // else same++;
+    // if (same % 1000000 == 0) printf("diff: %d same: %d\n", diff, same);
   } else {
     double iSubseqScore = calculateScore(inputSubseq, isUnpaired, probingData,
                                          clusterPaired, clusterUnpaired,
@@ -496,6 +773,7 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
 
   return score;
 }
+#endif
 
 // two track
 inline double getReactivityScore(const Subsequence &inputSubseq,
