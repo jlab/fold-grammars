@@ -1,7 +1,7 @@
 #ifndef PROBING_HH
 #define PROBING_HH
 
-//#define PRECALC_BASE_SCORES
+#define PRECALC_BASE_SCORES
 
 #include <time.h>
 #include <utility>
@@ -9,7 +9,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <limits>
 
 // Stefans own 1-dimensional k-means clustering
 inline void kmeans(int numCluster, int numData, double *input,
@@ -277,70 +276,64 @@ static void calcBaseScores(double **baseScores,
                            const bool hasDMSModifier,
                            const bool hasCMCTModifier,
                            const bool isCentroidProbNorm) {
-  // precalculate the score up to every base position
+  /* precalculate the score up to every base position for
+     cheap and fast score calculation in getReactivityScore
+
+     Algorithm:
+          1. continuously sum up the score for both paired and unpaired
+          2. assign the total sum to all bases which don't have their
+             own probingData entry
+          3. to get the score for a subsequence from position i to j
+             (i.e. the calculateScore result for that subsequence),
+             simply subtract the score sum up to position i from the
+             score sum of position j: 
+             baseScores[0][j] - baseScores[0][i] (paired), or
+             baseScores[1][j] - baseScores[2][i] (unpaired)
+    
+     This eliminates the need for caching/lookups, because we only need
+     to calculate this difference in every getReactivityScore call
+     after initializing the baseScores arrays, which only requires O(n) time.
+     We also reduce the space complexity from O(n²) to O(n) and speed up
+     the score lookup by eliminating the need for complex index calculation
+     as well as branching.
+  */
+
+           
   const unsigned int lookupSize = Base.seq->n + 1;
   baseScores[0] = new double[lookupSize]();  // paired base scores
   baseScores[1] = new double[lookupSize]();  // unpaired base scores
   double pairedScore = 0.0, unpairedScore = 0.0;
   
-  for (unsigned int i = 1; i < probingData.size(); i++) {
+  for (unsigned int i = 0; i < probingData.size(); i++) {
+    // continuously sum up the paired and unpaired score for every base 
+    baseScores[0][i + 1] = pairedScore;
+    baseScores[1][i + 1] = unpairedScore;
     if (hasDMSModifier && (Base[i] != A_BASE) && (Base[i] != C_BASE)) {
-      baseScores[0][i] = pairedScore;
-      baseScores[1][i] = unpairedScore;
       continue;
     } else if (hasCMCTModifier && (Base[i] != U_BASE) && (Base[i] != G_BASE)) {
-      baseScores[0][i] = pairedScore;
-      baseScores[1][i] = unpairedScore;
       continue;
     }
-    if (isCentroidProbNorm) {
-      unpairedScore += fabs(probingData[i-1] - clusterUnpaired);
-      pairedScore += fabs(probingData[i-1] - clusterPaired);
-    } else {
-      unpairedScore += probingData[i-1];
-      pairedScore -= probingData[i-1];
-    }
-    baseScores[0][i] = pairedScore;
-    baseScores[1][i] = unpairedScore;
-  }
 
-  for (unsigned int i = probingData.size(); i < lookupSize; i++) {
+    if (isCentroidProbNorm) {
+      unpairedScore += fabs(probingData[i] - clusterUnpaired);
+      pairedScore += fabs(probingData[i] - clusterPaired);
+    } else {
+      unpairedScore += probingData[i];
+      pairedScore -= probingData[i];
+    }
+
+    baseScores[0][i + 1] = pairedScore;
+    baseScores[1][i + 1] = unpairedScore;
+  }
+  
+  /* assign the final sum to all bases which don't have their
+     own probingData entry so the calculation also works for these bases
+  */
+  for (unsigned int i = probingData.size() + 1; i < lookupSize; i++) {
     baseScores[0][i] = pairedScore;
     baseScores[1][i] = unpairedScore;
   }
 }
-
-// static void calcBaseScores(double **baseScores,
-//                            const Subsequence &Base,
-//                            const std::vector<double> &probingData,
-//                            const double clusterPaired,
-//                            const double clusterUnpaired,
-//                            const bool hasDMSModifier,
-//                            const bool hasCMCTModifier,
-//                            const bool isCentroidProbNorm) {
-//   // precalculate the score up to every base position
-//   const unsigned int lookupSize = Base.seq->n;
-//   baseScores[0] = new double[lookupSize]();  // paired base scores
-//   baseScores[1] = new double[lookupSize]();  // unpaired base scores
-//   double pairedScore, unpairedScore;
-  
-//   for (unsigned int i = 0; i < probingData.size(); i++) {
-//     if (hasDMSModifier && (Base[i] != A_BASE) && (Base[i] != C_BASE)) {
-//       continue;
-//     } else if (hasCMCTModifier && (Base[i] != U_BASE) && (Base[i] != G_BASE)) {
-//       continue;
-//     }
-//     if (isCentroidProbNorm) {
-//       unpairedScore = fabs(probingData[i] - clusterUnpaired);
-//       pairedScore = fabs(probingData[i] - clusterPaired);
-//     } else {
-//       unpairedScore = probingData[i];
-//       pairedScore = probingData[i];
-//     }
-//     baseScores[0][i] = pairedScore;
-//     baseScores[1][i] = unpairedScore;
-//   }
-// }
 
 inline double getReactivityScore(const Subsequence &inputSubseq,
                                  const bool isUnpaired,
@@ -361,7 +354,10 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
   // check if the probing normalization method is "centroid"
   static const bool isCentroidProbNorm = strcmp(getProbing_normalization(),
                                                 "centroid") == 0;
-
+  
+  /* store pointers to the pairedBaseScores and unpairedBaseScores
+     arrays for both inputSubseq and offsetSubseq
+  */
   static double *inputSubseqBaseScores[2], *offsetSubseqBaseScores[2];
 
   if (!isLoaded) {
@@ -488,7 +484,6 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
       }
     }
 
-
     if (sep > -1) {
       for (int i=probingData.size()-1; i >= sep; i--) {
         off_probingData.insert(off_probingData.begin(), probingData.at(i));
@@ -496,6 +491,9 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
       }
     }
     
+    /* calculate the score sum for all bases
+       (for inputSubseq and offsetSubseq respectively)
+    */
     calcBaseScores(inputSubseqBaseScores,
                    inputSubseq, probingData, clusterPaired,
                    clusterUnpaired, hasDMSModifier,
@@ -508,25 +506,14 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
     isLoaded = true;
   }
   
+  /* calculate the score by subtracting the score sum up 
+     to position i from the score sum of position j
+  */
   double score = inputSubseqBaseScores[isUnpaired][inputSubseq.j] -
                  inputSubseqBaseScores[isUnpaired][inputSubseq.i] +
                  (offsetSubseqBaseScores[isUnpaired][offsetSubseq.j] -
                  offsetSubseqBaseScores[isUnpaired][offsetSubseq.i]) *
                  offset;
-  // double old_score = calculateScore(inputSubseq, isUnpaired, probingData,
-  //                                        clusterPaired, clusterUnpaired,
-  //                                        hasDMSModifier, hasCMCTModifier,
-  //                                        isCentroidProbNorm);
-
-  // static int same = 0, diff = 0;
-  // bool sameVal = fabs(score - old_score) < std::numeric_limits<double>::epsilon();
-  // if (!sameVal) {
-  //   diff++;
-  //   printf("New score: %f, Correct score: %f\n", score, old_score);
-  //   printf("score - correct_score = %.30f\n\n", score - old_score);
-  // }
-  // else same++;
-  // if (diff % 100000 == 0) printf("diff: %d same: %d\n", diff, same);
 
   return score;
 }
