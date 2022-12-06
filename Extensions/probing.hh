@@ -136,12 +136,12 @@ inline void kmeans(int numCluster, int numData, double *input,
 }
 
 // START: STOLEN FROM RNASTRUCTURE
-inline double Gammadist(double data, double shape, double loc, double scale) {
+static double Gammadist(double data, double shape, double loc, double scale) {
   return (1 / scale) * pow((data - loc) * (1 / scale), (shape - 1)) * \
          exp(-(1 / scale) * (data - loc)) / tgamma(shape);
 }
 
-inline double Potential(double data, const double (*params)[8],
+static double Potential(double data, const double (*params)[8],
                         double kT) {
   /* params[0] is for paired, params[0] for unpaired...params[][j], j=0,1,2 for
      shape, loc scale of component 1
@@ -164,7 +164,7 @@ inline double Potential(double data, const double (*params)[8],
    reactivity distribution per modifier, or the "classic" Deigan et al. bonus
    term when no modifier or an unrecognized modifier is provided. */
 
-inline double CalculatePseudoEnergy(double data, const std::string &modifier,
+static double CalculatePseudoEnergy(double data, const std::string &modifier,
                                     double slope, double intercept) {
   static const double (*params)[8];
   static constexpr double SHAPE_params[2][8] = {{1.82374892807, 0.0,
@@ -233,7 +233,7 @@ inline double CalculatePseudoEnergy(double data, const std::string &modifier,
 }
 
 // END STOLEN FROM RNASTRUCTURE
-inline double calculateScore(const Subsequence &Base, const bool isUnpaired,
+static double calculateScore(const Subsequence &Base, const bool isUnpaired,
                              const std::vector<double> &probingData,
                              const double clusterPaired,
                              const double clusterUnpaired,
@@ -264,7 +264,7 @@ inline double calculateScore(const Subsequence &Base, const bool isUnpaired,
   return score;
 }
 
-inline double getReactivityScore(const Subsequence &inputSubseq,
+static double getReactivityScore(const Subsequence &inputSubseq,
                                  const bool isUnpaired,
                                  const Subsequence &offsetSubseq,
                                  const bool offset) {
@@ -309,13 +309,10 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
       containing all previously calculated scores */
 
   unsigned int ciTrilSum = (inputSubseq.i * (inputSubseq.i + 1)) / 2;
-  unsigned int coTrilSum = (offsetSubseq.i * (offsetSubseq.i + 1)) / 2;
 
   // calculate the correct indices for the score lookup/storing
   unsigned int iIndex = (iTriuSum * isUnpaired) + inputSubseq.i * iLen +
                         inputSubseq.j - ciTrilSum;
-  unsigned int oIndex = (oTriuSum * isUnpaired) + offsetSubseq.i * oLen +
-                        offsetSubseq.j - coTrilSum;
 
   /* -allocate a static vector/1d-array (size of upper triangular matrix only)
       to store/look up the scores
@@ -480,6 +477,9 @@ inline double getReactivityScore(const Subsequence &inputSubseq,
        (in the GAPC compilations that call this function, offset is either
        always true or always false) */
     static std::vector<double> oSubseqScores(oTriuSum * 2);
+    unsigned int coTrilSum = (offsetSubseq.i * (offsetSubseq.i + 1)) / 2;
+    unsigned int oIndex = (oTriuSum * isUnpaired) + offsetSubseq.i * oLen +
+                           offsetSubseq.j - coTrilSum;
 
     if (oSubseqScores[oIndex]) {
       score += oSubseqScores[oIndex];
