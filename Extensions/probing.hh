@@ -138,7 +138,8 @@ static void kmeans(int numCluster, int numData, long double *input,
 }
 
 // START: STOLEN FROM RNASTRUCTURE
-static long double Gammadist(long double data, long double shape, long double loc, long double scale) {
+static long double Gammadist(long double data, long double shape,
+                             long double loc, long double scale) {
   return (1 / scale) * pow((data - loc) * (1 / scale), (shape - 1)) * \
          exp(-(1 / scale) * (data - loc)) / tgamma(shape);
 }
@@ -149,14 +150,18 @@ static long double Potential(long double data, const long double (*params)[8],
      shape, loc scale of component 1
      j=3,4,5 for shape, loc, scale of component 2 and j=6,7 for weights of
      components 1 and 2 respectively. */
-  long double pairedprob = params[0][6]*Gammadist(data, params[0][0], params[0][1],
-                                             params[0][2]) +
-                      params[0][7]*Gammadist(data, params[0][3], params[0][4],
-                                             params[0][5]);
-  long double unpairedprob = params[1][6]*Gammadist(data, params[1][0], params[1][1],
-                                               params[1][2]) +
-                        params[1][7]*Gammadist(data, params[1][3], params[1][4],
-                                               params[1][5]);
+  long double pairedprob = params[0][6]*Gammadist(data, params[0][0],
+                                                  params[0][1],
+                                                  params[0][2]) +
+                           params[0][7]*Gammadist(data, params[0][3],
+                                                  params[0][4],
+                                                  params[0][5]);
+  long double unpairedprob = params[1][6]*Gammadist(data, params[1][0],
+                                                    params[1][1],
+                                                    params[1][2]) +
+                             params[1][7]*Gammadist(data, params[1][3],
+                                                    params[1][4],
+                                                    params[1][5]);
   return -kT*log(pairedprob/unpairedprob);
 }
 
@@ -166,8 +171,10 @@ static long double Potential(long double data, const long double (*params)[8],
    reactivity distribution per modifier, or the "classic" Deigan et al. bonus
    term when no modifier or an unrecognized modifier is provided. */
 
-static long double CalculatePseudoEnergy(long double data, const std::string &modifier,
-                                    long double slope, long double intercept) {
+static long double CalculatePseudoEnergy(long double data,
+                                         const std::string &modifier,
+                                         long double slope,
+                                         long double intercept) {
   static const long double (*params)[8];
   static constexpr long double SHAPE_params[2][8] = {{1.82374892807, 0.0,
                                                  0.0830320205572,
@@ -235,7 +242,10 @@ static long double CalculatePseudoEnergy(long double data, const std::string &mo
 }
 
 #include <limits>
-static long double calculateScore(const Subsequence &Base, const bool isUnpaired,
+#include <algorithm>
+
+static long double calculateScore(const Subsequence &Base,
+                             const bool isUnpaired,
                              const std::vector<long double> &probingData,
                              const long double clusterPaired,
                              const long double clusterUnpaired,
@@ -498,14 +508,17 @@ static long double getReactivityScore(const Subsequence &inputSubseq,
   */
   long double iSubseqScore = inputSubseqBaseScores[isUnpaired][inputSubseq.j] -
                         inputSubseqBaseScores[isUnpaired][inputSubseq.i];
-  long double oSubseqScore = offsetSubseqBaseScores[isUnpaired][offsetSubseq.j] -
+  long double oSubseqScore =
+  offsetSubseqBaseScores[isUnpaired][offsetSubseq.j] -
                         offsetSubseqBaseScores[isUnpaired][offsetSubseq.i];
 
   // long double score = iSubseqScore + oSubseqScore * offset;
-  // long double old_score = calculateScore(inputSubseq, isUnpaired, probingData,
-  //                                   clusterPaired, clusterUnpaired, hasDMSModifier,
+  // long double old_score = calculateScore(inputSubseq,
+  //                                   isUnpaired, probingData,
+  //                                   clusterPaired, clusterUnpaired,
+  //                                   hasDMSModifier,
   //                                   hasCMCTModifier, isCentroidProbNorm);
-  
+
   // long double currdiff = fabs(old_score - score);
   // if (currdiff < 0.0) currdiff *= -1;
   // bool same = currdiff < std::numeric_limits<long double>::epsilon();
@@ -514,8 +527,6 @@ static long double getReactivityScore(const Subsequence &inputSubseq,
   // mxdiff = max(mxdiff, currdiff);
   // if (!same) {
   //   diffc++;
-  //   if (diffc % 10000000 == 0) {
-  //     printf("Same count: %d, Diff count: %d, Difference: %.30Lf, Max diff so far: %.30Lf\n", samec, diffc, old_score - score, mxdiff);
   //   }
   // } else samec++;
 
@@ -729,7 +740,8 @@ static long double getReactivityScore(const Subsequence &inputSubseq,
   if (iSubseqScores[iIndex]) {
     score = iSubseqScores[iIndex];
   } else {
-    long double iSubseqScore = calculateScore(inputSubseq, isUnpaired, probingData,
+    long double iSubseqScore = calculateScore(inputSubseq, isUnpaired,
+                                         probingData,
                                          clusterPaired, clusterUnpaired,
                                          hasDMSModifier, hasCMCTModifier,
                                          isCentroidProbNorm);
@@ -759,7 +771,7 @@ static long double getReactivityScore(const Subsequence &inputSubseq,
       oSubseqScores[oIndex] = oSubseqScore;
     }
   }
-  
+
   long double old_score = calculateScore(inputSubseq, isUnpaired, probingData,
                                          clusterPaired, clusterUnpaired,
                                          hasDMSModifier, hasCMCTModifier,
@@ -771,11 +783,9 @@ static long double getReactivityScore(const Subsequence &inputSubseq,
   mxdiff = max(mxdiff, currdiff);
   if (!same) {
     diffc++;
-  } else samec++;
-
-  if (samec % 100000 == 0) {
-      printf("Same count: %d, Diff count: %d, Difference: %.30f, Max diff so far: %.30f\n", samec, diffc, old_score - score, mxdiff);
-    }
+  } else {
+    samec++;
+  }
 
   return score;
 }
