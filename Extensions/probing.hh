@@ -241,7 +241,7 @@ static double CalculatePseudoEnergy(double data,
 
 typedef std::vector<std::vector<std::vector<double>>> score_matrix;
 
-static void precalculateScores(score_matrix &baseScores,
+static void precalculateScores(score_matrix *baseScores,
                                const Subsequence &Base,
                                const std::vector<double> &probingData,
                                const double clusterPaired,
@@ -255,16 +255,16 @@ static void precalculateScores(score_matrix &baseScores,
   const unsigned int lookupSize = Base.seq->n + 1;
 
   // rows for paired and unpaired score matrices
-  baseScores[0] = std::vector<std::vector<double>>(lookupSize);
-  baseScores[1] = std::vector<std::vector<double>>(lookupSize);
+  (*baseScores)[0] = std::vector<std::vector<double>>(lookupSize);
+  (*baseScores)[1] = std::vector<std::vector<double>>(lookupSize);
 
   double pairedScore, unpairedScore;
   int offset_j;
 
   for (unsigned int i = 0; i < lookupSize - 1; i++) {
     // columns for paired and unpaired scores matrices
-    baseScores[0][i] = std::vector<double>(lookupSize - i);
-    baseScores[1][i] = std::vector<double>(lookupSize - i);
+    (*baseScores)[0][i] = std::vector<double>(lookupSize - i);
+    (*baseScores)[1][i] = std::vector<double>(lookupSize - i);
 
     pairedScore = 0.0;
     unpairedScore = 0.0;
@@ -285,12 +285,12 @@ static void precalculateScores(score_matrix &baseScores,
       // need to offset j since only upper triangular matrix is stored
       offset_j = j - i + 1;
 
-      baseScores[0][i][offset_j] = pairedScore;
-      baseScores[1][i][offset_j] = unpairedScore;
+      (*baseScores)[0][i][offset_j] = pairedScore;
+      (*baseScores)[1][i][offset_j] = unpairedScore;
     }
 
-    baseScores[0][lookupSize - 1] = std::vector<double>(1, 0.0);
-    baseScores[1][lookupSize - 1] = std::vector<double>(1, 0.0);
+    (*baseScores)[0][lookupSize - 1] = std::vector<double>(1, 0.0);
+    (*baseScores)[1][lookupSize - 1] = std::vector<double>(1, 0.0);
 
     /* assign the final score to all bases which don't have their
        own probingData entry so the calculation in getReactivityScore
@@ -298,11 +298,12 @@ static void precalculateScores(score_matrix &baseScores,
     */
     for (unsigned int j = probingData.size() + 1; j < lookupSize; j++) {
       offset_j = j - i + 1;
-      baseScores[0][i][offset_j] = pairedScore;
-      baseScores[1][i][offset_j] = unpairedScore;
+      (*baseScores)[0][i][offset_j] = pairedScore;
+      (*baseScores)[1][i][offset_j] = unpairedScore;
     }
   }
 }
+
 
 static double getReactivityScore(const Subsequence &inputSubseq,
                                  const bool isUnpaired,
@@ -324,10 +325,11 @@ static double getReactivityScore(const Subsequence &inputSubseq,
   static const bool isCentroidProbNorm = strcmp(getProbing_normalization(),
                                                 "centroid") == 0;
 
-  static score_matrix inputSubseqBaseScores(2), _offsetSubseqBaseScores(2);
-  static score_matrix &offsetSubseqBaseScores = offset ?
-                                                _offsetSubseqBaseScores :
-                                                inputSubseqBaseScores;
+  static score_matrix inputSubseqScores(2);
+  static score_matrix __offsetSubseqScores(2);
+  static score_matrix &offsetSubseqScores = offset ?
+                                            __offsetSubseqScores :
+                                            inputSubseqScores;
 
   if (!isLoaded) {
     int sep = -1;
@@ -464,7 +466,7 @@ static double getReactivityScore(const Subsequence &inputSubseq,
        and store the scores in inputSubseqBaseScores
        and offsetSubseqBaseScores
     */
-    precalculateScores(inputSubseqBaseScores,
+    precalculateScores(&inputSubseqScores,
                        inputSubseq, probingData, clusterPaired,
                        clusterUnpaired, hasDMSModifier,
                        hasCMCTModifier, isCentroidProbNorm);
@@ -473,7 +475,7 @@ static double getReactivityScore(const Subsequence &inputSubseq,
       /* only precalculate offset scores if offset == true
          (calculating them if offset == false causes an error)
       */
-      precalculateScores(offsetSubseqBaseScores,
+      precalculateScores(&offsetSubseqScores,
                          offsetSubseq, off_probingData, clusterPaired,
                          clusterUnpaired, hasDMSModifier,
                          hasCMCTModifier, isCentroidProbNorm);
@@ -482,15 +484,15 @@ static double getReactivityScore(const Subsequence &inputSubseq,
     isLoaded = true;
   }
 
-  double iSubseqScore = inputSubseqBaseScores[isUnpaired]
-                                             [inputSubseq.i]
-                                             [inputSubseq.j -
-                                              inputSubseq.i];
+  double iSubseqScore = inputSubseqScores[isUnpaired]
+                                         [inputSubseq.i]
+                                         [inputSubseq.j -
+                                          inputSubseq.i];
 
-  double oSubseqScore = offsetSubseqBaseScores[isUnpaired]
-                                              [offsetSubseq.i]
-                                              [offsetSubseq.j -
-                                               offsetSubseq.i];
+  double oSubseqScore = offsetSubseqScores[isUnpaired]
+                                          [offsetSubseq.i]
+                                          [offsetSubseq.j -
+                                           offsetSubseq.i];
 
   /* multiply oSubseqScore with offset so it will only be
      added to the score if offset is true, i.e. in two-track mode
