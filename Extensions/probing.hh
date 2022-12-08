@@ -253,6 +253,7 @@ static void precalculateScores(score_matrix *baseScores,
   */
 
   const unsigned int lookupSize = Base.seq->n + 1;
+  const unsigned int seqLen = Base.seq->n;
 
   // rows for paired and unpaired score matrices
   (*baseScores)[0] = std::vector<std::vector<double>>(lookupSize);
@@ -269,7 +270,7 @@ static void precalculateScores(score_matrix *baseScores,
     pairedScore = 0.0;
     unpairedScore = 0.0;
 
-    for (unsigned int j = i; j < probingData.size(); j++) {
+    for (unsigned int j = i; j < probingData.size() && j < seqLen; j++) {
       // continuously sum up the paired and unpaired score for every base
       if (!(hasDMSModifier && Base[j] != A_BASE && Base[j] != C_BASE) &&
           !(hasCMCTModifier && Base[j] != U_BASE && Base[j] != G_BASE)) {
