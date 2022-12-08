@@ -452,7 +452,7 @@ static double getReactivityScore(const Subsequence &inputSubseq,
                    inputSubseq, probingData, clusterPaired,
                    clusterUnpaired, hasDMSModifier,
                    hasCMCTModifier, isCentroidProbNorm);
-    
+
     if (offset) {
       calcBaseScores(offsetSubseqBaseScores,
                      offsetSubseq, off_probingData, clusterPaired,
