@@ -4666,7 +4666,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=overdangle --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=unknown --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (2.965 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (2.983 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
 -16.20  13.7475000  ....((((((((......))))))))....  []
@@ -4713,7 +4713,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=microstate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=CMCT --normalization=centroid --slope=2.4
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (3.53 avg. iterations for 1000 alternative start points): unpaired = 1.07452, paired = 0.255027
+Cluster info (3.567 avg. iterations for 1000 alternative start points): unpaired = 1.07452, paired = 0.255027
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
 -16.20  10.4543000  ....((((((((......))))))))....  []
@@ -4738,7 +4738,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=microstate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=SHAPE --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (2.956 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (2.983 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
 -16.20  13.7475000  ....((((((((......))))))))....  []
@@ -4759,7 +4759,6 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 -6.20   0.8000000  ..(((((....)))))((...)).......  [][]
 -2.80   0.6000000  ..(((((....)))))......((....))  [][]
  0.30   0.2000000  ...(((...)))((..((...))..))...  [][]
- 1.30   0.2000000  ....(((((((((...)))..))..)).))  []
  4.30   0.1000000  ..((((...))..)).((...)).......  [][]
  4.30   1.8000000  ..((.((....)))).......((....))  [][]
  7.90  -0.2000000  ..((...))((.((..((...))..)).))  [][]
@@ -4780,7 +4779,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=macrostate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-0.6 --modifier=diffSHAPE --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (2.956 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (3.042 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
 -9.40  15.0687000  ..(((((....)))))..............  []
@@ -4797,7 +4796,7 @@ Cluster info (2.956 avg. iterations for 1000 alternative start points): unpaired
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=macrostate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-0.6 --modifier=SHAPE --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (2.956 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (3.042 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
 -9.40  15.0687000  ..(((((....)))))..............  []
@@ -4814,7 +4813,7 @@ Cluster info (2.956 avg. iterations for 1000 alternative start points): unpaired
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=nodangle --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-1.2 --modifier=DMS --normalization=centroid --slope=2.4
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (2.826 avg. iterations for 1000 alternative start points): unpaired = 0.991433, paired = 0.227229
+Cluster info (2.88 avg. iterations for 1000 alternative start points): unpaired = 0.991433, paired = 0.227229
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
  0.00  12.4294000  ..............................  _
@@ -4830,19 +4829,22 @@ Cluster info (2.826 avg. iterations for 1000 alternative start points): unpaired
  8.00   7.9876500  .(..(((.((.(.....).))..).))..)  []
 10.20   7.8775100  ....(((.((.(.....).))..).).)..  []
 12.70   7.8066500  .(..(((.((.(.....).))..).).).)  []
+15.50   7.8066500  .(..(((.(((.....)..))..).).).)  []
+17.90   7.8066500  .(..(((((.(....)).)....).).).)  []
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=nodangle --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-0.6 --modifier=diffSHAPE --normalization=centroid --slope=2.4
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (2.956 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (3.042 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
- 0.00  18.5588000  ..............................  _
+ 0.00  18.5589000  ..............................  _
  1.50  17.1754000  ......(((............)))......  []
  1.60  15.6637000  ......(((.(.........))))......  []
- 2.30  14.7800000  ......((((.........)).))......  []
+ 2.30  14.7801000  ......((((.........)).))......  []
  2.40  14.1662000  ......(.((....)).)............  []
  2.70  14.1530000  ......(((.(.(.....).))))......  []
+ 2.80  14.1530000  ......(((.(.(......)))))......  []
  2.90  13.2683000  ......((((.(.....).)).))......  []
  4.90  12.6544000  ........((....))((..........))  [][]
  5.30  12.5379000  .(..((((((.(.....).)).)).))..)  []
@@ -4870,7 +4872,6 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 12.70  -117.3950000  (.(....(((....)......))).)....  []
 14.70  -119.8300000  (.(....(((...).......))).)....  []
 16.00  -162.2810000  (.((....)((..........))).)....  [[][]]
-21.60  -162.2810000  (.((....).).(....(...))..)....  [[][]]
 21.80  -165.6990000  (.(.....)(.((....(...)))))....  [[][]]
 22.70  -197.7110000  ((((....).).(....(...))).)....  [[][]]
 
@@ -4887,8 +4888,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
  3.50   0.6000000  ....(((((.(.(.....).)))).))...  []
  3.90   0.4000000  .(..(((((............))).))..)  []
  4.00   0.2000000  .(..(((((.(.........)))).))..)  []
- 4.80   0.2000000  ..(.(((((............))).))..)  []
- 4.90  -0.0000000  ..(.(((((.(.........)))).))..)  []
+ 4.90   0.0000000  ..(.(((((.(.........)))).))..)  []
  5.10  -0.2000000  .(..(((((.(.(.....).)))).))..)  []
  6.00  -0.4000000  ..(.(((((.(.(.....).)))).))..)  []
  7.10  -0.8000000  (..((...((.........)).)).)....  []
@@ -4898,6 +4898,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 10.90  -2.2000000  (...(.((((.(.....))..)))))....  []
 13.30  -2.4000000  (...)..(((.((....(...))))))...  [][]
 16.10  -2.6000000  (...).((((.((....(...))))))..)  [][]
+25.90  -2.6000000  (.(((...).).(....(...))).)....  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=overdangle --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-0.6 --modifier=diffSHAPE --normalization=RNAstructure --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
@@ -4961,7 +4962,6 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
  2.50   0.6000000  ....(((((.(.(.....).)))).))...  []
  3.40   0.4000000  .(..(((((............))).))..)  []
  3.50   0.2000000  .(..(((((.(.........)))).))..)  []
- 4.50   0.2000000  ..(.(((((............))).))..)  []
  4.60  -0.2000000  .(..(((((.(.(.....).)))).))..)  []
  5.70  -0.4000000  ..(.(((((.(.(.....).)))).))..)  []
  6.40  -0.8000000  (..((...((.........)).)).)....  []
@@ -4971,6 +4971,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 10.20  -2.2000000  (...(.((((.(.....))..)))))....  []
 11.60  -2.4000000  (...)..(((.((....(...))))))...  [][]
 14.90  -2.6000000  (...).((((.((....(...))))))..)  [][]
+22.50  -2.6000000  (.(((...).).(....(...))).)....  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=overdangle --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-1.2 --modifier=unknown --normalization=logplain --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
@@ -5002,20 +5003,20 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
  0.40   2.5000000  ......(((............)))......  []
  1.30   2.3000000  ....(((((............))).))...  []
  2.20   1.5000000  ((......))....................  []
- 3.80   1.5000000  ((......))......(......)......  [][]
  4.90   1.3000000  ((......))......((..........))  [][]
  5.00   0.5000000  (.((....).).).................  []
  5.10   0.3000000  ((......)).((.........))......  [][]
- 6.40   0.3000000  (..((...((.........)).)).)....  []
  6.90  -0.3000000  (...(.(((............)))))....  []
  8.10  -0.5000000  (...(.(((.(.(.....).))))))....  []
  8.10  -0.5000000  (...(.(((..(.....)...)))))....  []
  9.90  -0.5000000  (.(....((.(.(.....).)))).)....  []
  9.90  -0.5000000  (.(....((..(.....)...))).)....  []
 10.20  -0.7000000  (...(.((((.(.....))..)))))....  []
+12.00  -0.7000000  (.(....(((.(.....))..))).)....  []
 14.90  -0.9000000  ((.(....)((..........))).)....  [[][]]
 15.30  -1.1000000  (.((....)((..........))).)....  [[][]]
 16.70  -1.3000000  (.((....).)((....(...))).)....  [[][]]
+17.00  -1.3000000  (.((....)(((.....)...))).)....  [[][]]
 21.60  -1.7000000  ((((....).).(....(...))).)....  [[][]]
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=microstate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-0.6 --modifier=diffSHAPE --normalization=asProbabilities --slope=1.8
@@ -5034,15 +5035,16 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=microstate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-1.2 --modifier=SHAPE --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (3.018 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (3.008 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
- 0.00  18.5588000  ..............................  _
+ 0.00  18.5589000  ..............................  _
  0.40  17.1754000  ......(((............)))......  []
  0.50  15.6637000  ......(((.(.........))))......  []
- 1.20  14.7800000  ......((((.........)).))......  []
+ 1.20  14.7801000  ......((((.........)).))......  []
  1.30  14.1662000  ......(.((....)).)............  []
  1.60  14.1530000  ......(((.(.(.....).))))......  []
+ 1.70  14.1530000  ......(((.(.(......)))))......  []
  1.80  13.2683000  ......((((.(.....).)).))......  []
  4.50  13.1772000  ......(.((.(.....).))..)......  []
  4.80  12.5379000  .(..((((((.(.....).)).)).))..)  []
@@ -5057,7 +5059,7 @@ Cluster info (3.018 avg. iterations for 1000 alternative start points): unpaired
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=microstate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-0.6 --modifier=diffSHAPE --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (3.018 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (3.008 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
 -9.40  15.0687000  ..(((((....)))))..............  []
@@ -5068,6 +5070,7 @@ Cluster info (3.018 avg. iterations for 1000 alternative start points): unpaired
 -0.50  11.6568000  ..(..((.(.(((...)))).))...)...  []
 -0.10  11.4226000  ...(.((.(.(((...)))).))...)...  []
  0.00  11.3537000  ..(((((....)))))(((....)..).).  [][]
+ 0.40  11.3537000  ..(((((....)))))((.(...)..).).  [][]
  1.30  10.6193000  ....(((((((((...)))..))..)).))  []
  2.80  10.3944000  ....(((.(((((...)))..))...).))  []
  3.30  9.8540600  ....(((((.(((...)))).....)).))  []
@@ -5233,10 +5236,9 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
  3.40   0.4000000  .(..(((((............))).))..)  []
  3.50   0.2000000  .(..(((((.(.........)))).))..)  []
  3.50   5.4000000  .(......).....................  []
- 4.50   0.2000000  ..(.(((((............))).))..)  []
  4.60  -0.2000000  .(..(((((.(.(.....).)))).))..)  []
- 4.60  -0.0000000  .(..(((((..(.....)...))).))..)  []
- 4.60  -0.0000000  ..(.(((((.(.........)))).))..)  []
+ 4.60   0.0000000  .(..(((((..(.....)...))).))..)  []
+ 4.60   0.0000000  ..(.(((((.(.........)))).))..)  []
  4.60   0.4000000  ....((((((.(.....))..))).))...  []
  4.60   0.8000000  ....((((((....)......))).))...  []
  4.60   1.6000000  ....((((...(.....)....)).))...  []
@@ -5244,6 +5246,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
  5.70  -0.4000000  ..(.(((((.(.(.....).)))).))..)  []
  5.70  -0.2000000  ..(.(((((..(.....)...))).))..)  []
  5.70   2.2000000  ..(....(.((..........)).)....)  []
+ 6.10  -0.4000000  (...).(((............)))......  [][]
  6.40  -0.8000000  (..((...((.........)).)).)....  []
  6.40   0.4000000  (.....(((............))).)....  []
  6.90  -1.4000000  (...(.(((............)))))....  []
@@ -5260,11 +5263,9 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 10.20  -1.8000000  (...(.((((....)......)))))....  []
 10.20  -1.0000000  (...(.((...(.....)....))))....  []
 10.20  -0.8000000  (...(..((............)).))....  []
-11.60   0.0000000  (.((....).).)(..(......).)....  [][]
+11.60  -0.0000000  (.((....).).)(..(......).)....  [][]
 11.60  -0.4000000  (.(.....))..((.(.(...).).))...  [][]
 11.60  -2.4000000  (...)..(((.((....(...))))))...  [][]
-24.40  -2.4000000  ((.((...).).(....(...))).)....  [[][]]
-24.40  -1.4000000  ((.(.(...)).(....(...))).)....  [[][]]
 24.80  -2.6000000  (.(((...).).(....(...))).)....  [[][]]
 24.80  -1.6000000  (.((.(...)).(....(...))).)....  [[][]]
 
