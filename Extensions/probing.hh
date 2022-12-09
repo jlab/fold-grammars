@@ -289,20 +289,6 @@ static double getReactivityScore(const Subsequence &inputSubseq,
                                  const Subsequence &offsetSubseq,
                                  const bool offset) {
   static bool isLoaded = false;
-  static std::vector<double> off_probingData;
-  static std::vector<double> probingData;
-
-  static double clusterUnpaired;
-  static double clusterPaired;
-
-  // get the probing modifier and check its value
-  static const std::string modifier = getProbing_modifier();
-  static const bool hasDMSModifier = modifier == "DMS";
-  static const bool hasCMCTModifier = modifier == "CMCT";
-
-  // check if the probing normalization method is "centroid"
-  static const bool isCentroidProbNorm = strcmp(getProbing_normalization(),
-                                                "centroid") == 0;
 
   /* store pointers to the pairedBaseScores and unpairedBaseScores
      arrays for both inputSubseq and offsetSubseq
@@ -313,6 +299,20 @@ static double getReactivityScore(const Subsequence &inputSubseq,
                                            inputSubseqBaseScores;
 
   if (!isLoaded) {
+    std::vector<double> off_probingData;
+    std::vector<double> probingData;
+
+    double clusterUnpaired = 0.0;
+    double clusterPaired = 0.0;
+
+    // get the probing modifier and check its value
+    const std::string modifier = getProbing_modifier();
+    const bool hasDMSModifier = modifier == "DMS";
+    const bool hasCMCTModifier = modifier == "CMCT";
+
+    // check if the probing normalization method is "centroid"
+    const bool isCentroidProbNorm = strcmp(getProbing_normalization(),
+                                           "centroid") == 0;
     int sep = -1;
     std::string line;
     std::ifstream infile(getProbing_dataFilename());
@@ -352,8 +352,7 @@ static double getReactivityScore(const Subsequence &inputSubseq,
                 << std::endl << "         compared to the number of nucleotides"
                 << " in your input sequence." << std::endl
                 << "         Missing values will be set to 0.0!" << std::endl;
-    }
-    if (probingData.size() > inputsLength) {
+    } else if (probingData.size() > inputsLength) {
       std::cerr << "Warning: chemical probing data file '"
                 << getProbing_dataFilename() << "' contains "
                 << (probingData.size()-inputsLength) << " more row(s) "
