@@ -318,7 +318,11 @@ class Opts {
 				<< "   valid types are 'DMS', 'CMCT', 'SHAPE', 'diffSHAPE', 'unknown' [unknown]." << std::endl
 				<< "-N <string> sets the type of normalization when reading the pure reactivity values from the file." << std::endl
 				<< "   valid types are 'centroid', 'RNAstructure', 'logplain', 'asProbabilities' [centroid]." << std::endl
-	            << std::endl;
+	            << std::endl
+	#ifdef GAPC_CALL_STRING
+                << "GAPC call: \"" << GAPC_CALL_STRING << "\"\n\n"
+    #endif
+	            ;
 	}
 
 	void parse(int argc, char **argv) {
