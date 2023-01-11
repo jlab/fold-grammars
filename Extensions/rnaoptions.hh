@@ -24,26 +24,32 @@
 #ifndef RTLIB_GENERIC_OPTS_HH_
 #define RTLIB_GENERIC_OPTS_HH_
 
+extern "C" {
+  #include <stdio.h>
+  #include <ctype.h>
+  #include <unistd.h>
+  #include <getopt.h>
+  #include <sys/stat.h>
+}
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <cstring>
 #include <vector>
-
 #include <exception>
-
 #include <cassert>
 
 //define _XOPEN_SOURCE=500
 
-#include <unistd.h>
 #include <cstdlib>
 #include <limits>
 #include <cmath>
 #include "rna.hh"
-#include <stdio.h>
-#include <ctype.h>
- #include <sys/stat.h>
+
+#ifdef CHECKPOINTING_INTEGRATED
+#include "boost/filesystem.hpp"
+#endif
 
 namespace gapc {
 
@@ -65,6 +71,38 @@ class Opts {
   private:
     Opts(const Opts&);
     Opts &operator=(const Opts&);
+
+	int parse_checkpointing_interval(const std::string &interval) {
+      // parse the user-specified checkpointing interval
+      std::stringstream tmp_interval(interval);
+      std::string val;
+      std::vector<int> interval_vals;
+
+      try {
+        // parse the checkpointing interval the user specified
+        while (std::getline(tmp_interval, val, ':')) {
+          // split the interval string at ':' and store values
+          interval_vals.push_back(std::stoi(val));
+        }
+
+        if (interval_vals.size() != 4) {
+          throw std::exception();
+        }
+      } catch (const std::exception &e) {
+        throw OptException("Invalid interval format! "
+                           "Must be d:h:m:s (e.g. 0:0:1:0).");
+      }
+
+      // calculate the interval length (in seconds)
+      int cp_interval = interval_vals[0] * 86400 + interval_vals[1] * 3600 +
+                        interval_vals[2] * 60 + interval_vals[3];
+
+      if (cp_interval <= 0) {
+        throw OptException("Interval cannot be <= 0 (is " +
+                           std::to_string(cp_interval) + ").");
+      }
+      return cp_interval;
+    }
   public:
     typedef std::vector<std::pair<const char*, unsigned> > inputs_t;
     inputs_t inputs;
@@ -95,6 +133,13 @@ class Opts {
     float probing_intercept;
     const char* probing_modifier;
     const char* probing_normalization;
+#ifdef CHECKPOINTING_INTEGRATED
+    size_t checkpoint_interval;  // default interval: 3600s (1h)
+    boost::filesystem::path  checkpoint_out_path;  // default path: cwd
+    boost::filesystem::path  checkpoint_in_path;  // default: empty
+#endif
+    int argc;
+    char **argv;
 
     Opts()
     :
@@ -128,7 +173,14 @@ class Opts {
     				probing_slope(1.8*100),
     				probing_intercept(-0.6*100),
     				probing_modifier("unknown"),
-    				probing_normalization("centroid")
+    				probing_normalization("centroid"),
+    #ifdef CHECKPOINTING_INTEGRATED
+                    checkpoint_interval(3600),
+                    checkpoint_out_path(boost::filesystem::current_path()),
+                    checkpoint_in_path(boost::filesystem::path("")),
+    #endif
+      argc(0),
+      argv(0)
     {
     }
 	~Opts()
@@ -237,14 +289,27 @@ class Opts {
 				<< "-a <int-value> select alignment consensus representation for dot plots, aka. outside computation." << std::endl
 				<< "   0 = consensus, 1 = most informative sequence" << std::endl
 				<< "" << std::endl
-				<< "-h Print this help." << std::endl
+				<< "-h, --help Print this help." << std::endl
 				<< "" << std::endl
 				<< " (-[drk] [0-9]+)*" << std::endl << std::endl
+	#ifdef CHECKPOINTING_INTEGRATED
+                << "-p, --checkpointInterval <d:h:m:s> specify the periodic checkpointing interval; default: 0:1:0:0 (1h)"
+				<< std::endl << std::endl
+                << "-O, --checkpointOutput <path>  set path where to store the checkpoints; default: current working directory" << std::endl
+                << "   The program will also attempt to read existing checkpoints from a Logfile from this path." << std::endl
+				<< "   Use the -I option to explictly set the input path for all checkpoints."
+				<< std::endl << std::endl
+                << "-I, --checkpointInput <path> set the path were to read the checkpoints from" << std::endl
+				<< "   default: parsed from a checkpoint Logfile located at path specified by the -O option." << std::endl
+                << "   Caution: Make sure that the input checkpoints from this path were generated from the same" << std::endl
+                << "   command line inputs as the inputs to this binary to ensure the correctness of the answer."
+				<< std::endl << std::endl
+    #endif
 				<< "The following options are for the structure probing context:" << std::endl
 				<< "-S <file> reads a file that contains chemical probing results to 'constrain' the prediction." << std::endl
 				<< "   The file must contain two tabular separated columns." << std::endl
-				<< "    The first addresses the affected base by an index starting at 1." << std::endl
-				<< "    The second holds the measured reactivity value as a float number." << std::endl
+				<< "   The first addresses the affected base by an index starting at 1." << std::endl
+				<< "   The second holds the measured reactivity value as a float number." << std::endl
 				<< "-A <float-value> sets the 'slope' for the RNAstructure inspired formula" << std::endl
 				<< "   of how to combine free energies and reactivities [1.8]" << std::endl
 				<< "-B <float-value> sets the 'intercept' for the RNAstructure inspired formula" << std::endl
@@ -253,14 +318,28 @@ class Opts {
 				<< "   valid types are 'DMS', 'CMCT', 'SHAPE', 'diffSHAPE', 'unknown' [unknown]." << std::endl
 				<< "-N <string> sets the type of normalization when reading the pure reactivity values from the file." << std::endl
 				<< "   valid types are 'centroid', 'RNAstructure', 'logplain', 'asProbabilities' [centroid]." << std::endl
-				<< "" << std::endl;
+	            << std::endl
+	#if defined(GAPC_CALL_STRING) && defined(GAPC_VERSION_STRING)
+                << "GAPC call:    \"" << GAPC_CALL_STRING << "\"\n"
+				<< "GAPC version: \"" << GAPC_VERSION_STRING << "\"\n"
+    #endif
+	            << "\n";
 	}
 
 	void parse(int argc, char **argv) {
 		int o = 0;
 		char *input = 0;
 		char *par_filename = 0;
-		while ((o = getopt(argc, argv, ":f:"
+		this->argc = argc;
+		this->argv = argv;
+		const option long_opts[] = {
+            {"help", no_argument, nullptr, 'h'},
+            {"checkpointInterval", required_argument, nullptr, 'p'},
+            {"checkpointOutput", required_argument, nullptr, 'O'},
+            {"checkpointInput", required_argument, nullptr, 'I'},
+            {nullptr, no_argument, nullptr, 0}};
+
+		while ((o = getopt_long(argc, argv, ":f:"
 		#ifdef WINDOW_MODE
 				"w:i:"
 		#endif
@@ -270,7 +349,7 @@ class Opts {
 					    "o:a:"  //output filename for dot plot, consensus type: 0=consensus, 1=mis
 						"n:C:m:R:" //for alifold parameters nfactor, cfactor and minpscore_basepair, ribosum scoring
 						"S:A:B:M:N:" //S: reads additional probing data from file "S", A: slope as in RNAstructure, B: intercept as in RNAstructure, M: modifier type (SHAPE, CMCT, DMS), N: normalization of plain reactivities (centroid, RNAstructure, logplain, asProbabilities)
-						"hd:r:k:")) != -1) {
+						"hd:r:k:p:I:O:", long_opts, nullptr)) != -1) {
 			switch (o) {
 			case 'f':
 				{
@@ -395,6 +474,76 @@ class Opts {
 			case 'a':
 				consensusType = std::atoi(optarg);
 				break;
+        #ifdef CHECKPOINTING_INTEGRATED
+            case 'p' :
+              checkpoint_interval = parse_checkpointing_interval(optarg);
+              break;
+            case 'I' :
+            {
+              boost::filesystem::path arg_path(optarg);
+              if (arg_path.is_absolute()) {
+                checkpoint_in_path = arg_path;
+              } else {
+                checkpoint_in_path = boost::filesystem::current_path() / arg_path;
+              }
+              if (!boost::filesystem::exists(checkpoint_in_path)) {
+                throw OptException("The input path \"" +
+                                   checkpoint_in_path.string() +
+                                   "\" doesn't exist!");
+              }
+
+              // check user permissions of checkpoint input directory
+              struct stat checkpoint_in_dir;
+              stat(checkpoint_in_path.c_str(), &checkpoint_in_dir);
+              if (!(checkpoint_in_dir.st_mode & S_IRUSR)) {
+                throw OptException("Missing read permissions for"
+                                   " input path \""
+                                   + checkpoint_in_path.string()
+                                   + "\"!");
+              }
+              break;
+            }
+            case 'O' :
+            {
+              boost::filesystem::path arg_path(optarg);
+              if (arg_path.is_absolute()) {
+                checkpoint_out_path = arg_path;
+              } else {
+                checkpoint_out_path /= arg_path;
+              }
+              if (!boost::filesystem::exists(checkpoint_out_path)) {
+                throw OptException("The output path \"" +
+                                   checkpoint_out_path.string() +
+                                   "\" doesn't exist!");
+              }
+
+              // check user permissions of checkpoint output directory
+              struct stat checkpoint_out_dir;
+              stat(checkpoint_out_path.c_str(), &checkpoint_out_dir);
+
+              // if no checkpoint input path was specified, assume
+              // output path is input path
+              bool need_read_permissions = checkpoint_in_path.empty();
+              bool has_read_permissions = (checkpoint_out_dir.st_mode
+                                           & S_IRUSR) &&
+                                          need_read_permissions;
+              bool has_write_permissions = checkpoint_out_dir.st_mode & S_IWUSR;
+
+              if (!has_write_permissions || (need_read_permissions &
+                  !has_read_permissions)) {
+                std::string read_perm_msg = (need_read_permissions &
+                                            !has_read_permissions) ?
+                                            "and read" : "";
+                throw OptException("Insufficient permissions for"
+                                   " output path \""
+                                   + checkpoint_out_path.string()
+                                   + "\"! Write "
+                                   + read_perm_msg
+                                   + " permissions are required!");
+              }
+              break;
+            }
+        #endif
 			case '?':
 				case ':':
 				{
@@ -484,4 +633,4 @@ class Opts {
 
 }
 
-#endif
+#endif  // RTLIB_GENERIC_OPTS_HH_
