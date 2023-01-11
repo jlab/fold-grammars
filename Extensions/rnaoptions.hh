@@ -349,7 +349,7 @@ class Opts {
 					    "o:a:"  //output filename for dot plot, consensus type: 0=consensus, 1=mis
 						"n:C:m:R:" //for alifold parameters nfactor, cfactor and minpscore_basepair, ribosum scoring
 						"S:A:B:M:N:" //S: reads additional probing data from file "S", A: slope as in RNAstructure, B: intercept as in RNAstructure, M: modifier type (SHAPE, CMCT, DMS), N: normalization of plain reactivities (centroid, RNAstructure, logplain, asProbabilities)
-						"hd:r:k:p:I:O", long_opts, nullptr)) != -1) {
+						"hd:r:k:p:I:O:", long_opts, nullptr)) != -1) {
 			switch (o) {
 			case 'f':
 				{
