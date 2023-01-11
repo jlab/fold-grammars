@@ -46,6 +46,8 @@ if ((not defined $subTask) or ($subTask eq "shapes")) {
 }
 if ((not defined $subTask) or ($subTask eq "alishapes")) {
 	checkProgram($TMPDIR, "rnaalishapes.run.out", "../../Applications/RNAalishapes/","RNAalishapes");
+	# see https://github.com/ViennaRNA/ViennaRNA/issues/136, base pair probabilities between gaps should be 0
+	checkBasepairProbabilities($TMPDIR, "ali_basepairprobs.run.out", "../../Applications/RNAalishapes/","RNAalishapes")
 }
 if ((not defined $subTask) or ($subTask eq "pkiss")) {
 	checkProgram($TMPDIR, "pkiss.run.out", "../../Applications/pKiss/","pKiss");
@@ -268,4 +270,28 @@ sub checkProbing {
 
 	print " done.\n";
 	$testIndex = Testing::evaluateTest($testName, $truth, $TMPDIR, $testIndex, \@failedTests);
+}
+
+sub checkBasepairProbabilities {
+	# test impossible base pair probabilities, see: https://github.com/ViennaRNA/ViennaRNA/issues/136
+	my ($TMPDIR, $truth, $programDir, $programName) = @_;
+
+	# compile RNAalishapes
+	compile($TMPDIR, $programDir, $programName);
+
+	print "\trunning aligment base pair probabilities: ";
+	Utils::execute("rm -f $TMPDIR/$truth");
+
+	# execute Alifold and prior remove potential old results
+	Utils::execute("rm -f $TMPDIR/gapc.ps");
+	Utils::execute("$PERL -I ../../Applications/lib/ $TMPDIR/$programName --binPath='$TMPDIR/$Settings::ARCHTRIPLE/' --mode outside --dotplot=$TMPDIR/gapc.ps tail.clustal");
+
+	my $res = Utils::execute("grep '%start of base pair probability data' -A 1 $TMPDIR/gapc.ps");
+	if ($res =~ m/1 7/) {
+		print "A base pairing between positions 1 and 7 should be impossible, since both are gaps!\n";
+		push @failedTests, 'aligment base pair probabilities';
+	}
+	print " done.\n";
+
+	$testIndex++;
 }
