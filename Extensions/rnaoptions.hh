@@ -319,10 +319,11 @@ class Opts {
 				<< "-N <string> sets the type of normalization when reading the pure reactivity values from the file." << std::endl
 				<< "   valid types are 'centroid', 'RNAstructure', 'logplain', 'asProbabilities' [centroid]." << std::endl
 	            << std::endl
-	#ifdef GAPC_CALL_STRING
-                << "GAPC call: \"" << GAPC_CALL_STRING << "\"\n\n"
+	#if defined(GAPC_CALL_STRING) && defined(GAPC_VERSION_STRING)
+                << "GAPC call:    \"" << GAPC_CALL_STRING << "\"\n"
+				<< "GAPC version: \"" << GAPC_VERSION_STRING << "\"\n"
     #endif
-	            ;
+	            << "\n";
 	}
 
 	void parse(int argc, char **argv) {
