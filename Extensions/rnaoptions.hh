@@ -21,8 +21,8 @@
 
 }}} */
 
-#ifndef EXTENSIONS_RNAOPTIONS_HH_
-#define EXTENSIONS_RNAOPTIONS_HH_
+#ifndef RTLIB_GENERIC_OPTS_HH_
+#define RTLIB_GENERIC_OPTS_HH_
 
 extern "C" {
   #include <stdio.h>
@@ -632,4 +632,4 @@ class Opts {
 
 }
 
-#endif  // EXTENSIONS_RNAOPTIONS_HH_
+#endif  // RTLIB_GENERIC_OPTS_HH_
