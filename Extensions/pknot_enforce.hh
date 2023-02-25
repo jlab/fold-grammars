@@ -4,6 +4,16 @@
 #include "typesRNAfolding.hh"
 
 struct pktype {
+#ifdef CHECKPOINTING_INTEGRATED
+  friend class boost::serialization::access;
+
+  template <class Archive>
+  void serialize(Archive &ar, const unsigned int version) {
+	ar & isH;
+	ar & isK;
+	ar & empty_;
+  }
+#endif
   bool isH;
   bool isK;
   bool empty_;

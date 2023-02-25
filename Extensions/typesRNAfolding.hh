@@ -1,7 +1,22 @@
 #ifndef typesRNAfolding_hh
 #define typesRNAfolding_hh
 
+#ifdef CHECKPOINTING_INTEGRATED
+#include "boost/serialization/access.hpp"
+#endif
+
 struct answer_pknot_mfe {
+#ifdef CHECKPOINTING_INTEGRATED
+    friend class boost::serialization::access;
+
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int version) {
+	    ar & energy;
+		ar & betaLeftOuter;
+		ar & alphaRightOuter;
+		ar & empty_;
+	}
+#endif
 	int energy;
 	int betaLeftOuter;
 	int alphaRightOuter;
@@ -85,6 +100,18 @@ inline int getIntScore(const answer_pknot_mfe &e) {
 }
 
 struct answer_pknot_mfecovar {
+#ifdef CHECKPOINTING_INTEGRATED
+    friend class boost::serialization::access;
+
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int version) {
+	    ar & mfe;
+		ar & covar;
+		ar & betaLeftOuter;
+		ar & alphaRightOuter;
+		ar & empty_;
+	}
+#endif
 	float mfe;
 	float covar;
 	int betaLeftOuter;
@@ -172,6 +199,16 @@ inline int getIntScore(const answer_pknot_mfecovar &e) {
 }
 
 struct mfecovar{
+#ifdef CHECKPOINTING_INTEGRATED
+    friend class boost::serialization::access;
+
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int version) {
+		ar & empty_;
+		ar & mfe;
+		ar & covar;
+	}
+#endif
 	bool empty_;
 	float mfe;
 	float covar;
@@ -316,6 +353,17 @@ inline int getIntScore(const mfecovar_macrostate &x) {
    At some other situations a similar trick is applied, but for less possibilities; thus the qx don't always mean the same!
 */
 struct pftuple{
+#ifdef CHECKPOINTING_INTEGRATED
+    friend class boost::serialization::access;
+
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int version) {
+		ar & q1;
+		ar & q2;
+		ar & q3;
+		ar & q4;
+	}
+#endif
   double q1;
   double q2;
   double q3;
@@ -349,6 +397,17 @@ inline double sum_elems(const pftuple &pf) {
 }
 
 struct answer_pknot_pfunc {
+#ifdef CHECKPOINTING_INTEGRATED
+    friend class boost::serialization::access;
+
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int version) {
+		ar & pfunc;
+		ar & betaLeftOuter;
+		ar & alphaRightOuter;
+		ar & empty_;
+	}
+#endif
 	double pfunc;
 	int betaLeftOuter;
 	int alphaRightOuter;
