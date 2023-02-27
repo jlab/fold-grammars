@@ -139,6 +139,7 @@ class Opts {
     boost::filesystem::path  checkpoint_out_path;  // default path: cwd
     boost::filesystem::path  checkpoint_in_path;  // default: empty
 	std::string user_file_prefix;
+	bool keep_archives;  // default: delete after calculations completed
 #endif
     int argc;
     char **argv;
@@ -181,6 +182,7 @@ class Opts {
                     checkpoint_out_path(boost::filesystem::current_path()),
                     checkpoint_in_path(boost::filesystem::path("")),
 					user_file_prefix(""),
+					keep_archives(false),
     #endif
       argc(0),
       argv(0)
@@ -298,7 +300,7 @@ class Opts {
 	#ifdef CHECKPOINTING_INTEGRATED
                 << "-p, --checkpointInterval <d:h:m:s> specify the periodic checkpointing interval; default: 0:1:0:0 (1h)"
 				<< std::endl << std::endl
-                << "-O, --checkpointOutput <path/prefix>  set path where to store the checkpoints; default: current working directory" << std::endl
+                << "-O, --checkpointOutput <path/prefix> set path where to store the checkpoints; default: current working directory" << std::endl
                 << "   Optional: add custom prefix for generated files to path" << std::endl
 				<< "   (e.g. path: \"path/to/dir/file_prefix\" will set path to \"/path/to/dir/\" and prefix to \"file_prefix\")." << std::endl
 				<< "   Make sure to add a \"/\" to the end of path if you don't wish to add a custom prefix to the files." << std::endl
@@ -307,6 +309,7 @@ class Opts {
                 << "-I, --checkpointInput <logfile> set the path to the Logfile of the checkpoints you wish to load." << std::endl
 				<< "   (This file was generated along with the checkpoint archives." << std::endl
 				<< "    If it isn't available add the path to each archive to a text file and provide the path to this file.)." << std::endl
+				<< "-K, --keepArchives don't delete checkpointing archives after the program finished its calculations" << std::endl
 				<< std::endl
     #endif
 				<< "The following options are for the structure probing context:" << std::endl
@@ -341,6 +344,7 @@ class Opts {
             {"checkpointInterval", required_argument, nullptr, 'p'},
             {"checkpointOutput", required_argument, nullptr, 'O'},
             {"checkpointInput", required_argument, nullptr, 'I'},
+			{"keepArchives", no_argument, nullptr, 'K'},
             {nullptr, no_argument, nullptr, 0}};
 
 		while ((o = getopt_long(argc, argv, ":f:"
@@ -353,7 +357,7 @@ class Opts {
 					    "o:a:"  //output filename for dot plot, consensus type: 0=consensus, 1=mis
 						"n:C:m:R:" //for alifold parameters nfactor, cfactor and minpscore_basepair, ribosum scoring
 						"S:A:B:M:N:" //S: reads additional probing data from file "S", A: slope as in RNAstructure, B: intercept as in RNAstructure, M: modifier type (SHAPE, CMCT, DMS), N: normalization of plain reactivities (centroid, RNAstructure, logplain, asProbabilities)
-						"hd:r:k:p:I:O:", long_opts, nullptr)) != -1) {
+						"hd:r:k:p:I:KO:", long_opts, nullptr)) != -1) {
 			switch (o) {
 			case 'f':
 				{
@@ -538,6 +542,9 @@ class Opts {
               }
               break;
             }
+			case 'K' :
+			  keep_archives = true;
+			  break;
         #endif
 			case '?':
 				case ':':
