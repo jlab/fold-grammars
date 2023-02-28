@@ -13,7 +13,8 @@
                multiloop} # h;
 
   stack     = sr(BASE,                                        weak,                                          BASE) with basepair # h;
-  hairpin   = hl(BASE,                                        REGION with minsize(3) with unpaired,          BASE) with basepair # h;
+  hairpin   = hl(BASE,                                        REGION with minsize(3) with unpaired,          BASE) with basepair
+            | gquadflank(BASE, REGION0 with unpaired, gquadruplex, REGION0 with unpaired, BASE) with basepair with_overlay gquad_minflanks # h;
   leftB     = bl(BASE, REGION with maxsize(30) with unpaired, strong,                                        BASE) with basepair # h;
   rightB    = br(BASE,                                        strong, REGION with maxsize(30) with unpaired, BASE) with basepair # h;
   iloop     = il(BASE, REGION with maxsize(30) with unpaired, strong, REGION with maxsize(30) with unpaired, BASE) with basepair # h;
