@@ -1,6 +1,7 @@
 algebra alg_mfe implements sig_foldrna(alphabet = char, answer = int) {
 	include "Algebras/MFE/Parts/algpart_mfe_basic.gap"
-	
+	include "Algebras/MFE/Parts/algpart_mfe_gquad.gap"
+
   //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions empty here.
   int acomb(int le,Subsequence b,int re) {return le+re;}
   int combine(int le,int re) {return le+re;}
