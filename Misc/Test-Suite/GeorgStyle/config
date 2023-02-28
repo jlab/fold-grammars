@@ -178,3 +178,19 @@ check_new_old_eq rnahybrid.gap rna probingenum ACUG rnahybrid_probingenum3 ACUG
 check_new_old_eq rnahybrid.gap rna probingmfepp AAGG rnahybrid_probingmfepp1 UUCC
 check_new_old_eq rnahybrid.gap rna probingmfepp ACCU rnahybrid_probingmfepp2 UCCA
 check_new_old_eq rnahybrid.gap rna probingmfepp ACUG rnahybrid_probingmfepp3 ACUG
+
+# tests for g-quadruplex integration
+RUN_CPP_FLAGS=" -u 1 "
+# I think results are correct, but see https://github.com/ViennaRNA/ViennaRNA/issues/181
+check_new_old_eq nodangle.gap rna dbmfe CGGGAGGGGCGGGUGGGAGG gquad
+
+# found that I had to add termau_energy penalty to gquadflank
+RUN_CPP_FLAGS=" -u 0 "
+check_new_old_eq nodangle.gap rna dbmfe ccaccGGGUGGUGGGGGGggccaaaggagg gquad_termAU
+
+# compare against first two examples of Vienna's gquad tests
+# note that gapc produces co-optimal results + loop regions of iloops can together exeed 30bp, which is not allowed in Vienna
+GAPC="$BASE/bin/gapc -t -I../../../../ --kbacktrace"
+RUN_CPP_FLAGS=" -u 1 "
+check_new_old_eq nodangle.gap rna mfepp GUGAACUCGUGACAAUCACAAACUUGGCGGCAAAGUGGCGACUCAACCUUGGGGGGGGGGGCGGGGGGAGGGCGCGAGGCUUUUGGAGCGGCUGUGGGUGUCGUCUGGACUGAGGUUUUUAA gquad_rnafold_gquad_test_0001
+check_new_old_eq nodangle.gap rna mfepp GCUUUCUUUACUGCACUGGAGUUCUGACUCCCUUUGAGUUGUGUGUUACUGGGGGUGGGGUGGGGUCAUGGGUUUUGUUGUUUUUGGGGGCUAAUUGGUGCAUAUUCAGGUACCACCUUUGA gquad_rnafold_gquad_test_0002
