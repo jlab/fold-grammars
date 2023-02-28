@@ -9,10 +9,12 @@
     append(res, '+', size(G4));
     return res;
   }
-  string gquadflank(Subsequence left, string x, Subsequence right) {
+  string gquadflank(Subsequence lb, Subsequence left, string x, Subsequence right, Subsequence rb) {
     string res;
+    append(res, '(');
     append(res, '.', size(left));
     append(res, x);
     append(res, '.', size(right));
+    append(res, ')');
     return res;
   }
