@@ -39,7 +39,7 @@ instance shape4mfepfxpp = gra_nodangle (((alg_shape4 * (alg_mfe % alg_pfunc)) su
 instance shape3mfepfxpp = gra_nodangle (((alg_shape3 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
 instance shape2mfepfxpp = gra_nodangle (((alg_shape2 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
 instance shape1mfepfxpp = gra_nodangle (((alg_shape1 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
-                  
+
 instance mfeshape5pp = gra_nodangle(alg_mfe * alg_shape5 * alg_dotBracket);
 instance mfeshape4pp = gra_nodangle(alg_mfe * alg_shape4 * alg_dotBracket);
 instance mfeshape3pp = gra_nodangle(alg_mfe * alg_shape3 * alg_dotBracket);
@@ -90,6 +90,14 @@ instance testmfeshape3pp = gra_nodangle(alg_mfe * alg_shapeX * alg_dotBracket);
 instance testdbshape5mfe = gra_nodangle(alg_dotBracket * alg_shapeX * alg_mfe);
 instance testshape4mfepfdb = gra_nodangle(alg_shapeX * (alg_mfe % alg_pfunc) * alg_dotBracket);
 instance testsampleshape2mfedb = gra_nodangle( ( (alg_pfunc | alg_pfunc_id ) * (alg_shapeX * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
+instance dbmfe = gra_nodangle(alg_dotBracket * alg_mfe);
+instance shapeXmfedb = gra_nodangle(alg_shapeX * (alg_mfe * alg_dotBracket * alg_enum));
+instance shape5mfedb = gra_nodangle(alg_shape5 * (alg_mfe * alg_dotBracket * alg_enum));
+instance shape4mfedb = gra_nodangle(alg_shape4 * (alg_mfe * alg_dotBracket * alg_enum));
+instance shape3mfedb = gra_nodangle(alg_shape3 * (alg_mfe * alg_dotBracket * alg_enum));
+instance shape2mfedb = gra_nodangle(alg_shape2 * (alg_mfe * alg_dotBracket * alg_enum));
+instance shape1mfedb = gra_nodangle(alg_shape1 * (alg_mfe * alg_dotBracket * alg_enum));
+instance shapeXpfunc = gra_nodangle(alg_shapeX * alg_pfunc);
 //stop: instances for unit tests
 
 instance erangeshapeanalysis5 = gra_nodangle((alg_shape5 * (alg_mfe * alg_dotBracket)) suchthat range_shape_mfe_db);
