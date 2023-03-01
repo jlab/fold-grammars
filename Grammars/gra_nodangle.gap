@@ -13,4 +13,13 @@ grammar gra_nodangle uses sig_foldrna(axiom = struct) {
 	dangle    = drem(LOC, strong, LOC)
 	          | gquadruplex # h;
     multiloop = ml(BASE, ml_comps, BASE) with basepair # h;
+
+  hlgquad = gquadflank(BASE,
+	                     REGION0 with unpaired,
+	                     gquadruplex,
+	                     REGION0 with unpaired,
+	                     BASE
+											 ; 0
+	                    ) with basepair with_overlay gquad_minflanks # h;
+
 }
