@@ -183,7 +183,7 @@ algebra alg_hishape_h implements sig_foldrna(alphabet = char, answer = Rope) {
     append(res, 'G');
     return res;
   }
-  Rope gquadflank(Subsequence lb, Subsequence left, Rope x, Subsequence right, Subsequence rb) {
+  Rope gquadflank(Subsequence lb, Subsequence left, Rope x, Subsequence right, Subsequence rb; int danglemodel) {
     return x;
   }
 

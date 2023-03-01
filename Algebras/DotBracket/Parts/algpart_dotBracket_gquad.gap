@@ -9,7 +9,7 @@
     append(res, '+', size(G4));
     return res;
   }
-  string gquadflank(Subsequence lb, Subsequence left, string x, Subsequence right, Subsequence rb) {
+  string gquadflank(Subsequence lb, Subsequence left, string x, Subsequence right, Subsequence rb; int danglemodel) {
     string res;
     append(res, '(');
     append(res, '.', size(left));

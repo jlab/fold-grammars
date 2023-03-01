@@ -1,4 +1,4 @@
-shape_t gquadflank(Subsequence lb, Subsequence left, shape_t x, Subsequence right, Subsequence rb) {
+shape_t gquadflank(Subsequence lb, Subsequence left, shape_t x, Subsequence right, Subsequence rb; int danglemodel) {
   shape_t res;
   append(res, shape_t(openParen));
   if (left.j - left.i > 0) {
