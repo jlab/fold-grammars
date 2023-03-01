@@ -14,7 +14,7 @@ grammar gra_microstate uses sig_foldrna(axiom = struct) {
               edr (LOC,                strong, BASE with unpaired) |
               edlr(BASE with unpaired, strong, BASE with unpaired) |
               drem(LOC,                strong, LOC               ) |
-              edlr(LOC,           gquadruplex, LOC               ) # h;
+              edlr(LOC,           gquadruplex, LOC               ) with allowGquad # h;
 
   strong    = {sr(BASE, weak, BASE) with basepair} with allowLonelyBasepairs(false) |
 			        {		      weak                     } with allowLonelyBasepairs(true)  # h;
@@ -28,7 +28,7 @@ grammar gra_microstate uses sig_foldrna(axiom = struct) {
 
   stack     = sr   (BASE,                                        weak,                                            BASE) with basepair # h;
   hairpin   = hl   (BASE,                                        REGION with minsize(3) with unpaired,            BASE) with basepair
-            | gquadflank(BASE, REGION0 with unpaired, gquadruplex, REGION0 with unpaired, BASE; 1) with basepair with_overlay gquad_minflanks # h;
+            | gquadflank(BASE, REGION0 with unpaired, gquadruplex, REGION0 with unpaired, BASE; 1) with basepair with_overlay gquad_minflanks with allowGquad # h;
   leftB     = bl   (BASE, REGION with maxsize(30) with unpaired, strong,                                          BASE) with basepair # h;
   rightB    = br   (BASE,                                        strong,   REGION with maxsize(30) with unpaired, BASE) with basepair # h;
   iloop     = il   (BASE, REGION with maxsize(30) with unpaired, strong,   REGION with maxsize(30) with unpaired, BASE) with basepair # h;
@@ -53,5 +53,5 @@ grammar gra_microstate uses sig_foldrna(axiom = struct) {
                           REGION with minsize(2) with maxsize(7) with onlychar(G_BASE),
                           REGION with minsize(1) with maxsize(15) with unpaired,
                           REGION with minsize(2) with maxsize(7) with onlychar(G_BASE)
-                         ) with_overlay gquad_same_quarted_sizes # h;
+                         ) with_overlay gquad_same_quarted_sizes with allowGquad # h;
 }

@@ -17,4 +17,4 @@
                           REGION with minsize(2) with maxsize(7) with onlychar(G_BASE),
                           REGION with minsize(1) with maxsize(15) with unpaired,
                           REGION with minsize(2) with maxsize(7) with onlychar(G_BASE)
-                         ) with_overlay gquad_same_quarted_sizes # h;
+                         ) with_overlay gquad_same_quarted_sizes with allowGquad # h;

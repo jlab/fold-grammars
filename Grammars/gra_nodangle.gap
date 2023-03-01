@@ -11,7 +11,7 @@ grammar gra_nodangle uses sig_foldrna(axiom = struct) {
 	include "Grammars/Parts/grapart_basic.gap"
 	include "Grammars/Parts/grapart_gquad.gap"
 	dangle    = drem(LOC, strong, LOC)
-	          | gquadruplex with allowGquad # h;
+	          | gquadruplex # h;
     multiloop = ml(BASE, ml_comps, BASE) with basepair # h;
 
   hlgquad = gquadflank(BASE,
@@ -20,6 +20,6 @@ grammar gra_nodangle uses sig_foldrna(axiom = struct) {
 	                     REGION0 with unpaired,
 	                     BASE
 											 ; 0
-	                    ) with basepair with_overlay gquad_minflanks # h;
+	                    ) with basepair with_overlay gquad_minflanks with allowGquad # h;
 
 }

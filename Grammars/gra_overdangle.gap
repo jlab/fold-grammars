@@ -19,5 +19,5 @@ grammar gra_overdangle uses sig_foldrna(axiom = struct) {
 		                     REGION0 with unpaired,
 		                     BASE
 												 ; 2
-		                    ) with basepair with_overlay gquad_minflanks # h;
+		                    ) with basepair with_overlay gquad_minflanks with allowGquad # h;
 }

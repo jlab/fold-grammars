@@ -14,7 +14,7 @@
 
   stack     = sr(BASE,                                        weak,                                          BASE) with basepair # h;
   hairpin   = hl(BASE,                                        REGION with minsize(3) with unpaired,          BASE) with basepair
-            | hlgquad with allowGquad # h;
+            | hlgquad # h;
   leftB     = bl(BASE, REGION with maxsize(30) with unpaired, strong,                                        BASE) with basepair # h;
   rightB    = br(BASE,                                        strong, REGION with maxsize(30) with unpaired, BASE) with basepair # h;
   iloop     = il(BASE, REGION with maxsize(30) with unpaired, strong, REGION with maxsize(30) with unpaired, BASE) with basepair # h;
