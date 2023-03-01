@@ -9,6 +9,7 @@
 
 grammar gra_cofold_nodangle uses sig_foldrna(axiom = struct_cut) {
 	include "Grammars/Parts/grapart_basic.gap"
+	hairpin   = hl(BASE, REGION with minsize(3) with unpaired, BASE) with basepair # h;
 	dangle    = drem(LOC, strong, LOC) # h;
   multiloop = ml(BASE, ml_comps, BASE) with basepair # h;
 
