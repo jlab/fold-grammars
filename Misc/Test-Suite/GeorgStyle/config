@@ -191,7 +191,7 @@ check_new_old_eq nodangle.gap rna dbmfe ccaccGGGUGGUGGGGGGggccaaaggagg gquad_ter
 # compare against first two examples of Vienna's gquad tests
 # note that gapc produces co-optimal results + loop regions of iloops can together exeed 30bp, which is not allowed in Vienna
 GAPC="$BASE/bin/gapc -t -I../../../../ --kbacktrace"
-RUN_CPP_FLAGS=" -u 1 "
+RUN_CPP_FLAGS=" -u 1 -g 1 "
 check_new_old_eq nodangle.gap rna mfepp GUGAACUCGUGACAAUCACAAACUUGGCGGCAAAGUGGCGACUCAACCUUGGGGGGGGGGGCGGGGGGAGGGCGCGAGGCUUUUGGAGCGGCUGUGGGUGUCGUCUGGACUGAGGUUUUUAA gquad_rnafold_gquad_test_0001
 check_new_old_eq nodangle.gap rna mfepp GCUUUCUUUACUGCACUGGAGUUCUGACUCCCUUUGAGUUGUGUGUUACUGGGGGUGGGGUGGGGUCAUGGGUUUUGUUGUUUUUGGGGGCUAAUUGGUGCAUAUUCAGGUACCACCUUUGA gquad_rnafold_gquad_test_0002
 
@@ -201,30 +201,30 @@ GAPC="$BASE/bin/gapc -t -I../../../../"
 check_new_old_eq nodangle.gap rna shapeXmfedb GGGaGGGaGGGaGGG gquad_shapeAlph
 
 # char_with = 3, did not work out, since it could not split 8 without a rest
-RUN_CPP_FLAGS=" -u 1 -q 1 "
+RUN_CPP_FLAGS=" -u 1 -q 1 -g 1 "
 check_new_old_eq nodangle.gap rna shapeXmfedb GGGaGGGaGGGaGGG gquad_shapeAlph_charwidth
 check_new_old_eq nodangle.gap rna shapeXmfedb aGGGaGGGaGGGaGGGu gquad_shapeX1
-RUN_CPP_FLAGS=" -u 1 -q 4 "
+RUN_CPP_FLAGS=" -u 1 -q 4 -g 1 "
 check_new_old_eq nodangle.gap rna shapeXmfedb aGGGaGGGaGGGaGGGu gquad_shapeX4
-RUN_CPP_FLAGS=" -u 1 -q 3 "
+RUN_CPP_FLAGS=" -u 1 -q 3 -g 1 "
 check_new_old_eq nodangle.gap rna shapeXmfedb aGGGaGGGaGGGaGGGu gquad_shapeX3
-RUN_CPP_FLAGS=" -u 1 "
+RUN_CPP_FLAGS=" -u 1 -g 1 "
 check_new_old_eq nodangle.gap rna shape5mfedb aGGGaGGGaGGGaGGGu gquad_shape5
-RUN_CPP_FLAGS=" -u 1 "
+RUN_CPP_FLAGS=" -u 1 -g 1 "
 check_new_old_eq nodangle.gap rna shape4mfedb aGGGaGGGaGGGaGGGu gquad_shape4
-RUN_CPP_FLAGS=" -u 1 "
+RUN_CPP_FLAGS=" -u 1 -g 1 "
 check_new_old_eq nodangle.gap rna shape3mfedb aGGGaGGGaGGGaGGGu gquad_shape3
-RUN_CPP_FLAGS=" -u 1 "
+RUN_CPP_FLAGS=" -u 1 -g 1 "
 check_new_old_eq nodangle.gap rna shape2mfedb aGGGaGGGaGGGaGGGu gquad_shape2
-RUN_CPP_FLAGS=" -u 1 "
+RUN_CPP_FLAGS=" -u 1 -g 1 "
 check_new_old_eq nodangle.gap rna shape1mfedb aGGGaGGGaGGGaGGGu gquad_shape1
 
 # test pfunc algebra, manually checked via spreadsheet
-RUN_CPP_FLAGS=" -u 1 -q 3 "
+RUN_CPP_FLAGS=" -u 1 -q 3 -g 1 "
 check_new_old_eq nodangle.gap rna shapeXpfunc CGGGAGGGGCGGGUGGGAGG gquad_pfunc
 
 # one test to check overdangle energy contributions
-RUN_CPP_FLAGS=" -u 0 "
+RUN_CPP_FLAGS=" -u 0 -g 1 "
 check_new_old_eq overdangle.gap rna ppmfe ccaccGGGUGGUGGGGGGggccaaaggagg gquad_over_termAU
 
 # one test to check microstate energy contributions
