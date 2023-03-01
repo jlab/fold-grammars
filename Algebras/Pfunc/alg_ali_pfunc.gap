@@ -1,7 +1,8 @@
 //we can't use a two part partition function (one component for energy, the other for covariation), because the scorings for covariation and the Boltzman function have a very unintuitive behaviour if combined --> very strange results for stochastical backtracing. Better directly fuse energy and covariation into one double!
 algebra alg_ali_pfunc implements sig_foldrna(alphabet = M_Char, answer = double) {
   include "Algebras/Pfunc/Parts/algpart_ali_pfunc_basic.gap"
-	
+  include "Algebras/Pfunc/Parts/algpart_ali_pfunc_gquad.gap"
+
   //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions empty here.
   double acomb(double le,Subsequence b,double re) {double x; return x;}
   double combine(double le,double re) {double x; return x;}
@@ -24,4 +25,3 @@ algebra alg_ali_pfunc_id extends alg_ali_pfunc {
     return i;
   }
 }
-
