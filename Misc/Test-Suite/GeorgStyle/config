@@ -223,6 +223,11 @@ check_new_old_eq nodangle.gap rna shape1mfedb aGGGaGGGaGGGaGGGu gquad_shape1
 RUN_CPP_FLAGS=" -u 1 -q 3 "
 check_new_old_eq nodangle.gap rna shapeXpfunc CGGGAGGGGCGGGUGGGAGG gquad_pfunc
 
-# RNA
+# one test to check overdangle energy contributions
 RUN_CPP_FLAGS=" -u 0 "
 check_new_old_eq overdangle.gap rna ppmfe ccaccGGGUGGUGGGGGGggccaaaggagg gquad_over_termAU
+
+# one test to check microstate energy contributions
+# although, I am not convinced that it make sense to dangle a base already involved in a
+# G-Quartet onto a neighboring stem, see follow up in https://github.com/ViennaRNA/ViennaRNA/issues/181
+check_new_old_eq microstate.gap rna ppmfe ccaccGGGUGGUGGGGGGggccaaaggagg gquad_microstate
