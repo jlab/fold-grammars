@@ -81,11 +81,18 @@ inline bool onlychar(const Basic_Sequence<alphabet, pos_type> &seq,
   if (j < i)
     return false;
 
-  for (unsigned row = 0; row < seq.rows(); row++)
-    for (T k = i; k < j; k++) {
-      if (seq.row(row)[k] != x)
-        return false;
+  for (T k = i; k < j; k++) {
+    unsigned int notGs = 0;
+    for (unsigned row = 0; row < seq.rows(); row++) {
+      if (seq.row(row)[k] != x) {
+        notGs++;
+      }
     }
+    if (notGs*2 >= seq.rows()) {
+      return false;
+    }
+  }
+
   return true;
 }
 
