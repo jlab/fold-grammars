@@ -194,3 +194,27 @@ GAPC="$BASE/bin/gapc -t -I../../../../ --kbacktrace"
 RUN_CPP_FLAGS=" -u 1 "
 check_new_old_eq nodangle.gap rna mfepp GUGAACUCGUGACAAUCACAAACUUGGCGGCAAAGUGGCGACUCAACCUUGGGGGGGGGGGCGGGGGGAGGGCGCGAGGCUUUUGGAGCGGCUGUGGGUGUCGUCUGGACUGAGGUUUUUAA gquad_rnafold_gquad_test_0001
 check_new_old_eq nodangle.gap rna mfepp GCUUUCUUUACUGCACUGGAGUUCUGACUCCCUUUGAGUUGUGUGUUACUGGGGGUGGGGUGGGGUCAUGGGUUUUGUUGUUUUUGGGGGCUAAUUGGUGCAUAUUCAGGUACCACCUUUGA gquad_rnafold_gquad_test_0002
+
+# the quadruplex shall be represented as a G, which required extension of gapc's shape_alph(abet)
+# and I initially messed up the bit-size. Better double check here again.
+GAPC="$BASE/bin/gapc -t -I../../../../"
+check_new_old_eq nodangle.gap rna shapeXmfedb GGGaGGGaGGGaGGG gquad_shapeAlph
+
+# char_with = 3, did not work out, since it could not split 8 without a rest
+RUN_CPP_FLAGS=" -u 1 -q 1 "
+check_new_old_eq nodangle.gap rna shapeXmfedb GGGaGGGaGGGaGGG gquad_shapeAlph_charwidth
+check_new_old_eq nodangle.gap rna shapeXmfedb aGGGaGGGaGGGaGGGu gquad_shapeX1
+RUN_CPP_FLAGS=" -u 1 -q 4 "
+check_new_old_eq nodangle.gap rna shapeXmfedb aGGGaGGGaGGGaGGGu gquad_shapeX4
+RUN_CPP_FLAGS=" -u 1 -q 3 "
+check_new_old_eq nodangle.gap rna shapeXmfedb aGGGaGGGaGGGaGGGu gquad_shapeX3
+RUN_CPP_FLAGS=" -u 1 "
+check_new_old_eq nodangle.gap rna shape5mfedb aGGGaGGGaGGGaGGGu gquad_shape5
+RUN_CPP_FLAGS=" -u 1 "
+check_new_old_eq nodangle.gap rna shape4mfedb aGGGaGGGaGGGaGGGu gquad_shape4
+RUN_CPP_FLAGS=" -u 1 "
+check_new_old_eq nodangle.gap rna shape3mfedb aGGGaGGGaGGGaGGGu gquad_shape3
+RUN_CPP_FLAGS=" -u 1 "
+check_new_old_eq nodangle.gap rna shape2mfedb aGGGaGGGaGGGaGGGu gquad_shape2
+RUN_CPP_FLAGS=" -u 1 "
+check_new_old_eq nodangle.gap rna shape1mfedb aGGGaGGGaGGGaGGGu gquad_shape1
