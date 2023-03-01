@@ -261,22 +261,22 @@ algebra alg_ali_consensus implements sig_foldrna(alphabet = M_Char, answer = Rop
 
   Rope gquad(Subsequence G1, Subsequence l1, Subsequence G2, Subsequence l2, Subsequence G3, Subsequence l3, Subsequence G4) {
     Rope res;
-    // append_consensus(res, G1);
-    // append_consensus(res, l1);
-    // append_consensus(res, G2);
-    // append_consensus(res, l2);
-    // append_consensus(res, G3);
-    // append_consensus(res, l3);
-    // append_consensus(res, G4);
+    append_consensus(res, G1);
+    append_consensus(res, l1);
+    append_consensus(res, G2);
+    append_consensus(res, l2);
+    append_consensus(res, G3);
+    append_consensus(res, l3);
+    append_consensus(res, G4);
     return res;
   }
   Rope gquadflank(Subsequence lb, Subsequence left, Rope x, Subsequence right, Subsequence rb; int danglemodel) {
     Rope res;
-    // append_consensus(res, lb);
-    // append_consensus(res, left);
-    // append(res, x);
-    // append_consensus(res, right);
-    // append_consensus(res, rb);
+    append_consensus(res, lb);
+    append_consensus(res, left);
+    append(res, x);
+    append_consensus(res, right);
+    append_consensus(res, rb);
     return res;
   }
 
