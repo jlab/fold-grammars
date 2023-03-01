@@ -218,3 +218,7 @@ RUN_CPP_FLAGS=" -u 1 "
 check_new_old_eq nodangle.gap rna shape2mfedb aGGGaGGGaGGGaGGGu gquad_shape2
 RUN_CPP_FLAGS=" -u 1 "
 check_new_old_eq nodangle.gap rna shape1mfedb aGGGaGGGaGGGaGGGu gquad_shape1
+
+# test pfunc algebra, manually checked via spreadsheet
+RUN_CPP_FLAGS=" -u 1 -q 3 "
+check_new_old_eq nodangle.gap rna shapeXpfunc CGGGAGGGGCGGGUGGGAGG gquad_pfunc
