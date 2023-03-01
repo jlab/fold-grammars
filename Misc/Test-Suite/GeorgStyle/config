@@ -180,12 +180,12 @@ check_new_old_eq rnahybrid.gap rna probingmfepp ACCU rnahybrid_probingmfepp2 UCC
 check_new_old_eq rnahybrid.gap rna probingmfepp ACUG rnahybrid_probingmfepp3 ACUG
 
 # tests for g-quadruplex integration
-RUN_CPP_FLAGS=" -u 1 "
+RUN_CPP_FLAGS=" -u 1 -g 1 "
 # I think results are correct, but see https://github.com/ViennaRNA/ViennaRNA/issues/181
 check_new_old_eq nodangle.gap rna dbmfe CGGGAGGGGCGGGUGGGAGG gquad
 
 # found that I had to add termau_energy penalty to gquadflank
-RUN_CPP_FLAGS=" -u 0 "
+RUN_CPP_FLAGS=" -u 0 -g 1 "
 check_new_old_eq nodangle.gap rna dbmfe ccaccGGGUGGUGGGGGGggccaaaggagg gquad_termAU
 
 # compare against first two examples of Vienna's gquad tests
