@@ -59,10 +59,18 @@ algebra alg_ali_purecovar implements sig_foldrna(alphabet = M_Char, answer = int
   int nil(Subsequence n) {
     return 0;
   }
+  int gquad(Subsequence G1, Subsequence l1, Subsequence G2, Subsequence l2, Subsequence G3, Subsequence l3, Subsequence G4) {
+    // not sure if we should covary the G's. Better return surprisingly low covariance
+    return -9999999999999999;
+  }
+  int gquadflank(Subsequence lb, Subsequence left, int x, Subsequence right, Subsequence rb; int danglemodel) {
+    return x + covscore(lb, lb.i, rb.i);
+  }
+
   choice [int] h([int] i) {
     return list(maximum(i));
   }
-	
+
   //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions empty here.
   int acomb(int le,Subsequence b,int re) {return le+re;}
   int combine(int le,int re) {return le+re;}

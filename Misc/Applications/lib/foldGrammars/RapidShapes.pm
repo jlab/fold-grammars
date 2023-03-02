@@ -53,36 +53,44 @@ sub compileAndrunTDM {
 	$tdmCall .= " -T ".$refHash_settings->{temperature}." " if ($refHash_settings->{temperature} != 37);
 	$tdmCall .= " -P ".$refHash_settings->{param}." " if (defined $refHash_settings->{param});
 	$tdmCall .= " -u ".$refHash_settings->{allowlp}." ";
-
-	my $grammar = lc($refHash_settings->{grammar});
-	my $bintdm = Utils::absFilename($refHash_settings->{binarypath}.'/'.$refHash_settings->{binaryprefix}.'tdm_'.$grammar.'_'.$refHash_settings->{shapelevel});
-	my $tdmGrammar = Utils::execute("$bintdm \"$shapestring\" 2>&1"); $tdmGrammar =~ s/Answer://;
-	
 	my $pwd = Utils::execute(Settings::getBinary('pwd')." 2>&1");
 	chomp $pwd;
-	
 	my $tmpDir = Utils::createUniqueTempDir($Settings::tmpdir, "tdmrun");
-	
-	my $mkdir = Utils::execute(Settings::getBinary('mkdir')." $tmpDir/Grammars -p 2>&1");
-	my $ln = Utils::execute(Settings::getBinary('ln')." -s $Settings::prototypeDirectory/$grammar.gap $tmpDir/ 2>&1");
-	open (OUT, "> $tmpDir/Grammars/gra_$grammar.gap") || die "can't write generated grammar file: $!";
-		print OUT $tdmGrammar;
-	close (OUT);
-	my $algebrasuffix = "";
-	my $gapc = Utils::execute(Settings::getBinary('gapc')." -p \"(alg_shapeX * (alg_mfe$algebrasuffix % alg_pfunc$algebrasuffix)) * (alg_dotBracket * alg_pfunc$algebrasuffix)\" $grammar.gap --kbacktrace --no-coopt-class -I $Settings::prototypeDirectory 2>&1");
-	print STDERR "\ttweaking makefile ..." if ($verbose);
-	my $perl = Utils::execute(Settings::getBinary('addRNAoptions.pl')." $tmpDir/out.mf 0 2>&1");
-	print STDERR " done.\n" if ($verbose);
-	print STDERR "\tcompiling ..." if ($verbose);
-	my $start_make = Time::HiRes::gettimeofday();
-	my $make = Utils::execute(Settings::getBinary('make')." -f out.mf CPPFLAGS_EXTRA=\"-I $Settings::prototypeDirectory -ffast-math\" LDLIBS=\"-lrnafast\" 2>&1");
-	print STDERR " done in ".sprintf("%.2f seconds.\n", Time::HiRes::gettimeofday() - $start_make) if ($verbose);
-	
+
+	my $tdm_name = Utils::absFilename($tmpDir."/out");
+	if (defined $refHash_settings->{tdmcachedir}) {
+		$tdm_name = Utils::absFilename($refHash_settings->{tdmcachedir}."/tdm-".$refHash_settings->{grammar}."-level".$refHash_settings->{shapelevel}."-".$shapestring);
+	}
+
+	if (! -x $tdm_name) {
+		my $grammar = lc($refHash_settings->{grammar});
+		my $bintdm = Utils::absFilename($refHash_settings->{binarypath}.'/'.$refHash_settings->{binaryprefix}.'tdm_'.$grammar.'_'.$refHash_settings->{shapelevel});
+		print Dumper ($bintdm);
+		my $tdmGrammar = Utils::execute("\"$bintdm\" \"$shapestring\" 2>&1"); $tdmGrammar =~ s/Answer://;
+
+		my $mkdir = Utils::execute(Settings::getBinary('mkdir')." $tmpDir/Grammars -p 2>&1");
+		my $ln = Utils::execute(Settings::getBinary('ln')." -s \"$Settings::prototypeDirectory/$grammar.gap\" $tmpDir/ 2>&1");
+		open (OUT, "> $tmpDir/Grammars/gra_$grammar.gap") || die "can't write generated grammar file: $!";
+			print OUT $tdmGrammar;
+		close (OUT);
+		my $algebrasuffix = "";
+		my $gapc = Utils::execute(Settings::getBinary('gapc')." -p \"(alg_shapeX * (alg_mfe$algebrasuffix % alg_pfunc$algebrasuffix)) * (alg_dotBracket * alg_pfunc$algebrasuffix)\" $grammar.gap --kbacktrace --no-coopt-class -I $Settings::prototypeDirectory 2>&1");
+		print STDERR "\ttweaking makefile ..." if ($verbose);
+		my $perl = Utils::execute(Settings::getBinary('addRNAoptions.pl')." $tmpDir/out.mf 0 2>&1");
+		print STDERR " done.\n" if ($verbose);
+		print STDERR "\tcompiling ..." if ($verbose);
+		my $start_make = Time::HiRes::gettimeofday();
+		my $make = Utils::execute(Settings::getBinary('make')." -f out.mf CPPFLAGS_EXTRA=\"-I $Settings::prototypeDirectory -ffast-math\" LDLIBS=\"-lrnafast\" 2>&1");
+		print STDERR " done in ".sprintf("%.2f seconds.\n", Time::HiRes::gettimeofday() - $start_make) if ($verbose);
+		if (defined $refHash_settings->{tdmcachedir}) {
+			Utils::execute(Settings::getBinary('cp')." ./out \"".$tdm_name."\" 2>&1");
+		}
+	}
 	my $seq = $refHash_sequence->{sequence};
 	$seq =~ s/t/u/gi;
 	print STDERR "\trunning ..." if ($verbose);
 	my $start_run = Time::HiRes::gettimeofday();
-	my $tdmResult = Utils::execute("./out $tdmCall \"$seq\" 2>&1"); 
+	my $tdmResult = Utils::execute("\"".$tdm_name."\" $tdmCall \"$seq\" 2>&1");
 	print STDERR " done in ".sprintf("%.2f seconds.\n", Time::HiRes::gettimeofday() - $start_run) if ($verbose);
 	
 	$tdmResult =~ s/Answer://;

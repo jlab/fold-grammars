@@ -68,7 +68,7 @@ algebra alg_SHAPE implements sig_foldrna(alphabet = char, answer = double) {
   choice [double] h([double] i) {
     return list(maximum(i));
   }
-  
+
   //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions empty here.
   double acomb(double le,Subsequence b,double re) {return le + re;}
   double combine(double le,double re) {return le+re;}
@@ -84,6 +84,13 @@ algebra alg_SHAPE implements sig_foldrna(alphabet = char, answer = double) {
   double cadd_Pr_Pr_Pr(double le,double re) {return le+re;}
   double cadd_Pr_Pr(double le,double re) {return le+re;}
   double cadd_Pr(double le,double re) {return le+re;}
+
+  double gquad(Subsequence G1, Subsequence l1, Subsequence G2, Subsequence l2, Subsequence G3, Subsequence l3, Subsequence G4) {
+    return 0.0;
+  }
+  double gquadflank(Subsequence lb, Subsequence left, double x, Subsequence right, Subsequence rb; int danglemodel) {
+    return x;
+  }
 }
 
 algebra alg_SHAPE_id extends alg_SHAPE {
@@ -101,7 +108,7 @@ algebra alg_SHAPEplain_id extends alg_SHAPE_id {
 	innerrb.i = rb.i-1;
 	innerrb.j = rb.j-1;
     return x + getSHAPEscore_plain(lb) + getSHAPEscore_plain(rb) + getSHAPEscore_plain(innerlb) + getSHAPEscore_plain(innerrb);
-  }	
+  }
 }
 algebra alg_SHAPEplain extends alg_SHAPE {
   double sr(Subsequence lb, double x, Subsequence rb) {
@@ -112,5 +119,5 @@ algebra alg_SHAPEplain extends alg_SHAPE {
 	innerrb.i = rb.i-1;
 	innerrb.j = rb.j-1;
     return x + getSHAPEscore_plain(lb) + getSHAPEscore_plain(rb) + getSHAPEscore_plain(innerlb) + getSHAPEscore_plain(innerrb);
-  }	
+  }
 }

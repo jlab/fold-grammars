@@ -73,10 +73,17 @@ algebra alg_ali_puremfe implements sig_foldrna(alphabet = M_Char, answer = int) 
   int nil(Subsequence n) {
     return 0;
   }
+  int gquad(Subsequence G1, Subsequence l1, Subsequence G2, Subsequence l2, Subsequence G3, Subsequence l3, Subsequence G4) {
+    return gquad_energy(G1, l1, G2, l2, G3, l3, G4) / float(rows(r));
+  }
+  int gquadflank(Subsequence lb, Subsequence left, int x, Subsequence right, Subsequence rb; int danglemodel) {
+    return x + (ss_energy(left) + ss_energy(right) + termau_energy(lb, rb) + gquad_penalty_energy(left, right, danglemodel)) / float(rows(r));
+  }
+
   choice [int] h([int] i) {
     return list(minimum(i));
   }
-	
+
   //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions empty here.
   int acomb(int le,Subsequence b,int re) {return le+re;}
   int combine(int le,int re) {return le+re;}

@@ -71,15 +71,19 @@
 	}
 	inline static const char* getProbing_normalization() {
 		return gapc::Opts::getOpts()->probing_normalization;
-    }
-    inline static std::vector<std::pair<const char*, unsigned> > getInputs() {
-        return gapc::Opts::getOpts()->inputs;
-    }
+  }
+  inline static std::vector<std::pair<const char*, unsigned> > getInputs() {
+    return gapc::Opts::getOpts()->inputs;
+  }
 	inline static int getConsensusType() {
 		return gapc::Opts::getOpts()->consensusType;
 	}
 	inline static bool isRiboseScoring() {
 		return gapc::Opts::getOpts()->ribosum_scoring;
+	}
+	template<typename alphabet, typename pos_type, typename T>
+	inline bool allowGquad(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
+		return gapc::Opts::getOpts()->enableGquadruplexes;
 	}
 #else
 	//if compiled with no special options to ask for energy penalties for initializing pseudoknots, minimal length of kissing hairpin stems and the pKiss strategy.
@@ -154,6 +158,10 @@
 		return 0;
 	}
 	inline static bool isRiboseScoring() {
+		return false;
+	}
+	template<typename alphabet, typename pos_type, typename T>
+	inline bool allowGquad(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
 		return false;
 	}
 #endif

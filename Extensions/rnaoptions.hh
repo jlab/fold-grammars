@@ -133,6 +133,7 @@ class Opts {
     float probing_intercept;
     const char* probing_modifier;
     const char* probing_normalization;
+    bool enableGquadruplexes;
 #ifdef CHECKPOINTING_INTEGRATED
     size_t checkpoint_interval;  // default interval: 3600s (1h)
     boost::filesystem::path  checkpoint_out_path;  // default path: cwd
@@ -174,6 +175,7 @@ class Opts {
     				probing_intercept(-0.6*100),
     				probing_modifier("unknown"),
     				probing_normalization("centroid"),
+            enableGquadruplexes(false),
     #ifdef CHECKPOINTING_INTEGRATED
                     checkpoint_interval(3600),
                     checkpoint_out_path(boost::filesystem::current_path()),
@@ -289,7 +291,9 @@ class Opts {
 				<< "-a <int-value> select alignment consensus representation for dot plots, aka. outside computation." << std::endl
 				<< "   0 = consensus, 1 = most informative sequence" << std::endl
 				<< "" << std::endl
-				<< "-h, --help Print this help." << std::endl
+        << "-g <int-value> 1 = enable integration of Guanine-quadruplexes, 0 = don't allow them [0]" << std::endl
+        << "" << std::endl
+        << "-h, --help Print this help." << std::endl
 				<< "" << std::endl
 				<< " (-[drk] [0-9]+)*" << std::endl << std::endl
 	#ifdef CHECKPOINTING_INTEGRATED
@@ -349,6 +353,7 @@ class Opts {
 					    "o:a:"  //output filename for dot plot, consensus type: 0=consensus, 1=mis
 						"n:C:m:R:" //for alifold parameters nfactor, cfactor and minpscore_basepair, ribosum scoring
 						"S:A:B:M:N:" //S: reads additional probing data from file "S", A: slope as in RNAstructure, B: intercept as in RNAstructure, M: modifier type (SHAPE, CMCT, DMS), N: normalization of plain reactivities (centroid, RNAstructure, logplain, asProbabilities)
+            "g:" // switch on/off Guanine Quadruplexes
 						"hd:r:k:p:I:O:", long_opts, nullptr)) != -1) {
 			switch (o) {
 			case 'f':
@@ -473,6 +478,9 @@ class Opts {
 				break;
 			case 'a':
 				consensusType = std::atoi(optarg);
+				break;
+      case 'g':
+				enableGquadruplexes = (std::atoi(optarg) >= 1);
 				break;
         #ifdef CHECKPOINTING_INTEGRATED
             case 'p' :

@@ -35,7 +35,7 @@ Known problems with algebra mfe for grammar MacroState:
 algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_macrostate) {
   mfecovar_macrostate sadd(Subsequence lb,mfecovar_macrostate e) {
     mfecovar_macrostate res = e;
-	
+
 	int sbase_sum = 0;
     for (int k = 0; k < int(rows(lb)); k=k+1) {
       if (column(seq_char(lb,lb.i),k) != GAP_BASE) {
@@ -46,7 +46,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = e.firstStem.j;
-	
+
     return res;
   }
 
@@ -126,7 +126,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
+
     res.mfe = e.mfe + (sr_energy(res.firstStem,res.firstStem) / float(rows(lb)));
     return res;
   }
@@ -159,8 +159,8 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
-    res.mfe = res.mfe + (br_energy(lb, rregion) / float(rows(lb))); 
+
+    res.mfe = res.mfe + (br_energy(lb, rregion) / float(rows(lb)));
 	res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
@@ -170,7 +170,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
+
     res.mfe = res.mfe + (il_energy(lregion, rregion) / float(rows(lb)));
 	res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
@@ -181,7 +181,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
+
     res.mfe = res.mfe + ml_energy() + ul_energy() + (termau_energy(res.firstStem,res.firstStem) / float(rows(lb)));
 	res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
@@ -196,7 +196,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
+
     res.mfe = res.mfe + ml_energy() + ul_energy() + ((dri_energy(res.firstStem,res.firstStem) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
 	res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
@@ -207,7 +207,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
+
     res.mfe = res.mfe + ml_energy() + ul_energy() + ((min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem, e.lastStem)) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
 	res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
@@ -218,7 +218,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
+
     res.mfe = res.mfe + ml_energy() + ul_energy() + ((ml_mismatch_energy(res.firstStem,res.firstStem) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
 	res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
@@ -229,7 +229,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
+
     res.mfe = res.mfe + ml_energy() + ul_energy() + ((min(dli_energy(res.firstStem,res.firstStem), dl_energy(e.firstStem, e.firstStem)) + min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem, e.lastStem)) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
 	res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
@@ -240,7 +240,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
+
     res.mfe = res.mfe + ml_energy() + ul_energy() + ((dli_energy(res.firstStem,res.firstStem) + min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem,e.lastStem)) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
 	res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
@@ -251,7 +251,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
+
     res.mfe = res.mfe + ml_energy() + ul_energy() + ((min(dli_energy(res.firstStem,res.firstStem), dl_energy(e.firstStem, e.firstStem)) + dri_energy(res.firstStem,res.firstStem) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
 	res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
@@ -262,7 +262,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
+
     res.mfe = res.mfe + ml_energy() + ul_energy() + ((dli_energy(res.firstStem,res.firstStem) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
 	res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
@@ -282,7 +282,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
   mfecovar_macrostate addss(mfecovar_macrostate e,Subsequence rb) {
     mfecovar_macrostate res = e;
     res.mfe = res.mfe + (ss_energy(rb) / float(rows(rb)));
-    
+
     res.firstStem = e.firstStem;
     res.lastStem = e.lastStem;
     return res;
@@ -291,7 +291,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
   mfecovar_macrostate ssadd(Subsequence lb,mfecovar_macrostate e) {
     mfecovar_macrostate res = e;
     res.mfe = res.mfe + ul_energy() + (ss_energy(lb) / float(rows(lb)));
-    
+
     res.firstStem = e.firstStem;
     res.lastStem = e.firstStem;
     return res;
@@ -304,7 +304,7 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
   mfecovar_macrostate incl(mfecovar_macrostate e) {
     mfecovar_macrostate res = e;
     res.mfe = res.mfe + ul_energy();
-    
+
     res.firstStem = e.firstStem;
     res.lastStem = e.firstStem;
     return res;
@@ -321,6 +321,17 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
     res.firstStem = le.firstStem;
     res.lastStem = re.lastStem;
     return res;
+  }
+
+  mfecovar_macrostate gquad(Subsequence G1, Subsequence l1, Subsequence G2, Subsequence l2, Subsequence G3, Subsequence l3, Subsequence G4) {
+    mfecovar_macrostate res;
+    res.mfe = -9999999999;
+    // warning: G-quadruplexes cannot really be considered in macrostate,
+    // but since it uses the same signature as the other grammar, we need to define the function here as well
+    return res;
+  }
+  mfecovar_macrostate gquadflank(Subsequence lb, Subsequence left, mfecovar_macrostate x, Subsequence right, Subsequence rb; int danglemodel) {
+    return x;
   }
 
   choice [mfecovar_macrostate] h([mfecovar_macrostate] i) {

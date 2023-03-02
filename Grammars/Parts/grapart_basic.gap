@@ -2,18 +2,17 @@
               cadd(dangle, struct)   |
               nil(LOC)               # h;
 
-  strong    = {sr(BASE, weak, BASE) with basepair} with allowLonelyBasepairs(false) | 
+  strong    = {sr(BASE, weak, BASE) with basepair} with allowLonelyBasepairs(false) |
 			  {		    weak                     } with allowLonelyBasepairs(true)  # h;
 
-  weak      = {stack      | 
+  weak      = {stack      |
                hairpin    |
-               leftB      | 
-               rightB     | 
-               iloop      | 
+               leftB      |
+               rightB     |
+               iloop      |
                multiloop} # h;
 
   stack     = sr(BASE,                                        weak,                                          BASE) with basepair # h;
-  hairpin   = hl(BASE,                                        REGION with minsize(3) with unpaired,          BASE) with basepair # h;
   leftB     = bl(BASE, REGION with maxsize(30) with unpaired, strong,                                        BASE) with basepair # h;
   rightB    = br(BASE,                                        strong, REGION with maxsize(30) with unpaired, BASE) with basepair # h;
   iloop     = il(BASE, REGION with maxsize(30) with unpaired, strong, REGION with maxsize(30) with unpaired, BASE) with basepair # h;

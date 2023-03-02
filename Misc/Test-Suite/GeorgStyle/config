@@ -178,3 +178,56 @@ check_new_old_eq rnahybrid.gap rna probingenum ACUG rnahybrid_probingenum3 ACUG
 check_new_old_eq rnahybrid.gap rna probingmfepp AAGG rnahybrid_probingmfepp1 UUCC
 check_new_old_eq rnahybrid.gap rna probingmfepp ACCU rnahybrid_probingmfepp2 UCCA
 check_new_old_eq rnahybrid.gap rna probingmfepp ACUG rnahybrid_probingmfepp3 ACUG
+
+# tests for g-quadruplex integration
+RUN_CPP_FLAGS=" -u 1 -g 1 "
+# I think results are correct, but see https://github.com/ViennaRNA/ViennaRNA/issues/181
+check_new_old_eq nodangle.gap rna dbmfe CGGGAGGGGCGGGUGGGAGG gquad
+
+# found that I had to add termau_energy penalty to gquadflank
+RUN_CPP_FLAGS=" -u 0 -g 1 "
+check_new_old_eq nodangle.gap rna dbmfe ccaccGGGUGGUGGGGGGggccaaaggagg gquad_termAU
+
+# compare against first two examples of Vienna's gquad tests
+# note that gapc produces co-optimal results + loop regions of iloops can together exeed 30bp, which is not allowed in Vienna
+GAPC="$BASE/bin/gapc -t -I../../../../ --kbacktrace"
+RUN_CPP_FLAGS=" -u 1 -g 1 "
+check_new_old_eq nodangle.gap rna mfepp GUGAACUCGUGACAAUCACAAACUUGGCGGCAAAGUGGCGACUCAACCUUGGGGGGGGGGGCGGGGGGAGGGCGCGAGGCUUUUGGAGCGGCUGUGGGUGUCGUCUGGACUGAGGUUUUUAA gquad_rnafold_gquad_test_0001
+check_new_old_eq nodangle.gap rna mfepp GCUUUCUUUACUGCACUGGAGUUCUGACUCCCUUUGAGUUGUGUGUUACUGGGGGUGGGGUGGGGUCAUGGGUUUUGUUGUUUUUGGGGGCUAAUUGGUGCAUAUUCAGGUACCACCUUUGA gquad_rnafold_gquad_test_0002
+
+# the quadruplex shall be represented as a G, which required extension of gapc's shape_alph(abet)
+# and I initially messed up the bit-size. Better double check here again.
+GAPC="$BASE/bin/gapc -t -I../../../../"
+check_new_old_eq nodangle.gap rna shapeXmfedb GGGaGGGaGGGaGGG gquad_shapeAlph
+
+# char_with = 3, did not work out, since it could not split 8 without a rest
+RUN_CPP_FLAGS=" -u 1 -q 1 -g 1 "
+check_new_old_eq nodangle.gap rna shapeXmfedb GGGaGGGaGGGaGGG gquad_shapeAlph_charwidth
+check_new_old_eq nodangle.gap rna shapeXmfedb aGGGaGGGaGGGaGGGu gquad_shapeX1
+RUN_CPP_FLAGS=" -u 1 -q 4 -g 1 "
+check_new_old_eq nodangle.gap rna shapeXmfedb aGGGaGGGaGGGaGGGu gquad_shapeX4
+RUN_CPP_FLAGS=" -u 1 -q 3 -g 1 "
+check_new_old_eq nodangle.gap rna shapeXmfedb aGGGaGGGaGGGaGGGu gquad_shapeX3
+RUN_CPP_FLAGS=" -u 1 -g 1 "
+check_new_old_eq nodangle.gap rna shape5mfedb aGGGaGGGaGGGaGGGu gquad_shape5
+RUN_CPP_FLAGS=" -u 1 -g 1 "
+check_new_old_eq nodangle.gap rna shape4mfedb aGGGaGGGaGGGaGGGu gquad_shape4
+RUN_CPP_FLAGS=" -u 1 -g 1 "
+check_new_old_eq nodangle.gap rna shape3mfedb aGGGaGGGaGGGaGGGu gquad_shape3
+RUN_CPP_FLAGS=" -u 1 -g 1 "
+check_new_old_eq nodangle.gap rna shape2mfedb aGGGaGGGaGGGaGGGu gquad_shape2
+RUN_CPP_FLAGS=" -u 1 -g 1 "
+check_new_old_eq nodangle.gap rna shape1mfedb aGGGaGGGaGGGaGGGu gquad_shape1
+
+# test pfunc algebra, manually checked via spreadsheet
+RUN_CPP_FLAGS=" -u 1 -q 3 -g 1 "
+check_new_old_eq nodangle.gap rna shapeXpfunc CGGGAGGGGCGGGUGGGAGG gquad_pfunc
+
+# one test to check overdangle energy contributions
+RUN_CPP_FLAGS=" -u 0 -g 1 "
+check_new_old_eq overdangle.gap rna ppmfe ccaccGGGUGGUGGGGGGggccaaaggagg gquad_over_termAU
+
+# one test to check microstate energy contributions
+# although, I am not convinced that it make sense to dangle a base already involved in a
+# G-Quartet onto a neighboring stem, see follow up in https://github.com/ViennaRNA/ViennaRNA/issues/181
+check_new_old_eq microstate.gap rna ppmfe ccaccGGGUGGUGGGGGGggccaaaggagg gquad_microstate

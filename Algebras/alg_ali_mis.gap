@@ -259,6 +259,27 @@ algebra alg_ali_mis implements sig_foldrna(alphabet = M_Char, answer = Rope) {
     return res;
   }
 
+  Rope gquad(Subsequence G1, Subsequence l1, Subsequence G2, Subsequence l2, Subsequence G3, Subsequence l3, Subsequence G4) {
+    Rope res;
+    append_mis(res, G1);
+    append_mis(res, l1);
+    append_mis(res, G2);
+    append_mis(res, l2);
+    append_mis(res, G3);
+    append_mis(res, l3);
+    append_mis(res, G4);
+    return res;
+  }
+  Rope gquadflank(Subsequence lb, Subsequence left, Rope x, Subsequence right, Subsequence rb; int danglemodel) {
+    Rope res;
+    append_mis(res, lb);
+    append_mis(res, left);
+    append(res, x);
+    append_mis(res, right);
+    append_mis(res, rb);
+    return res;
+  }
+
   choice [Rope] h([Rope] i) {
     //~ return list(minimum(i));
     //~ return i;

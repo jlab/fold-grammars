@@ -1,6 +1,7 @@
 algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar) {
 	include "Algebras/MFE/Parts/algpart_ali_mfe_basic.gap"
-	
+	include "Algebras/MFE/Parts/algpart_ali_mfe_gquad.gap"
+
   //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions empty here.
   mfecovar acomb(mfecovar le,Subsequence b,mfecovar re) {mfecovar x; return x;}
   mfecovar combine(mfecovar le,mfecovar re) {mfecovar x; return x;}

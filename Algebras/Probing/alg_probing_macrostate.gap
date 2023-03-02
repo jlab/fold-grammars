@@ -1,4 +1,6 @@
 algebra alg_probing implements sig_foldrna(alphabet = char, answer = double) {
+  include "Algebras/Probing/Parts/algpart_probing_gquad.gap"
+
   double sadd(Subsequence lb,double e) {
     return e + getReactivityScore(lb, true);
   }

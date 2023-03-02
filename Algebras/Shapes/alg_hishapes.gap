@@ -3,7 +3,7 @@ algebra alg_hishape_h implements sig_foldrna(alphabet = char, answer = Rope) {
   Rope sadd(Subsequence b,Rope e) {
     Rope emptyShape;
     Rope res;
-    
+
     if (e == emptyShape) {
       append(res, '_');
       append(res, e);
@@ -13,7 +13,7 @@ algebra alg_hishape_h implements sig_foldrna(alphabet = char, answer = Rope) {
     }
   }
 
-  Rope cadd(Rope le,Rope re) {  
+  Rope cadd(Rope le,Rope re) {
     if (re == "_") {
       return le;
     } else {
@@ -90,7 +90,7 @@ algebra alg_hishape_h implements sig_foldrna(alphabet = char, answer = Rope) {
     Rope res;
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, ',');
@@ -178,6 +178,14 @@ algebra alg_hishape_h implements sig_foldrna(alphabet = char, answer = Rope) {
     append(res, re);
     return res;
   }
+  Rope gquad(Subsequence G1, Subsequence l1, Subsequence G2, Subsequence l2, Subsequence G3, Subsequence l3, Subsequence G4) {
+    Rope res;
+    append(res, 'G');
+    return res;
+  }
+  Rope gquadflank(Subsequence lb, Subsequence left, Rope x, Subsequence right, Subsequence rb; int danglemodel) {
+    return x;
+  }
 
   choice [Rope] h([Rope] i) {
     return unique(i);
@@ -186,11 +194,11 @@ algebra alg_hishape_h implements sig_foldrna(alphabet = char, answer = Rope) {
 
 algebra alg_hishape_m extends alg_hishape_h {
   Rope ml(Subsequence lb,Rope e,Subsequence rb) {
-    Rope res;       
+    Rope res;
     append(res, e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'm');
@@ -199,11 +207,11 @@ algebra alg_hishape_m extends alg_hishape_h {
   }
 
   Rope mlall(Subsequence lb,Rope e,Subsequence rb) {
-    Rope res;       
+    Rope res;
     append(res, e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'm');
@@ -216,7 +224,7 @@ algebra alg_hishape_m extends alg_hishape_h {
     append(res, e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'm');
@@ -229,7 +237,7 @@ algebra alg_hishape_m extends alg_hishape_h {
     append(res, e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'm');
@@ -242,7 +250,7 @@ algebra alg_hishape_m extends alg_hishape_h {
     append(res, e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'm');
@@ -255,7 +263,7 @@ algebra alg_hishape_m extends alg_hishape_h {
     append(res,e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'm');
@@ -268,7 +276,7 @@ algebra alg_hishape_m extends alg_hishape_h {
     append(res, e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'm');
@@ -281,7 +289,7 @@ algebra alg_hishape_m extends alg_hishape_h {
     append(res, e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'm');
@@ -294,7 +302,7 @@ algebra alg_hishape_m extends alg_hishape_h {
     append(res,e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'm');
@@ -307,7 +315,7 @@ algebra alg_hishape_m extends alg_hishape_h {
     append(res, e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'm');
@@ -322,25 +330,25 @@ algebra alg_hishape_b extends alg_hishape_m {
     append(res, e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'b');
     append(res, ',');
-    return res;    
+    return res;
   }
-  
+
   Rope br(Subsequence lb,Rope e,Subsequence rregion,Subsequence rb) {
     Rope res;
     append(res, e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'b');
     append(res, ',');
-    return res;    
+    return res;
   }
 
   Rope il(Subsequence lb,Subsequence lregion,Rope e,Subsequence rregion,Subsequence rb) {
@@ -348,11 +356,11 @@ algebra alg_hishape_b extends alg_hishape_m {
     append(res, e);
     int pos;
     pos = (lb.i+rb.j+1)/2;
-    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;  
+    if ( pos*2 > lb.i+rb.j+1 ) pos = pos - 1;
     append(res, pos);
     if ( pos*2 != lb.i+rb.j+1 ) append(res, ".5", 2);
     append(res, 'b');
     append(res, ',');
-    return res;    
+    return res;
   }
 }
