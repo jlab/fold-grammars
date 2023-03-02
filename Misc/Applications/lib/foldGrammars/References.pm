@@ -124,6 +124,11 @@ $REFERENCES{'sau:gie:2015'} = {
 	title => "Pareto optimization in algebraic dynamic programming.",
 	journal => "Algorithms for Molecular Biology 2015.",
 	doi => "10.1186/s13015-015-0051-7"};
+$REFERENCES{'lor:ber:ext:qin:sie:amm:hof:sta:2012'} = {
+	authors => "Ronny Lorenz, Stephan H Bernhart, Fabian Externbrink, Jing Qin, Christian Hoener zu Siederdissen, Fabian Amman, Ivo L Hofacker, Peter F Stadler",
+	title => "RNA Folding Algorithms with G-Quadruplexes.",
+	journal => "7th Brazilian Symposium on Bioinformatics 2012.",
+	doi => "10.1007/978-3-642-31927-3_5"};
 
 our @ORDER = ();
 
