@@ -177,4 +177,20 @@ inline bool onlychar(const Basic_Sequence<alphabet, pos_type> &seq,
   return true;
 }
 
+template<typename pos_type, typename T>
+inline bool onlychar(const Basic_Sequence<M_Char, pos_type> &seq,
+                     T i, T j, base_t x) {
+  if (j < i)
+    return false;
+
+  for (T k = i; k < j; k++) {
+		for (unsigned row = 0; row < seq.rows(); row++) {
+      if (seq.row(row)[k] != x) {
+        return false;
+			}
+		}
+  }
+  return true;
+}
+
 #endif
