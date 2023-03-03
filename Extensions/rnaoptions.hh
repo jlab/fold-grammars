@@ -178,7 +178,7 @@ class Opts {
     				probing_modifier("unknown"),
     				probing_normalization("centroid"),
     #ifdef CHECKPOINTING_INTEGRATED
-                    checkpoint_interval(3600),
+                    checkpoint_interval(DEFAULT_CHECKPOINT_INTERVAL),
                     checkpoint_out_path(boost::filesystem::current_path()),
                     checkpoint_in_path(boost::filesystem::path("")),
 					user_file_prefix(""),
@@ -303,14 +303,11 @@ class Opts {
                 << "-O, --checkpointOutput <path/prefix> set path where to store the checkpoints; default: current working directory" << std::endl
                 << "   Optional: add custom prefix for generated files to path" << std::endl
 				<< "   (e.g. path: \"path/to/dir/file_prefix\" will set path to \"/path/to/dir/\" and prefix to \"file_prefix\")." << std::endl
-				<< "   Make sure to add a \"/\" to the end of path if you don't wish to add a custom prefix to the files." << std::endl
-				<< "   Use the -I option to explictly set the input path for all checkpoints."
-				<< std::endl << std::endl
+				<< "   Make sure to add a \"/\" to the end of path if you don't wish to add a custom prefix to the files." << std::endl << std::endl
                 << "-I, --checkpointInput <logfile> set the path to the Logfile of the checkpoints you wish to load." << std::endl
 				<< "   (This file was generated along with the checkpoint archives." << std::endl
-				<< "    If it isn't available add the path to each archive to a text file and provide the path to this file.)." << std::endl
-				<< "-K, --keepArchives don't delete checkpointing archives after the program finished its calculations" << std::endl
-				<< std::endl
+				<< "    If it isn't available add the path to each archive to a text file and provide the path to this file)." << std::endl << std::endl
+				<< "-K, --keepArchives don't delete checkpointing archives after the program finished its calculations" << std::endl << std::endl
     #endif
 				<< "The following options are for the structure probing context:" << std::endl
 				<< "-S <file> reads a file that contains chemical probing results to 'constrain' the prediction." << std::endl
@@ -501,10 +498,9 @@ class Opts {
                                    "\"!");
               }
 
-              // check user permissions of checkpoint input directory
-              struct stat checkpoint_in_dir;
-              stat(checkpoint_in_path.c_str(), &checkpoint_in_dir);
-              if (!(checkpoint_in_dir.st_mode & S_IRUSR)) {
+              // check if current user has read permissions
+              // for checkpoint input directory
+              if (access(checkpoint_in_path.c_str(), R_OK) != 0) {
                 throw OptException("Missing read permissions for"
                                    " Logfile \""
                                    + checkpoint_in_path.string()
@@ -523,6 +519,8 @@ class Opts {
                 checkpoint_out_path /= out_path;
               }
 
+              user_file_prefix = arg_path.filename().string();
+
               if (!boost::filesystem::exists(checkpoint_out_path) ||
                   !boost::filesystem::is_directory(checkpoint_out_path)) {
                 throw OptException("The output path \"" +
@@ -530,11 +528,9 @@ class Opts {
                                    "\" is not a directory!");
               }
 
-              // check user permissions of checkpoint output directory
-              struct stat checkpoint_out_dir;
-              stat(checkpoint_out_path.c_str(), &checkpoint_out_dir);
-
-              if (!(checkpoint_out_dir.st_mode & S_IWUSR)) {
+              // check if current user has write permissions
+              // for checkpoint output directory
+              if (access(checkpoint_out_path.c_str(), W_OK) != 0) {
                 throw OptException("Missing write permissions for"
                                    " output path \""
                                    + checkpoint_out_path.string()
