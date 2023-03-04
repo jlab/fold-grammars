@@ -138,8 +138,8 @@ class Opts {
     size_t checkpoint_interval;  // default interval: 3600s (1h)
     boost::filesystem::path  checkpoint_out_path;  // default path: cwd
     boost::filesystem::path  checkpoint_in_path;  // default: empty
-	std::string user_file_prefix;
-	bool keep_archives;  // default: delete after calculations completed
+    std::string user_file_prefix;
+    bool keep_archives;  // default: delete after calculations completed
 #endif
     int argc;
     char **argv;
@@ -181,8 +181,8 @@ class Opts {
                     checkpoint_interval(DEFAULT_CHECKPOINT_INTERVAL),
                     checkpoint_out_path(boost::filesystem::current_path()),
                     checkpoint_in_path(boost::filesystem::path("")),
-					user_file_prefix(""),
-					keep_archives(false),
+                    user_file_prefix(""),
+                    keep_archives(false),
     #endif
       argc(0),
       argv(0)

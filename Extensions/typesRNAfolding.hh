@@ -11,7 +11,7 @@ struct answer_pknot_mfe {
 
 	template <class Archive>
 	void serialize(Archive &ar, const unsigned int version) {
-	    ar & energy;
+		ar & energy;
 		ar & betaLeftOuter;
 		ar & alphaRightOuter;
 		ar & empty_;
