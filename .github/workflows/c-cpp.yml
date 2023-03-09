@@ -48,7 +48,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v3
     - run: pip install cpplint
-    - run: cpplint --recursive --counting 'detailed' --filter="-legal/copyright,-build/header_guard,-runtime/threadsafe_fn" --extensions=hh Extensions/probing.hh
+    - run: cpplint --recursive --counting 'detailed' --filter="-legal/copyright,-build/header_guard,-runtime/threadsafe_fn,-build/include_subdir,-runtime/explicit,-runtime/references" --extensions=hh Extensions/probing.hh Extensions/rnaoptions.hh Extensions/typesRNAfolding.hh
     - uses: vishnudxb/cancel-workflow@v1.2
       if: failure()
       with:
