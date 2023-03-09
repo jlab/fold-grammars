@@ -43,6 +43,14 @@ inline MFE get_pk_fn(const Hash::Ref<std::pair<SHAPE, std::pair<MFE, PFUNC> >, I
 
 template <typename T>
 struct filterLowProbShapes {
+#ifdef CHECKPOINTING_INTEGRATED
+  friend class boost::serialization::access;
+
+  template<class Archive>
+  void serialize(Archive &ar, const unsigned int version) {
+	ar & sum;
+  }
+#endif
   double sum;
   filterLowProbShapes() : sum(0) {
   }

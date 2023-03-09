@@ -37,6 +37,7 @@ extern "C" {
 #include <sstream>
 #include <cstring>
 #include <vector>
+#include <string>
 #include <exception>
 #include <cassert>
 
@@ -137,6 +138,8 @@ class Opts {
     size_t checkpoint_interval;  // default interval: 3600s (1h)
     boost::filesystem::path  checkpoint_out_path;  // default path: cwd
     boost::filesystem::path  checkpoint_in_path;  // default: empty
+    std::string user_file_prefix;
+    bool keep_archives;  // default: delete after calculations completed
 #endif
     int argc;
     char **argv;
@@ -175,9 +178,11 @@ class Opts {
     				probing_modifier("unknown"),
     				probing_normalization("centroid"),
     #ifdef CHECKPOINTING_INTEGRATED
-                    checkpoint_interval(3600),
+                    checkpoint_interval(DEFAULT_CHECKPOINT_INTERVAL),
                     checkpoint_out_path(boost::filesystem::current_path()),
                     checkpoint_in_path(boost::filesystem::path("")),
+                    user_file_prefix(""),
+                    keep_archives(false),
     #endif
       argc(0),
       argv(0)
@@ -295,15 +300,14 @@ class Opts {
 	#ifdef CHECKPOINTING_INTEGRATED
                 << "-p, --checkpointInterval <d:h:m:s> specify the periodic checkpointing interval; default: 0:1:0:0 (1h)"
 				<< std::endl << std::endl
-                << "-O, --checkpointOutput <path>  set path where to store the checkpoints; default: current working directory" << std::endl
-                << "   The program will also attempt to read existing checkpoints from a Logfile from this path." << std::endl
-				<< "   Use the -I option to explictly set the input path for all checkpoints."
-				<< std::endl << std::endl
-                << "-I, --checkpointInput <path> set the path were to read the checkpoints from" << std::endl
-				<< "   default: parsed from a checkpoint Logfile located at path specified by the -O option." << std::endl
-                << "   Caution: Make sure that the input checkpoints from this path were generated from the same" << std::endl
-                << "   command line inputs as the inputs to this binary to ensure the correctness of the answer."
-				<< std::endl << std::endl
+                << "-O, --checkpointOutput <path/prefix> set path where to store the checkpoints; default: current working directory" << std::endl
+                << "   Optional: add custom prefix for generated files to path" << std::endl
+				<< "   (e.g. path: \"path/to/dir/file_prefix\" will set path to \"/path/to/dir/\" and prefix to \"file_prefix\")." << std::endl
+				<< "   Make sure to add a \"/\" to the end of path if you don't wish to add a custom prefix to the files." << std::endl << std::endl
+                << "-I, --checkpointInput <logfile> set the path to the Logfile of the checkpoints you wish to load." << std::endl
+				<< "   (This file was generated along with the checkpoint archives." << std::endl
+				<< "    If it isn't available add the path to each archive to a text file and provide the path to this file)." << std::endl << std::endl
+				<< "-K, --keepArchives don't delete checkpointing archives after the program finished its calculations" << std::endl << std::endl
     #endif
 				<< "The following options are for the structure probing context:" << std::endl
 				<< "-S <file> reads a file that contains chemical probing results to 'constrain' the prediction." << std::endl
@@ -337,6 +341,7 @@ class Opts {
             {"checkpointInterval", required_argument, nullptr, 'p'},
             {"checkpointOutput", required_argument, nullptr, 'O'},
             {"checkpointInput", required_argument, nullptr, 'I'},
+			{"keepArchives", no_argument, nullptr, 'K'},
             {nullptr, no_argument, nullptr, 0}};
 
 		while ((o = getopt_long(argc, argv, ":f:"
@@ -349,7 +354,7 @@ class Opts {
 					    "o:a:"  //output filename for dot plot, consensus type: 0=consensus, 1=mis
 						"n:C:m:R:" //for alifold parameters nfactor, cfactor and minpscore_basepair, ribosum scoring
 						"S:A:B:M:N:" //S: reads additional probing data from file "S", A: slope as in RNAstructure, B: intercept as in RNAstructure, M: modifier type (SHAPE, CMCT, DMS), N: normalization of plain reactivities (centroid, RNAstructure, logplain, asProbabilities)
-						"hd:r:k:p:I:O:", long_opts, nullptr)) != -1) {
+						"hd:r:k:p:I:KO:", long_opts, nullptr)) != -1) {
 			switch (o) {
 			case 'f':
 				{
@@ -486,18 +491,18 @@ class Opts {
               } else {
                 checkpoint_in_path = boost::filesystem::current_path() / arg_path;
               }
-              if (!boost::filesystem::exists(checkpoint_in_path)) {
-                throw OptException("The input path \"" +
+              if (!boost::filesystem::exists(checkpoint_in_path) ||
+                  !boost::filesystem::is_regular_file(checkpoint_in_path)) {
+                throw OptException("Logfile could not be found at path \"" +
                                    checkpoint_in_path.string() +
-                                   "\" doesn't exist!");
+                                   "\"!");
               }
 
-              // check user permissions of checkpoint input directory
-              struct stat checkpoint_in_dir;
-              stat(checkpoint_in_path.c_str(), &checkpoint_in_dir);
-              if (!(checkpoint_in_dir.st_mode & S_IRUSR)) {
+              // check if current user has read permissions
+              // for checkpoint input directory
+              if (access(checkpoint_in_path.c_str(), R_OK) != 0) {
                 throw OptException("Missing read permissions for"
-                                   " input path \""
+                                   " Logfile \""
                                    + checkpoint_in_path.string()
                                    + "\"!");
               }
@@ -506,43 +511,36 @@ class Opts {
             case 'O' :
             {
               boost::filesystem::path arg_path(optarg);
-              if (arg_path.is_absolute()) {
-                checkpoint_out_path = arg_path;
+              boost::filesystem::path out_path = arg_path.parent_path();
+
+              if (out_path.is_absolute()) {
+                checkpoint_out_path = out_path;
               } else {
-                checkpoint_out_path /= arg_path;
+                checkpoint_out_path /= out_path;
               }
-              if (!boost::filesystem::exists(checkpoint_out_path)) {
+
+              user_file_prefix = arg_path.filename().string();
+
+              if (!boost::filesystem::exists(checkpoint_out_path) ||
+                  !boost::filesystem::is_directory(checkpoint_out_path)) {
                 throw OptException("The output path \"" +
                                    checkpoint_out_path.string() +
-                                   "\" doesn't exist!");
+                                   "\" is not a directory!");
               }
 
-              // check user permissions of checkpoint output directory
-              struct stat checkpoint_out_dir;
-              stat(checkpoint_out_path.c_str(), &checkpoint_out_dir);
-
-              // if no checkpoint input path was specified, assume
-              // output path is input path
-              bool need_read_permissions = checkpoint_in_path.empty();
-              bool has_read_permissions = (checkpoint_out_dir.st_mode
-                                           & S_IRUSR) &&
-                                          need_read_permissions;
-              bool has_write_permissions = checkpoint_out_dir.st_mode & S_IWUSR;
-
-              if (!has_write_permissions || (need_read_permissions &
-                  !has_read_permissions)) {
-                std::string read_perm_msg = (need_read_permissions &
-                                            !has_read_permissions) ?
-                                            "and read" : "";
-                throw OptException("Insufficient permissions for"
+              // check if current user has write permissions
+              // for checkpoint output directory
+              if (access(checkpoint_out_path.c_str(), W_OK) != 0) {
+                throw OptException("Missing write permissions for"
                                    " output path \""
                                    + checkpoint_out_path.string()
-                                   + "\"! Write "
-                                   + read_perm_msg
-                                   + " permissions are required!");
+                                   + "\"!");
               }
               break;
             }
+			case 'K' :
+			  keep_archives = true;
+			  break;
         #endif
 			case '?':
 				case ':':
