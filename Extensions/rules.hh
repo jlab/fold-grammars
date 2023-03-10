@@ -196,7 +196,7 @@ inline void append(alignment &ali1, const alignment &ali2) {
 
   for (i = 0; i < numberRows; i++) {
     Rope help;
-    if ((static_cas<int>(ali1.alignmentRows.size())) > i)
+    if ((static_cast<int>(ali1.alignmentRows.size())) > i)
       append(help, ali1.alignmentRows.at(i));
     if ((static_cast<int>(ali2.alignmentRows.size())) > i)
       append(help, ali2.alignmentRows.at(i));
