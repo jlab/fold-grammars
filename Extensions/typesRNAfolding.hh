@@ -604,6 +604,14 @@ inline Subsequence restoreSeq(subseq interval,
   s.j = interval.j;
   return s;
 }
+inline Subsequence restoreSeq(subseq interval,
+                              Basic_Sequence<char, unsigned> s) {
+  Subsequence res;
+  res.i = interval.i;
+  res.j = interval.j;
+  res.seq = &s;
+  return res;
+}
 
 struct answer_macrostate_mfe {
     int energy;
@@ -700,12 +708,18 @@ inline uint32_t hashable_value(const answer_macrostate_mfe& candidate) {
 #include "rtlib/string.hh"
 struct answer_macrostate_pfunc {
   bool empty_;
-  Subsequence firststem;  // position of the leftmost stem in according sequence
+  subseq firststem;  // position of the leftmost stem in according sequence
   pftuple pf;  // partition function answer tuple
 
-  answer_macrostate_pfunc() : empty_(false) {}
+  answer_macrostate_pfunc() : empty_(false) {
+    empty(firststem.i);
+    empty(firststem.j);
+  }
 
-  answer_macrostate_pfunc(int i) : empty_(false) {}
+  answer_macrostate_pfunc(int i) : empty_(false) {
+    empty(firststem.i);
+    empty(firststem.j);
+  }
 
   answer_macrostate_pfunc& operator+=(const answer_macrostate_pfunc &a) {
     firststem = a.firststem;
@@ -781,10 +795,13 @@ inline base_t wob_comp(base_t b) {
    "check_tuple" assures that all parts of the partition function
    are combined in the correct way (a or b).
 */
-inline double check_tuple(double qleft, const Subsequence &firststemLeft,
-                          const Subsequence &firststemRight,
+inline double check_tuple(double qleft, const subseq &firststemLeft_interval,
+                          const subseq &firststemRight_interval,
                           const Subsequence &ambiguousBase,
                           const pftuple &qright) {
+  Subsequence firststemLeft = restoreSeq(firststemLeft_interval, ambiguousBase);
+  Subsequence firststemRight = restoreSeq(firststemRight_interval,
+                                          ambiguousBase);
   return qleft * (qright.q1 + qright.q2) *
          mk_pf(min(dr_energy(firststemLeft, firststemLeft),
                    dl_dangle_dg(base_t(ambiguousBase[ambiguousBase.i]),
