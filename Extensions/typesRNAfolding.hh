@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <utility>
+#include <vector>
 
 #ifdef CHECKPOINTING_INTEGRATED
 #include "boost/serialization/access.hpp"
@@ -590,12 +591,22 @@ inline double operator+=(double a, const answer_pknot_pfunc &b) {
 struct answer_ali_pfunc_macrostate {
   bool empty_;
   // position of the leftmost stem in according sequence
-  Basic_Subsequence<M_Char, unsigned> firststem;
+  subseq firststem;
   pftuple pf;  // partition function answer tuple
+  /* records for dangle components, if their closing stems end
+   * with a Watson Crick basepair (AU, CG, GC, UA) or not (GU, UG)
+   */
+  std::vector<bool> isWCpair;
 
-  answer_ali_pfunc_macrostate() : empty_(false) {}
+  answer_ali_pfunc_macrostate() : empty_(false) {
+    empty(firststem.i);
+    empty(firststem.j);
+  }
 
-  answer_ali_pfunc_macrostate(int i) : empty_(false) {}
+  answer_ali_pfunc_macrostate(int i) : empty_(false) {
+    empty(firststem.i);
+    empty(firststem.j);
+  }
 
   answer_ali_pfunc_macrostate& operator+=(const
                                           answer_ali_pfunc_macrostate &a) {
@@ -831,13 +842,17 @@ inline double check_tuple(double qleft, const subseq &firststemLeft_interval,
 }
 inline double
 check_tuple(double qleft,
-            const Basic_Subsequence<M_Char, unsigned> &firststemLeft,
-            const Basic_Subsequence<M_Char, unsigned> &firststemRight,
+            const subseq &firststemLeft_interval,
+            const subseq &firststemRight_interval,
             const Basic_Subsequence<M_Char, unsigned> &ambiguousBase,
             const pftuple &qright) {
   double res = 0.0;
-
-  for (unsigned int i = 0; i < firststemLeft.seq->rows(); i++) {
+  Basic_Subsequence<M_Char, unsigned> firststemLeft = restoreSeq(
+      firststemLeft_interval, ambiguousBase);
+  Basic_Subsequence<M_Char, unsigned> firststemRight = restoreSeq(
+      firststemRight_interval,
+                                          ambiguousBase);
+  for (unsigned int i = 0; i < ambiguousBase.seq->rows(); i++) {
       res += qleft * (qright.q1 + qright.q2) *
              mk_pf(min(dr_energy(firststemLeft.seq->row(i),
                                  firststemLeft.i, firststemLeft.j-1,
@@ -879,10 +894,22 @@ inline bool isWCpair(const Subsequence &stem) {
          (base_t(stem[stem.i]) == U_BASE &&
           base_t(stem[stem.j-1]) == G_BASE));
 }
+inline std::vector<bool> isWCpair(const Basic_Subsequence<M_Char,
+                                  unsigned int> &stem) {
+  std::vector<bool> res;
+  for (unsigned int i = 0; i < stem.seq->rows(); i++) {
+    res.push_back(((base_t(stem.seq->row(i)[stem.i]) == G_BASE &&
+        base_t(stem.seq->row(i)[stem.j-1]) == U_BASE) ||
+      (base_t(stem.seq->row(i)[stem.i]) == U_BASE &&
+       base_t(stem.seq->row(i)[stem.j-1]) == G_BASE)));
+  }
+  return res;
+}
+
 
 /*
-   pushes x either to q1 or to q4, depending on the type of the basal basepair of stem.
-   x goes to q1 if it is a Watson-Crick basepair, otherwise x is in q4
+   pushes x either to q1 or to q4, depending on the type of the basal basepair
+   of stem. x goes to q1 if it is a Watson-Crick basepair, otherwise x is in q4
 */
 inline pftuple mk_tuple(bool isWCpair, double x) {
   pftuple res;
@@ -896,24 +923,20 @@ inline pftuple mk_tuple(bool isWCpair, double x) {
   return res;
 }
 
-inline pftuple mk_tuple(const Basic_Subsequence<M_Char, unsigned> &stem,
-                        double x) {
+inline pftuple mk_tuple(std::vector<bool> isWCpair, double x) {
     pftuple res;
 
-    for (unsigned int i = 0; i < stem.seq->rows(); i++) {
-        if ((base_t(stem.seq->row(i)[stem.i]) == G_BASE &&
-             base_t(stem.seq->row(i)[stem.j-1]) == U_BASE) ||
-            (base_t(stem.seq->row(i)[stem.i]) == U_BASE &&
-             base_t(stem.seq->row(i)[stem.j-1]) == G_BASE)) {
+    for (unsigned int i = 0; i < isWCpair.size(); i++) {
+        if (isWCpair.at(i)) {
           res.q4 += x;
         } else {
           res.q1 += x;
         }
     }
-    res.q1 /= static_cast<double>(stem.seq->rows());
-    res.q2 /= static_cast<double>(stem.seq->rows());
-    res.q3 /= static_cast<double>(stem.seq->rows());
-    res.q4 /= static_cast<double>(stem.seq->rows());
+    res.q1 /= static_cast<double>(isWCpair.size());
+    res.q2 /= static_cast<double>(isWCpair.size());
+    res.q3 /= static_cast<double>(isWCpair.size());
+    res.q4 /= static_cast<double>(isWCpair.size());
 
     return res;
 }
