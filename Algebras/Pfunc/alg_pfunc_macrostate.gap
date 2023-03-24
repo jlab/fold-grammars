@@ -63,10 +63,9 @@ algebra alg_pfunc implements sig_foldrna(alphabet = char, answer = answer_macros
 
   answer_macrostate_pfunc ambd_Pr(answer_macrostate_pfunc le,Subsequence b,answer_macrostate_pfunc re) {
     answer_macrostate_pfunc res = le;
-    
-    Subsequence stem = restoreSeq(le.firststem, b);
+
     res.pf = mk_tuple(le.isWCpair, scale(1) * check_tuple(le.pf.q1, le.firststem, re.firststem, b, re.pf));
-    
+
     return res;
   }
 
