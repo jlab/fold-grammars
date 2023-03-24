@@ -7,7 +7,6 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
   answer_macrostate_mfe sadd(Subsequence lb,answer_macrostate_mfe e) {
     answer_macrostate_mfe res;
     res.energy = e.energy + sbase_energy();
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = e.firstStem.j;
 
@@ -74,16 +73,20 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe ambd(answer_macrostate_mfe le,Subsequence b,answer_macrostate_mfe re) {
     answer_macrostate_mfe res;
-    res.energy = le.energy + re.energy + min(dr_energy(le.firstStem, le.firstStem), dl_energy(re.firstStem, re.firstStem));
+
+    Subsequence leftStem = restoreSeq(le.firstStem, b);
+    Subsequence rightStem = restoreSeq(re.firstStem, b);
+
+    res.energy = le.energy + re.energy + min(dr_energy(leftStem, leftStem), dl_energy(rightStem, rightStem));
     res.firstStem = le.firstStem;
 
     res.rep = Rope();
     append(res.rep, "min(dr_energy[", 14);
-    append(res.rep, le.firstStem);
+    append(res.rep, leftStem);
     append(res.rep, "],dl_energy[", 12);
-    append(res.rep, re.firstStem);
+    append(res.rep, rightStem);
     append(res.rep, "])=", 3);
-    append(res.rep, min(dr_energy(le.firstStem, le.firstStem), dl_energy(re.firstStem, re.firstStem)));
+    append(res.rep, min(dr_energy(leftStem, leftStem), dl_energy(rightStem, rightStem)));
     append(res.rep, "\n");
     append(res.rep, le.rep);
     append(res.rep, "\n");
@@ -94,16 +97,20 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe ambd_Pr(answer_macrostate_mfe le,Subsequence b,answer_macrostate_mfe re) {
     answer_macrostate_mfe res;
-    res.energy = le.energy + re.energy + min(dr_energy(le.firstStem, le.firstStem), dl_energy(re.firstStem, re.firstStem));
+
+    Subsequence leftStem = restoreSeq(le.firstStem, b);
+    Subsequence rightStem = restoreSeq(re.firstStem, b);
+
+    res.energy = le.energy + re.energy + min(dr_energy(leftStem, leftStem), dl_energy(rightStem, rightStem));
     res.firstStem = le.firstStem;
 
     res.rep = Rope();
     append(res.rep, "min(dr_energy[", 14);
-    append(res.rep, le.firstStem);
+    append(res.rep, leftStem);
     append(res.rep, "],dl_energy[", 12);
-    append(res.rep, re.firstStem);
+    append(res.rep, rightStem);
     append(res.rep, "])=", 3);
-    append(res.rep, min(dr_energy(le.firstStem, le.firstStem), dl_energy(re.firstStem, re.firstStem)));
+    append(res.rep, min(dr_energy(leftStem, leftStem), dl_energy(rightStem, rightStem)));
     append(res.rep, "\n");
     append(res.rep, le.rep);
     append(res.rep, "\n");
@@ -115,7 +122,8 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
   answer_macrostate_mfe nil(Subsequence loc) {
     answer_macrostate_mfe res;
     res.energy = 0;
-    res.firstStem = loc;
+    res.firstStem.i = loc.i;
+    res.firstStem.j = loc.j;
 
     res.rep = Rope();
 
@@ -124,19 +132,22 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe edl(Subsequence lb,answer_macrostate_mfe e, Subsequence rloc) {
     answer_macrostate_mfe res;
-    res.energy = e.energy + dl_energy(e.firstStem, e.firstStem) + termau_energy(e.firstStem, e.firstStem);
+
+    Subsequence stem = restoreSeq(e.firstStem, lb);
+
+    res.energy = e.energy + dl_energy(stem, stem) + termau_energy(stem, stem);
     res.firstStem = e.firstStem;
 
     res.rep = Rope();
     append(res.rep, "dl_energy[", 10);
-    append(res.rep, e.firstStem);
+    append(res.rep, stem);
     append(res.rep, "]=", 2);
-    append(res.rep, dl_energy(e.firstStem, e.firstStem));
+    append(res.rep, dl_energy(stem, stem));
     append(res.rep, " + ", 3);
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, e.firstStem);
+    append(res.rep, stem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(e.firstStem,e.firstStem));
+    append(res.rep, termau_energy(stem,stem));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -145,19 +156,22 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe edr(Subsequence lloc, answer_macrostate_mfe e,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.energy = e.energy + dr_energy(e.firstStem, e.firstStem) + termau_energy(e.firstStem, e.firstStem);
+
+    Subsequence stem = restoreSeq(e.firstStem, rb);
+
+    res.energy = e.energy + dr_energy(stem, stem) + termau_energy(stem, stem);
     res.firstStem = e.firstStem;
 
     res.rep = Rope();
     append(res.rep, "dr_energy[", 10);
-    append(res.rep, e.firstStem);
+    append(res.rep, stem);
     append(res.rep, "]=", 2);
-    append(res.rep, dr_energy(e.firstStem, e.firstStem));
+    append(res.rep, dr_energy(stem, stem));
     append(res.rep, " + ", 3);
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, e.firstStem);
+    append(res.rep, stem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(e.firstStem,e.firstStem));
+    append(res.rep, termau_energy(stem, stem));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -166,19 +180,22 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe edlr(Subsequence lb,answer_macrostate_mfe e,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.energy = e.energy + ext_mismatch_energy(e.firstStem, e.firstStem) + termau_energy(e.firstStem, e.firstStem);
+
+    Subsequence stem = restoreSeq(e.firstStem, lb);
+
+    res.energy = e.energy + ext_mismatch_energy(stem, stem) + termau_energy(stem, stem);
     res.firstStem = e.firstStem;
 
     res.rep = Rope();
     append(res.rep, "ext_mismatch_energy[", 20);
-    append(res.rep, e.firstStem);
+    append(res.rep, stem);
     append(res.rep, "]=", 2);
-    append(res.rep, ext_mismatch_energy(e.firstStem, e.firstStem));
+    append(res.rep, ext_mismatch_energy(stem, stem));
     append(res.rep, " + ", 3);
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, e.firstStem);
+    append(res.rep, stem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(e.firstStem,e.firstStem));
+    append(res.rep, termau_energy(stem, stem));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -187,13 +204,16 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe drem(Subsequence lloc, answer_macrostate_mfe e, Subsequence rloc) {
     answer_macrostate_mfe res = e;
-    res.energy = res.energy + termau_energy(e.firstStem, e.firstStem);
+
+    Subsequence stem = restoreSeq(e.firstStem, lloc);
+
+    res.energy = res.energy + termau_energy(stem, stem);
 
     res.rep = Rope();
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, e.firstStem);
+    append(res.rep, stem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(e.firstStem, e.firstStem));
+    append(res.rep, termau_energy(stem, stem));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -207,17 +227,18 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe sr(Subsequence lb,answer_macrostate_mfe e,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
-    res.energy = e.energy + sr_energy(res.firstStem,res.firstStem);
+    Subsequence stem = restoreSeq(res.firstStem, lb);
+
+    res.energy = e.energy + sr_energy(stem, stem);
 
     res.rep = Rope();
     append(res.rep, "sr_energy[", 10);
-    append(res.rep, e.firstStem);
+    append(res.rep, stem);
     append(res.rep, "]=", 2);
-    append(res.rep, sr_energy(res.firstStem,res.firstStem));
+    append(res.rep, sr_energy(stem, stem));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -227,7 +248,6 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe hl(Subsequence lb,Subsequence region,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
@@ -245,7 +265,6 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe bl(Subsequence lb,Subsequence lregion,answer_macrostate_mfe e,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
@@ -265,7 +284,6 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe br(Subsequence lb,answer_macrostate_mfe e,Subsequence rregion,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
@@ -285,7 +303,6 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe il(Subsequence lb,Subsequence lregion,answer_macrostate_mfe e,Subsequence rregion,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
@@ -305,11 +322,12 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe ml(Subsequence lb,answer_macrostate_mfe e,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
-    res.energy = ml_energy() + ul_energy() + e.energy + termau_energy(res.firstStem,res.firstStem);
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+
+    res.energy = ml_energy() + ul_energy() + e.energy + termau_energy(closingStem, closingStem);
 
     res.rep = Rope();
     append(res.rep, "ml_energy[", 10);
@@ -321,9 +339,9 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
     append(res.rep, ul_energy());
     append(res.rep, " + ", 3);
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(res.firstStem,res.firstStem));
+    append(res.rep, termau_energy(closingStem, closingStem));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -336,11 +354,12 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe mldr(Subsequence lb,answer_macrostate_mfe e,Subsequence dr,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
-    res.energy = ml_energy() + ul_energy() + e.energy + dri_energy(res.firstStem,res.firstStem) + termau_energy(res.firstStem,res.firstStem);
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+
+    res.energy = ml_energy() + ul_energy() + e.energy + dri_energy(closingStem, closingStem) + termau_energy(closingStem, closingStem);
 
     res.rep = Rope();
     append(res.rep, "ml_energy[", 10);
@@ -354,12 +373,12 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
     append(res.rep, "termau_energy[", 14);
     append(res.rep, res.firstStem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(res.firstStem,res.firstStem));
+    append(res.rep, termau_energy(closingStem, closingStem));
     append(res.rep, " + ", 3);
     append(res.rep, "dri_energy[", 11);
     append(res.rep, res.firstStem);
     append(res.rep, "]=", 2);
-    append(res.rep, dri_energy(res.firstStem,res.firstStem));
+    append(res.rep, dri_energy(closingStem, closingStem));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -368,11 +387,13 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe mladr(Subsequence lb,answer_macrostate_mfe e,Subsequence dr,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
-    res.energy = ml_energy() + ul_energy() + e.energy + min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem, e.lastStem)) + termau_energy(res.firstStem,res.firstStem);
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+    Subsequence lastStem = restoreSeq(e.lastStem, lb);
+
+    res.energy = ml_energy() + ul_energy() + e.energy + min(dri_energy(closingStem, closingStem), dr_energy(lastStem, lastStem)) + termau_energy(closingStem, closingStem);
 
     res.rep = Rope();
     append(res.rep, "ml_energy[", 10);
@@ -384,16 +405,16 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
     append(res.rep, ul_energy());
     append(res.rep, " + ", 3);
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(res.firstStem,res.firstStem));
+    append(res.rep, termau_energy(closingStem, closingStem));
     append(res.rep, " + ", 3);
     append(res.rep, "min(dri_energy[", 15);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "],dr_energy[", 12);
-    append(res.rep, e.lastStem);
+    append(res.rep, lastStem);
     append(res.rep, "])=", 3);
-    append(res.rep, min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem, e.lastStem)));
+    append(res.rep, min(dri_energy(closingStem, closingStem), dr_energy(lastStem, lastStem)));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -402,11 +423,12 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe mldlr(Subsequence lb,Subsequence dl,answer_macrostate_mfe e,Subsequence dr,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
-    res.energy = ml_energy() + ul_energy() + e.energy + ml_mismatch_energy(res.firstStem,res.firstStem) + termau_energy(res.firstStem,res.firstStem);
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+
+    res.energy = ml_energy() + ul_energy() + e.energy + ml_mismatch_energy(closingStem, closingStem) + termau_energy(closingStem, closingStem);
 
     res.rep = Rope();
     append(res.rep, "ml_energy[", 10);
@@ -418,14 +440,14 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
     append(res.rep, ul_energy());
     append(res.rep, " + ", 3);
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(res.firstStem,res.firstStem));
+    append(res.rep, termau_energy(closingStem, closingStem));
     append(res.rep, " + ", 3);
     append(res.rep, "ml_mismatch_energy[", 19);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, ml_mismatch_energy(res.firstStem,res.firstStem));
+    append(res.rep, ml_mismatch_energy(closingStem, closingStem));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -434,11 +456,14 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe mladlr(Subsequence lb,Subsequence dl,answer_macrostate_mfe e,Subsequence dr,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
-    res.energy = ml_energy() + ul_energy() + e.energy + min(dli_energy(res.firstStem,res.firstStem), dl_energy(e.firstStem, e.firstStem)) + min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem, e.lastStem)) + termau_energy(res.firstStem,res.firstStem);
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+    Subsequence firstStem = restoreSeq(e.firstStem, lb);
+    Subsequence lastStem = restoreSeq(e.lastStem, lb);
+
+    res.energy = ml_energy() + ul_energy() + e.energy + min(dli_energy(closingStem, closingStem), dl_energy(firstStem, firstStem)) + min(dri_energy(closingStem, closingStem), dr_energy(lastStem, lastStem)) + termau_energy(closingStem, closingStem);
 
     res.rep = Rope();
     append(res.rep, "ml_energy[", 10);
@@ -450,23 +475,23 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
     append(res.rep, ul_energy());
     append(res.rep, " + ", 3);
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(res.firstStem,res.firstStem));
+    append(res.rep, termau_energy(closingStem, closingStem));
     append(res.rep, " + ", 3);
     append(res.rep, "min(dli_energy[", 15);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "],dl_energy[", 12);
-    append(res.rep, e.firstStem);
+    append(res.rep, firstStem);
     append(res.rep, "])=", 3);
-    append(res.rep, min(dli_energy(res.firstStem,res.firstStem), dl_energy(e.firstStem, e.firstStem)));
+    append(res.rep, min(dli_energy(closingStem, closingStem), dl_energy(firstStem, firstStem)));
     append(res.rep, " + ", 3);
     append(res.rep, "min(dri_energy[", 15);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "],dr_energy[", 12);
-    append(res.rep, e.lastStem);
+    append(res.rep, lastStem);
     append(res.rep, "])=", 3);
-    append(res.rep, min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem, e.lastStem)));
+    append(res.rep, min(dri_energy(closingStem, closingStem), dr_energy(lastStem, lastStem)));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -475,11 +500,13 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe mldladr(Subsequence lb,Subsequence dl,answer_macrostate_mfe e,Subsequence dr,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
-    res.energy = ml_energy() + ul_energy() + e.energy + dli_energy(res.firstStem,res.firstStem) + min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem,e.lastStem)) + termau_energy(res.firstStem,res.firstStem);
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+    Subsequence lastStem = restoreSeq(e.lastStem, lb);
+
+    res.energy = ml_energy() + ul_energy() + e.energy + dli_energy(closingStem, closingStem) + min(dri_energy(closingStem, closingStem), dr_energy(lastStem, lastStem)) + termau_energy(closingStem, closingStem);
 
     res.rep = Rope();
     append(res.rep, "ml_energy[", 10);
@@ -491,21 +518,21 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
     append(res.rep, ul_energy());
     append(res.rep, " + ", 3);
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(res.firstStem,res.firstStem));
+    append(res.rep, termau_energy(closingStem, closingStem));
     append(res.rep, " + ", 3);
     append(res.rep, "dli_energy[", 11);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, dli_energy(res.firstStem,res.firstStem));
+    append(res.rep, dli_energy(closingStem, closingStem));
     append(res.rep, " + ", 3);
     append(res.rep, "min(dri_energy[", 15);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "],dr_energy[", 12);
-    append(res.rep, e.lastStem);
+    append(res.rep, lastStem);
     append(res.rep, "])=", 3);
-    append(res.rep, min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem, e.lastStem)));
+    append(res.rep, min(dri_energy(closingStem, closingStem), dr_energy(lastStem, lastStem)));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -514,16 +541,19 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe mladldr(Subsequence lb,Subsequence dl,answer_macrostate_mfe e,Subsequence dr,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
-    int dl_danglesonto_firstMLcomponent = dl_energy(e.firstStem, e.firstStem);
-    int dl_danglesonto_closingMLstem = dli_energy(res.firstStem,res.firstStem);
-    int dl_dr_mismatchonto_closingMLstem = ml_mismatch_energy(res.firstStem, res.firstStem);
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+    Subsequence firstStem = restoreSeq(e.firstStem, lb);
 
-    int ambdangle = min(min(dl_danglesonto_closingMLstem, dl_danglesonto_firstMLcomponent) + dri_energy(res.firstStem,res.firstStem), dl_dr_mismatchonto_closingMLstem);
-    res.energy = ml_energy() + ul_energy() + e.energy + ambdangle + termau_energy(res.firstStem,res.firstStem);
+
+    int dl_danglesonto_firstMLcomponent = dl_energy(firstStem, firstStem);
+    int dl_danglesonto_closingMLstem = dli_energy(closingStem, closingStem);
+    int dl_dr_mismatchonto_closingMLstem = ml_mismatch_energy(closingStem, closingStem);
+
+    int ambdangle = min(min(dl_danglesonto_closingMLstem, dl_danglesonto_firstMLcomponent) + dri_energy(closingStem, closingStem), dl_dr_mismatchonto_closingMLstem);
+    res.energy = ml_energy() + ul_energy() + e.energy + ambdangle + termau_energy(closingStem, closingStem);
 
     res.rep = Rope();
     append(res.rep, "ml_energy[", 10);
@@ -535,25 +565,25 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
     append(res.rep, ul_energy());
     append(res.rep, " + ", 3);
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(res.firstStem,res.firstStem));
+    append(res.rep, termau_energy(closingStem, closingStem));
     append(res.rep, " + ", 3);
     append(res.rep, "min(dli_energy[", 15);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, dli_energy(res.firstStem,res.firstStem));
+    append(res.rep, dli_energy(closingStem, closingStem));
     append(res.rep, ",dl_energy[", 11);
-    append(res.rep, e.firstStem);
+    append(res.rep, firstStem);
     append(res.rep, "]=", 2);
-    append(res.rep, dl_energy(e.firstStem, e.firstStem));
+    append(res.rep, dl_energy(firstStem, firstStem));
     append(res.rep, ")=", 2);
-    append(res.rep, min(dli_energy(res.firstStem,res.firstStem), dl_energy(e.firstStem, e.firstStem)));
+    append(res.rep, min(dli_energy(closingStem, closingStem), dl_energy(firstStem, firstStem)));
     append(res.rep, " + ", 3);
     append(res.rep, "dri_energy[", 11);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, dri_energy(res.firstStem,res.firstStem));
+    append(res.rep, dri_energy(closingStem, closingStem));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -562,11 +592,12 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe mldl(Subsequence lb,Subsequence dl,answer_macrostate_mfe e,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
-    res.energy = ml_energy() + ul_energy() + e.energy + dli_energy(res.firstStem,res.firstStem) + termau_energy(res.firstStem,res.firstStem);
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+
+    res.energy = ml_energy() + ul_energy() + e.energy + dli_energy(closingStem, closingStem) + termau_energy(closingStem, closingStem);
 
     res.rep = Rope();
     append(res.rep, "ml_energy[", 10);
@@ -578,14 +609,14 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
     append(res.rep, ul_energy());
     append(res.rep, " + ", 3);
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(res.firstStem,res.firstStem));
+    append(res.rep, termau_energy(closingStem, closingStem));
     append(res.rep, " + ", 3);
     append(res.rep, "dli_energy[", 11);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, dli_energy(res.firstStem,res.firstStem));
+    append(res.rep, dli_energy(closingStem, closingStem));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -594,11 +625,13 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe mladl(Subsequence lb,Subsequence dl,answer_macrostate_mfe e,Subsequence rb) {
     answer_macrostate_mfe res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
-    res.energy = ml_energy() + ul_energy() + e.energy + min(dli_energy(res.firstStem,res.firstStem), dl_energy(e.firstStem, e.firstStem)) + termau_energy(res.firstStem,res.firstStem);
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+    Subsequence firstStem = restoreSeq(e.firstStem, lb);
+
+    res.energy = ml_energy() + ul_energy() + e.energy + min(dli_energy(closingStem, closingStem), dl_energy(firstStem, firstStem)) + termau_energy(closingStem, closingStem);
 
     res.rep = Rope();
     append(res.rep, "ml_energy[", 10);
@@ -610,16 +643,16 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
     append(res.rep, ul_energy());
     append(res.rep, " + ", 3);
     append(res.rep, "termau_energy[", 14);
-    append(res.rep, res.firstStem);
+    append(res.rep, closingStem);
     append(res.rep, "]=", 2);
-    append(res.rep, termau_energy(res.firstStem,res.firstStem));
+    append(res.rep, termau_energy(closingStem, closingStem));
     append(res.rep, " + ", 3);
     append(res.rep, "min(dli_energy[", 15);
     append(res.rep, res.firstStem);
     append(res.rep, "],dl_energy[", 12);
-    append(res.rep, e.firstStem);
+    append(res.rep, firstStem);
     append(res.rep, "])=", 3);
-    append(res.rep, min(dli_energy(res.firstStem,res.firstStem), dl_energy(e.firstStem, e.firstStem)));
+    append(res.rep, min(dli_energy(closingStem, closingStem), dl_energy(firstStem, firstStem)));
     append(res.rep, "\n");
     append(res.rep, e.rep);
 
@@ -704,17 +737,21 @@ algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrosta
 
   answer_macrostate_mfe acomb(answer_macrostate_mfe le,Subsequence b,answer_macrostate_mfe re) {
     answer_macrostate_mfe res;
-    res.energy = le.energy + re.energy + min(dr_energy(le.lastStem, le.lastStem), dl_energy(re.firstStem, re.firstStem));
     res.firstStem = le.firstStem;
     res.lastStem = re.lastStem;
 
+    Subsequence leftStem = restoreSeq(le.lastStem, b);
+    Subsequence rightStem = restoreSeq(re.firstStem, b);
+
+    res.energy = le.energy + re.energy + min(dr_energy(leftStem, leftStem), dl_energy(rightStem, rightStem));
+
     res.rep = Rope();
     append(res.rep, "min(dr_energy[", 14);
-    append(res.rep, le.lastStem);
+    append(res.rep, leftStem);
     append(res.rep, "],dr_energy[", 12);
     append(res.rep, re.firstStem);
     append(res.rep, "])=", 3);
-    append(res.rep, min(dr_energy(le.lastStem, le.lastStem), dl_energy(re.firstStem, re.firstStem)));
+    append(res.rep, min(dr_energy(leftStem, leftStem), dl_energy(rightStem, rightStem)));
     append(res.rep, "\n");
     append(res.rep, le.rep);
     append(res.rep, "\n");
