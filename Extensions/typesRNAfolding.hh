@@ -598,7 +598,7 @@ struct subseq {
     unsigned int i;
     unsigned int j;
 };
-inline Subsequence restoreSeq(subseq interval, 
+inline Subsequence restoreSeq(subseq interval,
                               Basic_Subsequence<char, unsigned> s) {
   s.i = interval.i;
   s.j = interval.j;
