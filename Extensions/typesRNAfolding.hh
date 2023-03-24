@@ -8,6 +8,35 @@
 #include "boost/serialization/access.hpp"
 #endif
 
+// similar to a Basic_Subsequence, but without the character string, just
+// start (i) and end (j) borders
+struct subseq {
+    unsigned int i;
+    unsigned int j;
+};
+inline Subsequence restoreSeq(subseq interval,
+                              Basic_Subsequence<char, unsigned> s) {
+  s.i = interval.i;
+  s.j = interval.j;
+  return s;
+}
+template<typename alphabet = char, typename pos_type = unsigned int>
+inline Subsequence restoreSeq(subseq interval,
+                              Basic_Sequence<alphabet, pos_type> s) {
+  Subsequence res;
+  res.i = interval.i;
+  res.j = interval.j;
+  res.seq = &s;
+  return res;
+}
+template<typename pos_type = unsigned int>
+inline Basic_Subsequence<M_Char, pos_type> restoreSeq(subseq interval,
+                              Basic_Subsequence<M_Char, pos_type> s) {
+  s.i = interval.i;
+  s.j = interval.j;
+  return s;
+}
+
 struct answer_pknot_mfe {
 #ifdef CHECKPOINTING_INTEGRATED
     friend class boost::serialization::access;
@@ -322,12 +351,14 @@ typedef Basic_Subsequence<M_Char, unsigned> myTUSubsequence;
 struct mfecovar_macrostate {
   float mfe;
   float covar;
-  myTUSubsequence firstStem;
-  myTUSubsequence lastStem;
+  subseq firstStem;
+  subseq lastStem;
   bool empty_;
   mfecovar_macrostate() : mfe(0.0), covar(0.0), empty_(false) {
-      empty(firstStem);
-      empty(lastStem);
+      empty(firstStem.i);
+      empty(firstStem.j);
+      empty(lastStem.i);
+      empty(lastStem.j);
   }
 };
 
@@ -591,29 +622,6 @@ inline void empty(answer_ali_pfunc_macrostate &e) {
 inline bool isEmpty(const answer_ali_pfunc_macrostate &e) {
   return e.empty_;
 }
-
-// similar to a Basic_Subsequence, but without the character string, just
-// start (i) and end (j) borders
-struct subseq {
-    unsigned int i;
-    unsigned int j;
-};
-inline Subsequence restoreSeq(subseq interval,
-                              Basic_Subsequence<char, unsigned> s) {
-  s.i = interval.i;
-  s.j = interval.j;
-  return s;
-}
-template<typename alphabet = char, typename pos_type = unsigned int>
-inline Subsequence restoreSeq(subseq interval,
-                              Basic_Sequence<alphabet, pos_type> s) {
-  Subsequence res;
-  res.i = interval.i;
-  res.j = interval.j;
-  res.seq = &s;
-  return res;
-}
-
 
 struct answer_macrostate_mfe {
     int energy;
