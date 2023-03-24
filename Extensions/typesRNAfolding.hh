@@ -7,11 +7,21 @@
 
 #ifdef CHECKPOINTING_INTEGRATED
 #include "boost/serialization/access.hpp"
+#include "boost/serialization/vector.hpp"
 #endif
 
 // similar to a Basic_Subsequence, but without the character string, just
 // start (i) and end (j) borders
 struct subseq {
+#ifdef CHECKPOINTING_INTEGRATED
+    friend class boost::serialization::access;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+      ar & i;
+      ar & j;
+    }
+#endif
     unsigned int i;
     unsigned int j;
 };
@@ -350,11 +360,24 @@ inline int getIntScore(const mfecovar &e) {
 
 typedef Basic_Subsequence<M_Char, unsigned> myTUSubsequence;
 struct mfecovar_macrostate {
+#ifdef CHECKPOINTING_INTEGRATED
+  friend class boost::serialization::access;
+
+  template <class Archive>
+  void serialize(Archive &ar, const unsigned int version) {
+    ar & mfe;
+    ar & covar;
+    ar & firstStem;
+    ar & lastStem;
+    ar & empty_;
+  }
+#endif
   float mfe;
   float covar;
   subseq firstStem;
   subseq lastStem;
   bool empty_;
+
   mfecovar_macrostate() : mfe(0.0), covar(0.0), empty_(false) {
       empty(firstStem.i);
       empty(firstStem.j);
@@ -589,6 +612,17 @@ inline double operator+=(double a, const answer_pknot_pfunc &b) {
 }
 
 struct answer_ali_pfunc_macrostate {
+#ifdef CHECKPOINTING_INTEGRATED
+  friend class boost::serialization::access;
+
+  template <class Archive>
+  void serialize(Archive &ar, const unsigned int version) {
+    ar & empty_;
+    ar & firststem;
+    ar & pf;
+    ar & isWCpair;
+  }
+#endif
   bool empty_;
   // position of the leftmost stem in according sequence
   subseq firststem;
@@ -635,6 +669,17 @@ inline bool isEmpty(const answer_ali_pfunc_macrostate &e) {
 }
 
 struct answer_macrostate_mfe {
+#ifdef CHECKPOINTING_INTEGRATED
+    friend class boost::serialization::access;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+      ar & energy;
+      ar & firstStem;
+      ar & lastStem;
+      ar & empty_;
+    }
+#endif
     int energy;
     subseq firstStem;
     subseq lastStem;
@@ -728,6 +773,17 @@ inline uint32_t hashable_value(const answer_macrostate_mfe& candidate) {
 
 #include "rtlib/string.hh"
 struct answer_macrostate_pfunc {
+#ifdef CHECKPOINTING_INTEGRATED
+  friend class boost::serialization::access;
+
+  template <class Archive>
+  void serialize(Archive &ar, const unsigned int version) {
+    ar & empty_;
+    ar & firststem;
+    ar & pf;
+    ar & isWCpair;
+  }
+#endif
   bool empty_;
   subseq firststem;  // position of the leftmost stem in according sequence
   pftuple pf;  // partition function answer tuple
