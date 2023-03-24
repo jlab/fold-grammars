@@ -592,17 +592,29 @@ inline bool isEmpty(const answer_ali_pfunc_macrostate &e) {
   return e.empty_;
 }
 
-typedef Basic_Subsequence<char, unsigned> singleTUSubsequence;
+// similar to a Basic_Subsequence, but without the character string, just
+// start (i) and end (j) borders
+struct subseq {
+    unsigned int i;
+    unsigned int j;
+};
+inline Subsequence restoreSeq(subseq interval, Basic_Subsequence<char, unsigned> s) {
+  s.i = interval.i;
+  s.j = interval.j;
+  return s;
+}
 
 struct answer_macrostate_mfe {
     int energy;
-    singleTUSubsequence firstStem;
-    singleTUSubsequence lastStem;
+    subseq firstStem;
+    subseq lastStem;
     bool empty_;
 
     answer_macrostate_mfe() : energy(0), empty_(false) {
-        empty(firstStem);
-        empty(lastStem);
+        empty(firstStem.i);
+        empty(firstStem.j);
+        empty(lastStem.i);
+        empty(lastStem.j);
     }
 
     bool operator>(const answer_macrostate_mfe& other) const {
