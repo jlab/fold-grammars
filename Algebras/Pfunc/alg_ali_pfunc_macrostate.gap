@@ -1,96 +1,95 @@
 algebra alg_ali_pfunc implements sig_foldrna(alphabet = M_Char, answer = answer_ali_pfunc_macrostate) {
   answer_ali_pfunc_macrostate sadd(Subsequence lb,answer_ali_pfunc_macrostate e) {
-	answer_ali_pfunc_macrostate res;
-	  
-	res.firststem = e.firststem;
-	
-	float sbase_sum = 0;
+    answer_ali_pfunc_macrostate res;
+
+    res.firststem = e.firststem;
+
+    float sbase_sum = 0;
     for (int k = 0; k < int(rows(lb)); k=k+1) {
       if (column(seq_char(lb,lb.i),k) != GAP_BASE) {
         sbase_sum = sbase_sum + sbase_energy();
       }
     }
-    
+
     res.pf.q1 = scale(1) * e.pf.q1 * mk_pf(sbase_sum / float(rows(lb)));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-	
+
     return res;
   }
 
   answer_ali_pfunc_macrostate cadd(answer_ali_pfunc_macrostate le,answer_ali_pfunc_macrostate re) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem = le.firststem;
+
+    res.firststem = le.firststem;
 
     res.pf.q1 = le.pf.q1 * re.pf.q1;
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-        
+
     return res;
   }
 
   answer_ali_pfunc_macrostate cadd_Pr(answer_ali_pfunc_macrostate le,answer_ali_pfunc_macrostate re) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem = le.firststem;
+
+    res.firststem = le.firststem;
 
     res.pf.q1 = le.pf.q1 * sum_elems(re.pf);
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate cadd_Pr_Pr(answer_ali_pfunc_macrostate le,answer_ali_pfunc_macrostate re) {
     answer_ali_pfunc_macrostate res;
-    	
-	res.firststem = le.firststem;
-    res.pf = mk_tuple(le.firststem, le.pf.q1 * re.pf.q1);
-    
+
+    res.firststem = le.firststem;
+    res.pf = mk_tuple(le.isWCpair, le.pf.q1 * re.pf.q1);
+
     return res;
   }
 
   answer_ali_pfunc_macrostate cadd_Pr_Pr_Pr(answer_ali_pfunc_macrostate le,answer_ali_pfunc_macrostate re) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem = le.firststem;
-    res.pf = mk_tuple(le.firststem, le.pf.q1 * sum_elems(re.pf));
-    
+
+    res.firststem = le.firststem;
+    res.pf = mk_tuple(le.isWCpair, le.pf.q1 * sum_elems(re.pf));
+
     return res;
   }
 
   answer_ali_pfunc_macrostate ambd(answer_ali_pfunc_macrostate le,Subsequence b,answer_ali_pfunc_macrostate re) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem = le.firststem;
+
+    res.firststem = le.firststem;
 
     res.pf.q1 = scale(1) * check_tuple(le.pf.q1, le.firststem, re.firststem, b, re.pf);
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate ambd_Pr(answer_ali_pfunc_macrostate le,Subsequence b,answer_ali_pfunc_macrostate re) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem = le.firststem;
-    res.pf = mk_tuple(le.firststem, scale(1) * check_tuple(le.pf.q1, le.firststem, re.firststem, b, re.pf));
-    
+
+    res.firststem = le.firststem;
+    res.pf = mk_tuple(le.isWCpair, scale(1) * check_tuple(le.pf.q1, le.firststem, re.firststem, b, re.pf));
+
     return res;
   }
 
   answer_ali_pfunc_macrostate nil(Subsequence loc) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = seq_size(loc);
     res.firststem.j = seq_size(loc);
-    res.firststem.seq = loc.seq;
 
     res.pf.q1 = 1.0;
     res.pf.q2 = 0.0;
@@ -102,54 +101,63 @@ algebra alg_ali_pfunc implements sig_foldrna(alphabet = M_Char, answer = answer_
 
   answer_ali_pfunc_macrostate edl(Subsequence lb,answer_ali_pfunc_macrostate e, Subsequence rloc) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem = e.firststem;
 
-    res.pf.q1 = scale(1) * e.pf.q1 * mk_pf((dl_energy(e.firststem, e.firststem) + termau_energy(e.firststem, e.firststem)) / float(rows(lb)));
+    res.firststem = e.firststem;
+    Subsequence stem = restoreSeq(e.firststem, lb);
+
+    res.pf.q1 = scale(1) * e.pf.q1 * mk_pf((dl_energy(stem, stem) + termau_energy(stem, stem)) / float(rows(lb)));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-	
+    res.isWCpair = isWCpair(stem);
+
     return res;
   }
 
   answer_ali_pfunc_macrostate edr(Subsequence lloc, answer_ali_pfunc_macrostate e,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem = e.firststem;
-    
-	res.pf.q1 = scale(1) * e.pf.q1 * mk_pf((dr_energy(e.firststem, e.firststem) + termau_energy(e.firststem, e.firststem)) / float(rows(rb)));
+
+    res.firststem = e.firststem;
+    Subsequence stem = restoreSeq(e.firststem, rb);
+
+    res.pf.q1 = scale(1) * e.pf.q1 * mk_pf((dr_energy(stem, stem) + termau_energy(stem, stem)) / float(rows(rb)));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+    res.isWCpair = isWCpair(stem);
+
     return res;
   }
 
   answer_ali_pfunc_macrostate edlr(Subsequence lb,answer_ali_pfunc_macrostate e,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
 
+    Subsequence stem = restoreSeq(e.firststem, lb);
+
     //this minimization is necessary since Turner2004 parameters introduced the ext_mismatch_energy table. It now might happen, that dangling from one side only is better than dangling from both sides.
-	int help = min(min(ext_mismatch_energy(e.firststem, e.firststem), dl_energy(e.firststem, e.firststem)), dr_energy(e.firststem, e.firststem));
+    int help = min(min(ext_mismatch_energy(stem, stem), dl_energy(stem, stem)), dr_energy(stem, stem));
     
-	res.firststem = e.firststem;
-    res.pf.q1 = scale(2) * e.pf.q1 * mk_pf((help + termau_energy(e.firststem, e.firststem)) / float(rows(lb)));
+    res.firststem = e.firststem;
+    res.pf.q1 = scale(2) * e.pf.q1 * mk_pf((help + termau_energy(stem, stem)) / float(rows(lb)));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+    res.isWCpair = isWCpair(stem);
+
     return res;
   }
 
   answer_ali_pfunc_macrostate drem(Subsequence lloc, answer_ali_pfunc_macrostate e, Subsequence rloc) {
     answer_ali_pfunc_macrostate res;
 
-	res.firststem = e.firststem;
-	
-    res.pf.q1 = e.pf.q1 * mk_pf(termau_energy(e.firststem, e.firststem) / float(rows(lloc)));
+    res.firststem = e.firststem;
+    Subsequence stem = restoreSeq(e.firststem, lloc);
+
+    res.pf.q1 = e.pf.q1 * mk_pf(termau_energy(stem, stem) / float(rows(lloc)));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
+    res.isWCpair = isWCpair(stem);
 
     return res;
   }
@@ -160,23 +168,22 @@ algebra alg_ali_pfunc implements sig_foldrna(alphabet = M_Char, answer = answer_
 
   answer_ali_pfunc_macrostate sr(Subsequence lb,answer_ali_pfunc_macrostate e,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem.seq = lb.seq;
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-    
-    res.pf.q1 = scale(2) * e.pf.q1 * mk_pf(sr_energy(res.firststem,res.firststem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
+    Subsequence stem = restoreSeq(res.firststem, lb);
+
+    res.pf.q1 = scale(2) * e.pf.q1 * mk_pf(sr_energy(stem, stem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate hl(Subsequence lb,Subsequence region,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
-    res.firststem.seq = lb.seq;
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
 
@@ -184,33 +191,31 @@ algebra alg_ali_pfunc implements sig_foldrna(alphabet = M_Char, answer = answer_
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
 
   answer_ali_pfunc_macrostate bl(Subsequence lb,Subsequence lregion,answer_ali_pfunc_macrostate e,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-	res.firststem.seq = lb.seq;
-    
+
     res.pf.q1 = scale(lregion.j - lregion.i + 2) * e.pf.q1 * mk_pf(bl_energy(lregion,rb) / float(rows(lregion)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate br(Subsequence lb,answer_ali_pfunc_macrostate e,Subsequence rregion,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-	res.firststem.seq = lb.seq;
-    
+
     res.pf.q1 = scale(rregion.j - rregion.i + 2) * e.pf.q1 * mk_pf(br_energy(lb, rregion) / float(rows(rregion)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
@@ -221,268 +226,276 @@ algebra alg_ali_pfunc implements sig_foldrna(alphabet = M_Char, answer = answer_
 
   answer_ali_pfunc_macrostate il(Subsequence lb,Subsequence lregion,answer_ali_pfunc_macrostate e,Subsequence rregion,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-	res.firststem.seq = lb.seq;
-    
+
     res.pf.q1 = scale((lregion.j - lregion.i) + (rregion.j - rregion.i) + 2) * e.pf.q1 * mk_pf(il_energy(lregion, rregion) / float(rows(lregion)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate ml(Subsequence lb,answer_ali_pfunc_macrostate e,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-	res.firststem.seq = lb.seq;
-    
-    res.pf.q1 = scale(2) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + termau_energy(res.firststem,res.firststem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
+
+    Subsequence closingStem = restoreSeq(res.firststem, lb);
+
+    res.pf.q1 = scale(2) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + termau_energy(closingStem, closingStem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
-  
+
   answer_ali_pfunc_macrostate mlall(Subsequence lb,answer_ali_pfunc_macrostate e,Subsequence rb) {
     return e;
   }
-  
+
   answer_ali_pfunc_macrostate mldr(Subsequence lb,answer_ali_pfunc_macrostate e,Subsequence dr,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-    res.firststem.seq = lb.seq;
-	  
-    res.pf.q1 = scale(3) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + (dri_energy(res.firststem,res.firststem) + termau_energy(res.firststem,res.firststem)) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
+
+    Subsequence closingStem = restoreSeq(res.firststem, lb);
+
+    res.pf.q1 = scale(3) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + (dri_energy(closingStem, closingStem) + termau_energy(closingStem, closingStem)) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate mladr(Subsequence lb,answer_ali_pfunc_macrostate e,Subsequence dr,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-    res.firststem.seq = lb.seq;
-	
-	int dangleInternal_wc  = 0.0;
-	int dangleInternal_wob = 0.0;
-	int dangleClosing = 0.0;
-	for (int k = 0; k < int(rows(lb)); k=k+1) {
-		base_t rightdanglingBase = base_t(column(seq_char(dr, dr.i), k));
-		base_t rightmostBaselastStem = base_t(column(seq_char(e.firststem, dr.i-1), k));
-		dangleInternal_wc  = dangleInternal_wc  + dr_dangle_dg( wc_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
-		dangleInternal_wob = dangleInternal_wob + dr_dangle_dg(wob_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
-		dangleClosing = dangleClosing + getEnergyAtRow(res.firststem, k, 2);
-	}
-	dangleInternal_wc  = dangleInternal_wc  / float(rows(lb));
-	dangleInternal_wob = dangleInternal_wob / float(rows(lb));
-	dangleClosing      = dangleClosing      / float(rows(lb));
-		
+
+    Subsequence closingStem = restoreSeq(res.firststem, lb);
+
+    int dangleInternal_wc  = 0.0;
+    int dangleInternal_wob = 0.0;
+    int dangleClosing = 0.0;
+    for (int k = 0; k < int(rows(lb)); k=k+1) {
+        base_t rightdanglingBase = base_t(column(seq_char(dr, dr.i), k));
+        base_t rightmostBaselastStem = base_t(column(seq_char(dr, dr.i-1), k));
+        dangleInternal_wc  = dangleInternal_wc  + dr_dangle_dg( wc_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
+        dangleInternal_wob = dangleInternal_wob + dr_dangle_dg(wob_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
+        dangleClosing = dangleClosing + getEnergyAtRow(dr, k, 2);
+    }
+    dangleInternal_wc  = dangleInternal_wc  / float(rows(lb));
+    dangleInternal_wob = dangleInternal_wob / float(rows(lb));
+    dangleClosing      = dangleClosing      / float(rows(lb));
+        
     float amdangle = (e.pf.q1 + e.pf.q3) * mk_pf(min(dangleInternal_wc,  dangleClosing)) +
                      (e.pf.q2 + e.pf.q4) * mk_pf(min(dangleInternal_wob, dangleClosing));
-    
-    res.pf.q1 = scale(3) * amdangle * mk_pf(ml_energy() + ul_energy() + termau_energy(res.firststem,res.firststem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
+
+    res.pf.q1 = scale(3) * amdangle * mk_pf(ml_energy() + ul_energy() + termau_energy(closingStem, closingStem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate mldlr(Subsequence lb,Subsequence dl,answer_ali_pfunc_macrostate e,Subsequence dr,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-    res.firststem.seq = lb.seq;
-	  
+
+    Subsequence closingStem = restoreSeq(res.firststem, lb);
+
     //this minimization is necessary since Turner2004 parameters introduced the ml_mismatch_energy table. It now might happen, that dangling from one side only is better than dangling from both sides.
-	int help = min(min(ml_mismatch_energy(res.firststem,res.firststem), dli_energy(res.firststem,res.firststem)), dri_energy(res.firststem,res.firststem));
-    
-    res.pf.q1 = scale(4) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + (help + termau_energy(res.firststem,res.firststem)) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
+    int help = min(min(ml_mismatch_energy(closingStem, closingStem), dli_energy(closingStem, closingStem)), dri_energy(closingStem, closingStem));
+
+    res.pf.q1 = scale(4) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + (help + termau_energy(closingStem, closingStem)) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate mladlr(Subsequence lb,Subsequence dl,answer_ali_pfunc_macrostate e,Subsequence dr,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-    res.firststem.seq = lb.seq;
-	
-	int dangleInternal_first_wc  = 0;
-	int dangleInternal_first_wob = 0;
-	int dangleInternal_last_wc  = 0;
-	int dangleInternal_last_wob = 0;
-	int dangle_l = 0;
-	int dangle_r = 0;
-	for (int k = 0; k < int(rows(lb)); k=k+1) {
-		base_t leftdanglingBase = base_t(column(seq_char(dl, dl.i),k));
-		base_t rightdanglingBase = base_t(column(seq_char(dr, dr.i), k));
-		base_t leftmostBasefirstStem = base_t(column(seq_char(e.firststem, dl.i+1), k));
-		base_t rightmostBaselastStem = base_t(column(seq_char(e.firststem, dr.i-1), k));
-		dangleInternal_first_wc  = dangleInternal_first_wc  + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem,  wc_comp(leftmostBasefirstStem));
-		dangleInternal_first_wob = dangleInternal_first_wob + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem, wob_comp(leftmostBasefirstStem));
-		dangle_l = dangle_l + getEnergyAtRow(res.firststem, k, 1);
-		dangleInternal_last_wc  = dangleInternal_last_wc  + dr_dangle_dg( wc_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
-		dangleInternal_last_wob = dangleInternal_last_wob + dr_dangle_dg(wob_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
-		dangle_r = dangle_r + getEnergyAtRow(res.firststem, k, 2);
-	}
-	dangleInternal_first_wc  = dangleInternal_first_wc  / float(rows(lb));
-	dangleInternal_first_wob = dangleInternal_first_wob / float(rows(lb));
-	dangleInternal_last_wc   = dangleInternal_last_wc   / float(rows(lb));
-	dangleInternal_last_wob  = dangleInternal_last_wob  / float(rows(lb));
-	dangle_l                 = dangle_l                 / float(rows(lb));
-	dangle_r                 = dangle_r                 / float(rows(lb));
-	
-	float amdangle = (e.pf.q1 * mk_pf(min(dangleInternal_first_wc,  dangle_l) + min(dangleInternal_last_wc,  dangle_r)) +
-				      e.pf.q2 * mk_pf(min(dangleInternal_first_wc,  dangle_l) + min(dangleInternal_last_wob, dangle_r)) +
-				      e.pf.q3 * mk_pf(min(dangleInternal_first_wob, dangle_l) + min(dangleInternal_last_wc,  dangle_r)) +
-				      e.pf.q4 * mk_pf(min(dangleInternal_first_wob, dangle_l) + min(dangleInternal_last_wob, dangle_r)));
-	
-    res.pf.q1 = scale(4) * amdangle * mk_pf(ml_energy() + ul_energy() + termau_energy(res.firststem,res.firststem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
+
+    Subsequence closingStem = restoreSeq(res.firststem, lb);
+
+    int dangleInternal_first_wc  = 0;
+    int dangleInternal_first_wob = 0;
+    int dangleInternal_last_wc  = 0;
+    int dangleInternal_last_wob = 0;
+    int dangle_l = 0;
+    int dangle_r = 0;
+    for (int k = 0; k < int(rows(lb)); k=k+1) {
+        base_t leftdanglingBase = base_t(column(seq_char(dl, dl.i),k));
+        base_t rightdanglingBase = base_t(column(seq_char(dr, dr.i), k));
+        base_t leftmostBasefirstStem = base_t(column(seq_char(dl, dl.i+1), k));
+        base_t rightmostBaselastStem = base_t(column(seq_char(dl, dr.i-1), k));
+        dangleInternal_first_wc  = dangleInternal_first_wc  + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem,  wc_comp(leftmostBasefirstStem));
+        dangleInternal_first_wob = dangleInternal_first_wob + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem, wob_comp(leftmostBasefirstStem));
+        dangle_l = dangle_l + getEnergyAtRow(closingStem, k, 1);
+        dangleInternal_last_wc  = dangleInternal_last_wc  + dr_dangle_dg( wc_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
+        dangleInternal_last_wob = dangleInternal_last_wob + dr_dangle_dg(wob_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
+        dangle_r = dangle_r + getEnergyAtRow(closingStem, k, 2);
+    }
+    dangleInternal_first_wc  = dangleInternal_first_wc  / float(rows(lb));
+    dangleInternal_first_wob = dangleInternal_first_wob / float(rows(lb));
+    dangleInternal_last_wc   = dangleInternal_last_wc   / float(rows(lb));
+    dangleInternal_last_wob  = dangleInternal_last_wob  / float(rows(lb));
+    dangle_l                 = dangle_l                 / float(rows(lb));
+    dangle_r                 = dangle_r                 / float(rows(lb));
+
+    float amdangle = (e.pf.q1 * mk_pf(min(dangleInternal_first_wc,  dangle_l) + min(dangleInternal_last_wc,  dangle_r)) +
+                      e.pf.q2 * mk_pf(min(dangleInternal_first_wc,  dangle_l) + min(dangleInternal_last_wob, dangle_r)) +
+                      e.pf.q3 * mk_pf(min(dangleInternal_first_wob, dangle_l) + min(dangleInternal_last_wc,  dangle_r)) +
+                      e.pf.q4 * mk_pf(min(dangleInternal_first_wob, dangle_l) + min(dangleInternal_last_wob, dangle_r)));
+    
+    res.pf.q1 = scale(4) * amdangle * mk_pf(ml_energy() + ul_energy() + termau_energy(closingStem, closingStem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate mldladr(Subsequence lb,Subsequence dl,answer_ali_pfunc_macrostate e,Subsequence dr,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-    res.firststem.seq = lb.seq;
-	
-	int dangle_l = 0;
-	int dangle_r = 0;
-	int dangleInternal_wc = 0;
-	int dangleInternal_wob = 0;
-	for (int k = 0; k < int(rows(lb)); k=k+1) {
-		base_t rightdanglingBase = base_t(column(seq_char(dr, dr.i), k));
-		base_t rightmostBaselastStem = base_t(column(seq_char(e.firststem, dr.i-1), k));
-		dangle_l = dangle_l + getEnergyAtRow(res.firststem, k, 1);
-		dangle_r = dangle_r + getEnergyAtRow(res.firststem, k, 2);
-		dangleInternal_wc  = dangleInternal_wc  + dr_dangle_dg( wc_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
-		dangleInternal_wob = dangleInternal_wob + dr_dangle_dg(wob_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
-	}
-	dangle_l           = dangle_l           / float(rows(lb));
-	dangle_r           = dangle_r           / float(rows(lb));
-	dangleInternal_wc  = dangleInternal_wc  / float(rows(lb));
-	dangleInternal_wob = dangleInternal_wob / float(rows(lb));
-	double amdangle = ((e.pf.q1 * mk_pf(dangle_l) + e.pf.q3) * mk_pf(min(dangleInternal_wc, dangle_r)) +
-					   (e.pf.q2 + e.pf.q4) * mk_pf(min(dangleInternal_wob, dangle_r)));
-	
-    res.pf.q1 = scale(4) * amdangle * mk_pf(ml_energy() + ul_energy() + termau_energy(res.firststem,res.firststem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
+
+    Subsequence closingStem = restoreSeq(res.firststem, lb);
+
+    int dangle_l = 0;
+    int dangle_r = 0;
+    int dangleInternal_wc = 0;
+    int dangleInternal_wob = 0;
+    for (int k = 0; k < int(rows(lb)); k=k+1) {
+        base_t rightdanglingBase = base_t(column(seq_char(dr, dr.i), k));
+        base_t rightmostBaselastStem = base_t(column(seq_char(dr, dr.i-1), k));
+        dangle_l = dangle_l + getEnergyAtRow(closingStem, k, 1);
+        dangle_r = dangle_r + getEnergyAtRow(closingStem, k, 2);
+        dangleInternal_wc  = dangleInternal_wc  + dr_dangle_dg( wc_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
+        dangleInternal_wob = dangleInternal_wob + dr_dangle_dg(wob_comp(rightmostBaselastStem), rightmostBaselastStem, rightdanglingBase);
+    }
+    dangle_l           = dangle_l           / float(rows(lb));
+    dangle_r           = dangle_r           / float(rows(lb));
+    dangleInternal_wc  = dangleInternal_wc  / float(rows(lb));
+    dangleInternal_wob = dangleInternal_wob / float(rows(lb));
+    double amdangle = ((e.pf.q1 * mk_pf(dangle_l) + e.pf.q3) * mk_pf(min(dangleInternal_wc, dangle_r)) +
+                       (e.pf.q2 + e.pf.q4) * mk_pf(min(dangleInternal_wob, dangle_r)));
+
+    res.pf.q1 = scale(4) * amdangle * mk_pf(ml_energy() + ul_energy() + termau_energy(closingStem, closingStem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate mladldr(Subsequence lb,Subsequence dl,answer_ali_pfunc_macrostate e,Subsequence dr,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-    res.firststem.seq = lb.seq;
-	  
-	int dangleInternal_wc = 0;
-	int dangleInternal_wob = 0;
-	int dangle_l = 0;
-	int dangle_r = 0;
-	for (int k = 0; k < int(rows(lb)); k=k+1) {
-		base_t leftdanglingBase = base_t(column(seq_char(dl, dl.i), k));
-		base_t leftmostBasefirstStem = base_t(column(seq_char(e.firststem, dl.i+1), k));
-		dangleInternal_wc  = dangleInternal_wc  + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem,  wc_comp(leftmostBasefirstStem));
-		dangleInternal_wob = dangleInternal_wob + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem, wob_comp(leftmostBasefirstStem));
-		dangle_l = dangle_l + getEnergyAtRow(res.firststem, k, 1);
-		dangle_r = dangle_r + getEnergyAtRow(res.firststem, k, 2);
-	}
-	dangleInternal_wc  = dangleInternal_wc  / float(rows(lb));
-	dangleInternal_wob = dangleInternal_wob / float(rows(lb));
-	dangle_l           = dangle_l           / float(rows(lb));
-	dangle_r           = dangle_r           / float(rows(lb));
-	
-	float amdangle = ((e.pf.q1 + e.pf.q2) * mk_pf(min(dangleInternal_wc, dangle_l)) +
-				      (e.pf.q3 + e.pf.q4  * mk_pf(dangle_r)) * mk_pf(min(dangleInternal_wob, dangle_l)));
-	
-    res.pf.q1 = scale(4) * amdangle * mk_pf(ml_energy() + ul_energy() + termau_energy(res.firststem,res.firststem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
+
+    Subsequence closingStem = restoreSeq(res.firststem, lb);
+
+    int dangleInternal_wc = 0;
+    int dangleInternal_wob = 0;
+    int dangle_l = 0;
+    int dangle_r = 0;
+    for (int k = 0; k < int(rows(lb)); k=k+1) {
+        base_t leftdanglingBase = base_t(column(seq_char(dl, dl.i), k));
+        base_t leftmostBasefirstStem = base_t(column(seq_char(dl, dl.i+1), k));
+        dangleInternal_wc  = dangleInternal_wc  + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem,  wc_comp(leftmostBasefirstStem));
+        dangleInternal_wob = dangleInternal_wob + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem, wob_comp(leftmostBasefirstStem));
+        dangle_l = dangle_l + getEnergyAtRow(closingStem, k, 1);
+        dangle_r = dangle_r + getEnergyAtRow(closingStem, k, 2);
+    }
+    dangleInternal_wc  = dangleInternal_wc  / float(rows(lb));
+    dangleInternal_wob = dangleInternal_wob / float(rows(lb));
+    dangle_l           = dangle_l           / float(rows(lb));
+    dangle_r           = dangle_r           / float(rows(lb));
+    
+    float amdangle = ((e.pf.q1 + e.pf.q2) * mk_pf(min(dangleInternal_wc, dangle_l)) +
+                      (e.pf.q3 + e.pf.q4  * mk_pf(dangle_r)) * mk_pf(min(dangleInternal_wob, dangle_l)));
+
+    res.pf.q1 = scale(4) * amdangle * mk_pf(ml_energy() + ul_energy() + termau_energy(closingStem, closingStem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate mldl(Subsequence lb,Subsequence dl,answer_ali_pfunc_macrostate e,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-    res.firststem.seq = lb.seq;
-	  
-    res.pf.q1 = scale(3) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + (dli_energy(res.firststem,res.firststem) + termau_energy(res.firststem,res.firststem)) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
+
+    Subsequence closingStem = restoreSeq(res.firststem, lb);
+
+    res.pf.q1 = scale(3) * sum_elems(e.pf) * mk_pf(ml_energy() + ul_energy() + (dli_energy(closingStem, closingStem) + termau_energy(closingStem, closingStem)) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate mladl(Subsequence lb,Subsequence dl,answer_ali_pfunc_macrostate e,Subsequence rb) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem.i = lb.i;
     res.firststem.j = rb.j;
-    res.firststem.seq = lb.seq;
-	  
-	int dangleInternal_wc = 0.0;
-	int dangleInternal_wob = 0.0;
-	int dangleClosing = 0.0;
-	for (int k = 0; k < int(rows(lb)); k=k+1) {
-		base_t leftdanglingBase = base_t(column(seq_char(dl, dl.i), k));
-		base_t leftmostBasefirstStem = base_t(column(seq_char(e.firststem, dl.i+1), k));
-		dangleInternal_wc  = dangleInternal_wc + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem,  wc_comp(leftmostBasefirstStem));
-		dangleInternal_wob = dangleInternal_wc + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem, wob_comp(leftmostBasefirstStem));
-		dangleClosing = dangleClosing + getEnergyAtRow(res.firststem, k, 1);
-	}
-	dangleInternal_wc  = dangleInternal_wc  / float(rows(lb));
-	dangleInternal_wob = dangleInternal_wob / float(rows(lb));
-	dangleClosing      = dangleClosing      / float(rows(lb));
-	
-	float amdangle = (e.pf.q1 + e.pf.q2) * mk_pf(min(dangleInternal_wc,  dangleClosing)) +
+
+    Subsequence closingStem = restoreSeq(res.firststem, lb);
+
+    int dangleInternal_wc = 0.0;
+    int dangleInternal_wob = 0.0;
+    int dangleClosing = 0.0;
+    for (int k = 0; k < int(rows(lb)); k=k+1) {
+        base_t leftdanglingBase = base_t(column(seq_char(dl, dl.i), k));
+        base_t leftmostBasefirstStem = base_t(column(seq_char(dl, dl.i+1), k));
+        dangleInternal_wc  = dangleInternal_wc + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem,  wc_comp(leftmostBasefirstStem));
+        dangleInternal_wob = dangleInternal_wc + dl_dangle_dg(leftdanglingBase, leftmostBasefirstStem, wob_comp(leftmostBasefirstStem));
+        dangleClosing = dangleClosing + getEnergyAtRow(closingStem, k, 1);
+    }
+    dangleInternal_wc  = dangleInternal_wc  / float(rows(lb));
+    dangleInternal_wob = dangleInternal_wob / float(rows(lb));
+    dangleClosing      = dangleClosing      / float(rows(lb));
+
+    float amdangle = (e.pf.q1 + e.pf.q2) * mk_pf(min(dangleInternal_wc,  dangleClosing)) +
                      (e.pf.q3 + e.pf.q4) * mk_pf(min(dangleInternal_wob, dangleClosing));
 
-    res.pf.q1 = scale(3) * amdangle * mk_pf(ml_energy() + ul_energy() + termau_energy(res.firststem,res.firststem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
+    res.pf.q1 = scale(3) * amdangle * mk_pf(ml_energy() + ul_energy() + termau_energy(closingStem, closingStem) / float(rows(lb)) + covscore(lb, lb.i, rb.i));
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate addss(answer_ali_pfunc_macrostate e,Subsequence rregion) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem = e.firststem;
+
+    res.firststem = e.firststem;
     res.pf = mult_tup(scale(rregion.j - rregion.i) * mk_pf(ss_energy(rregion) / float(rows(rregion))), e.pf);
 
     return res;
@@ -490,70 +503,70 @@ algebra alg_ali_pfunc implements sig_foldrna(alphabet = M_Char, answer = answer_
 
   answer_ali_pfunc_macrostate ssadd(Subsequence lregion,answer_ali_pfunc_macrostate e) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem = e.firststem;
-    res.pf = mk_tuple(e.firststem, scale(lregion.j - lregion.i) * e.pf.q1 * mk_pf(ul_energy() + ss_energy(lregion) / float(rows(lregion))));
-    
+
+    res.firststem = e.firststem;
+    res.pf = mk_tuple(e.isWCpair, scale(lregion.j - lregion.i) * e.pf.q1 * mk_pf(ul_energy() + ss_energy(lregion) / float(rows(lregion))));
+
     return res;
   }
 
   answer_ali_pfunc_macrostate trafo(answer_ali_pfunc_macrostate e) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem = e.firststem;
-	
+
+    res.firststem = e.firststem;
+
     res.pf.q1 = sum_elems(e.pf);
     res.pf.q2 = 0.0;
     res.pf.q3 = 0.0;
     res.pf.q4 = 0.0;
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate incl(answer_ali_pfunc_macrostate e) {
     answer_ali_pfunc_macrostate res;
-    
-	res.firststem = e.firststem;
-	
-    res.pf = mk_tuple(e.firststem, e.pf.q1 * mk_pf(ul_energy()));
+
+    res.firststem = e.firststem;
+
+    res.pf = mk_tuple(e.isWCpair, e.pf.q1 * mk_pf(ul_energy()));
 
     return res;
   }
 
   answer_ali_pfunc_macrostate combine(answer_ali_pfunc_macrostate le,answer_ali_pfunc_macrostate re) {
     answer_ali_pfunc_macrostate res;
-    
+
     res.firststem = le.firststem;
-    
+
     res.pf.q1 = (le.pf.q1 + le.pf.q2) * (re.pf.q1 + re.pf.q3);
     res.pf.q2 = (le.pf.q1 + le.pf.q2) * (re.pf.q2 + re.pf.q4);
     res.pf.q3 = (le.pf.q3 + le.pf.q4) * (re.pf.q3 + re.pf.q1);
     res.pf.q4 = (le.pf.q4 + le.pf.q3) * (re.pf.q4 + re.pf.q2);
-    
+
     return res;
   }
 
   answer_ali_pfunc_macrostate acomb(answer_ali_pfunc_macrostate le,Subsequence b,answer_ali_pfunc_macrostate re) {
     answer_ali_pfunc_macrostate res;
-   
+
     int  wcDr = 0;
     int wobDr = 0;
     int  wcDl = 0;
     int wobDl = 0;
-	for (int k = 0; k < int(rows(b)); k=k+1) {
-		base_t baseLeftStem = base_t(column(seq_char(le.firststem, b.i-1), k));
-		base_t baseRightStem = base_t(column(seq_char(re.firststem, b.i+1), k));
-		base_t baseAmbigious = base_t(column(seq_char(b, b.i), k));
-		 wcDr =  wcDr + dr_dangle_dg(  wc_comp(baseLeftStem), baseLeftStem, baseAmbigious);
-		wobDr = wobDr + dr_dangle_dg( wob_comp(baseLeftStem), baseLeftStem, baseAmbigious);
-		 wcDl =  wcDl + dl_dangle_dg(baseAmbigious, baseRightStem,  wc_comp(baseRightStem));
-		wobDl = wobDl + dl_dangle_dg(baseAmbigious, baseRightStem, wob_comp(baseRightStem));
-	}
-	 wcDr =  wcDr / float(rows(b));
+    for (int k = 0; k < int(rows(b)); k=k+1) {
+        base_t baseLeftStem = base_t(column(seq_char(b, b.i-1), k));
+        base_t baseRightStem = base_t(column(seq_char(b, b.i+1), k));
+        base_t baseAmbigious = base_t(column(seq_char(b, b.i), k));
+         wcDr =  wcDr + dr_dangle_dg(  wc_comp(baseLeftStem), baseLeftStem, baseAmbigious);
+        wobDr = wobDr + dr_dangle_dg( wob_comp(baseLeftStem), baseLeftStem, baseAmbigious);
+         wcDl =  wcDl + dl_dangle_dg(baseAmbigious, baseRightStem,  wc_comp(baseRightStem));
+        wobDl = wobDl + dl_dangle_dg(baseAmbigious, baseRightStem, wob_comp(baseRightStem));
+    }
+     wcDr =  wcDr / float(rows(b));
     wobDr = wobDr / float(rows(b));
-	 wcDl =  wcDl / float(rows(b));
-	wobDl = wobDl / float(rows(b));
-	
+     wcDl =  wcDl / float(rows(b));
+    wobDl = wobDl / float(rows(b));
+
     res.pf.q1 = le.pf.q1 * (re.pf.q1 * mk_pf(min( wcDr, wcDl)) + re.pf.q3 * mk_pf(min( wcDr,wobDl))) + 
                    le.pf.q2 * (re.pf.q1 * mk_pf(min(wobDr, wcDl)) + re.pf.q3 * mk_pf(min(wobDr,wobDl)));
     res.pf.q2 = le.pf.q2 * (re.pf.q2 * mk_pf(min(wobDr, wcDl)) + re.pf.q4 * mk_pf(min(wobDr,wobDl))) + 
@@ -563,13 +576,13 @@ algebra alg_ali_pfunc implements sig_foldrna(alphabet = M_Char, answer = answer_
     res.pf.q4 = le.pf.q4 * (re.pf.q4 * mk_pf(min(wobDr,wobDl)) + re.pf.q2 * mk_pf(min(wobDr, wcDl))) +
                    le.pf.q3 * (re.pf.q4 * mk_pf(min( wcDr,wobDl)) + re.pf.q2 * mk_pf(min( wcDr, wcDl)));
 
-	res.pf.q1 = res.pf.q1 * scale(1);
-	res.pf.q2 = res.pf.q2 * scale(1);
-	res.pf.q3 = res.pf.q3 * scale(1);
-	res.pf.q4 = res.pf.q4 * scale(1);
+    res.pf.q1 = res.pf.q1 * scale(1);
+    res.pf.q2 = res.pf.q2 * scale(1);
+    res.pf.q3 = res.pf.q3 * scale(1);
+    res.pf.q4 = res.pf.q4 * scale(1);
 
-	res.firststem = le.firststem;
-	
+    res.firststem = le.firststem;
+
     return res;
   }
 
