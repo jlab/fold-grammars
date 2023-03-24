@@ -604,14 +604,16 @@ inline Subsequence restoreSeq(subseq interval,
   s.j = interval.j;
   return s;
 }
+template<typename alphabet = char, typename pos_type = unsigned int>
 inline Subsequence restoreSeq(subseq interval,
-                              Basic_Sequence<char, unsigned> s) {
+                              Basic_Sequence<alphabet, pos_type> s) {
   Subsequence res;
   res.i = interval.i;
   res.j = interval.j;
   res.seq = &s;
   return res;
 }
+
 
 struct answer_macrostate_mfe {
     int energy;
@@ -710,13 +712,16 @@ struct answer_macrostate_pfunc {
   bool empty_;
   subseq firststem;  // position of the leftmost stem in according sequence
   pftuple pf;  // partition function answer tuple
+  bool isWCpair;  // records for dangle components, if their closing stems end
+                  // with a Watson Crick basepair (AU, CG, GC, UA) or not
+                  // (GU, UG)
 
-  answer_macrostate_pfunc() : empty_(false) {
+  answer_macrostate_pfunc() : empty_(false), isWCpair(false) {
     empty(firststem.i);
     empty(firststem.j);
   }
 
-  answer_macrostate_pfunc(int i) : empty_(false) {
+  answer_macrostate_pfunc(int i) : empty_(false), isWCpair(false) {
     empty(firststem.i);
     empty(firststem.j);
   }
@@ -860,15 +865,21 @@ inline pftuple mult_tup(double x, const pftuple &pf) {
     pf.q4 * x);
 }
 
+inline bool isWCpair(const Subsequence &stem) {
+  return ((base_t(stem[stem.i]) == G_BASE &&
+           base_t(stem[stem.j-1]) == U_BASE) ||
+         (base_t(stem[stem.i]) == U_BASE &&
+          base_t(stem[stem.j-1]) == G_BASE));
+}
+
 /*
    pushes x either to q1 or to q4, depending on the type of the basal basepair of stem.
    x goes to q1 if it is a Watson-Crick basepair, otherwise x is in q4
 */
-inline pftuple mk_tuple(const Subsequence &stem, double x) {
+inline pftuple mk_tuple(bool isWCpair, double x) {
   pftuple res;
 
-  if ((base_t(stem[stem.i]) == G_BASE && base_t(stem[stem.j-1]) == U_BASE) ||
-      (base_t(stem[stem.i]) == U_BASE && base_t(stem[stem.j-1]) == G_BASE)) {
+  if (isWCpair) {
     res.q4 = x;
   } else {
     res.q1 = x;
