@@ -3,10 +3,50 @@
 
 #include <algorithm>
 #include <utility>
+#include <vector>
 
 #ifdef CHECKPOINTING_INTEGRATED
 #include "boost/serialization/access.hpp"
+#include "boost/serialization/vector.hpp"
 #endif
+
+// similar to a Basic_Subsequence, but without the character string, just
+// start (i) and end (j) borders
+struct subseq {
+#ifdef CHECKPOINTING_INTEGRATED
+    friend class boost::serialization::access;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+      ar & i;
+      ar & j;
+    }
+#endif
+    unsigned int i;
+    unsigned int j;
+};
+inline Subsequence restoreSeq(subseq interval,
+                              Basic_Subsequence<char, unsigned> s) {
+  s.i = interval.i;
+  s.j = interval.j;
+  return s;
+}
+template<typename alphabet = char, typename pos_type = unsigned int>
+inline Subsequence restoreSeq(subseq interval,
+                              Basic_Sequence<alphabet, pos_type> s) {
+  Subsequence res;
+  res.i = interval.i;
+  res.j = interval.j;
+  res.seq = &s;
+  return res;
+}
+template<typename pos_type = unsigned int>
+inline Basic_Subsequence<M_Char, pos_type> restoreSeq(subseq interval,
+                              Basic_Subsequence<M_Char, pos_type> s) {
+  s.i = interval.i;
+  s.j = interval.j;
+  return s;
+}
 
 struct answer_pknot_mfe {
 #ifdef CHECKPOINTING_INTEGRATED
@@ -320,14 +360,29 @@ inline int getIntScore(const mfecovar &e) {
 
 typedef Basic_Subsequence<M_Char, unsigned> myTUSubsequence;
 struct mfecovar_macrostate {
+#ifdef CHECKPOINTING_INTEGRATED
+  friend class boost::serialization::access;
+
+  template <class Archive>
+  void serialize(Archive &ar, const unsigned int version) {
+    ar & mfe;
+    ar & covar;
+    ar & firstStem;
+    ar & lastStem;
+    ar & empty_;
+  }
+#endif
   float mfe;
   float covar;
-  myTUSubsequence firstStem;
-  myTUSubsequence lastStem;
+  subseq firstStem;
+  subseq lastStem;
   bool empty_;
+
   mfecovar_macrostate() : mfe(0.0), covar(0.0), empty_(false) {
-      empty(firstStem);
-      empty(lastStem);
+      empty(firstStem.i);
+      empty(firstStem.j);
+      empty(lastStem.i);
+      empty(lastStem.j);
   }
 };
 
@@ -557,14 +612,35 @@ inline double operator+=(double a, const answer_pknot_pfunc &b) {
 }
 
 struct answer_ali_pfunc_macrostate {
+#ifdef CHECKPOINTING_INTEGRATED
+  friend class boost::serialization::access;
+
+  template <class Archive>
+  void serialize(Archive &ar, const unsigned int version) {
+    ar & empty_;
+    ar & firststem;
+    ar & pf;
+    ar & isWCpair;
+  }
+#endif
   bool empty_;
   // position of the leftmost stem in according sequence
-  Basic_Subsequence<M_Char, unsigned> firststem;
+  subseq firststem;
   pftuple pf;  // partition function answer tuple
+  /* records for dangle components, if their closing stems end
+   * with a Watson Crick basepair (AU, CG, GC, UA) or not (GU, UG)
+   */
+  std::vector<bool> isWCpair;
 
-  answer_ali_pfunc_macrostate() : empty_(false) {}
+  answer_ali_pfunc_macrostate() : empty_(false) {
+    empty(firststem.i);
+    empty(firststem.j);
+  }
 
-  answer_ali_pfunc_macrostate(int i) : empty_(false) {}
+  answer_ali_pfunc_macrostate(int i) : empty_(false) {
+    empty(firststem.i);
+    empty(firststem.j);
+  }
 
   answer_ali_pfunc_macrostate& operator+=(const
                                           answer_ali_pfunc_macrostate &a) {
@@ -592,17 +668,28 @@ inline bool isEmpty(const answer_ali_pfunc_macrostate &e) {
   return e.empty_;
 }
 
-typedef Basic_Subsequence<char, unsigned> singleTUSubsequence;
-
 struct answer_macrostate_mfe {
+#ifdef CHECKPOINTING_INTEGRATED
+    friend class boost::serialization::access;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+      ar & energy;
+      ar & firstStem;
+      ar & lastStem;
+      ar & empty_;
+    }
+#endif
     int energy;
-    singleTUSubsequence firstStem;
-    singleTUSubsequence lastStem;
+    subseq firstStem;
+    subseq lastStem;
     bool empty_;
 
     answer_macrostate_mfe() : energy(0), empty_(false) {
-        empty(firstStem);
-        empty(lastStem);
+        empty(firstStem.i);
+        empty(firstStem.j);
+        empty(lastStem.i);
+        empty(lastStem.j);
     }
 
     bool operator>(const answer_macrostate_mfe& other) const {
@@ -686,13 +773,33 @@ inline uint32_t hashable_value(const answer_macrostate_mfe& candidate) {
 
 #include "rtlib/string.hh"
 struct answer_macrostate_pfunc {
+#ifdef CHECKPOINTING_INTEGRATED
+  friend class boost::serialization::access;
+
+  template <class Archive>
+  void serialize(Archive &ar, const unsigned int version) {
+    ar & empty_;
+    ar & firststem;
+    ar & pf;
+    ar & isWCpair;
+  }
+#endif
   bool empty_;
-  Subsequence firststem;  // position of the leftmost stem in according sequence
+  subseq firststem;  // position of the leftmost stem in according sequence
   pftuple pf;  // partition function answer tuple
+  bool isWCpair;  // records for dangle components, if their closing stems end
+                  // with a Watson Crick basepair (AU, CG, GC, UA) or not
+                  // (GU, UG)
 
-  answer_macrostate_pfunc() : empty_(false) {}
+  answer_macrostate_pfunc() : empty_(false), isWCpair(false) {
+    empty(firststem.i);
+    empty(firststem.j);
+  }
 
-  answer_macrostate_pfunc(int i) : empty_(false) {}
+  answer_macrostate_pfunc(int i) : empty_(false), isWCpair(false) {
+    empty(firststem.i);
+    empty(firststem.j);
+  }
 
   answer_macrostate_pfunc& operator+=(const answer_macrostate_pfunc &a) {
     firststem = a.firststem;
@@ -768,10 +875,13 @@ inline base_t wob_comp(base_t b) {
    "check_tuple" assures that all parts of the partition function
    are combined in the correct way (a or b).
 */
-inline double check_tuple(double qleft, const Subsequence &firststemLeft,
-                          const Subsequence &firststemRight,
+inline double check_tuple(double qleft, const subseq &firststemLeft_interval,
+                          const subseq &firststemRight_interval,
                           const Subsequence &ambiguousBase,
                           const pftuple &qright) {
+  Subsequence firststemLeft = restoreSeq(firststemLeft_interval, ambiguousBase);
+  Subsequence firststemRight = restoreSeq(firststemRight_interval,
+                                          ambiguousBase);
   return qleft * (qright.q1 + qright.q2) *
          mk_pf(min(dr_energy(firststemLeft, firststemLeft),
                    dl_dangle_dg(base_t(ambiguousBase[ambiguousBase.i]),
@@ -788,13 +898,17 @@ inline double check_tuple(double qleft, const Subsequence &firststemLeft,
 }
 inline double
 check_tuple(double qleft,
-            const Basic_Subsequence<M_Char, unsigned> &firststemLeft,
-            const Basic_Subsequence<M_Char, unsigned> &firststemRight,
+            const subseq &firststemLeft_interval,
+            const subseq &firststemRight_interval,
             const Basic_Subsequence<M_Char, unsigned> &ambiguousBase,
             const pftuple &qright) {
   double res = 0.0;
-
-  for (unsigned int i = 0; i < firststemLeft.seq->rows(); i++) {
+  Basic_Subsequence<M_Char, unsigned> firststemLeft = restoreSeq(
+      firststemLeft_interval, ambiguousBase);
+  Basic_Subsequence<M_Char, unsigned> firststemRight = restoreSeq(
+      firststemRight_interval,
+                                          ambiguousBase);
+  for (unsigned int i = 0; i < ambiguousBase.seq->rows(); i++) {
       res += qleft * (qright.q1 + qright.q2) *
              mk_pf(min(dr_energy(firststemLeft.seq->row(i),
                                  firststemLeft.i, firststemLeft.j-1,
@@ -830,15 +944,33 @@ inline pftuple mult_tup(double x, const pftuple &pf) {
     pf.q4 * x);
 }
 
+inline bool isWCpair(const Subsequence &stem) {
+  return ((base_t(stem[stem.i]) == G_BASE &&
+           base_t(stem[stem.j-1]) == U_BASE) ||
+         (base_t(stem[stem.i]) == U_BASE &&
+          base_t(stem[stem.j-1]) == G_BASE));
+}
+inline std::vector<bool> isWCpair(const Basic_Subsequence<M_Char,
+                                  unsigned int> &stem) {
+  std::vector<bool> res;
+  for (unsigned int i = 0; i < stem.seq->rows(); i++) {
+    res.push_back(((base_t(stem.seq->row(i)[stem.i]) == G_BASE &&
+        base_t(stem.seq->row(i)[stem.j-1]) == U_BASE) ||
+      (base_t(stem.seq->row(i)[stem.i]) == U_BASE &&
+       base_t(stem.seq->row(i)[stem.j-1]) == G_BASE)));
+  }
+  return res;
+}
+
+
 /*
-   pushes x either to q1 or to q4, depending on the type of the basal basepair of stem.
-   x goes to q1 if it is a Watson-Crick basepair, otherwise x is in q4
+   pushes x either to q1 or to q4, depending on the type of the basal basepair
+   of stem. x goes to q1 if it is a Watson-Crick basepair, otherwise x is in q4
 */
-inline pftuple mk_tuple(const Subsequence &stem, double x) {
+inline pftuple mk_tuple(bool isWCpair, double x) {
   pftuple res;
 
-  if ((base_t(stem[stem.i]) == G_BASE && base_t(stem[stem.j-1]) == U_BASE) ||
-      (base_t(stem[stem.i]) == U_BASE && base_t(stem[stem.j-1]) == G_BASE)) {
+  if (isWCpair) {
     res.q4 = x;
   } else {
     res.q1 = x;
@@ -847,24 +979,20 @@ inline pftuple mk_tuple(const Subsequence &stem, double x) {
   return res;
 }
 
-inline pftuple mk_tuple(const Basic_Subsequence<M_Char, unsigned> &stem,
-                        double x) {
+inline pftuple mk_tuple(std::vector<bool> isWCpair, double x) {
     pftuple res;
 
-    for (unsigned int i = 0; i < stem.seq->rows(); i++) {
-        if ((base_t(stem.seq->row(i)[stem.i]) == G_BASE &&
-             base_t(stem.seq->row(i)[stem.j-1]) == U_BASE) ||
-            (base_t(stem.seq->row(i)[stem.i]) == U_BASE &&
-             base_t(stem.seq->row(i)[stem.j-1]) == G_BASE)) {
+    for (unsigned int i = 0; i < isWCpair.size(); i++) {
+        if (isWCpair.at(i)) {
           res.q4 += x;
         } else {
           res.q1 += x;
         }
     }
-    res.q1 /= static_cast<double>(stem.seq->rows());
-    res.q2 /= static_cast<double>(stem.seq->rows());
-    res.q3 /= static_cast<double>(stem.seq->rows());
-    res.q4 /= static_cast<double>(stem.seq->rows());
+    res.q1 /= static_cast<double>(isWCpair.size());
+    res.q2 /= static_cast<double>(isWCpair.size());
+    res.q3 /= static_cast<double>(isWCpair.size());
+    res.q4 /= static_cast<double>(isWCpair.size());
 
     return res;
 }

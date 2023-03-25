@@ -35,18 +35,17 @@ Known problems with algebra mfe for grammar MacroState:
 algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_macrostate) {
   mfecovar_macrostate sadd(Subsequence lb,mfecovar_macrostate e) {
     mfecovar_macrostate res = e;
-	
-	int sbase_sum = 0;
+
+    int sbase_sum = 0;
     for (int k = 0; k < int(rows(lb)); k=k+1) {
       if (column(seq_char(lb,lb.i),k) != GAP_BASE) {
         sbase_sum = sbase_sum + sbase_energy();
       }
     }
     res.mfe = res.mfe + (sbase_sum / float(rows(lb)));
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = e.firstStem.j;
-	
+
     return res;
   }
 
@@ -68,14 +67,22 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
 
   mfecovar_macrostate ambd(mfecovar_macrostate le,Subsequence b,mfecovar_macrostate re) {
     mfecovar_macrostate res = le;
-    res.mfe = le.mfe + re.mfe + (min(dr_energy(le.firstStem, le.firstStem), dl_energy(re.firstStem, re.firstStem)) / float(rows(b)));
+
+    Subsequence leftStem = restoreSeq(le.firstStem, b);
+    Subsequence rightStem = restoreSeq(re.firstStem, b);
+
+    res.mfe = le.mfe + re.mfe + (min(dr_energy(leftStem, leftStem), dl_energy(rightStem, rightStem)) / float(rows(b)));
     res.firstStem = le.firstStem;
     return res;
   }
 
   mfecovar_macrostate ambd_Pr(mfecovar_macrostate le,Subsequence b,mfecovar_macrostate re) {
     mfecovar_macrostate res = le;
-    res.mfe = le.mfe + re.mfe + (min(dr_energy(le.firstStem, le.firstStem), dl_energy(re.firstStem, re.firstStem)) / float(rows(b)));
+
+    Subsequence leftStem = restoreSeq(le.firstStem, b);
+    Subsequence rightStem = restoreSeq(re.firstStem, b);
+
+    res.mfe = le.mfe + re.mfe + (min(dr_energy(leftStem, leftStem), dl_energy(rightStem, rightStem)) / float(rows(b)));
     res.firstStem = le.firstStem;
     return res;
   }
@@ -83,36 +90,50 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
   mfecovar_macrostate nil(Subsequence loc) {
     mfecovar_macrostate res;
     res.mfe = 0;
-	res.covar = 0;
-    res.firstStem = loc;
-	res.lastStem = loc;
+    res.covar = 0;
+    res.firstStem.i = loc.i;
+    res.firstStem.j = loc.j;
+    res.lastStem.i = loc.i;
+    res.lastStem.j = loc.j;
     return res;
   }
 
   mfecovar_macrostate edl(Subsequence lb,mfecovar_macrostate e, Subsequence rloc) {
     mfecovar_macrostate res = e;
-    res.mfe = e.mfe + ((dl_energy(e.firstStem, e.firstStem) + termau_energy(e.firstStem, e.firstStem)) / float(rows(lb)));
+
+    Subsequence stem = restoreSeq(e.firstStem, lb);
+
+    res.mfe = e.mfe + ((dl_energy(stem, stem) + termau_energy(stem, stem)) / float(rows(lb)));
     res.firstStem = e.firstStem;
     return res;
   }
 
   mfecovar_macrostate edr(Subsequence lloc, mfecovar_macrostate e,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.mfe = e.mfe + ((dr_energy(e.firstStem, e.firstStem) + termau_energy(e.firstStem, e.firstStem)) / float(rows(rb)));
+
+    Subsequence stem = restoreSeq(e.firstStem, rb);
+
+    res.mfe = e.mfe + ((dr_energy(stem, stem) + termau_energy(stem, stem)) / float(rows(rb)));
     res.firstStem = e.firstStem;
     return res;
   }
 
   mfecovar_macrostate edlr(Subsequence lb,mfecovar_macrostate e,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.mfe = e.mfe + ((ext_mismatch_energy(e.firstStem, e.firstStem) + termau_energy(e.firstStem, e.firstStem)) / float(rows(lb)));
+
+    Subsequence stem = restoreSeq(e.firstStem, lb);
+
+    res.mfe = e.mfe + ((ext_mismatch_energy(stem, stem) + termau_energy(stem, stem)) / float(rows(lb)));
     res.firstStem = e.firstStem;
     return res;
   }
 
   mfecovar_macrostate drem(Subsequence lloc, mfecovar_macrostate e, Subsequence rloc) {
     mfecovar_macrostate res = e;
-    res.mfe = e.mfe + (termau_energy(e.firstStem, e.firstStem) / float(rows(lloc)));
+
+    Subsequence stem = restoreSeq(e.firstStem, lloc);
+
+    res.mfe = e.mfe + (termau_energy(stem, stem) / float(rows(lloc)));
     return res;
   }
 
@@ -123,67 +144,65 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
 
   mfecovar_macrostate sr(Subsequence lb,mfecovar_macrostate e,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
-    res.mfe = e.mfe + (sr_energy(res.firstStem,res.firstStem) / float(rows(lb)));
+
+    Subsequence stem = restoreSeq(res.firstStem, lb);
+
+    res.mfe = e.mfe + (sr_energy(stem, stem) / float(rows(lb)));
     return res;
   }
 
   mfecovar_macrostate hl(Subsequence lb,Subsequence region,Subsequence rb) {
     mfecovar_macrostate res;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
     res.mfe = hl_energy(region) / float(rows(lb));
-	res.covar = covscore(lb, lb.i, rb.i);
+    res.covar = covscore(lb, lb.i, rb.i);
     return res;
   }
 
 
   mfecovar_macrostate bl(Subsequence lb,Subsequence lregion,mfecovar_macrostate e,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
     res.mfe = res.mfe + (bl_energy(lregion,rb) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
   mfecovar_macrostate br(Subsequence lb,mfecovar_macrostate e,Subsequence rregion,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
     
     res.mfe = res.mfe + (br_energy(lb, rregion) / float(rows(lb))); 
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
   mfecovar_macrostate il(Subsequence lb,Subsequence lregion,mfecovar_macrostate e,Subsequence rregion,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
     
     res.mfe = res.mfe + (il_energy(lregion, rregion) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
   mfecovar_macrostate ml(Subsequence lb,mfecovar_macrostate e,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
-    res.mfe = res.mfe + ml_energy() + ul_energy() + (termau_energy(res.firstStem,res.firstStem) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+
+    res.mfe = res.mfe + ml_energy() + ul_energy() + (termau_energy(closingStem, closingStem) / float(rows(lb)));
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
@@ -193,89 +212,103 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
 
   mfecovar_macrostate mldr(Subsequence lb,mfecovar_macrostate e,Subsequence dr,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
-    res.mfe = res.mfe + ml_energy() + ul_energy() + ((dri_energy(res.firstStem,res.firstStem) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+
+    res.mfe = res.mfe + ml_energy() + ul_energy() + ((dri_energy(closingStem, closingStem) + termau_energy(closingStem, closingStem)) / float(rows(lb)));
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
   mfecovar_macrostate mladr(Subsequence lb,mfecovar_macrostate e,Subsequence dr,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
-    res.mfe = res.mfe + ml_energy() + ul_energy() + ((min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem, e.lastStem)) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+    Subsequence lastStem = restoreSeq(e.lastStem, lb);
+
+    res.mfe = res.mfe + ml_energy() + ul_energy() + ((min(dri_energy(closingStem, closingStem), dr_energy(lastStem, lastStem)) + termau_energy(closingStem, closingStem)) / float(rows(lb)));
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
   mfecovar_macrostate mldlr(Subsequence lb,Subsequence dl,mfecovar_macrostate e,Subsequence dr,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
-    res.mfe = res.mfe + ml_energy() + ul_energy() + ((ml_mismatch_energy(res.firstStem,res.firstStem) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+
+    res.mfe = res.mfe + ml_energy() + ul_energy() + ((ml_mismatch_energy(closingStem, closingStem) + termau_energy(closingStem, closingStem)) / float(rows(lb)));
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
   mfecovar_macrostate mladlr(Subsequence lb,Subsequence dl,mfecovar_macrostate e,Subsequence dr,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
-    res.mfe = res.mfe + ml_energy() + ul_energy() + ((min(dli_energy(res.firstStem,res.firstStem), dl_energy(e.firstStem, e.firstStem)) + min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem, e.lastStem)) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+    Subsequence firstStem = restoreSeq(e.firstStem, lb);
+    Subsequence lastStem = restoreSeq(e.lastStem, lb);
+
+    res.mfe = res.mfe + ml_energy() + ul_energy() + ((min(dli_energy(closingStem, closingStem), dl_energy(firstStem, firstStem)) + min(dri_energy(closingStem, closingStem), dr_energy(lastStem, lastStem)) + termau_energy(closingStem, closingStem)) / float(rows(lb)));
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
   mfecovar_macrostate mldladr(Subsequence lb,Subsequence dl,mfecovar_macrostate e,Subsequence dr,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
-    res.mfe = res.mfe + ml_energy() + ul_energy() + ((dli_energy(res.firstStem,res.firstStem) + min(dri_energy(res.firstStem,res.firstStem), dr_energy(e.lastStem,e.lastStem)) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+    Subsequence lastStem = restoreSeq(e.lastStem, lb);
+
+    res.mfe = res.mfe + ml_energy() + ul_energy() + ((dli_energy(closingStem, closingStem) + min(dri_energy(closingStem, closingStem), dr_energy(lastStem, lastStem)) + termau_energy(closingStem, closingStem)) / float(rows(lb)));
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
   mfecovar_macrostate mladldr(Subsequence lb,Subsequence dl,mfecovar_macrostate e,Subsequence dr,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
-    res.mfe = res.mfe + ml_energy() + ul_energy() + ((min(dli_energy(res.firstStem,res.firstStem), dl_energy(e.firstStem, e.firstStem)) + dri_energy(res.firstStem,res.firstStem) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+    Subsequence firstStem = restoreSeq(e.firstStem, lb);
+
+    res.mfe = res.mfe + ml_energy() + ul_energy() + ((min(dli_energy(closingStem, closingStem), dl_energy(firstStem, firstStem)) + dri_energy(closingStem, closingStem) + termau_energy(closingStem, closingStem)) / float(rows(lb)));
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
   mfecovar_macrostate mldl(Subsequence lb,Subsequence dl,mfecovar_macrostate e,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
-    
-    res.mfe = res.mfe + ml_energy() + ul_energy() + ((dli_energy(res.firstStem,res.firstStem) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+
+    res.mfe = res.mfe + ml_energy() + ul_energy() + ((dli_energy(closingStem, closingStem) + termau_energy(closingStem, closingStem)) / float(rows(lb)));
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
   mfecovar_macrostate mladl(Subsequence lb,Subsequence dl,mfecovar_macrostate e,Subsequence rb) {
     mfecovar_macrostate res = e;
-    res.firstStem.seq = lb.seq;
     res.firstStem.i = lb.i;
     res.firstStem.j = rb.j;
 
-    res.mfe = res.mfe + ml_energy() + ul_energy() + ((min(dli_energy(res.firstStem,res.firstStem), dl_energy(e.firstStem, e.firstStem)) + termau_energy(res.firstStem,res.firstStem)) / float(rows(lb)));
-	res.covar = res.covar + covscore(lb, lb.i, rb.i);
+    Subsequence closingStem = restoreSeq(res.firstStem, lb);
+    Subsequence firstStem = restoreSeq(e.firstStem, lb);
+
+    res.mfe = res.mfe + ml_energy() + ul_energy() + ((min(dli_energy(closingStem, closingStem), dl_energy(firstStem, firstStem)) + termau_energy(closingStem, closingStem)) / float(rows(lb)));
+    res.covar = res.covar + covscore(lb, lb.i, rb.i);
     return res;
   }
 
@@ -316,8 +349,12 @@ algebra alg_ali_mfe implements sig_foldrna(alphabet = M_Char, answer = mfecovar_
 
   mfecovar_macrostate acomb(mfecovar_macrostate le,Subsequence b,mfecovar_macrostate re) {
     mfecovar_macrostate res = le;
-    res.mfe = le.mfe + re.mfe + (min(dr_energy(le.lastStem, le.lastStem), dl_energy(re.firstStem, re.firstStem)) / float(rows(b)));
-	res.covar = le.covar + re.covar;
+
+    Subsequence leftStem = restoreSeq(le.lastStem, b);
+    Subsequence rightStem = restoreSeq(re.firstStem, b);
+
+    res.mfe = le.mfe + re.mfe + (min(dr_energy(leftStem, leftStem), dl_energy(rightStem, rightStem)) / float(rows(b)));
+    res.covar = le.covar + re.covar;
     res.firstStem = le.firstStem;
     res.lastStem = re.lastStem;
     return res;
