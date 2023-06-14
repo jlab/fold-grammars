@@ -38,14 +38,23 @@ open (IN, $infile) || die "can't read file '$infile': $!";
 			$line = <IN>; #: cat $(RTLIB)/generic_main.cc >> out_main.cc
 			$content .= $line;
 			if ($warn_macrostate) {
-				$content .= "\t".$sedBinary.' -i \'s|opts.parse(argc, argv);|opts.parse(argc, argv); test_macrostate_mme_assumption();|\' '.$1.'_main.cc'."\n";				
+				$content .= "\t".$sedBinary.' -i \'s|opts.parse(argc, argv);|opts.parse(argc, argv); test_macrostate_mme_assumption();|\' '.$1.'_main.cc'."\n";
 			}
 			if ($mode == 2) {
 				$content .= "\t".$sedBinary.' -i \'s|#include .rtlib/string.hh.|#include "bppm.hh"\n#include "rtlib/string.hh"|\' '.$1.'_main.cc'."\n";
-				$content .= "\t".$sedBinary.' -i \'s|gapc::class_name obj;|gapc::class_name obj;\n  outside_gapc::class_name outside_obj;\n  gapc::Opts outside_opts;\n  try {\n    optind = 1;\n    outside_opts.parse(argc, argv);\n        outside_opts.inputs.clear();\n    std::pair<const char*, unsigned int> duplicatedInput = duplicateInput(gapc::Opts::getOpts()->inputs.front());\n    outside_opts.inputs.push_back(duplicatedInput);\n  } catch (std::exception \&e) {\n      std::cerr << "Exception: " << e.what() << '."'\\''\\\\n'\\''".';\n      std::exit(1);\n  }\n|\' '.$1.'_main.cc'."\n";
-				$content .= "\t".$sedBinary.' -i \'s|obj.init(opts);|obj.init(opts);\n    outside_obj.init(outside_opts);|\' '.$1.'_main.cc'."\n";
-				$content .= "\t".$sedBinary.' -i \'s|gapc::return_type res = obj.run();|outside_obj.run();\n  gapc::return_type res = obj.run();|\' '.$1.'_main.cc'."\n";
+				$content .= "\t".$sedBinary.' -i \'s|gapc::class_name obj;|gapc::class_name obj;\n  outside_gapc::class_name outside_obj;|\' '.$1.'_main.cc'."\n";
+				$content .= "\t".$sedBinary.' -i \'s|obj.init(opts);|obj.init(opts);\n    outside_obj.init(opts);|\' '.$1.'_main.cc'."\n";
+				$content .= "\t".$sedBinary.' -i \'s|gapc::return_type res = obj.run();|outside_obj.run();\n  outside_obj.storeprobs();\n  gapc::return_type res = obj.run();|\' '.$1.'_main.cc'."\n";
 				$content .= "\t".$sedBinary.' -i \'s|obj.cyk();|outside_obj.cyk();\n  obj.cyk();|\' '.$1.'_main.cc'."\n";
+				$content .= "\t".$sedBinary.' -i \'s|int main(int argc, char \*\*argv)|double **bpprobs;\n\nint main(int argc, char **argv)|\' '.$1.'_main.cc'."\n";
+			}
+			if ($mode == 3) {
+				$content .= "\t".$sedBinary.' -i \'s|.report_insideoutside(|.makeplot(|\' '.$1.'_main.cc'."\n";
+				$content .= "\t".$sedBinary.' -i \'s|void cyk();|MAKEPLOT;\n  void cyk();|\' '.$1.'.hh '."\n";
+			}
+			if ($mode == 4) {
+				$content .= "\t".$sedBinary.' -i \'s|.report_insideoutside(|.storeprobs(|\' '.$1.'_main.cc'."\n";
+				$content .= "\t".$sedBinary.' -i \'s|void cyk();|STOREPROBS;\n  void cyk();|\' '.$1.'.hh '."\n";
 				$content .= "\t".$sedBinary.' -i \'s|int main(int argc, char \*\*argv)|double **bpprobs;\n\nint main(int argc, char **argv)|\' '.$1.'_main.cc'."\n";
 			}
 			$content .= "\t".$sedBinary.' -i \'s|gapc::Opts opts;||\' '.$1.'_main.cc'."\n";
@@ -53,7 +62,7 @@ open (IN, $infile) || die "can't read file '$infile': $!";
 			$content .= "\t".$sedBinary.' -i \'s|obj.init(opts);|obj.init(\\*gapc::Opts::getOpts());|g\' '.$1.'_main.cc'."\n";
 			$content .= "\t".$sedBinary.' -i \'s|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|\' '.$1.'_main.cc'."\n";
 			$content .= "\t".$sedBinary.' -i \'s%#include .rtlib/generic_opts.hh.%#include "Extensions/rnaoptions.hh"%\' '.$1.'.hh '.$1.'.cc'."\n";
-			if ($mode == 1) { 
+			if ($mode == 1) {
 				$content .= "\t".$sedBinary.' -i \'s|gapc::Opts::getOpts()->parse(argc, argv);|gapc::Opts::getOpts()->parse(argc, argv);\n\tif (gapc::Opts::getOpts()->inputs.size() == 2) {\n\t\tPairs::getGivenPairs()->setStructure(gapc::Opts::getOpts()->inputs.back());\n\t\tgapc::Opts::getOpts()->inputs.pop_back();\n\t}\n|\' '.$1.'_main.cc'."\n";
 			}
 		#~ } elsif ($line =~ m/^(\s*\$\(CXX\) -MMD -MP \$\(CPPFLAGS\) \$\(CXXFLAGS\))(.*)$/) {
