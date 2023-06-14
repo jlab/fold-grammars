@@ -6,6 +6,7 @@ import "Extensions/shapes.hh"
 import "Extensions/mea.hh"
 import "Extensions/probing.hh"
 //import "Extensions/pareto.hh" //using Thomas generic pareto implementation in Bellman's GAP instead
+import "Extensions/outside.hh"
 
 input rna
 
@@ -44,7 +45,7 @@ instance shape4mfepfxpp = gra_overdangle (((alg_shape4 * (alg_mfe % alg_pfunc)) 
 instance shape3mfepfxpp = gra_overdangle (((alg_shape3 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
 instance shape2mfepfxpp = gra_overdangle (((alg_shape2 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
 instance shape1mfepfxpp = gra_overdangle (((alg_shape1 * (alg_mfe % alg_pfunc)) suchthat filterLowProbShapes) * alg_dotBracket);  //must be compiled with --kbacktrace !
-                  
+
 instance mfeshape5pp = gra_overdangle(alg_mfe * alg_shape5 * alg_dotBracket);
 instance mfeshape4pp = gra_overdangle(alg_mfe * alg_shape4 * alg_dotBracket);
 instance mfeshape3pp = gra_overdangle(alg_mfe * alg_shape3 * alg_dotBracket);
@@ -90,4 +91,3 @@ instance testdbshape5mfe   = gra_overdangle(alg_dotBracket * alg_shapeX * alg_mf
 instance testshape4mfepfdb   = gra_overdangle(alg_shapeX * (alg_mfe % alg_pfunc) * alg_dotBracket);
 instance testsampleshape2mfedb   = gra_overdangle( ( (alg_pfunc | alg_pfunc_id ) * (alg_shapeX * alg_mfe * alg_dotBracket) ) suchthat sample_filter ); //compile with --sample !
 //stop: instances for unit tests
-
