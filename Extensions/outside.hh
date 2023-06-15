@@ -122,9 +122,9 @@ inline const std::string getPSheader(std::string input) {
 }
 
 inline const std::string getRepresentation(
-    Basic_Sequence<char, unsigned> input) {
+    Basic_Subsequence<char, unsigned> input) {
   std::ostringstream result;
-  for (Basic_Sequence<char, unsigned>::iterator it = input.begin(); it != input.end(); it++) {
+  for (Basic_Subsequence<char, unsigned>::iterator it = input.begin(); it != input.end(); it++) {
     result << base_to_char(*it);
   }
   return result.str();
@@ -134,7 +134,7 @@ inline const std::string getRepresentation(
 void makeplot(std::ostream &out) {                                                \
   std::ofstream psfile;                                                           \
   psfile.open(getDotplotFilename());                                              \
-  psfile << getPSheader(getRepresentation(t_0_seq));                              \
+  psfile << getPSheader(getRepresentation(TUSubsequence(t_0_seq, 0, t_0_seq.n))); \
   psfile << "%start of base pair probability data\n";                             \
   unsigned int n = t_0_seq.n;                                                     \
   for (unsigned int t_0_i = t_0_left_most; (t_0_i <= t_0_right_most); ++t_0_i) {  \
