@@ -124,81 +124,83 @@ inline const std::string getPSheader(std::string input) {
 inline const std::string getRepresentation(
     Basic_Subsequence<char, unsigned> input) {
   std::ostringstream result;
-  for (Basic_Subsequence<char, unsigned>::iterator it = input.begin(); it != input.end(); it++) {
+  for (Basic_Subsequence<char, unsigned>::iterator it = input.begin();
+       it != input.end(); it++) {
     result << base_to_char(*it);
   }
   return result.str();
 }
 
-#define MAKEPLOT                                                                  \
-void makeplot(std::ostream &out) {                                                \
-  std::ofstream psfile;                                                           \
-  psfile.open(getDotplotFilename());                                              \
-  psfile << getPSheader(getRepresentation(TUSubsequence(t_0_seq, 0, t_0_seq.n))); \
-  psfile << "%start of base pair probability data\n";                             \
-  unsigned int n = t_0_seq.n;                                                     \
-  for (unsigned int t_0_i = t_0_left_most; (t_0_i <= t_0_right_most); ++t_0_i) {  \
-    for (unsigned int t_0_j = t_0_i; (t_0_j <= t_0_right_most); ++t_0_j) {        \
-      double prob = 0.0;                                                          \
-      if (nt_weak(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() &&     \
-          nt_outside_weak(t_0_i, t_0_j) !=                                        \
-              std::numeric_limits<double>::infinity()) {                          \
-        prob += nt_weak(t_0_i, t_0_j) * nt_outside_weak(t_0_i, t_0_j);            \
-      }                                                                           \
-      if (!gapc::Opts::getOpts()->allowLonelyBasepairs) {                         \
-        if (nt_strong(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() && \
-            nt_outside_strong(t_0_i, t_0_j) !=                                    \
-                std::numeric_limits<double>::infinity()) {                        \
-          prob += nt_strong(t_0_i, t_0_j) * nt_outside_strong(t_0_i, t_0_j);      \
-        }                                                                         \
-      }                                                                           \
-      prob = sqrt(prob / nt_struct(0, t_0_seq.n));                                \
-      if (prob >= sqrt(lowProbabilityFilter())) {                                 \
-        psfile << (t_0_i + 1) << " " << t_0_j << " " << prob << " ubox\n";        \
-      }                                                                           \
-    }                                                                             \
-  }                                                                               \
-  psfile << "showpage\n";                                                         \
-  psfile << "end\n";                                                              \
-  psfile << "%%EOF\n";                                                            \
-  psfile.close();                                                                 \
-  std::cout << "wrote Post-Script dot-plot to '" << getDotplotFilename()          \
-            << "'\n";                                                             \
-  std::cout << "Answer: \n";                                                      \
-  print_result(std::cout, nt_struct(0, t_0_seq.n));                               \
+#define MAKEPLOT                                                               \
+void makeplot(std::ostream &out) {                                             \
+  std::ofstream psfile;                                                        \
+  psfile.open(getDotplotFilename());                                           \
+  psfile << getPSheader(getRepresentation(                                     \
+    TUSubsequence(t_0_seq, 0, t_0_seq.n)));                                    \
+  psfile << "%start of base pair probability data\n";                          \
+  unsigned int n = t_0_seq.n;                                                  \
+  for (unsigned int t_0_i = t_0_left_most; t_0_i <= t_0_right_most; ++t_0_i) { \
+    for (unsigned int t_0_j = t_0_i; (t_0_j <= t_0_right_most); ++t_0_j) {     \
+      double prob = 0.0;                                                       \
+      if (nt_weak(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() &&  \
+          nt_outside_weak(t_0_i, t_0_j) !=                                     \
+              std::numeric_limits<double>::infinity()) {                       \
+        prob += nt_weak(t_0_i, t_0_j) * nt_outside_weak(t_0_i, t_0_j);         \
+      }                                                                        \
+      if (!gapc::Opts::getOpts()->allowLonelyBasepairs) {                      \
+        if (nt_strong(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() \
+            && nt_outside_strong(t_0_i, t_0_j) !=                              \
+                std::numeric_limits<double>::infinity()) {                     \
+          prob += nt_strong(t_0_i, t_0_j) * nt_outside_strong(t_0_i, t_0_j);   \
+        }                                                                      \
+      }                                                                        \
+      prob = sqrt(prob / nt_struct(0, t_0_seq.n));                             \
+      if (prob >= sqrt(lowProbabilityFilter())) {                              \
+        psfile << (t_0_i + 1) << " " << t_0_j << " " << prob << " ubox\n";     \
+      }                                                                        \
+    }                                                                          \
+  }                                                                            \
+  psfile << "showpage\n";                                                      \
+  psfile << "end\n";                                                           \
+  psfile << "%%EOF\n";                                                         \
+  psfile.close();                                                              \
+  std::cout << "wrote Post-Script dot-plot to '" << getDotplotFilename()       \
+            << "'\n";                                                          \
+  std::cout << "Answer: \n";                                                   \
+  print_result(std::cout, nt_struct(0, t_0_seq.n));                            \
 }
 
 // for MEA structure prediction: we collect the structure with the highest BP
 // prob sum, thus we need to store these probabilities in "bpprobs"
-#define STOREPROBS                                                                \
-void storeprobs() {                                                               \
-  unsigned int n = t_0_seq.n + 1;                                                 \
-  bpprobs = reinterpret_cast<double**>(malloc(sizeof(double *) * n));             \
-  for (unsigned int t_0_i = t_0_left_most; (t_0_i <= t_0_right_most); ++t_0_i) {  \
-    bpprobs[t_0_i] = reinterpret_cast<double*>(malloc(sizeof(double) * n));       \
-    for (unsigned int t_0_j = t_0_i; (t_0_j <= t_0_right_most); ++t_0_j) {        \
-      bpprobs[t_0_i][t_0_j] = 0;                                                  \
-    }                                                                             \
-  }                                                                               \
-  for (unsigned int t_0_i = t_0_left_most; (t_0_i <= t_0_right_most); ++t_0_i) {  \
-    for (unsigned int t_0_j = t_0_i; (t_0_j <= t_0_right_most); ++t_0_j) {        \
-      double prob = 0.0;                                                          \
-      if (nt_weak(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() &&     \
-          nt_outside_weak(t_0_i, t_0_j) !=                                        \
-              std::numeric_limits<double>::infinity()) {                          \
-        prob += nt_weak(t_0_i, t_0_j) * nt_outside_weak(t_0_i, t_0_j);            \
-      }                                                                           \
-      if (!gapc::Opts::getOpts()->allowLonelyBasepairs) {                         \
-        if (nt_strong(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() && \
-            nt_outside_strong(t_0_i, t_0_j) !=                                    \
-                std::numeric_limits<double>::infinity()) {                        \
-          prob += nt_strong(t_0_i, t_0_j) * nt_outside_strong(t_0_i, t_0_j);      \
-        }                                                                         \
-      }                                                                           \
-      prob /= nt_struct(0, t_0_seq.n);                                            \
-      bpprobs[t_0_i][t_0_j] = prob;                                               \
-    }                                                                             \
-  }                                                                               \
+#define STOREPROBS                                                             \
+void storeprobs() {                                                            \
+  unsigned int n = t_0_seq.n + 1;                                              \
+  bpprobs = reinterpret_cast<double**>(malloc(sizeof(double *) * n));          \
+  for (unsigned int t_0_i = t_0_left_most; t_0_i <= t_0_right_most; ++t_0_i) { \
+    bpprobs[t_0_i] = reinterpret_cast<double*>(malloc(sizeof(double) * n));    \
+    for (unsigned int t_0_j = t_0_i; (t_0_j <= t_0_right_most); ++t_0_j) {     \
+      bpprobs[t_0_i][t_0_j] = 0;                                               \
+    }                                                                          \
+  }                                                                            \
+  for (unsigned int t_0_i = t_0_left_most; t_0_i <= t_0_right_most; ++t_0_i) { \
+    for (unsigned int t_0_j = t_0_i; (t_0_j <= t_0_right_most); ++t_0_j) {     \
+      double prob = 0.0;                                                       \
+      if (nt_weak(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() &&  \
+          nt_outside_weak(t_0_i, t_0_j) !=                                     \
+              std::numeric_limits<double>::infinity()) {                       \
+        prob += nt_weak(t_0_i, t_0_j) * nt_outside_weak(t_0_i, t_0_j);         \
+      }                                                                        \
+      if (!gapc::Opts::getOpts()->allowLonelyBasepairs) {                      \
+        if (nt_strong(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() \
+           && nt_outside_strong(t_0_i, t_0_j) !=                               \
+                std::numeric_limits<double>::infinity()) {                     \
+          prob += nt_strong(t_0_i, t_0_j) * nt_outside_strong(t_0_i, t_0_j);   \
+        }                                                                      \
+      }                                                                        \
+      prob /= nt_struct(0, t_0_seq.n);                                         \
+      bpprobs[t_0_i][t_0_j] = prob;                                            \
+    }                                                                          \
+  }                                                                            \
 }
 
 #endif
