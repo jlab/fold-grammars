@@ -2,10 +2,8 @@ name: build
 
 on:
   push:
-    branches:
-      - master
     tags:
-      - 'v*.*.*'
+      - '*'
 
 jobs:
   build:
@@ -34,9 +32,24 @@ jobs:
           arch: 'amd64'
           depends: 'libc6 (>= 2.2.1), git'
           desc: 'this is sample package.'
-          
-      - name: Commit build artefacts
-        uses: mutoco/commit-build-artefacts-action@0.5.1
+      - name: release
+        uses: actions/create-release@v1
+        id: create_release
         with:
-          # Source folder, defaults to ./build
-          source: ./
+          draft: false
+          prerelease: false
+          release_name: v0.0.1
+          tag_name: ${{ github.ref }}
+          body_path: samplescript_0.0.1_amd64.deb
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: upload artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./samplescript_0.0.1_amd64.deb
+          asset_name: 'Sample Script Deb Package'
+          asset_content_type: application/vnd.debian.binary-package
+
