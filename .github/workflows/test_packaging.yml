@@ -41,6 +41,9 @@ jobs:
         id: create_release
         with:
           tag: refs/tags/v0.0.1
+          allowUpdates: true
+          draft: true
+          prerelease: true
           bodyFile: ${{ steps.build_deb.outputs.DEB_FILE }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
