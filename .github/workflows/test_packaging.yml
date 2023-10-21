@@ -44,6 +44,7 @@ jobs:
           prerelease: false
           release_name: ${{ github.ref }}
           tag_name: ${{ github.ref }}
+          body_path: ${{ steps.build_deb.outputs.DEB_FILE }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
         continue-on-error: true
