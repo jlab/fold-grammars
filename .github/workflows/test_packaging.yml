@@ -44,8 +44,8 @@ jobs:
           allowUpdates: true
           draft: true
           prerelease: true
-          artifacts: ${{ steps.build_deb.outputs.DEB_FILE }}
-          bodyFile: ${{ steps.build_deb.outputs.DEB_FILE }}
+          artifacts: ${{ steps.build_deb.outputs.file_name }}
+          bodyFile: ${{ steps.build_deb.outputs.file_name }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
         continue-on-error: true
@@ -54,6 +54,6 @@ jobs:
         # if: startsWith(github.ref, 'refs/tags/')
         with:
           tag_name: v0.0.1
-          files: ${{ steps.build_deb.outputs.DEB_FILE }}
+          files: ${{ steps.build_deb.outputs.file_name }}
           # upload_url: ${{ steps.create_release.outputs.upload_url }}
 
