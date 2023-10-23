@@ -44,6 +44,7 @@ jobs:
           allowUpdates: true
           draft: true
           prerelease: true
+          artifacts: ${{ steps.build_deb.outputs.DEB_FILE }}
           bodyFile: ${{ steps.build_deb.outputs.DEB_FILE }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
