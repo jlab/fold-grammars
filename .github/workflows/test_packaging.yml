@@ -52,6 +52,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         # if: startsWith(github.ref, 'refs/tags/')
         with:
+          tag: v0.0.1
           files: ${{ steps.build_deb.outputs.DEB_FILE }}
           upload_url: ${{ steps.create_release.outputs.upload_url }}
 
