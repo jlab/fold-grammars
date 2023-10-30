@@ -12,16 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        task: [ acms, shapes, pkiss, palikiss,  rapid-shapes, alishapes, knotinframe, cofold, hybrid ]
-        app: [ aCMs, RNAShapes, pKiss, pAliKiss,  RapidShapes, RNAalishapes, Knotinframe, RNAcofold, RNAhybrid ]
+        task: [ [acms, aCMs], [shapes, RNAShapes], [pkiss, pKiss], [palikiss, pAliKiss],  [rapid-shapes, RapidShapes] , [alishapes, RNAalishapes],  [knotinframe, Knotinframe], [cofold, RNAcofold], [hybrid, RNAhybrid] ]
     steps:
       - uses: actions/checkout@v4
       - name: Create Tree
         run: |
-          make build-${{ matrix.task }} &&
-          cd ${{ github.workspace }}/Misc/Applications/${{ matrix.app }}
+          make build-${{ matrix.task[0] }} &&
+          cd ${{ github.workspace }}/Misc/Applications/${{ matrix.task[1] }}
           mkdir -p .debpkg/usr/bin/
-          cp ${{ matrix.app }} .debpkg/usr/bin
+          cp ${{ matrix.task[1] }} .debpkg/usr/bin
           cp x86_64-linux-gnu/* .debpkg/usr/bin
       - uses: jiro4989/build-deb-action@v3
         id: build_deb
