@@ -33,7 +33,7 @@ jobs:
           make build-${{ matrix.task[0] }} &&
           cd ${{ github.workspace }}/Misc/Applications/${{ matrix.task[1] }}
           mkdir -p .debpkg/usr/bin/
-          if [ -e ${{ matrix.task[1] }}]; then
+          if [ -e ${{ matrix.task[1] }} ]; then
             cp ${{ matrix.task[1] }} .debpkg/usr/bin
           fi
           cp x86_64-linux-gnu/* .debpkg/usr/bin
