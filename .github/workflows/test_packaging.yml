@@ -28,9 +28,10 @@ jobs:
       - name: make install
         run: cd $GITHUB_WORKSPACE/../gapc && sudo make install
 
-      - name: Create Tree
+      - name: Make each Application
+        run: make build-${{ matrix.task[0] }} 
+      - name: Package each Application
         run: |
-          make build-${{ matrix.task[0] }} &&
           cd ${{ github.workspace }}/Misc/Applications/${{ matrix.task[1] }}
           mkdir -p .debpkg/usr/bin/
           if [ -e ${{ matrix.task[1] }} ]; then
