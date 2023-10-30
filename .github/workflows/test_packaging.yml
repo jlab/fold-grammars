@@ -28,9 +28,9 @@ jobs:
       - name: make install
         run: cd $GITHUB_WORKSPACE/../gapc && sudo make install
 
-      - name: Make each Application
+      - name: Make Application
         run: make build-${{ matrix.task[0] }} 
-      - name: Package each Application
+      - name: Package Application
         run: |
           cd ${{ github.workspace }}/Misc/Applications/${{ matrix.task[1] }}
           mkdir -p .debpkg/usr/bin/
@@ -43,7 +43,7 @@ jobs:
         id: build_deb
         with:
           package: ${{ matrix.task[1] }}
-          package_root: .debpkg
+          package_root: ${{ github.workspace }}/Misc/Applications/${{ matrix.task[1] }}/.debpkg
           maintainer: To Be Determined
           version: v0.0.1 # refs/tags/v*.*.*
           arch: 'amd64'
