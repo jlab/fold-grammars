@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        task: [ [acms, aCMs], [shapes, RNAShapes], [pkiss, pKiss], [palikiss, pAliKiss],  [rapidshapes, RapidShapes] , [alishapes, RNAalishapes],  [knotinframe, Knotinframe], [cofold, RNAcofold], [hybrid, RNAhybrid] ]
+        task: [ [acms, aCMs], [shapes, RNAShapes], [pkiss, pKiss], [palikiss, pAliKiss],  [rapidshapes, RapidShapes] , [alishapes, RNAalishapes],  [knotin, Knotinframe], [cofold, RNAcofold], [hybrid, RNAhybrid] ]
     steps:
       - uses: actions/checkout@v4
       - name: update apt
