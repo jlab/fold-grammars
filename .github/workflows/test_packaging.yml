@@ -58,6 +58,7 @@ jobs:
           draft: true
           prerelease: true
           artifacts: ${{ steps.build_deb.outputs.file_name }}
+          replacesArtifacts: false
           #body: This is the Body of the Release, how shall we dynamically set this? 
         env:
           GITHUB_TOKEN: ${{ github.token }}
