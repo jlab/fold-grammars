@@ -10,30 +10,28 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        task: [default, shapes, pkiss, alishapes, palikiss, knotinframe]
+        app: [ aCMs, Knotinframe, Locomotif_wrapper, pAliKiss, pKiss, RapidShapes, RNAalishapes, RNAcofold, RNAhybrid, RNAShapes ]
     steps:
       - uses: actions/checkout@v4
-      - name: create sample script
-        id: create_script
+      - name: Create Tree
         run: |
-          mkdir -p .debpkg/usr/bin
-          mkdir -p .debpkg/usr/lib/samplescript
-          echo -e "echo sample" > .debpkg/usr/bin/samplescript
-          chmod +x .debpkg/usr/bin/samplescript
-          echo -e "a=1" > .debpkg/usr/lib/samplescript/samplescript.conf
-
-          # create DEBIAN directory if you want to add other pre/post scripts
-          mkdir -p .debpkg/DEBIAN
-          echo -e "echo postinst" > .debpkg/DEBIAN/postinst
-          chmod +x .debpkg/DEBIAN/postinst
+          make build-${{ matrix.app }} &&
+          cd ${{ github.workspace }}/Misc/Applications/${{ matrix.task }}
+          mkdir -p .debpkg/usr/bin/
+          cp ${{ matrix.app }} .debpkg/usr/bin
+          cp x86_64-linux-gnu/* .debpkg/usr/bin
       - uses: jiro4989/build-deb-action@v3
         id: build_deb
         with:
-          package: samplescript
+          package: ${{ matrix.task }}
           package_root: .debpkg
-          maintainer: your_name
+          maintainer: To Be Determined
           version: v0.0.1 # refs/tags/v*.*.*
           arch: 'amd64'
-          depends: 'libc6 (>= 2.2.1), git'
+          depends: 'bellmansgapc (>= 2023.07.05), git, perl'
           desc: 'this is sample package.'
       - name: Create Release
         uses: ncipollo/release-action@v1.13.0
@@ -54,4 +52,5 @@ jobs:
         with:
           tag_name: v0.0.1
           files: ${{ steps.build_deb.outputs.file_name }}
+          # upload_url: ${{ steps.create_release.outputs.upload_url }}
 
