@@ -47,7 +47,7 @@ jobs:
           maintainer: To Be Determined
           version: v0.0.1 # refs/tags/v*.*.*
           arch: 'amd64'
-          depends: 'bellmansgapc (>= 2023.07.05), git, perl'
+          depends: 'bellmansgapc (>= 2023), git, perl'
           desc: 'this is sample package.'
       - name: Create Release
         uses: ncipollo/release-action@v1.13.0
