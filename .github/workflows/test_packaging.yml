@@ -2,8 +2,6 @@ name: build
 
 on:
   push:
-    branches:
-      - master
     tags:
       - '*'
 
@@ -45,7 +43,7 @@ jobs:
           package: ${{ matrix.task[1] }}
           package_root: ${{ github.workspace }}/Misc/Applications/${{ matrix.task[1] }}/.debpkg
           maintainer: To Be Determined
-          version: v0.0.1 # refs/tags/v*.*.*
+          version: ${{  github.ref_name }}
           arch: 'amd64'
           depends: 'bellmansgapc (>= 2023), git, perl'
           desc: 'this is sample package.'
@@ -53,7 +51,7 @@ jobs:
         uses: ncipollo/release-action@v1.13.0
         id: create_release
         with:
-          tag: v0.0.1
+          tag: ${{  github.ref_name }}
           allowUpdates: true
           draft: true
           prerelease: true
