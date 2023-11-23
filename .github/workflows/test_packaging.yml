@@ -27,15 +27,17 @@ jobs:
         run: cd $GITHUB_WORKSPACE/../gapc && sudo make install
 
       - name: Make Application
-        run: make build-${{ matrix.task[0] }} 
+        run: make build-${{ matrix.task[0] }}
       - name: Package Application
         run: |
           cd ${{ github.workspace }}/Misc/Applications/${{ matrix.task[1] }}
-          mkdir -p .debpkg/usr/bin/
+          mkdir -p .debpkg/usr/{bin,lib}/
           if [ -e ${{ matrix.task[1] }} ]; then
             cp ${{ matrix.task[1] }} .debpkg/usr/bin
           fi
           cp x86_64-linux-gnu/* .debpkg/usr/bin
+          cp ../lib/foldGramars .debpkg/usr/lib
+          cp ../lib/addRNAoptions.pl .debpkg/usr/bin
           mkdir -p .debpkg/DEBIAN
       - uses: jiro4989/build-deb-action@v3
         id: build_deb
