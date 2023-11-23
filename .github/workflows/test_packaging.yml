@@ -36,8 +36,8 @@ jobs:
             cp ${{ matrix.task[1] }} .debpkg/usr/bin
           fi
           cp x86_64-linux-gnu/* .debpkg/usr/bin
-          cp ../lib/foldGrammars .debpkg/usr/lib
-          cp ../lib/addRNAoptions.pl .debpkg/usr/bin
+          cp -r ../lib/foldGrammars .debpkg/usr/lib
+          cp ../addRNAoptions.pl .debpkg/usr/bin
           mkdir -p .debpkg/DEBIAN
       - uses: jiro4989/build-deb-action@v3
         id: build_deb
