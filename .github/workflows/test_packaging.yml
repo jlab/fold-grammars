@@ -54,17 +54,21 @@ jobs:
           name: artifacts
           path: |
             ./*.deb
-      # - name: Create Release
-      #   uses: ncipollo/release-action@v1.13.0
-      #   id: create_release
-      #   with:
-      #     tag: ${{  github.ref_name }}
-      #     allowUpdates: true
-      #     draft: true
-      #     prerelease: true
-      #     artifacts: ${{ steps.build_deb.outputs.file_name }}
-      #     replacesArtifacts: false
-      #     #body: This is the Body of the Release, how shall we dynamically set this? 
-      #   env:
-      #     GITHUB_TOKEN: ${{ github.token }}
-      #   continue-on-error: true
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body_path: ./changelog
+          draft: false
+          prerelease: false
+          
+      - name: Write upload_url to file
+        run: echo '${{ steps.create-release.outputs.upload_url }}' > upload_url.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: create-release
+          path: upload_url.txt
