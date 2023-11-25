@@ -39,6 +39,7 @@ jobs:
           cp -r ../lib/foldGrammars .debpkg/usr/lib
           cp ../addRNAoptions.pl .debpkg/usr/bin
           mkdir -p .debpkg/DEBIAN
+
       - uses: jiro4989/build-deb-action@v3
         id: build_deb
         with:
@@ -49,11 +50,13 @@ jobs:
           arch: 'amd64'
           depends: 'perl'
           desc: 'This is the ${{ matrix.task[1] }} package of fold-grammars.'
+
       - uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: |
             ./*.deb
+            
       - name: Create Release
         id: create-release
         uses: actions/create-release@v1
@@ -61,14 +64,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body_path: ./changelog
+          release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-          
-      - name: Write upload_url to file
-        run: echo '${{ steps.create-release.outputs.upload_url }}' > upload_url.txt
-      - uses: actions/upload-artifact@v3
+
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: create-release
-          path: upload_url.txt
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./${{ steps.build_deb.outputs.file_name }}
+          asset_name: ${{ steps.build_deb.outputs.file_name }}
+          asset_content_type: application/vnd.debian.binary-package
