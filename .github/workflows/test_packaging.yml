@@ -3,7 +3,7 @@ name: build
 on:
   push:
     tags:
-      - '*'
+      - "v*"
 
 jobs:
   release:
@@ -27,7 +27,18 @@ jobs:
     needs: release
     strategy:
       matrix:
-        task: [ [acms, aCMs], [shapes, RNAshapes], [pkiss, pKiss], [palikiss, pAliKiss],  [rapidshapes, RapidShapes] , [alishapes, RNAalishapes],  [knotin, Knotinframe], [cofold, RNAcofold], [hybrid, RNAhybrid] ]
+        task:
+          [
+            [acms, aCMs],
+            [shapes, RNAshapes],
+            [pkiss, pKiss],
+            [palikiss, pAliKiss],
+            [rapidshapes, RapidShapes],
+            [alishapes, RNAalishapes],
+            [knotin, Knotinframe],
+            [cofold, RNAcofold],
+            [hybrid, RNAhybrid],
+          ]
     steps:
       - uses: actions/checkout@v4
       - name: update apt
@@ -42,7 +53,7 @@ jobs:
         run: cd $GITHUB_WORKSPACE/../gapc && make -j 2
       - name: make install
         run: cd $GITHUB_WORKSPACE/../gapc && sudo make install
-      
+
       - name: Make Application
         run: make build-${{ matrix.task[0] }}
       - name: Package Application
@@ -64,13 +75,12 @@ jobs:
           package_root: ${{ github.workspace }}/Misc/Applications/${{ matrix.task[1] }}/.debpkg
           maintainer: To Be Determined
           version: ${{  github.ref_name }}
-          arch: 'amd64'
-          depends: 'perl'
-          desc: 'This is the ${{ matrix.task[1] }} package of fold-grammars.'
-
+          arch: "amd64"
+          depends: "perl"
+          desc: "This is the ${{ matrix.task[1] }} package of fold-grammars."
 
       - name: Upload Release Asset
-        id: upload-release-asset 
+        id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
