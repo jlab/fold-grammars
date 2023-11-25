@@ -47,19 +47,24 @@ jobs:
           maintainer: To Be Determined
           version: ${{  github.ref_name }}
           arch: 'amd64'
-          depends: 'bellmansgapc (>= 2023), git, perl'
-          desc: 'this is sample package.'
-      - name: Create Release
-        uses: ncipollo/release-action@v1.13.0
-        id: create_release
+          depends: 'perl'
+          desc: 'This is the ${{ matrix.task[1] }} package of fold-grammars.'
+      - uses: actions/upload-artifact@v3
         with:
-          tag: ${{  github.ref_name }}
-          allowUpdates: true
-          draft: true
-          prerelease: true
-          artifacts: ${{ steps.build_deb.outputs.file_name }}
-          replacesArtifacts: false
-          #body: This is the Body of the Release, how shall we dynamically set this? 
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        continue-on-error: true
+          name: artifacts
+          path: |
+            ./*.deb
+      # - name: Create Release
+      #   uses: ncipollo/release-action@v1.13.0
+      #   id: create_release
+      #   with:
+      #     tag: ${{  github.ref_name }}
+      #     allowUpdates: true
+      #     draft: true
+      #     prerelease: true
+      #     artifacts: ${{ steps.build_deb.outputs.file_name }}
+      #     replacesArtifacts: false
+      #     #body: This is the Body of the Release, how shall we dynamically set this? 
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
+      #   continue-on-error: true
