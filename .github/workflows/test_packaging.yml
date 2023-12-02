@@ -41,7 +41,7 @@ jobs:
           ]
     steps:
       - name: Add PPA
-        run: sudo add-apt-repository ppa:~janssenlab/bellmansgapc
+        run: sudo add-apt-repository ppa:janssenlab/software
       - name: update apt
         run: sudo apt-get update
       - name: Install dependencies
