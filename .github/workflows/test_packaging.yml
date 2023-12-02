@@ -40,7 +40,7 @@ jobs:
             [hybrid, RNAhybrid],
           ]
     steps:
-      - uses: actions/checkoutv4
+      - uses: actions/checkout@v4
       - name: Add PPA
         run: sudo add-apt-repository ppa:janssenlab/software
       - name: Install dependencies
