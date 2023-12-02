@@ -63,7 +63,7 @@ jobs:
           echo "${{ matrix.task[0] }} ${{ github.ref_name }} distributions; metadata"
           git log `git tag --sort=-v:refname | head -2`..`git tag --sort=-v:refname | head -1` --pretty="* %s"
           echo "-- maintainer <email> $(date +'%A, %d %B %G %R:%S +%Z')"
-          } >> changelog
+          } >> .debpkg/DEBIAN/changelog
       - uses: jiro4989/build-deb-action@v3
         id: build_deb
         with:
