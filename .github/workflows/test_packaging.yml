@@ -7,6 +7,7 @@ on:
 
 jobs:
   upload:
+  steps:
     - name: Release
       needs: build 
       uses: softprops/action-gh-release@v1
