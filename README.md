@@ -4,3 +4,4 @@
 Collection of bgap code for RNA folding
 
 For rudimentary documentation, consult https://bibiserv.cebitec.uni-bielefeld.de/fold-grammars/
+
