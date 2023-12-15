@@ -204,7 +204,6 @@ sub doComputation {
 	}
 	my $seq = $refHash_sequence->{sequence};
 	$seq =~ s/t/u/gi;
-	$seq = $seq.'+'.$seq if ($settings->{mode} eq $Settings::MODE_OUTSIDE);
 	
 	my %pfAll = ();
 	if ($settings->{'structureprobabilities'}) {

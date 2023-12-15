@@ -115,9 +115,9 @@ compile_instance:
 compile_mea:
 	if [ ! -f "$(ARCHTRIPLE)/$(PROGRAMPREFIX)$(gapc_binaryname)" ]; then \
 		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product1)" $(gapc_options1) $(PWD)/$(BASEDIR)/$(gapc_file1) -o bppm.cc; \
+		cd $(TMPDIR) && $(SED) -i 's|void cyk();|STOREPROBS;\n  void cyk();|' bppm.hh; \
 		cd $(TMPDIR) && $(SED) -i "s/namespace gapc {/namespace outside_gapc {/" bppm.hh; \
-		cd $(TMPDIR) && $(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.hh; \
-		cd $(TMPDIR) && $(SED) -i 's|#include .rtlib/generic_opts.hh.|#include "Extensions/rnaoptions.hh"|' bppm.cc; \
+		cd $(TMPDIR) && $(SED) -i "s/^#define OUTSIDE//" bppm.hh; \
 		cd $(TMPDIR) && $(GAPC) -I $(PWD)/$(BASEDIR) -p "$(gapc_product2)" $(gapc_options2) $(PWD)/$(BASEDIR)/$(gapc_file2); \
 		$(PERL) $(PWD)/$(BASEDIR)/$(RNAOPTIONSPERLSCRIPT) $(TMPDIR)/out.mf 2 '$(gapc_binaryname)' '$(gapc_product)'; \
 		cd $(TMPDIR) && $(MAKE) -f out.mf bppm.o CPPFLAGS_EXTRA="-I $(PWD)/$(BASEDIR) -I ./" CXXFLAGS_EXTRA="$(CXXFLAGS_EXTRA)" $(FASTLIBRNA) LDFLAGS_EXTRA="$(EXTRARUNTIMEPATHS)"; \

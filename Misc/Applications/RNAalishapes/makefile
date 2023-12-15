@@ -9,11 +9,11 @@ all:
 	$(MAKE) all_window
 
 all_normal: mfe subopt shapes probs sample eval outside mea pfall helper_consensus helper_sci
-	
+
 all_window: windowmodeflag = --window-mode
 all_window: current_windowmodesuffix = $(WINDOWSUFFIX)
 all_window: mfe subopt shapes probs sample mea pfall
-	
+
 install: install-lib install-program
 
 install-program:
@@ -78,12 +78,13 @@ outside_%:
 		continue; \
 	else \
 		$(MAKE) compile \
-			gapc_product="alg_ali_outside_pfunc" \
-			gapc_options="$(windowmodeflag)" \
-			gapc_file="ali_outside_${*}.gap" \
-			gapc_binaryname="$@"; \
+			gapc_product="alg_ali_pfunc" \
+			gapc_options="$(windowmodeflag) --outside_grammar ALL" \
+			gapc_file="ali_${*}.gap" \
+			gapc_binaryname="$@" \
+			isEval="3"; \
 	fi;
-	
+
 mea: mea_nodangle mea_overdangle mea_microstate
 mea_%:
 	if [ ${*} = "macrostate" ]; then \
@@ -91,11 +92,11 @@ mea_%:
 		continue; \
 	else \
 		$(MAKE) compile_mea \
-			gapc_product1="alg_ali_outside_bppm" \
+			gapc_product1="alg_ali_pfunc" \
 			gapc_product2="alg_ali_mea * (alg_ali_dotBracket * alg_ali_mfe * alg_ali_shapeX)" \
-			gapc_options1="$(windowmodeflag)" \
+			gapc_options1="--outside_grammar ALL $(windowmodeflag)" \
 			gapc_options2="--backtrace $(windowmodeflag)" \
-			gapc_file1="ali_outside_${*}.gap" \
+			gapc_file1="ali_${*}.gap" \
 			gapc_file2="ali_${*}.gap" \
 			gapc_binaryname="$@$(current_windowmodesuffix)"; \
 	fi;

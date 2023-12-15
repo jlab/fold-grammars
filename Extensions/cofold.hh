@@ -75,4 +75,32 @@ inline Rope inner(const rope::Ref<X> &str) {
   return res;
 }
 
+template <typename T>
+inline bool containsBase(const Basic_Sequence<> &seq, T i, T j, base_t x) {
+  if (j < i) return false;
+
+  for (T k = i; k < j; k++) {
+    if (seq[k] == x) return true;
+  }
+
+  return false;
+}
+
+template <typename T>
+inline bool containsBase(const Basic_Sequence<M_Char, T> &seq, T i, T j,
+                         base_t x) {
+  if (j < i) return false;
+  for (unsigned int k = i; k < j; k++) {
+    bool rowEqualsX = true;
+    for (T l = 0; l < seq.rows(); l++) {
+      if (seq.row(l)[k] != x) {
+        rowEqualsX = false;
+        break;
+      }
+    }
+    return rowEqualsX;
+  }
+  return false;
+}
+
 #endif

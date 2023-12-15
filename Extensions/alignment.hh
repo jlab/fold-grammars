@@ -1352,6 +1352,13 @@ struct TA {
   }
 };
 
+// a covariance score for a single alignment row is always 1.0. Needed for
+// automatically generated algebras like count or enum.
+inline float covscore(const Basic_Subsequence<char, unsigned> &seq, int a,
+                      int b) {
+  return 1.0;
+}
+
 inline float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a,
                       int b) {
   typedef Table::Quadratic<float, Table::CYK> table_t;
@@ -1514,15 +1521,11 @@ inline const std::string getRepresentation(
   std::ostringstream result;
 
   Rope consensus;
-  unsigned int n = (input.seq->n - 1) / 2;
-  Basic_Subsequence<M_Char, unsigned> helper = input;
-  helper.i = 0;
-  helper.j = n;
   if (getConsensusType() == 0) {
-    append_consensus(consensus, helper);
+    append_consensus(consensus, input);
   }
   if (getConsensusType() == 1) {
-    append_mis(consensus, helper);
+    append_mis(consensus, input);
   }
 
   result << consensus;

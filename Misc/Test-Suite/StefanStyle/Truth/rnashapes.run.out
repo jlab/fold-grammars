@@ -3713,7 +3713,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 3 21 0.00109998 ubox
 3 23 0.18711 ubox
 3 24 0.0118973 ubox
-3 27 0.0422739 ubox
+3 27 0.0422755 ubox
 3 30 0.544528 ubox
 3 31 0.11159 ubox
 3 32 0.00309488 ubox
@@ -3722,112 +3722,129 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 3 49 0.00315457 ubox
 4 20 0.00109998 ubox
 4 22 0.0394538 ubox
-4 26 0.0422739 ubox
+4 26 0.0422755 ubox
 4 29 0.542718 ubox
 4 35 0.00106624 ubox
 4 43 0.00321633 ubox
 4 44 0.00186513 ubox
 4 47 0.794583 ubox
 5 20 0.024961 ubox
-5 22 0.183608 ubox
-5 26 0.594393 ubox
+5 22 0.183603 ubox
+5 26 0.593215 ubox
 5 42 0.00333387 ubox
 5 43 0.00186513 ubox
 5 46 0.761812 ubox
 6 19 0.024961 ubox
-6 21 0.183608 ubox
-6 24 0.0665836 ubox
-6 25 0.725587 ubox
+6 21 0.183603 ubox
+6 24 0.0673217 ubox
+6 25 0.713418 ubox
 6 41 0.0028015 ubox
-7 23 0.0665836 ubox
-7 24 0.745123 ubox
-8 17 0.0249253 ubox
-8 19 0.184564 ubox
-8 21 0.0797535 ubox
-8 23 0.745153 ubox
-9 16 0.0249253 ubox
-9 18 0.184573 ubox
-9 20 0.0798006 ubox
-9 22 0.74516 ubox
+7 23 0.0673217 ubox
+7 24 0.9569 ubox
+7 25 0.00291498 ubox
+8 17 0.0249266 ubox
+8 19 0.18856 ubox
+8 21 0.216607 ubox
+8 23 0.957501 ubox
+8 24 0.00291498 ubox
+8 27 0.00207153 ubox
+9 16 0.0249266 ubox
+9 18 0.18857 ubox
+9 20 0.216712 ubox
+9 22 0.957511 ubox
+9 26 0.00209104 ubox
 9 42 0.00241027 ubox
-10 17 0.184573 ubox
-10 19 0.0799203 ubox
-10 21 0.745148 ubox
+10 17 0.188571 ubox
+10 19 0.216786 ubox
+10 21 0.957495 ubox
+10 25 0.00206791 ubox
 10 41 0.00241027 ubox
-11 16 0.184537 ubox
-11 18 0.0799395 ubox
-11 20 0.74515 ubox
-12 17 0.0797902 ubox
-12 19 0.74433 ubox
+11 16 0.188534 ubox
+11 18 0.216799 ubox
+11 20 0.957499 ubox
+12 17 0.216394 ubox
+12 19 0.956445 ubox
+12 24 0.00227891 ubox
 12 40 0.00234029 ubox
-13 19 0.0203473 ubox
+13 19 0.0261463 ubox
+13 23 0.00228103 ubox
 13 39 0.00238645 ubox
-14 18 0.0203473 ubox
+14 18 0.0261463 ubox
+14 22 0.00228266 ubox
 14 38 0.00238631 ubox
+15 21 0.00228049 ubox
 15 37 0.00238621 ubox
 16 36 0.00238671 ubox
 17 35 0.00238631 ubox
-20 30 0.00173367 ubox
-21 29 0.00173367 ubox
-22 30 0.00142192 ubox
-22 48 0.00229767 ubox
-23 29 0.00142192 ubox
-23 43 0.0231362 ubox
-23 44 0.0276571 ubox
-23 47 0.00235013 ubox
-24 42 0.0231362 ubox
-24 43 0.0277295 ubox
-24 44 0.00117235 ubox
-24 46 0.00235164 ubox
-25 42 0.026233 ubox
-25 43 0.00117235 ubox
-25 45 0.00174834 ubox
-26 39 0.0909188 ubox
-26 41 0.013861 ubox
+20 27 0.00134734 ubox
+20 30 0.00176634 ubox
+21 26 0.00134734 ubox
+21 29 0.00176634 ubox
+21 42 0.00372835 ubox
+22 30 0.00182615 ubox
+22 41 0.00372835 ubox
+22 48 0.0022977 ubox
+23 29 0.00182615 ubox
+23 43 0.146224 ubox
+23 44 0.140852 ubox
+23 47 0.00235031 ubox
+24 42 0.146224 ubox
+24 43 0.14141 ubox
+24 44 0.0059068 ubox
+24 46 0.00235136 ubox
+25 34 0.00110155 ubox
+25 42 0.133797 ubox
+25 43 0.0059068 ubox
+25 45 0.00174785 ubox
+26 33 0.0010991 ubox
+26 36 0.00130674 ubox
+26 39 0.35105 ubox
+26 41 0.0706927 ubox
 26 48 0.125618 ubox
-27 38 0.0917174 ubox
+27 35 0.00130674 ubox
+27 38 0.355207 ubox
 27 47 0.125618 ubox
-28 37 0.0918572 ubox
-28 40 0.00871143 ubox
+28 37 0.355896 ubox
+28 40 0.0441959 ubox
 28 49 0.0768583 ubox
-29 36 0.0918641 ubox
-29 39 0.00880422 ubox
-29 48 0.0829048 ubox
-30 35 0.0870354 ubox
-30 38 0.008552 ubox
-30 44 0.0129148 ubox
-30 45 0.480695 ubox
-30 47 0.0709936 ubox
-31 43 0.015075 ubox
-31 44 0.524933 ubox
-31 46 0.0504927 ubox
-31 47 0.00227679 ubox
-32 42 0.0150719 ubox
-32 43 0.525303 ubox
-32 44 0.0477499 ubox
-32 46 0.00227679 ubox
-32 47 0.00344833 ubox
-33 42 0.52527 ubox
-33 43 0.0477499 ubox
-33 46 0.00344833 ubox
-34 40 0.216237 ubox
+29 36 0.355922 ubox
+29 39 0.0446295 ubox
+29 48 0.0829049 ubox
+30 35 0.337213 ubox
+30 38 0.0433489 ubox
+30 44 0.0222523 ubox
+30 45 0.661359 ubox
+30 47 0.0709937 ubox
+31 43 0.0278861 ubox
+31 44 0.747033 ubox
+31 46 0.0504928 ubox
+31 47 0.00227697 ubox
+32 42 0.0278811 ubox
+32 43 0.747545 ubox
+32 44 0.0479361 ubox
+32 46 0.00227697 ubox
+32 47 0.00344954 ubox
+33 42 0.747499 ubox
+33 43 0.0479361 ubox
+33 46 0.00344954 ubox
+34 40 0.307951 ubox
 34 49 0.474687 ubox
-35 39 0.216237 ubox
+35 39 0.307951 ubox
 35 48 0.555045 ubox
-36 43 0.0102682 ubox
-36 44 0.0111636 ubox
-36 46 0.0134042 ubox
+36 43 0.0104019 ubox
+36 44 0.011249 ubox
+36 46 0.0134041 ubox
 36 47 0.555037 ubox
-37 42 0.0102682 ubox
-37 43 0.0111636 ubox
-37 45 0.0134042 ubox
+37 42 0.0104019 ubox
+37 43 0.011249 ubox
+37 45 0.0134041 ubox
 37 46 0.552881 ubox
-39 46 0.0262983 ubox
-39 47 0.00558295 ubox
-40 45 0.0262983 ubox
-40 46 0.00558295 ubox
-40 47 0.0105624 ubox
-41 46 0.0105624 ubox
+39 46 0.0262976 ubox
+39 47 0.00558296 ubox
+40 45 0.0262976 ubox
+40 46 0.00558296 ubox
+40 47 0.0105626 ubox
+41 46 0.0105626 ubox
 42 49 0.0180797 ubox
 42 50 0.0142586 ubox
 43 48 0.0180797 ubox
@@ -3860,8 +3877,8 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 16 31 0.361483 ubox
 17 30 0.390695 ubox
 18 29 0.389389 ubox
-21 31 0.0331144 ubox
-22 30 0.0331094 ubox
+21 31 0.0331157 ubox
+22 30 0.0331107 ubox
 47 68 0.206126 ubox
 47 69 0.249203 ubox
 48 67 0.206126 ubox
@@ -4460,40 +4477,40 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=outside --allowLP=1 --grammar=microstate AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --bppmThreshold=0.1 --dotplot=dotPlot.ps --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --temperature=17
 3 16 0.979646 ubox
 4 15 0.986574 ubox
-5 14 0.992946 ubox
+5 14 0.992945 ubox
 6 13 0.999267 ubox
 7 12 0.985052 ubox
-22 44 0.981755 ubox
-23 43 0.999346 ubox
-24 42 0.999853 ubox
+22 44 0.981753 ubox
+23 43 0.999345 ubox
+24 42 0.999852 ubox
 25 41 0.999515 ubox
 26 40 0.999888 ubox
 27 39 0.999988 ubox
-28 38 0.99996 ubox
+28 38 0.999959 ubox
 29 37 0.999947 ubox
-30 36 0.978282 ubox
+30 36 0.978281 ubox
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=outside --allowLP=1 --grammar=microstate AAGGGCGUCGUCGCCCCGAGUCGUAGCAGUUGACUACUGUUAUGU --bppmThreshold=0.001 --dotplot=dotPlot.ps --param=BGAPDIR/share/gapc/librna/rna_turner1999.par --temperature=17
 3 16 0.979646 ubox
 3 17 0.198158 ubox
 4 15 0.986574 ubox
 4 16 0.163292 ubox
-5 14 0.992946 ubox
-5 15 0.118557 ubox
+5 14 0.992945 ubox
+5 15 0.118556 ubox
 6 13 0.999267 ubox
 7 12 0.985052 ubox
 7 14 0.0380227 ubox
 8 13 0.0349355 ubox
 20 45 0.203944 ubox
-22 44 0.981755 ubox
-23 43 0.999346 ubox
-24 42 0.999853 ubox
+22 44 0.981753 ubox
+23 43 0.999345 ubox
+24 42 0.999852 ubox
 25 41 0.999515 ubox
 26 40 0.999888 ubox
 27 39 0.999988 ubox
-28 38 0.99996 ubox
+28 38 0.999959 ubox
 29 37 0.999947 ubox
-30 36 0.978282 ubox
+30 36 0.978281 ubox
 31 36 0.0375318 ubox
 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=outside --allowLP=1 --grammar=microstate ACCCUACUGUGCUAACCGAACCAGAUAACGGUACAGUAGGGGUAAAUUCUCCGCAUUCGGUGCGGAAAA --bppmThreshold=1e-05 --dotplot=dotPlot.ps --param=BGAPDIR/share/gapc/librna/rna_turner2004.par --temperature=25.9
@@ -4518,13 +4535,14 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 10 35 0.00109136 ubox
 11 32 0.971922 ubox
 11 34 0.00161077 ubox
-12 24 0.00113876 ubox
+12 18 0.00143193 ubox
+12 24 0.00113883 ubox
 12 30 0.0115845 ubox
 12 31 0.963288 ubox
-13 18 0.0020341 ubox
-13 19 0.00267704 ubox
-13 20 0.00390034 ubox
-13 23 0.00194753 ubox
+13 18 0.00205183 ubox
+13 19 0.00268189 ubox
+13 20 0.00390071 ubox
+13 23 0.00194757 ubox
 13 24 0.00193882 ubox
 13 25 0.00338677 ubox
 13 27 0.0404913 ubox
@@ -4538,20 +4556,20 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 16 24 0.0851237 ubox
 16 30 0.0141318 ubox
 16 31 0.266881 ubox
-17 24 0.662834 ubox
+17 24 0.662835 ubox
 17 30 0.288558 ubox
 17 31 0.00114866 ubox
-18 22 0.0514005 ubox
+18 22 0.0514373 ubox
 18 26 0.0263746 ubox
 18 29 0.292435 ubox
 19 26 0.0760893 ubox
 20 26 0.0173802 ubox
-20 32 0.0220816 ubox
-21 30 0.0126692 ubox
-21 31 0.025342 ubox
-22 30 0.0273798 ubox
-24 29 0.03979 ubox
-26 30 0.0010942 ubox
+20 32 0.0221079 ubox
+21 30 0.0126694 ubox
+21 31 0.0253755 ubox
+22 30 0.0274108 ubox
+24 29 0.039839 ubox
+26 30 0.00119105 ubox
 42 47 0.00254696 ubox
 42 48 0.00459481 ubox
 42 49 0.0178492 ubox
@@ -4560,7 +4578,7 @@ No consensus shapes found. Try to increase energy range with --absoluteDeviation
 43 69 0.00202134 ubox
 44 48 0.00808044 ubox
 44 50 0.00135795 ubox
-45 50 0.00152845 ubox
+45 50 0.00152847 ubox
 47 66 0.00354224 ubox
 47 67 0.034073 ubox
 47 68 0.203058 ubox
@@ -4666,7 +4684,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=overdangle --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=unknown --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (2.983 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (2.976 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
 -16.20  13.7475000  ....((((((((......))))))))....  []
@@ -4713,7 +4731,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=microstate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=CMCT --normalization=centroid --slope=2.4
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (3.567 avg. iterations for 1000 alternative start points): unpaired = 1.07452, paired = 0.255027
+Cluster info (3.572 avg. iterations for 1000 alternative start points): unpaired = 1.07452, paired = 0.255027
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
 -16.20  10.4543000  ....((((((((......))))))))....  []
@@ -4738,7 +4756,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=microstate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU --intercept=-1.2 --modifier=SHAPE --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (2.983 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (2.976 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                  1  gGGCCGGGCGCGGUGGCGCGCGCCUGUAGU  30
 -16.20  13.7475000  ....((((((((......))))))))....  []
@@ -4779,7 +4797,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=macrostate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-0.6 --modifier=diffSHAPE --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (3.042 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (2.997 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
 -9.40  15.0687000  ..(((((....)))))..............  []
@@ -4796,7 +4814,7 @@ Cluster info (3.042 avg. iterations for 1000 alternative start points): unpaired
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=0 --grammar=macrostate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-0.6 --modifier=SHAPE --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (3.042 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (2.997 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
 -9.40  15.0687000  ..(((((....)))))..............  []
@@ -4813,7 +4831,7 @@ Cluster info (3.042 avg. iterations for 1000 alternative start points): unpaired
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=nodangle --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-1.2 --modifier=DMS --normalization=centroid --slope=2.4
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (2.88 avg. iterations for 1000 alternative start points): unpaired = 0.991433, paired = 0.227229
+Cluster info (2.819 avg. iterations for 1000 alternative start points): unpaired = 0.991433, paired = 0.227229
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
  0.00  12.4294000  ..............................  _
@@ -4835,7 +4853,7 @@ Cluster info (2.88 avg. iterations for 1000 alternative start points): unpaired 
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=nodangle --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-0.6 --modifier=diffSHAPE --normalization=centroid --slope=2.4
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (3.042 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (2.997 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
  0.00  18.5589000  ..............................  _
@@ -5035,7 +5053,7 @@ The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/M
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=microstate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape ACCCUACUGUGCUAACCGAACCAGAUAACG --intercept=-1.2 --modifier=SHAPE --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (3.008 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (3.002 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  ACCCUACUGUGCUAACCGAACCAGAUAACG  30
  0.00  18.5589000  ..............................  _
@@ -5059,7 +5077,7 @@ Cluster info (3.008 avg. iterations for 1000 alternative start points): unpaired
 #CMD: perl -I ../../Applications/lib/ x86_64-linux-gnu/RNAshapes  --binPath='x86_64-linux-gnu/x86_64-linux-gnu/'  --mode=probing --allowLP=1 --grammar=microstate --reactivityfilename=ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU --intercept=-0.6 --modifier=diffSHAPE --normalization=centroid --slope=1.8
 The following 1 warnings were raised when parsing the reactivity file 'ROOTDIR/Misc/Test-Suite/StefanStyle//cedric.shape':
   1) the file contains more reactivities than there are bases in your RNA input sequence. Exceeding reactivities will be ignored.
-Cluster info (3.008 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
+Cluster info (3.002 avg. iterations for 1000 alternative start points): unpaired = 1.00903, paired = 0.253127
 >unnamed sequence
                 1  AAGGGCGUCGUCGCCCCGAGUCGUAGCAGU  30
 -9.40  15.0687000  ..(((((....)))))..............  []

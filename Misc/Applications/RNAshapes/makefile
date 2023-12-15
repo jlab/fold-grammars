@@ -79,10 +79,11 @@ outside_%:
 		continue; \
 	else \
 		$(MAKE) compile \
-			gapc_product="alg_outside_pfunc" \
-			gapc_options="" \
-			gapc_file="outside_${*}.gap" \
-			gapc_binaryname="$@"; \
+			gapc_product="alg_pfunc" \
+			gapc_options="--outside_grammar ALL" \
+			gapc_file="${*}.gap" \
+			gapc_binaryname="$@" \
+			isEval="3"; \
 	fi;
 
 mea: mea_nodangle mea_overdangle mea_microstate
@@ -92,11 +93,11 @@ mea_%:
 		continue; \
 	else \
 		$(MAKE) compile_mea \
-			gapc_product1="alg_outside_bppm" \
+			gapc_product1="alg_pfunc" \
 			gapc_product2="alg_mea * (alg_dotBracket * alg_mfe * alg_shapeX)" \
-			gapc_options1="$(windowmodeflag)" \
+			gapc_options1="--outside_grammar ALL $(windowmodeflag)" \
 			gapc_options2="--backtrace $(windowmodeflag)" \
-			gapc_file1="outside_${*}.gap" \
+			gapc_file1="${*}.gap" \
 			gapc_file2="${*}.gap" \
 			gapc_binaryname="$@$(current_windowmodesuffix)"; \
 	fi;
