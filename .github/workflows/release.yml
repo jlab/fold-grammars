@@ -1,0 +1,66 @@
+name: build
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        task:
+          [
+            [acms, aCMs],
+            [shapes, RNAshapes],
+            [pkiss, pKiss],
+            [palikiss, pAliKiss],
+            [rapidshapes, RapidShapes],
+            [alishapes, RNAalishapes],
+            [knotin, Knotinframe],
+            [cofold, RNAcofold],
+            [hybrid, RNAhybrid],
+          ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add PPA
+        run: sudo add-apt-repository ppa:janssenlab/software
+      - name: Install dependencies
+        run: sudo apt-get install bellmansgapc
+
+      - name: Make Application
+        run: make build-${{ matrix.task[0] }}
+      - name: Package Application
+        run: |
+          cd ${{ github.workspace }}/Misc/Applications/${{ matrix.task[1] }}
+          mkdir -p .debpkg/usr/{bin,lib}/
+          if [ -e ${{ matrix.task[1] }} ]; then
+            cp ${{ matrix.task[1] }} .debpkg/usr/bin
+          fi
+          cp x86_64-linux-gnu/* .debpkg/usr/bin
+          cp -r ../lib/foldGrammars .debpkg/usr/lib
+          cp ../addRNAoptions.pl .debpkg/usr/bin
+          mkdir -p .debpkg/DEBIAN
+          {
+          echo "${{ matrix.task[0] }} ${{ github.ref_name }} distributions; metadata"
+          git log `git tag --sort=-v:refname | head -2`..`git tag --sort=-v:refname | head -1` --pretty="* %s"
+          echo "-- maintainer <email> $(date +'%A, %d %B %G %R:%S +%Z')"
+          } >> .debpkg/DEBIAN/changelog
+      - uses: jiro4989/build-deb-action@v3
+        id: build_deb
+        with:
+          package: ${{ matrix.task[1] }}
+          package_root: ${{ github.workspace }}/Misc/Applications/${{ matrix.task[1] }}/.debpkg
+          maintainer: To Be Determined
+          version: ${{  github.ref_name }}
+          arch: "amd64"
+          depends: "perl"
+          desc: "This is the ${{ matrix.task[1] }} package of fold-grammars."
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          files: ${{ steps.build_deb.outputs.file_name }}
