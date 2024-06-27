@@ -3,10 +3,13 @@ import rna
 import "Extensions/twotrack.hh"
 import "Extensions/mfesubopt.hh"
 import "Extensions/probing.hh"
+import "Extensions/probing.hh"
+import "Extensions/bpfilter.hh"
 
 input < rna, rna >
 type Rope = extern
 type pp = (int x, Rope topU, Rope topP, Rope botP, Rope botU)
+type ppS = (int pos, Rope targetUnpaired, Rope targetStacked, Rope pairs, Rope mirnaStacked, Rope mirnaUnpaired)
 type mfedebug = (int energy, Rope stack)
 
 signature sig_rnahybrid(alphabet, answer) {
@@ -21,6 +24,7 @@ signature sig_rnahybrid(alphabet, answer) {
   answer bb(<Subsequence, Subsequence>, <Subsequence, Subsequence>, answer);
   answer il(<Subsequence, Subsequence>, <Subsequence, Subsequence>, answer);
   answer el(<Subsequence, Subsequence>, <Subsequence, Subsequence>);
+  answer complete(answer);
   choice [answer] h([answer]);
 }
 
@@ -192,7 +196,251 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
 
     return res;
   }
+  pp complete(pp x) {
+    return x;
+  }
   choice [pp] h([pp] i) {
+    return i;
+  }
+}
+
+
+algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS) {
+  ppS nil(<Subsequence qregion, Subsequence tregion>) {
+    ppS res;
+    res.pos = 1;
+    res.targetUnpaired = Rope("");
+    res.targetStacked = Rope("");
+    res.mirnaStacked = Rope("");
+    res.mirnaUnpaired = Rope("");
+    res.pairs = Rope("");
+    return res;
+  }
+  ppS ult(<Subsequence qbase, Subsequence tloc>, ppS x) {
+    x.pos = x.pos + 1;
+    return x;
+  }
+  ppS ulb(<Subsequence qloc, Subsequence tbase>, ppS x) {
+    ppS res;
+    res.pos = 1;
+    append(res.targetUnpaired, ' ');
+    append(res.targetUnpaired, x.targetUnpaired);
+    append(res.targetStacked, ' ');
+    append(res.targetStacked, x.targetStacked);
+    append(res.mirnaStacked, ' ');
+    append(res.mirnaStacked, x.mirnaStacked);
+    append_deep_rna(res.mirnaUnpaired, tbase);
+    append(res.mirnaUnpaired, x.mirnaUnpaired);
+
+    res.pairs = x.pairs;
+    return res;
+  }
+  ppS eds(<Subsequence qbase, Subsequence tbase>, ppS x) {
+    ppS res;
+    res.pos = 1;
+    append_deep_rna(res.targetUnpaired, qbase);
+    append(res.targetUnpaired, x.targetUnpaired);
+    append(res.targetStacked, ' ');
+    append(res.targetStacked, x.targetStacked);
+    append(res.mirnaStacked, ' ');
+    append(res.mirnaStacked, x.mirnaStacked);
+    append_deep_rna(res.mirnaUnpaired, tbase);
+    append(res.mirnaUnpaired, x.mirnaUnpaired);
+
+    append(res.pairs, ' ');
+    append(res.pairs, x.pairs);
+    return res;
+  }
+  ppS edt(<Subsequence qbase, Subsequence tloc>, ppS x) {
+    ppS res;
+    res.pos = 1;
+    append_deep_rna(res.targetUnpaired, qbase);
+    append(res.targetUnpaired, x.targetUnpaired);
+    append(res.targetStacked, ' ');
+    append(res.targetStacked, x.targetStacked);
+    append(res.mirnaStacked, ' ');
+    append(res.mirnaStacked, x.mirnaStacked);
+    append(res.mirnaUnpaired, ' ');
+    append(res.mirnaUnpaired, x.mirnaUnpaired);
+
+    append(res.pairs, ' ');
+    append(res.pairs, x.pairs);
+    return res;
+  }
+  ppS edb(<Subsequence qloc, Subsequence tbase>, ppS x) {
+    ppS res;
+    res.pos = 1;
+    append(res.targetUnpaired, ' ');
+    append(res.targetUnpaired, x.targetUnpaired);
+    append(res.targetStacked, ' ');
+    append(res.targetStacked, x.targetStacked);
+    append(res.mirnaStacked, ' ');
+    append(res.mirnaStacked, x.mirnaStacked);
+    append_deep_rna(res.mirnaUnpaired, tbase);
+    append(res.mirnaUnpaired, x.mirnaUnpaired);
+    
+    res.pairs = x.pairs;
+    return res;
+  }
+  ppS sr(<Subsequence qbase, Subsequence tbase>, ppS x) {
+    ppS res;
+    res.pos = 1;
+    append(res.targetUnpaired, ' ');
+    append(res.targetUnpaired, x.targetUnpaired);
+    append_deep_rna(res.targetStacked, qbase);
+    append(res.targetStacked, x.targetStacked);
+    append_deep_rna(res.mirnaStacked, tbase);
+    append(res.mirnaStacked, x.mirnaStacked);
+    append(res.mirnaUnpaired, ' ');
+    append(res.mirnaUnpaired, x.mirnaUnpaired);
+
+    if (isWobblePair(qbase, tbase)) {
+      append(res.pairs, ':');
+    } else {
+      append(res.pairs, '|');
+    }
+    append(res.pairs, x.pairs);
+    return res;
+  }
+  ppS bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, ppS x) {
+    ppS res;
+    res.pos = 1;
+    append(res.targetUnpaired, ' ');
+    append_deep_rna(res.targetUnpaired, qregion);
+    append(res.targetUnpaired, x.targetUnpaired);
+    append_deep_rna(res.targetStacked, qbase);
+    append(res.targetStacked, ' ', size(qregion));
+    append(res.targetStacked, x.targetStacked);
+    append_deep_rna(res.mirnaStacked, tbase);
+    append(res.mirnaStacked, '-', size(qregion));
+    append(res.mirnaStacked, x.mirnaStacked);
+    append(res.mirnaUnpaired, ' ', 1+int(size(qregion)));
+    append(res.mirnaUnpaired, x.mirnaUnpaired);
+
+    if (isWobblePair(qbase, tbase)) {
+      append(res.pairs, ':');
+    } else {
+      append(res.pairs, '|');
+    }
+    append(res.pairs, ' ', size(qregion));
+    append(res.pairs, x.pairs);
+    return res;
+  }
+  ppS bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, ppS x) {
+    ppS res;
+    res.pos = 1;
+    append(res.targetUnpaired, ' ', 1+int(size(tregion)));
+    append(res.targetUnpaired, x.targetUnpaired);
+    append_deep_rna(res.targetStacked, qbase);
+    append(res.targetStacked, '-', size(tregion));
+    append(res.targetStacked, x.targetStacked);
+    append_deep_rna(res.mirnaStacked, tbase);
+    append(res.mirnaStacked, ' ', size(tregion));
+    append(res.mirnaStacked, x.mirnaStacked);
+    append(res.mirnaUnpaired, ' ');
+    append_deep_rna(res.mirnaUnpaired, tregion);
+    append(res.mirnaUnpaired, x.mirnaUnpaired);
+    
+    if (isWobblePair(qbase, tbase)) {
+      append(res.pairs, ':');
+    } else {
+      append(res.pairs, '|');
+    }
+    append(res.pairs, ' ', size(tregion));
+    append(res.pairs, x.pairs);
+    return res;
+  }
+  ppS il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, ppS x) {
+    int asym1 = max(0, int(size(tregion)) - int(size(qregion)));
+    int asym2 = max(0, int(size(qregion)) - int(size(tregion)));
+    int loopsize = max(int(size(qregion)), int(size(tregion)));
+
+    ppS res;
+    res.pos = 1;
+    append(res.targetUnpaired, ' ');
+    append_deep_rna(res.targetUnpaired, qregion);
+    append(res.targetUnpaired, '-', asym1);
+    append(res.targetUnpaired, x.targetUnpaired);
+
+    append_deep_rna(res.targetStacked, qbase);
+    append(res.targetStacked, ' ', size(qregion));
+    append(res.targetStacked, ' ', asym1);
+    append(res.targetStacked, x.targetStacked);
+
+    append_deep_rna(res.mirnaStacked, tbase);
+    append(res.mirnaStacked, ' ', size(tregion));
+    append(res.mirnaStacked, ' ', asym2);
+    append(res.mirnaStacked, x.mirnaStacked);
+
+    append(res.mirnaUnpaired, ' ');
+    append_deep_rna(res.mirnaUnpaired, tregion);
+    append(res.mirnaUnpaired, '-', asym2);
+    append(res.mirnaUnpaired, x.mirnaUnpaired);
+    
+    if (isWobblePair(qbase, tbase)) {
+      append(res.pairs, ':');
+    } else {
+      append(res.pairs, '|');
+    }
+    append(res.pairs, ' ', loopsize);
+    append(res.pairs, x.pairs);
+    return res;
+  }
+  ppS el(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>) {
+    ppS res;
+    res.pos = 1;
+
+    append(res.targetUnpaired, ' ');
+    append_deep_rna(res.targetStacked, qbase);
+    append_deep_rna(res.mirnaStacked, tbase);
+    append(res.mirnaUnpaired, ' ');
+    if (isWobblePair(qbase, tbase)) {
+      append(res.pairs, ':');
+    } else {
+      append(res.pairs, '|');
+    }
+
+    if (int(size(qregion)) == 0) {
+      append(res.targetUnpaired, ' ', max(0, int(size(tregion))));
+      append(res.targetStacked, ' ', max(0, int(size(tregion))));
+      append(res.mirnaStacked, ' ', max(0, int(size(tregion))));
+      append(res.pairs, ' ', max(0, int(size(tregion))));
+    } else {
+      Subsequence qregion_first = qregion;
+      qregion_first.j = qregion_first.i+1;
+      append_deep_rna(res.targetUnpaired, qregion_first);
+      append(res.targetUnpaired, ' ', max(0, int(size(tregion))-1));
+      if (int(size(tregion)) == 0) {
+        append(res.mirnaUnpaired, ' ');
+      }
+      append(res.targetStacked, ' ', max(1, int(size(tregion))));
+      append(res.mirnaStacked, ' ', max(1, int(size(tregion))));
+      append(res.pairs, ' ', max(1, int(size(tregion))));
+    }
+    append_deep_rna(res.mirnaUnpaired, tregion);
+    
+    append(res.targetUnpaired, " 3'", 3);
+    append(res.mirnaUnpaired, " 5'", 3);
+
+    return res;
+  }
+  ppS complete(ppS x) {
+    ppS res;
+    res.pos = x.pos;
+    append(res.targetUnpaired, "target 5' ", 10);
+    append(res.targetUnpaired, x.targetUnpaired);
+    append(res.targetStacked, ' ', 10);
+    append(res.targetStacked, x.targetStacked);
+    append(res.mirnaStacked, ' ', 10);
+    append(res.mirnaStacked, x.mirnaStacked);
+    append(res.mirnaUnpaired, "miRNA 3'  ", 10);
+    append(res.mirnaUnpaired, x.mirnaUnpaired);
+  
+    append(res.pairs, ' ', 10);
+    append(res.pairs, x.pairs);
+    return res;
+  }
+  choice [ppS] h([ppS] i) {
     return i;
   }
 }
@@ -324,6 +572,9 @@ algebra alg_mfe_debug implements sig_rnahybrid(alphabet = char, answer = mfedebu
 
     return res;
   }
+  mfedebug complete(mfedebug x) {
+    return x;
+  }
   choice [mfedebug] h([mfedebug] i) {
     return list(minimum(i));
   }
@@ -392,6 +643,9 @@ algebra alg_mfe implements sig_rnahybrid(alphabet = char, answer = int) {
     }
     return energy;
   }
+  int complete(int x) {
+    return x;
+  }
   choice [int] h([int] i) {
     return list(minimum(i));
   }
@@ -436,7 +690,9 @@ algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
   double el(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>) {
     return getReactivityScore(qbase, false, tbase) + getReactivityScore(qregion, true, tregion);
   }
-  
+  double complete(double x) {
+    return x;
+  }
   choice [double] h([double] i) {
     return list(minimum(i));
   }
@@ -445,8 +701,14 @@ algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
 /*
 This grammar has been extracted from src/hybrid_core.c of RNAhybrid-2.1.2.tar.gz by Stefan Janssen (2021-08-12)
 It seems to be equivalent to the Haskell Version https://bibiserv.cebitec.uni-bielefeld.de/cgi-bin/adp_RNAhybrid
+
+SMJ 2024-06-27: I've changed the grammar such that each candidate has "complete" as its root. This is useful to
+prepend the pretty print string with some left information, i.e. "target 5' " and "miRNA  3' "
 */
-grammar gra_rnahybrid uses sig_rnahybrid(axiom = hybrid) {
+grammar gra_rnahybrid uses sig_rnahybrid(axiom = struct) {
+  struct = complete(hybrid)
+         # h;
+  
   hybrid = nil(<REGION0, REGION0>)
          | unpaired_left_top
          | closed

@@ -13,4 +13,11 @@ inline bool minBPs(int minbp,
   return candidate.first.second >= minbp;
 }
 
+inline bool isWobblePair(const Subsequence &a, const Subsequence &b) {
+  // tests if a base pair is a wobble pair, i.e. GU or UG
+  // as opposed to CG,GC and AU,UA
+  int bpidx = bp_index(a.seq->seq[a.i], b.seq->seq[b.i]);
+  return ((bpidx == GU_BP) || (bpidx == UG_BP));
+}
+
 #endif
