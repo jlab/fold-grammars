@@ -179,6 +179,11 @@ check_new_old_eq rnahybrid.gap rna probingmfepp AAGG rnahybrid_probingmfepp1 UUC
 check_new_old_eq rnahybrid.gap rna probingmfepp ACCU rnahybrid_probingmfepp2 UCCA
 check_new_old_eq rnahybrid.gap rna probingmfepp ACUG rnahybrid_probingmfepp3 ACUG
 
+# RNAhybrid: when running mfe*pp against ~29kb of the corona virus, the program crashed due to exceeded stack size - which is due to massively recursion of unpaired_left_top as it consumes just one base each
+GAPC="$BASE/bin/gapc --tab-all --kbacktrace -I../../../../"
+RUN_CPP_FLAGS=""
+check_new_old_eq rnahybrid.gap rna mfepp `head -c 40000 < /dev/zero | tr '\0' 'A'`C rnahybrid_exceededstack CCCCCCCCCCCCCCCCCCCCCG
+
 GAPC="$BASE/bin/gapc -t -I../../../../ --checkpoint"
 check_checkpoint_eq rnahybrid.gap rna probingmfepp CGGCGCGUAUUCCGUUGCAUAAGUGuagcugaugcguaugcuguga rnahybrid_checkpoint_probingmfepp UGCAAAAAAAGUGGAAGACGUAUCGAGAUUUGUGCGUCUGAUCGAGACAUGUUUAAAAAUGGCUUGCCAUAAUUAACGUUGUAUGUGAUAACAGAUUUCGGGUUAAACGAGGUACAGUUCUGUUUAUGUGUGGCAUUUUCAGUAAAGAAGUCCUGAGUAAACACGUUGA 1 ../../KatharinaStyle/yopf.shape
 
