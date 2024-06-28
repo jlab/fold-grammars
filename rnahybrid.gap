@@ -233,7 +233,8 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
     append_deep_rna(res.mirnaUnpaired, tbase);
     append(res.mirnaUnpaired, x.mirnaUnpaired);
 
-    res.pairs = x.pairs;
+    append(res.pairs, ' ');
+    append(res.pairs, x.pairs);
     return res;
   }
   ppS eds(<Subsequence qbase, Subsequence tbase>, ppS x) {
