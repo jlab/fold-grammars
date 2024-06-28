@@ -218,7 +218,7 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
     return res;
   }
   ppS target_left_flank(<Subsequence tregion, Subsequence mloc>, ppS x) {
-    x.x = x.x + size(tregion);
+    x.pos = x.pos + size(tregion);
     return x;
   }
   ppS ulb(<Subsequence qloc, Subsequence tbase>, ppS x) {
