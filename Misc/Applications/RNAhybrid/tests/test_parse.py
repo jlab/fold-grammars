@@ -37,13 +37,13 @@ class TestParse(TestCase):
             p = Product(self.t2)
         self.assertTrue('Cannot make a Product of a single Product!' in str(e.exception))
 
-    # def test_parse_lines(self):
-    #     obs = Product(self.t2).parse_lines(["( 23 , -10 )"])
-    #
-    #     obs = Product(self.t1).parse_lines(["-23"])
-        #print(obs)
-        #obs = parse_gapc(["23", "-23", "-35347547568"], self.t1)
-        # self.assertEqual(obs, [[23], [-23], [-35347547568]])
+    def test_parse_lines(self):
+        obs = self.t2.parse_lines(["( 23 , -10 )", "( -44 , 10 )", "( -23 , -35347547568 )"])
+        self.assertEqual(obs, [
+            {'a': 23, 'b': -10},
+            {'a': -44, 'b': 10},
+            {'a': -23, 'b': -35347547568}])
+
 
 if __name__ == '__main__':
     main()
