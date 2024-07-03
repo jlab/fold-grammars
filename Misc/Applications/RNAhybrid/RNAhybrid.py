@@ -2,9 +2,11 @@ from math import log, exp
 import os
 import click
 import click_option_group
+from hashlib import md5
 
 from parse import *
 from execute import *
+from tempfile import gettempdir
 import pickle
 
 PROGNAME = 'RNAhybrid'
@@ -39,11 +41,26 @@ DISTRIBUTION = {
     '-d', '--distribution', nargs=2, type=float, help='<xi> and <theta> are the position and shape parameters, respectively, of the extreme value distribution assumed for p-value calculation. For example enter "0.91 0.25" without the quotes.')
 @click.option(
     '--binPath', type=str, default="", help='%s expects that according Bellman\'s GAP compiled binaries are located in the same directory as the Python wrapper is. Should you moved them into another directory, you must set --binPath to this new location!' % PROGNAME)
-def RNAhybrid(target, mirna, set, distribution, binpath):
+@click.option(
+    '--filter_minmax_seedlength', type=int, nargs=2, default=(0,9999), help='Minimal and maximal number of base-pairs in the seed helix.')
+@click.option(
+    '--filter_minmax_mirnabulgelength', type=int, nargs=2, default=(0,9999), help='Minimal and maximal number of bulged bases in microRNA directly after seed helix.')
+@click.option(
+    '--filter_max_energy', type=int, nargs=1, default=0, help='Maximal free energy (not that stable energies are negative)')
+@click.option(
+    '--verbose/--no-verbose', type=bool, default=False, help="Print verbose messages.")
+@click.option(
+    '--cache/--no-cache', type=bool, default=False, help="Cache the last execution and reuse if input does not change. Will store files to '%s'" % gettempdir())
+def RNAhybrid(target, mirna, set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, verbose, cache):
     settings = dict()
 
     settings['binpath'] = binpath
     settings['program_name'] = PROGNAME
+
+    if filter_minmax_seedlength[0] > filter_minmax_seedlength[1]:
+        raise ValueError("minimum for seed length must be smaller than maximum!")
+    if filter_minmax_mirnabulgelength[0] > filter_minmax_mirnabulgelength[1]:
+        raise ValueError("minimum for bulge must be smaller than maximum!")
 
     entries_mirnas = []
     if os.path.exists(mirna) and (mirna.upper().replace('A', '').replace('C', '').replace('G', '').replace('U', '') != ""):
@@ -57,23 +74,57 @@ def RNAhybrid(target, mirna, set, distribution, binpath):
     else:
         entries_targets = [('from commandline', target)]
 
+    # compute maximum duplex energies once per miRNA
+    mdes = dict()
+    if not distribution and set:
+        for entry_mirna in entries_mirnas:
+            cmd_mde = compose_call('mde', '', entry_mirna[1], complement(entry_mirna[1]), **settings)
+            if verbose:
+                print("Binary call: %s" % cmd_mde, file=sys.stderr)
+            res_mde = Product(TypeFloat('mde')).parse_lines(execute(cmd_mde))[0]
+            mdes[entry_mirna[0]] = res_mde['mde'] / 100
+
+    result_nr = 1
     for entry_target in entries_targets:
         for entry_mirna in entries_mirnas:
             settings['xi'] = 0
             settings['theta'] = 0
             if not distribution and set:
                 # estimate evd parameters from maximal duplex energy
-                cmd_mde = compose_call('mde', '', entry_mirna[1], complement(entry_mirna[1]), **settings)
-                res_mde = Product(TypeFloat('mde')).parse_lines(execute(cmd_mde))[0]
-                settings['xi'] = DISTRIBUTION[set]['xi_slope'] * (res_mde['mde'] / 100) + DISTRIBUTION[set]['xi_intercept']
-                settings['theta'] = DISTRIBUTION[set]['theta_slope'] * (res_mde['mde'] / 100) + DISTRIBUTION[set]['theta_intercept']
+                settings['xi'] = DISTRIBUTION[set]['xi_slope'] * mdes[entry_mirna[0]] + DISTRIBUTION[set]['xi_intercept']
+                settings['theta'] = DISTRIBUTION[set]['theta_slope'] * mdes[entry_mirna[0]] + DISTRIBUTION[set]['theta_intercept']
 
-            cmd_hybrid = compose_call('stacklen', 'rnahybrid', entry_target[1], entry_mirna[1], **settings)
-            raw_hybrid = execute(cmd_hybrid)
-            res_stacklen = Product(Product(TypeInt('stacklen'), TypeMFE()), TypeHybrid()).parse_lines(raw_hybrid)
+            cmd_hybrid = compose_call('khorshid', 'rnahybrid', entry_target[1], entry_mirna[1], **settings)
+            if verbose:
+                print("Binary call: %s" % cmd_hybrid, file=sys.stderr)
+            fp_cache = os.path.join(gettempdir(), md5(cmd_hybrid.encode()).hexdigest() + '.rnahybrid')
+            raw_hybrid = []
+            if os.path.exists(fp_cache) and cache:
+                if verbose:
+                    print("Read cached result from file '%s'" % fp_cache, file=sys.stderr)
+                with open(fp_cache, 'r') as f:
+                    raw_hybrid = f.read().splitlines()
+            else:
+                raw_hybrid = execute(cmd_hybrid)
+                if cache:
+                    with open(fp_cache, 'w') as f:
+                        f.write('\n'.join(raw_hybrid))
+                    if verbose:
+                        print("Wrote results into cache file '%s'" % fp_cache, file=sys.stderr)
+
+            #res_stacklen = Product(Product(TypeInt('stacklen'), TypeMFE()), TypeHybrid()).parse_lines(raw_hybrid)
+            res_stacklen = Product(Product(TypeKhorshid(), TypeMFE()), TypeHybrid()).parse_lines(raw_hybrid)
 
             out = sys.stdout
             for answer in sorted(res_stacklen, key=lambda a: (a['stacklen'], a['mfe'])):
+                if (answer['stacklen'] < filter_minmax_seedlength[0]) or (answer['stacklen'] > filter_minmax_seedlength[1]):
+                    continue
+                if (answer['bulgelen'] < filter_minmax_mirnabulgelength[0]) or (answer['bulgelen'] > filter_minmax_mirnabulgelength[1]):
+                    continue
+                if (answer['mfe'] / 100 > filter_max_energy):
+                    continue
+                out.write("result no %i\n" % result_nr)
+                result_nr += 1
                 out.write("target: %s\n" % entry_target[0])
                 out.write("length: %i\n" % len(entry_target[1]))
                 out.write("miRNA : %s\n" % entry_mirna[0])
@@ -82,7 +133,8 @@ def RNAhybrid(target, mirna, set, distribution, binpath):
                 normalized_energy = (answer['mfe'] / 100) / log(len(entry_target[1]) * len(entry_mirna[1]))
                 pvalue = 1 - exp(-1 * exp(-1 * ((-1 * normalized_energy - settings['xi']) / settings['theta'])))
                 out.write("p-value: %f\n" % pvalue)
-                out.write("5' stack length: %s\n" % answer['stacklen'])
+                out.write("5' seed length: %s\n" % answer['stacklen'])
+                out.write("miRNA bulge length: %s\n" % answer['bulgelen'])
                 out.write("\n")
                 out.write("position  %i\n" % (answer['target_position']))
                 out.write("target 5' " + answer['target_unpaired'] + " 3'\n")
