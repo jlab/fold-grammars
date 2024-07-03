@@ -26,6 +26,14 @@ mfe_%:
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
+stacklen: mfe_rnahybrid
+stacklen_%:
+	$(MAKE) compile \
+		gapc_product="(alg_leftstacklen * alg_mfe) * alg_prettySophie" \
+		gapc_options="--tab-all --kbacktrace --no-coopt-class $(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
+
 subopt: subopt_rnahybrid
 subopt_%:
 	$(MAKE) compile \
@@ -53,3 +61,4 @@ mde:
 
 distclean:
 	rm -rf $(ARCHTRIPLE);
+
