@@ -3,14 +3,15 @@ import rna
 import "Extensions/twotrack.hh"
 import "Extensions/mfesubopt.hh"
 import "Extensions/probing.hh"
-import "Extensions/probing.hh"
 import "Extensions/bpfilter.hh"
+// import "Extensions/rnahybrid.hh"
 
 input < rna, rna >
 type Rope = extern
 type pp = (int x, Rope topU, Rope topP, Rope botP, Rope botU)
 type ppS = (int pos, Rope targetUnpaired, Rope targetStacked, Rope pairs, Rope mirnaStacked, Rope mirnaUnpaired)
 type mfedebug = (int energy, Rope stack)
+type stackLen = (int len, bool isInterrupted)
 
 signature sig_rnahybrid(alphabet, answer) {
   answer nil(<Subsequence, Subsequence>);
@@ -211,10 +212,16 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
     ppS res;
     res.pos = 1;
     res.targetUnpaired = Rope("");
+    append(res.targetUnpaired, ' ', size(tregion));
+    append(res.targetUnpaired, " 3'", 3);
     res.targetStacked = Rope("");
+    append(res.targetStacked, ' ', size(tregion) + 1);
     res.mirnaStacked = Rope("");
-    res.mirnaUnpaired = Rope("");
+    append(res.mirnaStacked, ' ', size(tregion) + 1);
+    append_deep_rna(res.mirnaUnpaired, tregion);
+    append(res.mirnaUnpaired, " 5'", 3);
     res.pairs = Rope("");
+    append(res.pairs, ' ', size(tregion) + 1);
     return res;
   }
   ppS target_left_flank(<Subsequence tregion, Subsequence mloc>, ppS x) {
@@ -697,6 +704,68 @@ algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
   }
   choice [double] h([double] i) {
     return list(minimum(i));
+  }
+}
+
+algebra alg_leftstacklen implements sig_rnahybrid(alphabet = char, answer = int) {
+  int nil(<Subsequence qregion, Subsequence tregion>) {
+    return 0;
+  }
+  int target_left_flank(<Subsequence tregion, Subsequence mloc>, int x) {
+    return x;
+  }
+  int ulb(<Subsequence qloc, Subsequence tbase>, int x) {
+    return x;
+  }
+  int eds(<Subsequence qbase, Subsequence tbase>, int x) {
+    return x;
+  } 
+  int edt(<Subsequence qbase, Subsequence tloc>, int x) {
+    return x;
+  }
+  int edb(<Subsequence qloc, Subsequence tbase>, int x) {
+    return x;
+  }
+  int sr(<Subsequence qbase, Subsequence tbase>, int x) {
+    int res = x;
+    if (res >= 0) {
+      res = res + 1;
+    }
+    return res;
+  }  
+  int bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, int x) {
+    int res = x;
+    if (res >= 0) {
+      res = res * -1;
+    }
+    return res;
+  }
+  int bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, int x) {
+    int res = x;
+    if (res >= 0) {
+      res = res * -1;
+    }
+    return res;
+  }
+  int il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, int x) {
+    int res = x;
+    if (res >= 0) {
+      res = res * -1;
+    }
+    return res;
+  }
+  int el(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>) {
+    return 1;
+  }
+  int complete(int x) {
+    if (x < 0) {
+      return -1 * x;
+    } else {
+      return x;
+    }
+  }
+  choice [int] h([int] i) {
+    return unique(i);
   }
 }
 
