@@ -44,6 +44,16 @@ class TestParse(TestCase):
             {'a': -44, 'b': 10},
             {'a': -23, 'b': -35347547568}])
 
+        p = Product(TypeHybrid())
+        exp = [{'target_position': 25682,
+                'target_unpaired': 'U     C       GA      U U',
+                'target_stacked': ' UGCUG UGGCCUU  AGCCCC U ',
+                'pairs': ' ||||| |:|||:|  |||||| : ',
+                'mirna_stacked': ' ACGAC AUCGGGA--UCGGGG G ',
+                'mirna_unpaired': '      A               C U'}]
+        obs = p.parse_lines(["(25682, target 5' U     C       GA      U U 3',            UGCUG UGGCCUU  AGCCCC U ,            ||||| |:|||:|  |||||| : ,            ACGAC AUCGGGA--UCGGGG G , miRNA 3'        A               C U 5')"])
+        self.assertEqual(obs, exp)
+
 
 if __name__ == '__main__':
     main()
