@@ -26,10 +26,18 @@ mfe_%:
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
-stacklen: mfe_rnahybrid
+stacklen: stacklen_rnahybrid
 stacklen_%:
 	$(MAKE) compile \
 		gapc_product="(alg_leftstacklen * alg_mfe) * alg_prettySophie" \
+		gapc_options="--tab-all --kbacktrace --no-coopt-class $(windowmodeflag)" \
+		gapc_file="${*}.gap" \
+		gapc_binaryname="$@$(current_windowmodesuffix)";
+
+khorshid: khorshid_rnahybrid
+khorshid_%:
+	$(MAKE) compile \
+		gapc_product="(alg_khorshid * alg_mfe) * alg_prettySophie" \
 		gapc_options="--tab-all --kbacktrace --no-coopt-class $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";

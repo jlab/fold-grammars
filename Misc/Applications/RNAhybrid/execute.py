@@ -10,7 +10,7 @@ def complement(sequence: str):
 
 
 def compose_call(mode: str, grammar: str, inp_target: str, inp_mirna: str, **kwargs):
-    AVAILABLE_MODI = ['stacklen', 'mde']
+    AVAILABLE_MODI = ['stacklen', 'mde', 'khorshid']
     AVAILABLE_GRAMMARS = ['rnahybrid']
 
     cmd = kwargs['binpath']
