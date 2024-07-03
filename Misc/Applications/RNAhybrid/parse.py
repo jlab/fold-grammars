@@ -72,6 +72,13 @@ class TypeHybrid(Type):
             ['target_position', 'target_unpaired', 'target_stacked', 'pairs', 'mirna_stacked', 'mirna_unpaired'])
 
 
+class TypeKhorshid(Type):
+    def __init__(self):
+        super().__init__('khorshid',
+            r'\((-?\d+), (-?\d+)\)',
+            [int, int],
+            ['stacklen', 'bulgelen'])
+
 class Product:
     __left = None
     __right = None
@@ -162,9 +169,13 @@ class Product:
 
 
 def mainP():
-    p = Product(TypeHybrid())
-    obs = p.parse_lines(["(25682, target 5' U     C       GA      U U 3',            UGCUG UGGCCUU  AGCCCC U ,            ||||| |:|||:|  |||||| : ,            ACGAC AUCGGGA--UCGGGG G , miRNA 3'        A               C U 5')"])
-    print(obs)
+    lk = ["(1, 0)"]
+    pk = Product(TypeKhorshid())
+    print(pk.parse_lines(lk))
+
+    #lines = ["( ( (1, 0) , -2460 ) , (7387, target 5'  G           AGCUAUGGUUA  A   A A  3',             GCCCCGAUUUC           GA UGU C  ,             ||||||||::|           || ||| |  ,             CGGGGCUAGGG-----------CU ACA-G  , miRNA 3'  UG                        A     CA 5') )"]
+    #p = Product(Product(TypeKhorshid(), TypeMFE()), TypeHybrid())
+    #res = p.parse_lines(lines)
     #t2 = Product(TypeInt(), TypeInt())  # t2 = (GAPC_TYPES['int'], GAPC_TYPES['int'])
     # t3 = GAPProduct((GAPInt, (GAPInt, GAPInt))) # t3 = (GAPC_TYPES['int'], (GAPC_TYPES['int'], GAPC_TYPES['int']))
     # t4 = GAPProduct(((GAPInt, GAPInt), GAPInt)) # t4 = ((GAPC_TYPES['int'], GAPC_TYPES['int']), GAPC_TYPES['int'])
