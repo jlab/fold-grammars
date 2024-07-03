@@ -1,4 +1,5 @@
 import re
+import sys
 
 
 class Type:
@@ -126,20 +127,36 @@ class Product:
     def getTypes(self) -> []:
         return self.__dtypes
 
-    def parse_lines(self, lines:[str]):
+    def parse_lines(self, lines:[str], verbose=sys.stderr):
         pattern = re.compile(self.getRegex())
 
         results = []
-        nonhitlines = 0
-        for i, answer in enumerate(lines):
-            hit = pattern.fullmatch(answer)
-            if hit:
-                results.append({
-                    name: dtype(value)
-                    for (name, dtype, value)
-                    in zip(self.getComponentNames(), self.getTypes(), hit.groups())})
+        nonhitlines = []
+        for ln, answer in enumerate(lines):
+            if answer == "":
+                continue
+            elif answer == "Answer: ":
+                continue
             else:
-                nonhitlines += 1
+                hit = pattern.fullmatch(answer)
+                if hit:
+                    results.append({
+                        name: dtype(value)
+                        for (name, dtype, value)
+                        in zip(self.getComponentNames(), self.getTypes(), hit.groups())})
+                else:
+                    nonhitlines.append((ln, answer))
+
+        if len(nonhitlines) > 0:
+            MAXREPORT = 5
+            if verbose is not None:
+                verbose.write('%i line' % len(nonhitlines))
+                if len(nonhitlines) > 1:
+                    verbose.write('s')
+                verbose.write(' could not properly be parsed')
+                if len(nonhitlines) > MAXREPORT:
+                    verbose.write('. Reporting only the first %i here' % MAXREPORT)
+                verbose.write(':\n%s' % ''.join(['  line %i: "%s"\n' % (ln+1, line) for (ln, line) in nonhitlines[:5]]))
 
         return results
 
