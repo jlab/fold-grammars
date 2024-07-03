@@ -4,14 +4,14 @@ import "Extensions/twotrack.hh"
 import "Extensions/mfesubopt.hh"
 import "Extensions/probing.hh"
 import "Extensions/bpfilter.hh"
-// import "Extensions/rnahybrid.hh"
+import "Extensions/rnahybrid.hh"
 
 input < rna, rna >
 type Rope = extern
 type pp = (int x, Rope topU, Rope topP, Rope botP, Rope botU)
 type ppS = (int pos, Rope targetUnpaired, Rope targetStacked, Rope pairs, Rope mirnaStacked, Rope mirnaUnpaired)
 type mfedebug = (int energy, Rope stack)
-type stackLen = (int len, bool isInterrupted)
+type khorshid = extern
 
 signature sig_rnahybrid(alphabet, answer) {
   answer nil(<Subsequence, Subsequence>);
@@ -768,6 +768,93 @@ algebra alg_leftstacklen implements sig_rnahybrid(alphabet = char, answer = int)
     return unique(i);
   }
 }
+algebra alg_khorshid implements sig_rnahybrid(alphabet = char, answer = khorshid) {
+  khorshid nil(<Subsequence qregion, Subsequence tregion>) {
+    khorshid res;
+    res.leftstacklen = 0;
+    res.mirnabuldgelen = 0;
+    return res;
+  }
+  khorshid target_left_flank(<Subsequence tregion, Subsequence mloc>, khorshid x) {
+    return x;
+  }
+  khorshid ulb(<Subsequence qloc, Subsequence tbase>, khorshid x) {
+    return x;
+  }
+  khorshid eds(<Subsequence qbase, Subsequence tbase>, khorshid x) {
+    return x;
+  } 
+  khorshid edt(<Subsequence qbase, Subsequence tloc>, khorshid x) {
+    return x;
+  }
+  khorshid edb(<Subsequence qloc, Subsequence tbase>, khorshid x) {
+    return x;
+  }
+  khorshid sr(<Subsequence qbase, Subsequence tbase>, khorshid x) {
+    khorshid res;
+    res.leftstacklen = x.leftstacklen;
+    res.mirnabuldgelen = x.mirnabuldgelen;
+    if (res.leftstacklen >= 0) {
+      res.leftstacklen = res.leftstacklen + 1;
+    }
+    return res;
+  }  
+  khorshid bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, khorshid x) {
+    khorshid res;
+    res.leftstacklen = x.leftstacklen;
+    res.mirnabuldgelen = x.mirnabuldgelen;
+    if (res.leftstacklen >= 0) {
+      res.leftstacklen = res.leftstacklen * -1;
+    }
+    return res;
+  }
+  khorshid bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, khorshid x) {
+    khorshid res;
+    res.leftstacklen = x.leftstacklen;
+    res.mirnabuldgelen = x.mirnabuldgelen;
+    if (res.leftstacklen >= 0) {
+      res.leftstacklen = res.leftstacklen * -1;
+      if (res.mirnabuldgelen >= 0) {
+        res.mirnabuldgelen = -1 * size(tregion);
+      }
+    }
+    return res;
+  }
+  khorshid il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, khorshid x) {
+    khorshid res;
+    res.leftstacklen = x.leftstacklen;
+    res.mirnabuldgelen = x.mirnabuldgelen;
+    if (res.leftstacklen >= 0) {
+      res.leftstacklen = res.leftstacklen * -1;
+      if (res.mirnabuldgelen >= 0) {
+        res.mirnabuldgelen = -1 * size(tregion);
+      }
+    }
+    return res;
+  }
+  khorshid el(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>) {
+    khorshid res;
+    res.leftstacklen = 1;
+    res.mirnabuldgelen = 0;
+    return res;
+  }
+  khorshid complete(khorshid x) {
+    khorshid res;
+    res.leftstacklen = x.leftstacklen;
+    res.mirnabuldgelen = x.mirnabuldgelen;
+    if (res.leftstacklen < 0) {
+      res.leftstacklen = -1 * res.leftstacklen;
+    }
+    if (res.mirnabuldgelen < 0) {
+      res.mirnabuldgelen = -1 * res.mirnabuldgelen;
+    }
+    return res;
+  }
+  choice [khorshid] h([khorshid] i) {
+    return unique(i);
+  }
+}
+
 
 /*
 This grammar has been extracted from src/hybrid_core.c of RNAhybrid-2.1.2.tar.gz by Stefan Janssen (2021-08-12)
