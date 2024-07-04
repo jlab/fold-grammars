@@ -3,6 +3,7 @@ import os
 import click
 import click_option_group
 from hashlib import md5
+from multiprocessing import Pool, cpu_count
 
 from parse import *
 from execute import *
@@ -29,6 +30,58 @@ DISTRIBUTION = {
         'theta_slope': -0.001154,
         'theta_intercept': 0.1419}}
 
+def wrap_process(all_data):
+    return process_onetarget_onemirna(*all_data)
+
+def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna, mdes, distribution, set, verbose, cache, settings):
+    settings['xi'] = 0
+    settings['theta'] = 0
+    if not distribution and set:
+        # estimate evd parameters from maximal duplex energy
+        settings['xi'] = DISTRIBUTION[set]['xi_slope'] * mdes[entry_mirna[0]] + DISTRIBUTION[set]['xi_intercept']
+        settings['theta'] = DISTRIBUTION[set]['theta_slope'] * mdes[entry_mirna[0]] + DISTRIBUTION[set]['theta_intercept']
+
+    cmd_hybrid = compose_call('khorshid', 'rnahybrid', entry_target[1], entry_mirna[1], **settings)
+    if verbose:
+        print("Binary call: %s" % cmd_hybrid, file=sys.stderr)
+    fp_cache = os.path.join(gettempdir(), md5(cmd_hybrid.encode()).hexdigest() + '.rnahybrid')
+    raw_hybrid = []
+    if os.path.exists(fp_cache) and cache:
+        if verbose:
+            print("Read cached result from file '%s'" % fp_cache, file=sys.stderr)
+        with open(fp_cache, 'r') as f:
+            raw_hybrid = f.read().splitlines()
+    else:
+        raw_hybrid = execute(cmd_hybrid)
+        if cache:
+            with open(fp_cache, 'w') as f:
+                f.write('\n'.join(raw_hybrid))
+            if verbose:
+                print("Wrote results into cache file '%s'" % fp_cache, file=sys.stderr)
+
+    #res_stacklen = Product(Product(TypeInt('stacklen'), TypeMFE()), TypeHybrid()).parse_lines(raw_hybrid)
+    res_stacklen = Product(Product(TypeKhorshid(), TypeMFE()), TypeHybrid()).parse_lines(raw_hybrid)
+    # add original positions for each answer of
+    #   a) target sequence position in input file
+    #   b) mirna sequence position in input file
+    #   c) position in gapc raw result
+    for pos_answer, answer in enumerate(res_stacklen):
+        answer['pos_target'] = pos_target
+        answer['pos_mirna'] = pos_mirna
+        answer['pos_answer'] = pos_answer
+
+        answer['target_name'] = entry_target[0]
+        answer['target_length'] = len(entry_target[1])
+        answer['mirna_name'] = entry_mirna[0]
+        answer['mirna_length'] = len(entry_mirna[1])
+
+        # calculate p-value for answer
+        normalized_energy = (answer['mfe'] / 100) / log(answer['target_length'] * answer['mirna_length'])
+        answer['p-value'] = 1 - exp(-1 * exp(-1 * ((-1 * normalized_energy - settings['xi']) / settings['theta'])))
+
+    return res_stacklen
+
+
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option(
     '-t', '--target', type=str, required=True, help='An RNA sequence to be searched for miRNA targets. You can either enter a single RNA sequence OR a path to a (multiple) FASTA file.')
@@ -43,18 +96,22 @@ DISTRIBUTION = {
 @click.option(
     '--binPath', type=str, default="", help='%s expects that according Bellman\'s GAP compiled binaries are located in the same directory as the Python wrapper is. Should you moved them into another directory, you must set --binPath to this new location!' % PROGNAME)
 @click.option(
-    '--filter_minmax_seedlength', type=int, nargs=2, default=(0,9999), help='Minimal and maximal number of base-pairs in the seed helix.')
+    '--filter-minmax-seedlength', type=int, nargs=2, default=(0,9999), help='Minimal and maximal number of base-pairs in the seed helix.')
 @click.option(
-    '--filter_minmax_mirnabulgelength', type=int, nargs=2, default=(0,9999), help='Minimal and maximal number of bulged bases in microRNA directly after seed helix.')
+    '--filter-minmax-mirnabulgelength', type=int, nargs=2, default=(0,9999), help='Minimal and maximal number of bulged bases in microRNA directly after seed helix.')
 @click.option(
-    '--filter_max_energy', type=int, nargs=1, default=0, help='Maximal free energy (not that stable energies are negative)')
+    '--filter-max-energy', type=int, nargs=1, default=0, help='Maximal free energy (not that stable energies are negative)')
+@click.option(
+    '--filter-max-pvalue', type=click.FloatRange(0, 1), default=1, help='Maximal p-value (the smaller the less likely the result is due to rare chance)')
 @click.option(
     '--verbose/--no-verbose', type=bool, default=False, help="Print verbose messages.")
 @click.option(
     '--cache/--no-cache', type=bool, default=False, help="Cache the last execution and reuse if input does not change. Will store files to '%s'" % gettempdir())
 @click.option(
     '--stream-output/--no-stream-output', type=bool, default=False, help="Internally, computation is done per target per miRNA. By default, results are reported once ALL computations are done. With this setting you can make %s print results as soon as they are available - with the downside that ordering might be a bit more unintuitive." % (PROGNAME))
-def RNAhybrid(target, mirna, set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, verbose, cache, stream_output):
+@click.option(
+    "--num-cpus", type=click.IntRange(1, cpu_count()), default=1, help="Number of CPU-cores to use. Default is 1, i.e. single-threaded. Note that --stream-output cannot be used as concurrent sub-tasks would overwrite their results.")
+def RNAhybrid(target, mirna, set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue, verbose, cache, stream_output, num_cpus):
     settings = dict()
 
     settings['binpath'] = binpath
@@ -87,62 +144,39 @@ def RNAhybrid(target, mirna, set, distribution, binpath, filter_minmax_seedlengt
             res_mde = Product(TypeFloat('mde')).parse_lines(execute(cmd_mde))[0]
             mdes[entry_mirna[0]] = res_mde['mde'] / 100
 
-
     result_nr = 1
     answers = []
+    tasks = []
+    targets = []
+    total_mirnas = 0
     for pos_target, entry_target in enumerate(entries_targets):
+        targets.append([entry_target[0], len(entry_target[1])])
         for pos_mirna, entry_mirna in enumerate(entries_mirnas):
-            settings['xi'] = 0
-            settings['theta'] = 0
-            if not distribution and set:
-                # estimate evd parameters from maximal duplex energy
-                settings['xi'] = DISTRIBUTION[set]['xi_slope'] * mdes[entry_mirna[0]] + DISTRIBUTION[set]['xi_intercept']
-                settings['theta'] = DISTRIBUTION[set]['theta_slope'] * mdes[entry_mirna[0]] + DISTRIBUTION[set]['theta_intercept']
-
-            cmd_hybrid = compose_call('khorshid', 'rnahybrid', entry_target[1], entry_mirna[1], **settings)
-            if verbose:
-                print("Binary call: %s" % cmd_hybrid, file=sys.stderr)
-            fp_cache = os.path.join(gettempdir(), md5(cmd_hybrid.encode()).hexdigest() + '.rnahybrid')
-            raw_hybrid = []
-            if os.path.exists(fp_cache) and cache:
-                if verbose:
-                    print("Read cached result from file '%s'" % fp_cache, file=sys.stderr)
-                with open(fp_cache, 'r') as f:
-                    raw_hybrid = f.read().splitlines()
+            if pos_target == 0:
+                total_mirnas += 1
+            args = (entry_target, pos_target, entry_mirna, pos_mirna, mdes, distribution, set, verbose, cache, settings)
+            if num_cpus == 1:
+                res_stacklen = process_onetarget_onemirna(*args)
+                if stream_output:
+                    answers = res_stacklen
+                    answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue)
+                    result_nr += print_answers(answers, result_nr)
+                else:
+                    answers.extend(res_stacklen)
             else:
-                raw_hybrid = execute(cmd_hybrid)
-                if cache:
-                    with open(fp_cache, 'w') as f:
-                        f.write('\n'.join(raw_hybrid))
-                    if verbose:
-                        print("Wrote results into cache file '%s'" % fp_cache, file=sys.stderr)
+                tasks.append(args)
 
-            #res_stacklen = Product(Product(TypeInt('stacklen'), TypeMFE()), TypeHybrid()).parse_lines(raw_hybrid)
-            res_stacklen = Product(Product(TypeKhorshid(), TypeMFE()), TypeHybrid()).parse_lines(raw_hybrid)
-            # add original positions for each answer of
-            #   a) target sequence position in input file
-            #   b) mirna sequence position in input file
-            #   c) position in gapc raw result
-            for pos_answer, answer in enumerate(res_stacklen):
-                answer['pos_target'] = pos_target
-                answer['pos_mirna'] = pos_mirna
-                answer['pos_answer'] = pos_answer
+    if tasks != []:
+        pool = Pool(num_cpus)
+        for res in zip(pool.map(wrap_process, tasks)):
+            answers.extend(res[0])
 
-                # calculate p-value for answer
-                normalized_energy = (answer['mfe'] / 100) / log(len(entry_target[1]) * len(entry_mirna[1]))
-                answer['p-value'] = 1 - exp(-1 * exp(-1 * ((-1 * normalized_energy - settings['xi']) / settings['theta'])))
-
-            if stream_output:
-                answers = res_stacklen
-                answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy)
-                result_nr += print_answers(entry_target, entry_mirna, answers, result_nr)
-            else:
-                answers.extend(res_stacklen)
-
-    if not stream_output:
-        answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy)
-        result_nr += print_answers(entry_target, entry_mirna, answers, result_nr, out=sys.stdout)
-
+    # if (not stream_output) or (tasks != []):
+    #     answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue)
+    #     result_nr += print_answers(answers, result_nr, out=sys.stdout)
+    #
+    # print_summary(answers, len(targets), total_mirnas)
+    print_sam(answers, targets)
 
 if __name__ == '__main__':
     RNAhybrid()
