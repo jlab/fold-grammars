@@ -7,6 +7,7 @@ from hashlib import md5
 from parse import *
 from execute import *
 from tempfile import gettempdir
+from output import *
 import pickle
 
 PROGNAME = 'RNAhybrid'
@@ -51,7 +52,9 @@ DISTRIBUTION = {
     '--verbose/--no-verbose', type=bool, default=False, help="Print verbose messages.")
 @click.option(
     '--cache/--no-cache', type=bool, default=False, help="Cache the last execution and reuse if input does not change. Will store files to '%s'" % gettempdir())
-def RNAhybrid(target, mirna, set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, verbose, cache):
+@click.option(
+    '--stream-output/--no-stream-output', type=bool, default=False, help="Internally, computation is done per target per miRNA. By default, results are reported once ALL computations are done. With this setting you can make %s print results as soon as they are available - with the downside that ordering might be a bit more unintuitive." % (PROGNAME))
+def RNAhybrid(target, mirna, set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, verbose, cache, stream_output):
     settings = dict()
 
     settings['binpath'] = binpath
@@ -84,9 +87,11 @@ def RNAhybrid(target, mirna, set, distribution, binpath, filter_minmax_seedlengt
             res_mde = Product(TypeFloat('mde')).parse_lines(execute(cmd_mde))[0]
             mdes[entry_mirna[0]] = res_mde['mde'] / 100
 
+
     result_nr = 1
-    for entry_target in entries_targets:
-        for entry_mirna in entries_mirnas:
+    answers = []
+    for pos_target, entry_target in enumerate(entries_targets):
+        for pos_mirna, entry_mirna in enumerate(entries_mirnas):
             settings['xi'] = 0
             settings['theta'] = 0
             if not distribution and set:
@@ -114,36 +119,29 @@ def RNAhybrid(target, mirna, set, distribution, binpath, filter_minmax_seedlengt
 
             #res_stacklen = Product(Product(TypeInt('stacklen'), TypeMFE()), TypeHybrid()).parse_lines(raw_hybrid)
             res_stacklen = Product(Product(TypeKhorshid(), TypeMFE()), TypeHybrid()).parse_lines(raw_hybrid)
+            # add original positions for each answer of
+            #   a) target sequence position in input file
+            #   b) mirna sequence position in input file
+            #   c) position in gapc raw result
+            for pos_answer, answer in enumerate(res_stacklen):
+                answer['pos_target'] = pos_target
+                answer['pos_mirna'] = pos_mirna
+                answer['pos_answer'] = pos_answer
 
-            out = sys.stdout
-            for answer in sorted(res_stacklen, key=lambda a: (a['stacklen'], a['mfe'])):
-                if (answer['stacklen'] < filter_minmax_seedlength[0]) or (answer['stacklen'] > filter_minmax_seedlength[1]):
-                    continue
-                if (answer['bulgelen'] < filter_minmax_mirnabulgelength[0]) or (answer['bulgelen'] > filter_minmax_mirnabulgelength[1]):
-                    continue
-                if (answer['mfe'] / 100 > filter_max_energy):
-                    continue
-                out.write("result no %i\n" % result_nr)
-                result_nr += 1
-                out.write("target: %s\n" % entry_target[0])
-                out.write("length: %i\n" % len(entry_target[1]))
-                out.write("miRNA : %s\n" % entry_mirna[0])
-                out.write("length: %i\n" % len(entry_mirna[1]))
-                out.write("mfe: %.1f kcal/mol\n" % (answer['mfe'] / 100))
+                # calculate p-value for answer
                 normalized_energy = (answer['mfe'] / 100) / log(len(entry_target[1]) * len(entry_mirna[1]))
-                pvalue = 1 - exp(-1 * exp(-1 * ((-1 * normalized_energy - settings['xi']) / settings['theta'])))
-                out.write("p-value: %f\n" % pvalue)
-                out.write("5' seed length: %s\n" % answer['stacklen'])
-                out.write("miRNA bulge length: %s\n" % answer['bulgelen'])
-                out.write("\n")
-                out.write("position  %i\n" % (answer['target_position']))
-                out.write("target 5' " + answer['target_unpaired'] + " 3'\n")
-                out.write("          " + answer['target_stacked'] + "\n")
-                out.write("          " + answer['pairs'] + "\n")
-                out.write("          " + answer['mirna_stacked'] + "\n")
-                out.write("miRNA  3' " + answer['mirna_unpaired'] + " 5'\n")
-                out.write("\n")
-                out.write("\n")
+                answer['p-value'] = 1 - exp(-1 * exp(-1 * ((-1 * normalized_energy - settings['xi']) / settings['theta'])))
+
+            if stream_output:
+                answers = res_stacklen
+                answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy)
+                result_nr += print_answers(entry_target, entry_mirna, answers, result_nr)
+            else:
+                answers.extend(res_stacklen)
+
+    if not stream_output:
+        answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy)
+        result_nr += print_answers(entry_target, entry_mirna, answers, result_nr, out=sys.stdout)
 
 
 if __name__ == '__main__':
