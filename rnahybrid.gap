@@ -3,7 +3,6 @@ import rna
 import "Extensions/twotrack.hh"
 import "Extensions/mfesubopt.hh"
 import "Extensions/probing.hh"
-import "Extensions/probing.hh"
 import "Extensions/bpfilter.hh"
 
 input < rna, rna >
@@ -14,8 +13,8 @@ type mfedebug = (int energy, Rope stack)
 
 signature sig_rnahybrid(alphabet, answer) {
   answer nil(<Subsequence, Subsequence>);
-  answer ult(<Subsequence, Subsequence>, answer);
   answer ulb(<Subsequence, Subsequence>, answer);
+  answer target_left_flank(<Subsequence, Subsequence>, answer);
   answer eds(<Subsequence, Subsequence>, answer);
   answer edt(<Subsequence, Subsequence>, answer);
   answer edb(<Subsequence, Subsequence>, answer);
@@ -30,6 +29,7 @@ signature sig_rnahybrid(alphabet, answer) {
 
 algebra alg_enum auto enum;
 algebra alg_count auto count;
+algebra alg_tikz auto tikz;
 
 algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
   pp nil(<Subsequence qregion, Subsequence tregion>) {
@@ -41,8 +41,8 @@ algebra alg_pretty implements sig_rnahybrid(alphabet = char, answer = pp) {
     res.botU = Rope("");
     return res;
   }
-  pp ult(<Subsequence qbase, Subsequence tloc>, pp x) {
-    x.x = x.x + 1;
+  pp target_left_flank(<Subsequence tregion, Subsequence mloc>, pp x) {
+    x.x = x.x + size(tregion);
     return x;
   }
   pp ulb(<Subsequence qloc, Subsequence tbase>, pp x) {
@@ -222,8 +222,8 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
     append(res.pairs, ' ', size(tregion) + 1);
     return res;
   }
-  ppS ult(<Subsequence qbase, Subsequence tloc>, ppS x) {
-    x.pos = x.pos + 1;
+  ppS target_left_flank(<Subsequence tregion, Subsequence mloc>, ppS x) {
+    x.pos = x.pos + size(tregion);
     return x;
   }
   ppS ulb(<Subsequence qloc, Subsequence tbase>, ppS x) {
@@ -461,7 +461,7 @@ algebra alg_mfe_debug implements sig_rnahybrid(alphabet = char, answer = mfedebu
     res.stack = Rope("nil{0}");
     return res;
   }
-  mfedebug ult(<Subsequence qbase, Subsequence tloc>, mfedebug x) {
+  mfedebug target_left_flank(<Subsequence tregion, Subsequence mloc>, mfedebug x) {
     // v1 = tbl_unpaired_left_top[i1+1][i2];
     return x;
   }
@@ -593,8 +593,7 @@ algebra alg_mfe implements sig_rnahybrid(alphabet = char, answer = int) {
     // v1 = 0;
     return 0;
   }
-  int ult(<Subsequence qbase, Subsequence tloc>, int x) {
-    // v1 = tbl_unpaired_left_top[i1+1][i2];
+  int target_left_flank(<Subsequence tregion, Subsequence mloc>, int x) {
     return x;
   }
   int ulb(<Subsequence qloc, Subsequence tbase>, int x) {
@@ -668,8 +667,8 @@ algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
   double nil(<Subsequence qregion, Subsequence tregion>) {
     return 0.0;
   }
-  double ult(<Subsequence qbase, Subsequence tloc>, double x) {
-    return x + getReactivityScore(qbase, true);
+  double target_left_flank(<Subsequence tregion, Subsequence mloc>, double x) {
+    return x + getReactivityScore(tregion, true);
   }
   double ulb(<Subsequence qloc, Subsequence tbase>, double x) {
     return x + getReactivityScore(qloc, true, tbase);
@@ -706,32 +705,33 @@ algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
   }
 }
 
+
 /*
 This grammar has been extracted from src/hybrid_core.c of RNAhybrid-2.1.2.tar.gz by Stefan Janssen (2021-08-12)
 It seems to be equivalent to the Haskell Version https://bibiserv.cebitec.uni-bielefeld.de/cgi-bin/adp_RNAhybrid
 
 SMJ 2024-06-27: I've changed the grammar such that each candidate has "complete" as its root. This is useful to
-prepend the pretty print string with some left information, i.e. "target 5' " and "miRNA  3' "
+                prepend the pretty print string with some left information, i.e. "target 5' " and "miRNA  3' "
+
+SMJ 2024-06-28: I've recognized that the old one by one BASE fashion to "walk" through a long target sequence
+                did cause segmentation faults due to too many recursions. Thus, I've replaced this mechanism
+                via the new target_left_flank that uses one REGION instead.
 */
 grammar gra_rnahybrid uses sig_rnahybrid(axiom = struct) {
   struct = complete(hybrid)
          # h;
   
   hybrid = nil(<REGION0, REGION0>)
-         | unpaired_left_top
+         | target_left_flank(<REGION0, LOC>, unpaired_left_bot)
          | closed
          # h;
-
-  unpaired_left_top = ult(<BASE, LOC>, unpaired_left_top)
-                    | unpaired_left_bot
-                    # h;
 
   unpaired_left_bot = ulb(<LOC, BASE>, unpaired_left_bot)
                     | eds(<BASE,  BASE>, closed)
                     | edt(<BASE,  LOC >, closed)
                     | edb(<LOC,   BASE>, closed)
                     # h;
-
+  
   closed = sr(<BASE, BASE> with basepair, closed)
          | bt(<BASE, BASE> with basepair, <REGION with maxsize(15), LOC                    >, closed)
          | bb(<BASE, BASE> with basepair, <LOC,                     REGION with maxsize(15)>, closed)
