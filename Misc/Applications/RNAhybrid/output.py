@@ -116,7 +116,7 @@ def hit_2_sam(answer):
     sam.append("0")  # FLAG
     sam.append(answer['target_name'])  # RNAME
     sam.append(str(answer['target_position']))  # POS
-    sam.append(str(int(-1 * answer['mfe'])))  # MAPQ
+    sam.append(str((2**8)-1))  # MAPQ
     #sam.append('%iM' % len(target_sequence)) #hit['cigar'])  # CIGAR
     sam.append(cigar(answer)) #hit['cigar'])  # CIGAR
     sam.append('*')  # RNEXT
