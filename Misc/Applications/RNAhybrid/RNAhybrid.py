@@ -187,8 +187,7 @@ def RNAhybrid(target, target_file, mirna, mirna_file, set, distribution, binpath
 
     print_summary(answers, len(targets), total_mirnas)
     if sam:
-        with open(sam, 'w') as s:
-            s.write(answers, targets)
+        print_sam(answers, targets, sam)
 
 if __name__ == '__main__':
     RNAhybrid()
