@@ -4,12 +4,14 @@ import "Extensions/twotrack.hh"
 import "Extensions/mfesubopt.hh"
 import "Extensions/probing.hh"
 import "Extensions/bpfilter.hh"
+import "Extensions/rnahybrid.hh"
 
 input < rna, rna >
 type Rope = extern
 type pp = (int x, Rope topU, Rope topP, Rope botP, Rope botU)
 type ppS = (int pos, Rope targetUnpaired, Rope targetStacked, Rope pairs, Rope mirnaStacked, Rope mirnaUnpaired)
 type mfedebug = (int energy, Rope stack)
+type khorshid = extern
 
 signature sig_rnahybrid(alphabet, answer) {
   answer nil(<Subsequence, Subsequence>);
@@ -705,6 +707,154 @@ algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
   }
 }
 
+algebra alg_leftstacklen implements sig_rnahybrid(alphabet = char, answer = int) {
+  int nil(<Subsequence qregion, Subsequence tregion>) {
+    return 0;
+  }
+  int target_left_flank(<Subsequence tregion, Subsequence mloc>, int x) {
+    return x;
+  }
+  int ulb(<Subsequence qloc, Subsequence tbase>, int x) {
+    return x;
+  }
+  int eds(<Subsequence qbase, Subsequence tbase>, int x) {
+    return x;
+  } 
+  int edt(<Subsequence qbase, Subsequence tloc>, int x) {
+    return x;
+  }
+  int edb(<Subsequence qloc, Subsequence tbase>, int x) {
+    return x;
+  }
+  int sr(<Subsequence qbase, Subsequence tbase>, int x) {
+    int res = x;
+    if (res >= 0) {
+      res = res + 1;
+    }
+    return res;
+  }  
+  int bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, int x) {
+    int res = x;
+    if (res >= 0) {
+      res = res * -1;
+    }
+    return res;
+  }
+  int bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, int x) {
+    int res = x;
+    if (res >= 0) {
+      res = res * -1;
+    }
+    return res;
+  }
+  int il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, int x) {
+    int res = x;
+    if (res >= 0) {
+      res = res * -1;
+    }
+    return res;
+  }
+  int el(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>) {
+    return 1;
+  }
+  int complete(int x) {
+    if (x < 0) {
+      return -1 * x;
+    } else {
+      return x;
+    }
+  }
+  choice [int] h([int] i) {
+    return unique(i);
+  }
+}
+algebra alg_khorshid implements sig_rnahybrid(alphabet = char, answer = khorshid) {
+  khorshid nil(<Subsequence qregion, Subsequence tregion>) {
+    khorshid res;
+    res.leftstacklen = 0;
+    res.mirnabuldgelen = 0;
+    return res;
+  }
+  khorshid target_left_flank(<Subsequence tregion, Subsequence mloc>, khorshid x) {
+    return x;
+  }
+  khorshid ulb(<Subsequence qloc, Subsequence tbase>, khorshid x) {
+    return x;
+  }
+  khorshid eds(<Subsequence qbase, Subsequence tbase>, khorshid x) {
+    return x;
+  } 
+  khorshid edt(<Subsequence qbase, Subsequence tloc>, khorshid x) {
+    return x;
+  }
+  khorshid edb(<Subsequence qloc, Subsequence tbase>, khorshid x) {
+    return x;
+  }
+  khorshid sr(<Subsequence qbase, Subsequence tbase>, khorshid x) {
+    khorshid res;
+    res.leftstacklen = x.leftstacklen;
+    res.mirnabuldgelen = x.mirnabuldgelen;
+    if (res.leftstacklen >= 0) {
+      res.leftstacklen = res.leftstacklen + 1;
+    }
+    return res;
+  }  
+  khorshid bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, khorshid x) {
+    khorshid res;
+    res.leftstacklen = x.leftstacklen;
+    res.mirnabuldgelen = x.mirnabuldgelen;
+    if (res.leftstacklen >= 0) {
+      res.leftstacklen = res.leftstacklen * -1;
+    }
+    return res;
+  }
+  khorshid bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, khorshid x) {
+    khorshid res;
+    res.leftstacklen = x.leftstacklen;
+    res.mirnabuldgelen = x.mirnabuldgelen;
+    if (res.leftstacklen >= 0) {
+      res.leftstacklen = res.leftstacklen * -1;
+      if (res.mirnabuldgelen >= 0) {
+        res.mirnabuldgelen = -1 * size(tregion);
+      }
+    }
+    return res;
+  }
+  khorshid il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, khorshid x) {
+    khorshid res;
+    res.leftstacklen = x.leftstacklen;
+    res.mirnabuldgelen = x.mirnabuldgelen;
+    if (res.leftstacklen >= 0) {
+      res.leftstacklen = res.leftstacklen * -1;
+      if (res.mirnabuldgelen >= 0) {
+        res.mirnabuldgelen = -1 * size(tregion);
+      }
+    }
+    return res;
+  }
+  khorshid el(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>) {
+    khorshid res;
+    res.leftstacklen = 1;
+    res.mirnabuldgelen = 0;
+    return res;
+  }
+  khorshid complete(khorshid x) {
+    khorshid res;
+    res.leftstacklen = x.leftstacklen;
+    res.mirnabuldgelen = x.mirnabuldgelen;
+    if (res.leftstacklen < 0) {
+      res.leftstacklen = -1 * res.leftstacklen;
+    }
+    if (res.mirnabuldgelen < 0) {
+      res.mirnabuldgelen = -1 * res.mirnabuldgelen;
+    }
+    return res;
+  }
+  choice [khorshid] h([khorshid] i) {
+    return unique(i);
+  }
+}
+
 
 /*
 This grammar has been extracted from src/hybrid_core.c of RNAhybrid-2.1.2.tar.gz by Stefan Janssen (2021-08-12)
@@ -759,6 +909,9 @@ instance probing = gra_rnahybrid(alg_probing);
 instance probingenum = gra_rnahybrid(alg_probing * alg_enum);
 instance enumprobing = gra_rnahybrid(alg_enum * alg_probing);
 instance probingmfepp = gra_rnahybrid((alg_probing ^ alg_mfe) * alg_pretty);
+
+instance khorshid = gra_rnahybrid((alg_khorshid * alg_mfe) * alg_prettySophie);
+instance stacklen = gra_rnahybrid((alg_leftstacklen * alg_mfe) * alg_prettySophie);
 
 // don't remove the mde instance as it is used for p-value computation
 instance mde = gra_maxduplex(alg_mfe);
