@@ -83,10 +83,18 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.option(
-    '-t', '--target', type=str, required=True, help='An RNA sequence to be searched for miRNA targets. You can either enter a single RNA sequence OR a path to a (multiple) FASTA file.')
-@click.option(
-    '-q', '--mirna', type=str, required=True, help='A microRNA sequence that shall bind to the target sequence. You can either enter a single RNA sequence OR a path to a (multiple) FASTA file.')
+@click_option_group.optgroup.group(
+    'Target Input', cls=click_option_group.RequiredMutuallyExclusiveOptionGroup)
+@click_option_group.optgroup.option(
+    '-t', '--target', type=str, help='An plain (i.e. no header/name) RNA sequence to be searched for miRNA targets.')
+@click_option_group.optgroup.option(
+    '-tf', '--target_file', type=click.Path(exists=True, dir_okay=False), help='Read one or multiple target RNA sequences from a FASTA file.')
+@click_option_group.optgroup.group(
+    'miRNA Input', cls=click_option_group.RequiredMutuallyExclusiveOptionGroup)
+@click_option_group.optgroup.option(
+    '-q', '--mirna', type=str, help='A plain (i.e. no header/name) microRNA sequence that shall bind to a target sequence.')
+@click_option_group.optgroup.option(
+    '-qf', '--mirna_file', type=click.Path(exists=True, dir_okay=False), help='Read one or multiple miRNA sequences from a FASTA file.')
 @click_option_group.optgroup.group(
     'p-value calculation', cls=click_option_group.RequiredMutuallyExclusiveOptionGroup)
 @click_option_group.optgroup.option(
@@ -111,7 +119,9 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
     '--stream-output/--no-stream-output', type=bool, default=False, help="Internally, computation is done per target per miRNA. By default, results are reported once ALL computations are done. With this setting you can make %s print results as soon as they are available - with the downside that ordering might be a bit more unintuitive." % (PROGNAME))
 @click.option(
     "--num-cpus", type=click.IntRange(1, cpu_count()), default=1, help="Number of CPU-cores to use. Default is 1, i.e. single-threaded. Note that --stream-output cannot be used as concurrent sub-tasks would overwrite their results.")
-def RNAhybrid(target, mirna, set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue, verbose, cache, stream_output, num_cpus):
+@click.option(
+    '--sam', type=click.File('w'), required=False, help="Provide a filename if you want to make %s report results as a *.sam file, such that you can view hit positions in a genome browser like IGV." % PROGNAME)
+def RNAhybrid(target, target_file, mirna, mirna_file, set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue, verbose, cache, stream_output, num_cpus, sam):
     settings = dict()
 
     settings['binpath'] = binpath
@@ -123,14 +133,14 @@ def RNAhybrid(target, mirna, set, distribution, binpath, filter_minmax_seedlengt
         raise ValueError("minimum for bulge must be smaller than maximum!")
 
     entries_mirnas = []
-    if os.path.exists(mirna) and (mirna.upper().replace('A', '').replace('C', '').replace('G', '').replace('U', '') != ""):
-        entries_mirnas = list(read_fasta(mirna))
+    if mirna_file:
+        entries_mirnas = list(read_fasta(mirna_file))
     else:
         entries_mirnas = [('from commandline', mirna)]
 
     entries_targets = []
-    if os.path.exists(target) and (target.upper().replace('A', '').replace('C', '').replace('G', '').replace('U', '') != ""):
-        entries_targets = read_fasta(target)
+    if target_file:
+        entries_targets = read_fasta(target_file)
     else:
         entries_targets = [('from commandline', target)]
 
@@ -171,12 +181,14 @@ def RNAhybrid(target, mirna, set, distribution, binpath, filter_minmax_seedlengt
         for res in zip(pool.map(wrap_process, tasks)):
             answers.extend(res[0])
 
-    # if (not stream_output) or (tasks != []):
-    #     answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue)
-    #     result_nr += print_answers(answers, result_nr, out=sys.stdout)
-    #
-    # print_summary(answers, len(targets), total_mirnas)
-    print_sam(answers, targets)
+    if (not stream_output) or (tasks != []):
+        answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue)
+        result_nr += print_answers(answers, result_nr, out=sys.stdout)
+
+    print_summary(answers, len(targets), total_mirnas)
+    if sam:
+        with open(sam, 'w') as s:
+            s.write(answers, targets)
 
 if __name__ == '__main__':
     RNAhybrid()
