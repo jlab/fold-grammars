@@ -210,10 +210,16 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
     ppS res;
     res.pos = 1;
     res.targetUnpaired = Rope("");
+    append(res.targetUnpaired, ' ', size(tregion));
+    append(res.targetUnpaired, " 3'", 3);
     res.targetStacked = Rope("");
+    append(res.targetStacked, ' ', size(tregion) + 1);
     res.mirnaStacked = Rope("");
-    res.mirnaUnpaired = Rope("");
+    append(res.mirnaStacked, ' ', size(tregion) + 1);
+    append_deep_rna(res.mirnaUnpaired, tregion);
+    append(res.mirnaUnpaired, " 5'", 3);
     res.pairs = Rope("");
+    append(res.pairs, ' ', size(tregion) + 1);
     return res;
   }
   ppS ult(<Subsequence qbase, Subsequence tloc>, ppS x) {
