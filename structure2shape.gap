@@ -24,7 +24,6 @@ algebra alg_enum auto enum ;
 algebra alg_count auto count ;
 algebra alg_tikz auto tikz;
 
-
 //copied from "Algebras/Shapes/alg_shapes.gap", replaced terminal data type alphabet with "char" and removed function not necessary in a NoDangle style grammar
 algebra alg_shapeX implements sig_db2shape(alphabet = char, answer = shape_t) {
   shape_t sadd(char b, shape_t x) {
