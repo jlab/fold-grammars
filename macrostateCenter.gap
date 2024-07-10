@@ -708,7 +708,6 @@ algebra alg_count auto count ;
 algebra alg_enum auto enum ;
 algebra alg_tikz auto tikz;
 
-
 include "Grammars/gra_macrostate_centers.gap"
 
 instance count = gra_macrostate_centers (alg_count);
