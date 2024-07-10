@@ -18,6 +18,7 @@ algebra alg_dotBracket_id extends alg_dotBracket {
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
+algebra alg_tikz auto tikz;
 
 include "Grammars/gra_microstate.gap"
 

@@ -17,6 +17,7 @@ include "Algebras/Shapes/alg_shapes.gap"
 include "Algebras/DotBracket/alg_dotBracket.gap"
 algebra alg_count auto count ;
 algebra alg_enum auto enum ;
+algebra alg_tikz auto tikz;
 
 include "Grammars/gra_macrostate.gap"
 

@@ -3,7 +3,7 @@ import "Extensions/rnaoptions_defaults.hh"
 type shape_t = shape
 
 //copied from "Signatures/sig_foldrna.gap", replaced terminal data type with "alphabet" and removed function not necessary in a NoDangle style grammar
-signature sig_db2shape(alphabet,answer) {
+signature sig_db2shape(alphabet, answer) {
 	answer sadd(alphabet,answer); //add one unpaired base
 	answer cadd(answer,answer); //adds one component, which has dangling bases from both sides, next component has a dangling base from left
 	answer nil(Subsequence); //empty structure
@@ -22,6 +22,7 @@ signature sig_db2shape(alphabet,answer) {
 
 algebra alg_enum auto enum ;
 algebra alg_count auto count ;
+algebra alg_tikz auto tikz;
 
 //copied from "Algebras/Shapes/alg_shapes.gap", replaced terminal data type alphabet with "char" and removed function not necessary in a NoDangle style grammar
 algebra alg_shapeX implements sig_db2shape(alphabet = char, answer = shape_t) {
