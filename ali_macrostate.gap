@@ -5,8 +5,6 @@ import "Extensions/probabilities.hh"
 import "Extensions/typesRNAfolding.hh"
 import "Extensions/shapes.hh"
 
-input rna
-
 type base_t = extern
 type Rope = extern
 type shape_t = shape
