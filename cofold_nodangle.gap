@@ -23,6 +23,7 @@ include "Algebras/Shapes/alg_shapes_rope.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
+algebra alg_tikz auto tikz;
 
 include "Algebras/MFE/alg_cofold_mfe.gap"
 include "Algebras/alg_cofold.gap"

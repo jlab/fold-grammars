@@ -18,7 +18,7 @@ acgucgaaauaaaugccuugucugcuauauucgacgcgagcuuaauauuuggggcc
 .[[[[[[[......{{{{{{.........]]]]]]].............}}}}}}.
 */
 
-signature sig_stack(alphabet,answer) {
+signature sig_stack(alphabet, answer) {
 	answer sr(Subsequence, answer, Subsequence);
 	answer end(Subsequence);
 	choice [answer] h([answer]);

@@ -1,6 +1,6 @@
-//Eine Partition Function für Pseudoknoten so wie wir sie definieren (pknotsRG) kann garnicht richtig sein, denn
-// 1) verwenden wir ja absichtlich nur canonische / repräsentative Pseudoknoten und nicht alle im Suchraum (potentiell müssten die Wahrscheinlichkeiten also unterschätzt werden)
-// 2) die Dangles von außen auf die beiden PK Stems werden nicht korrekt addiert. Um diese für MFE richtig berechnen zu können werden die Indizes der inneren Basenpaar-Partner mitgeschleppt um später den Dangle berechnen zu können. Bei Pfunc wird aber einfach die Summe über alle verschiedenen Indizes genommen und darauf dann nur EINE Art von Dangling berechnet!
+//Eine Partition Function fuer Pseudoknoten so wie wir sie definieren (pknotsRG) kann garnicht richtig sein, denn
+// 1) verwenden wir ja absichtlich nur canonische / repraesentative Pseudoknoten und nicht alle im Suchraum (potentiell muessten die Wahrscheinlichkeiten also unterschaetzt werden)
+// 2) die Dangles von aussen auf die beiden PK Stems werden nicht korrekt addiert. Um diese fuer MFE richtig berechnen zu koennen werden die Indizes der inneren Basenpaar-Partner mitgeschleppt um spaeter den Dangle berechnen zu koennen. Bei Pfunc wird aber einfach die Summe ueber alle verschiedenen Indizes genommen und darauf dann nur EINE Art von Dangling berechnet!
 // im Moment braucht das generierte Programm noch einen manuellen Schuppser: in X.hh muss folgendes an passender Stelle eingefuegt werden:
 //answer_pknot_pfunc operator+=(const answer_pknot_pfunc &other) const
 //{

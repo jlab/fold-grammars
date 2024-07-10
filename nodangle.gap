@@ -18,6 +18,7 @@ include "Algebras/Shapes/alg_shapes.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
+algebra alg_tikz auto tikz;
 
 include "Algebras/MFE/alg_mfe.gap"
 include "Algebras/MEA/alg_mea.gap"
@@ -26,6 +27,10 @@ include "Algebras/Probing/alg_probing.gap" //an algebra for integrating structur
 include "Algebras/MFE/alg_mfe_SHAPE.gap"
 
 include "Grammars/gra_nodangle.gap"
+
+/*
+example inputs: CACUGUAAAGCUAACUUAGCAUUAACCUUUUAAGUUAAAGAUUAAGAGAACCAACACCUCUUUACAGUGACCA
+*/
 
 //start: instances used in the FoldingSpaces paper
 instance shape5pfx = gra_nodangle ((alg_shape5 * alg_pfunc) suchthat filterLowProbShapes);
