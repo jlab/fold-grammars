@@ -23,6 +23,8 @@ include "Algebras/Pfunc/alg_ali_pfunc_macrostate.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
+algebra alg_tikz auto tikz;
+
 
 include "Algebras/MFE/alg_ali_mfe_macrostate.gap"
 

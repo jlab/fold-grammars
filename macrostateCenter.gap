@@ -12,7 +12,7 @@ type shape_t = shape
 type base_t = extern
 type Rope = extern
 
-signature sig_foldrna(alphabet,answer) {
+signature sig_foldrna(alphabet, answer) {
 	answer sadd(Subsequence,answer);
 	answer cadd(answer,answer);
 	answer cadd_Pr(answer,answer);
@@ -706,6 +706,8 @@ algebra alg_HairpinCenter implements sig_foldrna(alphabet = char, answer = strin
 
 algebra alg_count auto count ;
 algebra alg_enum auto enum ;
+algebra alg_tikz auto tikz;
+
 
 include "Grammars/gra_macrostate_centers.gap"
 

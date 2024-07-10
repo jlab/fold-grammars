@@ -26,8 +26,14 @@ include "Algebras/Probing/alg_probing_macrostate.gap" //an algebra for integrati
 
 algebra alg_count auto count ;
 algebra alg_enum auto enum ;
+algebra alg_tikz auto tikz;
+
 
 include "Grammars/gra_macrostate.gap"
+
+/*
+example inputs: CACUGUAAAGCUAACUUAGCAUUAACCUUUUAAGUUAAAGAUUAAGAGAACCAACACCUCUUUACAGUGACCA
+*/
 
 //start: instances used in the FoldingSpaces paper
 instance shape5pfx = gra_macrostate ((alg_shape5 * alg_pfunc) suchthat filterLowProbShapes);

@@ -17,6 +17,8 @@ include "Signatures/sig_pknot_foldrna.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
+algebra alg_tikz auto tikz;
+
 include "Algebras/DotBracket/alg_pknot_dotBracket.gap"
 include "Algebras/Shapes/alg_pknot_shapes.gap"
 algebra alg_pknot_dotBracket_id extends alg_pknot_dotBracket {

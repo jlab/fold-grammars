@@ -1,4 +1,4 @@
-signature sig_foldrna(alphabet,answer) {
+signature sig_foldrna(alphabet, answer) {
 	include "Signatures/Parts/sigpart_basic.gap"
 	
 //microstate extensions:

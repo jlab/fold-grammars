@@ -13,6 +13,7 @@ include "Algebras/DotBracket/alg_ali_outside_dotBracket.gap"
 
 algebra alg_ali_outside_count auto count;
 algebra alg_ali_outside_enum auto enum;
+algebra alg_tikz auto tikz;
 
 include "Algebras/MFE/alg_ali_outside_mfe.gap"
 include "Algebras/Pfunc/alg_ali_outside_pfunc.gap"
