@@ -12,7 +12,6 @@ algebra alg_outside_count auto count;
 algebra alg_outside_enum auto enum;
 algebra alg_tikz auto tikz;
 
-
 include "Algebras/MFE/alg_outside_mfe.gap"
 include "Algebras/Pfunc/alg_outside_pfunc.gap"
 
