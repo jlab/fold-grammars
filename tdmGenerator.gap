@@ -11,7 +11,6 @@ algebra alg_count auto count;
 algebra alg_enum auto enum;
 algebra alg_tikz auto tikz;
 
-
 include "Algebras/alg_tdm.gap" //provides 20 algebras to generate the B-GAP grammar code for a TDM: available grammars are nodangle, overdangle, microstate and macrostate. Available shape levels: 5 to 1. Naming: alg_tdm_GRAMMAR_LEVEL
 include "Grammars/gra_tdm.gap" //provides 6 grammars to parse a shape string of a specific level for an arbitraty grammar. Why 6 for 5 shape levels? Because grammars for level 4 and 3 are identical -1 and we need two special versions in level 1 for microstate and macrostate +2
 
