@@ -6,6 +6,7 @@
 
   In order to ensure that ViennaRNA -d1 and microstate and macrostate assign same energies, I here define a grammar generating RNA input sequences for amibiguous situations.
 */
+
 signature sig_genseq(alphabet, answer) {
   //answer mladldr(alphabet, answer, answer, answer, answer, alphabet);
   answer cadd_Amb_Amb(answer, answer);
