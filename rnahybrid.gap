@@ -707,6 +707,29 @@ algebra alg_probing implements sig_rnahybrid(alphabet = char, answer = double) {
   }
 }
 
+/*
+Example from Khorshid et al. (2013) Nat Methods
+targetRNA 5' guu       auc-       uuag 3'
+                uu-ugca    UUUGCAC
+                || ||||    |||||||
+                aa acgu    AAACGUG
+miRNA 3'      uc  a    aucu       u    5'
+           7         -7    7654321 
+
+The algebra alg_leftstacklen counts the number of successive basepairs in the 
+first=5' miRNA (right end of above figure with capital nucleotids). This stack 
+is called the "seed". 
+We aim to compute this information with a single signed int. The principle is 
+that each structure starts with one el() which counts as one basepair. 
+Directly additional sr() add one basepair. il(), bb() and bt() "break" this 
+helix. We indicate this by flipping the sign of the current value. 
+Once the value is negative, additional sr() do NOT add. 
+The outermost complete() reverts negative signs back.
+
+This is a classifying algebra, i.e. it does NOT filter the candidates, but puts
+them into differenc classes, typically 0 to ~18; depending on input lengths
+and composition.
+*/
 algebra alg_leftstacklen implements sig_rnahybrid(alphabet = char, answer = int) {
   int nil(<Subsequence qregion, Subsequence tregion>) {
     return 0;
@@ -768,6 +791,20 @@ algebra alg_leftstacklen implements sig_rnahybrid(alphabet = char, answer = int)
     return unique(i);
   }
 }
+
+/*
+The algebra alg_khorshid extends the algebra alg_leftstacklen in the sense of
+additionally classifying by the number of nucleotids in an internal loop or
+bulge directly following (i.e. left of in the example structure) in 5'->3' 
+direction to the seed helix. We here use a two signed int tuple for the answer
+type. Thus, classification occures on two components. Unfortunately, the gapc 
+automatically generated tuple type lacks the correct == operator. We thus had
+to move this code into Extendsions/rnahybrid.hh and import it at the beginning
+of this file.
+
+The name of this algebra refers to the first author of the Khorshid et al. 
+(2013) Nat Methods paper, which elaborates on seed and bulge for miRNAs.
+*/
 algebra alg_khorshid implements sig_rnahybrid(alphabet = char, answer = khorshid) {
   khorshid nil(<Subsequence qregion, Subsequence tregion>) {
     khorshid res;
@@ -791,27 +828,21 @@ algebra alg_khorshid implements sig_rnahybrid(alphabet = char, answer = khorshid
     return x;
   }
   khorshid sr(<Subsequence qbase, Subsequence tbase>, khorshid x) {
-    khorshid res;
-    res.leftstacklen = x.leftstacklen;
-    res.mirnabuldgelen = x.mirnabuldgelen;
+    khorshid res = x;
     if (res.leftstacklen >= 0) {
       res.leftstacklen = res.leftstacklen + 1;
     }
     return res;
   }  
   khorshid bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, khorshid x) {
-    khorshid res;
-    res.leftstacklen = x.leftstacklen;
-    res.mirnabuldgelen = x.mirnabuldgelen;
+    khorshid res = x;
     if (res.leftstacklen >= 0) {
       res.leftstacklen = res.leftstacklen * -1;
     }
     return res;
   }
   khorshid bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, khorshid x) {
-    khorshid res;
-    res.leftstacklen = x.leftstacklen;
-    res.mirnabuldgelen = x.mirnabuldgelen;
+    khorshid res = x;
     if (res.leftstacklen >= 0) {
       res.leftstacklen = res.leftstacklen * -1;
       if (res.mirnabuldgelen >= 0) {
@@ -821,9 +852,7 @@ algebra alg_khorshid implements sig_rnahybrid(alphabet = char, answer = khorshid
     return res;
   }
   khorshid il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, khorshid x) {
-    khorshid res;
-    res.leftstacklen = x.leftstacklen;
-    res.mirnabuldgelen = x.mirnabuldgelen;
+    khorshid res = x;
     if (res.leftstacklen >= 0) {
       res.leftstacklen = res.leftstacklen * -1;
       if (res.mirnabuldgelen >= 0) {
@@ -839,9 +868,7 @@ algebra alg_khorshid implements sig_rnahybrid(alphabet = char, answer = khorshid
     return res;
   }
   khorshid complete(khorshid x) {
-    khorshid res;
-    res.leftstacklen = x.leftstacklen;
-    res.mirnabuldgelen = x.mirnabuldgelen;
+    khorshid res = x;
     if (res.leftstacklen < 0) {
       res.leftstacklen = -1 * res.leftstacklen;
     }
