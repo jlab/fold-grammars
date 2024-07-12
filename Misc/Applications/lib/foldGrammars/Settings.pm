@@ -6,19 +6,19 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'rnashapes', 				 {date => '21.04.2021', version => '3.3.2', name => 'RNAshapes', packageDir => 'RNAshapes/'},
-	'rnaalishapes', 		 {date => '21.04.2021', version => '2.4.9', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
-	'pkiss', 						 {date => '21.04.2021', version => '2.2.14', name => 'pKiss', packageDir => 'pKiss/'},
-	'palikiss',					 {date => '21.04.2021', version => '1.0.9', name => 'pAliKiss', packageDir => 'pAliKiss/'},
-	'libfoldgrammars', 	 {date => '21.04.2021', version => '1.2.1', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
-	'rapidshapes', 			 {date => '21.04.2021', version => '2.0.11', name => 'RapidShapes', packageDir => 'RapidShapes/'},
-	'knotinframe', 			 {date => '04.11.2021', version => '2.1.0', name => 'knotinframe', packageDir => 'Knotinframe/'},
-	'rapidshapestest', 	 {date => '21.04.2021', version => '2.1.1', name => 'RapidShapes-Test'},
-	'getoutsidetruth', 	 {date => '19.04.2013', version => '1.0.1', name => 'getOutsideTruth'},
-	'acms',							 {date => '21.03.2015', version => '1.2.2', name => 'acms', packageDir => 'aCMs/'},
-	'acmbuild', 				 {date => '21.11.2014', version => '1.1.2', name => 'acmbuild'},
-	'acmsearch', 				 {date => '21.11.2014', version => '1.1.2', name => 'acmsearch'},
-	'locomotif_wrapper', {date => '16.01.2015', version => '1.0.1', name => 'Locomotif_wrapper'},
+    'rnashapes',         {date => '21.04.2021', version => '3.4.0', name => 'RNAshapes', packageDir => 'RNAshapes/'},
+    'rnaalishapes',      {date => '21.04.2021', version => '2.5.0', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
+    'pkiss',             {date => '21.04.2021', version => '2.3.0', name => 'pKiss', packageDir => 'pKiss/'},
+    'palikiss',          {date => '21.04.2021', version => '1.1.0', name => 'pAliKiss', packageDir => 'pAliKiss/'},
+    'libfoldgrammars',   {date => '21.04.2021', version => '1.3.0', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
+    'rapidshapes',       {date => '21.04.2021', version => '2.1.0', name => 'RapidShapes', packageDir => 'RapidShapes/'},
+    'knotinframe',       {date => '04.11.2021', version => '2.2.0', name => 'knotinframe', packageDir => 'Knotinframe/'},
+    'rapidshapestest',   {date => '21.04.2021', version => '2.2.0', name => 'RapidShapes-Test'},
+    'getoutsidetruth',   {date => '19.04.2013', version => '1.1.0', name => 'getOutsideTruth'},
+    'acms',              {date => '21.03.2015', version => '1.3.0', name => 'acms', packageDir => 'aCMs/'},
+    'acmbuild',          {date => '21.11.2014', version => '1.2.0', name => 'acmbuild'},
+    'acmsearch',         {date => '21.11.2014', version => '1.2.0', name => 'acmsearch'},
+    'locomotif_wrapper', {date => '16.01.2015', version => '1.1.0', name => 'Locomotif_wrapper'},
 );
 
 
