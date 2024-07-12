@@ -19,7 +19,6 @@ build-stamp:
 
 	# Add here commands to compile the package.
 	pwd
-	ls -la
 	$(MAKE) -C libfoldgrammars/Misc/Applications/lib install PREFIX=`pwd`/debian/`dh_listpackages`/usr INSTALLDIR=/usr
 
 	touch build-stamp
@@ -31,6 +30,7 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	pwd
+	ls -la
 	$(MAKE) -C libfoldgrammars/Misc/Applications/lib/ clean
 
 	dh_clean
