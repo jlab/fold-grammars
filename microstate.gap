@@ -18,6 +18,7 @@ include "Algebras/Shapes/alg_shapes.gap"
 
 algebra alg_count auto count;
 algebra alg_enum auto enum;
+algebra alg_tikz auto tikz;
 
 include "Algebras/MFE/alg_mfe.gap"
 include "Algebras/MEA/alg_mea.gap"
@@ -31,6 +32,10 @@ algebra alg_mfe_id extends alg_mfe {
 }
 
 include "Grammars/gra_microstate.gap"
+
+/*
+example inputs: CACUGUAAAGCUAACUUAGCAUUAACCUUUUAAGUUAAAGAUUAAGAGAACCAACACCUCUUUACAGUGACCA
+*/
 
 //start: instances used in the FoldingSpaces paper
 instance shape5pfx = gra_microstate ((alg_shape5 * alg_pfunc) suchthat filterLowProbShapes);
