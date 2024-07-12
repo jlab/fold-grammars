@@ -184,6 +184,12 @@ GAPC="$BASE/bin/gapc --tab-all --kbacktrace -I../../../../"
 RUN_CPP_FLAGS=""
 check_new_old_eq rnahybrid.gap rna mfepp `head -c 40000 < /dev/zero | tr '\0' 'A'`C rnahybrid_exceededstack CCCCCCCCCCCCCCCCCCCCCG
 
+GAPC="$BASE/bin/gapc --tab-all --kbacktrace --no-coopt-class -I../../../../"
+check_new_old_eq rnahybrid.gap twotrack khorshid cCUAaACAACCUGCUcCCUCu rnahybrid_khorshid uuGAUaUGUUGGAUGAaGGAGu
+
+GAPC="$BASE/bin/gapc --tab-all --kbacktrace --no-coopt-class -I../../../../"
+check_new_old_eq rnahybrid.gap twotrack stacklen cCUAaACAACCUGCUcCCUCu rnahybrid_stacklen uuGAUaUGUUGGAUGAaGGAGu
+
 GAPC="$BASE/bin/gapc -t -I../../../../ --checkpoint"
 check_checkpoint_eq rnahybrid.gap rna probingmfepp CGGCGCGUAUUCCGUUGCAUAAGUGuagcugaugcguaugcuguga rnahybrid_checkpoint_probingmfepp UGCAAAAAAAGUGGAAGACGUAUCGAGAUUUGUGCGUCUGAUCGAGACAUGUUUAAAAAUGGCUUGCCAUAAUUAACGUUGUAUGUGAUAACAGAUUUCGGGUUAAACGAGGUACAGUUCUGUUUAUGUGUGGCAUUUUCAGUAAAGAAGUCCUGAGUAAACACGUUGA 1 ../../KatharinaStyle/yopf.shape
 
