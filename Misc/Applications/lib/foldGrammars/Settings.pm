@@ -84,7 +84,13 @@ our $MODE_ACM = 'acm'; #single and thus default mode for ACMs
 
 our $MODE_LOCOMOTIF = 'locomotif'; #single and thus default mode for the perl wrapper for locomotif, to present matcher results with my standard format
 
-our $ARCHTRIPLE = qx($BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
+# we might not have a compiler available, e.g. in bioconda builds. In these situations, default to "undefGCC" for ARCHTRIPLE,
+# which is basically pointing to the tmp directories of gapc compile products. These should have been moved
+# to PREFIX/bin via make install, anyway.
+our $ARCHTRIPLE = 'undefGCC';
+if (qx(which $BINARIES{gcc}) ne '') {
+  $ARCHTRIPLE = qx($BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
+}
 our $RNAPARAM1999 =  $Settings::bgapDir.$fileseparater.'share/gapc/librna/rna_turner1999.par';
 our $RNAPARAM2004 = $Settings::bgapDir.$fileseparater.'share/gapc/librna/rna_turner2004.par';
 
