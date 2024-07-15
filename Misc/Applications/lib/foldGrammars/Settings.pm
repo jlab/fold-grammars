@@ -6,19 +6,19 @@ use warnings;
 package Settings;
 
 our %PROGINFOS = (
-	'rnashapes', 				 {date => '21.04.2021', version => '3.3.2', name => 'RNAshapes', packageDir => 'RNAshapes/'},
-	'rnaalishapes', 		 {date => '21.04.2021', version => '2.4.9', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
-	'pkiss', 						 {date => '21.04.2021', version => '2.2.14', name => 'pKiss', packageDir => 'pKiss/'},
-	'palikiss',					 {date => '21.04.2021', version => '1.0.9', name => 'pAliKiss', packageDir => 'pAliKiss/'},
-	'libfoldgrammars', 	 {date => '21.04.2021', version => '1.2.1', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
-	'rapidshapes', 			 {date => '21.04.2021', version => '2.0.11', name => 'RapidShapes', packageDir => 'RapidShapes/'},
-	'knotinframe', 			 {date => '04.11.2021', version => '2.1.0', name => 'knotinframe', packageDir => 'Knotinframe/'},
-	'rapidshapestest', 	 {date => '21.04.2021', version => '2.1.1', name => 'RapidShapes-Test'},
-	'getoutsidetruth', 	 {date => '19.04.2013', version => '1.0.1', name => 'getOutsideTruth'},
-	'acms',							 {date => '21.03.2015', version => '1.2.2', name => 'acms', packageDir => 'aCMs/'},
-	'acmbuild', 				 {date => '21.11.2014', version => '1.1.2', name => 'acmbuild'},
-	'acmsearch', 				 {date => '21.11.2014', version => '1.1.2', name => 'acmsearch'},
-	'locomotif_wrapper', {date => '16.01.2015', version => '1.0.1', name => 'Locomotif_wrapper'},
+    'rnashapes',         {date => '12.07.2024', version => '3.4.0', name => 'RNAshapes', packageDir => 'RNAshapes/'},
+    'rnaalishapes',      {date => '12.07.2024', version => '2.5.0', name => 'RNAalishapes', packageDir => 'RNAalishapes/'},
+    'pkiss',             {date => '12.07.2024', version => '2.3.0', name => 'pKiss', packageDir => 'pKiss/'},
+    'palikiss',          {date => '12.07.2024', version => '1.1.0', name => 'pAliKiss', packageDir => 'pAliKiss/'},
+    'libfoldgrammars',   {date => '12.07.2024', version => '1.3.0', name => 'libfoldgrammars', packageDir => 'libfoldGrammars/'},
+    'rapidshapes',       {date => '12.07.2024', version => '2.1.0', name => 'RapidShapes', packageDir => 'RapidShapes/'},
+    'knotinframe',       {date => '12.07.2024', version => '2.2.0', name => 'knotinframe', packageDir => 'Knotinframe/'},
+    'rapidshapestest',   {date => '21.04.2021', version => '2.2.0', name => 'RapidShapes-Test'},
+    'getoutsidetruth',   {date => '19.04.2013', version => '1.1.0', name => 'getOutsideTruth'},
+    'acms',              {date => '12.07.2024', version => '1.3.0', name => 'acms', packageDir => 'aCMs/'},
+    'acmbuild',          {date => '12.07.2024', version => '1.3.0', name => 'acmbuild'},
+    'acmsearch',         {date => '12.07.2024', version => '1.3.0', name => 'acmsearch'},
+    'locomotif_wrapper', {date => '16.01.2015', version => '1.1.0', name => 'Locomotif_wrapper'},
 );
 
 
@@ -84,7 +84,13 @@ our $MODE_ACM = 'acm'; #single and thus default mode for ACMs
 
 our $MODE_LOCOMOTIF = 'locomotif'; #single and thus default mode for the perl wrapper for locomotif, to present matcher results with my standard format
 
-our $ARCHTRIPLE = qx($BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
+# we might not have a compiler available, e.g. in bioconda builds. In these situations, default to "undefGCC" for ARCHTRIPLE,
+# which is basically pointing to the tmp directories of gapc compile products. These should have been moved
+# to PREFIX/bin via make install, anyway.
+our $ARCHTRIPLE = 'undefGCC';
+if (qx(which $BINARIES{gcc}) ne '') {
+  $ARCHTRIPLE = qx($BINARIES{gcc} -dumpmachine); chomp $ARCHTRIPLE;
+}
 our $RNAPARAM1999 =  $Settings::bgapDir.$fileseparater.'share/gapc/librna/rna_turner1999.par';
 our $RNAPARAM2004 = $Settings::bgapDir.$fileseparater.'share/gapc/librna/rna_turner2004.par';
 

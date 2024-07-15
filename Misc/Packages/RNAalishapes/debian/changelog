@@ -1,3 +1,66 @@
+rnaalishapes (2.5.0-0ubuntu1~oracular1) oracular; urgency=medium
+
+  * underlying bellman's GAPc was updated such that
+    - thermodynamic parameters where updated to be en par with ViennaRNA 2.5.1
+    - mk_pf() and scale() repretitive computation is cached to speed up
+      probability computations, thanks Fynn Muermanns!
+
+   -- Algorithmic Bioinformatics, Justus Liebig University Giessen, Germany <stefan.janssen@computational.bio.uni-giessen.de>  Fri, 12 Jul 2024 11:00:00 +0200
+
+rnaalishapes (2.5.0-0ubuntu1~noble1) noble; urgency=medium
+
+  * underlying bellman's GAPc was updated such that
+    - thermodynamic parameters where updated to be en par with ViennaRNA 2.5.1
+    - mk_pf() and scale() repretitive computation is cached to speed up
+      probability computations, thanks Fynn Muermanns!
+
+   -- Algorithmic Bioinformatics, Justus Liebig University Giessen, Germany <stefan.janssen@computational.bio.uni-giessen.de>  Fri, 12 Jul 2024 11:00:00 +0200
+
+rnaalishapes (2.5.0-0ubuntu1~mantic1) mantic; urgency=medium
+
+  * underlying bellman's GAPc was updated such that
+    - thermodynamic parameters where updated to be en par with ViennaRNA 2.5.1
+    - mk_pf() and scale() repretitive computation is cached to speed up
+      probability computations, thanks Fynn Muermanns!
+
+   -- Algorithmic Bioinformatics, Justus Liebig University Giessen, Germany <stefan.janssen@computational.bio.uni-giessen.de>  Fri, 12 Jul 2024 11:00:00 +0200
+
+rnaalishapes (2.5.0-0ubuntu1~jammy1) jammy; urgency=medium
+
+  * underlying bellman's GAPc was updated such that
+    - thermodynamic parameters where updated to be en par with ViennaRNA 2.5.1
+    - mk_pf() and scale() repretitive computation is cached to speed up
+      probability computations, thanks Fynn Muermanns!
+
+   -- Algorithmic Bioinformatics, Justus Liebig University Giessen, Germany <stefan.janssen@computational.bio.uni-giessen.de>  Fri, 12 Jul 2024 11:00:00 +0200
+
+rnaalishapes (2.5.0-0ubuntu1~focal1) focal; urgency=medium
+
+  * underlying bellman's GAPc was updated such that
+    - thermodynamic parameters where updated to be en par with ViennaRNA 2.5.1
+    - mk_pf() and scale() repretitive computation is cached to speed up
+      probability computations, thanks Fynn Muermanns!
+
+   -- Algorithmic Bioinformatics, Justus Liebig University Giessen, Germany <stefan.janssen@computational.bio.uni-giessen.de>  Fri, 12 Jul 2024 11:00:00 +0200
+
+rnaalishapes (2.5.0-0ubuntu1~bionic1) bionic; urgency=medium
+
+  * underlying bellman's GAPc was updated such that
+    - thermodynamic parameters where updated to be en par with ViennaRNA 2.5.1
+    - mk_pf() and scale() repretitive computation is cached to speed up
+      probability computations, thanks Fynn Muermanns!
+
+   -- Algorithmic Bioinformatics, Justus Liebig University Giessen, Germany <stefan.janssen@computational.bio.uni-giessen.de>  Fri, 12 Jul 2024 11:00:00 +0200
+
+rnaalishapes (2.5.0-0ubuntu1~xenial1) xenial; urgency=medium
+
+  * underlying bellman's GAPc was updated such that
+    - thermodynamic parameters where updated to be en par with ViennaRNA 2.5.1
+    - mk_pf() and scale() repretitive computation is cached to speed up
+      probability computations, thanks Fynn Muermanns!
+
+   -- Algorithmic Bioinformatics, Justus Liebig University Giessen, Germany <stefan.janssen@computational.bio.uni-giessen.de>  Fri, 12 Jul 2024 11:00:00 +0200
+
 rnaalishapes (2.4.7-0ubuntu1~utopic1) utopic; urgency=medium
 
   * minor update
