@@ -17,18 +17,19 @@ install-program:
 	$(INSTALL) -m 755 $(ARCHTRIPLE)/* $(PREFIX)/bin;
 	$(INSTALL) -m 755 RNAshapes $(PREFIX)/bin
 
+# --tab-all makes a huge practical speedup: miRNA against half of corona genome: from 221s to 4s!
 mfe: mfe_rnahybrid
 mfe_%:
 	$(MAKE) compile \
-		gapc_product="alg_mfe * alg_pretty" \
-		gapc_options="--kbacktrace --no-coopt $(windowmodeflag)" \
+		gapc_product="alg_mfe * alg_prettySophie" \
+		gapc_options="--tab-all --kbacktrace --no-coopt $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
 
 subopt: subopt_rnahybrid
 subopt_%:
 	$(MAKE) compile \
-		gapc_product="alg_mfe_subopt * alg_pretty" \
+		gapc_product="alg_mfe_subopt * alg_prettySophie" \
 		gapc_options="--kbacktrace $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";
@@ -36,7 +37,7 @@ subopt_%:
 probing: probing_rnahybrid
 probing_%:
 	$(MAKE) compile \
-		gapc_product="(alg_probing ^ alg_mfe) * alg_pretty" \
+		gapc_product="(alg_probing ^ alg_mfe) * alg_prettySophie" \
 		gapc_options="--kbacktrace $(windowmodeflag)" \
 		gapc_file="${*}.gap" \
 		gapc_binaryname="$@$(current_windowmodesuffix)";

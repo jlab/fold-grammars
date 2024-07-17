@@ -1,18 +1,18 @@
 This work was packaged for Debian by:
 
-    Bielefeld BioInformatics Service <bibi-help@cebitec.uni-bielefeld.de> on Sat, 11 Mar 2013 17:48:38 +0200
+    Algorithmic Bioinformatics, Justus Liebig University Giessen, Germany <stefan.janssen@computational.bio.uni-giessen.de> on Fri, 12 Jul 2024 11:00:00 +0200
 
 It was downloaded from:
 
-    <http://bibiserv.cebitec.uni-bielefeld.de/rapidshapes/>
+    <https://github.com/jlab/fold-grammars>
 
 Upstream Author(s):
 
-	Stefan Janssen <sjanssen@cebitec.uni-bielefeld.de>
+    Stefan Janssen <stefan.janssen@computational.bio.uni-giessen.de>
 
 Copyright:
 
-    <Copyright (C) 2013 Stefan Janssen>
+    <Copyright (C) 2024 Stefan Janssen>
 
 License:
 
@@ -34,7 +34,7 @@ Public License version 3 can be found in `/usr/share/common-licenses/GPL-3'.
 
 The Debian packaging is:
 
-    Copyright (C) 2013 Stefan Janssen <sjanssen@cebitec.uni-bielefeld.de>
+    Copyright (C) 2024 Stefan Janssen <stefan.janssen@computational.bio.uni-giessen.de>
 
 and is licensed under the GPL version 3, see above.
 
