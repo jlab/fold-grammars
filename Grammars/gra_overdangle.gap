@@ -1,13 +1,19 @@
-//this is the grammar Jens Reeder used as a base for in pknotsRG and in his early version of shape matchers
+/*
+This grammar is essentially is a copy of "gra_nodangle", but we want to keep 
+names speaking. The difference stems from different MFE or partition function 
+algebras, not different grammars! Those differences are realized by overloading 
+the few according functions in the main GAP-L file "overdangle.gap", not by 
+different algebra files.
 
-//  For consistency with MacroState nil has a LOC terminal parser instead of an EMPTY terminal parser.
-//applying "basepair" instead of the build-in "basepairing" or "stackpairing" to be general enough to handle single sequence and alignment predictions. Remember to import singlefold.hh or alifold.hh!
-
-// the "with unpaired" filters are only interesting for RNAeval like instances; for singlefold or alifold they always return true. In evalfold the are false if the given position pairs with some other, thus only '.' returns true
-
-
+This is the grammar Jens Reeder used as a base in pknotsRG and in his early
+version of shape matchers.
+*/
 grammar gra_overdangle uses sig_foldrna(axiom = struct) {
-	include "Grammars/Parts/grapart_basic.gap"
-	dangle    = dall(LOC, strong, LOC) # h;
-    multiloop = mlall(BASE, ml_comps, BASE) with basepair # h;
+  include "Grammars/Parts/grapart_basic.gap"
+
+  dangle    = dall(LOC, strong, LOC)
+            # h;
+
+  multiloop = mlall(BASE, ml_comps, BASE) with basepair
+            # h;
 }
