@@ -4,7 +4,7 @@
   // returns true
 
   // SMJ 2012-11-09: For consistency with grammar MacroState, nil has a LOC 
-                     terminal parser instead of an EMPTY terminal parser.
+  //                 terminal parser instead of an EMPTY terminal parser.
 
   struct    = sadd(BASE with unpaired, struct)
             | cadd(dangle, struct)
