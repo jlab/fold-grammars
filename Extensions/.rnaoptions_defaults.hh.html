@@ -1,6 +1,0 @@
-There are two usecases for compiling RNA programs from this package:
-<ol>
-<li>You combine existing components or your new components to implement an algorithm for a new problem; or you simply want to directly get your hands on manual execution of <code>gapc</code>. Passing command line argument into this programs is not necessary, because you are happy with some defaults.</li>
-<li>You developed some instances and want to deploy them with the ability to accept some arguments.</li>
-</ol>
-To serve both usecases &quot;rnaoptions_defaults.hh&quot; comes with defaults for all arguments, as well as the functions to pass them into the generated recursions. What to use can be set by a -D g++ flag <code>WITH_RNAOPTIONS</code>. To ensure that one or the other is used, &quot;rnaoptions_defaults.hh&quot; is imported by <a href="?id=singlefold.hh">Extensions/singlefold.hh</a> and <a href="?id=alifold.hh">Extensions/alifold.hh</a>; one of which must be imported by your program.

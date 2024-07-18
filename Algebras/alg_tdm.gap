@@ -1,3 +1,36 @@
+/*
+  A thermodynamic matcher (TDM) is a specialized RNA folding program. Instead
+  of spanning the complete search space of general RNA folding, a TDM spans only
+  a defined subset of it. This subset might be defined via a graphical
+  description (see http://bioinformatics.oxfordjournals.org/cgi/content/abstract/23/13/i392:
+  "Locomotif: From Graphical Motif Description to RNA Motif Search") or via a
+  shape string (see http://bioinformatics.oxfordjournals.org/content/26/5/632.short: 
+  "Faster computation of exact RNA shape probabilities).
+
+  "alg_tdm" is for the later one. Given a shape string of a specific shape
+  level, we have to generate a specialized grammar out of one of the four
+  prototype grammars "gra_nodangle" "gra_overdangle" "gra_microstate" or
+  "gra_macrostate". This process itself is done with a GAP-L program. So one
+  could say a GAP program generates a GAP program. Due to modularity it only
+  generates the grammar, algebras, signatures and instances could simply be
+  re-used.
+
+  After the given shape string has been parsed by one of the grammars from
+  "gra_tdm", the candidate(s) must be transformed into a GAP-L grammar, which
+  is specialized to enumerate only those RNA structures that fold into the
+  given shape. All 20 (4 grammars * 5 levels) algebras, defined in this file,
+  are for that transformation. To avoid duplication of rules in the generated
+  grammars, we use the special data type "rules.hh". We heavily use "extends"
+  to avoid implementing the same functions several times. E.g. the algebras
+  for the nodangle prototype are identical to overdangle algebras, except the
+  "convert" function, which sets the name of the grammar.
+
+  For TDMs the rules must be indexed. We do so by using sub-shape strings, but
+  have to convert "[" to "L" and "]" to "J" characters to fit GAP-L's
+  requirements for valid non-terminal identifiers.
+
+  Please have a look at the application RapidShapes, to see TDMs in action.
+*/
 algebra alg_tdm_overdangle_5 implements sig_tdm(alphabet = char, answer = rules, output = Rope) {
   Rope convert(rules x) { // levels: all = converts rules into a Rope and adds header and footer to be a GAP-L grammar
 	return "grammar gra_overdangle uses sig_foldrna(axiom = struct) {\n" + toRope(x) + "}\n";

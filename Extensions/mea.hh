@@ -3,6 +3,10 @@
 
 #include <utility>
 
+/*
+  The Maximum Expected Accuracy (MEA) secondary structure is the one holding
+  the most base-pair probability weight as possible.
+*/
 extern double **bpprobs;
 
 inline double getBPprob(const TUSubsequence &leftBase,

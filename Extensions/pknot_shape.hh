@@ -1,6 +1,13 @@
 #ifndef PKNOT_SHAPE_HH
 #define PKNOT_SHAPE_HH
 
+/*
+  defines a special alphabet for "alg_ali_shapes" shape class computation for
+  pseudoknots. It also provides functions to inspect "front", "back" and "tail"
+  of a shape string. This is mainly necessary on concatenation of level 1
+  shapes, if their interface both have and underscore, representing unpaired
+  bases.
+*/
 template <typename alphabet, typename pos_type, typename T>
 inline bool midsize(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j,
                     int a, int l) {

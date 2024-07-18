@@ -3,6 +3,21 @@
 
 #include "rnaoptions_defaults.hh"
 
+/*
+  singlefold.hh" is a little hack to save code duplication. The only difference
+  between a grammar for single sequence input and "alignment input" is the
+  base-pairing filter. We use the special "pair" function, which does different
+  things for both input types. For the single sequence input it just calls the
+  GAP built-in "basepairing" filter.
+  
+  Should you also want to use this trick, ensure to insert the line
+  import "Extensions/singlefold.hh
+  or
+  import "Extensions/alifold.hh"
+  in your BGAP program for single sequence inputs or alignment inputs,
+  respectively.
+*/
+
 template <typename alphabet, typename pos_type, typename T>
 inline bool basepair(const Basic_Sequence<alphabet, pos_type> &seq, T i, T j) {
   return basepairing(seq, i, j);

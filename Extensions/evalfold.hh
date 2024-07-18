@@ -1,14 +1,16 @@
 #ifndef EVALFOLD_HH
 #define EVALFOLD_HH
 
-// this file is for RNAeval behavior for GAP programs: first input is the RNA
-// sequence, second input must be a structure in dotBracket format. The idea is
-// to "abuse" the basepair filter such that it only allows for the right
-// positions to pair. In addition, BASE or REGION must enforce to be unpaired,
-// otherwise we get a set of structure with all or just some of the given
-// basepairs. out_main.cc must be modified to pass the second input to the
-// global Pairs object and remove it before the real algorithm starts. Do this
-// via the addRNAoptions.pl script!
+/*
+  this file is for RNAeval behavior for GAP programs: first input is the RNA
+  sequence, second input must be a structure in dotBracket format. The idea is
+  to "abuse" the basepair filter such that it only allows for the right
+  positions to pair. In addition, BASE or REGION must enforce to be unpaired,
+  otherwise we get a set of structure with all or just some of the given
+  basepairs. out_main.cc must be modified to pass the second input to the
+  global Pairs object and remove it before the real algorithm starts. Do this
+  via the addRNAoptions.pl script!
+*/
 
 #include <vector>
 #include <map>

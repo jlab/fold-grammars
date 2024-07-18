@@ -1,3 +1,5 @@
+// The concrete shape abstraction level can be given as command line
+// parameter "-u".
   shape_t cadd_Pr(shape_t le,shape_t re) {
     return le + re;
   }

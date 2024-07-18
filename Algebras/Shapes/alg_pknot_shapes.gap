@@ -1,18 +1,30 @@
+/*
+  With "alg_pknot_shapes" we carry over the idea of shape abstraction to
+  pseudoknots. We define the same five levels of abstraction, but the shape
+  strings will have a slightly different look. To retain the crossing stem
+  indication by special types of brackets, we now use normal parentheses
+  "( )" for nested sub-structures, square brackets "[ ]" for alpha helices,
+  curly brackets "{ }" for beta helices and angle brackets "< >" for gamma
+  helices of pseudoknots.
+
+  You will find the five "normal" algebras plus a unifying "alg_pknot_shapeX"
+  version.
+*/
 algebra alg_pknot_shapeX implements sig_pknot_foldrna(alphabet = char, answer = shape_t, compKnot = shape_t) {
-	include "Algebras/Shapes/Parts/algpart_shapeX_basic.gap"
-	include "Algebras/Shapes/Parts/algpart_shapeX_knot.gap"
+  include "Algebras/Shapes/Parts/algpart_shapeX_basic.gap"
+  include "Algebras/Shapes/Parts/algpart_shapeX_knot.gap"
 }
 
 algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, answer = shape_t, compKnot = shape_t) {
-	include "Algebras/Shapes/Parts/algpart_shape5_basic.gap"
-	
+  include "Algebras/Shapes/Parts/algpart_shape5_basic.gap"
+
   shape_t pk(shape_t x) {
     return x;
   }
 
   shape_t pknot(Subsequence a, shape_t frt, Subsequence b, shape_t mid, Subsequence at, shape_t bck, Subsequence bt; int stackenergies) {
     shape_t res;
-	  
+
     append(res, '[');
     append(res, frt);
     append(res, '{');
@@ -20,7 +32,7 @@ algebra alg_pknot_shape5 implements sig_pknot_foldrna(alphabet = char, answer = 
     append(res, ']');
     append(res, bck);
     append(res, '}');
-	  
+
     return res;
   }
 

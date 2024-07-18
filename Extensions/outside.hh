@@ -3,6 +3,11 @@
 
 #include <limits>
 
+/*
+  The following code are basically C++ macros to alter the default output
+  behavior of a Bellman's GAP program. Instead of an answer list, a PostScript
+  file is generated, holding all base-pair probabilities in form of a Dot-Plot.
+*/
 extern double **bpprobs;
 
 // following is everything do draw Vienna dot plots:

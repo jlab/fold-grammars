@@ -1,4 +1,11 @@
-//computes csrPKs, given just left and right borders of the subword, namely i and j BUT (this is the difference to help_pknot_free_kl) saves results in a three dimensional table, for Strategy B
+  // The overlay of two optimal pseudoknots must not necessarily yield an 
+  // optimal kissing hairpin, since the overlay idea violates Bellman's 
+  // principle of optimality. Thus the combination of two suboptimal 
+  // pseudoknots might result in an energetically better kissing hairpin. 
+  // This knowledge is the basis for "Strategy B". This modification leads to 
+  // higher memory consumption to store certain suboptimal pseudoknots.
+
+  // computes csrPKs, given just left and right borders of the subword, namely i and j BUT (this is the difference to help_pknot_free_kl) saves results in a three dimensional table, for Strategy B
   help_pknot_free_hk_3D = 
     .[
       int i = t_0_i;

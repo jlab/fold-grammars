@@ -32,7 +32,10 @@ Known problems with algebra mfe for grammar MacroState:
    MacroStates candidate for the structure is cadd(edlr(U,sr(C,hl(C,G,GUG,C,G),G),G),nil())
    For edlr the energy tables of external mismatches is consulted in Turner2004 which are significant different from dl_dangle and dr_dangle. In Turner 1999 edlr is just the sum of dl_dangle and dr_dangle.
 */
-
+/*
+  "alg_mfe_macrostate" is the same as "alg_mfe", but with a four-tuple as answer
+  type.
+*/
 algebra alg_mfe implements sig_foldrna(alphabet = char, answer = answer_macrostate_mfe) {
   answer_macrostate_mfe sadd(Subsequence lb,answer_macrostate_mfe e) {
     answer_macrostate_mfe res;

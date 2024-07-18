@@ -1,5 +1,9 @@
-//innards for computing H-type pseudoknots
-  //computes csrPKs, given just left and right borders of the subword, namely i and j
+  // This grammar part is responsible for the index hacking for pknotsRG knots 
+  // (pseudoknots cannot be modeled by tree grammars in principal, thus we take
+  // a subword an manually subdivide it into necessary parts)
+  
+  // innards for computing H-type pseudoknots
+  // computes csrPKs, given just left and right borders of the subword, namely i and j
   help_pknot_free_hk =
     .[
       int i = t_0_i;
@@ -48,4 +52,4 @@
        stackenergies) 
       }.
     } # hKnot;     
-//end: innards for computing H-type pseudoknots
+  // end: innards for computing H-type pseudoknots

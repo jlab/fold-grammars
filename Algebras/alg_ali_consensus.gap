@@ -1,7 +1,17 @@
+/*
+  "alg_ali_consensus": given an alignment, this algebra computes a consensus
+  sequence. It simply is the most frequent character at each position. Should
+  several different characters appear with maximal frequency they are sorted
+  according to the GAP-L internal enumeration construct, which currently is
+  "enum base_t {N_BASE, A_BASE, C_BASE, G_BASE, U_BASE, GAP_BASE }", and the
+  first is selected.
+
+  The real magic is externalized in the file "alifold.hh".
+*/
 algebra alg_ali_consensus implements sig_foldrna(alphabet = M_Char, answer = Rope) {
   Rope sadd(Subsequence lb,Rope e) {
     Rope res;
-	append_consensus(res, lb);
+    append_consensus(res, lb);
     append(res, e);
     return res;
   }
@@ -262,6 +272,6 @@ algebra alg_ali_consensus implements sig_foldrna(alphabet = M_Char, answer = Rop
   choice [Rope] h([Rope] i) {
     //~ return list(minimum(i));
     //~ return i;
-	  return unique(i);
+    return unique(i);
   }
 }

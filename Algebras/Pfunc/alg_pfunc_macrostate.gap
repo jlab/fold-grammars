@@ -1,5 +1,19 @@
-//we can't use a two part partition function (one component for energy, the other for covariation), because the scorings for covariation and the Boltzman function have a very unintuitive behaviour if combined --> very strange results for stochastical backtracing. Better directly fuse energy and covariation into one double!
+/*
+  "alg_pfunc_macrostate" is a special version of "alg_pfunc" to deal with the
+  four-tuple answer type. With a clever way to pass the according values to and
+  from the substructures, it is possible to exactly and correctly compute
+  unambiguous partition function values for the four way dangling model.
 
+  Some of the special functionality is externalized in the file 
+  "pfunc_answer_macrostate.hh", e.g. the data-type for the answer-tuple,
+  the scaling, ...
+
+  We can't use a two part partition function (one component for energy, the
+  other for covariation), because the scorings for covariation and the Boltzman
+  function have a very unintuitive behaviour if combined
+  --> very strange results for stochastical backtracing. Better directly fuse
+  energy and covariation into one double!
+*/
 algebra alg_pfunc implements sig_foldrna(alphabet = char, answer = answer_macrostate_pfunc) {
   answer_macrostate_pfunc sadd(Subsequence lb,answer_macrostate_pfunc e) {
     answer_macrostate_pfunc res = e;

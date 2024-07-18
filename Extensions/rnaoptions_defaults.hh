@@ -6,6 +6,23 @@
 #include <vector>
 #include <boost/math/special_functions/fpclassify.hpp>  // isnan
 
+/*
+  There are two usecases for compiling RNA programs from this package:
+
+  1. You combine existing components or your new components to implement an 
+     algorithm for a new problem; or you simply want to directly get your hands
+     on manual execution of "gapc". Passing command line argument into this
+     programs is not necessary, because you are happy with some defaults.
+  2. You developed some instances and want to deploy them with the ability to
+     accept some arguments.
+
+  To serve both usecases "rnaoptions_defaults.hh" comes with defaults for all
+  arguments, as well as the functions to pass them into the generated
+  recursions. What to use can be set by a -D g++ flag "WITH_RNAOPTIONS".
+  To ensure that one or the other is used, "rnaoptions_defaults.hh" is imported
+  by "Extensions/singlefold.hh" and "Extensions/alifold.hh" one of which must
+  be imported by your program.
+*/
 #ifdef WITH_RNAOPTIONS
 // use command line parameter options to define energy penalties for
 // initializing pseudoknots, minimal length of kissing hairpin stems and the
