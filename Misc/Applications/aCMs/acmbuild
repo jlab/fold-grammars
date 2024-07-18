@@ -298,7 +298,7 @@ sub doComputation {
 				open (PROBS, "> ".$tmpDir.$Settings::fileseparater.$probFilename) || die "can't write to '".$tmpDir.$Settings::fileseparater.$probFilename."'\n";
 					print PROBS cmUtils::generateCppProbMaps(\%weighted_transitions, \%weighted_emissions, $refHash_family->{familyname});
 				close (PROBS);
-				Utils::execute(Settings::getBinary('ghc')." -tmpdir ".$tmpDir."/ -O -fglasgow-exts -odir ".$tmpDir." -i".$tmpDir.":".getPath($0)."../lib/aCMs/ -hidir ".$tmpDir." --make ".getPath($0)."../lib/aCMs/mcmbuild.lhs -o ".$buildBinary);
+				Utils::execute(Settings::getBinary('ghc')." -tmpdir ".$tmpDir."/ -O -odir ".$tmpDir." -i".$tmpDir.":".getPath($0)."../lib/aCMs/ -hidir ".$tmpDir." --make ".getPath($0)."../lib/aCMs/mcmbuild.lhs -o ".$buildBinary);
 				Utils::execute(Settings::getBinary('cp')." ".$tmpDir.$Settings::fileseparater.$probFilename." ".$outputDirectory);
 			}
 			my $cmd = "$buildBinary $concatConsensi";
