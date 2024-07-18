@@ -21,6 +21,29 @@
 
 }}} */
 
+/*
+  Binaries compiled with BGAP-C are not meant to be ready to ship programs.
+  The system is not restricted to RNA problems; although this package only deals
+  with them. Thus, compiled programs are equipped with a very generic front end
+  (the *_main.cc files). In order to pass RNA specific command line arguments
+  (e.g. usage of lonely base-pairs) into the computation, we replace some
+  components of the generated C++ code previous to compilation with g++.
+  This task is automated by the Perl script
+  "Misc/Applications/addRNAoptions.pl" and can be applied via
+  "perl Misc/Applications/addRNAoptions.pl out.mf".
+
+  "rnaoptions.hh" replaces the BGAP built-in "rtlib/generic_opts.hh" file.
+
+  Since this extension of the command line parameters only matters if you want 
+  to deploy an application, but not if you are in the process of designing a
+  new BGAP program, the file "Extensions/rnaoptions_defaults.hh" contains
+  default values for all additional RNA parameters
+
+  Depending on your instances not all arguments will have influence on the
+  results, e.g. if you deal with nested folding "pkissinit" (the initialization
+  penalty for a kissing hairpin) can be set but won't change anything.
+*/
+
 #ifndef RTLIB_GENERIC_OPTS_HH_
 #define RTLIB_GENERIC_OPTS_HH_
 

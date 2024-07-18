@@ -4,6 +4,14 @@
 #include "alignment.hh"
 #include "rnaoptions_defaults.hh"
 
+/*
+  This file is the complement to the "singlefold.hh" version. 
+  It basically provides the function "basepair" to decide if two columns of the
+  alignment are considered to form a base-pair. To judge about beeing paired,
+  the covariance ("covscore") defined in "alignment.hh" of these two columns
+  is computed.
+*/
+
 // static const float cfactor = 1.0; //Set the weight of the covariance term in
 // the energy function (default=`1.0') static const float nfactor = 1.0; //Set
 // the penalty for non-compatible sequences in the covariance term of the energy

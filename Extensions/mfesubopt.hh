@@ -5,6 +5,13 @@
 #include <utility>
 
 #include "typesRNAfolding.hh"
+
+/*
+  suboptimal enumeration of structures, sorted by their free energy, up to a
+  special energetic threshold, which is either an absolute difference in
+  kcal/mol to the MFE or an percentage of allowed deviation to MFE. One of the
+  most basic functions of RNA folding, but not included in standard GAP-L.
+*/
 template <typename Iterator>
 inline List_Ref<int> mfeSubopt(std::pair<Iterator, Iterator> i) {
   int minValue = minimum(i);  // find mfe value

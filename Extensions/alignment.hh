@@ -7,6 +7,25 @@
 
 #include "rnaoptions_defaults.hh"
 
+/*
+  holds functions to:
+  - pre-compute the covariance of each two alignment columns ("covscore")
+  - compute a representative character for an alignment column in terms of a
+    "consensus" base, i.e. returns the most frequent base in this column. In
+    case of co-optimals the alphabetically smaller base is reported.
+    ("append_consensus")
+  - compute a representative character for an alignment column in terms of a
+    "most informative" base, i.e. bases in columns with frequency greater than
+    the background frequency are projected into 
+    http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html "IUPAC" notation.
+    Columns where gaps are over-represented are in lower case. ("append_mis")
+  - there is also the experimental filter function "maxcombsize" that should
+    restrict the sum of both unpaired regions of an internal loop to a certain
+    number of bases. This mimics size restrictions known from Vienna Package.
+    Since we don't see a speed up, we stay with maximal 30 bases on each region
+    individually.
+*/
+
 // needed for internal loops, because the Vienna guys say that the combined
 // length of left and right unpaired regions can not exceed XXX nucleotides.
 template <typename alphabet, typename pos_type, typename T>
