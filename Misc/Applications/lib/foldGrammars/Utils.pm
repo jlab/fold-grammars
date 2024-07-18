@@ -303,7 +303,7 @@ sub applyFunctionToFastaFile {
 sub absFilename {
 	my ($filename) = @_;
 	
-	my $afn = Utils::execute(Settings::getBinary('readlink')." -m $filename");
+	my $afn = Utils::execute(Settings::getBinary('readlink')." -f $filename");
 	chomp $afn;
 	
 	return $afn;
