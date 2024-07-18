@@ -7,6 +7,25 @@
 
 #include "rnaoptions_defaults.hh"
 
+/*
+  holds functions to:
+  - pre-compute the covariance of each two alignment columns ("covscore")
+  - compute a representative character for an alignment column in terms of a
+    "consensus" base, i.e. returns the most frequent base in this column. In
+    case of co-optimals the alphabetically smaller base is reported.
+    ("append_consensus")
+  - compute a representative character for an alignment column in terms of a
+    "most informative" base, i.e. bases in columns with frequency greater than
+    the background frequency are projected into 
+    http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html "IUPAC" notation.
+    Columns where gaps are over-represented are in lower case. ("append_mis")
+  - there is also the experimental filter function "maxcombsize" that should
+    restrict the sum of both unpaired regions of an internal loop to a certain
+    number of bases. This mimics size restrictions known from Vienna Package.
+    Since we don't see a speed up, we stay with maximal 30 bases on each region
+    individually.
+*/
+
 // needed for internal loops, because the Vienna guys say that the combined
 // length of left and right unpaired regions can not exceed XXX nucleotides.
 template <typename alphabet, typename pos_type, typename T>
@@ -1352,6 +1371,13 @@ struct TA {
   }
 };
 
+// a covariance score for a single alignment row is always 1.0. Needed for
+// automatically generated algebras like count or enum.
+inline float covscore(const Basic_Subsequence<char, unsigned> &seq, int a,
+                      int b) {
+  return 1.0;
+}
+
 inline float covscore(const Basic_Subsequence<M_Char, unsigned> &seq, int a,
                       int b) {
   typedef Table::Quadratic<float, Table::CYK> table_t;
@@ -1514,15 +1540,11 @@ inline const std::string getRepresentation(
   std::ostringstream result;
 
   Rope consensus;
-  unsigned int n = (input.seq->n - 1) / 2;
-  Basic_Subsequence<M_Char, unsigned> helper = input;
-  helper.i = 0;
-  helper.j = n;
   if (getConsensusType() == 0) {
-    append_consensus(consensus, helper);
+    append_consensus(consensus, input);
   }
   if (getConsensusType() == 1) {
-    append_mis(consensus, helper);
+    append_mis(consensus, input);
   }
 
   result << consensus;

@@ -1,3 +1,6 @@
+// defines commonly used algebra functions, especially for the MacroState
+// grammar to produce Vienna-Dot-Bracket representations.
+
   string cadd_Pr(string le,string re) {
     string res;
     append(res, le);

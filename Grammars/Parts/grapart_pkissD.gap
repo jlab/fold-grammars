@@ -1,4 +1,10 @@
-//computes csrKHs with Strategy D, i.e. iterate over all six indices i,h,k,l,m,j (not described in the paper, but usefull for evaluating the heuristic properties of the other strategies)
+  // "Strategy D" is mainly for debugging. It is the direct application of the 
+  // canonicalization rules known from "pknotsRG", thus it has a very slow 
+  // runtime of O(n^6). Compared to strategies A to C and regarding the
+  // canonization concept, "Strategy D" is the only non-heuristically one. 
+  // Thus, it returns the best results, but its runtime is often unaffordable.
+
+  // computes csrKHs with Strategy D, i.e. iterate over all six indices i,h,k,l,m,j (not described in the paper, but usefull for evaluating the heuristic properties of the other strategies)
   help_pkiss_D   = 
     .[
       int i = t_0_i;

@@ -1,3 +1,5 @@
+// defines commonly used algebra functions to produce free energy scores for
+// single sequence inputs.
   int sadd(Subsequence lb, int x) {
     return x + sbase_energy();
   }

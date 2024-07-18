@@ -3,58 +3,12 @@
 
 #include <limits>
 
+/*
+  The following code are basically C++ macros to alter the default output
+  behavior of a Bellman's GAP program. Instead of an answer list, a PostScript
+  file is generated, holding all base-pair probabilities in form of a Dot-Plot.
+*/
 extern double **bpprobs;
-
-template <typename T>
-inline bool containsBase(const Basic_Sequence<> &seq, T i, T j, base_t x) {
-  if (j < i) return false;
-
-  for (T k = i; k < j; k++) {
-    if (seq[k] == x) return true;
-  }
-
-  return false;
-}
-
-template <typename T>
-inline bool containsBase(const Basic_Sequence<M_Char, T> &seq, T i, T j,
-                         base_t x) {
-  if (j < i) return false;
-  for (unsigned int k = i; k < j; k++) {
-    bool rowEqualsX = true;
-    for (T l = 0; l < seq.rows(); l++) {
-      if (seq.row(l)[k] != x) {
-        rowEqualsX = false;
-        break;
-      }
-    }
-    return rowEqualsX;
-  }
-  return false;
-}
-
-template <typename T>
-inline bool collfilter2(const Basic_Sequence<> &seq, T i, T j) {
-  unsigned int n = (seq.size() - 1) / 2;
-  return j - i == n + 1;  // once orig sequence + separator character
-}
-
-template <typename T>
-inline bool collfilter2(const Basic_Sequence<M_Char, unsigned int> &seq, T i,
-                        T j) {
-  unsigned int n = (seq.size() - 1) / 2;
-  return j - i == n + 1;  // once orig sequence + separator character
-}
-
-template <typename SEQ>
-inline SEQ shiftIndex(SEQ s) {
-  SEQ res;
-  res.seq = s.seq;
-  int bias = ((seq_size(s) - 1) / 2) + 1;
-  res.i = s.i - bias;
-  res.j = s.j - bias;
-  return res;
-}
 
 // following is everything do draw Vienna dot plots:
 #include <fstream>
@@ -175,141 +129,83 @@ inline const std::string getPSheader(std::string input) {
 inline const std::string getRepresentation(
     Basic_Subsequence<char, unsigned> input) {
   std::ostringstream result;
-
-  unsigned int n = (input.seq->n - 1) / 2;
-  Basic_Subsequence<char, unsigned> helper = input;
-  helper.i = 0;
-  helper.j = n;
-  Basic_Subsequence<char, unsigned>::iterator it = helper.begin();
-  for (it = helper.begin(); it != helper.end(); it++) {
-    if (*it == N_BASE) break;
+  for (Basic_Subsequence<char, unsigned>::iterator it = input.begin();
+       it != input.end(); it++) {
     result << base_to_char(*it);
   }
   return result.str();
 }
 
-#define MAKEPLOT(rnaSeq)                                                  \
-  std::ofstream psfile;                                                   \
-  psfile.open(getDotplotFilename());                                      \
-  psfile << getPSheader(getRepresentation(rnaSeq));                       \
-  psfile << "%start of base pair probability data\n";                     \
-  unsigned int i, j, n = (rnaSeq.seq->size() - 1) / 2;                    \
-  for (i = 0; i <= n; i++) {                                              \
-    for (j = i + 2; j <= n; j++) {                                        \
-      double prob = 0.0;                                                  \
-      if (nt_weak(i, j) != std::numeric_limits<double>::infinity() &&     \
-          nt_outer_strong(j, n + i + 1) !=                                \
-              std::numeric_limits<double>::infinity()) {                  \
-        prob += nt_weak(i, j) * nt_outer_strong(j, n + i + 1);            \
-      }                                                                   \
-      if (!gapc::Opts::getOpts()->allowLonelyBasepairs) {                 \
-        if (nt_strong(i, j) != std::numeric_limits<double>::infinity() && \
-            nt_outer_weak(j, n + i + 1) !=                                \
-                std::numeric_limits<double>::infinity()) {                \
-          prob += nt_strong(i, j) * nt_outer_weak(j, n + i + 1);          \
-        }                                                                 \
-      }                                                                   \
-      prob = sqrt(prob / nt_struct(0, n));                                \
-      if (prob >= sqrt(lowProbabilityFilter())) {                         \
-        psfile << (i + 1) << " " << j << " " << prob << " ubox\n";        \
-      }                                                                   \
-    }                                                                     \
-  }                                                                       \
-  psfile << "showpage\n";                                                 \
-  psfile << "end\n";                                                      \
-  psfile << "%%EOF\n";                                                    \
-  psfile.close();                                                         \
-  std::cout << "wrote Post-Script dot-plot to '" << getDotplotFilename()  \
-            << "'\n";
+#define MAKEPLOT                                                               \
+void makeplot(std::ostream &out) {                                             \
+  std::ofstream psfile;                                                        \
+  psfile.open(getDotplotFilename());                                           \
+  psfile << getPSheader(getRepresentation(                                     \
+    TUSubsequence(t_0_seq, 0, t_0_seq.n)));                                    \
+  psfile << "%start of base pair probability data\n";                          \
+  unsigned int n = t_0_seq.n;                                                  \
+  for (unsigned int t_0_i = t_0_left_most; t_0_i <= t_0_right_most; ++t_0_i) { \
+    for (unsigned int t_0_j = t_0_i; (t_0_j <= t_0_right_most); ++t_0_j) {     \
+      double prob = 0.0;                                                       \
+      if (nt_weak(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() &&  \
+          nt_outside_weak(t_0_i, t_0_j) !=                                     \
+              std::numeric_limits<double>::infinity()) {                       \
+        prob += nt_weak(t_0_i, t_0_j) * nt_outside_weak(t_0_i, t_0_j);         \
+      }                                                                        \
+      if (!gapc::Opts::getOpts()->allowLonelyBasepairs) {                      \
+        if (nt_strong(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() \
+            && nt_outside_strong(t_0_i, t_0_j) !=                              \
+                std::numeric_limits<double>::infinity()) {                     \
+          prob += nt_strong(t_0_i, t_0_j) * nt_outside_strong(t_0_i, t_0_j);   \
+        }                                                                      \
+      }                                                                        \
+      prob = sqrt(prob / nt_struct(0, t_0_seq.n));                             \
+      if (prob >= sqrt(lowProbabilityFilter())) {                              \
+        psfile << (t_0_i + 1) << " " << t_0_j << " " << prob << " ubox\n";     \
+      }                                                                        \
+    }                                                                          \
+  }                                                                            \
+  psfile << "showpage\n";                                                      \
+  psfile << "end\n";                                                           \
+  psfile << "%%EOF\n";                                                         \
+  psfile.close();                                                              \
+  std::cout << "wrote Post-Script dot-plot to '" << getDotplotFilename()       \
+            << "'\n";                                                          \
+  std::cout << "Answer: \n";                                                   \
+  print_result(std::cout, nt_struct(0, t_0_seq.n));                            \
+}
 
 // for MEA structure prediction: we collect the structure with the highest BP
 // prob sum, thus we need to store these probabilities in "bpprobs"
-#define STOREPROBS(rnaSeq)                                                \
-  unsigned int i, j, n = (rnaSeq.seq->size() - 1) / 2;                    \
-  bpprobs = reinterpret_cast<double**>(malloc(sizeof(double *) * n));     \
-  for (unsigned int i = 0; i < n; i++) {                                  \
-    bpprobs[i] = reinterpret_cast<double*>(malloc(sizeof(double) * n));   \
-    for (unsigned int j = 0; j < n; j++) {                                \
-      bpprobs[i][j] = 0;                                                  \
-    }                                                                     \
-  }                                                                       \
-  for (i = 0; i <= n; i++) {                                              \
-    for (j = i + 2; j <= n; j++) {                                        \
-      double prob = 0.0;                                                  \
-      if (nt_weak(i, j) != std::numeric_limits<double>::infinity() &&     \
-          nt_outer_strong(j, n + i + 1) !=                                \
-              std::numeric_limits<double>::infinity()) {                  \
-        prob += nt_weak(i, j) * nt_outer_strong(j, n + i + 1);            \
-      }                                                                   \
-      if (!gapc::Opts::getOpts()->allowLonelyBasepairs) {                 \
-        if (nt_strong(i, j) != std::numeric_limits<double>::infinity() && \
-            nt_outer_weak(j, n + i + 1) !=                                \
-                std::numeric_limits<double>::infinity()) {                \
-          prob += nt_strong(i, j) * nt_outer_weak(j, n + i + 1);          \
-        }                                                                 \
-      }                                                                   \
-      prob /= nt_struct(0, n);                                            \
-      bpprobs[i][j] = prob;                                               \
-    }                                                                     \
-  }
-
-// just for debugging purposes:
-#define PLOTCOUNT()                                                            \
-  unsigned int i, j, n = (t_0_seq.size() - 1) / 2;                             \
-  for (i = 0; i <= n; i++) {                                                   \
-    for (j = i + 1; j <= n; j++) {                                             \
-      std::cout << i << "\t" << j << "\t";                                     \
-      if (gapc::Opts::getOpts()->allowLonelyBasepairs) {                       \
-        std::cout << nt_weak(i, j) * nt_outer_strong(j, n + i + 1);            \
-        std::cout << "\t = nt_weak(" << i << "," << j                          \
-                  << "): " << nt_weak(i, j) << " * nt_outer_strong(" << j      \
-                  << "," << n + i + 1                                          \
-                  << "): " << nt_outer_strong(j, n + i + 1);                   \
-      } else {                                                                 \
-        std::cout << nt_weak(i, j) * nt_outer_strong(j, n + i + 1) +           \
-                         nt_strong(i, j) * nt_outer_weak(j, n + i + 1);        \
-        std::cout << "\t = nt_weak(" << i << "," << j                          \
-                  << "): " << nt_weak(i, j) << " * nt_outer_strong(" << j      \
-                  << "," << n + i + 1                                          \
-                  << "): " << nt_outer_strong(j, n + i + 1) << " + nt_strong(" \
-                  << i << "," << j << "): " << nt_strong(i, j)                 \
-                  << " * nt_outer_weak(" << j << "," << n + i + 1              \
-                  << "): " << nt_outer_weak(j, n + i + 1);                     \
-      }                                                                        \
-      std::cout << "\n";                                                       \
+#define STOREPROBS                                                             \
+void storeprobs() {                                                            \
+  unsigned int n = t_0_seq.n + 1;                                              \
+  bpprobs = reinterpret_cast<double**>(malloc(sizeof(double *) * n));          \
+  for (unsigned int t_0_i = t_0_left_most; t_0_i <= t_0_right_most; ++t_0_i) { \
+    bpprobs[t_0_i] = reinterpret_cast<double*>(malloc(sizeof(double) * n));    \
+    for (unsigned int t_0_j = t_0_i; (t_0_j <= t_0_right_most); ++t_0_j) {     \
+      bpprobs[t_0_i][t_0_j] = 0;                                               \
     }                                                                          \
-  }
-
-#define DEBUGPLOT()                                                   \
-  unsigned int i = getOpenPair(), j = getClosePair();                 \
-  std::cout << "weak(" << i << ", " << j << "):\n";                   \
-  gapc::return_type results = out::nt_weak(i, j);                     \
-  for (gapc::return_type::iterator it = results->begin();             \
-       it != results->end(); ++it) {                                  \
-    std::cout << "\t" << (*it) << "\n";                               \
-  }                                                                   \
-  std::cout << "\n";                                                  \
-  std::cout << "strong(" << i << ", " << j << "):\n";                 \
-  results = out::nt_strong(i, j);                                     \
-  for (gapc::return_type::iterator it = results->begin();             \
-       it != results->end(); ++it) {                                  \
-    std::cout << "\t" << (*it) << "\n";                               \
-  }                                                                   \
-  std::cout << "\n";                                                  \
-  unsigned int n = (t_0_seq.size() - 1) / 2;                          \
-  std::cout << "outer_weak(" << j << ", " << (n + i + 1) << "):\n";   \
-  results = out::nt_outer_weak(j, (n + i + 1));                       \
-  for (gapc::return_type::iterator it = results->begin();             \
-       it != results->end(); ++it) {                                  \
-    std::cout << "\t" << (*it) << "\n";                               \
-  }                                                                   \
-  std::cout << "\n";                                                  \
-  std::cout << "outer_strong(" << j << ", " << (n + i + 1) << "):\n"; \
-  results = out::nt_outer_strong(j, (n + i + 1));                     \
-  for (gapc::return_type::iterator it = results->begin();             \
-       it != results->end(); ++it) {                                  \
-    std::cout << "\t" << (*it) << "\n";                               \
-  }                                                                   \
-  std::cout << "\n";
+  }                                                                            \
+  for (unsigned int t_0_i = t_0_left_most; t_0_i <= t_0_right_most; ++t_0_i) { \
+    for (unsigned int t_0_j = t_0_i; (t_0_j <= t_0_right_most); ++t_0_j) {     \
+      double prob = 0.0;                                                       \
+      if (nt_weak(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() &&  \
+          nt_outside_weak(t_0_i, t_0_j) !=                                     \
+              std::numeric_limits<double>::infinity()) {                       \
+        prob += nt_weak(t_0_i, t_0_j) * nt_outside_weak(t_0_i, t_0_j);         \
+      }                                                                        \
+      if (!gapc::Opts::getOpts()->allowLonelyBasepairs) {                      \
+        if (nt_strong(t_0_i, t_0_j) != std::numeric_limits<double>::infinity() \
+           && nt_outside_strong(t_0_i, t_0_j) !=                               \
+                std::numeric_limits<double>::infinity()) {                     \
+          prob += nt_strong(t_0_i, t_0_j) * nt_outside_strong(t_0_i, t_0_j);   \
+        }                                                                      \
+      }                                                                        \
+      prob /= nt_struct(0, t_0_seq.n);                                         \
+      bpprobs[t_0_i][t_0_j] = prob;                                            \
+    }                                                                          \
+  }                                                                            \
+}
 
 #endif

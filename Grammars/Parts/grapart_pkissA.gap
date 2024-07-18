@@ -1,4 +1,11 @@
-  //computes csrPKs, given left and right borders of the subword, namely i and j AND the right stop position for alpha-helix, namely k. Thus we only iterate over h.
+  // "Strategy A" makes the optimistic assumption that an optimal pseudoknot for
+  // the first half of the input sequence can be taken over to the kissing 
+  // hairpin. The missing stem is adopted by an optimal, consistent pseudoknot
+  // for the second half.
+
+  // computes csrPKs, given left and right borders of the subword, namely i and 
+  // j AND the right stop position for alpha-helix, namely k. Thus we only
+  // iterate over h.
   help_pknot_free_h(int kk, int startH) = 
     .[
       int i = t_0_i;

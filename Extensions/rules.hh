@@ -4,6 +4,25 @@
 #include <map>
 #include <utility>
 
+/*
+  "rules.hh" is a special data-type for TDM generation. It holds all rules of
+  a grammar in an unique way, i.e. even if the generator adds twice the rules
+  for a simple hairpin it will appear only once in the generated grammar. This
+  is accomplished by using a two level hash. First level is for non-terminals,
+  second level for alternatives of a non-terminal.
+
+  For TDMs the rules must be indexed. We do so by using sub-shape strings, but
+  have to convert "[" to "L" and "]" to "J" characters to fit GAP-L's
+  requirements for valid non-terminal identifiers. Besides the two level hash,
+  the sub-shape string is the second component of the "rules" data type. A
+  special situation occurs for concatenating two level 1 sub-shapes.
+  There interface might hold unpaired bases ("_"), but of course their
+  concatenation must be "_" and not "__". Ensuring this is the task of
+  function "appendShape".
+
+  Please have a look at the application "RapidShapes", to see TDMs in action.
+*/
+
 // this file creates the datatype "rules" for Bellman's GAP which is a double
 // hash and should hold production rules of a grammar. This is necessary for
 // generating thermodynamic matchers given a specific shape string.

@@ -1,3 +1,17 @@
+/*
+  We also provide a partition function value algebra for structures including
+  pseudoknots, although results can in principle not be correct. The reason is,
+  that our way of computing pseudoknots is heuristic. We only deal with
+  canonical representative pseudoknotted structures, which stand for a whole
+  class of pseudoknotted structures. Thus, we will always miss a part of the
+  search space. The other reason is, that we don't have a grammar like
+  "gra_macrostate" for pseudoknots, which deal with dangling for pseudoknots in
+  the correct four-way manner. 
+  
+  "alg_pknot_pfunc" is an extension of "alg_pfunc" for the pseudoknot specific
+  algebra-functions.
+*/
+
 //Eine Partition Function fuer Pseudoknoten so wie wir sie definieren (pknotsRG) kann garnicht richtig sein, denn
 // 1) verwenden wir ja absichtlich nur canonische / repraesentative Pseudoknoten und nicht alle im Suchraum (potentiell muessten die Wahrscheinlichkeiten also unterschaetzt werden)
 // 2) die Dangles von aussen auf die beiden PK Stems werden nicht korrekt addiert. Um diese fuer MFE richtig berechnen zu koennen werden die Indizes der inneren Basenpaar-Partner mitgeschleppt um spaeter den Dangle berechnen zu koennen. Bei Pfunc wird aber einfach die Summe ueber alle verschiedenen Indizes genommen und darauf dann nur EINE Art von Dangling berechnet!

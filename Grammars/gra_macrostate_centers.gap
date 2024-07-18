@@ -1,4 +1,20 @@
-//WARNING: this grammar is of experimental state (Stefan Janssen, 25.07.2011)
+/* WARNING: this grammar is of experimental state (Stefan Janssen, 25.07.2011)
+
+A shape analysis is position unspecific (see 
+http://nar.oupjournals.org/cgi/content/abstract/32/16/4843">). If a sequence
+forms a hairpin at its very beginning or at its end, both alternatives are tied
+to the same shape: "[]". For some applications it is necessary to track the
+positions of the centers of hairpins, bulges, internal loops or multiloops.
+See http://rnajournal.cshlp.org/content/early/2012/10/24/rna.033548.112.short:
+"Abstract folding space analysis based on helices" for details.
+This grammar is a specialized version of "gra_macrostate for the computation
+of the probability of hairpin centers. In order to do so, the search space must
+be extended, such that a structure has exactly one and only one tagged hairpin,
+whilst all other hairpins remain the same. The only exception is the open
+structure with no hairpin at all. Since we need two types of algebra functions
+for hairpins "hl" and "hlTag" we also need special signatures and algebras,
+which are contained in the file "macrostateCenter.gap"
+*/
 
 grammar gra_macrostate_centers uses sig_foldrna(axiom = struct) {
   struct = left_danglePre | trafo(noleft_danglePre) | left_unpairedPre | left_unpairedEnd# h;

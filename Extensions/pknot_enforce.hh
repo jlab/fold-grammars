@@ -4,6 +4,15 @@
 #include <utility>
 #include "typesRNAfolding.hh"
 
+/*
+  provides an answer type, functions for backtracing and the overlay idea of
+  pKiss for a special classification algebra for pseudoknots. There are the
+  four hard coded classes "nested structure", "H-type pseudoknot",
+  "K-type pseudoknot" and "H- and K-type pseudoknot". You can use these
+  enforced folding classes for a comparison between say the energetically best
+  H-type structure and the best nested structure. This gives you a first
+  impression of the likelihood that the input sequence forms a pseudoknot.
+*/
 struct pktype {
 #ifdef CHECKPOINTING_INTEGRATED
   friend class boost::serialization::access;

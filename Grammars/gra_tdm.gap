@@ -1,9 +1,66 @@
+/*
+A thermodynamic matcher (TDM) is a specialized RNA folding program. Instead of
+spanning the complete search space of general RNA folding, a TDM spans only a
+defined subset of it. This subset might be defined via a graphical description
+(see http://bioinformatics.oxfordjournals.org/cgi/content/abstract/23/13/i392: 
+"Locomotif: From Graphical Motif Description to RNA Motif Search" or via a
+shape string (see http://bioinformatics.oxfordjournals.org/content/26/5/632.short:
+"Faster computation of exact RNA shape probabilities".
+
+"gra_tdm.gap" is for the later one. Given a shape string of a specific shape
+level, we have to generate a specialized grammar out of one of the four
+prototype grammars "gra_nodangle", "gra_overdangle" "gra_microstate" or
+"gra_macrostate". This process itself is done with a GAP-L program. So one
+could say a GAP program generates a GAP program. Due to modularity it only
+generates the grammar, algebras, signatures and instances could simply be
+re-used.
+
+Actually, "gra_tdm" is not a single grammar, but six of them. They all use 
+"sig_tdm", but not all functions in all shape levels or with all prototype
+grammars. 
+
+  - "gra_shape5": level 5 is the most easiest to parse, because of the highest
+                  abstraction level. All four prototype grammars get along with
+                  the same kind of parsing a level 5 shape string.
+  - "gra_shape4u3": the difference between level 5 and level 4 is only the types
+                    of interruptions of a stem. In level 4, also internal loop
+                    interruptions have to be expressed, thus we need one
+                    additional rule in this grammar, namely the "helixinterrupt"
+                    function. Fortunately, the difference to level 3 is even
+                    more easy. It manifests only in the way the specialized
+                    grammar is created, but not on parsing the given shape
+                    string. Thus, there is no difference between 4 and 3!
+  - "gra_shape2": again, only the alternatives to interrupt a stem increase.
+                  Instead of the "helixinterrupt", we now have "leftbulge",
+                  "rightbulge" and "internalloop".
+  - "gra_shape1": in level 1, we also account for unpaired bases outside of
+                  stems, i.e. between every two (multiloop-)stems and at 5'
+                  and 3' ends. This is reflected by the functions "sadd",
+                  "mlsadd" and "unpaired"
+     * "gra_shape1_microstate": the "gra_microstate" prototype grammar is
+                  semantically ambiguous regarding Vienna-Dot-Bracket strings,
+                  i.e. a (multiloop-)stem can formed by four different ways,
+                  dependent on dangling neighboring bases. But a dangling base
+                  is an unpaired one and must be represented by an underscore
+                  "_". On the other hand, this underscore could also result
+                  from a "real" stretch of unpaired bases. The grammar must
+                  take care of all these situations.
+    * "gra_shape1_macrostate": here we have the same problem as with
+                  "gra_shape1_microstate", but the "gra_macrostate" prototype
+                  avoids the ambiguity. Again, we need the grammar to ensure
+                  the right parsing of the given shape string.
+
+  Please note that shape level 1 grammars are syntactically ambiguous, while
+  all other grammars are not.
+
+Have a look at the application "RapidShapes", to see TDMs in action.
+*/
 grammar gra_shape5            uses sig_tdm(axiom = head) {
   head        = convert(structure)                            ;
 
   structure   = unpaired(CHAR('_'))                           | 
                 root(cons_hlmode)                             # h;
-	
+
   cons_hlmode = last_hlmode(danglecomp)                       |
                 next_hlmode(danglecomp, cons_hlmode)          # h;
                       
@@ -18,10 +75,10 @@ grammar gra_shape5            uses sig_tdm(axiom = head) {
 
 grammar gra_shape4u3          uses sig_tdm(axiom = head) {
   head        = convert(structure)                                 ;
-	                                        
+
   structure   = unpaired(CHAR('_'))                                | 
                 root(cons_hlmode)                                  # h;
-	     
+
   cons_hlmode = last_hlmode(danglecomp)                            |
                 next_hlmode(danglecomp, cons_hlmode)               # h;
                            
@@ -37,10 +94,10 @@ grammar gra_shape4u3          uses sig_tdm(axiom = head) {
 
 grammar gra_shape2            uses sig_tdm(axiom = head) {
   head        = convert(structure)                                                      ;
-	                                                           
+
   structure   = unpaired(CHAR('_'))                                                   | 
                 root(cons_hlmode)                                                     # h;
-	                        
+
   cons_hlmode = last_hlmode(danglecomp)                                               |
                 next_hlmode(danglecomp, cons_hlmode)                                  # h;
                                               
@@ -50,17 +107,17 @@ grammar gra_shape2            uses sig_tdm(axiom = head) {
   danglecomp  = dangle(strong(comp))                                                  ;
    
   comp        = hairpin     (CHAR('['),                                    CHAR(']')) |
-	            internalloop(CHAR('['),CHAR('_'), strong(comp), CHAR('_'), CHAR(']')) |
-	            leftbulge   (CHAR('['),CHAR('_'), strong(comp),            CHAR(']')) |
-	            rightbulge  (CHAR('['),           strong(comp), CHAR('_'), CHAR(']')) |
-	            multiloop   (CHAR('['),           cons_mlmode,             CHAR(']')) # h; 
+                internalloop(CHAR('['),CHAR('_'), strong(comp), CHAR('_'), CHAR(']')) |
+                leftbulge   (CHAR('['),CHAR('_'), strong(comp),            CHAR(']')) |
+                rightbulge  (CHAR('['),           strong(comp), CHAR('_'), CHAR(']')) |
+                multiloop   (CHAR('['),           cons_mlmode,             CHAR(']')) # h; 
 }
 
 grammar gra_shape1            uses sig_tdm(axiom = head) {
   head        = convert(structure)                                                       ;
-	                                                           
+
   structure   = root(cons_hlmode)                                                     # h;
-	                        
+
   cons_hlmode = sadd(CHAR('_'), last_hlmode(danglecomp))                              |
                                 last_hlmode(danglecomp)                               |
                 sadd(CHAR('_'), next_hlmode(danglecomp, cons_hlmode))                 |
@@ -69,9 +126,9 @@ grammar gra_shape1            uses sig_tdm(axiom = head) {
   
   next_mlcomp = next_mlmode(danglecomp, next_mlcomp)                                  |
                 saddml(CHAR('_'), next_mlmode(danglecomp, next_mlcomp))               |
-	            next_mlmode(danglecomp, last_mlcomp)                                  |
+                next_mlmode(danglecomp, last_mlcomp)                                  |
                 saddml(CHAR('_'), next_mlmode(danglecomp, last_mlcomp))               # h;
-	
+
   last_mlcomp = last_mlmode(danglecomp, mladdss(CHAR('_')))                           |
 	            last_mlmode(danglecomp, mlend(EMPTY))                                 |
 	            saddml(CHAR('_'), last_mlmode(danglecomp, mladdss(CHAR('_'))))        |

@@ -1,3 +1,10 @@
+/*
+  "alg_basepairMax": the first (see http://ultrastudio.org/en/Nussinov_algorithm)
+  RNA folding algorithm by Ruth Nussinov used the maximal number of base pairs
+  as optimization function. This algebra computes exactly these values and
+  maximizes over all of them.
+*/
+
 algebra alg_basepairMax implements sig_foldrna(alphabet = char, answer = int) {
   int sadd(Subsequence lb, int x) {
     return x;

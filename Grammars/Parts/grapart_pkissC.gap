@@ -1,4 +1,10 @@
-//computes csrKHs with Strategy C
+  // Since larger memory is often a harder problem than longer runtime, we alter
+  // "Strategy B" to trade memory for runtime. "Strategy C" avoids the extra
+  // storage required by Strategy B by re-computing the necessary information
+  // on demand. Coupling running indices k and l reduces the runtime by one
+  // dimension.
+
+  // computes csrKHs with Strategy C
   help_pkiss_C   = 
     .[
       int i = t_0_i;

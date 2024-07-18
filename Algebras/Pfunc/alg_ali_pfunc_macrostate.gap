@@ -1,3 +1,8 @@
+/*
+  "alg_ali_pfunc_macrostate" is a specialized version for the "gra_macrostate"
+  grammar and its four-tuple concept to remain semantically unambiguous
+  regarding Vienna-Dot-Bracket representations.
+*/
 algebra alg_ali_pfunc implements sig_foldrna(alphabet = M_Char, answer = answer_ali_pfunc_macrostate) {
   answer_ali_pfunc_macrostate sadd(Subsequence lb,answer_ali_pfunc_macrostate e) {
     answer_ali_pfunc_macrostate res;

@@ -10,6 +10,24 @@
 #include "boost/serialization/vector.hpp"
 #endif
 
+/*
+  Many algebras in this package need special answer types. Most of them are
+  defined in "typesRNAfolding.hh", although there is the possibility to do so
+  within BGAP-L code. But for these cases the generated functions are too
+  general. We want to add some special functions computing on these new data
+  types, as well, like "mk_tuple" or "wc_comp" for computation of
+  "alg_pfunc_macrostate" for "gra_macrostate". This way, we can also define
+  identity for those types, which becomes important for classification algebras,
+  when a hash is used ("hashable_value" functions) or representation of the
+  results ("operator<>" functions).
+  
+  The end of the file, contains functions for stochastic backtracing. To find
+  the right alternative with corresponding probability, the probability weight
+  must be expressed with a single value (of type "double"). In the macrostate
+  case, this means we have to sum over all four separate components
+  ("PfanswerToDoubleAll").
+*/
+
 // similar to a Basic_Subsequence, but without the character string, just
 // start (i) and end (j) borders
 struct subseq {

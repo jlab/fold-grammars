@@ -4,6 +4,27 @@
 #include <utility>
 #include "typesRNAfolding.hh"
 
+/*
+  complete probabilistic shape analysis (see 
+  http://www.biomedcentral.com/1741-7007/4/5/
+  "Complete probabilistic analysis of RNA shapes") has to deal with the huge
+  number of shape classes for an RNA sequence. Many of those classes contain
+  only very few structures, which furthermore have only a low partition function
+  value and thus hardly contribute to the overall partition function value.
+  While violating Bellman's Principle of Optimality, filtering out low
+  probability shape classes at the beginning of the computation yields
+  surprisingly good results and is a significant speed up. Default threshold is
+  10^-6.
+
+  You can use this filter when defining an instance, via "suchthat pfunc_filter"
+  for "alg_shapeX * alg_pfunc" products or "suchthat pfunc_filter_allPP" for 
+  "(alg_shapeX * (alg_mfe % alg_pfunc)) * alg_dotBracket" products.
+  
+  Unfortunately, the filter depends on the concrete answer tuple of the product,
+  thus it is not very generic and we have to implement functions for all
+  data-types.
+*/
+
 // needed for (shape * (mfe * pf) * pretty) --kbacktrack ing since
 // the 3rd component needs to be ignored (its synoptic)
 template <typename SHAPE, typename MFE, typename PFUNC>

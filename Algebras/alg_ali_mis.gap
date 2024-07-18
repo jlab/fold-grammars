@@ -1,7 +1,16 @@
+/*
+  "alg_ali_mis" computes the "most informative sequence" (Freyhult et al 2004).
+  Elements in alignment columns with frequency greater than the background
+  frequency are projected into
+  (see "http://www.dna.affrc.go.jp/misc/MPsrch/InfoIUPAC.html") IUPAC notation.
+  Columns where gaps are over-represented are in lower case.
+
+  The real magic is externalized in the file "alifold.hh".
+*/
 algebra alg_ali_mis implements sig_foldrna(alphabet = M_Char, answer = Rope) {
   Rope sadd(Subsequence lb,Rope e) {
     Rope res;
-	append_mis(res, lb);
+    append_mis(res, lb);
     append(res, e);
     return res;
   }
@@ -262,6 +271,6 @@ algebra alg_ali_mis implements sig_foldrna(alphabet = M_Char, answer = Rope) {
   choice [Rope] h([Rope] i) {
     //~ return list(minimum(i));
     //~ return i;
-	return unique(i);
+    return unique(i);
   }
 }

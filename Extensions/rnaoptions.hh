@@ -21,6 +21,29 @@
 
 }}} */
 
+/*
+  Binaries compiled with BGAP-C are not meant to be ready to ship programs.
+  The system is not restricted to RNA problems; although this package only deals
+  with them. Thus, compiled programs are equipped with a very generic front end
+  (the *_main.cc files). In order to pass RNA specific command line arguments
+  (e.g. usage of lonely base-pairs) into the computation, we replace some
+  components of the generated C++ code previous to compilation with g++.
+  This task is automated by the Perl script
+  "Misc/Applications/addRNAoptions.pl" and can be applied via
+  "perl Misc/Applications/addRNAoptions.pl out.mf".
+
+  "rnaoptions.hh" replaces the BGAP built-in "rtlib/generic_opts.hh" file.
+
+  Since this extension of the command line parameters only matters if you want 
+  to deploy an application, but not if you are in the process of designing a
+  new BGAP program, the file "Extensions/rnaoptions_defaults.hh" contains
+  default values for all additional RNA parameters
+
+  Depending on your instances not all arguments will have influence on the
+  results, e.g. if you deal with nested folding "pkissinit" (the initialization
+  penalty for a kissing hairpin) can be set but won't change anything.
+*/
+
 #ifndef RTLIB_GENERIC_OPTS_HH_
 #define RTLIB_GENERIC_OPTS_HH_
 
@@ -140,6 +163,7 @@ class Opts {
     std::string user_file_prefix;
     bool keep_archives;  // default: delete after calculations completed
 #endif
+    unsigned int tile_size;
     int argc;
     char **argv;
 
@@ -183,6 +207,7 @@ class Opts {
             user_file_prefix(""),
             keep_archives(false),
     #endif
+      tile_size(32),
       argc(0),
       argv(0)
     {}
@@ -366,6 +391,12 @@ class Opts {
         << "pure reactivity values from the file." << std::endl
         << "   valid types are 'centroid', 'RNAstructure', 'logplain', "
         << "'asProbabilities' [centroid]." << std::endl << std::endl
+  #ifdef _OPENMP
+        << "--tileSize,-L            N            set tile size in "
+        << "multithreaded cyk \n"
+        << "                                      loops (default: 32)\n"
+        << "\n"
+  #endif
   #if defined(GAPC_CALL_STRING) && defined(GAPC_VERSION_STRING)
         << "GAPC call:    \"" << GAPC_CALL_STRING << "\"\n"
         << "GAPC version: \"" << GAPC_VERSION_STRING << "\"\n"
@@ -385,6 +416,7 @@ class Opts {
       {"checkpointOutput", required_argument, nullptr, 'O'},
       {"checkpointInput", required_argument, nullptr, 'I'},
       {"keepArchives", no_argument, nullptr, 'K'},
+      {"tileSize", required_argument, nullptr, 'L'},
       {nullptr, no_argument, nullptr, 0}};
 
     while ((o = getopt_long(argc, argv, ":f:"
@@ -399,7 +431,7 @@ class Opts {
         // for alifold parameters nfactor,
         // cfactor and minpscore_basepair, ribosum scoring
         "n:C:m:R:"
-        /* 
+        /*
          * S: reads additional probing data from file "S", A: slope as in RNAstructure
          * B: intercept as in RNAstructure, M: modifier type (SHAPE, CMCT, DMS)
          * N: normalization of plain reactivities
@@ -592,6 +624,11 @@ class Opts {
       }
       case 'K' :
         keep_archives = true;
+        break;
+    #endif
+    #ifdef _OPENMP
+      case 'L' :
+        tile_size = std::atoi(optarg);
         break;
     #endif
       case '?':

@@ -7,6 +7,7 @@ import "Extensions/shapes.hh"
 import "Extensions/mea.hh"
 import "Extensions/probing.hh"
 import "Extensions/pareto.hh"
+import "Extensions/outside.hh"
 
 input rna
 

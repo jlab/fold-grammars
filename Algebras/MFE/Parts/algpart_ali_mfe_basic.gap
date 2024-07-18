@@ -1,7 +1,9 @@
+// defines commonly used algebra functions to produce free energy scores for
+// alignments.
   mfecovar sadd(Subsequence lb, mfecovar x) {
     mfecovar res;
-	
-	int sbase_sum = 0;
+
+    int sbase_sum = 0;
     for (int k = 0; k < int(rows(lb)); k=k+1) {
       if (column(seq_char(lb,lb.i),k) != GAP_BASE) {
         sbase_sum = sbase_sum + sbase_energy();

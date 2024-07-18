@@ -6,7 +6,7 @@ PROGRAMPREFIX=acmbuild_
 
 GHC=ghc
 WORKDIR=$(ARCHTRIPLE)
-OPTIONS= -tmpdir $(WORKDIR)/ -O -fglasgow-exts -odir $(WORKDIR) -i$(WORKDIR):$(BASEDIR)/Misc/Applications/lib/aCMs/ -hidir $(WORKDIR)
+OPTIONS= -tmpdir $(WORKDIR)/ -O -odir $(WORKDIR) -i$(WORKDIR):$(BASEDIR)/Misc/Applications/lib/aCMs/ -hidir $(WORKDIR)
 
 all: Train checkCompatibility
 	
