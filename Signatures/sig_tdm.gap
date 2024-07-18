@@ -1,3 +1,29 @@
+/*
+  A thermodynamic matcher (TDM) is a specialized RNA folding program. Instead
+  of spanning the complete search space of general RNA folding, a TDM spans
+  only a defined subset of it. This subset might be defined via a graphical
+  description (see "http://bioinformatics.oxfordjournals.org/cgi/content/abstract/23/13/i392":
+  "Locomotif: From Graphical Motif Description to RNA Motif Search") or via a
+  shape string (see "http://bioinformatics.oxfordjournals.org/content/26/5/632.short": 
+  "Faster computation of exact RNA shape probabilities").
+
+  "sig_tdm" is for the later one. Given a shape string of a specific shape
+  level, we have to generate a specialized grammar out of one of the four
+  prototype grammars "gra_nodangle" "gra_overdangle" "gra_microstate" or
+  "gra_macrostate". This process itself is done with a GAP-L program. So one
+  could say a GAP program generates a GAP program. Due to modularity it only
+  generates the grammar, algebras, signatures and instances could simply be
+  re-used.
+
+  "sig_tdm" is ready to cope with all four prototype grammars in all five shape
+  levels, but not all functions will be needed for each specific grammar / level
+  combination. See the comments in the file itself for further details.
+  Note the special function "convert", which is not part of the shape string
+  parsing process, but serves to add header and footer to the generated grammar.
+
+  Please have a look at the application RapidShapes, to see TDMs in action.
+*/
+
 signature sig_tdm(alphabet, answer, output) {
   output convert(answer);                                              // levels: all = converts rules into a Rope and adds header and footer to be a GAP-L grammar
   answer root(answer);                                                 // levels: all = brings in the axiom
