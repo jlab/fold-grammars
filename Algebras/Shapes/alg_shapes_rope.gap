@@ -1,3 +1,8 @@
+/*
+  "alg_shapes_rope" is identical to "alg_shapes", but uses the "Rope" data type
+  instead of "shape". This is useful to test hash key generation or develop
+  further shape levels with more than the three characters.
+*/
 algebra alg_shapeX implements sig_foldrna(alphabet = char, answer = Rope) {
   Rope sadd_cut_noduplex(Subsequence cutbase, Rope e) {
     Rope res;

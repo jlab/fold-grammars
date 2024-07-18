@@ -1,3 +1,5 @@
+// The concrete shape abstraction level can be given as command line
+// parameter "-u".
 //openParen and closeParen are defined in Extensions/shapes.hh as char '[' ']' and in Extensions/pknot_shape.hh as '(' ')'
 
   shape_t sadd(Subsequence b, shape_t x) {

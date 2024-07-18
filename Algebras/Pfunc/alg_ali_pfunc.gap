@@ -1,7 +1,20 @@
-//we can't use a two part partition function (one component for energy, the other for covariation), because the scorings for covariation and the Boltzman function have a very unintuitive behaviour if combined --> very strange results for stochastical backtracing. Better directly fuse energy and covariation into one double!
+/*
+  "alg_ali_pfunc" computes the partition function value for a candidate, where
+  the input is an alignment of RNAs. As well as for "alg_ali_mfe" functions
+  have to iterate through all alignment rows and RNA structures might change.
+  We cannot keep energy and covariance as separate components, because it is
+  unclear how to express zero covariance with Boltzmann's formula. Separation
+  would cause problems with stochastic sampling.
+
+  We can't use a two part partition function (one component for energy,
+  the other for covariation), because the scorings for covariation and the
+  Boltzman function have a very unintuitive behaviour if combined --> very
+  strange results for stochastical backtracing. Better directly fuse energy
+  and covariation into one double!
+*/
 algebra alg_ali_pfunc implements sig_foldrna(alphabet = M_Char, answer = double) {
   include "Algebras/Pfunc/Parts/algpart_ali_pfunc_basic.gap"
-	
+
   //functions only used with the macrostates grammar. Since with macrostates we need a more complex answer type, we provide a special MFE algebra for macrostates and leave these functions empty here.
   double acomb(double le,Subsequence b,double re) {double x; return x;}
   double combine(double le,double re) {double x; return x;}

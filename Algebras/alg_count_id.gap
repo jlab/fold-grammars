@@ -1,3 +1,13 @@
+/*
+  "alg_count_id": creating an algebra that counts the number of candidates in
+  the search space is generic and is usually done by GAP-C with the line:
+  "auto alg_count auto count;". Should you want to play around with stochastic
+  backtracing (aka. Sampling) you need an identity function. The generated count
+  algebra always uses "sum" as choice function and you cannot extend the auto
+  generated algebra in order to overwrite the choice function. GAP-C actually
+  crashes with a segmentation fault.
+*/
+
 algebra alg_count_id implements sig_foldrna(alphabet = char, answer = int) {
   int sadd(Subsequence b,int e) {
     return e;

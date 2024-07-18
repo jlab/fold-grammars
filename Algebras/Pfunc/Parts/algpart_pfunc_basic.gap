@@ -1,3 +1,5 @@
+// defines commonly used algebra functions to produce Boltzmann weighted scores
+// for single RNA inputs.
   double sadd(Subsequence lb, double x) {
     return scale(1) *                     x * mk_pf(sbase_energy());
   }

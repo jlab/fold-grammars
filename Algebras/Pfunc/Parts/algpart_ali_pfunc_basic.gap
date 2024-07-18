@@ -1,3 +1,5 @@
+// defines commonly used algebra functions to produce Boltzmann weighted scores
+// for RNA alignments.
   double sadd(Subsequence lb, double x) {
 	float sbase_sum = 0;
     for (int k = 0; k < int(rows(lb)); k=k+1) {

@@ -1,3 +1,6 @@
+// defines commonly used algebra functions to produce Vienna-Dot-Bracket
+// representations.
+
   string sadd(Subsequence lb,string e) {
     string res;
     append(res, '.');

@@ -1,5 +1,9 @@
+/*
+  "alg_pknot_mfe" is the same as "alg_mfe", but extended to algebra-functions
+  for pseudoknots.
+*/
 algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, answer = int, compKnot = answer_pknot_mfe) {
-	include "Algebras/MFE/Parts/algpart_mfe_basic.gap"
+  include "Algebras/MFE/Parts/algpart_mfe_basic.gap"
 
   int pk(answer_pknot_mfe x) {
     return x.energy;
@@ -7,7 +11,7 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, answer = int
 
   answer_pknot_mfe pknot(Subsequence a, int front, Subsequence b, int middle, Subsequence aPrime, int back, Subsequence bPrime ; int stackenergies) {
     answer_pknot_mfe res;
-	
+
     Subsequence alphaOuter;
     alphaOuter.seq = a.seq;
     alphaOuter.i = a.i;
@@ -27,7 +31,7 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, answer = int
     betaInner.seq = b.seq;
     betaInner.i = b.j-1;
     betaInner.j = bPrime.i+1;
-	  
+
     res.betaLeftOuter = b.i;
     res.alphaRightOuter = aPrime.j;
     
@@ -42,14 +46,14 @@ algebra alg_pknot_mfe implements sig_pknot_foldrna(alphabet = char, answer = int
                  + termau_energy(betaOuter, betaOuter)   // AU penalty for outmost BP in beta helix
                  + termau_energy(betaInner, betaInner)   // AU penalty for innermost BP in beta helix
                  + dli_energy(alphaInner, alphaInner)    // explicitly unpaired base, before front, dangles at the inside of helix alpha
-		         + dri_energy(betaInner, betaInner);     // explicitly unpaired base, after back, dangles at the inside of helix beta
+                 + dri_energy(betaInner, betaInner);     // explicitly unpaired base, after back, dangles at the inside of helix beta
     
-	return res;
+    return res;
   }
   answer_pknot_mfe pkiss(Subsequence a, int front, Subsequence b, int middle1, Subsequence aPrime, int middle2, Subsequence c, int middle3, Subsequence bPrime, int back, Subsequence cPrime; int stackenergies) {
     answer_pknot_mfe res;
-	
-	Subsequence alphaOuter;
+
+    Subsequence alphaOuter;
     alphaOuter.seq = a.seq;
     alphaOuter.i = a.i;
     alphaOuter.j = aPrime.j;
