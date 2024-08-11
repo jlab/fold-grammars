@@ -2,7 +2,7 @@
 #define RNAHYBRID_HH
 
 
-/* unfortunately, the automatic code generation does NOT consider all 
+/* unfortunately, the automatic code generation does NOT consider all
    components for == operators! */
 struct khorshid {
   int leftstacklen;
