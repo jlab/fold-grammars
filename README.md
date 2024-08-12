@@ -20,3 +20,15 @@ Install software one or multiple software packages:
   - KnotInFrame: `sudo apt-get install knotinframe`
   - RapidShapes: `sudo apt-get install rapidshapes`
   - aCMs: `sudo apt-get install acms`
+
+## conda
+You can alternatively install precompiled binaries for Linux and OSX through (bio)conda:
+  - RNAshapes: [`conda install bioconda::rnashapes`](https://anaconda.org/bioconda/rnashapes)
+  - RNAalishapes: [`conda install bioconda::rnaalishapes`](https://anaconda.org/bioconda/rnaalishapes)
+  - pKiss: [`conda install bioconda::pkiss`](https://anaconda.org/bioconda/pkiss)
+  - pAliKiss: [`conda install bioconda::palikiss`](https://anaconda.org/bioconda/palikiss)
+  - KnotInFrame: [`conda install bioconda::knotinframe`](https://anaconda.org/bioconda/knotinframe)
+  - RapidShapes: [`conda install bioconda::rapidshapes`](https://anaconda.org/bioconda/rapidshapes)
+  - aCMs: [`conda install bioconda::acms`](https://anaconda.org/bioconda/acms) (no OSX version available)
+
+(We have not (yet) tested the bioconda linux-aarch64 builds!)
