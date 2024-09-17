@@ -14,6 +14,7 @@ input rna
 type base_t = extern
 type Rope = extern
 type shape_t = shape
+type multi_mfe = (int mfe, int incl_count, bool cut)
 // type BigInteger = extern
 
 include "Signatures/sig_cofold_foldrna.gap"
@@ -26,6 +27,7 @@ algebra alg_enum auto enum;
 algebra alg_tikz auto tikz;
 
 include "Algebras/MFE/alg_cofold_mfe.gap"
+include "Algebras/MFE/alg_cofold_mfe_multi.gap"
 include "Algebras/alg_cofold.gap"
 // include "Algebras/MEA/alg_mea.gap"
 include "Algebras/Pfunc/alg_cofold_pfunc.gap"
