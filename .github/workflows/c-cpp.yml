@@ -56,7 +56,9 @@ jobs:
       shell: bash -l {0}
       run: |
         conda activate rnahybrid
-        python Misc/Applications/RNAhybrid/RNAhybrid.py
+        python Misc/Applications/RNAhybrid/tests/test_execute.py
+        python Misc/Applications/RNAhybrid/tests/test_parse.py
+        python Misc/Applications/RNAhybrid/RNAhybrid.py -t UGGCCCUGAUGGCUACCCUCUUGAGU -q CUGGGUUUACGUUGGGAGAAC -s 3utr_human --binPath Misc/Applications/RNAhybrid/x86_64-linux-gnu/
 
   cpplint:
     runs-on: ubuntu-latest
