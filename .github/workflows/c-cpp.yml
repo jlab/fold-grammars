@@ -42,6 +42,19 @@ jobs:
         perl runTests.pl 2 ${{ matrix.task }}
         popd
 
+  RNAhybrid:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup for conda
+      uses: conda-incubator/setup-miniconda@v2
+    - uses: actions/checkout@v3
+    - name: compile binaries
+      run: cd Misc/Applications/RNAhybrid && make -j 2
+    - name: install conda dependencies
+      run: conda create --quiet --yes -n rnahybrid -c conda-forge -c bioconda click-option-group samtools
+    - name: run RNAhybrid
+      run: python Misc/Applications/RNAhybrid/RNAhybrid.py
+
   cpplint:
     runs-on: ubuntu-latest
     steps:
