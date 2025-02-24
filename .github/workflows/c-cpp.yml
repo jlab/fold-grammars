@@ -53,6 +53,7 @@ jobs:
     - name: install conda dependencies
       run: conda create --quiet --yes -n rnahybrid -c conda-forge -c bioconda click-option-group samtools
     - name: run RNAhybrid
+      shell: bash -l {0}
       run: |
         conda activate rnahybrid
         python Misc/Applications/RNAhybrid/RNAhybrid.py
