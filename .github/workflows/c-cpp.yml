@@ -53,7 +53,9 @@ jobs:
     - name: install conda dependencies
       run: conda create --quiet --yes -n rnahybrid -c conda-forge -c bioconda click-option-group samtools
     - name: run RNAhybrid
-      run: python Misc/Applications/RNAhybrid/RNAhybrid.py
+      run: |
+        conda activate rnahybrid
+        python Misc/Applications/RNAhybrid/RNAhybrid.py
 
   cpplint:
     runs-on: ubuntu-latest
