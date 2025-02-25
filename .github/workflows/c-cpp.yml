@@ -56,6 +56,7 @@ jobs:
       shell: bash -l {0}
       run: |
         conda activate rnahybrid
+        pip install pynose
         pynose Misc/Applications/RNAhybrid/
 
   cpplint:
