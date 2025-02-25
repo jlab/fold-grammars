@@ -2,6 +2,7 @@
 #define ALIGNMENT_HH
 
 #include <string>
+#include <cstdio>
 #include <rtlib/rna.hh>
 #include <rtlib/table.hh>
 
@@ -16,7 +17,7 @@
     ("append_consensus")
   - compute a representative character for an alignment column in terms of a
     "most informative" base, i.e. bases in columns with frequency greater than
-    the background frequency are projected into 
+    the background frequency are projected into
     http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html "IUPAC" notation.
     Columns where gaps are over-represented are in lower case. ("append_mis")
   - there is also the experimental filter function "maxcombsize" that should

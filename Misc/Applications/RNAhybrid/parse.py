@@ -101,7 +101,7 @@ class Product:
         else:
             res_left = Product.chain(product.__left)
             res_right = Product.chain(product.__right)
-            return {'regexs': '\( %s , %s \)' % (res_left['regexs'], res_right['regexs']),
+            return {'regexs': r'\( %s , %s \)' % (res_left['regexs'], res_right['regexs']),
                     'dtypes': res_left['dtypes'] + res_right['dtypes'],
                     'component_names': res_left['component_names'] + res_right['component_names']}
 

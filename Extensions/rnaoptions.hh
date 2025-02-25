@@ -34,7 +34,7 @@
 
   "rnaoptions.hh" replaces the BGAP built-in "rtlib/generic_opts.hh" file.
 
-  Since this extension of the command line parameters only matters if you want 
+  Since this extension of the command line parameters only matters if you want
   to deploy an application, but not if you are in the process of designing a
   new BGAP program, the file "Extensions/rnaoptions_defaults.hh" contains
   default values for all additional RNA parameters
@@ -64,6 +64,7 @@ extern "C" {
 #include <exception>
 #include <cassert>
 #include <utility>
+#include <cstdio>
 
 // define _XOPEN_SOURCE=500
 

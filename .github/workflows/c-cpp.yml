@@ -42,6 +42,25 @@ jobs:
         perl runTests.pl 2 ${{ matrix.task }}
         popd
 
+  RNAhybrid:
+    runs-on: ubuntu-latest
+    steps:
+    - name: update apt
+      run: |
+        sudo apt-get update
+        sudo add-apt-repository ppa:janssenlab/software
+    - name: Install dependencies
+      run: sudo apt-get install bellmansgapc samtools
+    - name: Setup for conda
+      uses: conda-incubator/setup-miniconda@v2
+    - uses: actions/checkout@v3
+    - name: compile binaries
+      run: cd Misc/Applications/RNAhybrid && make -j 2 all
+    - name: run RNAhybrid
+      run: |
+        pip install pynose click-option-group
+        pynose Misc/Applications/RNAhybrid/
+
   cpplint:
     runs-on: ubuntu-latest
     steps:
