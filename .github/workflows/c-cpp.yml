@@ -45,21 +45,18 @@ jobs:
   RNAhybrid:
     runs-on: ubuntu-latest
     steps:
+    - name: update apt
+      run: sudo apt-get update
+    - name: Install dependencies
+      run: sudo apt-get install bellmansgapc samtools
     - name: Setup for conda
       uses: conda-incubator/setup-miniconda@v2
-    - name: install conda dependencies
-      run: conda create --quiet --yes -n rnahybrid -c conda-forge -c bioconda click-option-group samtools gapc
     - uses: actions/checkout@v3
     - name: compile binaries
-      shell: bash -l {0}
-      run: |
-        conda activate rnahybrid
-        cd Misc/Applications/RNAhybrid && make -j 2 all
+      run: cd Misc/Applications/RNAhybrid && make -j 2 all
     - name: run RNAhybrid
-      shell: bash -l {0}
       run: |
-        conda activate rnahybrid
-        pip install pynose
+        pip install pynose click-option-group
         pynose Misc/Applications/RNAhybrid/
 
   cpplint:
