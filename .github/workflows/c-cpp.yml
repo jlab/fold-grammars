@@ -46,7 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: update apt
-      run: sudo apt-get update
+      run: |
+        sudo apt-get update
+        sudo add-apt-repository ppa:janssenlab/software
     - name: Install dependencies
       run: sudo apt-get install bellmansgapc samtools
     - name: Setup for conda
