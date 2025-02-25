@@ -49,7 +49,7 @@ jobs:
       uses: conda-incubator/setup-miniconda@v2
     - uses: actions/checkout@v3
     - name: compile binaries
-      run: cd Misc/Applications/RNAhybrid && make -j 2
+      run: cd Misc/Applications/RNAhybrid && make -j 2 all
     - name: install conda dependencies
       run: conda create --quiet --yes -n rnahybrid -c conda-forge -c bioconda click-option-group samtools
     - name: run RNAhybrid
