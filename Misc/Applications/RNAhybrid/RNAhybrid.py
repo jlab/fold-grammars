@@ -134,12 +134,6 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
                 broken_sub_structure_dotBracket = get_sub_dotBracket_structure(target_structure, h[0], h[-1], novel_target_pairing_partners)
                 assert broken_sub_structure_dotBracket.count('(') == broken_sub_structure_dotBracket.count(')')
                 answer['broken_target_substructure_energy'] = process_eval(sub_sequence, broken_sub_structure_dotBracket, verbose, cache, settings)
-                # if (sub_sequence, broken_sub_structure_dotBracket) not in evaluated_structures:
-                #     cmd_eval = compose_call('eval', 'microstate', sub_sequence, None, inp_structure=broken_sub_structure_dotBracket, **eval_settings)
-                #     raw_eval = execute(cmd_eval)
-                #     res_eval = Product(TypeMFE()).parse_lines(raw_eval)
-                #     evaluated_structures[(sub_sequence, broken_sub_structure_dotBracket)] = res_eval[0]
-                # answer['broken_target_substructure_energy'] = evaluated_structures[(sub_sequence, broken_sub_structure_dotBracket)]['mfe']
 
     return res_stacklen
 
@@ -169,7 +163,6 @@ def extend_pairs_to_valid_substructure(full_structure, pair_subset):
         for i in range(orig_right, curr_right+1, 1):
             if i in full_structure.keys():
                 pair_subset[full_structure[i]] = i
-
         return extend_pairs_to_valid_substructure(full_structure, pair_subset)
 
 def get_sub_dotBracket_structure(structure, left_border:int, right_border:int, break_pairs=[]):
