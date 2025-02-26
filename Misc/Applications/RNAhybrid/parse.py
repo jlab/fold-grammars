@@ -67,9 +67,9 @@ class TypeMFE(TypeFloat):
 class TypeHybrid(Type):
     def __init__(self):
         super().__init__('hybrid',
-            r'\((\d+), target 5\' ([ACGU\- ]+) 3\',           ([ACGU\- ]+),           ([|: ]+),           ([ACGU\- ]+), miRNA 3\'  ([ACGU\- ]+) 5\'\)',
-            [int, str, str, str, str, str],
-            ['target_position', 'target_unpaired', 'target_stacked', 'pairs', 'mirna_stacked', 'mirna_unpaired'])
+            r'\((\d+), target 5\' ([ACGU\- ]+) 3\',           ([ACGU\- ]+),           ([|: ]+),           ([ACGU\- ]+), miRNA 3\'  ([ACGU\- ]+) 5\', ([0-9,]*)\)',
+            [int, str, str, str, str, str, str],
+            ['target_position', 'target_unpaired', 'target_stacked', 'pairs', 'mirna_stacked', 'mirna_unpaired', 'listOfTargetPartners'])
 
 
 class TypeKhorshid(Type):
@@ -101,7 +101,7 @@ class Product:
         else:
             res_left = Product.chain(product.__left)
             res_right = Product.chain(product.__right)
-            return {'regexs': '\( %s , %s \)' % (res_left['regexs'], res_right['regexs']),
+            return {'regexs': r'\( %s , %s \)' % (res_left['regexs'], res_right['regexs']),
                     'dtypes': res_left['dtypes'] + res_right['dtypes'],
                     'component_names': res_left['component_names'] + res_right['component_names']}
 
