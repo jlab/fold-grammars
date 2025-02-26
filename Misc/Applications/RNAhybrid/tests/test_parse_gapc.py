@@ -4,7 +4,7 @@ sys.path.append(dirname(__file__) + '/../')
 
 from unittest import TestCase, main
 
-from parse import *
+from parse_gapc import *
 
 class TestParse(TestCase):
     def setUp(self):
