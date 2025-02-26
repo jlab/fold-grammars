@@ -5,9 +5,10 @@ import click_option_group
 from hashlib import md5
 from multiprocessing import Pool, cpu_count
 
-from parse import *
+from parse_gapc import *
 from execute import *
 from tempfile import gettempdir
+from input import read_CT_file, disentangle_knots
 from output import *
 import pickle
 
@@ -247,10 +248,8 @@ def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, set, distr
     if target_file:
         entries_targets = read_fasta(target_file)
     elif target_ct_file:
-        trgt = read_CT_file(target_ct_file)
-        entries_targets = [(
-            trgt['name'], trgt['sequence'],
-            disentangle_knots(trgt['structure'])['nested'])]
+        entries_targets = map(lambda x: (x[0], x[1], disentangle_knots(x[2])['nested']),
+                              read_CT_file(target_ct_file))
     else:
         entries_targets = [('from commandline', target)]
 
