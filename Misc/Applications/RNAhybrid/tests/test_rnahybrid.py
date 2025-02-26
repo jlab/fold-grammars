@@ -3,7 +3,7 @@ from os.path import dirname, join
 sys.path.append(dirname(__file__) + '/../')
 
 from unittest import TestCase, main
-from execute import read_CT_file, disentangle_knots
+from input import read_CT_file, disentangle_knots
 from RNAhybrid import extend_pairs_to_valid_substructure, get_sub_dotBracket_structure
 
 def getFP(filepath):
@@ -11,7 +11,7 @@ def getFP(filepath):
 
 class TestRNAhybrid(TestCase):
     def setUp(self):
-        self.CTsars = disentangle_knots(read_CT_file(getFP('data/SARS-CoV-2_Full_Length_Secondary_Structure_Map.ct'))['structure'], verbose=None)['nested']
+        self.CTsars = disentangle_knots(next(read_CT_file(getFP('data/SARS-CoV-2_Full_Length_Secondary_Structure_Map.ct')))[2], verbose=None)['nested']
         # Pairs are stored as opening: closing base pair positions, i.e. opening < closing.
         # To ease access, we enrich this dict by also adding in closing: opening information.
         self.CTsars.update({c: o for o, c in self.CTsars.items()})
