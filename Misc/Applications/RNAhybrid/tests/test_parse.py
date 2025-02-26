@@ -50,8 +50,9 @@ class TestParse(TestCase):
                 'target_stacked': ' UGCUG UGGCCUU  AGCCCC U ',
                 'pairs': ' ||||| |:|||:|  |||||| : ',
                 'mirna_stacked': ' ACGAC AUCGGGA--UCGGGG G ',
-                'mirna_unpaired': '      A               C U'}]
-        obs = p.parse_lines(["(25682, target 5' U     C       GA      U U 3',            UGCUG UGGCCUU  AGCCCC U ,            ||||| |:|||:|  |||||| : ,            ACGAC AUCGGGA--UCGGGG G , miRNA 3'        A               C U 5')"])
+                'mirna_unpaired': '      A               C U',
+                'listOfTargetPartners': '25683,25684,25685,25686,25687,25689,25690,25691,25692,25693,25694,25695,25697,25698,25699,25700,25701,25702,25704'}]
+        obs = p.parse_lines(["(25682, target 5' U     C       GA      U U 3',            UGCUG UGGCCUU  AGCCCC U ,            ||||| |:|||:|  |||||| : ,            ACGAC AUCGGGA--UCGGGG G , miRNA 3'        A               C U 5', 25683,25684,25685,25686,25687,25689,25690,25691,25692,25693,25694,25695,25697,25698,25699,25700,25701,25702,25704)"])
         self.assertEqual(obs, exp)
 
 
