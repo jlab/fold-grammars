@@ -58,8 +58,16 @@ jobs:
       run: cd Misc/Applications/RNAhybrid && make -j 2 all
     - name: run RNAhybrid
       run: |
-        pip install pynose click-option-group
-        pynose Misc/Applications/RNAhybrid/
+        pip install pynose click-option-group coverage
+        cd Misc/Applications/RNAhybrid/ && pynose . --with-doctest --with-coverage --cover-package=RNAhybrid
+    - name: convert coverage
+      run: |
+        cd Misc/Applications/RNAhybrid/ && coverage lcov
+    - name: send coverage report
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: "Misc/Applications/RNAhybrid/coverage.lcov"
 
   cpplint:
     runs-on: ubuntu-latest
