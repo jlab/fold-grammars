@@ -62,12 +62,12 @@ jobs:
         cd Misc/Applications/RNAhybrid/ && pynose . --with-doctest --with-coverage --cover-package=RNAhybrid
     - name: convert coverage
       run: |
-        coverage lcov
+        cd Misc/Applications/RNAhybrid/ && coverage lcov
     - name: send coverage report
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: "coverage.lcov"
+        path-to-lcov: "cd Misc/Applications/RNAhybrid/coverage.lcov"
 
   cpplint:
     runs-on: ubuntu-latest
