@@ -30,7 +30,7 @@ def compose_call(mode: str, grammar: str, inp_target: str, inp_mirna: str, inp_s
         cmd += '_%s' % grammar
 
     if ('allow_lonelypairs' in kwargs) and (kwargs['allow_lonelypairs'] is True):
-        cmd += ' -u 1 '
+        cmd += ' -u 1'
     cmd += " '%s'" % inp_target.upper().replace('T', 'U')
     if inp_mirna is not None:
         cmd += " '%s'" % inp_mirna.upper().replace('T', 'U')
@@ -42,7 +42,7 @@ def compose_call(mode: str, grammar: str, inp_target: str, inp_mirna: str, inp_s
 
 def execute_subprocess(cmd, verbose=sys.stderr):
     if verbose:
-        print("Binary call: %s" % cmd_hybrid, file=sys.stderr)
+        print("Binary call: %s" % cmd, file=verbose)
     with subprocess.Popen([cmd],
                           shell=True,
                           stdout=subprocess.PIPE,
@@ -65,7 +65,7 @@ def cache_execute(cmd:str, cache, cache_suffix:str='.rnahybrid', verbose=sys.std
     raw = []
     if os.path.exists(fp_cache) and cache:
         if verbose:
-            print("Read cached result from file '%s'" % fp_cache, file=sys.stderr)
+            print("Read cached result from file '%s'" % fp_cache, file=verbose)
         with open(fp_cache, 'r') as f:
             raw = f.read().splitlines()
     else:
@@ -74,14 +74,5 @@ def cache_execute(cmd:str, cache, cache_suffix:str='.rnahybrid', verbose=sys.std
             with open(fp_cache, 'w') as f:
                 f.write('\n'.join(raw))
             if verbose:
-                print("Wrote results into cache file '%s'" % fp_cache, file=sys.stderr)
+                print("Wrote results into cache file '%s'" % fp_cache, file=verbose)
     return raw
-
-def mainP():
-    settings = {'bindir': './x86_64-linux-gnu/'}
-    cmd = compose_call('stacklen', 'rnahybrid', 'AUUAAAGGUUUAUACCUUCCCAGGUAACAAACCAACCAACUUUCGAUCUCUUGUAGAUCUGUUCUCUAAACGAACUUUAAAAUCUGUGUGGCUGUCACUC', 'ACGACAAUCGGGAUCGGGGCGU', **settings)
-    run = execute(cmd)
-
-
-if __name__ == '__main__':
-    mainP()
