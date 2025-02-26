@@ -40,20 +40,7 @@ def process_eval(sequence, dotBracket, verbose, cache, settings):
     eval_settings.update({'allow_lonelypairs': True})
 
     cmd_eval = compose_call('eval', 'microstate', sequence, None, inp_structure=dotBracket, **eval_settings)
-    fp_cache = os.path.join(gettempdir(), md5(cmd_eval.encode()).hexdigest() + '.rnaeval')
-    raw_eval = []
-    if os.path.exists(fp_cache) and cache:
-        if verbose:
-            print("Read cached result from file '%s'" % fp_cache, file=sys.stderr)
-        with open(fp_cache, 'r') as f:
-            raw_eval = f.read().splitlines()
-    else:
-        raw_eval = execute(cmd_eval)
-        if cache:
-            with open(fp_cache, 'w') as f:
-                f.write('\n'.join(raw_eval))
-            if verbose:
-                print("Wrote results into cache file '%s'" % fp_cache, file=sys.stderr)
+    raw_eval = cache_execute(cmd_eval, cache, '.rnaeval', verbose)
     res_eval = Product(TypeMFE()).parse_lines(raw_eval)
 
     return res_eval[0]['mfe']
@@ -68,22 +55,7 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
         settings['theta'] = DISTRIBUTION[set]['theta_slope'] * mdes[entry_mirna[0]] + DISTRIBUTION[set]['theta_intercept']
 
     cmd_hybrid = compose_call('khorshid', 'rnahybrid', entry_target[1], entry_mirna[1], **settings)
-    if verbose:
-        print("Binary call: %s" % cmd_hybrid, file=sys.stderr)
-    fp_cache = os.path.join(gettempdir(), md5(cmd_hybrid.encode()).hexdigest() + '.rnahybrid')
-    raw_hybrid = []
-    if os.path.exists(fp_cache) and cache:
-        if verbose:
-            print("Read cached result from file '%s'" % fp_cache, file=sys.stderr)
-        with open(fp_cache, 'r') as f:
-            raw_hybrid = f.read().splitlines()
-    else:
-        raw_hybrid = execute(cmd_hybrid)
-        if cache:
-            with open(fp_cache, 'w') as f:
-                f.write('\n'.join(raw_hybrid))
-            if verbose:
-                print("Wrote results into cache file '%s'" % fp_cache, file=sys.stderr)
+    raw_hybrid = cache_execute(cmd_hybrid, cache, '.rnahybrid', verbose)
 
     #res_stacklen = Product(Product(TypeInt('stacklen'), TypeMFE()), TypeHybrid()).parse_lines(raw_hybrid)
     res_stacklen = Product(Product(TypeKhorshid(), TypeMFE()), TypeHybrid()).parse_lines(raw_hybrid)
@@ -258,9 +230,8 @@ def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, set, distr
     if not distribution and set:
         for entry_mirna in entries_mirnas:
             cmd_mde = compose_call('mde', '', entry_mirna[1], complement(entry_mirna[1]), **settings)
-            if verbose:
-                print("Binary call: %s" % cmd_mde, file=sys.stderr)
-            res_mde = Product(TypeFloat('mde')).parse_lines(execute(cmd_mde))[0]
+            raw_mde = cache_execute(cmd_mde, cache, '.mde', verbose)
+            res_mde = Product(TypeFloat('mde')).parse_lines(raw_mde)[0]
             mdes[entry_mirna[0]] = res_mde['mde'] / 100
 
     result_nr = 1

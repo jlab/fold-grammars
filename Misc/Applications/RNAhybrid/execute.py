@@ -1,5 +1,8 @@
 import subprocess
 import sys
+import os
+from tempfile import gettempdir
+from hashlib import md5
 
 
 def complement(sequence: str):
@@ -36,7 +39,10 @@ def compose_call(mode: str, grammar: str, inp_target: str, inp_mirna: str, inp_s
 
     return cmd
 
-def execute(cmd):
+
+def execute_subprocess(cmd, verbose=sys.stderr):
+    if verbose:
+        print("Binary call: %s" % cmd_hybrid, file=sys.stderr)
     with subprocess.Popen([cmd],
                           shell=True,
                           stdout=subprocess.PIPE,
@@ -54,6 +60,22 @@ def execute(cmd):
             return out.decode("utf-8", 'backslashreplace').split('\n')
 
 
+def cache_execute(cmd:str, cache, cache_suffix:str='.rnahybrid', verbose=sys.stderr) -> [str]:
+    fp_cache = os.path.join(gettempdir(), md5(cmd.encode()).hexdigest() + cache_suffix)
+    raw = []
+    if os.path.exists(fp_cache) and cache:
+        if verbose:
+            print("Read cached result from file '%s'" % fp_cache, file=sys.stderr)
+        with open(fp_cache, 'r') as f:
+            raw = f.read().splitlines()
+    else:
+        raw = execute_subprocess(cmd, verbose)
+        if cache:
+            with open(fp_cache, 'w') as f:
+                f.write('\n'.join(raw))
+            if verbose:
+                print("Wrote results into cache file '%s'" % fp_cache, file=sys.stderr)
+    return raw
 
 def mainP():
     settings = {'bindir': './x86_64-linux-gnu/'}
