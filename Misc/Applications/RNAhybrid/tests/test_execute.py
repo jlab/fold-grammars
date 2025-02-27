@@ -3,6 +3,7 @@ import os
 from glob import glob
 from os.path import dirname, join
 from io import StringIO
+from tempfile import gettempdir
 sys.path.append(dirname(__file__) + '/../')
 
 from unittest import TestCase, main
@@ -15,7 +16,7 @@ def getFP(filepath):
 
 def _clean_cachefiles():
     # clean potential old cache files
-    for fp_old in glob(join(os.environ["TMPDIR"], '*.cache_unittest')):
+    for fp_old in glob(join(gettempdir(), '*.cache_unittest')):
         os.remove(fp_old)
 
 class TestExecute(TestCase):
