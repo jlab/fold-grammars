@@ -217,7 +217,7 @@ def RNAhybrid(ctx, target, target_file, target_ct_file, mirna, mirna_file, pretr
                     answers.extend(res_stacklen)
             else:
                 # replace the verbose value to enable parallel processing and writing to multiple independent files
-                _, fp_verbose = mkstemp()
+                FH, fp_verbose = mkstemp(suffix='.%s.verbose' % os.getpid())
                 tmp_args = list(args)
                 tmp_args[7] = Path(fp_verbose)
                 fps_verbose.append(fp_verbose)
@@ -235,6 +235,7 @@ def RNAhybrid(ctx, target, target_file, target_ct_file, mirna, mirna_file, pretr
     for fp_verbose in fps_verbose:
         with open(fp_verbose, 'r') as f:
             print(''.join(f.readlines()), file=verbose)
+        os.remove(fp_verbose)
 
     print_summary(answers, len(targets), total_mirnas)
     if sam:
