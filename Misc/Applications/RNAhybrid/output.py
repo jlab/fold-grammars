@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from io import TextIOWrapper
+from io import TextIOWrapper, StringIO
 
 def print_single_answer(answer, number:int, out=sys.stdout):
     out.write("result no %i\n" % number)
@@ -156,7 +156,7 @@ def warning(msg, target, linebreak=True):
                 f.write(msg)
                 if linebreak:
                     f.write('\n')
-        elif isinstance(target, TextIOWrapper):
+        elif isinstance(target, TextIOWrapper) or isinstance(target, StringIO):
             print(msg, file=target, end="")
             if linebreak:
                 print("", file=target)
