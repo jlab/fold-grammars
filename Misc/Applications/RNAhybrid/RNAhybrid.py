@@ -4,6 +4,9 @@ import click
 import click_option_group
 from hashlib import md5
 from multiprocessing import Pool, cpu_count
+from tempfile import mkstemp
+from io import StringIO
+from pathlib import Path
 
 from parse_gapc import *
 from execute import *
@@ -188,6 +191,7 @@ def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, pretrained
     tasks = []
     targets = []
     total_mirnas = 0
+    fps_verbose = []
     for pos_target, entry_target in enumerate(entries_targets):
         targets.append([entry_target[0], len(entry_target[1])])
         for pos_mirna, entry_mirna in enumerate(entries_mirnas):
@@ -203,7 +207,12 @@ def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, pretrained
                 else:
                     answers.extend(res_stacklen)
             else:
-                tasks.append(args)
+                # replace the verbose value to enable parallel processing and writing to multiple independent files
+                _, fp_verbose = mkstemp()
+                tmp_args = list(args)
+                tmp_args[7] = Path(fp_verbose)
+                fps_verbose.append(fp_verbose)
+                tasks.append(tuple(tmp_args))
 
     if tasks != []:
         pool = Pool(num_cpus)
@@ -213,6 +222,10 @@ def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, pretrained
     if (not stream_output) or (tasks != []):
         answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue)
         result_nr += print_answers(answers, result_nr, out=sys.stdout)
+
+    for fp_verbose in fps_verbose:
+        with open(fp_verbose, 'r') as f:
+            print(''.join(f.readlines()), file=verbose)
 
     print_summary(answers, len(targets), total_mirnas)
     if sam:

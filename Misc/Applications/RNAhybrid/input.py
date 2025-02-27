@@ -1,6 +1,7 @@
 import sys
 from collections import OrderedDict
 from typing import Generator, Tuple
+from output import warning
 
 
 def read_fasta(filename:str) -> Generator[Tuple[str, str], None, None]:
@@ -149,8 +150,8 @@ def disentangle_knots(pairs:dict[int, int], verbose=sys.stderr) -> dict[str, dic
     if len(pseudoknotted) > len(nested):
         nested, pseudoknotted = pseudoknotted, nested
 
-    if verbose is not None and len(pseudoknotted) > 0:
-        print("Warning: %i of %i base-pairs in your structure are pseudoknotted, i.e. crossing." % (len(pseudoknotted), len(nested) + len(pseudoknotted)), file=verbose)
+    if len(pseudoknotted) > 0:
+        warning("Warning: %i of %i base-pairs in your structure are pseudoknotted, i.e. crossing." % (len(pseudoknotted), len(nested) + len(pseudoknotted)), verbose)
 
     # return "normal" dictionaries, not ordered ones
     result = {'nested': dict(nested), 'knotted': dict(pseudoknotted)}

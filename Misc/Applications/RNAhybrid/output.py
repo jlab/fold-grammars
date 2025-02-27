@@ -1,4 +1,6 @@
 import sys
+from pathlib import Path
+from io import TextIOWrapper
 
 def print_single_answer(answer, number:int, out=sys.stdout):
     out.write("result no %i\n" % number)
@@ -146,3 +148,15 @@ def print_sam(answers, targets, out=sys.stdout):
         out.write('\t'.join(["@SQ", "SN:%s" % name, "LN:%i" % length]) + '\n')
     for answer in answers:
         out.write(hit_2_sam(answer) + "\n")
+
+def warning(msg, target, linebreak=True):
+    if target is not None:
+        if isinstance(target, Path):
+            with open(target, 'a') as f:
+                f.write(msg)
+                if linebreak:
+                    f.write('\n')
+        elif isinstance(target, TextIOWrapper):
+            print(msg, file=target, end="")
+            if linebreak:
+                print("", file=target)

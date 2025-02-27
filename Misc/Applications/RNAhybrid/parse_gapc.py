@@ -1,5 +1,6 @@
 import re
 import sys
+from output import warning
 
 
 class Type:
@@ -157,13 +158,13 @@ class Product:
         if len(nonhitlines) > 0:
             MAXREPORT = 5
             if verbose is not None:
-                verbose.write('%i line' % len(nonhitlines))
+                warning('%i line' % len(nonhitlines), verbose, linebreak=False)
                 if len(nonhitlines) > 1:
-                    verbose.write('s')
-                verbose.write(' could not properly be parsed')
+                    warning('s', verbose, linebreak=False)
+                warning(' could not properly be parsed', verbose, linebreak=False)
                 if len(nonhitlines) > MAXREPORT:
-                    verbose.write('. Reporting only the first %i here' % MAXREPORT)
-                verbose.write(':\n%s' % ''.join(['  line %i: "%s"\n' % (ln+1, line) for (ln, line) in nonhitlines[:5]]))
+                    warning('. Reporting only the first %i here' % MAXREPORT, verbose, linebreak=False)
+                warning(':\n%s' % ''.join(['  line %i: "%s"\n' % (ln+1, line) for (ln, line) in nonhitlines[:5]]), verbose, linebreak=False)
 
         return results
 
