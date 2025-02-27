@@ -161,13 +161,16 @@ def disentangle_knots(pairs:dict[int, int], verbose=sys.stderr) -> dict[str, dic
 
     return result
 
-def nested_pairs_to_dotBracket(pairs: dict[int, int]) -> str:
+def nested_pairs_to_dotBracket(pairs: dict[int, int], break_positions: [int]=[]) -> str:
     """Takes a dict of pairs and returns a dot-Bracket string.
 
     Parameters
     ==========
     pairs : dict[int, int]
         A "set" of base-pairs
+    break_positions : [int]
+        A list of positions that breaks pairs, i.e. affected base-pairs in pairs
+        will be represented as . . instead of ( )
 
     Returns
     =======
@@ -178,7 +181,7 @@ def nested_pairs_to_dotBracket(pairs: dict[int, int]) -> str:
     ValueError if pairs contain crossing base-pairs
     """
 
-    sorted_pairs = sort_pairs(pairs, only_ij=True)
+    sorted_pairs = sort_pairs(pairs, only_ij=False)
     dis = disentangle_knots(sorted_pairs)
     if len(dis['knotted']) != 0:
         raise ValueError("Cannot produce dot-Bracket strings for pseudoknotted pair-sets!")
@@ -186,18 +189,18 @@ def nested_pairs_to_dotBracket(pairs: dict[int, int]) -> str:
     # determine left and right borders
     (left, right) = get_left_right_positions(sorted_pairs)
     db = ""
+    # break_positions might contain partial pairs, we here ensure opening and closing partner are contained
+    break_pairs = {i: j for i, j in sorted_pairs.items() if i in break_positions or j in break_positions}
     for x in range(left, right+1, 1):
-        if x not in sorted_pairs.keys():
-            # x is no opening partner, could be unpaired or closing partner
-            if x not in sorted_pairs.values():
-                # x is also not closing partner
-                db += '.'
-            else:
-                # x is closing partner
-                db += ')'
-        else:
-            # x is opening partner
+        y = sorted_pairs.get(x, None)  # get potential pairing partner
+        if (y is None) or (x in break_pairs) or (y in break_pairs):
+            db += '.'
+        elif x < y:
             db += '('
+        else:
+            db += ')'
+
+    assert db.count('(') == db.count(')')
 
     return db
 
