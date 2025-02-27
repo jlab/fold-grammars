@@ -160,3 +160,5 @@ def warning(msg, target, linebreak=True):
             print(msg, file=target, end="")
             if linebreak:
                 print("", file=target)
+        elif isinstance(target, list):
+            target.append(msg + ('\n' if linebreak else ''))

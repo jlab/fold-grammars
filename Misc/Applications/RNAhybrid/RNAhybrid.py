@@ -106,7 +106,7 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
                 # free energy of affected target sub-structure, when existing base-pairs are broken to enable miRNA binding
                 answer['broken_target_substructure_energy'] = process_eval(sub_sequence, nested_pairs_to_dotBracket(sub_structure, novel_target_pairing_partners), verbose, cache, settings)
 
-    return res_stacklen
+    return res_stacklen, verbose
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
@@ -200,15 +200,14 @@ def RNAhybrid(ctx, target, target_file, target_ct_file, mirna, mirna_file, pretr
     tasks = []
     targets = []
     total_mirnas = 0
-    fps_verbose = []
     for pos_target, entry_target in enumerate(entries_targets):
         targets.append([entry_target[0], len(entry_target[1])])
         for pos_mirna, entry_mirna in enumerate(entries_mirnas):
             if pos_target == 0:
                 total_mirnas += 1
-            args = (entry_target, pos_target, entry_mirna, pos_mirna, mdes, distribution, pretrained_set, verbose, cache, settings)
+            args = (entry_target, pos_target, entry_mirna, pos_mirna, mdes, distribution, pretrained_set, verbose if num_cpus == 1 else [], cache, settings)
             if num_cpus == 1:
-                res_stacklen = process_onetarget_onemirna(*args)
+                res_stacklen, _ = process_onetarget_onemirna(*args)
                 if stream_output:
                     answers = res_stacklen
                     answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue)
@@ -216,25 +215,18 @@ def RNAhybrid(ctx, target, target_file, target_ct_file, mirna, mirna_file, pretr
                 else:
                     answers.extend(res_stacklen)
             else:
-                # replace the verbose value to enable parallel processing and writing to multiple independent files
-                _, fp_verbose = mkstemp()
-                tmp_args = list(args)
-                tmp_args[7] = Path(fp_verbose)
-                fps_verbose.append(fp_verbose)
-                tasks.append(tuple(tmp_args))
+                tasks.append(args)
 
     if tasks != []:
         pool = Pool(num_cpus)
         for res in zip(pool.map(wrap_process, tasks)):
-            answers.extend(res[0])
+            if verbose:
+                print(''.join(res[0][1]), file=verbose, end="")
+            answers.extend(res[0][0])
 
     if (not stream_output) or (tasks != []):
         answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue)
         result_nr += print_answers(answers, result_nr, out=sys.stdout)
-
-    for fp_verbose in fps_verbose:
-        with open(fp_verbose, 'r') as f:
-            print(''.join(f.readlines()), file=verbose)
 
     print_summary(answers, len(targets), total_mirnas)
     if sam:
