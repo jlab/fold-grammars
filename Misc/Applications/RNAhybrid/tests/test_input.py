@@ -2,6 +2,7 @@ import sys
 from os.path import dirname, join
 sys.path.append(dirname(__file__) + '/../')
 
+from io import StringIO
 from unittest import TestCase, main
 
 from input import read_fasta, read_CT_file, disentangle_knots, nested_pairs_to_dotBracket, get_minimal_valid_substructure
@@ -66,6 +67,12 @@ class TestExecute(TestCase):
         self.assertEqual(len(obs['nested']), 8681*2)
         self.assertEqual(len(obs['knotted']), 7*2)
 
+        errFile = StringIO("")
+        obs = disentangle_knots({1: 4, 2: 5}, errFile)
+        self.assertEqual(len(obs['nested']), 1*2)
+        self.assertEqual(len(obs['knotted']), 1*2)
+        self.assertEqual(errFile.getvalue(), "Warning: 1 of 2 base-pairs in your structure are pseudoknotted, i.e. crossing.\n")
+
     def test_nested_pairs_to_dotBracket(self):
         exp = '((......................)).............(((.............)................................................................................................................))'
         obs = nested_pairs_to_dotBracket(self.pairs1)
@@ -89,6 +96,8 @@ class TestExecute(TestCase):
             [24738, 24739, 24740, 24741, 24742, 24743, 24744, 24745, 24746, 24747, 24748, 24749, 24750, 24751])
         self.assertEqual(exp, obs)
 
+        with self.assertRaises(ValueError):
+            obs = nested_pairs_to_dotBracket({1: 4, 2: 5})
 
     def test_get_minimal_valid_substructure(self):
         fullSARS = list(read_CT_file(getFP('data/SARS-CoV-2_Full_Length_Secondary_Structure_Map.ct')))[0]
