@@ -13,12 +13,17 @@ from execute import complement, compose_call, execute_subprocess, cache_execute
 def getFP(filepath):
     return join(dirname(__file__), filepath)
 
+def _clean_cachefiles():
+    # clean potential old cache files
+    for fp_old in glob(join(os.environ["TMPDIR"], '*.cache_unittest')):
+        os.remove(fp_old)
+
 class TestExecute(TestCase):
     def setUp(self):
-        pass
+        _clean_cachefiles()
 
     def tearDown(self):
-        pass
+        _clean_cachefiles()
 
     def test_complement(self):
         exp = "GGGUUUCCC"
@@ -64,37 +69,30 @@ class TestExecute(TestCase):
             obs = execute_subprocess("touch /proc", verbose=None)
 
     def test_cache_execute(self):
-        def _clean_cachefiles():
-            # clean potential old cache files
-            for fp_old in glob('*.cache_unittest'):
-                os.remove(fp_old)
-
-        _clean_cachefiles()
-        os.environ["TMPDIR"] = "./"
         cmd = "echo 'heinz'"
-        errFile = StringIO("")
+        errFile1 = StringIO("")
         # first execution, should create cache file
-        obs = cache_execute(cmd, True, '.cache_unittest', verbose=errFile)
-        fp_cache = errFile.getvalue().split()[-1].split("'")[1]
-        self.assertEqual(['heinz', ''], obs)
-        self.assertIn('Wrote results into cache file', errFile.getvalue())
+        obs1 = cache_execute(cmd, True, '.cache_unittest', verbose=errFile1)
+        fp_cache = errFile1.getvalue().split()[-1].split("'")[1]
+        self.assertEqual(['heinz', ''], obs1)
+        self.assertIn('Wrote results into cache file', errFile1.getvalue())
         with open(fp_cache, 'r') as f:
             self.assertEqual('heinz\n', ''.join(f.readlines()))
 
         # second execution, should read from cache file. To test, we sneak a new value into the cache file
         with open(fp_cache, 'w') as f:
             f.write('cache is used\n')
-        errFile = StringIO("")
-        obs = cache_execute(cmd, True, '.cache_unittest', verbose=errFile)
-        self.assertEqual(['cache is used'], obs)
-        self.assertIn('Read cached result from file', errFile.getvalue())
+        errFile2 = StringIO("")
+        obs2 = cache_execute(cmd, True, '.cache_unittest', verbose=errFile2)
+        self.assertEqual(['cache is used'], obs2)
+        self.assertIn('Read cached result from file', errFile2.getvalue())
 
         # remove cache files
         _clean_cachefiles()
 
         # execution without using a cache file
-        obs = cache_execute(cmd, False, '.cache_unittest', verbose=None)
-        self.assertEqual(['heinz', ''], obs)
+        obs3 = cache_execute(cmd, False, '.cache_unittest', verbose=None)
+        self.assertEqual(['heinz', ''], obs3)
 
 
 if __name__ == '__main__':
