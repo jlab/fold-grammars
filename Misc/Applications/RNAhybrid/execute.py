@@ -4,6 +4,7 @@ import os
 from tempfile import gettempdir
 from hashlib import md5
 from output import warning
+from filelock import Timeout, FileLock
 
 
 def complement(sequence: str):
@@ -61,15 +62,21 @@ def execute_subprocess(cmd, verbose=sys.stderr):
 
 
 def cache_execute(cmd:str, cache, cache_suffix:str='.rnahybrid', verbose=sys.stderr) -> [str]:
+    if cache is False:
+        return execute_subprocess(cmd, verbose)
+
     fp_cache = os.path.join(gettempdir(), md5(cmd.encode()).hexdigest() + cache_suffix)
+    fp_cache_lock = fp_cache + '.lock'
+
     raw = []
-    if os.path.exists(fp_cache) and cache:
+    if os.path.exists(fp_cache):
         warning("Read cached result from file '%s'" % fp_cache, verbose)
         with open(fp_cache, 'r') as f:
             raw = f.read().splitlines()
     else:
         raw = execute_subprocess(cmd, verbose)
-        if cache:
+        lock = FileLock(fp_cache_lock, timeout=10)
+        with lock:
             with open(fp_cache, 'w') as f:
                 f.write('\n'.join(raw))
             warning("Wrote results into cache file '%s'" % fp_cache, verbose)

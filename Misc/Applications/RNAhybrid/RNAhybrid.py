@@ -216,7 +216,7 @@ def RNAhybrid(ctx, target, target_file, target_ct_file, mirna, mirna_file, pretr
                     answers.extend(res_stacklen)
             else:
                 tasks.append(args)
-
+    
     if tasks != []:
         pool = Pool(num_cpus)
         for res in zip(pool.map(wrap_process, tasks)):
