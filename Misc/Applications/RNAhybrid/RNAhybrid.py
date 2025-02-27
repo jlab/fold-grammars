@@ -8,7 +8,7 @@ from multiprocessing import Pool, cpu_count
 from parse_gapc import *
 from execute import *
 from tempfile import gettempdir
-from input import read_CT_file, disentangle_knots
+from input import read_CT_file, disentangle_knots, get_minimal_valid_substructure
 from output import *
 import pickle
 
@@ -45,14 +45,14 @@ def process_eval(sequence, dotBracket, verbose, cache, settings):
 
     return res_eval[0]['mfe']
 
-def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna, mdes, distribution, set, verbose, cache, settings):
+def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna, mdes, distribution, pretrained_set, verbose, cache, settings):
     settings['xi'] = 0
     settings['theta'] = 0
 
-    if not distribution and set:
+    if not distribution and pretrained_set:
         # estimate evd parameters from maximal duplex energy
-        settings['xi'] = DISTRIBUTION[set]['xi_slope'] * mdes[entry_mirna[0]] + DISTRIBUTION[set]['xi_intercept']
-        settings['theta'] = DISTRIBUTION[set]['theta_slope'] * mdes[entry_mirna[0]] + DISTRIBUTION[set]['theta_intercept']
+        settings['xi'] = DISTRIBUTION[pretrained_set]['xi_slope'] * mdes[entry_mirna[0]] + DISTRIBUTION[pretrained_set]['xi_intercept']
+        settings['theta'] = DISTRIBUTION[pretrained_set]['theta_slope'] * mdes[entry_mirna[0]] + DISTRIBUTION[pretrained_set]['theta_intercept']
 
     cmd_hybrid = compose_call('khorshid', 'rnahybrid', entry_target[1], entry_mirna[1], **settings)
     raw_hybrid = cache_execute(cmd_hybrid, cache, '.rnahybrid', verbose)
@@ -68,9 +68,6 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
         # If user provides ONE given secondary structure for target sequence,
         # we get this set of pairs as the third component of the entry_target tuple.
         target_structure = entry_target[2]
-        # Pairs are stored as opening: closing base pair positions, i.e. opening < closing.
-        # To ease access, we enrich this dict by also adding in closing: opening information.
-        target_structure.update({c: o for o, c in target_structure.items()})
 
     for pos_answer, answer in enumerate(res_stacklen):
         answer['pos_target'] = pos_target
@@ -94,7 +91,7 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
             original_target_pairs = {o: c for o, c in {x: target_structure.get(x, -1) for x in novel_target_pairing_partners}.items() if c != -1}
             if len(original_target_pairs) > 0:
                 # extend set of target pairs to valid sub-structure
-                sub_structure = extend_pairs_to_valid_substructure(target_structure, original_target_pairs)
+                sub_structure = get_minimal_valid_substructure(target_structure, original_target_pairs)
                 # sort involved base-pairs for extended sub-structure to enable easy access to extended left and right limits
                 h = sorted(list(sub_structure.keys()) + list(sub_structure.values()))
                 # get a valid short dot-Bracket representation of that part of the user given target secondary structure that is involved in miRNA binding
@@ -109,34 +106,6 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
                 answer['broken_target_substructure_energy'] = process_eval(sub_sequence, broken_sub_structure_dotBracket, verbose, cache, settings)
 
     return res_stacklen
-
-def extend_pairs_to_valid_substructure(full_structure, pair_subset):
-    """Recursively check if some of the pairs might extend into regions not yet within the sub-structure limits"""
-
-    curr_list_of_paired_bases = sorted(list(pair_subset.keys()) + list(pair_subset.values()))
-    orig_left, orig_right = curr_list_of_paired_bases[0], curr_list_of_paired_bases[-1]
-
-    curr_left, curr_right = orig_left, orig_right
-    for i in range(orig_left, orig_right+1, 1):
-         if i in full_structure.keys():
-             j = full_structure[i]
-             pair_subset[i] = j
-             pair_subset[j] = i
-             if j < curr_left:
-                 curr_left = j
-             if j > curr_right:
-                 curr_right = j
-
-    if (orig_left == curr_left) and (orig_right == curr_right):
-        return pair_subset
-    else:
-        for i in range(curr_left, orig_left+1, 1):
-            if i in full_structure.keys():
-                pair_subset[i] = full_structure[i]
-        for i in range(orig_right, curr_right+1, 1):
-            if i in full_structure.keys():
-                pair_subset[full_structure[i]] = i
-        return extend_pairs_to_valid_substructure(full_structure, pair_subset)
 
 def get_sub_dotBracket_structure(structure, left_border:int, right_border:int, break_pairs=[]):
     """Construct a dot-Bracket string for a part of the base-pairs given in the "structure" dictionary,
@@ -176,7 +145,7 @@ def get_sub_dotBracket_structure(structure, left_border:int, right_border:int, b
 @click_option_group.optgroup.group(
     'p-value calculation', cls=click_option_group.RequiredMutuallyExclusiveOptionGroup)
 @click_option_group.optgroup.option(
-    '-s', '--set', type=click.Choice(['3utr_fly','3utr_worm','3utr_human']), help='A pre-trained set of organism specific values.')
+    '-s', '--pretrained_set', type=click.Choice(['3utr_fly','3utr_worm','3utr_human']), help='A pre-trained set of organism specific values.')
 @click_option_group.optgroup.option(
     '-d', '--distribution', nargs=2, type=float, help='<xi> and <theta> are the position and shape parameters, respectively, of the extreme value distribution assumed for p-value calculation. For example enter "0.91 0.25" without the quotes.')
 @click.option(
@@ -199,7 +168,7 @@ def get_sub_dotBracket_structure(structure, left_border:int, right_border:int, b
     "--num-cpus", type=click.IntRange(1, cpu_count()), default=1, help="Number of CPU-cores to use. Default is 1, i.e. single-threaded. Note that --stream-output cannot be used as concurrent sub-tasks would overwrite their results.")
 @click.option(
     '--sam', type=click.File('w'), required=False, help="Provide a filename if you want to make %s report results as a *.sam file, such that you can view hit positions in a genome browser like IGV." % PROGNAME)
-def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue, verbose, cache, stream_output, num_cpus, sam):
+def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, pretrained_set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue, verbose, cache, stream_output, num_cpus, sam):
     settings = dict()
 
     settings['binpath'] = binpath
@@ -227,7 +196,7 @@ def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, set, distr
 
     # compute maximum duplex energies once per miRNA
     mdes = dict()
-    if not distribution and set:
+    if not distribution and pretrained_set:
         for entry_mirna in entries_mirnas:
             cmd_mde = compose_call('mde', '', entry_mirna[1], complement(entry_mirna[1]), **settings)
             raw_mde = cache_execute(cmd_mde, cache, '.mde', verbose)
@@ -244,7 +213,7 @@ def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, set, distr
         for pos_mirna, entry_mirna in enumerate(entries_mirnas):
             if pos_target == 0:
                 total_mirnas += 1
-            args = (entry_target, pos_target, entry_mirna, pos_mirna, mdes, distribution, set, verbose, cache, settings)
+            args = (entry_target, pos_target, entry_mirna, pos_mirna, mdes, distribution, pretrained_set, verbose, cache, settings)
             if num_cpus == 1:
                 res_stacklen = process_onetarget_onemirna(*args)
                 if stream_output:
