@@ -14,6 +14,9 @@ from tempfile import gettempdir
 from input import read_fasta, read_CT_file, disentangle_knots, get_minimal_valid_substructure, nested_pairs_to_dotBracket, get_left_right_positions
 from output import *
 import pickle
+import datetime
+import getpass
+import socket
 
 PROGNAME = 'RNAhybrid'
 # values taken from RNAhybrid-2.1.2/src/globals.h
@@ -147,7 +150,13 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
     "--num-cpus", type=click.IntRange(1, cpu_count()), default=1, help="Number of CPU-cores to use. Default is 1, i.e. single-threaded. Note that --stream-output cannot be used as concurrent sub-tasks would overwrite their results.")
 @click.option(
     '--sam', type=click.File('w'), required=False, help="Provide a filename if you want to make %s report results as a *.sam file, such that you can view hit positions in a genome browser like IGV." % PROGNAME)
-def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, pretrained_set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue, verbose, cache, stream_output, num_cpus, sam):
+@click.pass_context
+def RNAhybrid(ctx, target, target_file, target_ct_file, mirna, mirna_file, pretrained_set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue, verbose, cache, stream_output, num_cpus, sam):
+    click.echo("## RNAhybrid was called with following parameters:")
+    click.echo("## started execution on %s by %s on %s" % (datetime.datetime.now(), getpass.getuser(), socket.gethostname()))
+    for param, value in ctx.params.items():
+        click.echo(f"## - {param}: {value}")
+
     settings = dict()
 
     settings['binpath'] = binpath
@@ -230,6 +239,9 @@ def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, pretrained
     print_summary(answers, len(targets), total_mirnas)
     if sam:
         print_sam(answers, targets, sam)
+
+    click.echo("## finished execution on %s" % (datetime.datetime.now()))
+
 
 if __name__ == '__main__':
     RNAhybrid()
