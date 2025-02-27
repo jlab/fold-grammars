@@ -8,7 +8,7 @@ from multiprocessing import Pool, cpu_count
 from parse_gapc import *
 from execute import *
 from tempfile import gettempdir
-from input import read_CT_file, disentangle_knots, get_minimal_valid_substructure, nested_pairs_to_dotBracket, get_left_right_positions
+from input import read_fasta, read_CT_file, disentangle_knots, get_minimal_valid_substructure, nested_pairs_to_dotBracket, get_left_right_positions
 from output import *
 import pickle
 
