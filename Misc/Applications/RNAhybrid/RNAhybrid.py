@@ -149,6 +149,10 @@ def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, pretrained
 
     settings['binpath'] = binpath
     settings['program_name'] = PROGNAME
+    if verbose:
+        verbose = sys.stder
+    else:
+        verbose = None
 
     if filter_minmax_seedlength[0] > filter_minmax_seedlength[1]:
         raise ValueError("minimum for seed length must be smaller than maximum!")
