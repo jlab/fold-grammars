@@ -1,9 +1,9 @@
 import sys
 from collections import OrderedDict
-from typing import Generator
+from typing import Generator, Tuple
 
 
-def read_fasta(filename:str) -> Generator[(str, str)]:
+def read_fasta(filename:str) -> Generator[Tuple[str, str], None, None]:
     """Read a (multiple) fastA file"""
     with open(filename, 'r') as f:
         sequence = ""
@@ -24,7 +24,7 @@ def read_fasta(filename:str) -> Generator[(str, str)]:
         if (header is not None) and (len(sequence) > 0):
             yield (header, sequence)
 
-def read_CT_file(filename:str) -> Generator[(str, str, dict[int, int])]:
+def read_CT_file(filename:str) -> Generator[Tuple[str, str, dict[int, int]], None, None]:
     """Read a (multiple) CT (Connectivity Table) file.
 
     Parameters
@@ -88,6 +88,30 @@ def read_CT_file(filename:str) -> Generator[(str, str, dict[int, int])]:
             if expected_structure_length == next_lines_till_entry_end:
                 raise ValueError("One of the entries in your CT file '%s' seems to have surplus lines. Carefully check the header of the entries and compare to sequence lengths!")
 
+def sort_pairs(pairs: dict[int, int], only_ij=False) -> dict[int, int]:
+    sorted_pairs = dict()
+
+    if only_ij:
+        # ensure all pairs satisfy i < j
+        for i, j in pairs.items():
+            if i < j:
+                sorted_pairs[i] = j
+            else:
+                sorted_pairs[j] = i
+    else:
+        sorted_pairs = pairs
+        # ensure that reverse pairs are also included in sorted return set
+        sorted_pairs.update({j: i for i,j in sorted_pairs.items()})
+
+    # ensure pairs are sorted by i
+    sorted_pairs = OrderedDict({i: j for i, j in sorted(sorted_pairs.items())})
+
+    return sorted_pairs
+
+def get_left_right_positions(pairs: dict[int, int]) -> Tuple[int, int]:
+    positions = sorted(list(pairs.keys()) + list(pairs.values()))
+    return (positions[0], positions[-1])
+
 def disentangle_knots(pairs:dict[int, int], verbose=sys.stderr) -> dict[str, dict[int, int]]:
     """Remove minimal number of base-pairs to ensure remaining set is non-crossing.
 
@@ -105,7 +129,7 @@ def disentangle_knots(pairs:dict[int, int], verbose=sys.stderr) -> dict[str, dic
         'knotted': dict(int, int) those base-pairs, identified as crossing, inclusing symmetric ones
     """
     # only take pairs where i < j is satisfied + order ascendingly
-    orderes_pairs = OrderedDict({i:j for i,j in pairs.items() if i < j})
+    orderes_pairs = sort_pairs(pairs, only_ij=True) #OrderedDict({i:j for i,j in pairs.items() if i < j})
 
     nested = OrderedDict()
     pseudoknotted = OrderedDict()
@@ -125,7 +149,7 @@ def disentangle_knots(pairs:dict[int, int], verbose=sys.stderr) -> dict[str, dic
     if len(pseudoknotted) > len(nested):
         nested, pseudoknotted = pseudoknotted, nested
 
-    if verbose is not None:
+    if verbose is not None and len(pseudoknotted) > 0:
         print("Warning: %i of %i base-pairs in your structure are pseudoknotted, i.e. crossing." % (len(pseudoknotted), len(nested) + len(pseudoknotted)))
 
     # return "normal" dictionaries, not ordered ones
@@ -136,3 +160,77 @@ def disentangle_knots(pairs:dict[int, int], verbose=sys.stderr) -> dict[str, dic
             result[field][j] = i
 
     return result
+
+def nested_pairs_to_dotBracket(pairs: dict[int, int]) -> str:
+    """Takes a dict of pairs and returns a dot-Bracket string.
+
+    Parameters
+    ==========
+    pairs : dict[int, int]
+        A "set" of base-pairs
+
+    Returns
+    =======
+        A dot bracket string representation of the nested secondary structure
+
+    Raises
+    =====
+    ValueError if pairs contain crossing base-pairs
+    """
+
+    sorted_pairs = sort_pairs(pairs, only_ij=True)
+    dis = disentangle_knots(sorted_pairs)
+    if len(dis['knotted']) != 0:
+        raise ValueError("Cannot produce dot-Bracket strings for pseudoknotted pair-sets!")
+
+    # determine left and right borders
+    (left, right) = get_left_right_positions(sorted_pairs)
+    db = ""
+    for x in range(left, right+1, 1):
+        if x not in sorted_pairs.keys():
+            # x is no opening partner, could be unpaired or closing partner
+            if x not in sorted_pairs.values():
+                # x is also not closing partner
+                db += '.'
+            else:
+                # x is closing partner
+                db += ')'
+        else:
+            # x is opening partner
+            db += '('
+
+    return db
+
+def get_minimal_valid_substructure(pairs_full: dict[int, int], pair_subset: dict[int, int]) -> dict[int, int]:
+    """Returns all base-pairs of a template structure (pairs_full) that are enclosed by the provided subset.
+
+    Examples
+    ========
+     pairs_full:    [...]((........)).((((((.....))))))((((..((((((((..(((..((((((((....)))))..)))))).)))))))).((((........))))..............))))((((([...]
+     pair_subset:                     ((((((.....))))))((((....(...........................................).................................))))
+     result:                          ((((((.....))))))((((..((((((((..(((..((((((((....)))))..)))))).)))))))).((((........))))..............))))
+
+     pairs_full:    [...]((........)).((((((.....))))))((((..((((((((..(((..((((((((....)))))..)))))).)))))))).((((........))))..............))))((((([...]
+     pair_subset:                     ((((((.....))))))........(...........................................)
+     result:                          ((((((.....))))))((((..((((((((..(((..((((((((....)))))..)))))).)))))))).((((........))))..............))))
+
+    """
+
+    sorted_pairs_full = sort_pairs(pairs_full)
+    (left, right) = get_left_right_positions(pair_subset)
+
+    extended_pairs = pair_subset.copy()
+    (ext_left, ext_right) = (0, 0)
+
+    while True:
+        for i in range(left, right+1, 1):
+            if i in pairs_full.keys():
+                extended_pairs[i] = pairs_full[i]
+                extended_pairs[pairs_full[i]] = i
+        (ext_left, ext_right) = get_left_right_positions(extended_pairs)
+        if ext_left < left or ext_right > right:
+            (left, right) = (ext_left, ext_right)
+        else:
+            break
+
+    return extended_pairs

@@ -4,7 +4,7 @@ sys.path.append(dirname(__file__) + '/../')
 
 from unittest import TestCase, main
 
-from input import read_fasta, read_CT_file, disentangle_knots
+from input import read_fasta, read_CT_file, disentangle_knots, nested_pairs_to_dotBracket, get_minimal_valid_substructure
 
 def getFP(filepath):
     return join(dirname(__file__), filepath)
@@ -14,6 +14,10 @@ class TestExecute(TestCase):
         self.fp_fasta_mirna = getFP('data/mirnas.fasta')
         self.fp_multiCT = getFP('data/multi.ct')
         self.fp_sars = getFP('data/SARS-CoV-2_Full_Length_Secondary_Structure_Map.ct')
+        self.pairs1 = {14292: 14269, 14293: 14268, 14307: 14437, 14308: 14436, 14309: 14323}
+        self.pairs2 = {27149: 27127, 27150: 27126, 27164: 27330, 27165: 27329}
+        self.pairs3 = {28395: 28379, 28396: 28377, 28397: 28376, 28398: 28375, 28399: 28374, 28410: 28404, 28411: 28403}
+        self.pairs4 = {4060: 4053, 4061: 4052, 4062: 4051, 4063: 4050, 4067: 4048, 4068: 4047, 4069: 4046, 4071: 4144, 4072: 4143, 4073: 4142, 4074: 4141, 4075: 4140, 4076: 4139}
 
     def tearDown(self):
         pass
@@ -61,6 +65,41 @@ class TestExecute(TestCase):
         obs = disentangle_knots(next(read_CT_file(self.fp_sars))[2], verbose=None)
         self.assertEqual(len(obs['nested']), 8681*2)
         self.assertEqual(len(obs['knotted']), 7*2)
+
+    def test_nested_pairs_to_dotBracket(self):
+        exp = '((......................)).............(((.............)................................................................................................................))'
+        obs = nested_pairs_to_dotBracket(self.pairs1)
+        self.assertEqual(exp, obs)
+
+        exp = '((.....................)).............((...................................................................................................................................................................))'
+        obs = nested_pairs_to_dotBracket(self.pairs2)
+        self.assertEqual(exp, obs)
+
+        exp = '((((.(...............)))))...((.....))'
+        obs = nested_pairs_to_dotBracket(self.pairs3)
+        self.assertEqual(exp, obs)
+
+        exp = '(((.((((......))))...))).((((((..............................................................))))))'
+        obs = nested_pairs_to_dotBracket(self.pairs4)
+        self.assertEqual(exp, obs)
+
+    def test_get_minimal_valid_substructure(self):
+        fullSARS = list(read_CT_file(getFP('data/SARS-CoV-2_Full_Length_Secondary_Structure_Map.ct')))[0]
+
+        obs = get_minimal_valid_substructure(fullSARS[2], self.pairs1)
+        self.assertEqual(nested_pairs_to_dotBracket(obs), '((((.((((((.......))))))..))))......(((((((((...........))..((((((.((....)).))))))..(...(((((.....)))))...).(((......)))...(((((.((((((.(((..............))).)))).))))))).)))))))')
+
+        obs = get_minimal_valid_substructure(fullSARS[2], self.pairs2)
+        self.assertEqual(nested_pairs_to_dotBracket(obs), '(((((.(((.(((.....................))).))).)))))((((((...(((((((((((.((((...((((..(((((((((...))))).))))))))....).)))...))))))).......)))).(((((((((.......(((.((((....)))).)))..............)))))))))...............))))))')
+
+        obs = get_minimal_valid_substructure(fullSARS[2], self.pairs3)
+        self.assertEqual(nested_pairs_to_dotBracket(obs), '((((((.((((.........)))))))))).((.....))')
+
+        obs = get_minimal_valid_substructure(fullSARS[2], self.pairs4)
+        self.assertEqual(nested_pairs_to_dotBracket(obs), '(((((((((......))))..)))))((((((.....(((...((((((((((.((......................)).)))))))))))))))))))')
+
+        #print(">%s<" % nested_pairs_to_dotBracket(obs))
+        #print(obs)
 
 if __name__ == '__main__':
     main()
