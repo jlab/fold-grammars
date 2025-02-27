@@ -150,7 +150,7 @@ def RNAhybrid(target, target_file, target_ct_file, mirna, mirna_file, pretrained
     settings['binpath'] = binpath
     settings['program_name'] = PROGNAME
     if verbose:
-        verbose = sys.stder
+        verbose = sys.stderr
     else:
         verbose = None
 
