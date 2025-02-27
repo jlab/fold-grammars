@@ -8,7 +8,7 @@ from multiprocessing import Pool, cpu_count
 from parse_gapc import *
 from execute import *
 from tempfile import gettempdir
-from input import read_CT_file, disentangle_knots, get_minimal_valid_substructure
+from input import read_CT_file, disentangle_knots, get_minimal_valid_substructure, nested_pairs_to_dotBracket, get_left_right_positions
 from output import *
 import pickle
 
@@ -93,39 +93,15 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
                 # extend set of target pairs to valid sub-structure
                 sub_structure = get_minimal_valid_substructure(target_structure, original_target_pairs)
                 # sort involved base-pairs for extended sub-structure to enable easy access to extended left and right limits
-                h = sorted(list(sub_structure.keys()) + list(sub_structure.values()))
-                # get a valid short dot-Bracket representation of that part of the user given target secondary structure that is involved in miRNA binding
-                sub_structure_dotBracket = get_sub_dotBracket_structure(target_structure, h[0], h[-1])
-                assert sub_structure_dotBracket.count('(') == sub_structure_dotBracket.count(')')
-                sub_sequence = entry_target[1][h[0]-1:h[-1]]
-                answer['original_target_substructure_energy'] = process_eval(sub_sequence, sub_structure_dotBracket, verbose, cache, settings)
-
-                # same as "sub_structure_dotBracket", but those base-pairs that are involved in miRNA binding are broken, i.e. converted to .
-                broken_sub_structure_dotBracket = get_sub_dotBracket_structure(target_structure, h[0], h[-1], novel_target_pairing_partners)
-                assert broken_sub_structure_dotBracket.count('(') == broken_sub_structure_dotBracket.count(')')
-                answer['broken_target_substructure_energy'] = process_eval(sub_sequence, broken_sub_structure_dotBracket, verbose, cache, settings)
+                (left, right) = get_left_right_positions(sub_structure)
+                sub_sequence = entry_target[1][left-1:right]
+                # free energy of affected target sub-structure
+                answer['original_target_substructure_energy'] = process_eval(sub_sequence, nested_pairs_to_dotBracket(sub_structure), verbose, cache, settings)
+                # free energy of affected target sub-structure, when existing base-pairs are broken to enable miRNA binding
+                answer['broken_target_substructure_energy'] = process_eval(sub_sequence, nested_pairs_to_dotBracket(sub_structure, novel_target_pairing_partners), verbose, cache, settings)
 
     return res_stacklen
 
-def get_sub_dotBracket_structure(structure, left_border:int, right_border:int, break_pairs=[]):
-    """Construct a dot-Bracket string for a part of the base-pairs given in the "structure" dictionary,
-       but only for the interval between left_border and right_border.
-       Do NOT add a () pair, if one of the partners is in the break_pairs list.
-    """
-    dot = ""
-    for i in range(left_border, right_border+1, 1):
-        if i not in structure.keys():
-            dot += "."
-        else:
-            j = structure[i]
-            if (j < left_border) or (i in break_pairs) or (j in break_pairs):
-                dot += '.'
-            else:
-                if i < j:
-                    dot += '('
-                else:
-                    dot += ')'
-    return dot
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click_option_group.optgroup.group(
