@@ -145,6 +145,8 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
 @click.option(
     '--filter-max-pvalue', type=click.FloatRange(0, 1), default=1, help='Maximal p-value (the smaller the less likely the result is due to rare chance)')
 @click.option(
+    '--filter-min-energy-gain', type=click.FloatRange(0, 1), default=0, help='Only available if CT target file is used! Binding target-miRNA is compared to energy change within target structure to make according base-pairs available for target-miRNA binding. This parameter filteres out hits where target-miRNA energy gain is XXX (as ratio) higher than target breaking.')
+@click.option(
     '--verbose/--no-verbose', type=bool, default=False, help="Print verbose messages.")
 @click.option(
     '--cache/--no-cache', type=bool, default=False, help="Cache the last execution and reuse if input does not change. Will store files to '%s'" % gettempdir())
@@ -155,7 +157,7 @@ def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna,
 @click.option(
     '--sam', type=click.File('w'), required=False, help="Provide a filename if you want to make %s report results as a *.sam file, such that you can view hit positions in a genome browser like IGV." % PROGNAME)
 @click.pass_context
-def RNAhybrid(ctx, target, target_file, target_ct_file, mirna, mirna_file, pretrained_set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue, verbose, cache, stream_output, num_cpus, sam):
+def RNAhybrid(ctx, target, target_file, target_ct_file, mirna, mirna_file, pretrained_set, distribution, binpath, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue, filter_min_energy_gain, verbose, cache, stream_output, num_cpus, sam):
     click.echo("## RNAhybrid was called with following parameters:")
     click.echo("## started execution on %s by %s on %s" % (datetime.datetime.now(), getpass.getuser(), socket.gethostname()))
     for param, value in ctx.params.items():
@@ -229,7 +231,7 @@ def RNAhybrid(ctx, target, target_file, target_ct_file, mirna, mirna_file, pretr
             answers.extend(res[0][0])
 
     if (not stream_output) or (tasks != []):
-        answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue)
+        answers = filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue, filter_min_energy_gain)
         result_nr += print_answers(answers, result_nr, out=sys.stdout)
 
     print_summary(answers, len(targets), total_mirnas)
