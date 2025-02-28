@@ -201,7 +201,7 @@ def nested_pairs_to_dotBracket(pairs: dict[int, int], break_positions: [int]=[],
         else:
             db += ')'
 
-    assert db.count('(') == db.count(')')
+    assert db.count('(') == db.count(')'), "your stucture has %i opening- and %i closing parenthesis. Should be balanced!" % (db.count('('), db.count(')'))
 
     return db
 

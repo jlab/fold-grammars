@@ -49,6 +49,10 @@ def process_eval(sequence, dotBracket, verbose, cache, settings):
     raw_eval = cache_execute(cmd_eval, cache, '.rnaeval', verbose)
     res_eval = Product(TypeMFE()).parse_lines(raw_eval)
 
+    if len(res_eval) == 0:
+        warning('Could not obtain free energy for "%s" "%s". Maybe, this structure is outside of the defined folding-space, e.g. unpaired regions in bulges or interal-loops exceeds 30 bases.', verbose)
+        return None
+
     return res_eval[0]['mfe']
 
 def process_onetarget_onemirna(entry_target, pos_target, entry_mirna, pos_mirna, mdes, distribution, pretrained_set, verbose, cache, settings):
@@ -216,7 +220,7 @@ def RNAhybrid(ctx, target, target_file, target_ct_file, mirna, mirna_file, pretr
                     answers.extend(res_stacklen)
             else:
                 tasks.append(args)
-    
+
     if tasks != []:
         pool = Pool(num_cpus)
         for res in zip(pool.map(wrap_process, tasks)):
