@@ -56,7 +56,7 @@ def execute_subprocess(cmd, verbose=sys.stderr):
 
     err = ""
     for eline in iter(process.stderr.readline, ''):
-        err += eline.decode("utf-8", 'backslashreplace')
+        err += eline
     process.stderr.close()
 
     exitCode = process.wait()

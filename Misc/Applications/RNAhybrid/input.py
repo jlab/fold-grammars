@@ -162,7 +162,7 @@ def disentangle_knots(pairs:dict[int, int], verbose=sys.stderr) -> dict[str, dic
 
     return result
 
-def nested_pairs_to_dotBracket(pairs: dict[int, int], break_positions: [int]=[]) -> str:
+def nested_pairs_to_dotBracket(pairs: dict[int, int], break_positions: [int]=[], verbose=sys.stderr) -> str:
     """Takes a dict of pairs and returns a dot-Bracket string.
 
     Parameters
@@ -183,7 +183,7 @@ def nested_pairs_to_dotBracket(pairs: dict[int, int], break_positions: [int]=[])
     """
 
     sorted_pairs = sort_pairs(pairs, only_ij=False)
-    dis = disentangle_knots(sorted_pairs)
+    dis = disentangle_knots(sorted_pairs, verbose=verbose)
     if len(dis['knotted']) != 0:
         raise ValueError("Cannot produce dot-Bracket strings for pseudoknotted pair-sets!")
 

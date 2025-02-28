@@ -97,7 +97,7 @@ class TestExecute(TestCase):
         self.assertEqual(exp, obs)
 
         with self.assertRaises(ValueError):
-            obs = nested_pairs_to_dotBracket({1: 4, 2: 5})
+            obs = nested_pairs_to_dotBracket({1: 4, 2: 5}, verbose=None)
 
     def test_get_minimal_valid_substructure(self):
         fullSARS = list(read_CT_file(getFP('data/SARS-CoV-2_Full_Length_Secondary_Structure_Map.ct')))[0]
