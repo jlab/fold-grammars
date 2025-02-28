@@ -4,7 +4,6 @@ import os
 from tempfile import gettempdir
 from hashlib import md5
 from output import warning
-from filelock import Timeout, FileLock
 
 
 def complement(sequence: str):
@@ -44,21 +43,29 @@ def compose_call(mode: str, grammar: str, inp_target: str, inp_mirna: str, inp_s
 
 def execute_subprocess(cmd, verbose=sys.stderr):
     warning("Binary call: %s" % cmd, verbose)
-    with subprocess.Popen([cmd],
+    process = subprocess.Popen([cmd],
                           shell=True,
                           stdout=subprocess.PIPE,
                           stderr=subprocess.PIPE,
-                          executable="bash") as call_x:
-        if (call_x.wait() != 0):
-            out, err = call_x.communicate()
-            raise ValueError((
+                          executable="bash",
+                          text=True)
+    out = ""
+    for oline in iter(process.stdout.readline, ''):
+        out += oline
+    process.stdout.close()
+
+    err = ""
+    for eline in iter(process.stderr.readline, ''):
+        err += eline.decode("utf-8", 'backslashreplace')
+    process.stderr.close()
+
+    exitCode = process.wait()
+    if (exitCode != 0):
+        raise ValueError((
                 "SYSTEM CALL FAILED.\n==== STDERR ====\n%s"
-                "\n\n==== STDOUT ====\n%s\n") % (
-                    err.decode("utf-8", 'backslashreplace'),
-                    out.decode("utf-8", 'backslashreplace')))
-        else:
-            out, err = call_x.communicate()
-            return out.decode("utf-8", 'backslashreplace').split('\n')
+                "\n\n==== STDOUT ====\n%s\n") % (err, out))
+    else:
+        return out.split('\n')
 
 
 def cache_execute(cmd:str, cache, cache_suffix:str='.rnahybrid', verbose=sys.stderr) -> [str]:
@@ -66,8 +73,6 @@ def cache_execute(cmd:str, cache, cache_suffix:str='.rnahybrid', verbose=sys.std
         return execute_subprocess(cmd, verbose)
 
     fp_cache = os.path.join(gettempdir(), md5(cmd.encode()).hexdigest() + cache_suffix)
-    fp_cache_lock = fp_cache + '.lock'
-
     raw = []
     if os.path.exists(fp_cache):
         warning("Read cached result from file '%s'" % fp_cache, verbose)
@@ -75,9 +80,8 @@ def cache_execute(cmd:str, cache, cache_suffix:str='.rnahybrid', verbose=sys.std
             raw = f.read().splitlines()
     else:
         raw = execute_subprocess(cmd, verbose)
-        lock = FileLock(fp_cache_lock, timeout=10)
-        with lock:
-            with open(fp_cache, 'w') as f:
-                f.write('\n'.join(raw))
-            warning("Wrote results into cache file '%s'" % fp_cache, verbose)
+        with open(fp_cache, 'w') as f:
+            f.write('\n'.join(raw))
+        warning("Wrote results into cache file '%s'" % fp_cache, verbose)
+
     return raw
