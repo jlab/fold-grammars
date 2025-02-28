@@ -12,8 +12,8 @@ def print_single_answer(answer, number:int, out=sys.stdout):
     if 'broken_target_substructure_energy' in answer.keys():
         delta = 'unknown'
         if (answer['broken_target_substructure_energy'] is not None) and (answer['original_target_substructure_energy'] is not None):
-            delta = answer['broken_target_substructure_energy'] - answer['original_target_substructure_energy']
-        out.write('energy lost to make target accessible: %.1f kcal/mol\n' % (delta / 100))
+            delta = "%.1f kcal/mol" % ((answer['broken_target_substructure_energy'] - answer['original_target_substructure_energy']) / 100)
+        out.write('energy lost to make target accessible: %s\n' % delta)
     out.write("p-value: %f\n" % answer["p-value"])
     out.write("5' seed length: %s\n" % answer['stacklen'])
     out.write("miRNA bulge length: %s\n" % answer['bulgelen'])
