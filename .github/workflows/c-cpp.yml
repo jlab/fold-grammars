@@ -58,7 +58,7 @@ jobs:
       run: cd Misc/Applications/RNAhybrid && make -j 2 all
     - name: run RNAhybrid
       run: |
-        pip install pynose click-option-group coverage filelock
+        pip install pynose click-option-group coverage
         pynose Misc/Applications/RNAhybrid/ --with-doctest --with-coverage
     - name: convert coverage
       run: |
