@@ -9,7 +9,7 @@ import "Extensions/rnahybrid.hh"
 input < rna, rna >
 type Rope = extern
 type pp = (int x, Rope topU, Rope topP, Rope botP, Rope botU)
-type ppS = (int pos, Rope targetUnpaired, Rope targetStacked, Rope pairs, Rope mirnaStacked, Rope mirnaUnpaired)
+type ppS = (int pos, Rope targetUnpaired, Rope targetStacked, Rope pairs, Rope mirnaStacked, Rope mirnaUnpaired, Rope listOfTargetPartners)
 type mfedebug = (int energy, Rope stack)
 type khorshid = extern
 
@@ -222,6 +222,7 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
     append(res.mirnaUnpaired, " 5'", 3);
     res.pairs = Rope("");
     append(res.pairs, ' ', size(tregion) + 1);
+    res.listOfTargetPartners = Rope("");
     return res;
   }
   ppS target_left_flank(<Subsequence tregion, Subsequence mloc>, ppS x) {
@@ -242,6 +243,7 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
 
     append(res.pairs, ' ');
     append(res.pairs, x.pairs);
+    res.listOfTargetPartners = x.listOfTargetPartners;
     return res;
   }
   ppS eds(<Subsequence qbase, Subsequence tbase>, ppS x) {
@@ -258,6 +260,7 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
 
     append(res.pairs, ' ');
     append(res.pairs, x.pairs);
+    res.listOfTargetPartners = x.listOfTargetPartners;
     return res;
   }
   ppS edt(<Subsequence qbase, Subsequence tloc>, ppS x) {
@@ -274,6 +277,7 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
 
     append(res.pairs, ' ');
     append(res.pairs, x.pairs);
+    res.listOfTargetPartners = x.listOfTargetPartners;
     return res;
   }
   ppS edb(<Subsequence qloc, Subsequence tbase>, ppS x) {
@@ -290,6 +294,7 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
     
     append(res.pairs, ' ');
     append(res.pairs, x.pairs);
+    res.listOfTargetPartners = x.listOfTargetPartners;
     return res;
   }
   ppS sr(<Subsequence qbase, Subsequence tbase>, ppS x) {
@@ -310,6 +315,11 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
       append(res.pairs, '|');
     }
     append(res.pairs, x.pairs);
+
+    res.listOfTargetPartners = Rope("");
+    append(res.listOfTargetPartners, qbase.i+1);  // +1 to be in alignment with .pos
+    append(res.listOfTargetPartners, ',');
+    append(res.listOfTargetPartners, x.listOfTargetPartners);
     return res;
   }
   ppS bt(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tloc>, ppS x) {
@@ -334,6 +344,11 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
     }
     append(res.pairs, ' ', size(qregion));
     append(res.pairs, x.pairs);
+
+    res.listOfTargetPartners = Rope("");
+    append(res.listOfTargetPartners, qbase.i+1);
+    append(res.listOfTargetPartners, ',');
+    append(res.listOfTargetPartners, x.listOfTargetPartners);
     return res;
   }
   ppS bb(<Subsequence qbase, Subsequence tbase>, <Subsequence qloc, Subsequence tregion>, ppS x) {
@@ -358,6 +373,11 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
     }
     append(res.pairs, ' ', size(tregion));
     append(res.pairs, x.pairs);
+
+    res.listOfTargetPartners = Rope("");
+    append(res.listOfTargetPartners, qbase.i+1);
+    append(res.listOfTargetPartners, ',');
+    append(res.listOfTargetPartners, x.listOfTargetPartners);
     return res;
   }
   ppS il(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>, ppS x) {
@@ -394,6 +414,11 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
     }
     append(res.pairs, ' ', loopsize);
     append(res.pairs, x.pairs);
+    
+    res.listOfTargetPartners = Rope("");
+    append(res.listOfTargetPartners, qbase.i+1);
+    append(res.listOfTargetPartners, ',');
+    append(res.listOfTargetPartners, x.listOfTargetPartners);
     return res;
   }
   ppS el(<Subsequence qbase, Subsequence tbase>, <Subsequence qregion, Subsequence tregion>) {
@@ -432,6 +457,9 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
     append(res.targetUnpaired, " 3'", 3);
     append(res.mirnaUnpaired, " 5'", 3);
 
+    res.listOfTargetPartners = Rope("");
+    append(res.listOfTargetPartners, qbase.i+1);
+
     return res;
   }
   ppS complete(ppS x) {
@@ -448,6 +476,8 @@ algebra alg_prettySophie implements sig_rnahybrid(alphabet = char, answer = ppS)
   
     append(res.pairs, ' ', 10);
     append(res.pairs, x.pairs);
+	  
+    res.listOfTargetPartners = x.listOfTargetPartners;
     return res;
   }
   choice [ppS] h([ppS] i) {

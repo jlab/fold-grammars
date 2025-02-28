@@ -7,7 +7,7 @@ PROGRAMPREFIX=RNAhybrid_
 all:
 	$(MAKE) all_normal
 
-all_normal: mfe subopt probing mde
+all_normal: mfe subopt probing mde khorshid eval_microstate
 
 
 install: install-lib install-program
@@ -67,6 +67,16 @@ mde:
 		gapc_file="rnahybrid.gap" \
 		gapc_binaryname="$@";
 
+# evaluate sequence structure pair according to microstate grammar
+eval: eval_microstate
+eval_%:
+	sMi=`if [ ${*} = "microstate" ]; then echo "_id"; fi`; \
+	$(MAKE) compile \
+		gapc_product="alg_mfe" \
+		gapc_options="--tab-all" \
+		gapc_file="eval_${*}.gap" \
+		gapc_binaryname="$@" \
+		isEval="1";
+
 distclean:
 	rm -rf $(ARCHTRIPLE);
-

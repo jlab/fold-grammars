@@ -1,4 +1,6 @@
 import sys
+from pathlib import Path
+from io import TextIOWrapper, StringIO
 
 def print_single_answer(answer, number:int, out=sys.stdout):
     out.write("result no %i\n" % number)
@@ -7,6 +9,11 @@ def print_single_answer(answer, number:int, out=sys.stdout):
     out.write("miRNA : %s\n" % answer['mirna_name'])
     out.write("length: %i\n" % answer['mirna_length'])
     out.write("mfe: %.1f kcal/mol\n" % (answer['mfe'] / 100))
+    if 'broken_target_substructure_energy' in answer.keys():
+        delta = 'unknown'
+        if (answer['broken_target_substructure_energy'] is not None) and (answer['original_target_substructure_energy'] is not None):
+            delta = "%.1f kcal/mol" % ((answer['broken_target_substructure_energy'] - answer['original_target_substructure_energy']) / 100)
+        out.write('energy necessary to make target accessible: %s\n' % delta)
     out.write("p-value: %f\n" % answer["p-value"])
     out.write("5' seed length: %s\n" % answer['stacklen'])
     out.write("miRNA bulge length: %s\n" % answer['bulgelen'])
@@ -32,7 +39,7 @@ def print_answers(answers, number:int, out=sys.stdout):
         number += inc
     return number
 
-def filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue):
+def filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgelength, filter_max_energy, filter_max_pvalue, filter_min_energy_gain):
     results = []
     for answer in answers:
         if (answer['stacklen'] < filter_minmax_seedlength[0]) or (answer['stacklen'] > filter_minmax_seedlength[1]):
@@ -43,6 +50,11 @@ def filter_answers(answers, filter_minmax_seedlength, filter_minmax_mirnabulgele
             continue
         if (answer['p-value'] > filter_max_pvalue):
             continue
+        if ('broken_target_substructure_energy' in answer.keys()) and ('original_target_substructure_energy' in answer.keys()) and \
+           (answer['broken_target_substructure_energy'] is not None) and (answer['original_target_substructure_energy'] is not None) and \
+           (((answer['mfe'] + answer['broken_target_substructure_energy'] - answer['original_target_substructure_energy']) / answer['mfe']) < filter_min_energy_gain):
+           continue
+
         results.append(answer)
 
     return results
@@ -144,3 +156,17 @@ def print_sam(answers, targets, out=sys.stdout):
         out.write('\t'.join(["@SQ", "SN:%s" % name, "LN:%i" % length]) + '\n')
     for answer in answers:
         out.write(hit_2_sam(answer) + "\n")
+
+def warning(msg, target, linebreak=True):
+    if target is not None:
+        if isinstance(target, Path):
+            with open(target, 'a') as f:
+                f.write(msg)
+                if linebreak:
+                    f.write('\n')
+        elif isinstance(target, TextIOWrapper) or isinstance(target, StringIO):
+            print(msg, file=target, end="")
+            if linebreak:
+                print("", file=target)
+        elif isinstance(target, list):
+            target.append(msg + ('\n' if linebreak else ''))
