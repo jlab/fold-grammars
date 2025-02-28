@@ -43,6 +43,15 @@ def read_CT_file(filename:str) -> Generator[Tuple[str, str, dict[int, int]], Non
            as unpaired bases are NOT represented
     """
     # see https://rna.urmc.rochester.edu/Text/File_Formats.html for format description
+
+    def _assert_max_pairs(pairs, filename):
+        assert len(pairs.values()) == len(set(pairs.values()))
+        assert len(pairs.keys()) == len(set(pairs.keys()))
+        for i,j in pairs.items():
+            if j not in pairs.keys():
+                raise ValueError("Your CT file '%s' does contain invalid pairing information: pair %i - %i is present, but symmetric pair %i - %i is not!" % (filename, i,j,j,i))
+            assert pairs[j] == i
+
     with open(filename, 'r') as f:
         next_lines_till_entry_end = 0
         header = None
@@ -53,6 +62,7 @@ def read_CT_file(filename:str) -> Generator[Tuple[str, str, dict[int, int]], Non
             if next_lines_till_entry_end == 0:
                 # yield current entry
                 if header is not None:
+                    _assert_max_pairs(pairs, filename)
                     yield (header, sequence, pairs)
 
                 # new entry
@@ -82,6 +92,7 @@ def read_CT_file(filename:str) -> Generator[Tuple[str, str, dict[int, int]], Non
                 next_lines_till_entry_end -= 1
         if next_lines_till_entry_end == 0:
             if header is not None:
+                _assert_max_pairs(pairs, filename)
                 yield (header, sequence, pairs)
         else:
             if expected_structure_length - next_lines_till_entry_end > 0:
@@ -201,7 +212,7 @@ def nested_pairs_to_dotBracket(pairs: dict[int, int], break_positions: [int]=[],
         else:
             db += ')'
 
-    assert db.count('(') == db.count(')'), "your stucture has %i opening- and %i closing parenthesis. Should be balanced!" % (db.count('('), db.count(')'))
+    assert db.count('(') == db.count(')'), "your stucture %s has %i opening- and %i closing parenthesis. Should be balanced!\npairs=%s, break_positions=%s" % (db, db.count('('), db.count(')'), str(pairs), str(break_positions))
 
     return db
 
