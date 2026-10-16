@@ -1,8 +1,0 @@
-<p>&quot;Algebras/Shapes/alg_shapes.gap&quot;: Shapes are an abstraction of the concrete Vienna-Dot-Bracket string to the - as we think - most important features of an RNA structure. They come in five different levels, where 5 is the most abstract and 1 the most concrete level. All levels abstract from length and position. For a definition of the levels, see <a href="http://bioinformatics.oxfordjournals.org/content/26/5/632.short">Faster computation of exact RNA shape probabilities</a>
-The file contains five algebras, one for each level. It starts with level 5 and uses the inheritance system of GAP-L to keep the effort of defining the other levels as small as possible. For efficiency reasons we use the special <code>shape</code> (in the file <code>shape_t</code> is a type synonym for <code>shape</code>) data type with a very limited alphabet, i.e. just <code>[</code>, <code>]</code> and <code>_</code>. The advantage of a small alphabet becomes obvious if we have to use a hash of very many different shapes.</p>
-<p>
-We also provide another algebra, called <code>alg_shapeX</code> for convenience of applications. It is possible to give the desired level as a command line parameter (<code>- u</code>). Thus, we only have to compile one program instead of five and we can still choose the level of abstraction.
-</p>
-<p>
-We make heavy use of out-sourcing parts of the algebras into separate files, which can be re-used by several algebras. See sub-directory &quot;Parts&quot;.
-</p>
