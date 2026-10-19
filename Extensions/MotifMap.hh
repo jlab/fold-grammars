@@ -37,7 +37,7 @@ struct Motif {std::string seq; char abb {'X'};};
 enum class direction_type: std::uint8_t {forward,reverse,both};
 
 class CounterMap{
-    //Simple Unordered Map to count number of occurences of letters in a string
+    //Simple Unordered Map to count number of occurences of letters in a vector
 
     public:
     //using Counter = std::unordered_map<const char, unsigned int>;
